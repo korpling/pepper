@@ -18,12 +18,17 @@ carefully, which should be located in the corresponding jar-files
 inside the folders plugins or lib.
 
 This project includes:
-  de.hu_berlin.german.korpling.saltnpepper.pepper.PepperWorkflow under The Apache Software License, Version 2.0
+  Annotations for SCR under The Apache Software License, Version 2.0
+  JUnit under Common Public License Version 1.0
   org.eclipse.emf.common under Eclipse Public License - v 1.0
   org.eclipse.emf.ecore under Eclipse Public License - v 1.0
   org.eclipse.emf.ecore.xmi under Eclipse Public License - v 1.0
   OSGi R4 Compendium Bundle under The Apache Software License, Version 2.0
   OSGi R4 Core Bundle under The Apache Software License, Version 2.0
   OSGi R4 Foundation EE under The Apache Software License, Version 2.0
+  pepper-workflow under The Apache Software License, Version 2.0
+  salt-graph under The Apache Software License, Version 2.0
+  salt-saltCommon under The Apache Software License, Version 2.0
+  salt-saltCore under The Apache Software License, Version 2.0
   Servlet 2.1 API under The Apache Software License, Version 2.0
 
