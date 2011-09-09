@@ -12,6 +12,36 @@
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-framework/</developerConnection>
   </scm>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  		<artifactId>pepper-exceptions</artifactId>
+  		<version>${project.version}</version>
+  		<type>bundle</type>
+  		<scope>compile</scope>
+  	</dependency>
+	<dependency>
+  		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  		<artifactId>pepper-workflow</artifactId>
+  		<version>${project.version}</version>
+  		<type>bundle</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  		<artifactId>pepper-modules</artifactId>
+  		<version>${project.version}</version>
+  		<type>bundle</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+    	<groupId>log4j</groupId>
+    	<artifactId>log4j</artifactId>
+    	<version>1.2.16</version>
+    	<type>bundle</type>
+    	<scope>test</scope>
+	</dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>

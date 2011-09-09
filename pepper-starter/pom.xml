@@ -12,6 +12,31 @@
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-starter/</developerConnection>
   </scm>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  		<artifactId>pepper-exceptions</artifactId>
+  		<version>${project.version}</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  		<artifactId>pepper-framework</artifactId>
+  		<version>${project.version}</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+	    <groupId>log4j</groupId>
+	    <artifactId>log4j</artifactId>
+	    <version>1.2.16</version>
+	    <scope>compile</scope>
+	</dependency>
+	<dependency>
+      <groupId>org.eclipse.osgi</groupId>
+      <artifactId>org.eclipse.osgi</artifactId>
+      <version>3.6.0.v20100517</version>
+    </dependency>
+  </dependencies>
   <build>
   	<plugins>
   	  <!-- start: Creation of jar file -->

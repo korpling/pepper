@@ -18,7 +18,6 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,7 +38,6 @@ import org.osgi.framework.ServiceReference;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.exceptions.PepperPropertyException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.test.IPepperConverter;
 
 public class PepperStarter 
 {
@@ -113,29 +111,29 @@ public class PepperStarter
 		 return bc;
 	}
 	
-	private static Properties loadProperties(URI uri) throws IOException
-	{
-		if (uri== null)
-			throw new PepperException("Cannot read properties, because no ressource is given.");
-		Properties properties = new Properties();
-		FileInputStream stream = null;
-		try {
-			File propFile= new File(uri.getPath());
-			if (staticLogger!= null)
-				staticLogger.info("using property file: "+ propFile.getAbsolutePath());
-			stream = new FileInputStream(propFile);
-			properties.load(stream);
-		} catch (IOException e) {
-			throw e;
-		}
-		finally
-		{
-			if (stream!= null)
-				stream.close();
-		}
-		
-		return(properties);
-	} 
+//	private static Properties loadProperties(URI uri) throws IOException
+//	{
+//		if (uri== null)
+//			throw new PepperException("Cannot read properties, because no ressource is given.");
+//		Properties properties = new Properties();
+//		FileInputStream stream = null;
+//		try {
+//			File propFile= new File(uri.getPath());
+//			if (staticLogger!= null)
+//				staticLogger.info("using property file: "+ propFile.getAbsolutePath());
+//			stream = new FileInputStream(propFile);
+//			properties.load(stream);
+//		} catch (IOException e) {
+//			throw e;
+//		}
+//		finally
+//		{
+//			if (stream!= null)
+//				stream.close();
+//		}
+//		
+//		return(properties);
+//	} 
 
 //========================== start: Property handling	
 	private Properties properties= null;
@@ -155,22 +153,22 @@ public class PepperStarter
 	}
 //========================== end: Property handling
 	
-	/**
-	 * stores the uri of the path to common-dependencies-plugins
-	 */
-	private URI commonDependenciesUri= null;
-	/**
-	 * stores the uri of the path to core-plugins
-	 */
-	private URI coreUri= null;
-	/**
-	 * stores the uri of the path to pepper-plugins
-	 */
-	private URI pepperUri= null;
-	/**
-	 * stores the uri of the path to module-plugins
-	 */
-	private URI modulesUri= null;
+//	/**
+//	 * stores the uri of the path to common-dependencies-plugins
+//	 */
+//	private URI commonDependenciesUri= null;
+//	/**
+//	 * stores the uri of the path to core-plugins
+//	 */
+//	private URI coreUri= null;
+//	/**
+//	 * stores the uri of the path to pepper-plugins
+//	 */
+//	private URI pepperUri= null;
+//	/**
+//	 * stores the uri of the path to module-plugins
+//	 */
+//	private URI modulesUri= null;
 	
 	/**
 	 * The encoding for the use of the PEPPER_HOME environment variable inside the property file
@@ -349,20 +347,20 @@ public class PepperStarter
 		if (pepperParams== null)
 			throw new RuntimeException("Cannot start, because no parameters are given.");
 		
-		 if (PROFILE_TEST)
-		 {//TODO remove this
-			ServiceReference serviceReference = bundleContext.getServiceReference(IPepperConverter.class.getName());
-			if (serviceReference== null) 
-				throw new PepperException("----------> Cannot find an PepperConverter-object with name '"+KW_QNAME_PEPPER_CONVERTER+"'.");
-			else
-			{
-				IPepperConverter pepperConverter= (IPepperConverter) bundleContext.getService(serviceReference);
-				System.out.println("----------> scheint zu gehen");
-				pepperConverter.start();
-				System.out.println("----------> ach nee doch nicht");
-
-			}
-		}//TODO remove this
+//		 if (PROFILE_TEST)
+//		 {//TODO remove this
+//			ServiceReference serviceReference = bundleContext.getServiceReference(IPepperConverter.class.getName());
+//			if (serviceReference== null) 
+//				throw new PepperException("----------> Cannot find an PepperConverter-object with name '"+KW_QNAME_PEPPER_CONVERTER+"'.");
+//			else
+//			{
+//				IPepperConverter pepperConverter= (IPepperConverter) bundleContext.getService(serviceReference);
+//				System.out.println("----------> scheint zu gehen");
+//				pepperConverter.start();
+//				System.out.println("----------> ach nee doch nicht");
+//
+//			}
+//		 }//TODO remove this
 		
 		ServiceReference[] serviceRefs= bundleContext.getServiceReferences(KW_QNAME_PEPPER_CONVERTER, null);
 		if ((serviceRefs== null) || (serviceRefs.length== 0))
@@ -479,7 +477,7 @@ public class PepperStarter
 		return(retVal.toString());
 	}
 	
-	private static final String ENV_PEPPER_HOME="PEPPER_HOME";
+//	private static final String ENV_PEPPER_HOME="PEPPER_HOME";
 	
 	protected static Logger staticLogger= Logger.getLogger(PepperStarter.class);
 	
@@ -546,7 +544,7 @@ public class PepperStarter
 		PepperStarter pepperStarter = new PepperStarter();
 		//marks if parameter for program call are ok
 		boolean paramsOk= false;
-		URI udPropUri= null;
+//		URI udPropUri= null;
 		URI paramUri= null;
 		try
 		{
