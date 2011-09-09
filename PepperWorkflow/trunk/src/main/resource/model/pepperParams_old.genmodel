@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/PepperWorkflow/src/main/java"
+    modelPluginID="de.hub.corpling.pepper.pepperParams" modelName="PepperParams" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>pepperParams.ecore</foreignModel>
+  <genPackages prefix="PepperParams" basePackage="de.hu_berlin.german.korpling.saltnpepper.pepper"
+      disposableProviderFactory="true" ecorePackage="pepperParams.ecore#/">
+    <genDataTypes ecoreDataType="pepperParams.ecore#//URI"/>
+    <genClasses ecoreClass="pepperParams.ecore#//ModuleParams">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ModuleParams/moduleName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ModuleParams/specialParams"/>
+    </genClasses>
+    <genClasses ecoreClass="pepperParams.ecore#//ImporterParams">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ImporterParams/formatName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ImporterParams/formatVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ImporterParams/sourcePath"/>
+    </genClasses>
+    <genClasses ecoreClass="pepperParams.ecore#//PepperParams">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference pepperParams.ecore#//PepperParams/pepperJobParams"/>
+    </genClasses>
+    <genClasses ecoreClass="pepperParams.ecore#//PepperJobParams">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference pepperParams.ecore#//PepperJobParams/importerParams"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference pepperParams.ecore#//PepperJobParams/moduleParams"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference pepperParams.ecore#//PepperJobParams/exporterParams"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//PepperJobParams/id"/>
+    </genClasses>
+    <genClasses ecoreClass="pepperParams.ecore#//ExporterParams">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ExporterParams/formatName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ExporterParams/formatVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute pepperParams.ecore#//ExporterParams/destinationPath"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
