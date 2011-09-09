@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="de.hub.corpling.pepper.PepperFW"
+            class="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage"
+            genModel="model/pepperFW.genmodel"/>
+   </extension>
+
+</plugin>

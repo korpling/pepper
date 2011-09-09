@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_-Qdc4FHqEd6V3MngOa_sow" type="EcoreTools" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_-vNOYFHqEd6V3MngOa_sow" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_-vNOY1HqEd6V3MngOa_sow" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_-vTVAFHqEd6V3MngOa_sow" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_Ib7FkFtSEd6k9POL3Ck4pg" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperConverter/pepperParams"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_Ib7FkVtSEd6k9POL3Ck4pg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_4y2i4XbEEd6LROQmWWh5vg" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperConverter/parallelized"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_4y2i4nbEEd6LROQmWWh5vg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_7S6NsDs5Ed-6JOqmJx5gjw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperConverter/properties"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_7S6NsTs5Ed-6JOqmJx5gjw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="__y7wIMvwEd-LYeMz64vMhA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperConverter/pepperParamsURI"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="__y7wIcvwEd-LYeMz64vMhA"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_-vTVAVHqEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_-vTVAlHqEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_-vTVA1HqEd6V3MngOa_sow"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_-vTVBFHqEd6V3MngOa_sow" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_lkAtsFtgEd6k9POL3Ck4pg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperConverter/setPepperParams"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_lkAtsVtgEd6k9POL3Ck4pg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_8GG0wFzYEd6A-bVjdTyCrg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperConverter/start"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_8GG0wVzYEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_bFYzkFzdEd6A-bVjdTyCrg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperConverter/startPepperConvertJob"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_bFe6MFzdEd6A-bVjdTyCrg"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_-vTVBVHqEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_-vTVBlHqEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_-vTVB1HqEd6V3MngOa_sow"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_-vNOYVHqEd6V3MngOa_sow" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperConverter"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-vNOYlHqEd6V3MngOa_sow" x="1565" y="1015" width="403" height="147"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_WihdIFHsEd6V3MngOa_sow" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_WihdI1HsEd6V3MngOa_sow" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_WihdJFHsEd6V3MngOa_sow" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_dYUbQHOhEd6cRr31dcvF_g" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperModuleResolver/pepperImporterComponentFactories"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_dYUbQXOhEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_yeEW4HOqEd6cRr31dcvF_g" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperModuleResolver/pepperManipulatorComponentFactories"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_yeEW4XOqEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_3JeWEHOqEd6cRr31dcvF_g" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperModuleResolver/pepperExporterComponentFactories"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_3JeWEXOqEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_k1bg8JL5Ed6C9dJV2ENdlw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperModuleResolver/temprorariesPropertyName"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_k1bg8ZL5Ed6C9dJV2ENdlw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_pEMAYJL5Ed6C9dJV2ENdlw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperModuleResolver/resourcesPropertyName"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_pEMAYZL5Ed6C9dJV2ENdlw"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_WihdJVHsEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_WihdJlHsEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_WihdJ1HsEd6V3MngOa_sow"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_WihdKFHsEd6V3MngOa_sow" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_m-_akHOhEd6cRr31dcvF_g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/addPepperImporterComponentFactory"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_m-_akXOhEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_tCQkkHOhEd6cRr31dcvF_g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/removePepperImporterComponentFactory"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_tCQkkXOhEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_BikQ0HOrEd6cRr31dcvF_g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/addPepperManipulatorComponentFactory"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_BikQ0XOrEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_HuJpUHOrEd6cRr31dcvF_g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/removePepperManipulatorComponentFactory"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_HuJpUXOrEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_MI8ZoHOrEd6cRr31dcvF_g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/addPepperExporterComponentFactory"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_MI8ZoXOrEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_QhoRIHOrEd6cRr31dcvF_g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/removePepperExporterComponentFactory"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_QhoRIXOrEd6cRr31dcvF_g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_SwfJsFzTEd6A-bVjdTyCrg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getPepperImporter"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_SwfJsVzTEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_Uc-gsFzTEd6A-bVjdTyCrg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getPepperManipulator"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_Uc-gsVzTEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_VgNfUFzTEd6A-bVjdTyCrg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getPepperExporter"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_VgNfUVzTEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_20ulAXXiEd6tRoxjVqwBzw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getPepperImporters"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_20ulAnXiEd6tRoxjVqwBzw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_4bfHcHXiEd6tRoxjVqwBzw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getPepperManipulators"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_4bfHcXXiEd6tRoxjVqwBzw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_5oXxUHXiEd6tRoxjVqwBzw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getPepperExporters"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_5oXxUXXiEd6tRoxjVqwBzw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_MXkSUYghEd6SP_fGUdGHDw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleResolver/getStatus"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_MXkSUoghEd6SP_fGUdGHDw"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_WihdKVHsEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_WihdKlHsEd6V3MngOa_sow"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_WihdK1HsEd6V3MngOa_sow"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_WihdIVHsEd6V3MngOa_sow" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperModuleResolver"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WihdIlHsEd6V3MngOa_sow" x="890" y="985" width="408" height="302"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_KMPDEFtGEd6k9POL3Ck4pg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_KMPDE1tGEd6k9POL3Ck4pg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_KMVJsFtGEd6k9POL3Ck4pg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_KMPDEVtGEd6k9POL3Ck4pg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperModule"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KMPDEltGEd6k9POL3Ck4pg" x="35" y="30" width="458" height="61"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_0QboMFtHEd6k9POL3Ck4pg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_0QboM1tHEd6k9POL3Ck4pg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_0QboNFtHEd6k9POL3Ck4pg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_0QboMVtHEd6k9POL3Ck4pg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperImporter"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0QboMltHEd6k9POL3Ck4pg" x="35" y="100" width="453" height="61"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_1MUBoFtHEd6k9POL3Ck4pg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_1MUBo1tHEd6k9POL3Ck4pg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_1MUBpFtHEd6k9POL3Ck4pg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_1MUBoVtHEd6k9POL3Ck4pg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperExporter"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1MUBoltHEd6k9POL3Ck4pg" x="35" y="170" width="453" height="61"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_-pzEMFtREd6k9POL3Ck4pg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_-pzEM1tREd6k9POL3Ck4pg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_-pzENFtREd6k9POL3Ck4pg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_-pzEMVtREd6k9POL3Ck4pg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperParams"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-pzEMltREd6k9POL3Ck4pg" x="40" y="475" width="447" height="56"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_v4_kgFtgEd6k9POL3Ck4pg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_v4_kg1tgEd6k9POL3Ck4pg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_v4_khFtgEd6k9POL3Ck4pg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_v4_kgVtgEd6k9POL3Ck4pg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//URI"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_v4_kgltgEd6k9POL3Ck4pg" x="50" y="945" width="442" height="61"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_fpdAMFzTEd6A-bVjdTyCrg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_fpjG0FzTEd6A-bVjdTyCrg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_fpjG0VzTEd6A-bVjdTyCrg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_fpdAMVzTEd6A-bVjdTyCrg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperImporterParams"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fpdAMlzTEd6A-bVjdTyCrg" x="40" y="555" width="448" height="51"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_xZfTUFzTEd6A-bVjdTyCrg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_xZfTU1zTEd6A-bVjdTyCrg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_xZfTVFzTEd6A-bVjdTyCrg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_xZfTUVzTEd6A-bVjdTyCrg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperModuleParams"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xZfTUlzTEd6A-bVjdTyCrg" x="40" y="620" width="452" height="56"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_0Fe_gFzTEd6A-bVjdTyCrg" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_0Fe_g1zTEd6A-bVjdTyCrg" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_0Fe_hFzTEd6A-bVjdTyCrg" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_0Fe_gVzTEd6A-bVjdTyCrg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperExporterParams"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0Fe_glzTEd6A-bVjdTyCrg" x="40" y="685" width="452" height="56"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_zR3X8FzYEd6A-bVjdTyCrg" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_zR3X81zYEd6A-bVjdTyCrg" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_zR9ekFzYEd6A-bVjdTyCrg" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_4Y3ecDs5Ed-6JOqmJx5gjw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperJob/properties"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_4Y3ecTs5Ed-6JOqmJx5gjw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_iFdg4FzZEd6A-bVjdTyCrg" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperJob/pepperImporters"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_iFdg4VzZEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_lZAVQFzZEd6A-bVjdTyCrg" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperJob/pepperModules"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_lZAVQVzZEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_oAIvkFzZEd6A-bVjdTyCrg" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperJob/pepperExporters"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_oAIvkVzZEd6A-bVjdTyCrg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_q6zh8V1-Ed66vpgvIJBuzg" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperJob/id"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_q6zh8l1-Ed66vpgvIJBuzg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_SP2vIGcWEd65u8lXMgWJ3A" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperJob/saltProject"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_SP2vIWcWEd65u8lXMgWJ3A"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_zR9ekVzYEd6A-bVjdTyCrg"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_zR9eklzYEd6A-bVjdTyCrg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_zR9ek1zYEd6A-bVjdTyCrg"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_zR9elFzYEd6A-bVjdTyCrg" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_vSrwIFzZEd6A-bVjdTyCrg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperJob/start"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_vSrwIVzZEd6A-bVjdTyCrg"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_zR9elVzYEd6A-bVjdTyCrg"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_zR9ellzYEd6A-bVjdTyCrg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_zR9el1zYEd6A-bVjdTyCrg"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_zR3X8VzYEd6A-bVjdTyCrg" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperJob"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zR3X8lzYEd6A-bVjdTyCrg" x="1570" y="460" width="282" height="152"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_3F8fkGJUEd6tA6cWJZKimQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_3F8fk2JUEd6tA6cWJZKimQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_3GCmMGJUEd6tA6cWJZKimQ" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_3GCmMWJUEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3GCmMmJUEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3GCmM2JUEd6tA6cWJZKimQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_3GCmNGJUEd6tA6cWJZKimQ" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_YNxwMGJiEd6tA6cWJZKimQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleController/start"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_YNxwMWJiEd6tA6cWJZKimQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_uVnnUGcTEd65u8lXMgWJ3A" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperModuleController/importCorpusStructure"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_uVnnUWcTEd65u8lXMgWJ3A"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_3GCmNWJUEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3GCmNmJUEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3GCmN2JUEd6tA6cWJZKimQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_3F8fkWJUEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperModuleController"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3F8fkmJUEd6tA6cWJZKimQ" x="1070" y="420" width="331" height="91"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_FrRtEGJcEd6tA6cWJZKimQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_FrXzsGJcEd6tA6cWJZKimQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_FrXzsWJcEd6tA6cWJZKimQ" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_FrXzsmJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_FrXzs2JcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_FrXztGJcEd6tA6cWJZKimQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_FrXztWJcEd6tA6cWJZKimQ" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_FrXztmJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_FrXzt2JcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_FrXzuGJcEd6tA6cWJZKimQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_FrRtEWJcEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//Runnable"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FrRtEmJcEd6tA6cWJZKimQ" x="1245" y="160" width="102" height="51"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_Pau08GJcEd6tA6cWJZKimQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_Pau082JcEd6tA6cWJZKimQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_Pau09GJcEd6tA6cWJZKimQ" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_YH_I0WM0Ed61Sf-gnRcwTw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperQueuedMonitor/orderQueue"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_YH_I0mM0Ed61Sf-gnRcwTw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_vx1hEGV7Ed6TicPDaHnsbw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperQueuedMonitor/empty"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_vx1hEWV7Ed6TicPDaHnsbw"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_Pau09WJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_Pau09mJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_Pau092JcEd6tA6cWJZKimQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_Pau0-GJcEd6tA6cWJZKimQ" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_bRtqAGJcEd6tA6cWJZKimQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperQueuedMonitor/put"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_bRtqAWJcEd6tA6cWJZKimQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cAy9kGJcEd6tA6cWJZKimQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperQueuedMonitor/get"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cAy9kWJcEd6tA6cWJZKimQ"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_Pau0-WJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_Pau0-mJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_Pau0-2JcEd6tA6cWJZKimQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_Pau08WJcEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperQueuedMonitor"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Pau08mJcEd6tA6cWJZKimQ" x="1475" y="175" width="270" height="113"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_XQOxkGJcEd6tA6cWJZKimQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_XQOxk2JcEd6tA6cWJZKimQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_XQOxlGJcEd6tA6cWJZKimQ" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_XQOxlWJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_XQOxlmJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_XQOxl2JcEd6tA6cWJZKimQ"/>
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_OaDsAGJlEd6tA6cWJZKimQ" value="0.27450980392156865"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_XQOxmGJcEd6tA6cWJZKimQ" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_XQOxmWJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_XQOxmmJcEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_XQOxm2JcEd6tA6cWJZKimQ"/>
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_OaDsAWJlEd6tA6cWJZKimQ" value="0.3333333333333333"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_XQOxkWJcEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperFinishableMonitor"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XQOxkmJcEd6tA6cWJZKimQ" x="1805" y="175" width="211" height="66"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_J6rWoGJlEd6tA6cWJZKimQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_J6xdQGJlEd6tA6cWJZKimQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_J6xdQWJlEd6tA6cWJZKimQ" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_LZnZ0GJlEd6tA6cWJZKimQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperMonitor/id"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_LZnZ0WJlEd6tA6cWJZKimQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_3vb4wGJlEd6tA6cWJZKimQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperMonitor/finished"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_3vb4wWJlEd6tA6cWJZKimQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_vPtxoWfPEd66kfLGjtPUBw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperMonitor/exceptions"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_vPtxomfPEd66kfLGjtPUBw"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_J6xdQmJlEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_J6xdQ2JlEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_J6xdRGJlEd6tA6cWJZKimQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_J6xdRWJlEd6tA6cWJZKimQ" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_2CkHQGJlEd6tA6cWJZKimQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperMonitor/finish"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_2CkHQWJlEd6tA6cWJZKimQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_UpPM0WVfEd6TicPDaHnsbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperMonitor/waitUntilFinished"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_UpPM0mVfEd6TicPDaHnsbw"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_J6xdRmJlEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_J6xdR2JlEd6tA6cWJZKimQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_J6xdSGJlEd6tA6cWJZKimQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_J6rWoWJlEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperMonitor"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J6rWomJlEd6tA6cWJZKimQ" x="1695" y="15" width="156" height="111"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_JSe3sGM1Ed61Sf-gnRcwTw" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_JSk-UGM1Ed61Sf-gnRcwTw" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_JSk-UWM1Ed61Sf-gnRcwTw" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_JSe3sWM1Ed61Sf-gnRcwTw" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//ConcurrentLinkedQueue"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JSe3smM1Ed61Sf-gnRcwTw" x="45" y="1025" width="447" height="51"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_qEo9UGbyEd6Xp8XDvt7MJw" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_qEvD8GbyEd6Xp8XDvt7MJw" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_qEvD8WbyEd6Xp8XDvt7MJw" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_qEo9UWbyEd6Xp8XDvt7MJw" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperModuleException"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qEo9UmbyEd6Xp8XDvt7MJw" x="35" y="315" width="457" height="66"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_J_gskGb1Ed6Xp8XDvt7MJw" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_J_mzMGb1Ed6Xp8XDvt7MJw" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_J_mzMWb1Ed6Xp8XDvt7MJw" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_J_gskWb1Ed6Xp8XDvt7MJw" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperConvertException"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J_gskmb1Ed6Xp8XDvt7MJw" x="35" y="400" width="457" height="51"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_o2ckgGb1Ed6Xp8XDvt7MJw" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_o2irIGb1Ed6Xp8XDvt7MJw" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_o2irIWb1Ed6Xp8XDvt7MJw" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_o2ckgWb1Ed6Xp8XDvt7MJw" fontHeight="10" fillColor="13761016" lineColor="0"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//PepperException"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_o2ckgmb1Ed6Xp8XDvt7MJw" x="40" y="255" width="447" height="51"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_WTiJ4XOhEd6cRr31dcvF_g" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_WTiJ5HOhEd6cRr31dcvF_g" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_WTiJ5XOhEd6cRr31dcvF_g" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_WTiJ4nOhEd6cRr31dcvF_g" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//ComponentFactory"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WTiJ43OhEd6cRr31dcvF_g" x="50" y="865" width="438" height="68"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_dkYiEQaxEd-Hw5jzaoTmzQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_dkkvUAaxEd-Hw5jzaoTmzQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_dkkvUQaxEd-Hw5jzaoTmzQ" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_dkkvUgaxEd-Hw5jzaoTmzQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dkkvUwaxEd-Hw5jzaoTmzQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dkkvVAaxEd-Hw5jzaoTmzQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_dkq18AaxEd-Hw5jzaoTmzQ" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_fQyZgAaxEd-Hw5jzaoTmzQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperJobLogger/setLogService"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_fQyZgQaxEd-Hw5jzaoTmzQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_1xwsEAaxEd-Hw5jzaoTmzQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperJobLogger/getLogService"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_1xwsEQaxEd-Hw5jzaoTmzQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_as2CUAazEd-k1N33D_KoWg" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperJobLogger/logStatus"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_as2CUQazEd-k1N33D_KoWg"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_dkq18QaxEd-Hw5jzaoTmzQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dkq18gaxEd-Hw5jzaoTmzQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dkq18waxEd-Hw5jzaoTmzQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_dkYiEgaxEd-Hw5jzaoTmzQ" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperJobLogger"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dkYiEwaxEd-Hw5jzaoTmzQ" x="945" y="570" width="336" height="120"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_cnkCkAazEd-k1N33D_KoWg" type="1005">
+    <children xmi:type="notation:Node" xmi:id="_cnkCkwazEd-k1N33D_KoWg" type="4010"/>
+    <children xmi:type="notation:Node" xmi:id="_cnwP0AazEd-k1N33D_KoWg" type="5008">
+      <children xmi:type="notation:Node" xmi:id="_HqWoAC3zEd-oT8XdkLeCbw" type="2006">
+        <element xmi:type="ecore:EEnumLiteral" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS/NOT_STARTED"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_HqWoAS3zEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_fytI4AazEd-k1N33D_KoWg" type="2006">
+        <element xmi:type="ecore:EEnumLiteral" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS/IN_PROCESS"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_fytI4QazEd-k1N33D_KoWg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_kXnegAazEd-k1N33D_KoWg" type="2006">
+        <element xmi:type="ecore:EEnumLiteral" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS/COMPLETED"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_kXnegQazEd-k1N33D_KoWg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_iGESoAazEd-k1N33D_KoWg" type="2006">
+        <element xmi:type="ecore:EEnumLiteral" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS/DELETED"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_iGESoQazEd-k1N33D_KoWg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_lubgcAazEd-k1N33D_KoWg" type="2006">
+        <element xmi:type="ecore:EEnumLiteral" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS/FAILED"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_lubgcQazEd-k1N33D_KoWg"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_cnwP0QazEd-k1N33D_KoWg"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_cnwP0gazEd-k1N33D_KoWg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_cnwP0wazEd-k1N33D_KoWg"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_cnkCkQazEd-k1N33D_KoWg" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EEnum" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cnkCkgazEd-k1N33D_KoWg" x="980" y="49" width="247" height="118"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_Vm2F8S3QEd-oT8XdkLeCbw" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_VnIZ0C3QEd-oT8XdkLeCbw" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_VnIZ0S3QEd-oT8XdkLeCbw" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_JWAfEC3TEd-oT8XdkLeCbw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperDocumentController/REMOVE_SDOCUMENT_AFTER_PROCESSING"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_JWAfES3TEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_82Z_kTsfEd-6JOqmJx5gjw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperDocumentController/COMPUTE_PERFORMANCE"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_82Z_kjsfEd-6JOqmJx5gjw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_bmVm0TwAEd-fLLrUWtZ6oQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperDocumentController/AMOUNT_OF_COMPUTABLE_SDOCUMENTS"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_bmVm0jwAEd-fLLrUWtZ6oQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_iKvuADwLEd-fLLrUWtZ6oQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="pepperFW.ecore#//PepperDocumentController/currentAmountOfSDocuments"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_iKvuATwLEd-fLLrUWtZ6oQ"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_VnIZ0i3QEd-oT8XdkLeCbw"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_VnIZ0y3QEd-oT8XdkLeCbw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_VnIZ1C3QEd-oT8XdkLeCbw"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_VnIZ1S3QEd-oT8XdkLeCbw" type="5002">
+      <children xmi:type="notation:Node" xmi:id="_p9r_EC3XEd-oT8XdkLeCbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/observeSDocument"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_p9r_ES3XEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_vEBxUC3YEd-oT8XdkLeCbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/getObservedSDocuments"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_vEBxUS3YEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_QEldoC3YEd-oT8XdkLeCbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/setSDocumentStatus"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_QEldoS3YEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_c4g5wC3xEd-oT8XdkLeCbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/getStatus4Print"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_c4g5wS3xEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_hLFiMC3xEd-oT8XdkLeCbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/getStatus"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_hLFiMS3xEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_mBepYC3xEd-oT8XdkLeCbw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/getStatus.1"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_mBepYS3xEd-oT8XdkLeCbw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_TL6xkDs3Ed-6JOqmJx5gjw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/finish"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_TL6xkTs3Ed-6JOqmJx5gjw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_ndMVkDs7Ed-6JOqmJx5gjw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/setLogService"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_ndMVkTs7Ed-6JOqmJx5gjw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_oxIpsDs7Ed-6JOqmJx5gjw" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/getLogService"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_oxIpsTs7Ed-6JOqmJx5gjw"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_jPzSkDwAEd-fLLrUWtZ6oQ" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperFW.ecore#//PepperDocumentController/waitForSDocument"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_jPzSkTwAEd-fLLrUWtZ6oQ"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_VnIZ1i3QEd-oT8XdkLeCbw"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_VnIZ1y3QEd-oT8XdkLeCbw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_VnIZ2C3QEd-oT8XdkLeCbw"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_Vm2F8i3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperDocumentController"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Vm2F8y3QEd-oT8XdkLeCbw" x="1080" y="709" width="587" height="258"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_vqPzYDs3Ed-6JOqmJx5gjw" type="1004">
+    <children xmi:type="notation:Node" xmi:id="_vqV6ADs3Ed-6JOqmJx5gjw" type="4008"/>
+    <children xmi:type="notation:Node" xmi:id="_vqV6ATs3Ed-6JOqmJx5gjw" type="4009"/>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_vqPzYTs3Ed-6JOqmJx5gjw" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EDataType" href="pepperFW.ecore#//Properties"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vqPzYjs3Ed-6JOqmJx5gjw" x="49" y="1104" width="441" height="52"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_-Qdc4VHqEd6V3MngOa_sow"/>
+  <element xmi:type="ecore:EPackage" href="pepperFW.ecore#/"/>
+  <edges xmi:type="notation:Edge" xmi:id="_cG2BUFHsEd6V3MngOa_sow" type="3002" source="_-vNOYFHqEd6V3MngOa_sow" target="_WihdIFHsEd6V3MngOa_sow">
+    <children xmi:type="notation:Node" xmi:id="_cG2BVFHsEd6V3MngOa_sow" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_cG2BVVHsEd6V3MngOa_sow" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_cG2BVlHsEd6V3MngOa_sow" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_cG2BV1HsEd6V3MngOa_sow" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_cG2BUVHsEd6V3MngOa_sow" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_cG2BUlHsEd6V3MngOa_sow" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperConverter/pepperModuleResolver"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_cG2BU1HsEd6V3MngOa_sow" points="[0, 0, 124, 60]$[-124, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MWJlEd6tA6cWJZKimQ" id="(0.33333334,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MmJlEd6tA6cWJZKimQ" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_1QaIQFzYEd6A-bVjdTyCrg" type="3002" source="_-vNOYFHqEd6V3MngOa_sow" target="_zR3X8FzYEd6A-bVjdTyCrg">
+    <children xmi:type="notation:Node" xmi:id="_1QgO4FzYEd6A-bVjdTyCrg" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_1QgO4VzYEd6A-bVjdTyCrg" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_1QgO4lzYEd6A-bVjdTyCrg" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_1QgO41zYEd6A-bVjdTyCrg" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_1QaIQVzYEd6A-bVjdTyCrg" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_1QaIQlzYEd6A-bVjdTyCrg" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperConverter/pepperJobs"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_1QaIQ1zYEd6A-bVjdTyCrg" points="[0, 0, 20, 164]$[-20, -164, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_1QgO5FzYEd6A-bVjdTyCrg" id="(0.6666667,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MGJlEd6tA6cWJZKimQ" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_U0jOwGJbEd6tA6cWJZKimQ" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_3F8fkGJUEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_U0jOxGJbEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_U0jOxWJbEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_U0jOxmJbEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_U0jOx2JbEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_U0jOwWJbEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_U0jOwmJbEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperModuleControllers"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_U0jOw2JbEd6tA6cWJZKimQ" points="[1, 0, 151, 60]$[-150, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_Tromb3Ed6Xp8XDvt7MJw" id="(0.64634144,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_Tro2b3Ed6Xp8XDvt7MJw" id="(0.49707603,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_YsSVUGJbEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_zR3X8FzYEd6A-bVjdTyCrg">
+    <children xmi:type="notation:Node" xmi:id="_YsSVVGJbEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_YsSVVWJbEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_YsSVVmJbEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_YsSVV2JbEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_YsSVUWJbEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_YsSVUmJbEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/pepperJob"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YsSVU2JbEd6tA6cWJZKimQ" points="[0, 0, -150, -60]$[151, 60, 1, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_ZyQGb3Ed6Xp8XDvt7MJw" id="(0.49707603,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_ZyQWb3Ed6Xp8XDvt7MJw" id="(0.64634144,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_KuFfoGJcEd6tA6cWJZKimQ" type="3003" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_FrRtEGJcEd6tA6cWJZKimQ">
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_KuFfoWJcEd6tA6cWJZKimQ" routing="Tree" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_KuFfomJcEd6tA6cWJZKimQ"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KuFfo2JcEd6tA6cWJZKimQ" points="[0, 0, -220, 266]$[0, -231, -220, 35]$[154, -231, -66, 35]$[154, -266, -66, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KuLmQGJcEd6tA6cWJZKimQ" id="(0.19883041,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4UylGJlEd6tA6cWJZKimQ" id="(0.75,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_M-8Y4GJlEd6tA6cWJZKimQ" type="3003" source="_Pau08GJcEd6tA6cWJZKimQ" target="_J6rWoGJlEd6tA6cWJZKimQ">
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_M-8Y4WJlEd6tA6cWJZKimQ" routing="Tree" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_M-8Y4mJlEd6tA6cWJZKimQ"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_M-8Y42JlEd6tA6cWJZKimQ" points="[0, 0, -112, 60]$[0, -30, -112, 30]$[112, -30, 0, 30]$[112, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4g_0mJlEd6tA6cWJZKimQ" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4g_02JlEd6tA6cWJZKimQ" id="(0.33333334,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_NXxvoGJlEd6tA6cWJZKimQ" type="3003" source="_XQOxkGJcEd6tA6cWJZKimQ" target="_J6rWoGJlEd6tA6cWJZKimQ">
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_NXxvoWJlEd6tA6cWJZKimQ" routing="Tree" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_NXxvomJlEd6tA6cWJZKimQ"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_NXxvo2JlEd6tA6cWJZKimQ" points="[1, 0, 111, 60]$[1, -30, 111, 30]$[-110, -30, 0, 30]$[-110, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4IlUGJlEd6tA6cWJZKimQ" id="(0.49763033,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4IlUWJlEd6tA6cWJZKimQ" id="(0.6666667,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_VxwSUGJlEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_Pau08GJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_VxwSVGJlEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_VxwSVWJlEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_VxwSVmJlEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_VxwSV2JlEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_VxwSUWJlEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_VxwSUmJlEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/inputPepperModuleMonitors"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VxwSU2JlEd6tA6cWJZKimQ" points="[1, 0, 0, 60]$[1, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Vx2Y8GJlEd6tA6cWJZKimQ" id="(0.5964912,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4UylWJlEd6tA6cWJZKimQ" id="(0.06818182,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_Xcn4sGJlEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_Pau08GJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_Xcn4tGJlEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Xcn4tWJlEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_Xcn4tmJlEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Xcn4t2JlEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_Xcn4sWJlEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_Xcn4smJlEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/outputPepperModuleMonitors"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Xcn4s2JlEd6tA6cWJZKimQ" points="[0, 0, -25, 60]$[26, -60, 1, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Xct_UGJlEd6tA6cWJZKimQ" id="(0.39766082,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Xct_UWJlEd6tA6cWJZKimQ" id="(0.03181818,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_e7xK0GJlEd6tA6cWJZKimQ" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_Pau08GJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_e7xK1GJlEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_e7xK1WJlEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_e7xK1mJlEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_e7xK12JlEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_e7xK0WJlEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_e7xK0mJlEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperM2MMonitors"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_e7xK02JlEd6tA6cWJZKimQ" points="[0, 0, 0, 186]$[0, -186, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_e7xK2GJlEd6tA6cWJZKimQ" id="(0.86585367,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4g_1GJlEd6tA6cWJZKimQ" id="(0.9227273,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_kn7cYGJlEd6tA6cWJZKimQ" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_XQOxkGJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_kn7cZGJlEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_kn7cZWJlEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_kn7cZmJlEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_kn7cZ2JlEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_kn7cYWJlEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_kn7cYmJlEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperM2JMonitors"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_kn7cY2JlEd6tA6cWJZKimQ" points="[0, 0, -166, 216]$[166, -216, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_koBjAGJlEd6tA6cWJZKimQ" id="(0.9308943,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4nGcGJlEd6tA6cWJZKimQ" id="(0.49289098,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_tYc20GJlEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_XQOxkGJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_tYc21GJlEd6tA6cWJZKimQ" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_tYc21WJlEd6tA6cWJZKimQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_tYc21mJlEd6tA6cWJZKimQ" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_tYc212JlEd6tA6cWJZKimQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_tYc20WJlEd6tA6cWJZKimQ" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_tYc20mJlEd6tA6cWJZKimQ" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/pepperM2JMonitor"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tYc202JlEd6tA6cWJZKimQ" points="[0, 0, -153, 84]$[154, -84, 1, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tYi9cGJlEd6tA6cWJZKimQ" id="(0.79532164,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tYi9cWJlEd6tA6cWJZKimQ" id="(0.24644549,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_TYuMwGb3Ed6Xp8XDvt7MJw" type="3003" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_FrRtEGJcEd6tA6cWJZKimQ">
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_TYuMwWb3Ed6Xp8XDvt7MJw" routing="Tree" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_TYuMwmb3Ed6Xp8XDvt7MJw"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_TYuMw2b3Ed6Xp8XDvt7MJw" points="[0, 0, 176, 226]$[0, -30, 176, 196]$[-176, -30, 0, 196]$[-176, -226, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_ZyQmb3Ed6Xp8XDvt7MJw" id="(0.21544716,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_ZyQ2b3Ed6Xp8XDvt7MJw" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_ZWr7sWr3Ed61WPbwasXytA" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_XQOxkGJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_ZW4I8Gr3Ed61WPbwasXytA" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_ZW4I8Wr3Ed61WPbwasXytA" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_ZW-PkGr3Ed61WPbwasXytA" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_ZW-PkWr3Ed61WPbwasXytA" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_ZWr7smr3Ed61WPbwasXytA" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_ZWr7s2r3Ed61WPbwasXytA" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperJ2CMonitor"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZWr7tGr3Ed61WPbwasXytA" points="[11, -54, -79, 358]$[122, -394, 32, 18]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZXEWMGr3Ed61WPbwasXytA" id="(0.8699187,0.4864865)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_e6EEsGr3Ed61WPbwasXytA" type="3002" source="_-vNOYFHqEd6V3MngOa_sow" target="_XQOxkGJcEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_e6EEtGr3Ed61WPbwasXytA" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_e6EEtWr3Ed61WPbwasXytA" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_e6EEtmr3Ed61WPbwasXytA" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_e6EEt2r3Ed61WPbwasXytA" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_e6EEsWr3Ed61WPbwasXytA" lineColor="0"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_e6EEsmr3Ed61WPbwasXytA" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperConverter/pepperJ2CMonitors"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_e6EEs2r3Ed61WPbwasXytA" points="[8, -10, -398, 559]$[448, -561, 42, 8]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_e6KLUGr3Ed61WPbwasXytA" id="(0.96236557,0.43956044)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_e6KLUWr3Ed61WPbwasXytA" id="(0.80094784,0.6969697)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_6AncsQayEd-k1N33D_KoWg" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_dkYiEQaxEd-Hw5jzaoTmzQ">
+    <children xmi:type="notation:Node" xmi:id="_6AtjUAayEd-k1N33D_KoWg" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_6AtjUQayEd-k1N33D_KoWg" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_6AtjUgayEd-k1N33D_KoWg" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_6AtjUwayEd-k1N33D_KoWg" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_6AncsgayEd-k1N33D_KoWg" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_6AncswayEd-k1N33D_KoWg" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperJobLogger"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_6AnctAayEd-k1N33D_KoWg" points="[91, -5, -75, 5]$[167, -49, 1, -39]"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_6Azp8AayEd-k1N33D_KoWg" id="(0.09655172413793103,0.44166666666666665)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_7fE-wAayEd-k1N33D_KoWg" type="3002" source="_dkYiEQaxEd-Hw5jzaoTmzQ" target="_zR3X8FzYEd6A-bVjdTyCrg">
+    <children xmi:type="notation:Node" xmi:id="_7fE-xAayEd-k1N33D_KoWg" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_7fE-xQayEd-k1N33D_KoWg" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_7fE-xgayEd-k1N33D_KoWg" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_7fE-xwayEd-k1N33D_KoWg" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_7fE-wQayEd-k1N33D_KoWg" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_7fE-wgayEd-k1N33D_KoWg" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJobLogger/pepperJob"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7fE-wwayEd-k1N33D_KoWg" points="[-8, 1, 93, -4]$[-99, 36, 2, 31]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7fLFYAayEd-k1N33D_KoWg" id="(0.08275862068965517,0.7083333333333334)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7fLFYQayEd-k1N33D_KoWg" id="(0.8455284552845529,0.6917293233082706)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_hiRXIAa1Ed-k1N33D_KoWg" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_dkYiEQaxEd-Hw5jzaoTmzQ">
+    <children xmi:type="notation:Node" xmi:id="_hiRXJAa1Ed-k1N33D_KoWg" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_hiRXJQa1Ed-k1N33D_KoWg" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_hiRXJga1Ed-k1N33D_KoWg" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_hiRXJwa1Ed-k1N33D_KoWg" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_hiRXIQa1Ed-k1N33D_KoWg" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_hiRXIga1Ed-k1N33D_KoWg" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/PepperJobLogger"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_hiRXIwa1Ed-k1N33D_KoWg" points="[12, 13, -46, -56]$[60, 59, 2, -10]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hiRXKAa1Ed-k1N33D_KoWg" id="(0.5045317220543807,0.8021978021978022)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hiRXKQa1Ed-k1N33D_KoWg" id="(0.33793103448275863,0.11666666666666667)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_hypUcC3QEd-oT8XdkLeCbw" type="3002" source="_Vm2F8S3QEd-oT8XdkLeCbw" target="_3F8fkGJUEd6tA6cWJZKimQ">
+    <children xmi:type="notation:Node" xmi:id="_hypUdC3QEd-oT8XdkLeCbw" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_hyvbEC3QEd-oT8XdkLeCbw" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_hyvbES3QEd-oT8XdkLeCbw" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_hyvbEi3QEd-oT8XdkLeCbw" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_hypUcS3QEd-oT8XdkLeCbw" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_hypUci3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperDocumentController/pepperModuleControllers"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_hypUcy3QEd-oT8XdkLeCbw" points="[-2, -9, 71, 203]$[-71, -190, 2, 22]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hyvbEy3QEd-oT8XdkLeCbw" id="(0.3380281690140845,0.19672131147540983)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hyvbFC3QEd-oT8XdkLeCbw" id="(0.8308157099697885,0.6703296703296703)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_lIkucC3QEd-oT8XdkLeCbw" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_Vm2F8S3QEd-oT8XdkLeCbw">
+    <children xmi:type="notation:Node" xmi:id="_lIkudC3QEd-oT8XdkLeCbw" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_lIkudS3QEd-oT8XdkLeCbw" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_lIkudi3QEd-oT8XdkLeCbw" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_lIkudy3QEd-oT8XdkLeCbw" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_lIkucS3QEd-oT8XdkLeCbw" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_lIkuci3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/pepperDocumentController"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_lIkucy3QEd-oT8XdkLeCbw" points="[2, 22, -71, -190]$[71, 203, -2, -9]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_n_FBhC3QEd-oT8XdkLeCbw" id="(0.8308157099697885,0.6703296703296703)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_n_FBhS3QEd-oT8XdkLeCbw" id="(0.3380281690140845,0.19672131147540983)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_o2ejkC3QEd-oT8XdkLeCbw" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_Vm2F8S3QEd-oT8XdkLeCbw">
+    <children xmi:type="notation:Node" xmi:id="_o2ejlC3QEd-oT8XdkLeCbw" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_o2ejlS3QEd-oT8XdkLeCbw" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_o2ejli3QEd-oT8XdkLeCbw" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_o2ejly3QEd-oT8XdkLeCbw" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_o2ejkS3QEd-oT8XdkLeCbw" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_o2ejki3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperDocumentController"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_o2ejky3QEd-oT8XdkLeCbw" points="[-38, 49, 125, -141]$[-107, 168, 56, -22]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF2YwC3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF2YwS3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_q6j7MC3QEd-oT8XdkLeCbw" type="3002" source="_Vm2F8S3QEd-oT8XdkLeCbw" target="_zR3X8FzYEd6A-bVjdTyCrg">
+    <children xmi:type="notation:Node" xmi:id="_q6j7NC3QEd-oT8XdkLeCbw" visible="false" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_q6j7NS3QEd-oT8XdkLeCbw" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_q6j7Ni3QEd-oT8XdkLeCbw" visible="false" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_q6j7Ny3QEd-oT8XdkLeCbw" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_q6j7MS3QEd-oT8XdkLeCbw" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_q6j7Mi3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperDocumentController/pepperJobController"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_q6j7My3QEd-oT8XdkLeCbw" points="[56, -22, -107, 168]$[125, -141, -38, 49]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF8fYC3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF8fYS3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
+  </edges>
+</notation:Diagram>

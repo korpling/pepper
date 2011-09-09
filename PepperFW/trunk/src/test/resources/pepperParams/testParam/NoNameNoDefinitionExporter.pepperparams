@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pepperParams:PepperParams xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pepperParams="de.hub.corpling.pepper.pepperParams">
+  <pepperJobParams id="1">
+    <importerParams moduleName="anyImporter"/>
+    <exporterParams moduleName=""/>
+  </pepperJobParams>
+</pepperParams:PepperParams>
