@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+
+
+<paula version="1.0">
+<header paula_id="mmax.pocos.maz-4282_groupsSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="groupsSeg" xml:base="merged.maz-4282.tok.xml">
+<mark id="groupsSeg_1000162" xlink:href="(#tok_10,#xpointer(id('tok_40')/range-to(id('tok_44'))))"/>
+</markList>
+</paula>

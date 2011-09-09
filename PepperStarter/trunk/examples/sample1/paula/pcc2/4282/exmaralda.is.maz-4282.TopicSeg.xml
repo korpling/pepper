@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_TopicSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="TopicSeg" xml:base="merged.maz-4282.tok.xml">
+
+<mark id="TopicSeg_1" xlink:href="#xpointer(id('tok_10')/range-to(id('tok_12')))"/><!-- die...Gemeindevertreter -->
+<mark id="TopicSeg_2" xlink:href="#xpointer(id('tok_31')/range-to(id('tok_33')))"/><!-- ein...Steilpass -->
+<mark id="TopicSeg_3" xlink:href="#xpointer(id('tok_50')/range-to(id('tok_51')))"/><!-- Ein...Befreiungsschlag -->
+<mark id="TopicSeg_4" xlink:href="#xpointer(id('tok_67')/range-to(id('tok_71')))"/><!-- Die...Groß_Glienicker -->
+<mark id="TopicSeg_5" xlink:href="#tok_87"/><!-- sie -->
+<mark id="TopicSeg_6" xlink:href="#xpointer(id('tok_101')/range-to(id('tok_102')))"/><!-- die...Trainerkabine -->
+<mark id="TopicSeg_7" xlink:href="#xpointer(id('tok_108')/range-to(id('tok_110')))"/><!-- der...Spielsituation -->
+<mark id="TopicSeg_8" xlink:href="#xpointer(id('tok_127')/range-to(id('tok_128')))"/><!-- die...Spieler -->
+<mark id="TopicSeg_9" xlink:href="#tok_136"/><!-- sie -->
+<mark id="TopicSeg_10" xlink:href="#xpointer(id('tok_162')/range-to(id('tok_165')))"/><!-- Ermahnungen...Seitenlinie -->
+</markList>
+
+</paula>

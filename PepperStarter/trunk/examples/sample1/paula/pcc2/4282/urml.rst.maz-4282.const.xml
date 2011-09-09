@@ -1,0 +1,78 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_struct.dtd">
+
+
+<paula version="1.0">
+<header paula_id="urml.rst.maz-4282_const"/>
+
+<structList xmlns:xlink="http://www.w3.org/1999/xlink" type="const">
+<struct id="const_1">
+<rel id="rel_1" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_1"/><!--       Steilpas...-->
+<rel id="rel_2" type="edge" xlink:href="#const_10"/>
+</struct>
+<struct id="const_2">
+<rel id="rel_3" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_11"/><!--       Und
+    ...-->
+<rel id="rel_4" type="edge" xlink:href="#const_9"/>
+</struct>
+<struct id="const_3">
+<rel id="rel_5" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_12"/><!--       Auch
+   ...-->
+<rel id="rel_6" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_13"/><!--       Und
+    ...-->
+</struct>
+<struct id="const_4">
+<rel id="rel_7" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_14"/><!--       Ermahnun...-->
+<rel id="rel_8" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_15"/><!--       Vorerst
+...-->
+</struct>
+<struct id="const_5">
+<rel id="rel_9" type="edge" xlink:href="#const_8"/>
+<rel id="rel_10" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_2"/><!--       Wunder
+ ...-->
+</struct>
+<struct id="const_6">
+<rel id="rel_11" type="edge" xlink:href="#const_5"/>
+<rel id="rel_12" type="edge" xlink:href="#const_7"/>
+</struct>
+<struct id="const_7">
+<rel id="rel_13" type="edge" xlink:href="#const_11"/>
+<rel id="rel_14" type="edge" xlink:href="#const_13"/>
+</struct>
+<struct id="const_8">
+<rel id="rel_15" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_3"/><!--       Erst
+   ...-->
+<rel id="rel_16" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_4"/><!--       Und
+    ...-->
+</struct>
+<struct id="const_9">
+<rel id="rel_17" type="edge" xlink:href="#const_3"/>
+<rel id="rel_18" type="edge" xlink:href="#const_4"/>
+</struct>
+<struct id="const_10">
+<rel id="rel_19" type="edge" xlink:href="#const_6"/>
+<rel id="rel_20" type="edge" xlink:href="#const_2"/>
+</struct>
+<struct id="const_11">
+<rel id="rel_21" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_5"/><!--       Ein
+    ...-->
+<rel id="rel_22" type="edge" xlink:href="#const_12"/>
+</struct>
+<struct id="const_12">
+<rel id="rel_23" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_6"/><!--       weil
+   ...-->
+<rel id="rel_24" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_7"/><!--       Die
+    ...-->
+</struct>
+<struct id="const_13">
+<rel id="rel_25" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_8"/><!--       Nun
+    ...-->
+<rel id="rel_26" type="edge" xlink:href="#const_14"/>
+</struct>
+<struct id="const_14">
+<rel id="rel_27" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_9"/><!--       Eine
+   ...-->
+<rel id="rel_28" type="edge" xlink:href="urml.rst.maz-4282.discUnit.xml#seg_10"/><!--       wäre
+   ...-->
+</struct></structList>
+</paula>

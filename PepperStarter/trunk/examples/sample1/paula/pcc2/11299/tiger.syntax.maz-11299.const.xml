@@ -1,0 +1,428 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_struct.dtd">
+
+
+<paula version="1.0">
+<header paula_id="tiger.syntax.maz-11299_const"/>
+
+<structList xmlns:xlink="http://www.w3.org/1999/xlink" type="const">
+<struct id="const_1">
+<rel id="rel_1" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_4"/><!-- in -->
+<rel id="rel_2" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_5"/><!-- Zossen -->
+</struct>
+<struct id="const_2">
+<rel id="rel_3" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_7"/><!-- ein -->
+<rel id="rel_4" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_8"/><!-- Musikcafé -->
+</struct>
+<struct id="const_3">
+<rel id="rel_5" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_2"/><!-- Die -->
+<rel id="rel_6" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_3"/><!-- Jugendlichen -->
+<rel id="rel_7" type="edge" xlink:href="#const_1"/>
+</struct>
+<struct id="const_4">
+<rel id="rel_8" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_6"/><!-- wollen -->
+<rel id="rel_9" type="edge" xlink:href="#const_2"/>
+<rel id="rel_10" type="edge" xlink:href="#const_3"/>
+</struct>
+<struct id="const_5">
+<rel id="rel_11" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_13"/><!-- bei -->
+<rel id="rel_12" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_14"/><!-- der -->
+<rel id="rel_13" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_15"/><!-- ersten -->
+<rel id="rel_14" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_16"/><!-- Zossener -->
+<rel id="rel_15" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_17"/><!-- Runde -->
+</struct>
+<struct id="const_6">
+<rel id="rel_16" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_18"/><!-- am -->
+<rel id="rel_17" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_19"/><!-- Dienstagabend -->
+</struct>
+<struct id="const_7">
+<rel id="rel_18" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_10"/><!-- Das -->
+<rel id="rel_19" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_11"/><!-- forderten -->
+<rel id="rel_20" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_12"/><!-- sie -->
+<rel id="rel_21" type="edge" xlink:href="#const_5"/>
+<rel id="rel_22" type="edge" xlink:href="#const_6"/>
+</struct>
+<struct id="const_8">
+<rel id="rel_23" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_24"/><!-- der -->
+<rel id="rel_24" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_25"/><!-- Stadt -->
+</struct>
+<struct id="const_9">
+<rel id="rel_25" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_26"/><!-- dafür -->
+<rel id="rel_26" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_27"/><!-- Verständnis -->
+</struct>
+<struct id="const_10">
+<rel id="rel_27" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_22"/><!-- die -->
+<rel id="rel_28" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_23"/><!-- Politiker -->
+<rel id="rel_29" type="edge" xlink:href="#const_8"/>
+</struct>
+<struct id="const_11">
+<rel id="rel_30" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_21"/><!-- Dass -->
+<rel id="rel_31" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_28"/><!-- haben -->
+<rel id="rel_32" type="edge" xlink:href="#const_9"/>
+<rel id="rel_33" type="edge" xlink:href="#const_10"/>
+</struct>
+<struct id="const_12">
+<rel id="rel_34" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_30"/><!-- ist -->
+<rel id="rel_35" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_31"/><!-- löblich -->
+<rel id="rel_36" type="edge" xlink:href="#const_11"/>
+</struct>
+<struct id="const_13">
+<rel id="rel_37" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_36"/><!-- im -->
+<rel id="rel_38" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_37"/><!-- Rathaus -->
+</struct>
+<struct id="const_14">
+<rel id="rel_39" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_43"/><!-- zwischen -->
+<rel id="rel_40" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_44"/><!-- den -->
+<rel id="rel_41" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_45"/><!-- Generationen -->
+</struct>
+<struct id="const_15">
+<rel id="rel_42" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_33"/><!-- Mit -->
+<rel id="rel_43" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_34"/><!-- dem -->
+<rel id="rel_44" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_35"/><!-- Treffen -->
+<rel id="rel_45" type="edge" xlink:href="#const_13"/>
+</struct>
+<struct id="const_16">
+<rel id="rel_46" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_40"/><!-- auch -->
+<rel id="rel_47" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_41"/><!-- ein -->
+<rel id="rel_48" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_42"/><!-- Dialog -->
+<rel id="rel_49" type="edge" xlink:href="#const_14"/>
+</struct>
+<struct id="const_17">
+<rel id="rel_50" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_39"/><!-- somit -->
+<rel id="rel_51" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_46"/><!-- angestoßen -->
+<rel id="rel_52" type="edge" xlink:href="#const_15"/>
+</struct>
+<struct id="const_18">
+<rel id="rel_53" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_38"/><!-- ist -->
+<rel id="rel_54" type="edge" xlink:href="#const_16"/>
+<rel id="rel_55" type="edge" xlink:href="#const_17"/>
+</struct>
+<struct id="const_19">
+<rel id="rel_56" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_49"/><!-- die -->
+<rel id="rel_57" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_50"/><!-- beiden -->
+<rel id="rel_58" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_51"/><!-- geladenen -->
+<rel id="rel_59" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_52"/><!-- Jugendlichen -->
+</struct>
+<struct id="const_20">
+<rel id="rel_60" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_55"/><!-- des -->
+<rel id="rel_61" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_56"/><!-- Abends -->
+</struct>
+<struct id="const_21">
+<rel id="rel_62" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_57"/><!-- immer -->
+<rel id="rel_63" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_58"/><!-- weniger -->
+</struct>
+<struct id="const_22">
+<rel id="rel_64" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_59"/><!-- zu -->
+<rel id="rel_65" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_60"/><!-- Wort -->
+</struct>
+<struct id="const_23">
+<rel id="rel_66" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_65"/><!-- keine -->
+<rel id="rel_67" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_66"/><!-- böse -->
+<rel id="rel_68" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_67"/><!-- Absicht -->
+</struct>
+<struct id="const_24">
+<rel id="rel_69" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_69"/><!-- ärgerlich -->
+<rel id="rel_70" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_70"/><!-- ist -->
+<rel id="rel_71" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_71"/><!-- es -->
+<rel id="rel_72" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_72"/><!-- trotzdem -->
+</struct>
+<struct id="const_25">
+<rel id="rel_73" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_53"/><!-- im -->
+<rel id="rel_74" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_54"/><!-- Laufe -->
+<rel id="rel_75" type="edge" xlink:href="#const_20"/>
+</struct>
+<struct id="const_26">
+<rel id="rel_76" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_48"/><!-- Dass -->
+<rel id="rel_77" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_61"/><!-- kamen -->
+<rel id="rel_78" type="edge" xlink:href="#const_19"/>
+<rel id="rel_79" type="edge" xlink:href="#const_21"/>
+<rel id="rel_80" type="edge" xlink:href="#const_22"/>
+<rel id="rel_81" type="edge" xlink:href="#const_25"/>
+</struct>
+<struct id="const_27">
+<rel id="rel_82" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_63"/><!-- war -->
+<rel id="rel_83" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_64"/><!-- sicher -->
+<rel id="rel_84" type="edge" xlink:href="#const_23"/>
+<rel id="rel_85" type="edge" xlink:href="#const_26"/>
+</struct>
+<struct id="const_28">
+<rel id="rel_86" type="edge" xlink:href="#const_24"/>
+<rel id="rel_87" type="edge" xlink:href="#const_27"/>
+</struct>
+<struct id="const_29">
+<rel id="rel_88" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_74"/><!-- Und -->
+<rel id="rel_89" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_75"/><!-- aberwitzig -->
+<rel id="rel_90" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_76"/><!-- dazu -->
+</struct>
+<struct id="const_30">
+<rel id="rel_91" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_81"/><!-- der -->
+<rel id="rel_92" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_82"/><!-- Komik -->
+</struct>
+<struct id="const_31">
+<rel id="rel_93" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_89"/><!-- Karola -->
+<rel id="rel_94" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_90"/><!-- Andrae -->
+</struct>
+<struct id="const_32">
+<rel id="rel_95" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_95"/><!-- Susanne -->
+<rel id="rel_96" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_96"/><!-- Michler -->
+</struct>
+<struct id="const_33">
+<rel id="rel_97" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_101"/><!-- Joachim -->
+<rel id="rel_98" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_102"/><!-- Zanow -->
+</struct>
+<struct id="const_34">
+<rel id="rel_99" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_110"/><!-- was -->
+<rel id="rel_100" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_111"/><!-- Jugendliche -->
+<rel id="rel_101" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_112"/><!-- wollen -->
+</struct>
+<struct id="const_35">
+<rel id="rel_102" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_114"/><!-- brauchen -->
+<rel id="rel_103" type="secedge" xlink:href="merged.maz-11299.tok.xml#tok_110"/><!-- was -->
+<rel id="rel_104" type="secedge" xlink:href="merged.maz-11299.tok.xml#tok_111"/><!-- Jugendliche -->
+</struct>
+<struct id="const_36">
+<rel id="rel_105" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_120"/><!-- zu -->
+<rel id="rel_106" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_121"/><!-- kommen -->
+</struct>
+<struct id="const_37">
+<rel id="rel_107" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_123"/><!-- sie -->
+<rel id="rel_108" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_124"/><!-- selbst -->
+</struct>
+<struct id="const_38">
+<rel id="rel_109" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_125"/><!-- zu -->
+<rel id="rel_110" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_126"/><!-- fragen -->
+</struct>
+<struct id="const_39">
+<rel id="rel_111" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_92"/><!-- Bürgerbündnis/FDP -->
+<rel id="rel_112" type="edge" xlink:href="#const_31"/>
+</struct>
+<struct id="const_40">
+<rel id="rel_113" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_98"/><!-- CDU -->
+<rel id="rel_114" type="edge" xlink:href="#const_32"/>
+</struct>
+<struct id="const_41">
+<rel id="rel_115" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_104"/><!-- SPD -->
+<rel id="rel_116" type="edge" xlink:href="#const_33"/>
+</struct>
+<struct id="const_42">
+<rel id="rel_117" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_113"/><!-- und -->
+<rel id="rel_118" type="edge" xlink:href="#const_34"/>
+<rel id="rel_119" type="edge" xlink:href="#const_35"/>
+</struct>
+<struct id="const_43">
+<rel id="rel_120" type="edge" xlink:href="#const_37"/>
+<rel id="rel_121" type="edge" xlink:href="#const_38"/>
+</struct>
+<struct id="const_44">
+<rel id="rel_122" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_100"/><!-- und -->
+<rel id="rel_123" type="edge" xlink:href="#const_39"/>
+<rel id="rel_124" type="edge" xlink:href="#const_40"/>
+<rel id="rel_125" type="edge" xlink:href="#const_41"/>
+</struct>
+<struct id="const_45">
+<rel id="rel_126" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_107"/><!-- darüber -->
+<rel id="rel_127" type="edge" xlink:href="#const_42"/>
+</struct>
+<struct id="const_46">
+<rel id="rel_128" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_117"/><!-- auf -->
+<rel id="rel_129" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_118"/><!-- die -->
+<rel id="rel_130" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_119"/><!-- Idee -->
+<rel id="rel_131" type="edge" xlink:href="#const_43"/>
+</struct>
+<struct id="const_47">
+<rel id="rel_132" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_86"/><!-- drei -->
+<rel id="rel_133" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_87"/><!-- Erwachsene -->
+<rel id="rel_134" type="edge" xlink:href="#const_44"/>
+</struct>
+<struct id="const_48">
+<rel id="rel_135" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_116"/><!-- ohne -->
+<rel id="rel_136" type="edge" xlink:href="#const_36"/>
+<rel id="rel_137" type="edge" xlink:href="#const_46"/>
+</struct>
+<struct id="const_49">
+<rel id="rel_138" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_84"/><!-- wenn -->
+<rel id="rel_139" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_85"/><!-- sich -->
+<rel id="rel_140" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_108"/><!-- streiten -->
+<rel id="rel_141" type="edge" xlink:href="#const_45"/>
+<rel id="rel_142" type="edge" xlink:href="#const_47"/>
+<rel id="rel_143" type="edge" xlink:href="#const_48"/>
+</struct>
+<struct id="const_50">
+<rel id="rel_144" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_78"/><!-- Es -->
+<rel id="rel_145" type="edge" xlink:href="#const_49"/>
+</struct>
+<struct id="const_51">
+<rel id="rel_146" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_79"/><!-- entbehrt -->
+<rel id="rel_147" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_80"/><!-- nicht -->
+<rel id="rel_148" type="edge" xlink:href="#const_30"/>
+<rel id="rel_149" type="edge" xlink:href="#const_50"/>
+</struct>
+<struct id="const_52">
+<rel id="rel_150" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_133"/><!-- ihnen -->
+<rel id="rel_151" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_134"/><!-- gegenüber -->
+</struct>
+<struct id="const_53">
+<rel id="rel_152" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_131"/><!-- obwohl -->
+<rel id="rel_153" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_132"/><!-- sie -->
+<rel id="rel_154" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_135"/><!-- sitzen -->
+<rel id="rel_155" type="edge" xlink:href="#const_52"/>
+</struct>
+<struct id="const_54">
+<rel id="rel_156" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_128"/><!-- Und -->
+<rel id="rel_157" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_129"/><!-- das -->
+<rel id="rel_158" type="edge" xlink:href="#const_53"/>
+</struct>
+<struct id="const_55">
+<rel id="rel_159" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_137"/><!-- Die -->
+<rel id="rel_160" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_138"/><!-- Jugendlichen -->
+</struct>
+<struct id="const_56">
+<rel id="rel_161" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_141"/><!-- zum -->
+<rel id="rel_162" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_142"/><!-- bloßen -->
+<rel id="rel_163" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_143"/><!-- Feigenblatt -->
+</struct>
+<struct id="const_57">
+<rel id="rel_164" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_140"/><!-- somit -->
+<rel id="rel_165" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_144"/><!-- degradiert -->
+<rel id="rel_166" type="edge" xlink:href="#const_56"/>
+</struct>
+<struct id="const_58">
+<rel id="rel_167" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_139"/><!-- wurden -->
+<rel id="rel_168" type="edge" xlink:href="#const_55"/>
+<rel id="rel_169" type="edge" xlink:href="#const_57"/>
+</struct>
+<struct id="const_59">
+<rel id="rel_170" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_146"/><!-- Nicht -->
+<rel id="rel_171" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_147"/><!-- über -->
+</struct>
+<struct id="const_60">
+<rel id="rel_172" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_149"/><!-- mit -->
+<rel id="rel_173" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_150"/><!-- ihnen -->
+</struct>
+<struct id="const_61">
+<rel id="rel_174" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_152"/><!-- die -->
+<rel id="rel_175" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_153"/><!-- Politiker -->
+</struct>
+<struct id="const_62">
+<rel id="rel_176" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_148"/><!-- sondern -->
+<rel id="rel_177" type="edge" xlink:href="#const_59"/>
+<rel id="rel_178" type="edge" xlink:href="#const_60"/>
+</struct>
+<struct id="const_63">
+<rel id="rel_179" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_154"/><!-- reden -->
+<rel id="rel_180" type="edge" xlink:href="#const_62"/>
+</struct>
+<struct id="const_64">
+<rel id="rel_181" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_155"/><!-- sollen -->
+<rel id="rel_182" type="edge" xlink:href="#const_63"/>
+</struct>
+<struct id="const_65">
+<rel id="rel_183" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_151"/><!-- hätten -->
+<rel id="rel_184" type="edge" xlink:href="#const_61"/>
+<rel id="rel_185" type="edge" xlink:href="#const_64"/>
+</struct>
+<struct id="const_66">
+<rel id="rel_186" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_159"/><!-- eine -->
+<rel id="rel_187" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_160"/><!-- große -->
+<rel id="rel_188" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_161"/><!-- Chance -->
+</struct>
+<struct id="const_67">
+<rel id="rel_189" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_157"/><!-- Damit -->
+<rel id="rel_190" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_158"/><!-- ist -->
+<rel id="rel_191" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_162"/><!-- vertan -->
+<rel id="rel_192" type="edge" xlink:href="#const_66"/>
+</struct>
+<struct id="const_68">
+<rel id="rel_193" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_171"/><!-- Anfang -->
+<rel id="rel_194" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_172"/><!-- 2002 -->
+</struct>
+<struct id="const_69">
+<rel id="rel_195" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_167"/><!-- bei -->
+<rel id="rel_196" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_168"/><!-- der -->
+<rel id="rel_197" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_169"/><!-- nächsten -->
+<rel id="rel_198" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_170"/><!-- Runde -->
+<rel id="rel_199" type="edge" xlink:href="#const_68"/>
+</struct>
+<struct id="const_70">
+<rel id="rel_200" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_164"/><!-- Vielleicht -->
+<rel id="rel_201" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_165"/><!-- klappt -->
+<rel id="rel_202" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_166"/><!-- es -->
+<rel id="rel_203" type="edge" xlink:href="#const_69"/>
+</struct>
+<struct id="const_71">
+<rel id="rel_204" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_174"/><!-- Dann -->
+<rel id="rel_205" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_176"/><!-- auch -->
+<rel id="rel_206" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_179"/><!-- eingeladen -->
+</struct>
+<struct id="const_72">
+<rel id="rel_207" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_177"/><!-- mehr -->
+<rel id="rel_208" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_178"/><!-- Jugendliche -->
+</struct>
+<struct id="const_73">
+<rel id="rel_209" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_175"/><!-- werden -->
+<rel id="rel_210" type="edge" xlink:href="#const_71"/>
+<rel id="rel_211" type="edge" xlink:href="#const_72"/>
+</struct>
+<struct id="const_74">
+<rel id="rel_212" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_181"/><!-- In -->
+<rel id="rel_213" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_182"/><!-- der -->
+<rel id="rel_214" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_183"/><!-- Gruppe -->
+</struct>
+<struct id="const_75">
+<rel id="rel_215" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_188"/><!-- mehr -->
+<rel id="rel_216" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_189"/><!-- Gehör -->
+</struct>
+<struct id="const_76">
+<rel id="rel_217" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_186"/><!-- sich -->
+<rel id="rel_218" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_190"/><!-- verschaffen -->
+<rel id="rel_219" type="edge" xlink:href="#const_75"/>
+</struct>
+<struct id="const_77">
+<rel id="rel_220" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_184"/><!-- können -->
+<rel id="rel_221" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_185"/><!-- sie -->
+<rel id="rel_222" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_187"/><!-- hoffentlich -->
+<rel id="rel_223" type="edge" xlink:href="#const_74"/>
+<rel id="rel_224" type="edge" xlink:href="#const_76"/>
+</struct>
+<struct id="const_78">
+<rel id="rel_225" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_198"/><!-- PDS -->
+<rel id="rel_226" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_199"/><!-- und -->
+<rel id="rel_227" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_200"/><!-- Gewerbeverein -->
+</struct>
+<struct id="const_79">
+<rel id="rel_228" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_203"/><!-- ins -->
+<rel id="rel_229" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_204"/><!-- Rathaus -->
+</struct>
+<struct id="const_80">
+<rel id="rel_230" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_197"/><!-- von -->
+<rel id="rel_231" type="edge" xlink:href="#const_78"/>
+</struct>
+<struct id="const_81">
+<rel id="rel_232" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_201"/><!-- ihren -->
+<rel id="rel_233" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_202"/><!-- Weg -->
+<rel id="rel_234" type="edge" xlink:href="#const_79"/>
+</struct>
+<struct id="const_82">
+<rel id="rel_235" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_195"/><!-- auch -->
+<rel id="rel_236" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_196"/><!-- Vertreter -->
+<rel id="rel_237" type="edge" xlink:href="#const_80"/>
+</struct>
+<struct id="const_83">
+<rel id="rel_238" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_192"/><!-- Vielleicht -->
+<rel id="rel_239" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_193"/><!-- finden -->
+<rel id="rel_240" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_194"/><!-- dann -->
+<rel id="rel_241" type="edge" xlink:href="#const_81"/>
+<rel id="rel_242" type="edge" xlink:href="#const_82"/>
+</struct>
+<struct id="const_84">
+<rel id="rel_243" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_210"/><!-- mit -->
+<rel id="rel_244" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_211"/><!-- Abwesenheit -->
+</struct>
+<struct id="const_85">
+<rel id="rel_245" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_206"/><!-- Die -->
+<rel id="rel_246" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_207"/><!-- glänzten -->
+<rel id="rel_247" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_208"/><!-- diesmal -->
+<rel id="rel_248" type="edge" xlink:href="merged.maz-11299.tok.xml#tok_209"/><!-- noch -->
+<rel id="rel_249" type="edge" xlink:href="#const_84"/>
+</struct></structList>
+</paula>

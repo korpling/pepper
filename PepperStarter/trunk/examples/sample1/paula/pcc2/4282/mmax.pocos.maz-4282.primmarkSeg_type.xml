@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+
+<paula version="1.0">
+
+<header paula_id="mmax.pocos.maz-4282_primmarkSeg_type"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="type" xml:base="mmax.pocos.maz-4282.primmarkSeg.xml">
+<feat xlink:href="#primmarkSeg_28" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_32" value="none"/>
+<feat xlink:href="#primmarkSeg_23" value="none"/>
+<feat xlink:href="#primmarkSeg_16" value="none"/>
+<feat xlink:href="#primmarkSeg_56" value="none"/>
+<feat xlink:href="#primmarkSeg_72" value="none"/>
+<feat xlink:href="#primmarkSeg_7" value="none"/>
+<feat xlink:href="#primmarkSeg_46" value="none"/>
+<feat xlink:href="#primmarkSeg_60" value="none"/>
+<feat xlink:href="#primmarkSeg_1000159" value="none"/>
+<feat xlink:href="#primmarkSeg_39" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_1000154" value="none"/>
+<feat xlink:href="#primmarkSeg_6" value="none"/>
+<feat xlink:href="#primmarkSeg_45" value="none"/>
+<feat xlink:href="#primmarkSeg_100086" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_1000161" value="none"/>
+<feat xlink:href="#primmarkSeg_12" value="none"/>
+<feat xlink:href="#primmarkSeg_4" value="none"/>
+<feat xlink:href="#primmarkSeg_100090" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_100045" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_51" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_1000155" value="none"/>
+<feat xlink:href="#primmarkSeg_1000142" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_74" value="none"/>
+<feat xlink:href="#primmarkSeg_57" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_1000158" value="none"/>
+<feat xlink:href="#primmarkSeg_1000135" value="anaphoric"/>
+<feat xlink:href="#primmarkSeg_30" value="none"/>
+</featList>
+</paula>

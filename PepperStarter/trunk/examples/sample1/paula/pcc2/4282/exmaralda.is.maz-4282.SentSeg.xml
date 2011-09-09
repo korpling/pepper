@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_SentSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="SentSeg" xml:base="merged.maz-4282.tok.xml">
+
+<mark id="SentSeg_1" xlink:href="#xpointer(id('tok_2')/range-to(id('tok_7')))"/><!-- Wunder...! -->
+<mark id="SentSeg_2" xlink:href="#xpointer(id('tok_8')/range-to(id('tok_23')))"/><!-- Erst.... -->
+<mark id="SentSeg_3" xlink:href="#xpointer(id('tok_24')/range-to(id('tok_49')))"/><!-- Und.... -->
+<mark id="SentSeg_4" xlink:href="#xpointer(id('tok_50')/range-to(id('tok_66')))"/><!-- Ein.... -->
+<mark id="SentSeg_5" xlink:href="#xpointer(id('tok_67')/range-to(id('tok_84')))"/><!-- Die.... -->
+<mark id="SentSeg_6" xlink:href="#xpointer(id('tok_85')/range-to(id('tok_95')))"/><!-- Nun.... -->
+<mark id="SentSeg_7" xlink:href="#xpointer(id('tok_96')/range-to(id('tok_112')))"/><!-- Eine.... -->
+<mark id="SentSeg_8" xlink:href="#xpointer(id('tok_113')/range-to(id('tok_124')))"/><!-- Und.... -->
+<mark id="SentSeg_9" xlink:href="#xpointer(id('tok_125')/range-to(id('tok_153')))"/><!-- Auch.... -->
+<mark id="SentSeg_10" xlink:href="#xpointer(id('tok_154')/range-to(id('tok_161')))"/><!-- Und.... -->
+<mark id="SentSeg_11" xlink:href="#xpointer(id('tok_162')/range-to(id('tok_183')))"/><!-- Ermahnungen.... -->
+<mark id="SentSeg_12" xlink:href="#xpointer(id('tok_184')/range-to(id('tok_186')))"/><!-- Vorerst...hilfreich -->
+</markList>
+
+</paula>

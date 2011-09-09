@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+
+<paula version="1.0">
+
+<header paula_id="mmax.pocos.maz-11299_primmarkSeg_ambiguity"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="ambiguity" xml:base="mmax.pocos.maz-11299.primmarkSeg.xml">
+<feat xlink:href="#primmarkSeg_10004" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_18" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100091" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_10009" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000200" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000205" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_70" value="ambig_ante"/>
+<feat xlink:href="#primmarkSeg_17" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_23" value="ambig_rel"/>
+<feat xlink:href="#primmarkSeg_1000197" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000149" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100025" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100077" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_16" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000131" value="ambig_ante"/>
+<feat xlink:href="#primmarkSeg_7" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100097" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_39" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000210" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_6" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100075" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100011" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_24" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000132" value="ambig_ante"/>
+<feat xlink:href="#primmarkSeg_36" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_12" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_95" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000156" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_87" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000122" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_37" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000207" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_52" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000206" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000106" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_38" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_63" value="ambig_ante"/>
+<feat xlink:href="#primmarkSeg_10" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000128" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_3" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_80" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000103" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000209" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100070" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_93" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000184" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_29" value="not_ambig"/>
+</featList>
+</paula>

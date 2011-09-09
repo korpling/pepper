@@ -1,0 +1,105 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>PepperModuleBundle</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <!-- start: copies all dependencies into lib folder -->
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+      <excludes>
+      	<exclude>${project.groupId}.${project.artifactId}_${project.version}.jar</exclude>
+      </excludes>
+    </dependencySet>
+  </dependencySets>
+  <!-- end: copies all dependencies into lib folder -->
+  
+  <!-- start: copies the plugin folder -->
+  <fileSets>
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${basedir}/plugins/**</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies the plugin folder -->
+ 	
+ 	<!-- start: copies the example folder -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${basedir}/examples/**</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies the example folder -->
+ 	 	
+ 	<!-- start: copies the scripts -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${basedir}/pepperStart.*</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies the scripts -->
+ 	
+ 	<!-- start: copies the license stuff -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>LICENSE</include>
+  			<include>NOTICE</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies the license stuff -->
+ 	
+ 	<!-- start: copies the readme file -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>readme.txt</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies the readme file -->
+ 	
+ 	<!-- start: copies property files -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${basedir}/conf/**</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies property files -->
+  
+  	<!-- Include pepper bundle -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib/</outputDirectory>
+  		<directory>${basedir}/target</directory>
+  		<includes>
+  			<include>${bundle.file}</include>
+  		</includes>
+  	</fileSet>
+  	
+  	<!-- Include license and notice file -->
+  	<!-- 
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${license.file}</include>
+  			<include>${notice.file}</include>
+  		</includes>
+  	</fileSet>
+  	 -->
+  	
+  	<!-- Include resource files -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<directory>${basedir}/src/main/resources/</directory>
+  	</fileSet>
+  </fileSets>
+</assembly>

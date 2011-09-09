@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_Focus_newInf"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Focus_newInf" xml:base="exmaralda.is.maz-11299.Focus_newInfSeg.xml">
+
+<feat xlink:href="#Focus_newInfSeg_1" value="nf-unsol"/><!-- wollen...Musikcafé -->
+<feat xlink:href="#Focus_newInfSeg_2" value="nf-unsol"/><!-- ist...angestoßen -->
+<feat xlink:href="#Focus_newInfSeg_3" value="nf-unsol"/><!-- immer...trotzdem -->
+<feat xlink:href="#Focus_newInfSeg_4" value="nf-unsol"/><!-- Und...dazu -->
+<feat xlink:href="#Focus_newInfSeg_5" value="nf-unsol"/><!-- wurden...degradiert -->
+<feat xlink:href="#Focus_newInfSeg_6" value="nf-unsol"/><!-- Nicht...hätten -->
+<feat xlink:href="#Focus_newInfSeg_7" value="nf-unsol"/><!-- reden...sollen -->
+<feat xlink:href="#Focus_newInfSeg_8" value="nf-unsol"/><!-- In...können -->
+<feat xlink:href="#Focus_newInfSeg_9" value="nf-unsol"/><!-- sich...verschaffen -->
+<feat xlink:href="#Focus_newInfSeg_10" value="nf-unsol"/><!-- Vielleicht...auch -->
+<feat xlink:href="#Focus_newInfSeg_11" value="nf-unsol"/><!-- ihren...Rathaus -->
+<feat xlink:href="#Focus_newInfSeg_12" value="nf-unsol"/><!-- glänzten...Abwesenheit -->
+</featList>
+
+</paula>

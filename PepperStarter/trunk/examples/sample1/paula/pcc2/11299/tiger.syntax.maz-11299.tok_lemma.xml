@@ -1,0 +1,277 @@
+<?xml version="1.0" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="tiger.syntax.maz-11299_lemma"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="lemma" xml:base="merged.maz-11299.tok.xml">
+
+<feat xlink:href="#tok_1" value="Feigenblatt"/><!--  -->
+<feat xlink:href="#tok_2" value="der"/><!--  -->
+<feat xlink:href="#tok_3" value="jugendliche"/><!--  -->
+<feat xlink:href="#tok_4" value="in"/><!--  -->
+<feat xlink:href="#tok_5" value="Zossen"/><!--  -->
+<feat xlink:href="#tok_6" value="wollen"/><!--  -->
+<feat xlink:href="#tok_7" value="ein"/><!--  -->
+<feat xlink:href="#tok_8" value="Musikcaf&#xE9;"/><!--  -->
+<feat xlink:href="#tok_9" value="."/><!--  -->
+<feat xlink:href="#tok_10" value="der"/><!--  -->
+<feat xlink:href="#tok_11" value="fordern"/><!--  -->
+<feat xlink:href="#tok_12" value="sie"/><!--  -->
+<feat xlink:href="#tok_13" value="bei"/><!--  -->
+<feat xlink:href="#tok_14" value="der"/><!--  -->
+<feat xlink:href="#tok_15" value="erster"/><!--  -->
+<feat xlink:href="#tok_16" value="Zossener"/><!--  -->
+<feat xlink:href="#tok_17" value="Runde"/><!--  -->
+<feat xlink:href="#tok_18" value="an"/><!--  -->
+<feat xlink:href="#tok_19" value="Dienstagabend"/><!--  -->
+<feat xlink:href="#tok_20" value="."/><!--  -->
+<feat xlink:href="#tok_21" value="dass"/><!--  -->
+<feat xlink:href="#tok_22" value="der"/><!--  -->
+<feat xlink:href="#tok_23" value="Politiker"/><!--  -->
+<feat xlink:href="#tok_24" value="der"/><!--  -->
+<feat xlink:href="#tok_25" value="Stadt"/><!--  -->
+<feat xlink:href="#tok_26" value="daf&#xFC;r"/><!--  -->
+<feat xlink:href="#tok_27" value="Verst&#xE4;ndnis"/><!--  -->
+<feat xlink:href="#tok_28" value="haben"/><!--  -->
+<feat xlink:href="#tok_29" value=","/><!--  -->
+<feat xlink:href="#tok_30" value="sein"/><!--  -->
+<feat xlink:href="#tok_31" value="l&#xF6;blich"/><!--  -->
+<feat xlink:href="#tok_32" value="."/><!--  -->
+<feat xlink:href="#tok_33" value="mit"/><!--  -->
+<feat xlink:href="#tok_34" value="der"/><!--  -->
+<feat xlink:href="#tok_35" value="Treffen"/><!--  -->
+<feat xlink:href="#tok_36" value="in"/><!--  -->
+<feat xlink:href="#tok_37" value="Rathaus"/><!--  -->
+<feat xlink:href="#tok_38" value="sein"/><!--  -->
+<feat xlink:href="#tok_39" value="somit"/><!--  -->
+<feat xlink:href="#tok_40" value="auch"/><!--  -->
+<feat xlink:href="#tok_41" value="ein"/><!--  -->
+<feat xlink:href="#tok_42" value="Dialog"/><!--  -->
+<feat xlink:href="#tok_43" value="zwischen"/><!--  -->
+<feat xlink:href="#tok_44" value="der"/><!--  -->
+<feat xlink:href="#tok_45" value="Generation"/><!--  -->
+<feat xlink:href="#tok_46" value="ansto&#xDF;en"/><!--  -->
+<feat xlink:href="#tok_47" value="."/><!--  -->
+<feat xlink:href="#tok_48" value="dass"/><!--  -->
+<feat xlink:href="#tok_49" value="der"/><!--  -->
+<feat xlink:href="#tok_50" value="beide"/><!--  -->
+<feat xlink:href="#tok_51" value="geladen"/><!--  -->
+<feat xlink:href="#tok_52" value="jugendliche"/><!--  -->
+<feat xlink:href="#tok_53" value="in"/><!--  -->
+<feat xlink:href="#tok_54" value="Lauf"/><!--  -->
+<feat xlink:href="#tok_55" value="der"/><!--  -->
+<feat xlink:href="#tok_56" value="Abend"/><!--  -->
+<feat xlink:href="#tok_57" value="immer"/><!--  -->
+<feat xlink:href="#tok_58" value="weniger"/><!--  -->
+<feat xlink:href="#tok_59" value="zu"/><!--  -->
+<feat xlink:href="#tok_60" value="Wort"/><!--  -->
+<feat xlink:href="#tok_61" value="kommen"/><!--  -->
+<feat xlink:href="#tok_62" value=","/><!--  -->
+<feat xlink:href="#tok_63" value="sein"/><!--  -->
+<feat xlink:href="#tok_64" value="sicher"/><!--  -->
+<feat xlink:href="#tok_65" value="kein"/><!--  -->
+<feat xlink:href="#tok_66" value="b&#xF6;se"/><!--  -->
+<feat xlink:href="#tok_67" value="Absicht"/><!--  -->
+<feat xlink:href="#tok_68" value=","/><!--  -->
+<feat xlink:href="#tok_69" value="&#xE4;rgerlich"/><!--  -->
+<feat xlink:href="#tok_70" value="sein"/><!--  -->
+<feat xlink:href="#tok_71" value="es"/><!--  -->
+<feat xlink:href="#tok_72" value="trotzdem"/><!--  -->
+<feat xlink:href="#tok_73" value="."/><!--  -->
+<feat xlink:href="#tok_74" value="und"/><!--  -->
+<feat xlink:href="#tok_75" value="aberwitzig"/><!--  -->
+<feat xlink:href="#tok_76" value="dazu"/><!--  -->
+<feat xlink:href="#tok_77" value="."/><!--  -->
+<feat xlink:href="#tok_78" value="es"/><!-- 
+  -->
+<feat xlink:href="#tok_79" value="entbehren"/><!-- 
+  -->
+<feat xlink:href="#tok_80" value="nicht"/><!-- 
+  -->
+<feat xlink:href="#tok_81" value="der"/><!-- 
+  -->
+<feat xlink:href="#tok_82" value="Komik"/><!-- 
+  -->
+<feat xlink:href="#tok_83" value=","/><!-- 
+  -->
+<feat xlink:href="#tok_84" value="wenn"/><!-- 
+  -->
+<feat xlink:href="#tok_85" value="sich"/><!-- 
+  -->
+<feat xlink:href="#tok_86" value="drei"/><!-- 
+  -->
+<feat xlink:href="#tok_87" value="erwachsene"/><!-- 
+  -->
+<feat xlink:href="#tok_88" value="-"/><!-- 
+  -->
+<feat xlink:href="#tok_89" value="Karola"/><!-- 
+  -->
+<feat xlink:href="#tok_90" value="Andrae"/><!-- 
+  -->
+<feat xlink:href="#tok_91" value="("/><!-- 
+  -->
+<feat xlink:href="#tok_92" value="B&#xFC;rgerb&#xFC;ndnis/FDP"/><!-- 
+  -->
+<feat xlink:href="#tok_93" value=")"/><!-- 
+  -->
+<feat xlink:href="#tok_94" value=","/><!-- 
+  -->
+<feat xlink:href="#tok_95" value="Susanne"/><!-- 
+  -->
+<feat xlink:href="#tok_96" value="Michler"/><!-- 
+  -->
+<feat xlink:href="#tok_97" value="("/><!-- 
+  -->
+<feat xlink:href="#tok_98" value="CDU"/><!-- 
+  -->
+<feat xlink:href="#tok_99" value=")"/><!-- 
+  -->
+<feat xlink:href="#tok_100" value="und"/><!-- 
+  -->
+<feat xlink:href="#tok_101" value="Joachim"/><!-- 
+  -->
+<feat xlink:href="#tok_102" value="Zanow"/><!-- 
+  -->
+<feat xlink:href="#tok_103" value="("/><!-- 
+  -->
+<feat xlink:href="#tok_104" value="SPD"/><!-- 
+  -->
+<feat xlink:href="#tok_105" value=")"/><!-- 
+  -->
+<feat xlink:href="#tok_106" value="-"/><!-- 
+  -->
+<feat xlink:href="#tok_107" value="dar&#xFC;ber"/><!-- 
+  -->
+<feat xlink:href="#tok_108" value="streiten"/><!-- 
+  -->
+<feat xlink:href="#tok_109" value=","/><!-- 
+  -->
+<feat xlink:href="#tok_110" value="was"/><!-- 
+            
+           -->
+<feat xlink:href="#tok_111" value="jugendliche"/><!-- 
+            
+           -->
+<feat xlink:href="#tok_112" value="wollen"/><!-- 
+  -->
+<feat xlink:href="#tok_113" value="und"/><!-- 
+  -->
+<feat xlink:href="#tok_114" value="brauchen"/><!-- 
+  -->
+<feat xlink:href="#tok_115" value=","/><!-- 
+  -->
+<feat xlink:href="#tok_116" value="ohne"/><!-- 
+  -->
+<feat xlink:href="#tok_117" value="auf"/><!-- 
+  -->
+<feat xlink:href="#tok_118" value="der"/><!-- 
+  -->
+<feat xlink:href="#tok_119" value="Idee"/><!-- 
+  -->
+<feat xlink:href="#tok_120" value="zu"/><!-- 
+  -->
+<feat xlink:href="#tok_121" value="kommen"/><!-- 
+  -->
+<feat xlink:href="#tok_122" value=","/><!-- 
+  -->
+<feat xlink:href="#tok_123" value="sie"/><!-- 
+  -->
+<feat xlink:href="#tok_124" value="selbst"/><!-- 
+  -->
+<feat xlink:href="#tok_125" value="zu"/><!-- 
+  -->
+<feat xlink:href="#tok_126" value="fragen"/><!-- 
+  -->
+<feat xlink:href="#tok_127" value="."/><!-- 
+  -->
+<feat xlink:href="#tok_128" value="und"/><!--  -->
+<feat xlink:href="#tok_129" value="der"/><!--  -->
+<feat xlink:href="#tok_130" value=","/><!--  -->
+<feat xlink:href="#tok_131" value="obwohl"/><!--  -->
+<feat xlink:href="#tok_132" value="sie"/><!--  -->
+<feat xlink:href="#tok_133" value="ihnen"/><!--  -->
+<feat xlink:href="#tok_134" value="gegen&#xFC;ber"/><!--  -->
+<feat xlink:href="#tok_135" value="sitzen"/><!--  -->
+<feat xlink:href="#tok_136" value="."/><!--  -->
+<feat xlink:href="#tok_137" value="der"/><!--  -->
+<feat xlink:href="#tok_138" value="jugendliche"/><!--  -->
+<feat xlink:href="#tok_139" value="werden"/><!--  -->
+<feat xlink:href="#tok_140" value="somit"/><!--  -->
+<feat xlink:href="#tok_141" value="zu"/><!--  -->
+<feat xlink:href="#tok_142" value="blo&#xDF;"/><!--  -->
+<feat xlink:href="#tok_143" value="Feigenblatt"/><!--  -->
+<feat xlink:href="#tok_144" value="degradieren"/><!--  -->
+<feat xlink:href="#tok_145" value="."/><!--  -->
+<feat xlink:href="#tok_146" value="nicht"/><!--  -->
+<feat xlink:href="#tok_147" value="&#xFC;ber"/><!--  -->
+<feat xlink:href="#tok_148" value="sondern"/><!--  -->
+<feat xlink:href="#tok_149" value="mit"/><!--  -->
+<feat xlink:href="#tok_150" value="ihnen"/><!--  -->
+<feat xlink:href="#tok_151" value="haben"/><!--  -->
+<feat xlink:href="#tok_152" value="der"/><!--  -->
+<feat xlink:href="#tok_153" value="Politiker"/><!--  -->
+<feat xlink:href="#tok_154" value="reden"/><!--  -->
+<feat xlink:href="#tok_155" value="sollen"/><!--  -->
+<feat xlink:href="#tok_156" value="."/><!--  -->
+<feat xlink:href="#tok_157" value="damit"/><!--  -->
+<feat xlink:href="#tok_158" value="sein"/><!--  -->
+<feat xlink:href="#tok_159" value="ein"/><!--  -->
+<feat xlink:href="#tok_160" value="gro&#xDF;"/><!--  -->
+<feat xlink:href="#tok_161" value="Chance"/><!--  -->
+<feat xlink:href="#tok_162" value="vertun"/><!--  -->
+<feat xlink:href="#tok_163" value="."/><!--  -->
+<feat xlink:href="#tok_164" value="vielleicht"/><!--  -->
+<feat xlink:href="#tok_165" value="klappen"/><!--  -->
+<feat xlink:href="#tok_166" value="es"/><!--  -->
+<feat xlink:href="#tok_167" value="bei"/><!--  -->
+<feat xlink:href="#tok_168" value="der"/><!--  -->
+<feat xlink:href="#tok_169" value="n&#xE4;chster"/><!--  -->
+<feat xlink:href="#tok_170" value="Runde"/><!--  -->
+<feat xlink:href="#tok_171" value="Anfang"/><!--  -->
+<feat xlink:href="#tok_172" value="2002"/><!--  -->
+<feat xlink:href="#tok_173" value="."/><!--  -->
+<feat xlink:href="#tok_174" value="dann"/><!--  -->
+<feat xlink:href="#tok_175" value="werden"/><!--  -->
+<feat xlink:href="#tok_176" value="auch"/><!--  -->
+<feat xlink:href="#tok_177" value="mehr"/><!--  -->
+<feat xlink:href="#tok_178" value="jugendliche"/><!--  -->
+<feat xlink:href="#tok_179" value="einladen"/><!--  -->
+<feat xlink:href="#tok_180" value="."/><!--  -->
+<feat xlink:href="#tok_181" value="in"/><!--  -->
+<feat xlink:href="#tok_182" value="der"/><!--  -->
+<feat xlink:href="#tok_183" value="Gruppe"/><!--  -->
+<feat xlink:href="#tok_184" value="k&#xF6;nnen"/><!--  -->
+<feat xlink:href="#tok_185" value="sie"/><!--  -->
+<feat xlink:href="#tok_186" value="sich"/><!--  -->
+<feat xlink:href="#tok_187" value="hoffentlich"/><!--  -->
+<feat xlink:href="#tok_188" value="mehr"/><!--  -->
+<feat xlink:href="#tok_189" value="Geh&#xF6;r"/><!--  -->
+<feat xlink:href="#tok_190" value="verschaffen"/><!--  -->
+<feat xlink:href="#tok_191" value="."/><!--  -->
+<feat xlink:href="#tok_192" value="vielleicht"/><!--  -->
+<feat xlink:href="#tok_193" value="finden"/><!--  -->
+<feat xlink:href="#tok_194" value="dann"/><!--  -->
+<feat xlink:href="#tok_195" value="auch"/><!--  -->
+<feat xlink:href="#tok_196" value="Vertreter"/><!--  -->
+<feat xlink:href="#tok_197" value="von"/><!--  -->
+<feat xlink:href="#tok_198" value="PDS"/><!--  -->
+<feat xlink:href="#tok_199" value="und"/><!--  -->
+<feat xlink:href="#tok_200" value="Gewerbeverein"/><!--  -->
+<feat xlink:href="#tok_201" value="ihr"/><!--  -->
+<feat xlink:href="#tok_202" value="Weg"/><!--  -->
+<feat xlink:href="#tok_203" value="in"/><!--  -->
+<feat xlink:href="#tok_204" value="Rathaus"/><!--  -->
+<feat xlink:href="#tok_205" value="."/><!--  -->
+<feat xlink:href="#tok_206" value="die"/><!--  -->
+<feat xlink:href="#tok_207" value="gl&#xE4;nzen"/><!--  -->
+<feat xlink:href="#tok_208" value="diesmal"/><!--  -->
+<feat xlink:href="#tok_209" value="noch"/><!--  -->
+<feat xlink:href="#tok_210" value="mit"/><!--  -->
+<feat xlink:href="#tok_211" value="Abwesenheit"/><!--  -->
+<feat xlink:href="#tok_212" value="."/><!--  -->
+</featList>
+
+</paula>

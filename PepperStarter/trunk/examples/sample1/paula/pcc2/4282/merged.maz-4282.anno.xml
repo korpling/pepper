@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_struct.dtd">
+
+<paula version="1.0">
+ <header paula_id="merged.maz-4282.annoSet" />
+ <structList xmlns:xlink="http://www.w3.org/1999/xlink" type="annoSet">
+  <struct id="anno_0">
+	<rel id="rel_01" xlink:href="urml.rst.maz-4282.discUnit.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.Foc_contrSeg.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.Foc_contrSeg_Foc_contr.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.Focus_newInfSeg.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.Focus_newInfSeg_Focus_newInf.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.Inf-StatSeg.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.Inf-StatSeg_Inf-Stat.xml" />
+	<rel id="rel_01" xlink:href="exmaralda.is.maz-11299.NPSeg.xml" />
+	<rel id="rel_02" xlink:href="exmaralda.is.maz-11299.NPSeg_NP.xml" />
+	<rel id="rel_03" xlink:href="exmaralda.is.maz-11299.PPSeg.xml" />
+	<rel id="rel_04" xlink:href="exmaralda.is.maz-11299.PPSeg_PP.xml" />
+	<rel id="rel_05" xlink:href="exmaralda.is.maz-11299.SentSeg.xml" />
+	<rel id="rel_06" xlink:href="exmaralda.is.maz-11299.SentSeg_Sent.xml" />
+	<rel id="rel_07" xlink:href="exmaralda.is.maz-11299.TopicSeg.xml" />
+	<rel id="rel_08" xlink:href="exmaralda.is.maz-11299.TopicSeg_Topic.xml" />
+	<rel id="rel_09" xlink:href="merged.maz-11299.anno.xml" />
+	<rel id="rel_010" xlink:href="merged.maz-11299.anno_feat.xml" />
+	<rel id="rel_011" xlink:href="merged.maz-11299.text.xml" />
+	<rel id="rel_012" xlink:href="merged.maz-11299.tok.xml" />
+	<rel id="rel_013" xlink:href="mmax.pocos.maz-11299.groupsSeg.xml" />
+	<rel id="rel_014" xlink:href="mmax.pocos.maz-11299.primmarkSeg.xml" />
+	<rel id="rel_015" xlink:href="mmax.pocos.maz-11299.primmarkSeg_ambiguity.xml" />
+	<rel id="rel_016" xlink:href="mmax.pocos.maz-11299.primmarkSeg_anaphor_antecedent.xml" />
+	<rel id="rel_017" xlink:href="mmax.pocos.maz-11299.primmarkSeg_anaphor_type.xml" />
+	<rel id="rel_018" xlink:href="mmax.pocos.maz-11299.primmarkSeg_complex_np.xml" />
+	<rel id="rel_019" xlink:href="mmax.pocos.maz-11299.primmarkSeg_dir_speech.xml" />
+	<rel id="rel_020" xlink:href="mmax.pocos.maz-11299.primmarkSeg_grammatical_role.xml" />
+	<rel id="rel_021" xlink:href="mmax.pocos.maz-11299.primmarkSeg_np_form.xml" />
+	<rel id="rel_022" xlink:href="mmax.pocos.maz-11299.primmarkSeg_phrase_type.xml" />
+	<rel id="rel_023" xlink:href="mmax.pocos.maz-11299.primmarkSeg_referentiality.xml" />
+	<rel id="rel_024" xlink:href="mmax.pocos.maz-11299.primmarkSeg_type.xml" />
+	<rel id="rel_025" xlink:href="mmax.pocos.maz-11299.secmarkSeg.xml" />
+	<rel id="rel_026" xlink:href="mmax.pocos.maz-11299.secmarkSeg_ambiguity.xml" />
+	<rel id="rel_027" xlink:href="mmax.pocos.maz-11299.secmarkSeg_complex_np.xml" />
+	<rel id="rel_028" xlink:href="mmax.pocos.maz-11299.secmarkSeg_dir_speech.xml" />
+	<rel id="rel_029" xlink:href="mmax.pocos.maz-11299.secmarkSeg_grammatical_role.xml" />
+	<rel id="rel_030" xlink:href="mmax.pocos.maz-11299.secmarkSeg_np_form.xml" />
+	<rel id="rel_031" xlink:href="mmax.pocos.maz-11299.secmarkSeg_phrase_type.xml" />
+	<rel id="rel_032" xlink:href="mmax.pocos.maz-11299.secmarkSeg_referentiality.xml" />
+	<rel id="rel_033" xlink:href="mmax.pocos.maz-11299.sentenceSeg.xml" />
+	<rel id="rel_034" xlink:href="tiger.syntax.maz-11299.const.xml" />
+	<rel id="rel_035" xlink:href="tiger.syntax.maz-11299.const_cat.xml" />
+	<rel id="rel_036" xlink:href="tiger.syntax.maz-11299.const_func.xml" />
+	<rel id="rel_037" xlink:href="tiger.syntax.maz-11299.tok_lemma.xml" />
+	<rel id="rel_038" xlink:href="tiger.syntax.maz-11299.tok_morph.xml" />
+	<rel id="rel_039" xlink:href="tiger.syntax.maz-11299.tok_pos.xml" />
+	<rel id="rel_040" xlink:href="urml.rst.maz-11299.const.xml" />
+	<rel id="rel_041" xlink:href="urml.rst.maz-11299.const_func.xml" />
+	<rel id="rel_042" xlink:href="urml.rst.maz-11299.const_rst_relation.xml" />
+	<rel id="rel_043" xlink:href="urml.rst.maz-11299.const_rstRel_type.xml" />
+	<rel id="rel_044" xlink:href="urml.rst.maz-11299.discUnit.xml" />
+  </struct>
+  <struct id="anno_1">
+   <rel id="rel_1" xlink:href="urml.rst.maz-4282.discUnit.xml" />
+  </struct>
+  <struct id="anno_2">
+   <rel id="rel_2" xlink:href="merged.maz-4282.text.xml" />
+  </struct>
+  <struct id="anno_3">
+   <rel id="rel_3" xlink:href="exmaralda.is.maz-4282.NPSeg.xml" />
+   <rel id="rel_4" xlink:href="exmaralda.is.maz-4282.NPSeg_NP.xml" />
+  </struct>
+  <struct id="anno_4">
+   <rel id="rel_5" xlink:href="mmax.pocos.maz-4282.secmarkSeg.xml" />
+   <rel id="rel_6" xlink:href="mmax.pocos.maz-4282.secmarkSeg_ambiguity.xml" />
+   <rel id="rel_7" xlink:href="mmax.pocos.maz-4282.secmarkSeg_complex_np.xml" />
+   <rel id="rel_8" xlink:href="mmax.pocos.maz-4282.secmarkSeg_dir_speech.xml" />
+   <rel id="rel_9" xlink:href="mmax.pocos.maz-4282.secmarkSeg_grammatical_role.xml" />
+   <rel id="rel_10" xlink:href="mmax.pocos.maz-4282.secmarkSeg_np_form.xml" />
+   <rel id="rel_11" xlink:href="mmax.pocos.maz-4282.secmarkSeg_phrase_type.xml" />
+   <rel id="rel_12" xlink:href="mmax.pocos.maz-4282.secmarkSeg_referentiality.xml" />
+  </struct>
+  <struct id="anno_5">
+   <rel id="rel_13" xlink:href="exmaralda.is.maz-4282.PPSeg.xml" />
+   <rel id="rel_14" xlink:href="exmaralda.is.maz-4282.PPSeg_PP.xml" />
+  </struct>
+  <struct id="anno_6">
+   <rel id="rel_15" xlink:href="urml.rst.maz-4282.const.xml" />
+   <rel id="rel_16" xlink:href="urml.rst.maz-4282.const_func.xml" />
+   <rel id="rel_17" xlink:href="urml.rst.maz-4282.const_rst_relation.xml" />
+   <rel id="rel_18" xlink:href="urml.rst.maz-4282.const_rstRel_type.xml" />
+  </struct>
+  <struct id="anno_7">
+   <rel id="rel_19" xlink:href="mmax.pocos.maz-4282.groupsSeg.xml" />
+  </struct>
+  <struct id="anno_8">
+   <rel id="rel_20" xlink:href="merged.maz-4282.anno_feat.xml" />
+  </struct>
+  <struct id="anno_9">
+   <rel id="rel_21" xlink:href="mmax.pocos.maz-4282.primmarkSeg.xml" />
+   <rel id="rel_22" xlink:href="mmax.pocos.maz-4282.primmarkSeg_ambiguity.xml" />
+   <rel id="rel_23" xlink:href="mmax.pocos.maz-4282.primmarkSeg_anaphor_antecedent.xml" />
+   <rel id="rel_24" xlink:href="mmax.pocos.maz-4282.primmarkSeg_anaphor_type.xml" />
+   <rel id="rel_25" xlink:href="mmax.pocos.maz-4282.primmarkSeg_complex_np.xml" />
+   <rel id="rel_26" xlink:href="mmax.pocos.maz-4282.primmarkSeg_dir_speech.xml" />
+   <rel id="rel_27" xlink:href="mmax.pocos.maz-4282.primmarkSeg_grammatical_role.xml" />
+   <rel id="rel_28" xlink:href="mmax.pocos.maz-4282.primmarkSeg_np_form.xml" />
+   <rel id="rel_29" xlink:href="mmax.pocos.maz-4282.primmarkSeg_phrase_type.xml" />
+   <rel id="rel_30" xlink:href="mmax.pocos.maz-4282.primmarkSeg_referentiality.xml" />
+   <rel id="rel_31" xlink:href="mmax.pocos.maz-4282.primmarkSeg_type.xml" />
+  </struct>
+  <struct id="anno_10">
+   <rel id="rel_32" xlink:href="merged.maz-4282.tok.xml" />
+   <rel id="rel_33" xlink:href="tiger.syntax.maz-4282.tok_lemma.xml" />
+   <rel id="rel_34" xlink:href="tiger.syntax.maz-4282.tok_morph.xml" />
+   <rel id="rel_35" xlink:href="tiger.syntax.maz-4282.tok_pos.xml" />
+  </struct>
+  <struct id="anno_11">
+   <rel id="rel_36" xlink:href="exmaralda.is.maz-4282.Foc_contrSeg.xml" />
+   <rel id="rel_37" xlink:href="exmaralda.is.maz-4282.Foc_contrSeg_Foc_contr.xml" />
+  </struct>
+  <struct id="anno_12">
+   <rel id="rel_38" xlink:href="exmaralda.is.maz-4282.Focus_newInfSeg.xml" />
+   <rel id="rel_39" xlink:href="exmaralda.is.maz-4282.Focus_newInfSeg_Focus_newInf.xml" />
+  </struct>
+  <struct id="anno_13">
+   <rel id="rel_40" xlink:href="exmaralda.is.maz-4282.Inf-StatSeg.xml" />
+   <rel id="rel_41" xlink:href="exmaralda.is.maz-4282.Inf-StatSeg_Inf-Stat.xml" />
+  </struct>
+  <struct id="anno_14">
+   <rel id="rel_42" xlink:href="mmax.pocos.maz-4282.sentenceSeg.xml" />
+  </struct>
+  <struct id="anno_15">
+   <rel id="rel_43" xlink:href="tiger.syntax.maz-4282.const.xml" />
+   <rel id="rel_44" xlink:href="tiger.syntax.maz-4282.const_cat.xml" />
+   <rel id="rel_45" xlink:href="tiger.syntax.maz-4282.const_func.xml" />
+  </struct>
+  <struct id="anno_16">
+   <rel id="rel_46" xlink:href="exmaralda.is.maz-4282.SentSeg.xml" />
+   <rel id="rel_47" xlink:href="exmaralda.is.maz-4282.SentSeg_Sent.xml" />
+  </struct>
+  <struct id="anno_17">
+   <rel id="rel_48" xlink:href="merged.maz-4282.tok.xml" />
+  </struct>
+  <struct id="anno_18">
+   <rel id="rel_49" xlink:href="exmaralda.is.maz-4282.TopicSeg.xml" />
+   <rel id="rel_50" xlink:href="exmaralda.is.maz-4282.TopicSeg_Topic.xml" />
+  </struct>
+ </structList>
+</paula>

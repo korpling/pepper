@@ -1,0 +1,233 @@
+<?xml version="1.0" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="tiger.syntax.maz-4282_func"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="func" xml:base="tiger.syntax.maz-4282.const.xml">
+
+<feat xlink:href="#rel_1" value="MO"/><!-- immer -->
+<feat xlink:href="#rel_2" value="HD"/><!-- wieder -->
+<feat xlink:href="#rel_3" value="OA"/><!-- Wunder -->
+<feat xlink:href="#rel_4" value="HD"/><!-- gibt -->
+<feat xlink:href="#rel_5" value="EP"/><!-- es -->
+<feat xlink:href="#rel_6" value="MO"/>
+<feat xlink:href="#rel_7" value="NK"/><!-- die -->
+<feat xlink:href="#rel_8" value="NK"/><!-- Dallgower -->
+<feat xlink:href="#rel_9" value="NK"/><!-- Gemeindevertreter -->
+<feat xlink:href="#rel_10" value="CJ"/><!-- statisch -->
+<feat xlink:href="#rel_11" value="CD"/><!-- und -->
+<feat xlink:href="#rel_12" value="CJ"/><!-- verzagt -->
+<feat xlink:href="#rel_13" value="NK"/><!-- der -->
+<feat xlink:href="#rel_14" value="NK"/><!-- Fußballkicker -->
+<feat xlink:href="#rel_15" value="CM"/><!-- wie -->
+<feat xlink:href="#rel_16" value="NK"/><!-- die -->
+<feat xlink:href="#rel_17" value="NK"/><!-- deutsche -->
+<feat xlink:href="#rel_18" value="NK"/><!-- Abwehrreihe -->
+<feat xlink:href="#rel_19" value="AG"/>
+<feat xlink:href="#rel_20" value="HD"/><!-- so -->
+<feat xlink:href="#rel_21" value="CC"/>
+<feat xlink:href="#rel_22" value="HD"/>
+<feat xlink:href="#rel_23" value="MO"/>
+<feat xlink:href="#rel_24" value="MO"/><!-- Erst -->
+<feat xlink:href="#rel_25" value="HD"/><!-- spielen -->
+<feat xlink:href="#rel_26" value="SB"/>
+<feat xlink:href="#rel_27" value="MO"/>
+<feat xlink:href="#rel_28" value="AC"/><!-- aus -->
+<feat xlink:href="#rel_29" value="NK"/><!-- der -->
+<feat xlink:href="#rel_30" value="NK"/><!-- Tiefe -->
+<feat xlink:href="#rel_31" value="AC"/><!-- von -->
+<feat xlink:href="#rel_32" value="NK"/><!-- dem -->
+<feat xlink:href="#rel_33" value="CJ"/><!-- Seeburger -->
+<feat xlink:href="#rel_34" value="CD"/><!-- oder -->
+<feat xlink:href="#rel_35" value="CJ"/><!-- Groß_Glienicker -->
+<feat xlink:href="#rel_36" value="OA"/><!-- ihn -->
+<feat xlink:href="#rel_37" value="HD"/><!-- aufnehmen -->
+<feat xlink:href="#rel_38" value="NK"/><!-- die -->
+<feat xlink:href="#rel_39" value="NK"/><!-- Mitspieler -->
+<feat xlink:href="#rel_40" value="NK"/>
+<feat xlink:href="#rel_41" value="CP"/><!-- dass -->
+<feat xlink:href="#rel_42" value="HD"/><!-- können -->
+<feat xlink:href="#rel_43" value="OC"/>
+<feat xlink:href="#rel_44" value="SB"/>
+<feat xlink:href="#rel_45" value="SB"/><!-- man -->
+<feat xlink:href="#rel_46" value="HD"/><!-- hofft -->
+<feat xlink:href="#rel_47" value="MO"/>
+<feat xlink:href="#rel_48" value="OC"/>
+<feat xlink:href="#rel_49" value="NK"/><!-- solch -->
+<feat xlink:href="#rel_50" value="NK"/><!-- ein -->
+<feat xlink:href="#rel_51" value="NK"/><!-- fulminanter -->
+<feat xlink:href="#rel_52" value="NK"/><!-- Steilpass -->
+<feat xlink:href="#rel_53" value="RC"/>
+<feat xlink:href="#rel_54" value="JU"/><!-- Und -->
+<feat xlink:href="#rel_55" value="MO"/><!-- dann -->
+<feat xlink:href="#rel_56" value="HD"/><!-- kommt -->
+<feat xlink:href="#rel_57" value="MO"/>
+<feat xlink:href="#rel_58" value="SB"/>
+<feat xlink:href="#rel_59" value="NK"/><!-- Ein -->
+<feat xlink:href="#rel_60" value="NK"/><!-- Befreiungsschlag -->
+<feat xlink:href="#rel_61" value="AC"/><!-- fürs -->
+<feat xlink:href="#rel_62" value="NK"/><!-- Dallgower -->
+<feat xlink:href="#rel_63" value="NK"/><!-- Tor -->
+<feat xlink:href="#rel_64" value="NK"/><!-- keine -->
+<feat xlink:href="#rel_65" value="NK"/><!-- Gefahr -->
+<feat xlink:href="#rel_66" value="MNR"/>
+<feat xlink:href="#rel_67" value="CP"/><!-- weil -->
+<feat xlink:href="#rel_68" value="EP"/><!-- es -->
+<feat xlink:href="#rel_69" value="MO"/><!-- vorerst -->
+<feat xlink:href="#rel_70" value="HD"/><!-- gab -->
+<feat xlink:href="#rel_71" value="OA"/>
+<feat xlink:href="#rel_72" value="HD"/><!-- ist -->
+<feat xlink:href="#rel_73" value="SB"/><!-- es -->
+<feat xlink:href="#rel_74" value="MO"/><!-- allerdings -->
+<feat xlink:href="#rel_75" value="NG"/><!-- nicht -->
+<feat xlink:href="#rel_76" value="PD"/>
+<feat xlink:href="#rel_77" value="MO"/>
+<feat xlink:href="#rel_78" value="NK"/><!-- Die -->
+<feat xlink:href="#rel_79" value="NK"/><!-- Seeburger -->
+<feat xlink:href="#rel_80" value="NK"/><!-- einige -->
+<feat xlink:href="#rel_81" value="NK"/><!-- Groß_Glienicker -->
+<feat xlink:href="#rel_82" value="NK"/><!-- den -->
+<feat xlink:href="#rel_83" value="NK"/><!-- Ball -->
+<feat xlink:href="#rel_84" value="AVC"/><!-- um -->
+<feat xlink:href="#rel_85" value="AVC"/><!-- so -->
+<feat xlink:href="#rel_86" value="CD"/><!-- und -->
+<feat xlink:href="#rel_87" value="CJ"/>
+<feat xlink:href="#rel_88" value="CJ"/>
+<feat xlink:href="#rel_89" value="MO"/><!-- erst -->
+<feat xlink:href="#rel_90" value="HD"/><!-- zurückgespielt -->
+<feat xlink:href="#rel_91" value="OA"/>
+<feat xlink:href="#rel_92" value="HD"/><!-- drängender -->
+<feat xlink:href="#rel_93" value="MO"/>
+<feat xlink:href="#rel_94" value="MO"/><!-- dann -->
+<feat xlink:href="#rel_95" value="MO"/><!-- wieder -->
+<feat xlink:href="#rel_96" value="HD"/><!-- gefordert -->
+<feat xlink:href="#rel_97" value="MO"/>
+<feat xlink:href="#rel_98" value="CD"/><!-- und -->
+<feat xlink:href="#rel_99" value="CJ"/>
+<feat xlink:href="#rel_100" value="CJ"/>
+<feat xlink:href="#rel_101" value="HD"/><!-- haben -->
+<feat xlink:href="#rel_102" value="SB"/>
+<feat xlink:href="#rel_103" value="OC"/>
+<feat xlink:href="#rel_104" value="NK"/><!-- die -->
+<feat xlink:href="#rel_105" value="NK"/><!-- Chance -->
+<feat xlink:href="#rel_106" value="MO"/><!-- wie -->
+<feat xlink:href="#rel_107" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_108" value="HD"/><!-- verwerten -->
+<feat xlink:href="#rel_109" value="OA"/>
+<feat xlink:href="#rel_110" value="HD"/><!-- zeigen -->
+<feat xlink:href="#rel_111" value="OC"/>
+<feat xlink:href="#rel_112" value="MO"/><!-- Nun -->
+<feat xlink:href="#rel_113" value="HD"/><!-- sollen -->
+<feat xlink:href="#rel_114" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_115" value="OC"/>
+<feat xlink:href="#rel_116" value="MO"/><!-- wo -->
+<feat xlink:href="#rel_117" value="MO"/><!-- künftig -->
+<feat xlink:href="#rel_118" value="HD"/><!-- stehen -->
+<feat xlink:href="#rel_119" value="NK"/><!-- die -->
+<feat xlink:href="#rel_120" value="NK"/><!-- Trainerkabine -->
+<feat xlink:href="#rel_121" value="AC"/><!-- in -->
+<feat xlink:href="#rel_122" value="NK"/><!-- der -->
+<feat xlink:href="#rel_123" value="NK"/><!-- jetzigen -->
+<feat xlink:href="#rel_124" value="NK"/><!-- Spielsituation -->
+<feat xlink:href="#rel_125" value="HD"/><!-- soll -->
+<feat xlink:href="#rel_126" value="OC"/>
+<feat xlink:href="#rel_127" value="SB"/>
+<feat xlink:href="#rel_128" value="NK"/><!-- Eine -->
+<feat xlink:href="#rel_129" value="NK"/><!-- Diskussion -->
+<feat xlink:href="#rel_130" value="OC"/>
+<feat xlink:href="#rel_131" value="HD"/><!-- wäre -->
+<feat xlink:href="#rel_132" value="PD"/><!-- verheerend -->
+<feat xlink:href="#rel_133" value="MO"/>
+<feat xlink:href="#rel_134" value="SB"/>
+<feat xlink:href="#rel_135" value="AC"/><!-- zu -->
+<feat xlink:href="#rel_136" value="NK"/><!-- den -->
+<feat xlink:href="#rel_137" value="NK"/><!-- deutschen -->
+<feat xlink:href="#rel_138" value="NK"/><!-- Grotten_Kickern -->
+<feat xlink:href="#rel_139" value="MO"/><!-- immer -->
+<feat xlink:href="#rel_140" value="HD"/><!-- noch -->
+<feat xlink:href="#rel_141" value="NK"/><!-- eine -->
+<feat xlink:href="#rel_142" value="NK"/><!-- Parallele -->
+<feat xlink:href="#rel_143" value="MNR"/>
+<feat xlink:href="#rel_144" value="JU"/><!-- Und -->
+<feat xlink:href="#rel_145" value="HD"/><!-- gibt -->
+<feat xlink:href="#rel_146" value="EP"/><!-- es -->
+<feat xlink:href="#rel_147" value="MO"/>
+<feat xlink:href="#rel_148" value="OA"/>
+<feat xlink:href="#rel_149" value="NK"/><!-- die -->
+<feat xlink:href="#rel_150" value="NK"/><!-- Spieler -->
+<feat xlink:href="#rel_151" value="AC"/><!-- aus -->
+<feat xlink:href="#rel_152" value="NK"/><!-- den -->
+<feat xlink:href="#rel_153" value="NK"/><!-- verschiedenen -->
+<feat xlink:href="#rel_154" value="NK"/><!-- Vereinen -->
+<feat xlink:href="#rel_155" value="NK"/><!-- Döberitzer -->
+<feat xlink:href="#rel_156" value="NK"/><!-- Heide -->
+<feat xlink:href="#rel_157" value="MO"/><!-- Auch -->
+<feat xlink:href="#rel_158" value="HD"/><!-- zusammengewürfelt -->
+<feat xlink:href="#rel_159" value="MO"/>
+<feat xlink:href="#rel_160" value="PNC"/>
+<feat xlink:href="#rel_161" value="CP"/><!-- wenn -->
+<feat xlink:href="#rel_162" value="HD"/><!-- sind -->
+<feat xlink:href="#rel_163" value="SB"/>
+<feat xlink:href="#rel_164" value="PD"/>
+<feat xlink:href="#rel_165" value="AC"/><!-- in -->
+<feat xlink:href="#rel_166" value="NK"/><!-- einer -->
+<feat xlink:href="#rel_167" value="NK"/><!-- Mannschaft -->
+<feat xlink:href="#rel_168" value="NK"/>
+<feat xlink:href="#rel_169" value="CP"/><!-- dass -->
+<feat xlink:href="#rel_170" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_171" value="MO"/><!-- nun -->
+<feat xlink:href="#rel_172" value="HD"/><!-- spielen -->
+<feat xlink:href="#rel_173" value="MO"/>
+<feat xlink:href="#rel_174" value="PH"/><!-- daran -->
+<feat xlink:href="#rel_175" value="RE"/>
+<feat xlink:href="#rel_176" value="OA"/><!-- sich -->
+<feat xlink:href="#rel_177" value="HD"/><!-- gewöhnen -->
+<feat xlink:href="#rel_178" value="OP"/>
+<feat xlink:href="#rel_179" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_180" value="HD"/><!-- müssen -->
+<feat xlink:href="#rel_181" value="MO"/>
+<feat xlink:href="#rel_182" value="OC"/>
+<feat xlink:href="#rel_183" value="NG"/><!-- nicht -->
+<feat xlink:href="#rel_184" value="HD"/><!-- gegeneinander -->
+<feat xlink:href="#rel_185" value="CJ"/><!-- gemeinsam -->
+<feat xlink:href="#rel_186" value="CD"/><!-- und -->
+<feat xlink:href="#rel_187" value="CJ"/>
+<feat xlink:href="#rel_188" value="JU"/><!-- Und -->
+<feat xlink:href="#rel_189" value="SB"/><!-- das -->
+<feat xlink:href="#rel_190" value="HD"/><!-- heißt -->
+<feat xlink:href="#rel_191" value="OC"/>
+<feat xlink:href="#rel_192" value="AC"/><!-- von -->
+<feat xlink:href="#rel_193" value="NK"/><!-- der -->
+<feat xlink:href="#rel_194" value="NK"/><!-- Seitenlinie -->
+<feat xlink:href="#rel_195" value="MO"/><!-- miteinander -->
+<feat xlink:href="#rel_196" value="MO"/><!-- fair -->
+<feat xlink:href="#rel_197" value="HD"/><!-- umzugehen -->
+<feat xlink:href="#rel_198" value="AC"/><!-- beim -->
+<feat xlink:href="#rel_199" value="NK"/><!-- kleinsten -->
+<feat xlink:href="#rel_200" value="NK"/><!-- Schubser -->
+<feat xlink:href="#rel_201" value="PM"/><!-- zu -->
+<feat xlink:href="#rel_202" value="HD"/><!-- zerfleischen -->
+<feat xlink:href="#rel_203" value="OA"/><!-- sich -->
+<feat xlink:href="#rel_204" value="NG"/><!-- nicht -->
+<feat xlink:href="#rel_205" value="MO"/><!-- gegenseitig -->
+<feat xlink:href="#rel_206" value="MO"/>
+<feat xlink:href="#rel_207" value="HD"/>
+<feat xlink:href="#rel_208" value="CD"/><!-- und -->
+<feat xlink:href="#rel_209" value="CJ"/>
+<feat xlink:href="#rel_210" value="CJ"/>
+<feat xlink:href="#rel_211" value="NK"/><!-- Ermahnungen -->
+<feat xlink:href="#rel_212" value="MNR"/>
+<feat xlink:href="#rel_213" value="OC"/>
+<feat xlink:href="#rel_214" value="HD"/><!-- sind -->
+<feat xlink:href="#rel_215" value="MO"/><!-- normalerweise -->
+<feat xlink:href="#rel_216" value="PD"/><!-- überflüssig -->
+<feat xlink:href="#rel_217" value="SB"/>
+<feat xlink:href="#rel_218" value="MO"/><!-- Vorerst -->
+<feat xlink:href="#rel_219" value="MO"/><!-- allerdings -->
+<feat xlink:href="#rel_220" value="PD"/><!-- hilfreich -->
+</featList>
+
+</paula>

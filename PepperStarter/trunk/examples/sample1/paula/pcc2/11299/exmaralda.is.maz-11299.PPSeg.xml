@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_PPSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="PPSeg" xml:base="merged.maz-11299.tok.xml">
+
+<mark id="PPSeg_1" xlink:href="#xpointer(id('tok_4')/range-to(id('tok_5')))"/><!-- in...Zossen -->
+<mark id="PPSeg_2" xlink:href="#xpointer(id('tok_13')/range-to(id('tok_17')))"/><!-- bei...Runde -->
+<mark id="PPSeg_3" xlink:href="#xpointer(id('tok_18')/range-to(id('tok_19')))"/><!-- am...Dienstagabend -->
+<mark id="PPSeg_4" xlink:href="#xpointer(id('tok_33')/range-to(id('tok_35')))"/><!-- Mit...Treffen -->
+<mark id="PPSeg_5" xlink:href="#xpointer(id('tok_36')/range-to(id('tok_37')))"/><!-- im...Rathaus -->
+<mark id="PPSeg_6" xlink:href="#xpointer(id('tok_43')/range-to(id('tok_45')))"/><!-- zwischen...Generationen -->
+<mark id="PPSeg_7" xlink:href="#xpointer(id('tok_53')/range-to(id('tok_54')))"/><!-- im...Laufe -->
+<mark id="PPSeg_8" xlink:href="#xpointer(id('tok_59')/range-to(id('tok_60')))"/><!-- zu...Wort -->
+<mark id="PPSeg_9" xlink:href="#xpointer(id('tok_117')/range-to(id('tok_119')))"/><!-- auf...Idee -->
+<mark id="PPSeg_10" xlink:href="#xpointer(id('tok_141')/range-to(id('tok_143')))"/><!-- zum...Feigenblatt -->
+<mark id="PPSeg_11" xlink:href="#xpointer(id('tok_147')/range-to(id('tok_150')))"/><!-- über...ihnen -->
+<mark id="PPSeg_12" xlink:href="#xpointer(id('tok_167')/range-to(id('tok_170')))"/><!-- bei...Runde -->
+<mark id="PPSeg_13" xlink:href="#xpointer(id('tok_181')/range-to(id('tok_183')))"/><!-- In...Gruppe -->
+<mark id="PPSeg_14" xlink:href="#xpointer(id('tok_197')/range-to(id('tok_200')))"/><!-- von...Gewerbeverein -->
+<mark id="PPSeg_15" xlink:href="#xpointer(id('tok_203')/range-to(id('tok_204')))"/><!-- ins...Rathaus -->
+<mark id="PPSeg_16" xlink:href="#xpointer(id('tok_210')/range-to(id('tok_211')))"/><!-- mit...Abwesenheit -->
+</markList>
+
+</paula>

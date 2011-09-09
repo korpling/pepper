@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_PP"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="PP" xml:base="exmaralda.is.maz-4282.PPSeg.xml">
+
+<feat xlink:href="#PPSeg_1" value="PP"/><!-- aus...Tiefe -->
+<feat xlink:href="#PPSeg_2" value="PP"/><!-- von...dem -->
+<feat xlink:href="#PPSeg_3" value="PP"/><!-- fürs...Tor -->
+<feat xlink:href="#PPSeg_4" value="PP"/><!-- in...Spielsituation -->
+<feat xlink:href="#PPSeg_5" value="PP"/><!-- zu...Grotten_Kickern -->
+<feat xlink:href="#PPSeg_6" value="PP"/><!-- aus...Vereinen -->
+<feat xlink:href="#PPSeg_7" value="PP"/><!-- in..." -->
+<feat xlink:href="#PPSeg_8" value="PP"/><!-- von...Seitenlinie -->
+<feat xlink:href="#PPSeg_9" value="PP"/><!-- beim...Schubser -->
+</featList>
+
+</paula>

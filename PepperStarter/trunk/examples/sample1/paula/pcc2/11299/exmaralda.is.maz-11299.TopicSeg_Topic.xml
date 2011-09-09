@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_Topic"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Topic" xml:base="exmaralda.is.maz-11299.TopicSeg.xml">
+
+<feat xlink:href="#TopicSeg_1" value="ab"/><!-- Die...Zossen -->
+<feat xlink:href="#TopicSeg_2" value="ab"/><!-- sie -->
+<feat xlink:href="#TopicSeg_3" value="fs"/><!-- bei...Dienstagabend -->
+<feat xlink:href="#TopicSeg_4" value="ab"/><!-- die...Stadt -->
+<feat xlink:href="#TopicSeg_5" value="fs"/><!-- Mit...Rathaus -->
+<feat xlink:href="#TopicSeg_6" value="ab"/><!-- die...Jugendlichen -->
+<feat xlink:href="#TopicSeg_7" value="fs"/><!-- im...Abends -->
+<feat xlink:href="#TopicSeg_8" value="ab"/><!-- drei..._ -->
+<feat xlink:href="#TopicSeg_9" value="ab"/><!-- sie -->
+<feat xlink:href="#TopicSeg_10" value="ab"/><!-- Die...Jugendlichen -->
+<feat xlink:href="#TopicSeg_11" value="ab"/><!-- die...Politiker -->
+<feat xlink:href="#TopicSeg_12" value="fs"/><!-- bei.... -->
+<feat xlink:href="#TopicSeg_13" value="fs"/><!-- Dann -->
+<feat xlink:href="#TopicSeg_14" value="ab"/><!-- sie -->
+<feat xlink:href="#TopicSeg_15" value="ab"/><!-- Vertreter...Gewerbeverein -->
+<feat xlink:href="#TopicSeg_16" value="ab"/><!-- Die -->
+</featList>
+
+</paula>

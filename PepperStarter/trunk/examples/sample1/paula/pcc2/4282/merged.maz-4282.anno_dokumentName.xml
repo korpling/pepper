@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+<paula version="1.0">
+ <header paula_id="merged.maz-4282.dokumentName" />
+ <featList type="Dokumentname" xml:base="merged.maz-4282.anno.xml" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <feat xlink:href="#anno_0" value="pcc-4282" />
+ </featList>
+</paula>

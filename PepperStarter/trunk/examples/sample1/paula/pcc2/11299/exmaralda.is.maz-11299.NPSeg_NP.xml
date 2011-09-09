@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_NP"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="NP" xml:base="exmaralda.is.maz-11299.NPSeg.xml">
+
+<feat xlink:href="#NPSeg_1" value="NP"/><!-- Die...Jugendlichen -->
+<feat xlink:href="#NPSeg_2" value="NP"/><!-- Zossen -->
+<feat xlink:href="#NPSeg_3" value="NP"/><!-- ein...Musikcafé -->
+<feat xlink:href="#NPSeg_4" value="NP"/><!-- Das -->
+<feat xlink:href="#NPSeg_5" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_6" value="NP"/><!-- der...Runde -->
+<feat xlink:href="#NPSeg_7" value="NP"/><!-- Dienstagabend -->
+<feat xlink:href="#NPSeg_8" value="NP"/><!-- die...Politiker -->
+<feat xlink:href="#NPSeg_9" value="NP"/><!-- der...Stadt -->
+<feat xlink:href="#NPSeg_10" value="NP"/><!-- dafür -->
+<feat xlink:href="#NPSeg_11" value="NP"/><!-- Verständnis -->
+<feat xlink:href="#NPSeg_12" value="NP"/><!-- dem...Treffen -->
+<feat xlink:href="#NPSeg_13" value="NP"/><!-- Rathaus -->
+<feat xlink:href="#NPSeg_14" value="NP"/><!-- ein...Dialog -->
+<feat xlink:href="#NPSeg_15" value="NP"/><!-- den...Generationen -->
+<feat xlink:href="#NPSeg_16" value="NP"/><!-- die...Jugendlichen -->
+<feat xlink:href="#NPSeg_17" value="NP"/><!-- Laufe -->
+<feat xlink:href="#NPSeg_18" value="NP"/><!-- des...Abends -->
+<feat xlink:href="#NPSeg_19" value="NP"/><!-- Wort -->
+<feat xlink:href="#NPSeg_20" value="NP"/><!-- keine...Absicht -->
+<feat xlink:href="#NPSeg_21" value="NP"/><!-- es -->
+<feat xlink:href="#NPSeg_22" value="NP"/><!-- Es -->
+<feat xlink:href="#NPSeg_23" value="NP"/><!-- der...Komik -->
+<feat xlink:href="#NPSeg_24" value="NP"/><!-- drei...Erwachsene -->
+<feat xlink:href="#NPSeg_25" value="NP"/><!-- Karola...Andrae -->
+<feat xlink:href="#NPSeg_26" value="NP"/><!-- (...) -->
+<feat xlink:href="#NPSeg_27" value="NP"/><!-- Susanne...Michler -->
+<feat xlink:href="#NPSeg_28" value="NP"/><!-- (...) -->
+<feat xlink:href="#NPSeg_29" value="NP"/><!-- Joachim...Zanow -->
+<feat xlink:href="#NPSeg_30" value="NP"/><!-- (...) -->
+<feat xlink:href="#NPSeg_31" value="NP"/><!-- Jugendliche -->
+<feat xlink:href="#NPSeg_32" value="NP"/><!-- die...Idee -->
+<feat xlink:href="#NPSeg_33" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_34" value="NP"/><!-- das -->
+<feat xlink:href="#NPSeg_35" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_36" value="NP"/><!-- ihnen -->
+<feat xlink:href="#NPSeg_37" value="NP"/><!-- Die...Jugendlichen -->
+<feat xlink:href="#NPSeg_38" value="NP"/><!-- bloßen...Feigenblatt -->
+<feat xlink:href="#NPSeg_39" value="NP"/><!-- ihnen -->
+<feat xlink:href="#NPSeg_40" value="NP"/><!-- die...Politiker -->
+<feat xlink:href="#NPSeg_41" value="NP"/><!-- eine...Chance -->
+<feat xlink:href="#NPSeg_42" value="NP"/><!-- es -->
+<feat xlink:href="#NPSeg_43" value="NP"/><!-- der...Runde -->
+<feat xlink:href="#NPSeg_44" value="NP"/><!-- Anfang...2002 -->
+<feat xlink:href="#NPSeg_45" value="NP"/><!-- mehr...Jugendliche -->
+<feat xlink:href="#NPSeg_46" value="NP"/><!-- der...Gruppe -->
+<feat xlink:href="#NPSeg_47" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_48" value="NP"/><!-- mehr...Gehör -->
+<feat xlink:href="#NPSeg_49" value="NP"/><!-- Vertreter -->
+<feat xlink:href="#NPSeg_50" value="NP"/><!-- PDS -->
+<feat xlink:href="#NPSeg_51" value="NP"/><!-- Gewerbeverein -->
+<feat xlink:href="#NPSeg_52" value="NP"/><!-- ihren...Weg -->
+<feat xlink:href="#NPSeg_53" value="NP"/><!-- Rathaus -->
+<feat xlink:href="#NPSeg_54" value="NP"/><!-- Die -->
+<feat xlink:href="#NPSeg_55" value="NP"/><!-- Abwesenheit -->
+</featList>
+
+</paula>

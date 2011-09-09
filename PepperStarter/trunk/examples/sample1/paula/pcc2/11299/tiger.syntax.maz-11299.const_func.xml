@@ -1,0 +1,262 @@
+<?xml version="1.0" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="tiger.syntax.maz-11299_func"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="func" xml:base="tiger.syntax.maz-11299.const.xml">
+
+<feat xlink:href="#rel_1" value="AC"/><!-- in -->
+<feat xlink:href="#rel_2" value="NK"/><!-- Zossen -->
+<feat xlink:href="#rel_3" value="NK"/><!-- ein -->
+<feat xlink:href="#rel_4" value="NK"/><!-- Musikcafé -->
+<feat xlink:href="#rel_5" value="NK"/><!-- Die -->
+<feat xlink:href="#rel_6" value="NK"/><!-- Jugendlichen -->
+<feat xlink:href="#rel_7" value="MNR"/>
+<feat xlink:href="#rel_8" value="HD"/><!-- wollen -->
+<feat xlink:href="#rel_9" value="OA"/>
+<feat xlink:href="#rel_10" value="SB"/>
+<feat xlink:href="#rel_11" value="AC"/><!-- bei -->
+<feat xlink:href="#rel_12" value="NK"/><!-- der -->
+<feat xlink:href="#rel_13" value="NK"/><!-- ersten -->
+<feat xlink:href="#rel_14" value="NK"/><!-- Zossener -->
+<feat xlink:href="#rel_15" value="NK"/><!-- Runde -->
+<feat xlink:href="#rel_16" value="AC"/><!-- am -->
+<feat xlink:href="#rel_17" value="NK"/><!-- Dienstagabend -->
+<feat xlink:href="#rel_18" value="OA"/><!-- Das -->
+<feat xlink:href="#rel_19" value="HD"/><!-- forderten -->
+<feat xlink:href="#rel_20" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_21" value="MO"/>
+<feat xlink:href="#rel_22" value="MO"/>
+<feat xlink:href="#rel_23" value="NK"/><!-- der -->
+<feat xlink:href="#rel_24" value="NK"/><!-- Stadt -->
+<feat xlink:href="#rel_25" value="MNR"/><!-- dafür -->
+<feat xlink:href="#rel_26" value="NK"/><!-- Verständnis -->
+<feat xlink:href="#rel_27" value="NK"/><!-- die -->
+<feat xlink:href="#rel_28" value="NK"/><!-- Politiker -->
+<feat xlink:href="#rel_29" value="AG"/>
+<feat xlink:href="#rel_30" value="CP"/><!-- Dass -->
+<feat xlink:href="#rel_31" value="HD"/><!-- haben -->
+<feat xlink:href="#rel_32" value="OA"/>
+<feat xlink:href="#rel_33" value="SB"/>
+<feat xlink:href="#rel_34" value="HD"/><!-- ist -->
+<feat xlink:href="#rel_35" value="PD"/><!-- löblich -->
+<feat xlink:href="#rel_36" value="SB"/>
+<feat xlink:href="#rel_37" value="AC"/><!-- im -->
+<feat xlink:href="#rel_38" value="NK"/><!-- Rathaus -->
+<feat xlink:href="#rel_39" value="AC"/><!-- zwischen -->
+<feat xlink:href="#rel_40" value="NK"/><!-- den -->
+<feat xlink:href="#rel_41" value="NK"/><!-- Generationen -->
+<feat xlink:href="#rel_42" value="AC"/><!-- Mit -->
+<feat xlink:href="#rel_43" value="NK"/><!-- dem -->
+<feat xlink:href="#rel_44" value="NK"/><!-- Treffen -->
+<feat xlink:href="#rel_45" value="MNR"/>
+<feat xlink:href="#rel_46" value="MO"/><!-- auch -->
+<feat xlink:href="#rel_47" value="NK"/><!-- ein -->
+<feat xlink:href="#rel_48" value="NK"/><!-- Dialog -->
+<feat xlink:href="#rel_49" value="MNR"/>
+<feat xlink:href="#rel_50" value="MO"/><!-- somit -->
+<feat xlink:href="#rel_51" value="HD"/><!-- angestoßen -->
+<feat xlink:href="#rel_52" value="MO"/>
+<feat xlink:href="#rel_53" value="HD"/><!-- ist -->
+<feat xlink:href="#rel_54" value="SB"/>
+<feat xlink:href="#rel_55" value="PD"/>
+<feat xlink:href="#rel_56" value="NK"/><!-- die -->
+<feat xlink:href="#rel_57" value="NK"/><!-- beiden -->
+<feat xlink:href="#rel_58" value="NK"/><!-- geladenen -->
+<feat xlink:href="#rel_59" value="NK"/><!-- Jugendlichen -->
+<feat xlink:href="#rel_60" value="NK"/><!-- des -->
+<feat xlink:href="#rel_61" value="NK"/><!-- Abends -->
+<feat xlink:href="#rel_62" value="MO"/><!-- immer -->
+<feat xlink:href="#rel_63" value="HD"/><!-- weniger -->
+<feat xlink:href="#rel_64" value="AC"/><!-- zu -->
+<feat xlink:href="#rel_65" value="NK"/><!-- Wort -->
+<feat xlink:href="#rel_66" value="NK"/><!-- keine -->
+<feat xlink:href="#rel_67" value="NK"/><!-- böse -->
+<feat xlink:href="#rel_68" value="NK"/><!-- Absicht -->
+<feat xlink:href="#rel_69" value="PD"/><!-- ärgerlich -->
+<feat xlink:href="#rel_70" value="HD"/><!-- ist -->
+<feat xlink:href="#rel_71" value="SB"/><!-- es -->
+<feat xlink:href="#rel_72" value="MO"/><!-- trotzdem -->
+<feat xlink:href="#rel_73" value="AC"/><!-- im -->
+<feat xlink:href="#rel_74" value="NK"/><!-- Laufe -->
+<feat xlink:href="#rel_75" value="AG"/>
+<feat xlink:href="#rel_76" value="CP"/><!-- Dass -->
+<feat xlink:href="#rel_77" value="HD"/><!-- kamen -->
+<feat xlink:href="#rel_78" value="SB"/>
+<feat xlink:href="#rel_79" value="MO"/>
+<feat xlink:href="#rel_80" value="CVC"/>
+<feat xlink:href="#rel_81" value="MO"/>
+<feat xlink:href="#rel_82" value="HD"/><!-- war -->
+<feat xlink:href="#rel_83" value="MO"/><!-- sicher -->
+<feat xlink:href="#rel_84" value="PD"/>
+<feat xlink:href="#rel_85" value="SB"/>
+<feat xlink:href="#rel_86" value="CJ"/>
+<feat xlink:href="#rel_87" value="CJ"/>
+<feat xlink:href="#rel_88" value="JU"/><!-- Und -->
+<feat xlink:href="#rel_89" value="PD"/><!-- aberwitzig -->
+<feat xlink:href="#rel_90" value="MO"/><!-- dazu -->
+<feat xlink:href="#rel_91" value="NK"/><!-- der -->
+<feat xlink:href="#rel_92" value="NK"/><!-- Komik -->
+<feat xlink:href="#rel_93" value="PNC"/><!-- Karola -->
+<feat xlink:href="#rel_94" value="PNC"/><!-- Andrae -->
+<feat xlink:href="#rel_95" value="PNC"/><!-- Susanne -->
+<feat xlink:href="#rel_96" value="PNC"/><!-- Michler -->
+<feat xlink:href="#rel_97" value="PNC"/><!-- Joachim -->
+<feat xlink:href="#rel_98" value="PNC"/><!-- Zanow -->
+<feat xlink:href="#rel_99" value="OA"/><!-- was -->
+<feat xlink:href="#rel_100" value="SB"/><!-- Jugendliche -->
+<feat xlink:href="#rel_101" value="HD"/><!-- wollen -->
+<feat xlink:href="#rel_102" value="HD"/><!-- brauchen -->
+<feat xlink:href="#rel_103" value="OA"/><!-- was -->
+<feat xlink:href="#rel_104" value="SB"/><!-- Jugendliche -->
+<feat xlink:href="#rel_105" value="PM"/><!-- zu -->
+<feat xlink:href="#rel_106" value="HD"/><!-- kommen -->
+<feat xlink:href="#rel_107" value="NK"/><!-- sie -->
+<feat xlink:href="#rel_108" value="MNR"/><!-- selbst -->
+<feat xlink:href="#rel_109" value="PM"/><!-- zu -->
+<feat xlink:href="#rel_110" value="HD"/><!-- fragen -->
+<feat xlink:href="#rel_111" value="PAR"/><!-- Bürgerbündnis/FDP -->
+<feat xlink:href="#rel_112" value="NK"/>
+<feat xlink:href="#rel_113" value="PAR"/><!-- CDU -->
+<feat xlink:href="#rel_114" value="NK"/>
+<feat xlink:href="#rel_115" value="PAR"/><!-- SPD -->
+<feat xlink:href="#rel_116" value="NK"/>
+<feat xlink:href="#rel_117" value="CD"/><!-- und -->
+<feat xlink:href="#rel_118" value="CJ"/>
+<feat xlink:href="#rel_119" value="CJ"/>
+<feat xlink:href="#rel_120" value="OA"/>
+<feat xlink:href="#rel_121" value="HD"/>
+<feat xlink:href="#rel_122" value="CD"/><!-- und -->
+<feat xlink:href="#rel_123" value="CJ"/>
+<feat xlink:href="#rel_124" value="CJ"/>
+<feat xlink:href="#rel_125" value="CJ"/>
+<feat xlink:href="#rel_126" value="PH"/><!-- darüber -->
+<feat xlink:href="#rel_127" value="RE"/>
+<feat xlink:href="#rel_128" value="AC"/><!-- auf -->
+<feat xlink:href="#rel_129" value="NK"/><!-- die -->
+<feat xlink:href="#rel_130" value="NK"/><!-- Idee -->
+<feat xlink:href="#rel_131" value="MNR"/>
+<feat xlink:href="#rel_132" value="NK"/><!-- drei -->
+<feat xlink:href="#rel_133" value="NK"/><!-- Erwachsene -->
+<feat xlink:href="#rel_134" value="APP"/>
+<feat xlink:href="#rel_135" value="CP"/><!-- ohne -->
+<feat xlink:href="#rel_136" value="HD"/>
+<feat xlink:href="#rel_137" value="MO"/>
+<feat xlink:href="#rel_138" value="CP"/><!-- wenn -->
+<feat xlink:href="#rel_139" value="OA"/><!-- sich -->
+<feat xlink:href="#rel_140" value="HD"/><!-- streiten -->
+<feat xlink:href="#rel_141" value="OP"/>
+<feat xlink:href="#rel_142" value="SB"/>
+<feat xlink:href="#rel_143" value="MO"/>
+<feat xlink:href="#rel_144" value="PH"/><!-- Es -->
+<feat xlink:href="#rel_145" value="RE"/>
+<feat xlink:href="#rel_146" value="HD"/><!-- entbehrt -->
+<feat xlink:href="#rel_147" value="NG"/><!-- nicht -->
+<feat xlink:href="#rel_148" value="OG"/>
+<feat xlink:href="#rel_149" value="SB"/>
+<feat xlink:href="#rel_150" value="NK"/><!-- ihnen -->
+<feat xlink:href="#rel_151" value="AC"/><!-- gegenüber -->
+<feat xlink:href="#rel_152" value="CP"/><!-- obwohl -->
+<feat xlink:href="#rel_153" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_154" value="HD"/><!-- sitzen -->
+<feat xlink:href="#rel_155" value="MO"/>
+<feat xlink:href="#rel_156" value="JU"/><!-- Und -->
+<feat xlink:href="#rel_157" value="SB"/><!-- das -->
+<feat xlink:href="#rel_158" value="MO"/>
+<feat xlink:href="#rel_159" value="NK"/><!-- Die -->
+<feat xlink:href="#rel_160" value="NK"/><!-- Jugendlichen -->
+<feat xlink:href="#rel_161" value="AC"/><!-- zum -->
+<feat xlink:href="#rel_162" value="NK"/><!-- bloßen -->
+<feat xlink:href="#rel_163" value="NK"/><!-- Feigenblatt -->
+<feat xlink:href="#rel_164" value="MO"/><!-- somit -->
+<feat xlink:href="#rel_165" value="HD"/><!-- degradiert -->
+<feat xlink:href="#rel_166" value="MO"/>
+<feat xlink:href="#rel_167" value="HD"/><!-- wurden -->
+<feat xlink:href="#rel_168" value="SB"/>
+<feat xlink:href="#rel_169" value="OC"/>
+<feat xlink:href="#rel_170" value="NG"/><!-- Nicht -->
+<feat xlink:href="#rel_171" value="AC"/><!-- über -->
+<feat xlink:href="#rel_172" value="AC"/><!-- mit -->
+<feat xlink:href="#rel_173" value="NK"/><!-- ihnen -->
+<feat xlink:href="#rel_174" value="NK"/><!-- die -->
+<feat xlink:href="#rel_175" value="NK"/><!-- Politiker -->
+<feat xlink:href="#rel_176" value="CD"/><!-- sondern -->
+<feat xlink:href="#rel_177" value="CJ"/>
+<feat xlink:href="#rel_178" value="CJ"/>
+<feat xlink:href="#rel_179" value="HD"/><!-- reden -->
+<feat xlink:href="#rel_180" value="OP"/>
+<feat xlink:href="#rel_181" value="HD"/><!-- sollen -->
+<feat xlink:href="#rel_182" value="OC"/>
+<feat xlink:href="#rel_183" value="HD"/><!-- hätten -->
+<feat xlink:href="#rel_184" value="SB"/>
+<feat xlink:href="#rel_185" value="OC"/>
+<feat xlink:href="#rel_186" value="NK"/><!-- eine -->
+<feat xlink:href="#rel_187" value="NK"/><!-- große -->
+<feat xlink:href="#rel_188" value="NK"/><!-- Chance -->
+<feat xlink:href="#rel_189" value="MO"/><!-- Damit -->
+<feat xlink:href="#rel_190" value="HD"/><!-- ist -->
+<feat xlink:href="#rel_191" value="PD"/><!-- vertan -->
+<feat xlink:href="#rel_192" value="SB"/>
+<feat xlink:href="#rel_193" value="NK"/><!-- Anfang -->
+<feat xlink:href="#rel_194" value="NK"/><!-- 2002 -->
+<feat xlink:href="#rel_195" value="AC"/><!-- bei -->
+<feat xlink:href="#rel_196" value="NK"/><!-- der -->
+<feat xlink:href="#rel_197" value="NK"/><!-- nächsten -->
+<feat xlink:href="#rel_198" value="NK"/><!-- Runde -->
+<feat xlink:href="#rel_199" value="MNR"/>
+<feat xlink:href="#rel_200" value="MO"/><!-- Vielleicht -->
+<feat xlink:href="#rel_201" value="HD"/><!-- klappt -->
+<feat xlink:href="#rel_202" value="SB"/><!-- es -->
+<feat xlink:href="#rel_203" value="MO"/>
+<feat xlink:href="#rel_204" value="MO"/><!-- Dann -->
+<feat xlink:href="#rel_205" value="MO"/><!-- auch -->
+<feat xlink:href="#rel_206" value="HD"/><!-- eingeladen -->
+<feat xlink:href="#rel_207" value="NK"/><!-- mehr -->
+<feat xlink:href="#rel_208" value="NK"/><!-- Jugendliche -->
+<feat xlink:href="#rel_209" value="HD"/><!-- werden -->
+<feat xlink:href="#rel_210" value="OC"/>
+<feat xlink:href="#rel_211" value="SB"/>
+<feat xlink:href="#rel_212" value="AC"/><!-- In -->
+<feat xlink:href="#rel_213" value="NK"/><!-- der -->
+<feat xlink:href="#rel_214" value="NK"/><!-- Gruppe -->
+<feat xlink:href="#rel_215" value="NK"/><!-- mehr -->
+<feat xlink:href="#rel_216" value="NK"/><!-- Gehör -->
+<feat xlink:href="#rel_217" value="DA"/><!-- sich -->
+<feat xlink:href="#rel_218" value="HD"/><!-- verschaffen -->
+<feat xlink:href="#rel_219" value="OA"/>
+<feat xlink:href="#rel_220" value="HD"/><!-- können -->
+<feat xlink:href="#rel_221" value="SB"/><!-- sie -->
+<feat xlink:href="#rel_222" value="MO"/><!-- hoffentlich -->
+<feat xlink:href="#rel_223" value="MO"/>
+<feat xlink:href="#rel_224" value="OC"/>
+<feat xlink:href="#rel_225" value="CJ"/><!-- PDS -->
+<feat xlink:href="#rel_226" value="CD"/><!-- und -->
+<feat xlink:href="#rel_227" value="CJ"/><!-- Gewerbeverein -->
+<feat xlink:href="#rel_228" value="AC"/><!-- ins -->
+<feat xlink:href="#rel_229" value="NK"/><!-- Rathaus -->
+<feat xlink:href="#rel_230" value="AC"/><!-- von -->
+<feat xlink:href="#rel_231" value="NK"/>
+<feat xlink:href="#rel_232" value="NK"/><!-- ihren -->
+<feat xlink:href="#rel_233" value="NK"/><!-- Weg -->
+<feat xlink:href="#rel_234" value="MNR"/>
+<feat xlink:href="#rel_235" value="MO"/><!-- auch -->
+<feat xlink:href="#rel_236" value="NK"/><!-- Vertreter -->
+<feat xlink:href="#rel_237" value="PG"/>
+<feat xlink:href="#rel_238" value="MO"/><!-- Vielleicht -->
+<feat xlink:href="#rel_239" value="HD"/><!-- finden -->
+<feat xlink:href="#rel_240" value="MO"/><!-- dann -->
+<feat xlink:href="#rel_241" value="OA"/>
+<feat xlink:href="#rel_242" value="SB"/>
+<feat xlink:href="#rel_243" value="AC"/><!-- mit -->
+<feat xlink:href="#rel_244" value="NK"/><!-- Abwesenheit -->
+<feat xlink:href="#rel_245" value="SB"/><!-- Die -->
+<feat xlink:href="#rel_246" value="HD"/><!-- glänzten -->
+<feat xlink:href="#rel_247" value="MO"/><!-- diesmal -->
+<feat xlink:href="#rel_248" value="MO"/><!-- noch -->
+<feat xlink:href="#rel_249" value="MO"/>
+</featList>
+
+</paula>

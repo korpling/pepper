@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_Focus_newInf"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Focus_newInf" xml:base="exmaralda.is.maz-4282.Focus_newInfSeg.xml">
+
+<feat xlink:href="#Focus_newInfSeg_1" value="nf-unsol"/><!-- so...Fußballkicker -->
+<feat xlink:href="#Focus_newInfSeg_2" value="nf-unsol"/><!-- Und...solch -->
+<feat xlink:href="#Focus_newInfSeg_3" value="nf-unsol"/><!-- von...können -->
+<feat xlink:href="#Focus_newInfSeg_4" value="nf-unsol"/><!-- ist...gab -->
+<feat xlink:href="#Focus_newInfSeg_5" value="nf-unsol"/><!-- haben...gefordert -->
+<feat xlink:href="#Focus_newInfSeg_6" value="nf-unsol"/><!-- wie...verwerten -->
+<feat xlink:href="#Focus_newInfSeg_7" value="nf-unsol"/><!-- Und...noch -->
+<feat xlink:href="#Focus_newInfSeg_8" value="nf-unsol"/><!-- aus...sind -->
+<feat xlink:href="#Focus_newInfSeg_9" value="nf-unsol"/><!-- dass...spielen -->
+<feat xlink:href="#Focus_newInfSeg_10" value="nf-unsol"/><!-- Und...gegeneinander -->
+<feat xlink:href="#Focus_newInfSeg_11" value="nf-unsol"/><!-- miteinander...überflüssig -->
+</featList>
+
+</paula>

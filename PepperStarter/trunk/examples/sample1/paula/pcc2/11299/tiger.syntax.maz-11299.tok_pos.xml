@@ -1,0 +1,277 @@
+<?xml version="1.0" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="tiger.syntax.maz-11299_pos"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="pos" xml:base="merged.maz-11299.tok.xml">
+
+<feat xlink:href="#tok_1" value="NN"/><!--  -->
+<feat xlink:href="#tok_2" value="ART"/><!--  -->
+<feat xlink:href="#tok_3" value="NN"/><!--  -->
+<feat xlink:href="#tok_4" value="APPR"/><!--  -->
+<feat xlink:href="#tok_5" value="NE"/><!--  -->
+<feat xlink:href="#tok_6" value="VMFIN"/><!--  -->
+<feat xlink:href="#tok_7" value="ART"/><!--  -->
+<feat xlink:href="#tok_8" value="NN"/><!--  -->
+<feat xlink:href="#tok_9" value="$."/><!--  -->
+<feat xlink:href="#tok_10" value="PDS"/><!--  -->
+<feat xlink:href="#tok_11" value="VVFIN"/><!--  -->
+<feat xlink:href="#tok_12" value="PPER"/><!--  -->
+<feat xlink:href="#tok_13" value="APPR"/><!--  -->
+<feat xlink:href="#tok_14" value="ART"/><!--  -->
+<feat xlink:href="#tok_15" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_16" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_17" value="NN"/><!--  -->
+<feat xlink:href="#tok_18" value="APPRART"/><!--  -->
+<feat xlink:href="#tok_19" value="NN"/><!--  -->
+<feat xlink:href="#tok_20" value="$."/><!--  -->
+<feat xlink:href="#tok_21" value="KOUS"/><!--  -->
+<feat xlink:href="#tok_22" value="ART"/><!--  -->
+<feat xlink:href="#tok_23" value="NN"/><!--  -->
+<feat xlink:href="#tok_24" value="ART"/><!--  -->
+<feat xlink:href="#tok_25" value="NN"/><!--  -->
+<feat xlink:href="#tok_26" value="PROAV"/><!--  -->
+<feat xlink:href="#tok_27" value="NN"/><!--  -->
+<feat xlink:href="#tok_28" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_29" value="$,"/><!--  -->
+<feat xlink:href="#tok_30" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_31" value="ADJD"/><!--  -->
+<feat xlink:href="#tok_32" value="$."/><!--  -->
+<feat xlink:href="#tok_33" value="APPR"/><!--  -->
+<feat xlink:href="#tok_34" value="ART"/><!--  -->
+<feat xlink:href="#tok_35" value="NN"/><!--  -->
+<feat xlink:href="#tok_36" value="APPRART"/><!--  -->
+<feat xlink:href="#tok_37" value="NN"/><!--  -->
+<feat xlink:href="#tok_38" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_39" value="ADV"/><!--  -->
+<feat xlink:href="#tok_40" value="ADV"/><!--  -->
+<feat xlink:href="#tok_41" value="ART"/><!--  -->
+<feat xlink:href="#tok_42" value="NN"/><!--  -->
+<feat xlink:href="#tok_43" value="APPR"/><!--  -->
+<feat xlink:href="#tok_44" value="ART"/><!--  -->
+<feat xlink:href="#tok_45" value="NN"/><!--  -->
+<feat xlink:href="#tok_46" value="VVPP"/><!--  -->
+<feat xlink:href="#tok_47" value="$."/><!--  -->
+<feat xlink:href="#tok_48" value="KOUS"/><!--  -->
+<feat xlink:href="#tok_49" value="ART"/><!--  -->
+<feat xlink:href="#tok_50" value="PIAT"/><!--  -->
+<feat xlink:href="#tok_51" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_52" value="NN"/><!--  -->
+<feat xlink:href="#tok_53" value="APPRART"/><!--  -->
+<feat xlink:href="#tok_54" value="NN"/><!--  -->
+<feat xlink:href="#tok_55" value="ART"/><!--  -->
+<feat xlink:href="#tok_56" value="NN"/><!--  -->
+<feat xlink:href="#tok_57" value="ADV"/><!--  -->
+<feat xlink:href="#tok_58" value="ADV"/><!--  -->
+<feat xlink:href="#tok_59" value="APPR"/><!--  -->
+<feat xlink:href="#tok_60" value="NN"/><!--  -->
+<feat xlink:href="#tok_61" value="VVFIN"/><!--  -->
+<feat xlink:href="#tok_62" value="$,"/><!--  -->
+<feat xlink:href="#tok_63" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_64" value="ADJD"/><!--  -->
+<feat xlink:href="#tok_65" value="PIAT"/><!--  -->
+<feat xlink:href="#tok_66" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_67" value="NN"/><!--  -->
+<feat xlink:href="#tok_68" value="$,"/><!--  -->
+<feat xlink:href="#tok_69" value="ADJD"/><!--  -->
+<feat xlink:href="#tok_70" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_71" value="PPER"/><!--  -->
+<feat xlink:href="#tok_72" value="PROAV"/><!--  -->
+<feat xlink:href="#tok_73" value="$."/><!--  -->
+<feat xlink:href="#tok_74" value="KON"/><!--  -->
+<feat xlink:href="#tok_75" value="ADJD"/><!--  -->
+<feat xlink:href="#tok_76" value="PROAV"/><!--  -->
+<feat xlink:href="#tok_77" value="$."/><!--  -->
+<feat xlink:href="#tok_78" value="PPER"/><!-- 
+  -->
+<feat xlink:href="#tok_79" value="VVFIN"/><!-- 
+  -->
+<feat xlink:href="#tok_80" value="PTKNEG"/><!-- 
+  -->
+<feat xlink:href="#tok_81" value="ART"/><!-- 
+  -->
+<feat xlink:href="#tok_82" value="NN"/><!-- 
+  -->
+<feat xlink:href="#tok_83" value="$,"/><!-- 
+  -->
+<feat xlink:href="#tok_84" value="KOUS"/><!-- 
+  -->
+<feat xlink:href="#tok_85" value="PRF"/><!-- 
+  -->
+<feat xlink:href="#tok_86" value="CARD"/><!-- 
+  -->
+<feat xlink:href="#tok_87" value="NN"/><!-- 
+  -->
+<feat xlink:href="#tok_88" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_89" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_90" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_91" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_92" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_93" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_94" value="$,"/><!-- 
+  -->
+<feat xlink:href="#tok_95" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_96" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_97" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_98" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_99" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_100" value="KON"/><!-- 
+  -->
+<feat xlink:href="#tok_101" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_102" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_103" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_104" value="NE"/><!-- 
+  -->
+<feat xlink:href="#tok_105" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_106" value="$("/><!-- 
+  -->
+<feat xlink:href="#tok_107" value="PROAV"/><!-- 
+  -->
+<feat xlink:href="#tok_108" value="VVFIN"/><!-- 
+  -->
+<feat xlink:href="#tok_109" value="$,"/><!-- 
+  -->
+<feat xlink:href="#tok_110" value="PWS"/><!-- 
+            
+           -->
+<feat xlink:href="#tok_111" value="NN"/><!-- 
+            
+           -->
+<feat xlink:href="#tok_112" value="VMFIN"/><!-- 
+  -->
+<feat xlink:href="#tok_113" value="KON"/><!-- 
+  -->
+<feat xlink:href="#tok_114" value="VVFIN"/><!-- 
+  -->
+<feat xlink:href="#tok_115" value="$,"/><!-- 
+  -->
+<feat xlink:href="#tok_116" value="KOUI"/><!-- 
+  -->
+<feat xlink:href="#tok_117" value="APPR"/><!-- 
+  -->
+<feat xlink:href="#tok_118" value="ART"/><!-- 
+  -->
+<feat xlink:href="#tok_119" value="NN"/><!-- 
+  -->
+<feat xlink:href="#tok_120" value="PTKZU"/><!-- 
+  -->
+<feat xlink:href="#tok_121" value="VVINF"/><!-- 
+  -->
+<feat xlink:href="#tok_122" value="$,"/><!-- 
+  -->
+<feat xlink:href="#tok_123" value="PPER"/><!-- 
+  -->
+<feat xlink:href="#tok_124" value="ADV"/><!-- 
+  -->
+<feat xlink:href="#tok_125" value="PTKZU"/><!-- 
+  -->
+<feat xlink:href="#tok_126" value="VVINF"/><!-- 
+  -->
+<feat xlink:href="#tok_127" value="$."/><!-- 
+  -->
+<feat xlink:href="#tok_128" value="KON"/><!--  -->
+<feat xlink:href="#tok_129" value="PDS"/><!--  -->
+<feat xlink:href="#tok_130" value="$,"/><!--  -->
+<feat xlink:href="#tok_131" value="KOUS"/><!--  -->
+<feat xlink:href="#tok_132" value="PPER"/><!--  -->
+<feat xlink:href="#tok_133" value="PPER"/><!--  -->
+<feat xlink:href="#tok_134" value="APPO"/><!--  -->
+<feat xlink:href="#tok_135" value="VVFIN"/><!--  -->
+<feat xlink:href="#tok_136" value="$."/><!--  -->
+<feat xlink:href="#tok_137" value="ART"/><!--  -->
+<feat xlink:href="#tok_138" value="NN"/><!--  -->
+<feat xlink:href="#tok_139" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_140" value="ADV"/><!--  -->
+<feat xlink:href="#tok_141" value="APPRART"/><!--  -->
+<feat xlink:href="#tok_142" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_143" value="NN"/><!--  -->
+<feat xlink:href="#tok_144" value="VVPP"/><!--  -->
+<feat xlink:href="#tok_145" value="$."/><!--  -->
+<feat xlink:href="#tok_146" value="PTKNEG"/><!--  -->
+<feat xlink:href="#tok_147" value="APPR"/><!--  -->
+<feat xlink:href="#tok_148" value="KON"/><!--  -->
+<feat xlink:href="#tok_149" value="APPR"/><!--  -->
+<feat xlink:href="#tok_150" value="PPER"/><!--  -->
+<feat xlink:href="#tok_151" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_152" value="ART"/><!--  -->
+<feat xlink:href="#tok_153" value="NN"/><!--  -->
+<feat xlink:href="#tok_154" value="VVINF"/><!--  -->
+<feat xlink:href="#tok_155" value="VMINF"/><!--  -->
+<feat xlink:href="#tok_156" value="$."/><!--  -->
+<feat xlink:href="#tok_157" value="PROAV"/><!--  -->
+<feat xlink:href="#tok_158" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_159" value="ART"/><!--  -->
+<feat xlink:href="#tok_160" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_161" value="NN"/><!--  -->
+<feat xlink:href="#tok_162" value="VVPP"/><!--  -->
+<feat xlink:href="#tok_163" value="$."/><!--  -->
+<feat xlink:href="#tok_164" value="ADV"/><!--  -->
+<feat xlink:href="#tok_165" value="VVFIN"/><!--  -->
+<feat xlink:href="#tok_166" value="PPER"/><!--  -->
+<feat xlink:href="#tok_167" value="APPR"/><!--  -->
+<feat xlink:href="#tok_168" value="ART"/><!--  -->
+<feat xlink:href="#tok_169" value="ADJA"/><!--  -->
+<feat xlink:href="#tok_170" value="NN"/><!--  -->
+<feat xlink:href="#tok_171" value="NN"/><!--  -->
+<feat xlink:href="#tok_172" value="CARD"/><!--  -->
+<feat xlink:href="#tok_173" value="$."/><!--  -->
+<feat xlink:href="#tok_174" value="ADV"/><!--  -->
+<feat xlink:href="#tok_175" value="VAFIN"/><!--  -->
+<feat xlink:href="#tok_176" value="ADV"/><!--  -->
+<feat xlink:href="#tok_177" value="PIAT"/><!--  -->
+<feat xlink:href="#tok_178" value="NN"/><!--  -->
+<feat xlink:href="#tok_179" value="VVPP"/><!--  -->
+<feat xlink:href="#tok_180" value="$."/><!--  -->
+<feat xlink:href="#tok_181" value="APPR"/><!--  -->
+<feat xlink:href="#tok_182" value="ART"/><!--  -->
+<feat xlink:href="#tok_183" value="NN"/><!--  -->
+<feat xlink:href="#tok_184" value="VMFIN"/><!--  -->
+<feat xlink:href="#tok_185" value="PPER"/><!--  -->
+<feat xlink:href="#tok_186" value="PRF"/><!--  -->
+<feat xlink:href="#tok_187" value="ADV"/><!--  -->
+<feat xlink:href="#tok_188" value="PIAT"/><!--  -->
+<feat xlink:href="#tok_189" value="NN"/><!--  -->
+<feat xlink:href="#tok_190" value="VVINF"/><!--  -->
+<feat xlink:href="#tok_191" value="$."/><!--  -->
+<feat xlink:href="#tok_192" value="ADV"/><!--  -->
+<feat xlink:href="#tok_193" value="VVFIN"/><!--  -->
+<feat xlink:href="#tok_194" value="ADV"/><!--  -->
+<feat xlink:href="#tok_195" value="ADV"/><!--  -->
+<feat xlink:href="#tok_196" value="NN"/><!--  -->
+<feat xlink:href="#tok_197" value="APPR"/><!--  -->
+<feat xlink:href="#tok_198" value="NE"/><!--  -->
+<feat xlink:href="#tok_199" value="KON"/><!--  -->
+<feat xlink:href="#tok_200" value="NN"/><!--  -->
+<feat xlink:href="#tok_201" value="PPOSAT"/><!--  -->
+<feat xlink:href="#tok_202" value="NN"/><!--  -->
+<feat xlink:href="#tok_203" value="APPRART"/><!--  -->
+<feat xlink:href="#tok_204" value="NN"/><!--  -->
+<feat xlink:href="#tok_205" value="$."/><!--  -->
+<feat xlink:href="#tok_206" value="PDS"/><!--  -->
+<feat xlink:href="#tok_207" value="VVFIN"/><!--  -->
+<feat xlink:href="#tok_208" value="ADV"/><!--  -->
+<feat xlink:href="#tok_209" value="ADV"/><!--  -->
+<feat xlink:href="#tok_210" value="APPR"/><!--  -->
+<feat xlink:href="#tok_211" value="NN"/><!--  -->
+<feat xlink:href="#tok_212" value="$."/><!--  -->
+</featList>
+
+</paula>

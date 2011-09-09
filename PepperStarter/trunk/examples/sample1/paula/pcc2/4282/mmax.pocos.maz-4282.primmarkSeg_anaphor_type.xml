@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+
+<paula version="1.0">
+
+<header paula_id="mmax.pocos.maz-4282_primmarkSeg_anaphor_type"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="anaphor_type" xml:base="mmax.pocos.maz-4282.primmarkSeg.xml">
+<feat xlink:href="#primmarkSeg_28" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_39" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_100086" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_100090" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_100045" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_51" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_1000142" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_57" value="anaphor_nominal"/>
+<feat xlink:href="#primmarkSeg_1000135" value="anaphor_nominal"/>
+</featList>
+</paula>

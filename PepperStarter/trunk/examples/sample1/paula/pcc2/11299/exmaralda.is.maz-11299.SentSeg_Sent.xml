@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_Sent"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Sent" xml:base="exmaralda.is.maz-11299.SentSeg.xml">
+
+<feat xlink:href="#SentSeg_1" value="s"/><!-- Die.... -->
+<feat xlink:href="#SentSeg_2" value="s"/><!-- Das.... -->
+<feat xlink:href="#SentSeg_3" value="s"/><!-- Dass.... -->
+<feat xlink:href="#SentSeg_4" value="s"/><!-- Mit.... -->
+<feat xlink:href="#SentSeg_5" value="s"/><!-- Dass.... -->
+<feat xlink:href="#SentSeg_6" value="s"/><!-- Und.... -->
+<feat xlink:href="#SentSeg_7" value="s"/><!-- Es.... -->
+<feat xlink:href="#SentSeg_8" value="s"/><!-- Und.... -->
+<feat xlink:href="#SentSeg_9" value="s"/><!-- Die.... -->
+<feat xlink:href="#SentSeg_10" value="s"/><!-- Nicht.... -->
+<feat xlink:href="#SentSeg_11" value="s"/><!-- Damit.... -->
+<feat xlink:href="#SentSeg_12" value="s"/><!-- Vielleicht.... -->
+<feat xlink:href="#SentSeg_13" value="s"/><!-- Dann.... -->
+<feat xlink:href="#SentSeg_14" value="s"/><!-- In.... -->
+<feat xlink:href="#SentSeg_15" value="s"/><!-- Vielleicht.... -->
+<feat xlink:href="#SentSeg_16" value="s"/><!-- Die...Abwesenheit -->
+</featList>
+
+</paula>

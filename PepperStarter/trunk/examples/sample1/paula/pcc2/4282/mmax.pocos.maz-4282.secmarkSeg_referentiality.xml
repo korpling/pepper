@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+
+<paula version="1.0">
+
+<header paula_id="mmax.pocos.maz-4282_secmarkSeg_referentiality"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="referentiality" xml:base="mmax.pocos.maz-4282.secmarkSeg.xml">
+<feat xlink:href="#secmarkSeg_1000157" value="discourse-new"/>
+<feat xlink:href="#secmarkSeg_1000156" value="discourse-new"/>
+</featList>
+</paula>

@@ -1,0 +1,277 @@
+<?xml version="1.0" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="tiger.syntax.maz-11299_morph"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="morph" xml:base="merged.maz-11299.tok.xml">
+
+<feat xlink:href="#tok_1" value="Nom.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_2" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_3" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_4" value="--"/><!--  -->
+<feat xlink:href="#tok_5" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_6" value="3.Pl.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_7" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_8" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_9" value="--"/><!--  -->
+<feat xlink:href="#tok_10" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_11" value="3.Pl.Past.Ind"/><!--  -->
+<feat xlink:href="#tok_12" value="3.Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_13" value="--"/><!--  -->
+<feat xlink:href="#tok_14" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_15" value="Pos.Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_16" value="Pos.*.*.*"/><!--  -->
+<feat xlink:href="#tok_17" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_18" value="Dat.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_19" value="Dat.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_20" value="--"/><!--  -->
+<feat xlink:href="#tok_21" value="--"/><!--  -->
+<feat xlink:href="#tok_22" value="Nom.Pl.Masc"/><!--  -->
+<feat xlink:href="#tok_23" value="Nom.Pl.Masc"/><!--  -->
+<feat xlink:href="#tok_24" value="Gen.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_25" value="Gen.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_26" value="--"/><!--  -->
+<feat xlink:href="#tok_27" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_28" value="3.Pl.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_29" value="--"/><!--  -->
+<feat xlink:href="#tok_30" value="3.Sg.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_31" value="Pos"/><!--  -->
+<feat xlink:href="#tok_32" value="--"/><!--  -->
+<feat xlink:href="#tok_33" value="--"/><!--  -->
+<feat xlink:href="#tok_34" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_35" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_36" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_37" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_38" value="3.Sg.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_39" value="--"/><!--  -->
+<feat xlink:href="#tok_40" value="--"/><!--  -->
+<feat xlink:href="#tok_41" value="Nom.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_42" value="Nom.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_43" value="--"/><!--  -->
+<feat xlink:href="#tok_44" value="Dat.Pl.Fem"/><!--  -->
+<feat xlink:href="#tok_45" value="Dat.Pl.Fem"/><!--  -->
+<feat xlink:href="#tok_46" value="Psp"/><!--  -->
+<feat xlink:href="#tok_47" value="--"/><!--  -->
+<feat xlink:href="#tok_48" value="--"/><!--  -->
+<feat xlink:href="#tok_49" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_50" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_51" value="Pos.Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_52" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_53" value="Dat.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_54" value="Dat.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_55" value="Gen.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_56" value="Gen.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_57" value="--"/><!--  -->
+<feat xlink:href="#tok_58" value="--"/><!--  -->
+<feat xlink:href="#tok_59" value="--"/><!--  -->
+<feat xlink:href="#tok_60" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_61" value="3.Pl.Past.Ind"/><!--  -->
+<feat xlink:href="#tok_62" value="--"/><!--  -->
+<feat xlink:href="#tok_63" value="3.Sg.Past.Ind"/><!--  -->
+<feat xlink:href="#tok_64" value="Pos"/><!--  -->
+<feat xlink:href="#tok_65" value="Nom.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_66" value="Pos.Nom.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_67" value="Nom.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_68" value="--"/><!--  -->
+<feat xlink:href="#tok_69" value="Pos"/><!--  -->
+<feat xlink:href="#tok_70" value="3.Sg.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_71" value="3.Nom.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_72" value="--"/><!--  -->
+<feat xlink:href="#tok_73" value="--"/><!--  -->
+<feat xlink:href="#tok_74" value="--"/><!--  -->
+<feat xlink:href="#tok_75" value="Pos"/><!--  -->
+<feat xlink:href="#tok_76" value="--"/><!--  -->
+<feat xlink:href="#tok_77" value="--"/><!--  -->
+<feat xlink:href="#tok_78" value="3.Nom.Sg.Neut"/><!-- 
+  -->
+<feat xlink:href="#tok_79" value="3.Sg.Pres.Ind"/><!-- 
+  -->
+<feat xlink:href="#tok_80" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_81" value="Gen.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_82" value="Gen.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_83" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_84" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_85" value="3.Acc.Pl"/><!-- 
+  -->
+<feat xlink:href="#tok_86" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_87" value="Nom.Pl.*"/><!-- 
+  -->
+<feat xlink:href="#tok_88" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_89" value="Nom.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_90" value="Nom.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_91" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_92" value="Nom.Sg.*"/><!-- 
+  -->
+<feat xlink:href="#tok_93" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_94" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_95" value="Nom.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_96" value="Nom.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_97" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_98" value="Nom.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_99" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_100" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_101" value="Nom.Sg.Masc"/><!-- 
+  -->
+<feat xlink:href="#tok_102" value="Nom.Sg.Masc"/><!-- 
+  -->
+<feat xlink:href="#tok_103" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_104" value="Nom.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_105" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_106" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_107" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_108" value="3.Pl.Pres.Ind"/><!-- 
+  -->
+<feat xlink:href="#tok_109" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_110" value="Acc.Sg.Neut"/><!-- 
+            
+           -->
+<feat xlink:href="#tok_111" value="Nom.Pl.*"/><!-- 
+            
+           -->
+<feat xlink:href="#tok_112" value="3.Pl.Pres.Ind"/><!-- 
+  -->
+<feat xlink:href="#tok_113" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_114" value="3.Pl.Pres.Ind"/><!-- 
+  -->
+<feat xlink:href="#tok_115" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_116" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_117" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_118" value="Acc.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_119" value="Acc.Sg.Fem"/><!-- 
+  -->
+<feat xlink:href="#tok_120" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_121" value="Inf"/><!-- 
+  -->
+<feat xlink:href="#tok_122" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_123" value="3.Acc.Pl.*"/><!-- 
+  -->
+<feat xlink:href="#tok_124" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_125" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_126" value="Inf"/><!-- 
+  -->
+<feat xlink:href="#tok_127" value="--"/><!-- 
+  -->
+<feat xlink:href="#tok_128" value="--"/><!--  -->
+<feat xlink:href="#tok_129" value="Nom.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_130" value="--"/><!--  -->
+<feat xlink:href="#tok_131" value="--"/><!--  -->
+<feat xlink:href="#tok_132" value="3.Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_133" value="3.Dat.Pl.*"/><!--  -->
+<feat xlink:href="#tok_134" value="--"/><!--  -->
+<feat xlink:href="#tok_135" value="3.Pl.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_136" value="--"/><!--  -->
+<feat xlink:href="#tok_137" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_138" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_139" value="3.Pl.Past.Ind"/><!--  -->
+<feat xlink:href="#tok_140" value="--"/><!--  -->
+<feat xlink:href="#tok_141" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_142" value="Pos.Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_143" value="Dat.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_144" value="Psp"/><!--  -->
+<feat xlink:href="#tok_145" value="--"/><!--  -->
+<feat xlink:href="#tok_146" value="--"/><!--  -->
+<feat xlink:href="#tok_147" value="--"/><!--  -->
+<feat xlink:href="#tok_148" value="--"/><!--  -->
+<feat xlink:href="#tok_149" value="Dat"/><!--  -->
+<feat xlink:href="#tok_150" value="3.Dat.Pl.*"/><!--  -->
+<feat xlink:href="#tok_151" value="3.Pl.Past.Subj"/><!--  -->
+<feat xlink:href="#tok_152" value="Nom.Pl.Masc"/><!--  -->
+<feat xlink:href="#tok_153" value="Nom.Pl.Masc"/><!--  -->
+<feat xlink:href="#tok_154" value="Inf"/><!--  -->
+<feat xlink:href="#tok_155" value="Inf"/><!--  -->
+<feat xlink:href="#tok_156" value="--"/><!--  -->
+<feat xlink:href="#tok_157" value="--"/><!--  -->
+<feat xlink:href="#tok_158" value="3.Sg.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_159" value="Nom.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_160" value="Pos.Nom.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_161" value="Nom.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_162" value="Psp"/><!--  -->
+<feat xlink:href="#tok_163" value="--"/><!--  -->
+<feat xlink:href="#tok_164" value="--"/><!--  -->
+<feat xlink:href="#tok_165" value="3.Sg.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_166" value="3.Nom.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_167" value="--"/><!--  -->
+<feat xlink:href="#tok_168" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_169" value="Pos.Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_170" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_171" value="*.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_172" value="--"/><!--  -->
+<feat xlink:href="#tok_173" value="--"/><!--  -->
+<feat xlink:href="#tok_174" value="--"/><!--  -->
+<feat xlink:href="#tok_175" value="3.Pl.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_176" value="--"/><!--  -->
+<feat xlink:href="#tok_177" value="*.*.*"/><!--  -->
+<feat xlink:href="#tok_178" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_179" value="Psp"/><!--  -->
+<feat xlink:href="#tok_180" value="--"/><!--  -->
+<feat xlink:href="#tok_181" value="--"/><!--  -->
+<feat xlink:href="#tok_182" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_183" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_184" value="3.Pl.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_185" value="3.Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_186" value="3.Dat.Pl"/><!--  -->
+<feat xlink:href="#tok_187" value="--"/><!--  -->
+<feat xlink:href="#tok_188" value="*.*.*"/><!--  -->
+<feat xlink:href="#tok_189" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_190" value="Inf"/><!--  -->
+<feat xlink:href="#tok_191" value="--"/><!--  -->
+<feat xlink:href="#tok_192" value="--"/><!--  -->
+<feat xlink:href="#tok_193" value="3.Pl.Pres.Ind"/><!--  -->
+<feat xlink:href="#tok_194" value="--"/><!--  -->
+<feat xlink:href="#tok_195" value="--"/><!--  -->
+<feat xlink:href="#tok_196" value="Nom.Pl.Masc"/><!--  -->
+<feat xlink:href="#tok_197" value="--"/><!--  -->
+<feat xlink:href="#tok_198" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_199" value="--"/><!--  -->
+<feat xlink:href="#tok_200" value="Dat.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_201" value="Acc.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_202" value="Acc.Sg.Masc"/><!--  -->
+<feat xlink:href="#tok_203" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_204" value="Acc.Sg.Neut"/><!--  -->
+<feat xlink:href="#tok_205" value="--"/><!--  -->
+<feat xlink:href="#tok_206" value="Nom.Pl.*"/><!--  -->
+<feat xlink:href="#tok_207" value="3.Pl.Past.Ind"/><!--  -->
+<feat xlink:href="#tok_208" value="--"/><!--  -->
+<feat xlink:href="#tok_209" value="--"/><!--  -->
+<feat xlink:href="#tok_210" value="--"/><!--  -->
+<feat xlink:href="#tok_211" value="Dat.Sg.Fem"/><!--  -->
+<feat xlink:href="#tok_212" value="--"/><!--  -->
+</featList>
+
+</paula>

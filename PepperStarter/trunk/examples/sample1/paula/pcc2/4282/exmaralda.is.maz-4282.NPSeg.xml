@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_NPSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="NPSeg" xml:base="merged.maz-4282.tok.xml">
+
+<mark id="NPSeg_1" xlink:href="#tok_2"/><!-- Wunder -->
+<mark id="NPSeg_2" xlink:href="#xpointer(id('tok_10')/range-to(id('tok_12')))"/><!-- die...Gemeindevertreter -->
+<mark id="NPSeg_3" xlink:href="#xpointer(id('tok_18')/range-to(id('tok_22')))"/><!-- die...Fußballkicker -->
+<mark id="NPSeg_4" xlink:href="#xpointer(id('tok_28')/range-to(id('tok_29')))"/><!-- der...Tiefe -->
+<mark id="NPSeg_5" xlink:href="#xpointer(id('tok_31')/range-to(id('tok_33')))"/><!-- ein...Steilpass -->
+<mark id="NPSeg_6" xlink:href="#tok_36"/><!-- dem -->
+<mark id="NPSeg_7" xlink:href="#tok_37"/><!-- man -->
+<mark id="NPSeg_8" xlink:href="#xpointer(id('tok_41')/range-to(id('tok_45')))"/><!-- die...Mitspieler -->
+<mark id="NPSeg_9" xlink:href="#tok_46"/><!-- ihn -->
+<mark id="NPSeg_10" xlink:href="#xpointer(id('tok_50')/range-to(id('tok_51')))"/><!-- Ein...Befreiungsschlag -->
+<mark id="NPSeg_11" xlink:href="#xpointer(id('tok_60')/range-to(id('tok_61')))"/><!-- keine...Gefahr -->
+<mark id="NPSeg_12" xlink:href="#xpointer(id('tok_63')/range-to(id('tok_64')))"/><!-- Dallgower...Tor -->
+<mark id="NPSeg_13" xlink:href="#xpointer(id('tok_67')/range-to(id('tok_68')))"/><!-- Die...Seeburger -->
+<mark id="NPSeg_14" xlink:href="#xpointer(id('tok_70')/range-to(id('tok_71')))"/><!-- einige...Groß_Glienicker -->
+<mark id="NPSeg_15" xlink:href="#xpointer(id('tok_73')/range-to(id('tok_74')))"/><!-- den...Ball -->
+<mark id="NPSeg_16" xlink:href="#tok_87"/><!-- sie -->
+<mark id="NPSeg_17" xlink:href="#tok_91"/><!-- sie -->
+<mark id="NPSeg_18" xlink:href="#xpointer(id('tok_92')/range-to(id('tok_93')))"/><!-- die...Chance -->
+<mark id="NPSeg_19" xlink:href="#xpointer(id('tok_96')/range-to(id('tok_97')))"/><!-- Eine...Diskussion -->
+<mark id="NPSeg_20" xlink:href="#xpointer(id('tok_101')/range-to(id('tok_102')))"/><!-- die...Trainerkabine -->
+<mark id="NPSeg_21" xlink:href="#xpointer(id('tok_108')/range-to(id('tok_110')))"/><!-- der...Spielsituation -->
+<mark id="NPSeg_22" xlink:href="#xpointer(id('tok_114')/range-to(id('tok_115')))"/><!-- eine...Parallele -->
+<mark id="NPSeg_23" xlink:href="#xpointer(id('tok_117')/range-to(id('tok_119')))"/><!-- den...Grotten_Kickern -->
+<mark id="NPSeg_24" xlink:href="#xpointer(id('tok_127')/range-to(id('tok_128')))"/><!-- die...Spieler -->
+<mark id="NPSeg_25" xlink:href="#xpointer(id('tok_130')/range-to(id('tok_132')))"/><!-- den...Vereinen -->
+<mark id="NPSeg_26" xlink:href="#tok_136"/><!-- sie -->
+<mark id="NPSeg_27" xlink:href="#tok_138"/><!-- sich -->
+<mark id="NPSeg_28" xlink:href="#tok_143"/><!-- sie -->
+<mark id="NPSeg_29" xlink:href="#xpointer(id('tok_146')/range-to(id('tok_151')))"/><!-- einer..." -->
+<mark id="NPSeg_30" xlink:href="#tok_155"/><!-- das -->
+<mark id="NPSeg_31" xlink:href="#tok_162"/><!-- Ermahnungen -->
+<mark id="NPSeg_32" xlink:href="#xpointer(id('tok_164')/range-to(id('tok_165')))"/><!-- der...Seitenlinie -->
+<mark id="NPSeg_33" xlink:href="#tok_171"/><!-- sich -->
+<mark id="NPSeg_34" xlink:href="#xpointer(id('tok_174')/range-to(id('tok_175')))"/><!-- kleinsten...Schubser -->
+</markList>
+
+</paula>

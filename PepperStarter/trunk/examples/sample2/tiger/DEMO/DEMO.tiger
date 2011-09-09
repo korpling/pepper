@@ -1,0 +1,246 @@
+<corpus id="DEMO">
+
+<head>
+  <meta>
+    <name>two sentences of Wall Street Journal corpus</name>
+    <format>bracketing format</format>
+  </meta>
+  <annotation>
+    <feature name="word" domain="T"/>
+    <feature name="pos" domain="T">
+       <value name=","/>
+       <value name="-NONE-"/>
+       <value name="."/>
+       <value name="CC"/>
+       <value name="CD"/>
+       <value name="DT"/>
+       <value name="IN"/>
+       <value name="JJ"/>
+       <value name="MD"/>
+       <value name="NN"/>
+       <value name="NNP"/>
+       <value name="NNS"/>
+       <value name="VB"/>
+       <value name="VBD"/>
+       <value name="VBN"/>
+    </feature>
+    <feature name="cat" domain="NT">
+       <value name="ADJP"/>
+       <value name="NP"/>
+       <value name="PP"/>
+       <value name="S"/>
+       <value name="UCP"/>
+       <value name="VP"/>
+    </feature>
+    <edgelabel>
+       <value name="--">not bound</value>
+       <value name="CLR"/>
+       <value name="PRD"/>
+       <value name="SBJ"/>
+       <value name="TMP"/>
+    </edgelabel>
+    <secedgelabel>
+       <value name="*"/>
+    </secedgelabel>
+  </annotation>
+</head>
+
+<body>
+
+<s id="s1">
+  <graph root="s1_500">
+    <terminals>
+      <t id="s1_1" word="Pierre" pos="NNP"/>
+      <t id="s1_2" word="Vinken" pos="NNP"/>
+      <t id="s1_3" word="," pos=","/>
+      <t id="s1_4" word="61" pos="CD"/>
+      <t id="s1_5" word="years" pos="NNS"/>
+      <t id="s1_6" word="old" pos="JJ"/>
+      <t id="s1_7" word="," pos=","/>
+      <t id="s1_8" word="will" pos="MD"/>
+      <t id="s1_9" word="join" pos="VB"/>
+      <t id="s1_10" word="the" pos="DT"/>
+      <t id="s1_11" word="board" pos="NN"/>
+      <t id="s1_12" word="as" pos="IN"/>
+      <t id="s1_13" word="a" pos="DT"/>
+      <t id="s1_14" word="nonexecutive" pos="JJ"/>
+      <t id="s1_15" word="director" pos="NN"/>
+      <t id="s1_16" word="Nov." pos="NNP"/>
+      <t id="s1_17" word="29" pos="CD"/>
+      <t id="s1_18" word="." pos="."/>
+    </terminals>
+    <nonterminals>
+      <nt id="s1_502" cat="NP">
+        <edge label="--" idref="s1_1"/>
+        <edge label="--" idref="s1_2"/>
+      </nt>
+      <nt id="s1_504" cat="NP">
+        <edge label="--" idref="s1_4"/>
+        <edge label="--" idref="s1_5"/>
+      </nt>
+      <nt id="s1_503" cat="ADJP">
+        <edge label="--" idref="s1_504"/>
+        <edge label="--" idref="s1_6"/>
+      </nt>
+      <nt id="s1_501" cat="NP">
+        <edge label="--" idref="s1_502"/>
+        <edge label="--" idref="s1_3"/>
+        <edge label="--" idref="s1_503"/>
+        <edge label="--" idref="s1_7"/>
+      </nt>
+      <nt id="s1_507" cat="NP">
+        <edge label="--" idref="s1_10"/>
+        <edge label="--" idref="s1_11"/>
+      </nt>
+      <nt id="s1_509" cat="NP">
+        <edge label="--" idref="s1_13"/>
+        <edge label="--" idref="s1_14"/>
+        <edge label="--" idref="s1_15"/>
+      </nt>
+      <nt id="s1_508" cat="PP">
+        <edge label="--" idref="s1_12"/>
+        <edge label="--" idref="s1_509"/>
+      </nt>
+      <nt id="s1_510" cat="NP">
+        <edge label="--" idref="s1_16"/>
+        <edge label="--" idref="s1_17"/>
+      </nt>
+      <nt id="s1_506" cat="VP">
+        <edge label="--" idref="s1_9"/>
+        <edge label="--" idref="s1_507"/>
+        <edge label="CLR" idref="s1_508"/>
+        <edge label="TMP" idref="s1_510"/>
+      </nt>
+      <nt id="s1_505" cat="VP">
+        <edge label="--" idref="s1_8"/>
+        <edge label="--" idref="s1_506"/>
+      </nt>
+      <nt id="s1_500" cat="S">
+        <edge label="SBJ" idref="s1_501"/>
+        <edge label="--" idref="s1_505"/>
+        <edge label="--" idref="s1_18"/>
+      </nt>
+    </nonterminals>
+  </graph>
+</s>
+
+<s id="s3">
+  <graph root="s3_500">
+    <terminals>
+      <t id="s3_1" word="Rudolph" pos="NNP"/>
+      <t id="s3_2" word="Agnew" pos="NNP"/>
+      <t id="s3_3" word="," pos=","/>
+      <t id="s3_4" word="55" pos="CD"/>
+      <t id="s3_5" word="years" pos="NNS"/>
+      <t id="s3_6" word="old" pos="JJ"/>
+      <t id="s3_7" word="and" pos="CC"/>
+      <t id="s3_8" word="former" pos="JJ"/>
+      <t id="s3_9" word="chairman" pos="NN"/>
+      <t id="s3_10" word="of" pos="IN"/>
+      <t id="s3_11" word="Consolidated" pos="NNP"/>
+      <t id="s3_12" word="Gold" pos="NNP"/>
+      <t id="s3_13" word="Fields" pos="NNP"/>
+      <t id="s3_14" word="PLC" pos="NNP"/>
+      <t id="s3_15" word="," pos=","/>
+      <t id="s3_16" word="was" pos="VBD"/>
+      <t id="s3_17" word="named" pos="VBN"/>
+      <t id="s3_18" word="*" pos="-NONE-"/>
+      <t id="s3_19" word="a" pos="DT"/>
+      <t id="s3_20" word="nonexecutive" pos="JJ"/>
+      <t id="s3_21" word="director" pos="NN"/>
+      <t id="s3_22" word="of" pos="IN"/>
+      <t id="s3_23" word="this" pos="DT"/>
+      <t id="s3_24" word="British" pos="JJ"/>
+      <t id="s3_25" word="industrial" pos="JJ"/>
+      <t id="s3_26" word="conglomerate" pos="NN"/>
+      <t id="s3_27" word="." pos="."/>
+    </terminals>
+    <nonterminals>
+      <nt id="s3_502" cat="NP">
+        <edge label="--" idref="s3_1"/>
+        <edge label="--" idref="s3_2"/>
+      </nt>
+      <nt id="s3_505" cat="NP">
+        <edge label="--" idref="s3_4"/>
+        <edge label="--" idref="s3_5"/>
+      </nt>
+      <nt id="s3_504" cat="ADJP">
+        <edge label="--" idref="s3_505"/>
+        <edge label="--" idref="s3_6"/>
+      </nt>
+      <nt id="s3_507" cat="NP">
+        <edge label="--" idref="s3_8"/>
+        <edge label="--" idref="s3_9"/>
+      </nt>
+      <nt id="s3_509" cat="NP">
+        <edge label="--" idref="s3_11"/>
+        <edge label="--" idref="s3_12"/>
+        <edge label="--" idref="s3_13"/>
+        <edge label="--" idref="s3_14"/>
+      </nt>
+      <nt id="s3_508" cat="PP">
+        <edge label="--" idref="s3_10"/>
+        <edge label="--" idref="s3_509"/>
+      </nt>
+      <nt id="s3_506" cat="NP">
+        <edge label="--" idref="s3_507"/>
+        <edge label="--" idref="s3_508"/>
+      </nt>
+      <nt id="s3_503" cat="UCP">
+        <edge label="--" idref="s3_504"/>
+        <edge label="--" idref="s3_7"/>
+        <edge label="--" idref="s3_506"/>
+      </nt>
+      <nt id="s3_501" cat="NP">
+        <edge label="--" idref="s3_502"/>
+        <edge label="--" idref="s3_3"/>
+        <edge label="--" idref="s3_503"/>
+        <edge label="--" idref="s3_15"/>
+        <secedge label="*" idref="s3_18"/>
+      </nt>
+      <nt id="s3_513" cat="NP">
+        <edge label="--" idref="s3_18"/>
+      </nt>
+      <nt id="s3_515" cat="NP">
+        <edge label="--" idref="s3_19"/>
+        <edge label="--" idref="s3_20"/>
+        <edge label="--" idref="s3_21"/>
+      </nt>
+      <nt id="s3_517" cat="NP">
+        <edge label="--" idref="s3_23"/>
+        <edge label="--" idref="s3_24"/>
+        <edge label="--" idref="s3_25"/>
+        <edge label="--" idref="s3_26"/>
+      </nt>
+      <nt id="s3_516" cat="PP">
+        <edge label="--" idref="s3_22"/>
+        <edge label="--" idref="s3_517"/>
+      </nt>
+      <nt id="s3_514" cat="NP">
+        <edge label="--" idref="s3_515"/>
+        <edge label="--" idref="s3_516"/>
+      </nt>
+      <nt id="s3_512" cat="S">
+        <edge label="SBJ" idref="s3_513"/>
+        <edge label="PRD" idref="s3_514"/>
+      </nt>
+      <nt id="s3_511" cat="VP">
+        <edge label="--" idref="s3_17"/>
+        <edge label="--" idref="s3_512"/>
+      </nt>
+      <nt id="s3_510" cat="VP">
+        <edge label="--" idref="s3_16"/>
+        <edge label="--" idref="s3_511"/>
+      </nt>
+      <nt id="s3_500" cat="S">
+        <edge label="SBJ" idref="s3_501"/>
+        <edge label="--" idref="s3_510"/>
+        <edge label="--" idref="s3_27"/>
+      </nt>
+    </nonterminals>
+  </graph>
+</s>
+
+</body>
+
+</corpus>

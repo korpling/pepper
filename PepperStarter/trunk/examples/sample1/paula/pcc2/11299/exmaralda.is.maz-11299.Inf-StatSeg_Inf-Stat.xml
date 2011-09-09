@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_Inf-Stat"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Inf-Stat" xml:base="exmaralda.is.maz-11299.Inf-StatSeg.xml">
+
+<feat xlink:href="#Inf-StatSeg_1" value="new"/><!-- Die...Jugendlichen -->
+<feat xlink:href="#Inf-StatSeg_2" value="new"/><!-- Zossen -->
+<feat xlink:href="#Inf-StatSeg_3" value="new"/><!-- ein...Musikcafé -->
+<feat xlink:href="#Inf-StatSeg_4" value="giv-active"/><!-- Das -->
+<feat xlink:href="#Inf-StatSeg_5" value="giv-active"/><!-- sie -->
+<feat xlink:href="#Inf-StatSeg_6" value="new"/><!-- der...Runde -->
+<feat xlink:href="#Inf-StatSeg_7" value="new"/><!-- die...Politiker -->
+<feat xlink:href="#Inf-StatSeg_8" value="giv-active"/><!-- der...Stadt -->
+<feat xlink:href="#Inf-StatSeg_9" value="giv-active"/><!-- dafür -->
+<feat xlink:href="#Inf-StatSeg_10" value="giv-active"/><!-- dem...Treffen -->
+<feat xlink:href="#Inf-StatSeg_11" value="acc-gen"/><!-- Rathaus -->
+<feat xlink:href="#Inf-StatSeg_12" value="acc-inf"/><!-- ein...Dialog -->
+<feat xlink:href="#Inf-StatSeg_13" value="acc-inf"/><!-- den...Generationen -->
+<feat xlink:href="#Inf-StatSeg_14" value="giv-active"/><!-- die...Jugendlichen -->
+<feat xlink:href="#Inf-StatSeg_15" value="giv-inactive"/><!-- des...Abends -->
+<feat xlink:href="#Inf-StatSeg_16" value="idiom"/><!-- keine...Absicht -->
+<feat xlink:href="#Inf-StatSeg_17" value="idiom"/><!-- Es -->
+<feat xlink:href="#Inf-StatSeg_18" value="idiom"/><!-- der...Komik -->
+<feat xlink:href="#Inf-StatSeg_19" value="giv-inacitve"/><!-- drei...Erwachsene -->
+<feat xlink:href="#Inf-StatSeg_20" value="acc-gen"/><!-- Karola...Andrae -->
+<feat xlink:href="#Inf-StatSeg_21" value="acc-gen"/><!-- (...) -->
+<feat xlink:href="#Inf-StatSeg_22" value="acc-gen"/><!-- Susanne...Michler -->
+<feat xlink:href="#Inf-StatSeg_23" value="acc-gen"/><!-- (...) -->
+<feat xlink:href="#Inf-StatSeg_24" value="acc-gen"/><!-- Joachim...Zanow -->
+<feat xlink:href="#Inf-StatSeg_25" value="acc-gen"/><!-- (...) -->
+<feat xlink:href="#Inf-StatSeg_26" value="giv-inactive"/><!-- Jugendliche -->
+<feat xlink:href="#Inf-StatSeg_27" value="giv-active"/><!-- sie -->
+<feat xlink:href="#Inf-StatSeg_28" value="giv-active"/><!-- sie -->
+<feat xlink:href="#Inf-StatSeg_29" value="giv-active"/><!-- ihnen -->
+<feat xlink:href="#Inf-StatSeg_30" value="giv-active"/><!-- Die...Jugendlichen -->
+<feat xlink:href="#Inf-StatSeg_31" value="idiom"/><!-- bloßen...Feigenblatt -->
+<feat xlink:href="#Inf-StatSeg_32" value="giv-active"/><!-- ihnen -->
+<feat xlink:href="#Inf-StatSeg_33" value="giv-active"/><!-- die...Politiker -->
+<feat xlink:href="#Inf-StatSeg_34" value="giv-inactive"/><!-- der...Runde -->
+<feat xlink:href="#Inf-StatSeg_35" value="acc-inf"/><!-- mehr...Jugendliche -->
+<feat xlink:href="#Inf-StatSeg_36" value="acc-inf"/><!-- der...Gruppe -->
+<feat xlink:href="#Inf-StatSeg_37" value="giv-active"/><!-- sie -->
+<feat xlink:href="#Inf-StatSeg_38" value="idiom"/><!-- mehr...Gehör -->
+<feat xlink:href="#Inf-StatSeg_39" value="acc-inf"/><!-- Vertreter -->
+<feat xlink:href="#Inf-StatSeg_40" value="acc-gen"/><!-- PDS -->
+<feat xlink:href="#Inf-StatSeg_41" value="acc-gen"/><!-- Gewerbeverein -->
+<feat xlink:href="#Inf-StatSeg_42" value="giv-inactive"/><!-- Rathaus -->
+<feat xlink:href="#Inf-StatSeg_43" value="giv-active"/><!-- Die -->
+<feat xlink:href="#Inf-StatSeg_44" value="idiom"/><!-- Abwesenheit -->
+</featList>
+
+</paula>

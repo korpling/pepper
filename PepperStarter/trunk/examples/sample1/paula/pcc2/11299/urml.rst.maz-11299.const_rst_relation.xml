@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="urml.rst.maz-11299_rst_relation"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="rst_relation" xml:base="urml.rst.maz-11299.const.xml">
+
+<feat xlink:href="#const_1" value="elaboration"/>
+<feat xlink:href="#const_2" value="nonvolitional-cause"/>
+<feat xlink:href="#const_3" value="evaluation"/>
+<feat xlink:href="#const_4" value="elaboration"/>
+<feat xlink:href="#const_5" value="contrast"/>
+<feat xlink:href="#const_6" value="elaboration"/>
+<feat xlink:href="#const_7" value="volitional-cause"/>
+<feat xlink:href="#const_8" value="evaluation"/>
+<feat xlink:href="#const_9" value="evaluation"/>
+<feat xlink:href="#const_10" value="list"/>
+<feat xlink:href="#const_11" value="evaluation"/>
+<feat xlink:href="#const_12" value="evaluation"/>
+<feat xlink:href="#const_13" value="list"/>
+<feat xlink:href="#const_14" value="concession"/>
+</featList>
+
+</paula>

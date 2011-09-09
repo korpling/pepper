@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_Topic"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Topic" xml:base="exmaralda.is.maz-4282.TopicSeg.xml">
+
+<feat xlink:href="#TopicSeg_1" value="ab"/><!-- die...Gemeindevertreter -->
+<feat xlink:href="#TopicSeg_2" value="ab"/><!-- ein...Steilpass -->
+<feat xlink:href="#TopicSeg_3" value="ab"/><!-- Ein...Befreiungsschlag -->
+<feat xlink:href="#TopicSeg_4" value="ab"/><!-- Die...Groß_Glienicker -->
+<feat xlink:href="#TopicSeg_5" value="ab"/><!-- sie -->
+<feat xlink:href="#TopicSeg_6" value="ab"/><!-- die...Trainerkabine -->
+<feat xlink:href="#TopicSeg_7" value="fs"/><!-- der...Spielsituation -->
+<feat xlink:href="#TopicSeg_8" value="ab"/><!-- die...Spieler -->
+<feat xlink:href="#TopicSeg_9" value="ab"/><!-- sie -->
+<feat xlink:href="#TopicSeg_10" value="ab"/><!-- Ermahnungen...Seitenlinie -->
+</featList>
+
+</paula>

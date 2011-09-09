@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_NP"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="NP" xml:base="exmaralda.is.maz-4282.NPSeg.xml">
+
+<feat xlink:href="#NPSeg_1" value="NP"/><!-- Wunder -->
+<feat xlink:href="#NPSeg_2" value="NP"/><!-- die...Gemeindevertreter -->
+<feat xlink:href="#NPSeg_3" value="NP"/><!-- die...Fußballkicker -->
+<feat xlink:href="#NPSeg_4" value="NP"/><!-- der...Tiefe -->
+<feat xlink:href="#NPSeg_5" value="NP"/><!-- ein...Steilpass -->
+<feat xlink:href="#NPSeg_6" value="NP"/><!-- dem -->
+<feat xlink:href="#NPSeg_7" value="NP"/><!-- man -->
+<feat xlink:href="#NPSeg_8" value="NP"/><!-- die...Mitspieler -->
+<feat xlink:href="#NPSeg_9" value="NP"/><!-- ihn -->
+<feat xlink:href="#NPSeg_10" value="NP"/><!-- Ein...Befreiungsschlag -->
+<feat xlink:href="#NPSeg_11" value="NP"/><!-- keine...Gefahr -->
+<feat xlink:href="#NPSeg_12" value="NP"/><!-- Dallgower...Tor -->
+<feat xlink:href="#NPSeg_13" value="NP"/><!-- Die...Seeburger -->
+<feat xlink:href="#NPSeg_14" value="NP"/><!-- einige...Groß_Glienicker -->
+<feat xlink:href="#NPSeg_15" value="NP"/><!-- den...Ball -->
+<feat xlink:href="#NPSeg_16" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_17" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_18" value="NP"/><!-- die...Chance -->
+<feat xlink:href="#NPSeg_19" value="NP"/><!-- Eine...Diskussion -->
+<feat xlink:href="#NPSeg_20" value="NP"/><!-- die...Trainerkabine -->
+<feat xlink:href="#NPSeg_21" value="NP"/><!-- der...Spielsituation -->
+<feat xlink:href="#NPSeg_22" value="NP"/><!-- eine...Parallele -->
+<feat xlink:href="#NPSeg_23" value="NP"/><!-- den...Grotten_Kickern -->
+<feat xlink:href="#NPSeg_24" value="NP"/><!-- die...Spieler -->
+<feat xlink:href="#NPSeg_25" value="NP"/><!-- den...Vereinen -->
+<feat xlink:href="#NPSeg_26" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_27" value="NP"/><!-- sich -->
+<feat xlink:href="#NPSeg_28" value="NP"/><!-- sie -->
+<feat xlink:href="#NPSeg_29" value="NP"/><!-- einer..." -->
+<feat xlink:href="#NPSeg_30" value="NP"/><!-- das -->
+<feat xlink:href="#NPSeg_31" value="NP"/><!-- Ermahnungen -->
+<feat xlink:href="#NPSeg_32" value="NP"/><!-- der...Seitenlinie -->
+<feat xlink:href="#NPSeg_33" value="NP"/><!-- sich -->
+<feat xlink:href="#NPSeg_34" value="NP"/><!-- kleinsten...Schubser -->
+</featList>
+
+</paula>

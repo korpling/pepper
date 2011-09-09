@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+<paula version="1.0">
+ <header paula_id="merged.maz-11299.genre" />
+ <featList type="Genre" xml:base="merged.maz-11299.anno.xml" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <feat xlink:href="#anno_0" value="Politik" />
+ </featList>
+</paula>

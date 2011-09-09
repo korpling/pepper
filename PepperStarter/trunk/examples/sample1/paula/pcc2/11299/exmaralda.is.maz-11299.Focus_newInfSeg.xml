@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_Focus_newInfSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="Focus_newInfSeg" xml:base="merged.maz-11299.tok.xml">
+
+<mark id="Focus_newInfSeg_1" xlink:href="#xpointer(id('tok_6')/range-to(id('tok_8')))"/><!-- wollen...Musikcafé -->
+<mark id="Focus_newInfSeg_2" xlink:href="#xpointer(id('tok_38')/range-to(id('tok_46')))"/><!-- ist...angestoßen -->
+<mark id="Focus_newInfSeg_3" xlink:href="#xpointer(id('tok_57')/range-to(id('tok_72')))"/><!-- immer...trotzdem -->
+<mark id="Focus_newInfSeg_4" xlink:href="#xpointer(id('tok_74')/range-to(id('tok_76')))"/><!-- Und...dazu -->
+<mark id="Focus_newInfSeg_5" xlink:href="#xpointer(id('tok_139')/range-to(id('tok_144')))"/><!-- wurden...degradiert -->
+<mark id="Focus_newInfSeg_6" xlink:href="#xpointer(id('tok_146')/range-to(id('tok_151')))"/><!-- Nicht...hätten -->
+<mark id="Focus_newInfSeg_7" xlink:href="#xpointer(id('tok_154')/range-to(id('tok_155')))"/><!-- reden...sollen -->
+<mark id="Focus_newInfSeg_8" xlink:href="#xpointer(id('tok_181')/range-to(id('tok_184')))"/><!-- In...können -->
+<mark id="Focus_newInfSeg_9" xlink:href="#xpointer(id('tok_186')/range-to(id('tok_190')))"/><!-- sich...verschaffen -->
+<mark id="Focus_newInfSeg_10" xlink:href="#xpointer(id('tok_192')/range-to(id('tok_195')))"/><!-- Vielleicht...auch -->
+<mark id="Focus_newInfSeg_11" xlink:href="#xpointer(id('tok_201')/range-to(id('tok_204')))"/><!-- ihren...Rathaus -->
+<mark id="Focus_newInfSeg_12" xlink:href="#xpointer(id('tok_207')/range-to(id('tok_211')))"/><!-- glänzten...Abwesenheit -->
+</markList>
+
+</paula>

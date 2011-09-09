@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_PPSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="PPSeg" xml:base="merged.maz-4282.tok.xml">
+
+<mark id="PPSeg_1" xlink:href="#xpointer(id('tok_27')/range-to(id('tok_29')))"/><!-- aus...Tiefe -->
+<mark id="PPSeg_2" xlink:href="#xpointer(id('tok_35')/range-to(id('tok_36')))"/><!-- von...dem -->
+<mark id="PPSeg_3" xlink:href="#xpointer(id('tok_62')/range-to(id('tok_64')))"/><!-- fürs...Tor -->
+<mark id="PPSeg_4" xlink:href="#xpointer(id('tok_107')/range-to(id('tok_110')))"/><!-- in...Spielsituation -->
+<mark id="PPSeg_5" xlink:href="#xpointer(id('tok_116')/range-to(id('tok_119')))"/><!-- zu...Grotten_Kickern -->
+<mark id="PPSeg_6" xlink:href="#xpointer(id('tok_129')/range-to(id('tok_132')))"/><!-- aus...Vereinen -->
+<mark id="PPSeg_7" xlink:href="#xpointer(id('tok_145')/range-to(id('tok_151')))"/><!-- in..." -->
+<mark id="PPSeg_8" xlink:href="#xpointer(id('tok_163')/range-to(id('tok_165')))"/><!-- von...Seitenlinie -->
+<mark id="PPSeg_9" xlink:href="#xpointer(id('tok_173')/range-to(id('tok_175')))"/><!-- beim...Schubser -->
+</markList>
+
+</paula>

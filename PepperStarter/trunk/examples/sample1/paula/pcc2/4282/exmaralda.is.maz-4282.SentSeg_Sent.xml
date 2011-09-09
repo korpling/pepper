@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_Sent"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="Sent" xml:base="exmaralda.is.maz-4282.SentSeg.xml">
+
+<feat xlink:href="#SentSeg_1" value="s"/><!-- Wunder...! -->
+<feat xlink:href="#SentSeg_2" value="s"/><!-- Erst.... -->
+<feat xlink:href="#SentSeg_3" value="s"/><!-- Und.... -->
+<feat xlink:href="#SentSeg_4" value="s"/><!-- Ein.... -->
+<feat xlink:href="#SentSeg_5" value="s"/><!-- Die.... -->
+<feat xlink:href="#SentSeg_6" value="s"/><!-- Nun.... -->
+<feat xlink:href="#SentSeg_7" value="s"/><!-- Eine.... -->
+<feat xlink:href="#SentSeg_8" value="s"/><!-- Und.... -->
+<feat xlink:href="#SentSeg_9" value="s"/><!-- Auch.... -->
+<feat xlink:href="#SentSeg_10" value="s"/><!-- Und.... -->
+<feat xlink:href="#SentSeg_11" value="s"/><!-- Ermahnungen.... -->
+<feat xlink:href="#SentSeg_12" value="s"/><!-- Vorerst...hilfreich -->
+</featList>
+
+</paula>

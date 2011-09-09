@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+
+<paula version="1.0">
+
+<header paula_id="mmax.pocos.maz-4282_primmarkSeg_ambiguity"/>
+
+<featList xmlns:xlink="http://www.w3.org/1999/xlink" type="ambiguity" xml:base="mmax.pocos.maz-4282.primmarkSeg.xml">
+<feat xlink:href="#primmarkSeg_28" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_32" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_23" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_16" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_56" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_72" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_7" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_46" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_60" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000159" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_39" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000154" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_6" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_45" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100086" value="ambig_ante"/>
+<feat xlink:href="#primmarkSeg_1000161" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_12" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_4" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100090" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_100045" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_51" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000155" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000142" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_74" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_57" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000158" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_1000135" value="not_ambig"/>
+<feat xlink:href="#primmarkSeg_30" value="not_ambig"/>
+</featList>
+</paula>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-4282_Focus_newInfSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="Focus_newInfSeg" xml:base="merged.maz-4282.tok.xml">
+
+<mark id="Focus_newInfSeg_1" xlink:href="#xpointer(id('tok_13')/range-to(id('tok_22')))"/><!-- so...Fußballkicker -->
+<mark id="Focus_newInfSeg_2" xlink:href="#xpointer(id('tok_24')/range-to(id('tok_30')))"/><!-- Und...solch -->
+<mark id="Focus_newInfSeg_3" xlink:href="#xpointer(id('tok_35')/range-to(id('tok_48')))"/><!-- von...können -->
+<mark id="Focus_newInfSeg_4" xlink:href="#xpointer(id('tok_52')/range-to(id('tok_65')))"/><!-- ist...gab -->
+<mark id="Focus_newInfSeg_5" xlink:href="#xpointer(id('tok_72')/range-to(id('tok_83')))"/><!-- haben...gefordert -->
+<mark id="Focus_newInfSeg_6" xlink:href="#xpointer(id('tok_90')/range-to(id('tok_94')))"/><!-- wie...verwerten -->
+<mark id="Focus_newInfSeg_7" xlink:href="#xpointer(id('tok_113')/range-to(id('tok_123')))"/><!-- Und...noch -->
+<mark id="Focus_newInfSeg_8" xlink:href="#xpointer(id('tok_129')/range-to(id('tok_134')))"/><!-- aus...sind -->
+<mark id="Focus_newInfSeg_9" xlink:href="#xpointer(id('tok_142')/range-to(id('tok_152')))"/><!-- dass...spielen -->
+<mark id="Focus_newInfSeg_10" xlink:href="#xpointer(id('tok_154')/range-to(id('tok_160')))"/><!-- Und...gegeneinander -->
+<mark id="Focus_newInfSeg_11" xlink:href="#xpointer(id('tok_167')/range-to(id('tok_182')))"/><!-- miteinander...überflüssig -->
+</markList>
+
+</paula>

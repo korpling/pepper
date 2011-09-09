@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE paula SYSTEM "paula_feat.dtd">
+
+<paula version="1.0">
+ <header paula_id="merged.maz-11299.annoFeat" />
+ <featList type="annoFeat" xml:base="merged.maz-11299.anno.xml" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <feat xlink:href="#rel_1" value="merged.tok" />
+  <feat xlink:href="#rel_2" value="mmax.secmarkSeg" />
+  <feat xlink:href="#rel_3" value="mmax.secmarkSeg_ambiguity" />
+  <feat xlink:href="#rel_4" value="mmax.secmarkSeg_complex_np" />
+  <feat xlink:href="#rel_5" value="mmax.secmarkSeg_dir_speech" />
+  <feat xlink:href="#rel_6" value="mmax.secmarkSeg_grammatical_role" />
+  <feat xlink:href="#rel_7" value="mmax.secmarkSeg_np_form" />
+  <feat xlink:href="#rel_8" value="mmax.secmarkSeg_phrase_type" />
+  <feat xlink:href="#rel_9" value="mmax.secmarkSeg_referentiality" />
+  <feat xlink:href="#rel_10" value="exmaralda.TopicSeg" />
+  <feat xlink:href="#rel_11" value="exmaralda.TopicSeg_Topic" />
+  <feat xlink:href="#rel_12" value="mmax.groupsSeg" />
+  <feat xlink:href="#rel_13" value="tiger.const" />
+  <feat xlink:href="#rel_14" value="tiger.const_cat" />
+  <feat xlink:href="#rel_15" value="tiger.const_func" />
+  <feat xlink:href="#rel_16" value="mmax.primmarkSeg" />
+  <feat xlink:href="#rel_17" value="mmax.primmarkSeg_ambiguity" />
+  <feat xlink:href="#rel_18" value="mmax.primmarkSeg_anaphor_antecedent" />
+  <feat xlink:href="#rel_19" value="mmax.primmarkSeg_anaphor_type" />
+  <feat xlink:href="#rel_20" value="mmax.primmarkSeg_complex_np" />
+  <feat xlink:href="#rel_21" value="mmax.primmarkSeg_dir_speech" />
+  <feat xlink:href="#rel_22" value="mmax.primmarkSeg_grammatical_role" />
+  <feat xlink:href="#rel_23" value="mmax.primmarkSeg_np_form" />
+  <feat xlink:href="#rel_24" value="mmax.primmarkSeg_phrase_type" />
+  <feat xlink:href="#rel_25" value="mmax.primmarkSeg_referentiality" />
+  <feat xlink:href="#rel_26" value="mmax.primmarkSeg_type" />
+  <feat xlink:href="#rel_27" value="exmaralda.NPSeg" />
+  <feat xlink:href="#rel_28" value="exmaralda.NPSeg_NP" />
+  <feat xlink:href="#rel_29" value="exmaralda.Foc_contrSeg" />
+  <feat xlink:href="#rel_30" value="exmaralda.Foc_contrSeg_Foc_contr" />
+  <feat xlink:href="#rel_31" value="merged.text" />
+  <feat xlink:href="#rel_32" value="merged.tok" />
+  <feat xlink:href="#rel_33" value="tiger.tok_lemma" />
+  <feat xlink:href="#rel_34" value="tiger.tok_morph" />
+  <feat xlink:href="#rel_35" value="tiger.tok_pos" />
+  <feat xlink:href="#rel_36" value="exmaralda.SentSeg" />
+  <feat xlink:href="#rel_37" value="exmaralda.SentSeg_Sent" />
+  <feat xlink:href="#rel_38" value="exmaralda.Inf-StatSeg" />
+  <feat xlink:href="#rel_39" value="exmaralda.Inf-StatSeg_Inf-Stat" />
+  <feat xlink:href="#rel_40" value="exmaralda.PPSeg" />
+  <feat xlink:href="#rel_41" value="exmaralda.PPSeg_PP" />
+  <feat xlink:href="#rel_42" value="urml.const" />
+  <feat xlink:href="#rel_43" value="urml.const_func" />
+  <feat xlink:href="#rel_44" value="urml.const_rst_relation" />
+  <feat xlink:href="#rel_45" value="urml.const_rstRel_type" />
+  <feat xlink:href="#rel_46" value="mmax.sentenceSeg" />
+  <feat xlink:href="#rel_47" value="urml.discUnit" />
+  <feat xlink:href="#rel_48" value="merged.anno_feat" />
+  <feat xlink:href="#rel_49" value="exmaralda.Focus_newInfSeg" />
+  <feat xlink:href="#rel_50" value="exmaralda.Focus_newInfSeg_Focus_newInf" />
+ </featList>
+</paula>

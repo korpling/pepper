@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_NPSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="NPSeg" xml:base="merged.maz-11299.tok.xml">
+
+<mark id="NPSeg_1" xlink:href="#xpointer(id('tok_2')/range-to(id('tok_3')))"/><!-- Die...Jugendlichen -->
+<mark id="NPSeg_2" xlink:href="#tok_5"/><!-- Zossen -->
+<mark id="NPSeg_3" xlink:href="#xpointer(id('tok_7')/range-to(id('tok_8')))"/><!-- ein...Musikcafé -->
+<mark id="NPSeg_4" xlink:href="#tok_10"/><!-- Das -->
+<mark id="NPSeg_5" xlink:href="#tok_12"/><!-- sie -->
+<mark id="NPSeg_6" xlink:href="#xpointer(id('tok_14')/range-to(id('tok_17')))"/><!-- der...Runde -->
+<mark id="NPSeg_7" xlink:href="#tok_19"/><!-- Dienstagabend -->
+<mark id="NPSeg_8" xlink:href="#xpointer(id('tok_22')/range-to(id('tok_23')))"/><!-- die...Politiker -->
+<mark id="NPSeg_9" xlink:href="#xpointer(id('tok_24')/range-to(id('tok_25')))"/><!-- der...Stadt -->
+<mark id="NPSeg_10" xlink:href="#tok_26"/><!-- dafür -->
+<mark id="NPSeg_11" xlink:href="#tok_27"/><!-- Verständnis -->
+<mark id="NPSeg_12" xlink:href="#xpointer(id('tok_34')/range-to(id('tok_35')))"/><!-- dem...Treffen -->
+<mark id="NPSeg_13" xlink:href="#tok_37"/><!-- Rathaus -->
+<mark id="NPSeg_14" xlink:href="#xpointer(id('tok_41')/range-to(id('tok_42')))"/><!-- ein...Dialog -->
+<mark id="NPSeg_15" xlink:href="#xpointer(id('tok_44')/range-to(id('tok_45')))"/><!-- den...Generationen -->
+<mark id="NPSeg_16" xlink:href="#xpointer(id('tok_49')/range-to(id('tok_52')))"/><!-- die...Jugendlichen -->
+<mark id="NPSeg_17" xlink:href="#tok_54"/><!-- Laufe -->
+<mark id="NPSeg_18" xlink:href="#xpointer(id('tok_55')/range-to(id('tok_56')))"/><!-- des...Abends -->
+<mark id="NPSeg_19" xlink:href="#tok_60"/><!-- Wort -->
+<mark id="NPSeg_20" xlink:href="#xpointer(id('tok_65')/range-to(id('tok_67')))"/><!-- keine...Absicht -->
+<mark id="NPSeg_21" xlink:href="#tok_71"/><!-- es -->
+<mark id="NPSeg_22" xlink:href="#tok_78"/><!-- Es -->
+<mark id="NPSeg_23" xlink:href="#xpointer(id('tok_81')/range-to(id('tok_82')))"/><!-- der...Komik -->
+<mark id="NPSeg_24" xlink:href="#xpointer(id('tok_86')/range-to(id('tok_87')))"/><!-- drei...Erwachsene -->
+<mark id="NPSeg_25" xlink:href="#xpointer(id('tok_89')/range-to(id('tok_90')))"/><!-- Karola...Andrae -->
+<mark id="NPSeg_26" xlink:href="#xpointer(id('tok_91')/range-to(id('tok_93')))"/><!-- (...) -->
+<mark id="NPSeg_27" xlink:href="#xpointer(id('tok_95')/range-to(id('tok_96')))"/><!-- Susanne...Michler -->
+<mark id="NPSeg_28" xlink:href="#xpointer(id('tok_97')/range-to(id('tok_99')))"/><!-- (...) -->
+<mark id="NPSeg_29" xlink:href="#xpointer(id('tok_101')/range-to(id('tok_102')))"/><!-- Joachim...Zanow -->
+<mark id="NPSeg_30" xlink:href="#xpointer(id('tok_103')/range-to(id('tok_105')))"/><!-- (...) -->
+<mark id="NPSeg_31" xlink:href="#tok_111"/><!-- Jugendliche -->
+<mark id="NPSeg_32" xlink:href="#xpointer(id('tok_118')/range-to(id('tok_119')))"/><!-- die...Idee -->
+<mark id="NPSeg_33" xlink:href="#tok_123"/><!-- sie -->
+<mark id="NPSeg_34" xlink:href="#tok_129"/><!-- das -->
+<mark id="NPSeg_35" xlink:href="#tok_132"/><!-- sie -->
+<mark id="NPSeg_36" xlink:href="#tok_133"/><!-- ihnen -->
+<mark id="NPSeg_37" xlink:href="#xpointer(id('tok_137')/range-to(id('tok_138')))"/><!-- Die...Jugendlichen -->
+<mark id="NPSeg_38" xlink:href="#xpointer(id('tok_142')/range-to(id('tok_143')))"/><!-- bloßen...Feigenblatt -->
+<mark id="NPSeg_39" xlink:href="#tok_150"/><!-- ihnen -->
+<mark id="NPSeg_40" xlink:href="#xpointer(id('tok_152')/range-to(id('tok_153')))"/><!-- die...Politiker -->
+<mark id="NPSeg_41" xlink:href="#xpointer(id('tok_159')/range-to(id('tok_161')))"/><!-- eine...Chance -->
+<mark id="NPSeg_42" xlink:href="#tok_166"/><!-- es -->
+<mark id="NPSeg_43" xlink:href="#xpointer(id('tok_168')/range-to(id('tok_170')))"/><!-- der...Runde -->
+<mark id="NPSeg_44" xlink:href="#xpointer(id('tok_171')/range-to(id('tok_172')))"/><!-- Anfang...2002 -->
+<mark id="NPSeg_45" xlink:href="#xpointer(id('tok_177')/range-to(id('tok_178')))"/><!-- mehr...Jugendliche -->
+<mark id="NPSeg_46" xlink:href="#xpointer(id('tok_182')/range-to(id('tok_183')))"/><!-- der...Gruppe -->
+<mark id="NPSeg_47" xlink:href="#tok_185"/><!-- sie -->
+<mark id="NPSeg_48" xlink:href="#xpointer(id('tok_188')/range-to(id('tok_189')))"/><!-- mehr...Gehör -->
+<mark id="NPSeg_49" xlink:href="#tok_196"/><!-- Vertreter -->
+<mark id="NPSeg_50" xlink:href="#tok_198"/><!-- PDS -->
+<mark id="NPSeg_51" xlink:href="#tok_200"/><!-- Gewerbeverein -->
+<mark id="NPSeg_52" xlink:href="#xpointer(id('tok_201')/range-to(id('tok_202')))"/><!-- ihren...Weg -->
+<mark id="NPSeg_53" xlink:href="#tok_204"/><!-- Rathaus -->
+<mark id="NPSeg_54" xlink:href="#tok_206"/><!-- Die -->
+<mark id="NPSeg_55" xlink:href="#tok_211"/><!-- Abwesenheit -->
+</markList>
+
+</paula>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE paula SYSTEM "paula_mark.dtd">
+<paula version="1.0">
+
+<header paula_id="exmaralda.is.maz-11299_TopicSeg"/>
+
+<markList xmlns:xlink="http://www.w3.org/1999/xlink" type="TopicSeg" xml:base="merged.maz-11299.tok.xml">
+
+<mark id="TopicSeg_1" xlink:href="#xpointer(id('tok_2')/range-to(id('tok_5')))"/><!-- Die...Zossen -->
+<mark id="TopicSeg_2" xlink:href="#tok_12"/><!-- sie -->
+<mark id="TopicSeg_3" xlink:href="#xpointer(id('tok_13')/range-to(id('tok_19')))"/><!-- bei...Dienstagabend -->
+<mark id="TopicSeg_4" xlink:href="#xpointer(id('tok_22')/range-to(id('tok_25')))"/><!-- die...Stadt -->
+<mark id="TopicSeg_5" xlink:href="#xpointer(id('tok_33')/range-to(id('tok_37')))"/><!-- Mit...Rathaus -->
+<mark id="TopicSeg_6" xlink:href="#xpointer(id('tok_49')/range-to(id('tok_52')))"/><!-- die...Jugendlichen -->
+<mark id="TopicSeg_7" xlink:href="#xpointer(id('tok_53')/range-to(id('tok_56')))"/><!-- im...Abends -->
+<mark id="TopicSeg_8" xlink:href="#xpointer(id('tok_86')/range-to(id('tok_106')))"/><!-- drei..._ -->
+<mark id="TopicSeg_9" xlink:href="#tok_132"/><!-- sie -->
+<mark id="TopicSeg_10" xlink:href="#xpointer(id('tok_137')/range-to(id('tok_138')))"/><!-- Die...Jugendlichen -->
+<mark id="TopicSeg_11" xlink:href="#xpointer(id('tok_152')/range-to(id('tok_153')))"/><!-- die...Politiker -->
+<mark id="TopicSeg_12" xlink:href="#xpointer(id('tok_167')/range-to(id('tok_173')))"/><!-- bei.... -->
+<mark id="TopicSeg_13" xlink:href="#tok_174"/><!-- Dann -->
+<mark id="TopicSeg_14" xlink:href="#tok_185"/><!-- sie -->
+<mark id="TopicSeg_15" xlink:href="#xpointer(id('tok_196')/range-to(id('tok_200')))"/><!-- Vertreter...Gewerbeverein -->
+<mark id="TopicSeg_16" xlink:href="#tok_206"/><!-- Die -->
+</markList>
+
+</paula>
