@@ -13,7 +13,7 @@
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-framework/</developerConnection>
   </scm>
   <dependencies>
-  	<dependency>
+    <dependency>
   		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
   		<artifactId>pepper-exceptions</artifactId>
   		<version>${project.version}</version>
