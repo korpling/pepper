@@ -9,7 +9,7 @@
     <module>pepper-modules</module>
     <module>pepper-workflow</module>
     <module>pepper-framework</module>
-    <module>pepper-starter</module>
+    <!-- <module>pepper-starter</module> -->
   </modules>
   <licenses>
     <license>
@@ -41,19 +41,12 @@
     <license.file>${basedir}/LICENSE</license.file>
     <notice.file>${basedir}/NOTICE</notice.file>
   </properties>
+  
   <dependencies>
   	<dependency>
     	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-    	<artifactId>salt</artifactId>
-    	<version>1.1.2</version>
-    	<type>pom</type>
-    	<!-- <version>[1.1.1,)</version> -->
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     	<artifactId>salt-graph</artifactId>
-    	<version>1.1.2</version>
+    	<version>1.1.2-SNAPSHOT</version>
     	<type>bundle</type>
     	<!-- <version>[1.1.1,)</version> -->
     	<scope>compile</scope>
@@ -61,7 +54,7 @@
     <dependency>
     	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     	<artifactId>salt-saltCore</artifactId>
-    	<version>1.1.2</version>
+    	<version>1.1.2-SNAPSHOT</version>
     	<type>bundle</type>
     	<!-- <version>[1.1.1,)</version> -->
     	<scope>compile</scope>
@@ -69,12 +62,12 @@
     <dependency>
     	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     	<artifactId>salt-saltCommon</artifactId>
-    	<version>1.1.2</version>
+    	<version>1.1.2-SNAPSHOT</version>
     	<type>bundle</type>
     	<!-- <version>[1.1.1,)</version> -->
     	<scope>compile</scope>
     </dependency>
-  	<dependency>
+   <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
@@ -116,24 +109,8 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
-    <!-- 
-    <dependency>
-    	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-    	<artifactId>salt-graph</artifactId>
-    	<version>[1.1.1,)</version>
-    	<scope>compile</scope>
-    </dependency>
-     -->
-    <!-- 
-     <dependency>
-    	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-    	<artifactId>salt-saltCore</artifactId>
-    	<version>[1.1.1,)</version>
-    	<scope>compile</scope>
-    </dependency>
-    -->
-   
   </dependencies>
+  
   <build>
     <plugins>
    <!-- start: Plugin for automatic releasing -->
