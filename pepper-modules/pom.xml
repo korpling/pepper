@@ -39,9 +39,14 @@
           <manifestLocation>${basedir}/META-INF</manifestLocation>
           <source>1.6</source>
           <target>1.6</target>
-          <instructions><Bundle-Name>${project.artifactId}</Bundle-Name><Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName><Bundle-Version>${project.version}</Bundle-Version><Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment><Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl</Export-Package><Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>w
-
-				</instructions>
+          <instructions>
+          	<Bundle-Name>${project.artifactId}</Bundle-Name>
+          	<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+          	<Bundle-Version>${project.version}</Bundle-Version>
+          	<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+          	<Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl</Export-Package>
+          	<Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>w
+		  </instructions>
         </configuration>
       </plugin>
     </plugins>
