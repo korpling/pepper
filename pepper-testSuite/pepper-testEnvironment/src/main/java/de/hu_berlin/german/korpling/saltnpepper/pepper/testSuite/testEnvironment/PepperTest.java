@@ -32,6 +32,7 @@ import org.osgi.service.log.LogService;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.*;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment.exceptions.PepperTestException;
 
 @Component(name="PepperTestComponent", immediate=true)
 @Service
@@ -95,7 +96,7 @@ public class PepperTest implements Runnable
 		return(workflowDescFile);
 	}
 	
-	public static final String logReaderName= "de.hu_berlin.german.korpling.saltnpepper.misc.LogReader";
+	public static final String logReaderName= "de.hu_berlin.german.korpling.saltnpepper.pepper-logReader";
 	
 	public void start() throws Exception 
 	{
@@ -105,10 +106,10 @@ public class PepperTest implements Runnable
 				String pepperTestPathStr= System.getenv(ENV_PEPPER_TEST);
 				if (	(pepperTestPathStr== null) ||
 						(pepperTestPathStr.equals("")))
-					throw new NullPointerException("Cannot start PepperTest, because the environment variable '"+ENV_PEPPER_TEST+"' is not set. Please set this variable and try again.");
+					throw new PepperTestException("Cannot start PepperTest, because the environment variable '"+ENV_PEPPER_TEST+"' is not set. Please set this variable and try again.");
 				pepperTestPath= new File(pepperTestPathStr);
 				if (!pepperTestPath.exists())
-					throw new NullPointerException("Cannot start PepperTest, because the path '"+pepperTestPathStr+"' to which the environment variable '"+ENV_PEPPER_TEST+"' points to does not exists.");
+					throw new PepperTestException("Cannot start PepperTest, because the path '"+pepperTestPathStr+"' to which the environment variable '"+ENV_PEPPER_TEST+"' points to does not exists.");
 			}//checking environment variable PEPPER_TEST
 			
 			//for module resolver
@@ -162,7 +163,7 @@ public class PepperTest implements Runnable
 	private void printHello()
 	{
 		if (this.logService== null)
-			throw new NullPointerException("Cannot go on, because no LogService is set. It shall not be possible to start a PepperTest-object without LogService-object.");
+			throw new PepperTestException("Cannot go on, because no LogService is set. It shall not be possible to start a PepperTest-object without LogService-object.");
 		
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 		this.logService.log(LogService.LOG_INFO,"***                      Test Pepper Converter                       ***");
@@ -208,7 +209,7 @@ public class PepperTest implements Runnable
 			this.start();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new PepperException("Any exception occurs while running PepperTest.", e);
+			throw new PepperTestException("Any exception occurs while running PepperTest.", e);
 		}
 		finally
 		{

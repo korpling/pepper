@@ -6,11 +6,37 @@
     <version>1.1.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>pepper-testSuite</groupId>
   <artifactId>pepper-testSuite</artifactId>
   <packaging>pom</packaging>
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-testSuite/</developerConnection>
   </scm>
+  <dependencies>
+  	 <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>pepper-modules</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>pepper-exceptions</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>pepper-framework</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+      <type>bundle</type>
+    </dependency>
+  </dependencies>
+  <modules>
+  	<module>pepper-moduleTests</module>
+  	<module>pepper-testEnvironment</module>
+  </modules>
 </project>
 

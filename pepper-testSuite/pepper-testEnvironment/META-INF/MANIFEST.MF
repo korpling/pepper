@@ -7,11 +7,14 @@ Created-By: Apache Maven Bundle Plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Build-Jdk: 1.6.0_21
 Bundle-Version: 1.1.3.SNAPSHOT
-Bnd-LastModified: 1316085500250
+Bnd-LastModified: 1316085643117
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
-Import-Package: org.eclipse.emf.common.util,org.osgi.service.component
- ;version="1.0",org.osgi.service.log;version="1.3"
+Import-Package: de.hu_berlin.german.korpling.saltnpepper.pepper.pepper
+ Exceptions,de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW,d
+ e.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams,org.eclip
+ se.emf.common.util,org.osgi.service.component;version="1.0",org.osgi.
+ service.log;version="1.3"
 Bundle-SymbolicName: de.hu_berlin.german.korpling.saltnpepper.pepper-t
  estEnvironment;singleton:=true
 
