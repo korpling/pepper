@@ -1,4 +1,4 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModulesTest;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
