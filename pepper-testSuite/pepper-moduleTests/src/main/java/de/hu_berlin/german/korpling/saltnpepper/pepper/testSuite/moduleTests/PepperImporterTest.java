@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 
-public class GeneralPepperImporterTest extends GeneralPepperModuleTest
+public class PepperImporterTest extends PepperModuleTest
 {
 	//TODO much more tests for example setGetCorpusDefinition, testSetGetPepperModuleController
 	

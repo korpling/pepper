@@ -35,7 +35,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactor
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
-public abstract class GeneralPepperModuleTest extends TestCase 
+public abstract class PepperModuleTest extends TestCase 
 {
 	private URI resourceURI= null;
 	private URI temproraryURI= null;

@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 
-public class GeneralPepperExporterTest extends GeneralPepperModuleTest 
+public class PepperExporterTest extends PepperModuleTest 
 {
 	/**
 	 * A list of formats, which shall be supported
