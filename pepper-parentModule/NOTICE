@@ -19,8 +19,8 @@ inside the folders plugins or lib.
 
 This project includes:
   Annotations for SCR under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.devTools-GeneralPepperModuleTests under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepperModules-parentModule under The Apache Software License, Version 2.0
+  de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests under The Apache Software License, Version 2.0
+  de.hu_berlin.german.korpling.saltnpepper.pepper-parentModule under The Apache Software License, Version 2.0
   JUnit under Common Public License Version 1.0
   org.eclipse.emf.common under Eclipse Public License - v 1.0
   org.eclipse.emf.ecore under Eclipse Public License - v 1.0
@@ -35,6 +35,5 @@ This project includes:
   salt-graph under The Apache Software License, Version 2.0
   salt-saltCommon under The Apache Software License, Version 2.0
   salt-saltCore under The Apache Software License, Version 2.0
-  salt-saltSample under The Apache Software License, Version 2.0
   Servlet 2.1 API under The Apache Software License, Version 2.0
 
