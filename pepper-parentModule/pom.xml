@@ -1,46 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+    <artifactId>pepper</artifactId>
+    <version>1.1.3-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-  <artifactId>pepperModules-parentModule</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <artifactId>pepper-parentModule</artifactId>
   <packaging>pom</packaging>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <component.descriptor.name>serviceComponents.xml</component.descriptor.name>
-    <bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
-    <assemblies.name>src/assemble/assemblies.xml</assemblies.name>
-    <license.file>${basedir}/LICENSE</license.file>
-    <notice.file>${basedir}/NOTICE</notice.file>
-  </properties>
-  <distributionManagement>
-    <repository>
-      <id>SaltNPepper Repository</id>
-      <name>SaltNPepper Repository</name>
-      <url>file:///home/annis/public_html/maven2/saltnpepper</url>
-    </repository>
-  </distributionManagement>
-  <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/PepperModules/PepperParentModule/trunk</developerConnection>
-  </scm>
-  <repositories>
-    <repository>
-      <id>SaltNPepper Repository</id>
-      <url>https://korpling.german.hu-berlin.de/~annis/maven2/saltnpepper/</url>
-    </repository>
-  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-      <artifactId>devTools-GeneralPepperModuleTests</artifactId>
-      <version>1.1.1</version>
+      <artifactId>pepper-moduleTests</artifactId>
+      <version>[1.1.2,)</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+      <artifactId>pepper-framework</artifactId>
+      <version>[1.1.2,)</version>
+      <type>bundle</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -82,34 +63,6 @@
       <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
       <version>2.5.0.v20100521-1846</version>
       <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-      <artifactId>salt-saltCommon</artifactId>
-      <version>1.1.2</version>
-      <type>bundle</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-      <artifactId>salt-saltSample</artifactId>
-      <version>1.1.2</version>
-      <type>bundle</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-      <artifactId>pepper-exceptions</artifactId>
-      <version>1.1.2</version>
-      <type>bundle</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-      <artifactId>pepper-framework</artifactId>
-      <version>1.1.2</version>
-      <type>bundle</type>
       <scope>compile</scope>
     </dependency>
   </dependencies>

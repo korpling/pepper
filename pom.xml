@@ -11,6 +11,7 @@
     <module>pepper-workflow</module>
     <module>pepper-framework</module>
     <module>pepper-testSuite</module>
+    <module>pepper-parentModule</module>
     <!-- <module>pepper-starter</module> -->
   </modules>
   <licenses>
