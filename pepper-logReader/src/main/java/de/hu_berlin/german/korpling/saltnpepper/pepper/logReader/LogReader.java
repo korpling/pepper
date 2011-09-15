@@ -44,7 +44,7 @@ public class LogReader implements LogListener
 	 * Keyword to which the LogService listens, to get the log4j file, set by the PepperStarter
 	 */
 	private final static String KW_LOGGER_PROPERTY="de.hu_berlin.german.korpling.saltnpepper.logger";
-	private static final String symbolicName= "de.hu_berlin.german.korpling.saltnpepper.misc.LogReader";
+	private static final String symbolicName= "de.hu_berlin.german.korpling.saltnpepper.pepper-logReader";
 	private static final String LOG_FILE= "log4j.properties"; 
 	
 	/**
