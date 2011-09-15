@@ -15,29 +15,31 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.devTools.generalModuleTests;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 
-public class GeneralPepperExporterTest extends GeneralPepperModuleTest 
+public class GeneralPepperImporterTest extends GeneralPepperModuleTest
 {
+	//TODO much more tests for example setGetCorpusDefinition, testSetGetPepperModuleController
+	
 	/**
 	 * A list of formats, which shall be supported
 	 */
 	protected EList<FormatDefinition> supportedFormatsCheck= null;
 	
-	protected void setFixture(PepperExporter fixture) {
+	protected void setFixture(PepperImporter fixture) {
 		super.setFixture(fixture);
 		this.supportedFormatsCheck= new BasicEList<FormatDefinition>();
 	}
 	
-	protected PepperExporter getFixture() 
+	protected PepperImporter getFixture() 
 	{
-		return((PepperExporter) super.getFixture());
+		return((PepperImporter) super.getFixture());
 	}
 	
 	public void testGetSupportedFormats()
@@ -57,9 +59,11 @@ public class GeneralPepperExporterTest extends GeneralPepperModuleTest
 		assertEquals("There is a different between the number formats which are supported by module, and the number of formats which shall be supported.", this.supportedFormatsCheck.size(), this.getFixture().getSupportedFormats().size());
 		for (FormatDefinition formatCheck: this.supportedFormatsCheck)
 		{
+			System.out.println("formatCheck: "+formatCheck);
 			Boolean hasOpponend= false;
 			for (FormatDefinition formatDef: this.getFixture().getSupportedFormats())
 			{
+				System.out.println("formatDef: "+formatDef);
 				if (	(formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName())) &&
 						(formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
 					hasOpponend= true;

@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.devTools.generalModuleTests;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,13 +24,13 @@ import junit.framework.TestCase;
 
 import org.eclipse.emf.common.util.URI;
 
-import de.hu_berlin.german.korpling.saltnpepper.devTools.generalModuleTests.util.FileComparator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFinishableMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util.FileComparator;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
