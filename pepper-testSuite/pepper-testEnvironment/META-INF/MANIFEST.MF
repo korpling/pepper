@@ -6,8 +6,8 @@ Bundle-Name: pepper-testEnvironment
 Created-By: Apache Maven Bundle Plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Build-Jdk: 1.6.0_21
-Bundle-Version: 1.1.3.SNAPSHOT
-Bnd-LastModified: 1316107519161
+Bundle-Version: 1.1.2.SNAPSHOT
+Bnd-LastModified: 1316108066941
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Import-Package: de.hu_berlin.german.korpling.saltnpepper.pepper.pepper
