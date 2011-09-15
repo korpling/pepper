@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+    <artifactId>pepper-testSuite</artifactId>
+    <version>1.1.2</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>pepper-testEnvironment</artifactId>
+  <packaging>bundle</packaging>
+  <scm>
+    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.2/pepper-testSuite/pepper-testEnvironment</developerConnection>
+  </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.1.0</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <manifestLocation>${basedir}/META-INF</manifestLocation>
+          <source>1.6</source>
+          <target>1.6</target>
+          <instructions>
+            <Bundle-Name>${project.artifactId}</Bundle-Name>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-Version>${project.version}</Bundle-Version>
+            <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+            <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests</Export-Package>
+            <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+    <finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
+  </build>
+  <name>${project.groupId}.${project.artifactId}</name>
+</project>

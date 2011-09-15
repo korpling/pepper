@@ -20,10 +20,6 @@ inside the folders plugins or lib.
 This project includes:
   Annotations for SCR under The Apache Software License, Version 2.0
   Apache Log4j under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper-parentModule under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper-testEnvironment under The Apache Software License, Version 2.0
   JUnit under Common Public License Version 1.0
   org.eclipse.emf.common under Eclipse Public License - v 1.0
   org.eclipse.emf.ecore under Eclipse Public License - v 1.0
@@ -31,12 +27,7 @@ This project includes:
   OSGi R4 Compendium Bundle under The Apache Software License, Version 2.0
   OSGi R4 Core Bundle under The Apache Software License, Version 2.0
   OSGi R4 Foundation EE under The Apache Software License, Version 2.0
-  pepper-exceptions under The Apache Software License, Version 2.0
-  pepper-framework under The Apache Software License, Version 2.0
   pepper-logReader under The Apache Software License, Version 2.0
-  pepper-modules under The Apache Software License, Version 2.0
-  pepper-testSuite under The Apache Software License, Version 2.0
-  pepper-workflow under The Apache Software License, Version 2.0
   salt-graph under The Apache Software License, Version 2.0
   salt-saltCommon under The Apache Software License, Version 2.0
   salt-saltCore under The Apache Software License, Version 2.0
