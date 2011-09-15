@@ -8,7 +8,9 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pepper-parentModule</artifactId>
   <packaging>pom</packaging>
-
+  <scm>
+    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-parentModule/</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
@@ -68,17 +70,6 @@
   </dependencies>
   <build>
     <plugins>
-      <!-- start: Plugin for automatic releasing -->
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.1</version>
-        <configuration>
-          <tagBase>
-            https://korpling.german.hu-berlin.de/svn/saltnpepper/PepperModules/PepperParentModule/tags</tagBase>
-          <releaseProfiles>release</releaseProfiles>
-        </configuration>
-      </plugin>
-      <!-- start: assembly plugin -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2</version>
