@@ -10,6 +10,7 @@
     <module>pepper-modules</module>
     <module>pepper-workflow</module>
     <module>pepper-framework</module>
+    <module>pepper-testSuite</module>
     <!-- <module>pepper-starter</module> -->
   </modules>
   <licenses>
