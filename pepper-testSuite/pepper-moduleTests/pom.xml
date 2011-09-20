@@ -43,7 +43,7 @@
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Version>${project.version}</Bundle-Version>
             <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
-            <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests</Export-Package>
+            <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests, de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util</Export-Package>
             <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
           </instructions>
         </configuration>

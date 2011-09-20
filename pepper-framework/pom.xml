@@ -34,6 +34,13 @@
   		<type>bundle</type>
   		<scope>compile</scope>
   	</dependency>
+  	<!-- OSGI service-component -->
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.scr.annotations</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+    <!-- end OSGI service-component -->
   	<dependency>
     	<groupId>log4j</groupId>
     	<artifactId>log4j</artifactId>
@@ -67,7 +74,6 @@
             <Bundle-Version>${project.version}</Bundle-Version>
             <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
             <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW, de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util</Export-Package>
-            <Service-Component>OSGI-INF/${component.descriptor.name}</Service-Component>
             <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
           </instructions>
         </configuration>

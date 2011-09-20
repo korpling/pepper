@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
+
 /**
  * a class which defines a runner, which has a finish method.
  * @author Administrator
