@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     <artifactId>pepper-testSuite</artifactId>
-    <version>1.1.3-SNAPSHOT</version>
+    <version>1.1.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pepper-moduleTests</artifactId>
