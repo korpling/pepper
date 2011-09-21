@@ -36,7 +36,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment
 
 @Component(name="PepperTestComponent", immediate=true)
 @Service
-public class PepperTest implements Runnable
+public class PepperTestRunner implements Runnable
 {
 	/**
 	 * name of environment variable, which is supposed to contain the workflow description file
@@ -47,7 +47,7 @@ public class PepperTest implements Runnable
 	 */
 	public static final String ENV_PEPPER_TEST= "PEPPER_TEST";
 	
-	public PepperTest()
+	public PepperTestRunner()
 	{}
 
 // ========================================== start: LogService	
@@ -188,9 +188,9 @@ public class PepperTest implements Runnable
 	
 	protected void activate(ComponentContext componentContext)
 	{
-			System.out.println("PepperTest Komponente wird aktiviert");
-			Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
-			pepperTestThread.start();
+		System.out.println("PepperTest Komponente wird aktiviert");
+		Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
+		pepperTestThread.start();
 	}
 	
 	protected void deactivate(ComponentContext componentContext)
