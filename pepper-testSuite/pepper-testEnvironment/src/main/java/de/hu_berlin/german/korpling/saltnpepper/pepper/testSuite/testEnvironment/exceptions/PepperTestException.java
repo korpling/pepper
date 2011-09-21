@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironmen
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 
+
 public class PepperTestException extends PepperException{
 	/**
 	 * generated serialVersionUID

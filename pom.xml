@@ -38,7 +38,6 @@
   </repositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <component.descriptor.name>serviceComponents.xml</component.descriptor.name>
     <bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
     <assemblies.name>src/assemble/assemblies.xml</assemblies.name>
     <license.file>${basedir}/LICENSE</license.file>
@@ -83,13 +82,6 @@
       <artifactId>org.osgi.compendium</artifactId>
       <version>1.0.0</version>
     </dependency>
-    <!-- OSGI service-component -->
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <version>1.4.0</version>
-    </dependency>
-    <!-- end OSGI service-component -->
     <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.common</artifactId>
@@ -204,48 +196,6 @@
         </configuration>
       </plugin>
       <!-- end: creates a NOTICE file use mvn notice:generate -->
-      <!-- creation of  OSGi Service components -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-scr-plugin</artifactId>
-        <version>1.4.4</version>
-        <executions>
-          <execution>
-            <id>generate-scr-scrdescriptor</id>
-            <goals>
-              <goal>scr</goal>
-            </goals>
-            <configuration>
-              <finalName>${component.descriptor.name}</finalName>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- end: creation of OSGi Service components -->
-      <!-- start: copying of OSGI-INF -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.4.3</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/OSGI-INF</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>target/scr-plugin-generated/OSGI-INF</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- end: copying of OSGI-INF -->
     </plugins>
     <finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
   </build>

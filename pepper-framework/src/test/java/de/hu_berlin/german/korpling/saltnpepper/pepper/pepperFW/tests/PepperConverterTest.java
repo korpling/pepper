@@ -17,10 +17,12 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
@@ -40,10 +42,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ImporterPara
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
