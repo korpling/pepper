@@ -4,8 +4,8 @@ Export-Package: de.hu_berlin.german.korpling.saltnpepper.pepper.testSu
  ite.testEnvironment.exceptions;uses:="de.hu_berlin.german.korpling.sa
  ltnpepper.pepper.pepperExceptions",de.hu_berlin.german.korpling.saltn
  pepper.pepper.testSuite.testEnvironment;uses:="de.hu_berlin.german.ko
- rpling.saltnpepper.pepper.pepperExceptions,de.hu_berlin.german.korpli
- ng.saltnpepper.pepper.pepperFW,org.osgi.service.log,org.eclipse.emf.c
+ rpling.saltnpepper.pepper.pepperExceptions,org.osgi.service.log,de.hu
+ _berlin.german.korpling.saltnpepper.pepper.pepperFW,org.eclipse.emf.c
  ommon.util,de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.
  testEnvironment.exceptions,org.osgi.service.component,de.hu_berlin.ge
  rman.korpling.saltnpepper.pepper.pepperParams"
@@ -16,7 +16,7 @@ Created-By: Apache Maven Bundle Plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Build-Jdk: 1.6.0_21
 Bundle-Version: 1.1.2.SNAPSHOT
-Bnd-LastModified: 1316612599185
+Bnd-LastModified: 1316688222042
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Import-Package: de.hu_berlin.german.korpling.saltnpepper.pepper.pepper
