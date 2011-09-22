@@ -11,6 +11,9 @@
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.2/pepper-parentModule</developerConnection>
   </scm>
+  <properties>
+  	<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
