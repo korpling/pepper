@@ -476,17 +476,28 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 		URI retVal= null;
 		if (currentFile== null)
 			throw new PepperException("The given file 'currentFile' is null.");
+		File path= null;
 		if (currentFile.toFileString()== null)
-			throw new PepperException("Cannot create an absolute uri for current file '"+currentFile+"'.");
-//		if (currentFile!= null)
-//		{
-			File path= new File(currentFile.toFileString());
-			if (!path.isAbsolute())
-			{//path is a relative one, complete it to an absolute one (workflow-description-directory + path) 
-				retVal= URI.createFileURI((new File(baseDir +"/"+ currentFile.toFileString())).getCanonicalPath());
-			}//path is a relative one, complete it to an absolute one (workflow-description-directory + path
-			else retVal= currentFile;
-//		}
+		{
+			if (currentFile.toString()==null)
+				throw new PepperException("Cannot create an absolute uri for current file '"+currentFile+"'.");
+			else 
+			{
+				path= new File(currentFile.toString());
+			}
+		}
+		else 
+		{
+			path= new File(currentFile.toFileString());
+		}
+		if (!path.isAbsolute())
+		{//path is a relative one, complete it to an absolute one (workflow-description-directory + path) 
+			retVal= URI.createFileURI((new File(baseDir +"/"+ currentFile.toFileString())).getCanonicalPath());
+		}//path is a relative one, complete it to an absolute one (workflow-description-directory + path
+		else 
+		{
+			retVal= URI.createFileURI(path.getPath());
+		}
 		return(retVal);
 	}
 	
