@@ -12,9 +12,9 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="de.hub.corpling.pepper.PepperFW"
+            uri="de.hu_berlin.german.korpling.pepper.PepperFW"
             class="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage"
-            genModel="model/pepperFW.genmodel"/>
+            genModel="src/main/model/pepperFW.genmodel"/>
    </extension>
 
 </plugin>
