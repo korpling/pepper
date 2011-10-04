@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.exceptions
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 
+
 public class PepperPropertyException extends PepperException
 {
 	/**

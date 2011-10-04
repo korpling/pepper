@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.exceptions.PepperPropertyException;
 
+
 public class PepperProperties 
 {
 	public static final String ENV_PEPPER_HOME= "PEPPER_HOME";

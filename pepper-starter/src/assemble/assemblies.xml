@@ -7,21 +7,40 @@
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
   <!-- start: copies all dependencies into lib folder -->
+  
+  <!-- 
   <dependencySets>
     <dependencySet>
+    	<useTransitiveDependencies>true</useTransitiveDependencies>
       <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib</outputDirectory>
+      <excludes>
+        <exclude>*</exclude>
+      </excludes>
       <includes>
         <include>*</include>
       </includes>
       <excludes>
-      	<exclude>${project.groupId}.${project.artifactId}_${project.version}.jar</exclude>
+      	<exclude>${project.groupId}:${project.artifactId}:*</exclude>
       </excludes>
     </dependencySet>
   </dependencySets>
+   -->
   <!-- end: copies all dependencies into lib folder -->
   
-  <!-- start: copies the plugin folder -->
+   
+  
   <fileSets>
+  	
+  	<!-- start: copies the lib folder to distribution folder-->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${basedir}/lib/**</include>
+  		</includes>
+  	</fileSet>
+ 	<!-- end: copies the lib folder to distribution folder -->
+  	
+  <!-- start: copies the plugin folder -->
   	<fileSet>
   		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
   		<includes>
