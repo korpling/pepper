@@ -61,9 +61,10 @@ public class PepperStarter
 
 	public BundleContext runEquinox() throws Exception
 	{
+		if (PROFILE_TEST)
 		 {//for debug messages
-//			 System.setProperty("equinox.ds.debug", "true");
-//			 System.setProperty("equinox.ds.print", "true");
+			 System.setProperty("equinox.ds.debug", "true");
+			 System.setProperty("equinox.ds.print", "true");
 		 }
 		 
 		 Properties frameworkProperties = new Properties();
@@ -111,30 +112,6 @@ public class PepperStarter
 		 return bc;
 	}
 	
-//	private static Properties loadProperties(URI uri) throws IOException
-//	{
-//		if (uri== null)
-//			throw new PepperException("Cannot read properties, because no ressource is given.");
-//		Properties properties = new Properties();
-//		FileInputStream stream = null;
-//		try {
-//			File propFile= new File(uri.getPath());
-//			if (staticLogger!= null)
-//				staticLogger.info("using property file: "+ propFile.getAbsolutePath());
-//			stream = new FileInputStream(propFile);
-//			properties.load(stream);
-//		} catch (IOException e) {
-//			throw e;
-//		}
-//		finally
-//		{
-//			if (stream!= null)
-//				stream.close();
-//		}
-//		
-//		return(properties);
-//	} 
-
 //========================== start: Property handling	
 	private Properties properties= null;
 	
@@ -153,29 +130,7 @@ public class PepperStarter
 	}
 //========================== end: Property handling
 	
-//	/**
-//	 * stores the uri of the path to common-dependencies-plugins
-//	 */
-//	private URI commonDependenciesUri= null;
-//	/**
-//	 * stores the uri of the path to core-plugins
-//	 */
-//	private URI coreUri= null;
-//	/**
-//	 * stores the uri of the path to pepper-plugins
-//	 */
-//	private URI pepperUri= null;
-//	/**
-//	 * stores the uri of the path to module-plugins
-//	 */
-//	private URI modulesUri= null;
-	
-	/**
-	 * The encoding for the use of the PEPPER_HOME environment variable inside the property file
-	 * to locate the plugin folder.
-	 */
-//	private static final String KW_ENV_PEPPER_HOME= "$PEPPER_HOME"; 
-	
+		
 	private void loadProperties(Properties props) throws URISyntaxException
 	{
 		if (props== null)
@@ -190,7 +145,6 @@ public class PepperStarter
 		}
 		
 		{//setting system properties for temprorary and resource folder for modules
-//			String tmpUriStr= props.getProperty("temproraries");
 			String tmpUriStr= props.getProperty(PepperProperties.PROP_TMP_PATH);
 			
 			//checking if property for core module is set
@@ -198,7 +152,6 @@ public class PepperStarter
 					(tmpUriStr.equals("")))
 				throw new PepperException("Cannot set properties, because no path for temproraries folder is given.");
 			//replace KW_ENV_PEPPER_HOME if occurs
-//			tmpUriStr= tmpUriStr.replace(KW_ENV_PEPPER_HOME, this.getPepperHomeDir().getAbsolutePath()).replace("\\", "/");
 			File tmpFile= new File(tmpUriStr);
 			try {
 				System.setProperty("PepperModuleResolver.TemprorariesURI", tmpFile.getCanonicalPath());
@@ -207,13 +160,11 @@ public class PepperStarter
 				throw new PepperException("Cannot identify temprorary or resource folder. Nested Exception: "+ e);
 			}
 			String resUriStr= props.getProperty(PepperProperties.PROP_RESOURCE_PATH);
-//			String resUriStr= props.getProperty("plugins.modules.resources");
 			//checking if property for core module is set
 			if (	(resUriStr== null) ||
 					(resUriStr.equals("")))
 				throw new PepperException("Cannot set properties, because no path for resources folder for modules is given.");
 			//replace KW_ENV_PEPPER_HOME if occurs
-//			resUriStr= resUriStr.replace(KW_ENV_PEPPER_HOME, this.getPepperHomeDir().getAbsolutePath()).replace("\\", "/");
 			File resFile= new File(resUriStr);
 			try {
 				System.setProperty("PepperModuleResolver.ResourcesURI", resFile.getCanonicalPath());
@@ -256,12 +207,12 @@ public class PepperStarter
 		this.logger.debug("-------------------- installing bundles --------------------");
 		Collection<Bundle> bundles= null;
 		{//installing module-bundles
-			this.logger.debug("\tinstalling module bundles:");
+			this.logger.debug("\tinstalling OSGI-bundles:");
 			bundles= this.installBundles(new File(properties.getProperty(PepperProperties.PROP_PLUGIN_PATH)).toURI());
 		}//installing module-bundles
 		this.logger.debug("----------------------------------------------------------");
 		this.logger.info("installing OSGI-bundles...FINISHED");
-		this.logger.info("starting OSGI-bundles...FINISHED");
+		this.logger.info("starting OSGI-bundles:");
 		this.logger.debug("-------------------- starting bundles --------------------");
 		this.startBundles(bundles);
 		this.logger.debug("----------------------------------------------------------");
@@ -290,9 +241,8 @@ public class PepperStarter
 					URI bundleURI= bundleJar.toURI();
 					Bundle persistenceBundle = this.bundleContext.installBundle(bundleURI.toString());
 					bundles.add(persistenceBundle);
-					this.logger.debug("\t\tinstalling bundle: "+persistenceBundle.getSymbolicName()+ persistenceBundle.getVersion());
+					this.logger.debug("\t\tinstalling bundle: "+persistenceBundle.getSymbolicName()+"-"+ persistenceBundle.getVersion());
 					{//set system property for ressource path for plugins
-//						String resourceUri= pluginPath+"/"+persistenceBundle.getSymbolicName();
 						String resourceUri= pluginPath+"/"+bundleJar.getName().replace(".jar", "");
 						File resourceFile= new File(resourceUri);
 						System.setProperty(persistenceBundle.getSymbolicName()+".resources", resourceFile.getAbsolutePath());
@@ -313,6 +263,7 @@ public class PepperStarter
 		if (bundles!= null)
 		{
 			Bundle pepperFWBundle= null;
+			
 			for (Bundle bundle: bundles)
 			{
 				if (bundle.getSymbolicName().contains(this.getProperties().getProperty(PepperProperties.PROP_PATTERN_PEPPERFW)))
@@ -321,15 +272,36 @@ public class PepperStarter
 				}
 				else
 				{
-					this.logger.debug("\t\tstarting bundle: "+bundle.getSymbolicName()+ bundle.getVersion());
-					bundle.start();
+					this.logger.debug("\t\tstarting bundle: "+bundle.getSymbolicName()+ "-"+ bundle.getVersion());
+					if (PROFILE_TEST)
+					{//print out the status, the bundle is in before it was started
+						String status="";
+						switch (bundle.getState()) {
+						case Bundle.UNINSTALLED:
+							status= "UNINSTALLED"; break;
+						case Bundle.INSTALLED:
+							status= "INSTALLED"; break;
+						case Bundle.RESOLVED:
+							status= "RESOLVED"; break;
+						case Bundle.STARTING:
+							status= "STARTING"; break;
+						case Bundle.STOPPING:
+							status= "STOPPING"; break;
+						case Bundle.ACTIVE:
+							status= "ACTIVE"; break;
+						}
+						this.logger.debug("\t\t\tbundle was in status: "+ status);
+					}//print out the status, the bundle is in before it was started
+					
+					if (bundle.getState()!= Bundle.ACTIVE)
+						bundle.start();
 					if (bundle.getState()!= Bundle.ACTIVE)
 						this.logger.error("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly.");
 				}
 			}
 			if (pepperFWBundle!= null)
 			{
-				this.logger.debug("\t\tstarting bundle: "+pepperFWBundle.getSymbolicName()+ pepperFWBundle.getVersion());
+				this.logger.debug("\t\tstarting bundle: "+pepperFWBundle.getSymbolicName()+"-"+ pepperFWBundle.getVersion());
 				pepperFWBundle.start();
 				if (pepperFWBundle.getState()!= Bundle.ACTIVE)
 					this.logger.error("The bundle '"+pepperFWBundle.getSymbolicName()+ "-" +pepperFWBundle.getVersion()+"' wasn't started correctly.");
@@ -477,8 +449,6 @@ public class PepperStarter
 		return(retVal.toString());
 	}
 	
-//	private static final String ENV_PEPPER_HOME="PEPPER_HOME";
-	
 	protected static Logger staticLogger= Logger.getLogger(PepperStarter.class);
 	
 	/**
@@ -544,7 +514,6 @@ public class PepperStarter
 		PepperStarter pepperStarter = new PepperStarter();
 		//marks if parameter for program call are ok
 		boolean paramsOk= false;
-//		URI udPropUri= null;
 		URI paramUri= null;
 		try
 		{
@@ -595,7 +564,7 @@ public class PepperStarter
 		{
 			staticLogger.error(e);
 			//TODO remove at delivery time
-			e.printStackTrace();
+//			e.printStackTrace();
 			
 		}
 		finally
