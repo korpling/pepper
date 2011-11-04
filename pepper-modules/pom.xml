@@ -19,6 +19,7 @@
   		<version>${project.version}</version>
   		<scope>compile</scope>
   	</dependency>
+	<!-- 
 	<dependency>
 		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 		<artifactId>salt-graph</artifactId>
@@ -26,6 +27,7 @@
 		<type>bundle</type>
 		<scope>compile</scope>
 	</dependency>
+	 -->
   </dependencies>
   <build>
   	<plugins>
@@ -51,7 +53,7 @@
           	<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
           	<Bundle-Version>${project.version}</Bundle-Version>
           	<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
-          	<!--<Import-Package> de.hu_berlin.german.korpling.saltnpepper.salt.graph</Import-Package>-->
+          	<Import-Package>*; de.hu_berlin.german.korpling.saltnpepper.salt.graph</Import-Package>
           	<Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl</Export-Package>
           	<Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
 		  </instructions>

@@ -138,9 +138,10 @@ public class PepperTestRunner implements Runnable
 		converter.setPepperParams(workflowDescURI);
 		
 		{//creating user-defined properties
+			//TODO this must be parameterized (but how to set parameters in an OSGi environment)
 			Properties props= new Properties();
 			props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
-			props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "10");
+			props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
 			props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
 			converter.setProperties(props);
 		}//creating user-defined properties

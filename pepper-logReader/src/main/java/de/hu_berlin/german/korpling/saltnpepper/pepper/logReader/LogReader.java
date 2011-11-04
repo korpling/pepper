@@ -36,7 +36,7 @@ import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogReaderService;
 import org.osgi.service.log.LogService;
 
-@Component(name="LogReader", immediate=true)
+@Component(name="LogReaderComponent", immediate=true)
 @Service
 public class LogReader implements LogListener
 {
