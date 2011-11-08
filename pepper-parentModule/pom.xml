@@ -145,6 +145,9 @@
         <version>1.0.4</version>
         <configuration>
           <noticeTemplate>./src/etc/NOTICE_template.txt</noticeTemplate>
+          <licenseMapping>
+				<param>https://source.jasig.org/licenses/license-mappings.xml</param>
+    		</licenseMapping>
         </configuration>
       </plugin>
       <!-- end: creates a NOTICE file use mvn notice:generate -->
