@@ -36,6 +36,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment
 
 @Component(name="PepperTestComponent", immediate=true)
 @Service
+//TODO replace environment variables and parameters with a param file, which can be passed via OSGi to the test-environmet   
 public class PepperTestRunner implements Runnable
 {
 	/**

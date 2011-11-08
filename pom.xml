@@ -100,6 +100,13 @@
 	      <type>jar</type>
 	      <scope>compile</scope>
 	    </dependency>
+	    <!-- OSGI service-component -->
+	    <dependency>
+	      <groupId>org.apache.felix</groupId>
+	      <artifactId>org.apache.felix.scr.annotations</artifactId>
+	      <version>1.6.0</version>
+	    </dependency>
+	    <!-- end OSGI service-component -->
 	  </dependencies>
 	
   
@@ -148,6 +155,24 @@
           </filesets>
         </configuration>
       </plugin>
+       <!-- creation of  OSGi Service components -->
+		<plugin>
+			<groupId>org.apache.felix</groupId>
+            <artifactId>maven-scr-plugin</artifactId>
+            <version>1.7.2</version>
+            <executions>
+                   <execution>
+                        <id>generate-scr-scrdescriptor</id>
+                        <goals>
+                            <goal>scr</goal>
+                        </goals>
+                        <configuration>
+                        	 <finalName>${component.descriptor.name}</finalName>
+                        </configuration>
+                   </execution>
+            </executions>
+        </plugin>
+        <!-- end: creation of OSGi Service components -->
       <!-- start: assembly plugin -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>

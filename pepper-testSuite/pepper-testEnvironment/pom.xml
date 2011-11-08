@@ -14,17 +14,17 @@
   	<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
   </properties>
   <dependencies>
-  	<!-- OSGI service-component -->
+  	<!-- OSGI service-component 
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.scr.annotations</artifactId>
       <version>1.4.0</version>
     </dependency>
-    <!-- end OSGI service-component -->
+     end OSGI service-component -->
   </dependencies>
   <build>
     <plugins>
-    <!-- creation of  OSGi Service components -->
+    <!-- start: creation of  OSGi Service components 
 		<plugin>
 			<groupId>org.apache.felix</groupId>
             <artifactId>maven-scr-plugin</artifactId>
@@ -41,7 +41,7 @@
                    </execution>
             </executions>
         </plugin>
-        <!-- end: creation of OSGi Service components -->
+         end: creation of OSGi Service components -->
         <!-- start: copying of OSGI-INF -->
           <plugin>
 	        <artifactId>maven-resources-plugin</artifactId>

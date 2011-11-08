@@ -52,13 +52,13 @@
       <artifactId>org.osgi.compendium</artifactId>
       <version>1.0.0</version>
     </dependency>
-    <!-- OSGI service-component -->
+    <!-- OSGI service-component 
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.scr.annotations</artifactId>
       <version>1.4.0</version>
     </dependency>
-    <!-- end OSGI service-component -->
+     end OSGI service-component -->
     <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.common</artifactId>
@@ -149,6 +149,7 @@
       </plugin>
       <!-- end: creates a NOTICE file use mvn notice:generate -->
       <!-- creation of  OSGi Service components -->
+      <!-- start: creation of OSGi Service components
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-scr-plugin</artifactId>
@@ -165,7 +166,7 @@
           </execution>
         </executions>
       </plugin>
-      <!-- end: creation of OSGi Service components -->
+       end: creation of OSGi Service components -->
       <!-- start: copying of OSGI-INF -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
