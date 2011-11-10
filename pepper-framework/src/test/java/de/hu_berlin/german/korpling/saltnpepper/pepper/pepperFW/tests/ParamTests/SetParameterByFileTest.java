@@ -123,12 +123,12 @@ public class SetParameterByFileTest extends TestCase {
 		}	
 	}
 	
-	private String resourcesFolderName= "./src/test/resources/pepperParams/";
+	private String resourcesFolderName= "/src/test/resources/pepperParams/";
 	
 	public void testParams1() throws Exception
 	{
 		File file = new File(resourcesFolderName);
-		URI uri= URI.createFileURI(file.getAbsolutePath()+ "./testParam/PepperParams1.pepperparams");
+		URI uri= URI.createFileURI(file.getAbsolutePath()+ "/testParam/PepperParams1.pepperparams");
 		boolean isCorrect= true;
 		String description= "everything shall be ok";
 		
