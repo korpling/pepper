@@ -123,7 +123,7 @@ public class SetParameterByFileTest extends TestCase {
 		}	
 	}
 	
-	private String resourcesFolderName= "/src/test/resources/pepperParams/";
+	private String resourcesFolderName= "./src/test/resources/pepperParams/";
 	
 	public void testParams1() throws Exception
 	{
