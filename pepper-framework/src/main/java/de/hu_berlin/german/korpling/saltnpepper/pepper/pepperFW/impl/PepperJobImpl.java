@@ -608,93 +608,91 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 	}
 	
 	/**
-	 * Checks if everything necessary is set, so start can begin. If there is 
-	 * something missing, this method will throw an PepperConvertException
+	 * Checks if the set workflow description is complete and the system is ready to start the workflow. If there is 
+	 * something missing, this method will throw an {@link PepperConvertException}
 	 */
-	protected void readyToStart() throws PepperConvertException
+	protected void validateBeforeStart() throws PepperConvertException
 	{
-		{//validate the job before staring
-			//if id of job is not set
-			if (this.getId()== null)
-				throw new PepperConvertException("Job Cannot start with converting, because the id for job is not set.");
-			//if no saltProject is given
-			if (this.getSaltProject()== null)
-				throw new PepperConvertException("Job Cannot start with converting, because the salt-project for job "+this.getId()+" is not set.");
-			//checking if importers are given
-			if ((this.getPepperImporters()== null) || (this.getPepperImporters().size()< 1))
-				throw new PepperConvertException("Job Cannot start with converting, because no importers are given.");
-			//checking if exporters are given
-			if ((this.getPepperExporters()== null) || (this.pepperExporters.size()< 1))
-				throw new PepperConvertException("Cannot start with converting, because no exporters are given.");
+		//if id of job is not set
+		if (this.getId()== null)
+			throw new PepperConvertException("Job Cannot start with converting, because the id for job is not set.");
+		//if no saltProject is given
+		if (this.getSaltProject()== null)
+			throw new PepperConvertException("Job Cannot start with converting, because the salt-project for job "+this.getId()+" is not set.");
+		//checking if importers are given
+		if ((this.getPepperImporters()== null) || (this.getPepperImporters().size()< 1))
+			throw new PepperConvertException("Job Cannot start with converting, because no importers are given.");
+		//checking if exporters are given
+		if ((this.getPepperExporters()== null) || (this.pepperExporters.size()< 1))
+			throw new PepperConvertException("Cannot start with converting, because no exporters are given.");
+	
+		//start: checking if all importers are correct instantiated
+			for (PepperImporter importer: this.getPepperImporters())
+			{
+				//check if importer has a corpus definition
+				if (importer.getCorpusDefinition()== null)
+					throw new PepperConvertException("Cannot start converting, because no corpus definition is set for importer: "+importer.getName());
+				//check if importer has an uri
+				if (importer.getCorpusDefinition().getCorpusPath()== null)
+					throw new PepperConvertException("Cannot start converting, because no corpus path is set for importer: "+importer.getName());
+				if (importer.getCorpusDefinition().getCorpusPath().toFileString()== null)
+					throw new PepperConvertException("Cannot start converting, because the given corpus path is null for importer: '"+importer.getName()+ "'. Please set a corpus path as uri syntax, for example 'file:\\rootCorpus'.");
+				//check if importer has an existing uri
+				File corpusPath= new File(importer.getCorpusDefinition().getCorpusPath().toFileString());
+				if (!corpusPath.exists())
+					throw new PepperConvertException("Cannot start converting, because the given corpus path does not exists for importer: '"+importer.getName()+ "', path: '"+corpusPath.getAbsolutePath()+"'.");
+				//setting saltProject to importer
+				importer.setSaltProject(this.getSaltProject());
+			}
+		//end: checking if all importers are correct instantiated
+		//start: checking if all manipulators are correct instantiated
+			for (PepperModule module: this.getPepperModules())
+			{
+				//check only the PepperManipulators
+				if (module instanceof PepperManipulator)
+				{
+					PepperManipulator manipulator= (PepperManipulator) module;
+					//setting saltProject to manipulator
+					manipulator.setSaltProject(this.getSaltProject());
+				}
+			}
+		//end: checking if all manipulators are correct instantiated
 		
-			{//checking if all importers are correct instantiated
-				for (PepperImporter importer: this.getPepperImporters())
-				{
-					//check if importer has a corpus definition
-					if (importer.getCorpusDefinition()== null)
-						throw new PepperConvertException("Cannot start converting, because no corpus definition is set for importer: "+importer.getName());
-					//check if importer has an uri
-					if (importer.getCorpusDefinition().getCorpusPath()== null)
-						throw new PepperConvertException("Cannot start converting, because no corpus path is set for importer: "+importer.getName());
-					if (importer.getCorpusDefinition().getCorpusPath().toFileString()== null)
-						throw new PepperConvertException("Cannot start converting, because the given corpus path is null for importer: '"+importer.getName()+ "'. Please set a corpus path as uri syntax, for example 'file:\\rootCorpus'.");
-					//check if importer has an existing uri
-					File corpusPath= new File(importer.getCorpusDefinition().getCorpusPath().toFileString());
-					if (!corpusPath.exists())
-						throw new PepperConvertException("Cannot start converting, because the given corpus path does not exists for importer: '"+importer.getName()+ "', path: '"+corpusPath+"'.");
-					//setting saltProject to importer
-					importer.setSaltProject(this.getSaltProject());
-				}
-			}
-			{//checking if all manipulators are correct instantiated
-				for (PepperModule module: this.getPepperModules())
-				{
-					//check only the PepperManipulators
-					if (module instanceof PepperManipulator)
+		//start: checking if all exporters are correct instantiated
+			for (PepperExporter exporter: this.getPepperExporters())
+			{
+				//check if exporter has a corpus definition
+				if (exporter.getCorpusDefinition()== null)
+					throw new PepperConvertException("Cannot start converting, because no corpus definition is set for exporter: "+exporter.getName());
+				//check if exporter has an uri
+				if (exporter.getCorpusDefinition().getCorpusPath()== null)
+					throw new PepperConvertException("Cannot start converting, because no corpus path is set for exporter: "+exporter.getName());
+				if (exporter.getCorpusDefinition().getCorpusPath().toFileString()== null)
+					throw new PepperConvertException("Cannot start converting, because the given corpus path is null for exporter: '"+exporter.getName()+ "'.");
+				//check if exporter has an existing uri
+				File corpusPath= new File(exporter.getCorpusDefinition().getCorpusPath().toFileString());				
+				if (!corpusPath.exists())
+				{	
+					if(corpusPath.isFile())
 					{
-						PepperManipulator manipulator= (PepperManipulator) module;
-						//setting saltProject to manipulator
-						manipulator.setSaltProject(this.getSaltProject());
+						corpusPath.getParentFile().mkdirs();
+					}
+					else 
+					{
+						corpusPath.mkdirs();
 					}
 				}
-			}//checking if all manipulators are correct instantiated
-			
-			{//checking if all exporters are correct instantiated
-				for (PepperExporter exporter: this.getPepperExporters())
-				{
-					//check if exporter has a corpus definition
-					if (exporter.getCorpusDefinition()== null)
-						throw new PepperConvertException("Cannot start converting, because no corpus definition is set for exporter: "+exporter.getName());
-					//check if exporter has an uri
-					if (exporter.getCorpusDefinition().getCorpusPath()== null)
-						throw new PepperConvertException("Cannot start converting, because no corpus path is set for exporter: "+exporter.getName());
-					if (exporter.getCorpusDefinition().getCorpusPath().toFileString()== null)
-						throw new PepperConvertException("Cannot start converting, because the given corpus path is null for exporter: '"+exporter.getName()+ "'.");
-					//check if exporter has an existing uri
-					File corpusPath= new File(exporter.getCorpusDefinition().getCorpusPath().toFileString());				
-					if (!corpusPath.exists())
-					{	
-						if(corpusPath.isFile())
-						{
-							corpusPath.getParentFile().mkdirs();
-						}
-						else 
-						{
-							corpusPath.mkdirs();
-						}
-					}
-					//setting saltProject to exporter
-					exporter.setSaltProject(this.getSaltProject());
-				}
+				//setting saltProject to exporter
+				exporter.setSaltProject(this.getSaltProject());
 			}
-		}
+		//end: checking if all exporters are correct instantiated
 	}
 	
 	protected EList<PepperModuleController> allModuleControlers= null;
 	protected EList<PepperFinishableMonitor> allM2JMonitors= null;
 	
 	/**
-	 * creates and wires a pepper-moduleController, which looks on given PepperModule
+	 * Creates and wires a {@link PepperModuleController} object, which looks on given {@link PepperModule}
 	 * @param module
 	 */
 	protected void createAndWirePepperModuleController(PepperModule module)
@@ -873,7 +871,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 			this.logService.log(LogService.LOG_INFO,"===== Starting with job("+id+") ==============================");
 		
 		//checks if everything necessary is set
-		this.readyToStart();
+		this.validateBeforeStart();
 		
 		EList<ImporterGraphPair> importerGraphPairs= null;
 		{//import the corpus structure

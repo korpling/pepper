@@ -23,11 +23,14 @@ import junit.textui.TestRunner;
 import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleResolver;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperConverterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperModuleResolverImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.Resolver.TestComponentFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.TestModules.TestExporter1;
@@ -568,4 +571,62 @@ public class PepperConverterTest extends TestCase {
 //		}
 //		FinishableRunner.startRunner(8000l, new Runner(), this.getFixture());	
 //	}
+	
+	/**
+	 * Checks the private method checkAndResolveURI(URI baseURI, URI uri), if the only supported uris can be passed and if 
+	 * the resolved uri is correct.
+	 */
+	public void testCheckAndResolveURI_URI_URI()
+	{
+		class TestPepperConverterImpl extends PepperConverterImpl
+		{
+			public URI checkAndResolveURITest(URI baseURI, URI uri)
+			{
+				return(super.checkAndResolveURI(baseURI, uri));
+			}
+		}
+		TestPepperConverterImpl fixture= new TestPepperConverterImpl();
+		URI baseUri= null;
+		URI uri= null;
+		
+		assertNull(fixture.checkAndResolveURITest(null, null));
+		
+		baseUri= URI.createURI("file:/d:/TestFolder");
+		uri= null;
+		assertNull(fixture.checkAndResolveURITest(baseUri, uri));
+		
+		baseUri= null;
+		uri= URI.createURI("file:/d:/TestFolder");
+		assertEquals(uri, fixture.checkAndResolveURITest(baseUri, uri));
+		
+		//start: check windows absolute pathes
+			try {
+				baseUri= null;
+				uri= URI.createURI("d:/TestFolder");
+				fixture.checkAndResolveURITest(baseUri, uri);
+				fail("Wrong scheme");
+			} catch (PepperConvertException e) {
+			}
+			
+			try {
+				baseUri= URI.createURI("d:/TestFolder");
+				uri= URI.createURI("./TestFolder");
+				fixture.checkAndResolveURITest(baseUri, uri);
+				fail("Wrong scheme");
+			} catch (PepperConvertException e) {
+			}
+		//end: check windows absolute pathes
+			
+		baseUri= URI.createURI("file:/d:/a/b/c");
+		uri= URI.createURI("/d/e/f/");
+		assertEquals(URI.createURI("/d/e/f/"),fixture.checkAndResolveURITest(baseUri, uri));
+		
+		baseUri= URI.createURI("file:/d:/a/b/c");
+		uri= URI.createURI("./d/e/f/");
+		assertEquals(URI.createURI("file:/d:/a/b/d/e/f/"),fixture.checkAndResolveURITest(baseUri, uri));
+		
+		baseUri= URI.createURI("file:/d:/a/b/c/");
+		uri= URI.createURI("./d/e/f/");
+		assertEquals(URI.createURI("file:/d:/a/b/c/d/e/f/"),fixture.checkAndResolveURITest(baseUri, uri));
+	}
 } //PepperConverterTest

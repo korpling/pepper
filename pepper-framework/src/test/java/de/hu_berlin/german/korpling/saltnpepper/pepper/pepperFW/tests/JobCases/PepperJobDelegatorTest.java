@@ -45,9 +45,9 @@ public class PepperJobDelegatorTest extends PepperJobImpl
 		{ return(original.sCorpusGraph); }
 	}
 	
-	public void readyToStart() throws PepperConvertException
+	public void validateBeforeStart() throws PepperConvertException
 	{
-		super.readyToStart();
+		super.validateBeforeStart();
 	}
 	
 	public void createAndWirePepperModuleController(PepperModule module)

@@ -130,7 +130,7 @@ public class ReadyToStartTest extends TestCase
 		this.getFixture().getPepperExporters().add(exporter1);
 		this.getFixture().getPepperImporters().add(importer1);
 		try {
-			this.getFixture().readyToStart();
+			this.getFixture().validateBeforeStart();
 			fail();
 		} catch (Exception e) {
 		}
@@ -165,7 +165,7 @@ public class ReadyToStartTest extends TestCase
 		
 		
 		try {
-			this.getFixture().readyToStart();
+			this.getFixture().validateBeforeStart();
 			fail();
 		} catch (PepperConvertException e) {
 		}
@@ -182,7 +182,7 @@ public class ReadyToStartTest extends TestCase
 		this.getFixture().getPepperExporters().add(new TestExporter1());
 		this.getFixture().setId(0);
 		try {
-			this.getFixture().readyToStart();
+			this.getFixture().validateBeforeStart();
 			fail();
 		} catch (Exception e) {
 		}
@@ -214,7 +214,7 @@ public class ReadyToStartTest extends TestCase
 		this.getFixture().getPepperImporters().add(importer1);
 		this.getFixture().setId(0);
 		try {
-			this.getFixture().readyToStart();
+			this.getFixture().validateBeforeStart();
 			fail();
 		} catch (Exception e) {
 		}
@@ -231,7 +231,7 @@ public class ReadyToStartTest extends TestCase
 		this.getFixture().getPepperImporters().add(new TestImporter1());
 		this.getFixture().setId(0);
 		try {
-			this.getFixture().readyToStart();
+			this.getFixture().validateBeforeStart();
 			fail();
 		} catch (Exception e) {
 		}
@@ -261,7 +261,7 @@ public class ReadyToStartTest extends TestCase
 		this.getFixture().getPepperImporters().add(importer1);
 		this.getFixture().setId(0);
 		try {
-			this.getFixture().readyToStart();
+			this.getFixture().validateBeforeStart();
 			fail();
 		} catch (Exception e) {
 		}

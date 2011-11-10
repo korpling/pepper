@@ -17,6 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.ParamTests;
 
+import java.io.File;
+
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
@@ -125,8 +127,8 @@ public class SetParameterByFileTest extends TestCase {
 	
 	public void testParams1() throws Exception
 	{
-//		URI uri= new URI("./data/pepperParams/testParam/PepperParams1.pepperparams");
-		URI uri= URI.createFileURI(resourcesFolderName+ "testParam/PepperParams1.pepperparams");
+		File file = new File(resourcesFolderName);
+		URI uri= URI.createFileURI(file.getAbsolutePath()+ "./testParam/PepperParams1.pepperparams");
 		boolean isCorrect= true;
 		String description= "everything shall be ok";
 		

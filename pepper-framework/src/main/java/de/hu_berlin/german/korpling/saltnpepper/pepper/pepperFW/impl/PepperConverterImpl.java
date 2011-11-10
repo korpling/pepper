@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogService;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperParamsException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
@@ -423,18 +424,25 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 			{//fullfill all pathes if necessary and possible
 				if (this.getPepperParamsURI()!= null)
 				{// only if the path of pepper-workflow description is set	
-					File pepperWorkflowDirectory= new File(this.getPepperParamsURI().toFileString());
-					pepperWorkflowDirectory= pepperWorkflowDirectory.getParentFile();
+//					File pepperWorkflowDirectory= new File(this.getPepperParamsURI().toFileString());
+//					pepperWorkflowDirectory= pepperWorkflowDirectory.getParentFile();
 					String errorPart="";
+					URI errorURI= null;
 					try {
 						for (ImporterParams importerParams: jobParams.getImporterParams())
 						{//check all uri parameters for importers
 							errorPart= "source path for importer";
-							importerParams.setSourcePath(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSourcePath()));
+							errorURI= importerParams.getSourcePath();
+							importerParams.setSourcePath(this.checkAndResolveURI(this.getPepperParamsURI(), importerParams.getSourcePath()));
+//							importerParams.setSourcePath(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSourcePath()));
 							errorPart= "special parameter for importer";
+							errorURI= importerParams.getSpecialParams();
 							if (	(importerParams.getSpecialParams()!= null)&&
 									(!importerParams.getSpecialParams().toFileString().equals("")))
-								importerParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSpecialParams()));
+							{
+								importerParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), importerParams.getSpecialParams()));
+//								importerParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSpecialParams()));
+							}
 						}//check all uri parameters for importers
 						for (ModuleParams manipulatorParams: jobParams.getModuleParams())
 						{//check all uri parameters for manipulators
@@ -442,23 +450,34 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 									(!(manipulatorParams instanceof ExporterParams)))
 							{	
 								errorPart= "special parameter for manipulator";
+								errorURI= manipulatorParams.getSpecialParams();
 								if (	(manipulatorParams.getSpecialParams()!= null)&&
 										(!manipulatorParams.getSpecialParams().toFileString().equals("")))
-									manipulatorParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, manipulatorParams.getSpecialParams()));
+								{
+									
+									manipulatorParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), manipulatorParams.getSpecialParams()));
+//									manipulatorParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, manipulatorParams.getSpecialParams()));
+								}
 							}
 						}//check all uri parameters for manipulators
 						for (ExporterParams exporterParams: jobParams.getExporterParams())
 						{//check all uri parameters for exporters
 							
 							errorPart= "source path for exporter";
-							exporterParams.setDestinationPath(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getDestinationPath()));
+							errorURI= exporterParams.getDestinationPath();
+							exporterParams.setDestinationPath(this.checkAndResolveURI(this.getPepperParamsURI(), exporterParams.getDestinationPath()));
+//							exporterParams.setDestinationPath(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getDestinationPath()));
 							errorPart= "special parameter for exporter";
+							errorURI= exporterParams.getSpecialParams();
 							if (	(exporterParams.getSpecialParams()!= null)&&
 									(!exporterParams.getSpecialParams().toFileString().equals("")))
-								exporterParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getSpecialParams()));
+							{
+								exporterParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), exporterParams.getSpecialParams()));
+//								exporterParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getSpecialParams()));
+							}
 						}//check all uri parameters for exporters
-					} catch (IOException e) {
-						throw new PepperParamsException("Cannot set parameter to PepperConverter, because file was not found for "+errorPart+".",e);
+					} catch (PepperConvertException e) {
+						throw new PepperParamsException("Cannot load pepper workflow description '"+errorURI+"', because file was not found for "+errorPart+". Maybe an incorrect using of the URI syntax is the reason. Please use for instance 'file:/home/...', 'file:///home/...', 'file:/c:/...', or 'file:///c:/...' for absolute pathes and './a/b/c/' for relative pathes.",e);
 					}
 				}// only if the path of pepper-workflow description is set		
 			}//fullfill all pathes if necessary and possible
@@ -466,40 +485,129 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	}
 	
 	/**
-	 * If possible adds the given currentFile to baseDIr and returns the result as a canonical path.
-	 * @param baseDir
-	 * @param currentFile
-	 * @return
+	 * The uri schemes, which are supported by usage in pepper workflow descriptions.
 	 */
-	private URI createAbsoluteURI(File baseDir, URI currentFile) throws IOException
+	public static final String[] supportedURISchemes= {"file"};
+	
+	/**
+	 * Checks if the scheme of the given {@link URI} objects is supported and resolves the uris if possible.
+	 * <ul>
+	 * 	<li>If the uri <em>resolveURI</em> is absolute, 
+	 * 		<ul>
+	 * 			<li>if the scheme of <em>resolveURI</em> is supported <em>resolveURI</em> will be returned.</li>
+	 * 			<li>else a {@link PepperConvertException} will be thrown.</li>
+	 * 		</ul> 
+	 * 	<li>If the uri <em>resolveURI</em> is relative,</li>
+	 * 	<ul>
+	 * 		<li>if the path of the uri <em>resolveURI</em> is absolute, it will be returned.</li>
+	 * 		<li>if the path of the uri <em>resolveURI</em> is relative,</li> 
+	 * 		<ul>
+	 * 			<li>if the <em>baseURI</em> is null a {@link PepperConvertException} will be thrown.</li>
+	 * 			<li>the uri will be resolved against <em>baseURI</em>. If the scheme of <em>baseURI</em> is not supported a {@link PepperConvertException} will be thrown.</li>
+	 * 		</ul>
+	 * 	</ul>
+	 * 	<li>If the uri <em>resolveURI</em> is null, null will be returned.</li>
+	 * </ul> 
+	 * @param baseURI the base uri to resolve against the other one 
+	 * @param resolveURI the uri to resolve
+	 * @return a supported uri with absolute path
+	 */
+	protected URI checkAndResolveURI(URI baseURI, URI resolveURI)
 	{
 		URI retVal= null;
-		if (currentFile== null)
-			throw new PepperException("The given file 'currentFile' is null.");
-		File path= null;
-		if (currentFile.toFileString()== null)
+		boolean isSupported= false;
+		
+		if (resolveURI!= null)
 		{
-			if (currentFile.toString()==null)
-				throw new PepperException("Cannot create an absolute uri for current file '"+currentFile+"'.");
-			else 
+			if (!resolveURI.isRelative())
+			{//resolveURI is absolute
+				//start: check if scheme of resolveURI is supported
+					isSupported= false;
+					for (String supportedScheme: supportedURISchemes)
+					{
+						if (supportedScheme.equals(resolveURI.scheme()))
+						{
+							isSupported= true;
+							break;
+						}
+					}
+					if (!isSupported)
+						throw new PepperConvertException("The scheme '"+resolveURI.scheme()+"' of given resolve uri '"+resolveURI+"' is not supported.");
+				//end: check if scheme of resolveURI is supported
+				retVal= resolveURI;
+			}//resolveURI is absolute
+			else
 			{
-				path= new File(currentFile.toString());
+				if (resolveURI.path().startsWith("/"))
+				{
+					retVal= resolveURI;
+				}
+				else
+				{
+					if (baseURI== null)
+						throw new PepperConvertException("Cannot resolve 'resolveURI' against 'baseURI', because given 'baseURI' is null.");
+					//start: check if scheme of baseURI is supported
+						isSupported= false;
+						for (String supportedScheme: supportedURISchemes)
+						{
+							if (supportedScheme.equals(baseURI.scheme()))
+							{
+								isSupported= true;
+								break;
+							}
+						}
+						if (!isSupported)
+							throw new PepperConvertException("The scheme '"+baseURI.scheme()+"' of given base uri '"+baseURI+"' is not supported.");
+					//end: check if scheme of baseURI is supported
+					retVal= resolveURI.resolve(baseURI, true);	
+				}
 			}
-		}
-		else 
-		{
-			path= new File(currentFile.toFileString());
-		}
-		if (!path.isAbsolute())
-		{//path is a relative one, complete it to an absolute one (workflow-description-directory + path) 
-			retVal= URI.createFileURI((new File(baseDir +"/"+ currentFile.toFileString())).getCanonicalPath());
-		}//path is a relative one, complete it to an absolute one (workflow-description-directory + path
-		else 
-		{
-			retVal= URI.createFileURI(path.getPath());
 		}
 		return(retVal);
 	}
+	
+//	/**
+//	 * If possible adds the given currentFile to baseDir and returns the result as a canonical path.
+//	 * @param baseDir
+//	 * @param currentURI
+//	 * @return
+//	 */
+//	private URI createAbsoluteURI(File baseDir, URI currentURI) throws IOException
+//	{
+////		System.out.println("baseDir: "+ baseDir);
+////		System.out.println("baseURI: "+ baseDir.toURI());
+////		System.out.println("URI.create baseURI: "+ URI.createURI(baseDir.toURI().toString()));
+////		System.out.println("currentURI: "+ currentURI);
+////		System.out.println("currentURI isRelative: "+ currentURI.isRelative());
+////		System.out.println("resolve: "+ currentURI.resolve(URI.createURI(baseDir.toURI().toString())));
+//		
+//		URI retVal= null;
+//		if (currentURI== null)
+//			throw new PepperException("The given file 'currentFile' is null.");
+//		File path= null;
+//		if (currentURI.toFileString()== null)
+//		{
+//			if (currentURI.toString()==null)
+//				throw new PepperException("Cannot create an absolute uri for current file '"+currentURI+"'.");
+//			else 
+//			{
+//				path= new File(currentURI.toString());
+//			}
+//		}
+//		else 
+//		{
+//			path= new File(currentURI.toFileString());
+//		}
+//		if (!path.isAbsolute())
+//		{//path is a relative one, complete it to an absolute one (workflow-description-directory + path) 
+//			retVal= URI.createFileURI((new File(baseDir +"/"+ currentURI.toFileString())).getCanonicalPath());
+//		}//path is a relative one, complete it to an absolute one (workflow-description-directory + path
+//		else 
+//		{
+//			retVal= URI.createFileURI(path.getPath());
+//		}
+//		return(retVal);
+//	}
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -602,23 +710,33 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Converts the given {@link java.net.URI} object to a {@link URI} object pointing to a pepper workflow description
+	 * and calls the method {@link #setPepperParamsURI(URI)}.
+	 * @param pepperParamUri a uri (as {@link java.net.URI}) pointing to the file containing the pepper workflow description 
 	 */
 	public void setPepperParams(java.net.URI pepperParamUri) 
 	{
-		URI ecoreURI= URI.createFileURI(pepperParamUri.toString());
-		this.setPepperParams(ecoreURI);
+		URI ecoreURI= null;
+		try{	
+			ecoreURI= URI.createFileURI(pepperParamUri.toString());
+			this.setPepperParams(ecoreURI);
+		}
+		catch (IllegalArgumentException e) {
+			throw new PepperParamsException("An exception occured when converting the given uri '"+pepperParamUri+"' into a emf uri.",e);
+		}
+		
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Reads the the given {@link URI} object pointing to a pepper workflow description and creates a {@link PepperParams} object 
+	 * filled with the content of the workflow description. After creating that {@link PepperParams} object, the method
+	 * {@link #setPepperParams(PepperParams)} is called.
+	 * @param pepperParamUri a uri pointing to the file containing the pepper workflow description 
 	 */
 	public void setPepperParams(URI pepperParamUri) 
 	{
 		if (pepperParamUri== null)
-			throw new PepperParamsException("No uri was given.");
+			throw new PepperParamsException("Cannot set the pepper workflow description, because no uri was given.");
 		
 		//set the path of this pepper-workflow description
 		this.setPepperParamsURI(pepperParamUri);
