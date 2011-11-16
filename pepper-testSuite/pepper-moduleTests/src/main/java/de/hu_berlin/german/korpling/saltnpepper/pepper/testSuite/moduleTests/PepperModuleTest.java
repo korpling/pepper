@@ -92,7 +92,7 @@ public abstract class PepperModuleTest extends TestCase
 	public void testGetName()
 	{
 		assertNotNull("The importer has to have a name.",this.getFixture().getName());
-		assertFalse("The name of the importer can�t be empty.", this.getFixture().getName().equals(""));
+		assertFalse("The name of the importer cannot be empty.", this.getFixture().getName().equals(""));
 	}
 	
 	/**
@@ -142,7 +142,7 @@ public abstract class PepperModuleTest extends TestCase
 	
 	public void testSetGetResources()
 	{
-		assertNotNull("Cannot run test, because resources aren�t set. Please call setResourcesURI(URI resourceURI) before start testing.", resourceURI);
+		assertNotNull("Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing.", resourceURI);
 		this.getFixture().setResources(resourceURI);
 		assertEquals(resourceURI, this.getFixture().getResources());
 	}
