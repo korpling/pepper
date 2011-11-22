@@ -133,7 +133,6 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 			throw new PepperModuleException("Cannot save the given model object into uri, because model uri is empty.");
 		//source model
 		source = getResource(modelURI);
-		System.out.println("source: "+ source);
 		source.getContents().add(modelObject);
 		try {
 			source.save(null);

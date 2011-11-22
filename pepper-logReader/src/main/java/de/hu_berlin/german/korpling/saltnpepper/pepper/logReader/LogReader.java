@@ -80,7 +80,7 @@ public class LogReader implements LogListener
 	public void logged(LogEntry entry) 
 	{	
 		if (this.logProperties== null)
-		{//if no log properties still given
+		//start: if no log properties still given
 			
 			if (System.getProperty(KW_LOGGER_PROPERTY)!= null)
 			{
@@ -94,13 +94,19 @@ public class LogReader implements LogListener
 					logPath= logPath + "/";
 				this.setLogProperties(logPath+ LOG_FILE);
 			}
-		}//if no log properties still given
-		String log= String.format("[%s] <%s> %s", getLevelAsString(entry.getLevel()), entry.getBundle().getSymbolicName(), entry.getMessage());
+		//end: if no log properties still given
+		String log= null;
+		if (entry.getBundle()!= null)
+			log= String.format("[%s] <%s> %s", getLevelAsString(entry.getLevel()), entry.getBundle().getSymbolicName(), entry.getMessage());
+		else log= String.format("[%s] <%s> %s", getLevelAsString(entry.getLevel()), "no bundle given", entry.getMessage());
 		switch (entry.getLevel()) 
 		{
 			case LogService.LOG_DEBUG:
 //				logger.debug(log);
-				Logger.getLogger(entry.getBundle().getSymbolicName()).debug(log);
+				if (entry.getBundle()!= null)
+					Logger.getLogger(entry.getBundle().getSymbolicName()).debug(log);
+				else
+					Logger.getLogger(this.getClass()).debug(log);
 				break;
 			case LogService.LOG_INFO:
 				if (	(entry.getMessage().startsWith("ServiceEvent REGISTERED")) ||
@@ -122,15 +128,22 @@ public class LogReader implements LogListener
 				break;
 			case LogService.LOG_WARNING:
 //				logger.warn(log);
-				Logger.getLogger(entry.getBundle().getSymbolicName()).warn(log);
+				if (entry.getBundle()!= null)
+					Logger.getLogger(entry.getBundle().getSymbolicName()).warn(log);
+				else
+					Logger.getLogger(this.getClass()).warn(log);
 				break;
 			case LogService.LOG_ERROR:
-//				logger.error(log);
-				Logger.getLogger(entry.getBundle().getSymbolicName()).error(log);
+				if (entry.getBundle()!= null)
+					Logger.getLogger(entry.getBundle().getSymbolicName()).error(log);
+				else
+					Logger.getLogger(this.getClass()).error(log);
 				break;
 			default:
-//				logger.debug(log);
-				Logger.getLogger(entry.getBundle().getSymbolicName()).debug(log);
+				if (entry.getBundle()!= null)
+					Logger.getLogger(entry.getBundle().getSymbolicName()).debug(log);
+				else
+					Logger.getLogger(this.getClass()).debug(log);
 		}
 		
 		Throwable exception= entry.getException();

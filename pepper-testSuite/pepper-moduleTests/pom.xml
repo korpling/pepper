@@ -18,6 +18,13 @@
       <version>3.8.1</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+    	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+    	<artifactId>pepper-logReader</artifactId>
+    	<version>${project.version}</version>
+    	<type>bundle</type>
+    	<scope>compile</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

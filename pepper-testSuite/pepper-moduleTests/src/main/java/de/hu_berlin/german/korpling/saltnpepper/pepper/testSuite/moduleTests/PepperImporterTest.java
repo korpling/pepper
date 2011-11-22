@@ -59,11 +59,9 @@ public class PepperImporterTest extends PepperModuleTest
 		assertEquals("There is a different between the number formats which are supported by module, and the number of formats which shall be supported.", this.supportedFormatsCheck.size(), this.getFixture().getSupportedFormats().size());
 		for (FormatDefinition formatCheck: this.supportedFormatsCheck)
 		{
-			System.out.println("formatCheck: "+formatCheck);
 			Boolean hasOpponend= false;
 			for (FormatDefinition formatDef: this.getFixture().getSupportedFormats())
 			{
-				System.out.println("formatDef: "+formatDef);
 				if (	(formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName())) &&
 						(formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
 					hasOpponend= true;

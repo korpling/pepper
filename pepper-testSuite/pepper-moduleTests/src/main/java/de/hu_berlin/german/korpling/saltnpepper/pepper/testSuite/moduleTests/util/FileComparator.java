@@ -23,6 +23,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.PepperModuleTestException;
+
 public class FileComparator 
 {
 	/**
@@ -39,12 +41,12 @@ public class FileComparator
 		boolean retVal= false;
 		
 		if ((file1== null) || (file2== null))
-			throw new NullPointerException("One of the files to compare are null.");
+			throw new PepperModuleTestException("One of the files to compare are null.");
 		
 		if (!file1.exists())
-			throw new NullPointerException("The file '"+file1+"' does not exists.");
+			throw new PepperModuleTestException("The file '"+file1+"' does not exists.");
 		if (!file2.exists())
-			throw new NullPointerException("The file '"+file2+"' does not exists.");
+			throw new PepperModuleTestException("The file '"+file2+"' does not exists.");
 		String contentFile1= null;
 		String contentFile2= null;
 		BufferedReader brFile1= null;

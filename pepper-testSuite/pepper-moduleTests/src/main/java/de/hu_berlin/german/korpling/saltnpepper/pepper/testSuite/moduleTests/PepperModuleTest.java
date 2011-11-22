@@ -24,14 +24,19 @@ import junit.framework.TestCase;
 
 import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.logReader.LogReader;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFinishableMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util.FileComparator;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util.PepperModuleTestLogService;
+import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
@@ -53,8 +58,16 @@ public abstract class PepperModuleTest extends TestCase
 	
 	public void start()
 	{
+		if (this.getFixture()== null)
+			throw new PepperModuleTestException("Cannot start pepper-module, because the fixture is not set.");
+
 		PepperModuleController moduleController= PepperFWFactory.eINSTANCE.createPepperModuleController();
 		moduleController.setPepperModule(this.getFixture());
+		
+		PepperModuleTestLogService logService= new PepperModuleTestLogService();
+		LogReader logReader= new LogReader();
+		logService.setLogListener(logReader);
+		this.getFixture().setLogService(logService);
 		//setting the document controller, to delete documents
 		moduleController.setPepperDocumentController(PepperFWFactory.eINSTANCE.createPepperDocumentController());
 		moduleController.getPepperDocumentController().setREMOVE_SDOCUMENT_AFTER_PROCESSING(false);
@@ -64,6 +77,23 @@ public abstract class PepperModuleTest extends TestCase
 		
 		PepperFinishableMonitor m2jMonitor= PepperFWFactory.eINSTANCE.createPepperFinishableMonitor();
 		moduleController.setPepperM2JMonitor(m2jMonitor);
+		
+		
+		if (this.getFixture() instanceof PepperImporter)
+		{//if fixture is an importer, import corpus structure first
+			if (this.getFixture().getSaltProject()== null)
+				this.getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+			if (	(this.getFixture().getSaltProject().getSCorpusGraphs()== null) ||
+					(this.getFixture().getSaltProject().getSCorpusGraphs().size()==0))
+				this.getFixture().getSaltProject().getSCorpusGraphs().add(SaltFactory.eINSTANCE.createSCorpusGraph());
+			if (this.getFixture().getSaltProject().getSCorpusGraphs().get(0)== null)
+				throw new PepperModuleTestException("Cannot start pepper-module, because the corpus graph list of the SaltProject of the fixture has SDocument objects.");
+			
+			((PepperImporter) this.getFixture()).importCorpusStructure(this.getFixture().getSaltProject().getSCorpusGraphs().get(0));
+		}//if fixture is an importer, import corpus structure first
+		
+		if (this.getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments()== null)
+			throw new PepperModuleTestException("Cannot start pepper-module, because the first corpus graph of the SaltProject of the fixture has SDocument objects.");
 		for (SDocument sDocument: this.getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments())
 		{
 			moduleController.getPepperDocumentController().observeSDocument(sDocument.getSElementId());
@@ -85,7 +115,6 @@ public abstract class PepperModuleTest extends TestCase
 	{
 		SCorpusGraph corpGraph= SaltCommonFactory.eINSTANCE.createSCorpusGraph();
 		this.getFixture().setSCorpusGraph(corpGraph);
-		System.out.println(corpGraph.differences(this.getFixture().getSCorpusGraph()));
 		assertEquals(corpGraph, this.getFixture().getSCorpusGraph());
 	}
 	
