@@ -36,10 +36,15 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.uti
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util.PepperModuleTestLogService;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
+/**
+ * The method start simulates the Pepper framework as in normal runtime. The difference is, that here Pepper is started
+ * in an developement environment and enables for developers to get an access directly to the OSGi environment.
+ * @author Florian Zipser
+ *
+ */
 public abstract class PepperModuleTest extends TestCase 
 {
 	private URI resourceURI= null;
@@ -48,14 +53,29 @@ public abstract class PepperModuleTest extends TestCase
 	
 	protected PepperModule fixture= null;
 	
+	/**
+	 * Sets the current fixture to test.
+	 * @param fixture object to test, derived from {@link PepperModule}
+	 */
 	protected void setFixture(PepperModule fixture) {
 		this.fixture = fixture;
 	}
 
+	/**
+	 * Returns the current fixture to test.
+	 * @return object to test, derived from {@link PepperModule}
+	 */
 	protected PepperModule getFixture() {
 		return fixture;
 	}
 	
+	/**
+	 * This methods starts the processing of Pepper in the developement environment. In case of the fixture is 
+	 * {@link PepperImporter}, first the method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called.
+	 * For all kinds of fixture, the method {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * is called for each {@link SDocument} object contained in the variable {@link PepperModule#getSaltProject()}.
+	 * This method will wait, until each {@link PepperModuleController} return having finished the process.
+	 */
 	public void start()
 	{
 		if (this.getFixture()== null)
@@ -130,6 +150,10 @@ public abstract class PepperModuleTest extends TestCase
 	 */
 	public void setTemprorariesURI(URI tempURI)
 	{
+		if (tempURI== null)
+			throw new PepperModuleTestException("The given temprorary uri is empty.");
+		if (tempURI.toFileString()== null)
+			throw new PepperModuleTestException("Cannot create file for uri '"+tempURI+"'.");
 		File tmpDir= new File(tempURI.toFileString());
 		if (!tmpDir.exists())
 			tmpDir.mkdirs();
@@ -169,6 +193,9 @@ public abstract class PepperModuleTest extends TestCase
 		else throw new RuntimeException("A resource uri must be set.");
 	}
 	
+	/**
+	 * Checks if the resource path is set.
+	 */
 	public void testSetGetResources()
 	{
 		assertNotNull("Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing.", resourceURI);
@@ -176,6 +203,9 @@ public abstract class PepperModuleTest extends TestCase
 		assertEquals(resourceURI, this.getFixture().getResources());
 	}
 	
+	/**
+	 * Checks if symbolic name is given.
+	 */
 	public void testGetSymbolicName()
 	{
 		assertNotNull("The symbolic name of module shall not be null.", this.getFixture().getSymbolicName());
