@@ -44,6 +44,7 @@ public class PepperImporterTest extends PepperModuleTest
 	
 	public void testGetSupportedFormats()
 	{
+		assertNotNull("Cannot run test, please set fixture first.",this.getFixture());
 		assertNotNull("There have to be some supported formats",this.getFixture().getSupportedFormats());
 		EList<FormatDefinition> formatDefs= this.getFixture().getSupportedFormats();
 		assertNotSame("Number of supported formats have to be more than 0", 0, formatDefs);

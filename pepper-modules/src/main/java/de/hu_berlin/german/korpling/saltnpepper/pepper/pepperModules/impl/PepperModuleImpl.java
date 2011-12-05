@@ -409,7 +409,9 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	{
 		if (newTemproraries== null)
 			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri is empty.");
-		File file= new File(newTemproraries.toFileString());
+		if (newTemproraries.toString()== null)
+			throw new PepperModuleException("Cannot create an uri out of given temprorary path '"+newTemproraries+"' for module '"+this.getName()+"'.");
+		File file= new File(newTemproraries.toString());
 		if (!file.exists())
 			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri '"+newTemproraries+"' does not exists.");
 		if (!file.isDirectory())

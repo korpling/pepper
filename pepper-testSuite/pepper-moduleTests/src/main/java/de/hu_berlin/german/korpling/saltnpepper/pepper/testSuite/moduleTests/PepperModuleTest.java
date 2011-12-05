@@ -152,9 +152,9 @@ public abstract class PepperModuleTest extends TestCase
 	{
 		if (tempURI== null)
 			throw new PepperModuleTestException("The given temprorary uri is empty.");
-		if (tempURI.toFileString()== null)
+		if (tempURI.toString()== null)
 			throw new PepperModuleTestException("Cannot create file for uri '"+tempURI+"'.");
-		File tmpDir= new File(tempURI.toFileString());
+		File tmpDir= new File(tempURI.toString());
 		if (!tmpDir.exists())
 			tmpDir.mkdirs();
 		this.temproraryURI= tempURI;
@@ -163,7 +163,7 @@ public abstract class PepperModuleTest extends TestCase
 	}
 	public void testSetGetTemproraries()
 	{
-		assertNotNull("Cannot run test, because temproraries aren�t set. Please call setTemprorariesURI(URI tempURI) before start testing.", temproraryURI);
+		assertNotNull("Cannot run test, because temproraries aren't set. Please call setTemprorariesURI(URI tempURI) before start testing.", temproraryURI);
 		this.getFixture().setTemproraries(temproraryURI);
 		assertEquals(temproraryURI, this.getFixture().getTemproraries());
 	}
