@@ -31,9 +31,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PEPPER_SDOCUMENT
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperDocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperDocumentControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperModuleControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;

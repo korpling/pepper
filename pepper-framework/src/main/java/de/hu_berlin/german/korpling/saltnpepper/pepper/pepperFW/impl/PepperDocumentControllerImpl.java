@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -293,12 +294,11 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the number of currently processed documents. 
 	 */
 	public Integer getCurrentAmountOfSDocuments() 
 	{
-		return(this.currentlyProcessedSDocuments.getCurrentAmountOfSDocuments());
+		return(this.currentlyProcessedSDocuments.getCurrentlyProcessedSDocuments());
 	}
 
 	// ============================ start: performance computing
@@ -366,7 +366,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 				if (this.performanceEntries== null)
 					throw new PepperFWException("An internal exception occurs, while notifiying the Pepper framework, that a document has been finished by a module. Internal message('performanceEntries==null')");
 				for (int i= 0; i< this.performanceEntries.size(); i++)
-				{//search the correct perfromance entry
+				{//search the correct performance entry
 					PerformanceEntry searchPerformanceEntry= this.performanceEntries.get(i);
 					if (searchPerformanceEntry== null)
 						throw new PepperFWException("An internal exception occurs, while notifiying the Pepper framework, that a document has been finished by a module. Internal message('searchPerformanceEntry==null')");
@@ -398,7 +398,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		{
 			Long retVal= null;
 			for (int i= 0; i< this.performanceEntries.size(); i++)
-			{//search the correct perfromance entry
+			{//search the correct performance entry
 				PerformanceEntry performanceEntry= this.performanceEntries.get(i);
 				if (performanceEntry.sDocumentId.equals(sDocumentId))
 				{
@@ -407,7 +407,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 					else
 						retVal= retVal + performanceEntry.time;
 				}
-			}//search the correct perfromance entry
+			}//search the correct performance entry
 			
 			return(retVal);
 		}
@@ -444,8 +444,19 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 	
 // ============================ start: AmountOfSDocumentController
 	/**
-	 * This class stores and controles a list of current used documents. It also controls that not more
-	 * than the given maximal number of SDocuments can be stored. 
+`	 * An object, which contains all SDocument objects which are currently in process.
+	 */
+	private volatile AmountOfSDocumentController currentlyProcessedSDocuments= null;
+		
+	/**
+	 * This class provides an object to store the queue of current processed {@link SDocument} objects related to 
+	 * the {@link PepperModuleController} objects processing it. This class also takes care, that the maximal number
+	 * of {@link SDocument} objects which can be processed at the same time will not be exceeded.
+	 * <ul>
+	 * 	<li>The method {@link #addSDocumentToQueue(SElementId)} adds an {@link SDocument} to the queue.</li>
+	 *  <li>The method {@link #removeSDocumentFromQueue(SElementId) removes an {@link SDocument} from the queue.</li>
+	 *  <li>The method {@link #waitForRemovingSDocumentFromQueue()} lets the invoking method wait until a new slot is free, in case of the maximal number of {@link SDocument} objects to process at the same time is reached.</li>
+	 * </ul> 
 	 */
 	private class AmountOfSDocumentController
 	{
@@ -460,20 +471,24 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		private volatile Condition spaceForNewSDocument=lock.newCondition();
 		
 		private volatile Integer maxAmountOfDocuments= AMOUNT_OF_COMPUTABLE_SDOCUMENTS_EDEFAULT;
-		private volatile EList<SElementId> sDocumentIds= null;
 		
 		/**
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * list of currently processed {@link SDocument}
 		 */
-		public  Integer getCurrentAmountOfSDocuments() 
+		private volatile Collection<SElementId> sDocumentIds= null;
+		
+		/**
+		 * Returns the number of currently processed documents. Means {@link SDocument} in 
+		 * state {@link PEPPER_SDOCUMENT_STATUS#IN_PROCESS}.
+		 */
+		public Integer getCurrentlyProcessedSDocuments() 
 		{
 			return(this.sDocumentIds.size());
 		}
 		
 		public AmountOfSDocumentController()
 		{
-			this.sDocumentIds= new BasicEList<SElementId>();
+			this.sDocumentIds= new Vector<SElementId>();
 		}
 		/**
 		 * @param maxAmountOfDocuments the maxAmountOfDocuments to set
@@ -485,77 +500,82 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		/**
 		 * @return the maximal amount of documents
 		 */
-		public Integer getMaxAmountOfDocuments() {
+		public synchronized Integer getMaxAmountOfDocuments() {
 			return maxAmountOfDocuments;
 		}
 		
 		/**
-		 * This method adds a new SDocumentId to the list of current processed documents.
+		 * This method adds a new SDocumentId to the queue of current processed documents.
 		 * @param sDocumentId
 		 */
-		public void addSDocument(SElementId sDocumentId)
+		public synchronized void addSDocumentToQueue(SElementId sDocumentId)
 		{
-//			//System.out.println("============> (PepperDocumentController) adding document Id: "+ sDocumentId.getSId()+ " to add: "+!this.sDocumentIds.contains(sDocumentId)+" to "+ sDocumentIds);
 			if (!this.sDocumentIds.contains(sDocumentId)) 
 			{
-				synchronized (this.sDocumentIds) 
+				if (	(this.maxAmountOfDocuments> 0) &&
+						(sDocumentIds.size()>= this.getMaxAmountOfDocuments()))
 				{
-					if (	(this.maxAmountOfDocuments> 0) &&
-							(sDocumentIds.size()>= this.getMaxAmountOfDocuments()))
-					{
-						throw new PepperFWException("Cannot import or create a new document, because maximal number of simulaneously stored sDocument is reached ("+this.getMaxAmountOfDocuments()+"). SDocument-object that caused the exception is: "+sDocumentId.getSId()+". If this module is not an PepperImporter, this document has not yet been added by an PepperImporter.");
-					}
-				
-					this.sDocumentIds.add(sDocumentId);
+					throw new PepperFWException("Cannot import or create a new document, because maximal number of simulaneously stored sDocument is reached ("+this.getMaxAmountOfDocuments()+"). SDocument-object that caused the exception is: "+sDocumentId.getSId()+". If this module is not an PepperImporter, this document has not yet been added by an PepperImporter.");
 				}
+			
+				this.sDocumentIds.add(sDocumentId);
 			}
-//			else
-//				throw new PepperFWException("This may be a bug, an SDocument object with the id '"+sDocumentId+"' already exists in list of documents being processed.");
 		}
 		
 		/**
-		 * This method removes the given sDocumentId from the list of current processed documents.
-		 * @param sDocumentId
+		 * This method removes the given sDocumentId from the queue of current processed documents.
+		 * @param sDocumentId {@link SElementId} of the {@link SDocument} to remove from queue
 		 */
-		public void removeSDocument(SElementId sDocumentId)
+		public synchronized void removeSDocumentFromQueue(SElementId sDocumentId)
 		{
-			//System.out.println("HERE 3.1");
+			if (sDocumentId== null)
+				throw new PepperConvertException("Cannot remove the SDocument object from queue, because the given sDocumentId is null.");
 			this.lock.lock();
-			//System.out.println("HERE 3.2");
-			synchronized (this.sDocumentIds) {
+			try{
 				this.sDocumentIds.remove(sDocumentId);
+				spaceForNewSDocument.signal();
+			}catch (Exception e) {
+				throw new PepperConvertException("An internal exception occured, can not unlock the constraint 'spaceForNewSDocument' after sending a signal.");	
+			}finally{
+				this.lock.unlock();
 			}
-			//System.out.println("HERE 3.3");
-			spaceForNewSDocument.signal();
-			//System.out.println("HERE 3.4");
-			this.lock.unlock();
-			//System.out.println("HERE 3.5");
 		}
 		
 		/**
 		 * This method constrain the calling method to wait until any SDocument has been removed
-		 * from the list of current processed SDocument-objects.
+		 * from the queue of current processed SDocument-objects.
 		 */
-		public void waitForRemovingSDocument()
+		public void waitForRemovingSDocumentFromQueue()
 		{
 			lock.lock();
 			try {
 				if (	(this.getMaxAmountOfDocuments()> 0)&&
-						(this.sDocumentIds.size()>= this.getMaxAmountOfDocuments()))
+						(this.getCurrentlyProcessedSDocuments()>= this.getMaxAmountOfDocuments()))
 				{
-					spaceForNewSDocument.await();
+					if (getLogService()!= null)
+						getLogService().log(LogService.LOG_DEBUG, "waiting for a free slot for a new document...");
+					boolean wait= true;
+					long waitingTime= 0l;
+					while (wait)
+					{
+						waitingTime= spaceForNewSDocument.awaitNanos(10000000000L);
+						if (waitingTime> 0l)
+							wait= false;
+						if (getLogService()!= null)
+							getLogService().log(LogService.LOG_DEBUG, getStatus4Print());
+					}
+					if (getLogService()!= null)
+						getLogService().log(LogService.LOG_DEBUG, "waiting for a free slot for a new document... OK");
 				}
 			} catch (InterruptedException e) {
 				throw new PepperFWException(e.getMessage());
 			}
-			lock.unlock();
+			finally
+			{
+				lock.unlock();
+			}
 		}
-	}
-	
-	/**
-`	 * A list, which contains all SDocument objects which are currently in process.
-	 */
-	private volatile AmountOfSDocumentController currentlyProcessedSDocuments= null;
+	}	
 // ============================ end: AmountOfSDocumentController
 	/**
 	 * Stores the current status for every sElementId.
@@ -563,37 +583,34 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 	private volatile Hashtable<SElementId, SDocumentStatus> sDocumentStatusTable= null;
 	
 	/**
-	 * Stores the global status for a Document. And a list of tuples for all Modules and their current 
-	 * status.  
+	 * Returns the total percentage value of the progress of the Pepper workflow.
+	 * @return percentage value between 0 and 1. 
 	 */
-	private class SDocumentStatus
+	private double getTotalPercentage()
 	{
-//		public SElementId sDocumentId= null;
-		public volatile PEPPER_SDOCUMENT_STATUS globalStatus= null;
-		public volatile EList<PepperModuleStatusTuple> statusEntries= new BasicEList<PepperModuleStatusTuple>();
-	}
-	
-	/**
-	 * This class represents a triple, a PepperModuleController
-	 * and the status for the PepperModuleController.
-	 */
-	private class PepperModuleStatusTuple
-	{	
-		public volatile PepperModuleController pModuleController= null;
-		public volatile PEPPER_SDOCUMENT_STATUS pModuleStatus= null;
+		Collection<SDocumentStatus> sDocStatuses= Collections.synchronizedCollection(sDocumentStatusTable.values());
+		double p= 0l;
+		for (SDocumentStatus sDocStatus: sDocStatuses)
+		{
+			p= p+ sDocStatus.getPercentage();
+		}
+		return(p/sDocumentStatusTable.size());
 	}
 		
 	/**
 	 * Puts the given sDocumentId into an internal list of SElementIds belonging to SDocument objects which have to be observed. 
 	 * Observing in this sense means, that this PepperDocumentController object logs everything what is done with a document. 
-	 * If it was started by a PepperModule, if it was processed or removed by such a module.   
+	 * If it was started by a PepperModule, if it was processed or removed by such a module.  
+	 * @param sDocumentId {@link SElementId} of the {@link SDocument} object to observe
 	 */
 	public synchronized void observeSDocument(SElementId sDocumentId) 
 	{
+		if (getLogService()!= null)
+			getLogService().log(LogService.LOG_DEBUG, "observing document: "+ sDocumentId.getSId());
 		if (sDocumentId== null)
 			throw new PepperConvertException("Cannot observe an empty sDocumentId.");
 		if (	(sDocumentId.getSId()== null) ||
-				(sDocumentId.getSId().equals("")))
+				(sDocumentId.getSId().isEmpty()))
 			throw new PepperConvertException("Cannot observe a sDocumentId with an empty sId value.");
 		if (sDocumentId.getSIdentifiableElement()== null)
 			throw new PepperConvertException("Cannot observe an sDocumentId with an empty sIdentifiableElement: "+sDocumentId.getSId()+".");
@@ -609,25 +626,19 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 			throw new PepperConvertException("The document corresponding to the given sDocumentId is already observed.");
 		
 		sDocumentStatus= new SDocumentStatus();
-//		sDocumentStatus.sDocumentId= sDocumentId;
-		sDocumentStatus.globalStatus= PEPPER_SDOCUMENT_STATUS.NOT_STARTED;
+		sDocumentStatus.setsDocumentId(sDocumentId);
 		this.sDocumentStatusTable.put(sDocumentId, sDocumentStatus);
 		
-		PepperModuleStatusTuple pModuleStatusTuple= null;
-		for (int i= 0; i < this.getPepperModuleControllers().size(); i++)
-//		for (PepperModuleController pModuleController: this.getPepperModuleControllers())
+		for (PepperModuleController pModuleController: Collections.synchronizedCollection(this.getPepperModuleControllers()))
 		{//create a PepperModuleStatusTuple for every controller
-			pModuleStatusTuple= new PepperModuleStatusTuple();;
-			pModuleStatusTuple.pModuleController= this.getPepperModuleControllers().get(i);
-//			pModuleStatusTuple.pModuleController= pModuleController;
-			pModuleStatusTuple.pModuleStatus= PEPPER_SDOCUMENT_STATUS.NOT_STARTED;
-			sDocumentStatus.statusEntries.add(pModuleStatusTuple);
+			sDocumentStatus.addPepperModule(pModuleController);
 		}//create a PepperModuleStatusTuple for every controller
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns a list of {@link SElementId} objects corresponding to {@link SDocument} objects, which are observed
+	 * by this object.
+	 * @return list of all {@link SElementId} objects 
 	 */
 	public EList<SElementId> getObservedSDocuments() 
 	{
@@ -644,90 +655,14 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		}
 		return(retVal);
 	}
-
-	/**
-	 * Updates the global status of given sDocumentId. This will be done, by checking all the status of
-	 * the PepperModuleController-objects.
-	 * This method shall be called before the processing of the documents has started.
-	 *  
-	 * @param sDocumentId the id of the SDocuemnt object to be observed
-	 */
-	private void updateGlobalStatus(SElementId sDocumentId)
-	{
-		if (sDocumentId== null)
-			throw new PepperConvertException("Cannot update sDocument status, because it is null.");
-		
-		SDocumentStatus sDocumentStatus= this.sDocumentStatusTable.get(sDocumentId);
-		EList<PEPPER_SDOCUMENT_STATUS> currStatus= new BasicEList<PEPPER_SDOCUMENT_STATUS>();
-		//create a list of all status
-		
-		for (int i= 0; i< sDocumentStatus.statusEntries.size();i++)
-		{
-			if (!currStatus.contains(sDocumentStatus.statusEntries.get(i).pModuleStatus))
-			{
-				currStatus.add(sDocumentStatus.statusEntries.get(i).pModuleStatus);
-			}
-		}
-//		//create a list of all status
-//		for (PepperModuleStatusTuple pModStat: sDocumentStatus.statusEntries)
-//		{
-//			if (!currStatus.contains(pModStat.pModuleStatus))
-//			{
-//				currStatus.add(pModStat.pModuleStatus);
-//			}
-//		}
-		{//setting global status, respecting to hierarchy of status
-			if (currStatus.contains(PEPPER_SDOCUMENT_STATUS.DELETED))
-			{//if one PepperModuleController says deleted, status is deleted
-				sDocumentStatus.globalStatus= PEPPER_SDOCUMENT_STATUS.DELETED;
-				if (this.removE_SDOCUMENT_AFTER_PROCESSING)
-				{
-					((SDocument)sDocumentId.getSIdentifiableElement()).setSDocumentGraph(null);
-				}
-			}//if one PepperMOduleController says deleted, status is deleted
-			else if (currStatus.contains(PEPPER_SDOCUMENT_STATUS.IN_PROCESS))
-			{//if one PepperModuleController says IN_PROCESS, status is IN_PROCESS
-				sDocumentStatus.globalStatus= PEPPER_SDOCUMENT_STATUS.IN_PROCESS;
-			}//if one PepperModuleController says IN_PROCESS, status is IN_PROCESS
-			else if (currStatus.contains(PEPPER_SDOCUMENT_STATUS.FAILED))
-			{//if one PepperModuleController says FAILED, status is FAILED
-				sDocumentStatus.globalStatus= PEPPER_SDOCUMENT_STATUS.FAILED;
-				if (this.removE_SDOCUMENT_AFTER_PROCESSING)
-					((SDocument)sDocumentId.getSIdentifiableElement()).setSDocumentGraph(null);
-			}//if one PepperModuleController says FAILED, status is FAILED
-			else if (	(currStatus.contains(PEPPER_SDOCUMENT_STATUS.COMPLETED))&&
-						(currStatus.size()== 1))
-			{//only contains status COMPLETED	
-				if (this.removE_SDOCUMENT_AFTER_PROCESSING)
-				{
-					((SDocument)sDocumentId.getSIdentifiableElement()).setSDocumentGraph(null);
-				}
-				sDocumentStatus.globalStatus= PEPPER_SDOCUMENT_STATUS.COMPLETED;
-			}//only contains status COMPLETED
-//			FZ: outcommented on 20.04.2011
-//			{//notify the amountOfSDocumentController, in case of removing a document
-//				if (	(sDocumentStatus.globalStatus.equals(PEPPER_SDOCUMENT_STATUS.COMPLETED)) ||
-//						(sDocumentStatus.globalStatus.equals(PEPPER_SDOCUMENT_STATUS.DELETED)) ||
-//						(sDocumentStatus.globalStatus.equals(PEPPER_SDOCUMENT_STATUS.FAILED)))
-//				{
-//					this.currentlyProcessedSDocuments.removeSDocument(sDocumentId);
-//				}
-//			}//notify the amountOfSDocumentController, in case of removing a document
-		}//setting global status, respecting to hierarchy of status
-	}
 	
 	/**
-	 * Changes the internal status of a document corresponding to a PepperModule (via a PepperModuleController).
-	 * 
-	 * @param sDocumentId the id of the SDocument object, which is observed and whose status has been changed
-	 * @param pModuleController the PepperModuleController object corresponding to the PepperModule, which is currently working on the document and raised this method
-	 * @param status the now current status of the document which is supposed to be changed   
+	 * {@inheritDoc PepperDocumentController#setSDocumentStatus(SElementId, PepperModuleController, PEPPER_SDOCUMENT_STATUS)}
 	 */
 	public void setSDocumentStatus(	SElementId sDocumentId, 
 									PepperModuleController pModuleController, 
 									PEPPER_SDOCUMENT_STATUS status) 
 	{
-		//System.out.println("> "+this.getClass().getName()+"." +Thread.currentThread().getStackTrace()[1].getMethodName()+"("+sDocumentId.getSId()+ ", "+pModuleController.getPepperModule().getClass().getName()+", "+status+")");
 		if (sDocumentId== null)
 			throw new PepperConvertException("Cannot add sDocument status, because it is null.");
 		if (pModuleController== null)
@@ -736,35 +671,26 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		SDocumentStatus sDocumentStatus= this.sDocumentStatusTable.get(sDocumentId);
 		if (sDocumentStatus== null)
 			throw new PepperConvertException("Cannot add sDocument status, because no entry for the sDocumentId '"+sDocumentId.getSId()+"' exists. Please call observeSDocument() first.");
-		if (	(sDocumentStatus.statusEntries== null) ||
-				(sDocumentStatus.statusEntries.size()== 0))
+		if (	(sDocumentStatus.getStepStatuses()== null) ||
+				(sDocumentStatus.getStepStatuses().size()== 0))
 			throw new PepperConvertException("Cannot add sDocument status, because no PepperModuleController-object is given for the sDocumentId '"+sDocumentId.getSId()+"'. Please call add PeppermoduleControllers first.");
-		Boolean found= false;
-		//System.out.println("HERE 0");
-		for (int i= 0; i < sDocumentStatus.statusEntries.size(); i++)
-//		for (PepperModuleStatusTuple pModStat: sDocumentStatus.statusEntries)
-		{
-			PepperModuleStatusTuple pModStat= sDocumentStatus.statusEntries.get(i);
-			if (pModStat.pModuleController.equals(pModuleController))
-			{//search for given PepperModuleController in internal list
-				if  (	(pModStat.pModuleStatus!= null) &&
-						(pModStat.pModuleStatus.getValue() >= status.getValue()))
-				{//status must be set
-					throw new PepperConvertException("Cannot add status of sDocument '"+sDocumentId+"', because the level of current status '"+pModStat.pModuleStatus.getValue()+"' is higher or equal than the givenstatus '"+status+"'.");
-				}//status must be set
-				else
-					pModStat.pModuleStatus= status;
-				
-				//update the global status
-				this.updateGlobalStatus(sDocumentId);
-				found= true;
-				break;
-			}//search for given PepperModuleController in internal list
-		}
-		//System.out.println("HERE 1");
-		if (!found)
-			throw new PepperConvertException("Cannot add sDocument status, because the PepperModuleController is not registered. Please add it first by using getPepperModuleControllers.add().");
-		{//notify the performance resolver to log event
+		
+		//updates step status and document status to the new given status
+		sDocumentStatus.update(pModuleController, status);
+		
+		
+		if (	(PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(sDocumentStatus.getGlobalStatus()))||
+				(PEPPER_SDOCUMENT_STATUS.DELETED.equals(sDocumentStatus.getGlobalStatus()))||
+				(PEPPER_SDOCUMENT_STATUS.FAILED.equals(sDocumentStatus.getGlobalStatus())))
+		{//clean up when document is finished
+			if (this.removE_SDOCUMENT_AFTER_PROCESSING)
+			{//delete SDocumentGraph if SDocument was fully processed and flag to delete is set
+				((SDocument)sDocumentId.getSIdentifiableElement()).setSDocumentGraph(null);
+			}//delete SDocumentGraph if SDocument was fully processed and flag to delete is set
+			this.currentlyProcessedSDocuments.removeSDocumentFromQueue(sDocumentId);
+		}//clean up when document is finished
+		
+		//start: notify the performance resolver to log event
 			if (this.performanceResolver!= null)
 			{
 				//log start time
@@ -776,30 +702,18 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 							(status.equals(PEPPER_SDOCUMENT_STATUS.FAILED)))
 					this.performanceResolver.endDocument(sDocumentId, pModuleController);
 			}
-		}//notify the performance resolver to log event
-		//System.out.println("HERE 2");
-		{//notify the DocumentAmountController that one document has been removed
+		//end: notify the performance resolver to log event
+		//start: notify the DocumentAmountController that one document has been removed
 			if (status.equals(PEPPER_SDOCUMENT_STATUS.IN_PROCESS))
 			{//add the id of the currently processed SDocument object to the list of processed documents 
-				//System.out.println("HERE 3a");
-				this.currentlyProcessedSDocuments.addSDocument(sDocumentId);
+				this.currentlyProcessedSDocuments.addSDocumentToQueue(sDocumentId);
 			}//add the id of the currently processed SDocument object to the list of processed documents
-			
-			//FZ: added following lines on 20.04.2011
-			else if (	(sDocumentStatus.globalStatus.equals(PEPPER_SDOCUMENT_STATUS.COMPLETED)) ||
-						(sDocumentStatus.globalStatus.equals(PEPPER_SDOCUMENT_STATUS.DELETED)) ||
-						(sDocumentStatus.globalStatus.equals(PEPPER_SDOCUMENT_STATUS.FAILED)))
-			{
-				//System.out.println("HERE 3b");
-				this.currentlyProcessedSDocuments.removeSDocument(sDocumentId);
-			}
-		}//notify the DocumentAmountController that one document has been removed
-		//System.out.println("< "+this.getClass().getName()+"." +Thread.currentThread().getStackTrace()[1].getMethodName()+"("+sDocumentId.getSId()+ ", "+pModuleController.getPepperModule().getClass().getName()+", "+status+")");
+		//end: notify the DocumentAmountController that one document has been removed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns a String containing each observed document, and the status of each Pepper module which has to process the {@link SDocument}
+	 * corresponding to the {@link SDocument}.
 	 */
 	public String getStatus4Print() 
 	{
@@ -808,6 +722,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 				(this.sDocumentStatusTable.size()> 0))
 		{	
 			StringBuffer printStatus= new StringBuffer();
+			printStatus.append("total progress: "+ Math.round(this.getTotalPercentage()*10000)/100.0+"%\n");
 			Enumeration<SElementId> sDocumentIds= this.sDocumentStatusTable.keys();
 			SElementId sDocumentId= null;
 			while (sDocumentIds.hasMoreElements())
@@ -815,14 +730,20 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 				sDocumentId= sDocumentIds.nextElement();
 				SDocumentStatus sDocStatus= this.sDocumentStatusTable.get(sDocumentId);
 				printStatus.append(sDocumentId.getSId());
-				printStatus.append(" ["+sDocStatus.globalStatus+"]\n");
-				for (int i= 0; i< sDocStatus.statusEntries.size(); i++)
+				printStatus.append(" ["+sDocStatus.getGlobalStatus()+"] ... "+Math.round(sDocStatus.getPercentage()*10000)/100.0+"%\n");
+				for (StepStatus stepStatus: sDocStatus.getStepStatuses())
 				{
-					PepperModuleStatusTuple tuple= sDocStatus.statusEntries.get(i);
-					if (tuple.pModuleController.getPepperModule()!= null) 
-						printStatus.append("\t"+tuple.pModuleController.getPepperModule().getName());
-					else printStatus.append("\t"+tuple.pModuleController);
-					printStatus.append(" ["+tuple.pModuleStatus+"]\n");
+					if (stepStatus.getpModuleController().getPepperModule()!= null) 
+						printStatus.append("\t"+stepStatus.getpModuleController().getPepperModule().getName());
+					else printStatus.append("\t"+stepStatus.getpModuleController());
+					printStatus.append(" ["+stepStatus.getModuleStatus());
+					if (PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(stepStatus.getModuleStatus()))
+						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ]\n");
+					else if (PEPPER_SDOCUMENT_STATUS.NOT_STARTED.equals(stepStatus.getModuleStatus()))
+						printStatus.append("]\n");
+					else
+						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ]\n");
+						
 				}
 			}
 			retVal= printStatus.toString();
@@ -842,7 +763,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		SDocumentStatus sDocStatus= this.sDocumentStatusTable.get(sDocumentId);
 		if (sDocStatus== null)
 			throw new PepperConvertException("Cannot return sDocument status, the given sDocumentId '"+sDocumentId+"' has not been observed. Please call observeSDocument(sDocumentId) first.");
-		return(sDocStatus.globalStatus);
+		return(sDocStatus.getGlobalStatus());
 	}
 
 	/**
@@ -859,11 +780,11 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 			throw new PepperConvertException("Cannot return sDocument status, because the given moduleController is null.");
 		
 		SDocumentStatus sDocumentStatus= this.sDocumentStatusTable.get(sDocumentId);
-		for (PepperModuleStatusTuple pModStat: Collections.synchronizedCollection(sDocumentStatus.statusEntries))
+		for (StepStatus stepStatus: sDocumentStatus.getStepStatuses())
 		{
-			if (pModStat.pModuleController.equals(pepperModuleController))
+			if (stepStatus.getpModuleController().equals(pepperModuleController))
 			{
-				retVal= pModStat.pModuleStatus;
+				retVal= stepStatus.getModuleStatus();
 				break;
 			}
 		}
@@ -881,7 +802,6 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 			{	
 				StringBuilder logText= new StringBuilder();
 				for (int i= 0; i< this.pepperModuleControllers.size(); i++)
-//				for (PepperModuleController pModuleController: this.pepperModuleControllers)
 				{
 					PepperModuleController pModuleController= this.pepperModuleControllers.get(i);
 					Long neededTime= this.performanceResolver.getTotalProcessingTimeOfPepperModule(pModuleController);
@@ -902,10 +822,13 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 	}
 
 // ================================== start: LogService
+	/**
+	 * OSGi service for logging.
+	 */
 	private LogService logService= null;
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the OSGi {@link LogService}, for logging in an OSGi environment.
+	 * @param logService reference to a {@link LogService}
 	 */
 	public void setLogService(LogService logService) 
 	{
@@ -913,8 +836,8 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the OSGi {@link LogService}, for logging in an OSGi environment.
+	 * @return reference to a {@link LogService}
 	 */
 	public LogService getLogService() 
 	{
@@ -930,7 +853,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 	 */
 	public synchronized void waitForSDocument() 
 	{
-		this.currentlyProcessedSDocuments.waitForRemovingSDocument();
+		this.currentlyProcessedSDocuments.waitForRemovingSDocumentFromQueue();
 	}
 
 	// ================================== end: LogService

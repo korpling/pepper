@@ -181,8 +181,9 @@ public class PepperMonitorImpl extends EObjectImpl implements PepperMonitor {
 			e.printStackTrace();
 			throw new PepperFWException(e.getMessage());
 		}
-		
-		lock.unlock();
+		finally{
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -192,9 +193,12 @@ public class PepperMonitorImpl extends EObjectImpl implements PepperMonitor {
 	public void finish() 
 	{
 		this.lock.lock();
-		this.finished= true;
-		isFinished.signal();
-		this.lock.unlock();
+		try {
+			this.finished= true;
+			isFinished.signal();
+		}finally{
+			this.lock.unlock();
+		}
 	}
 
 	/**

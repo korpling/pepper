@@ -470,7 +470,6 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 	 */
 	private void realStart() 
 	{
-		
 		if (isReadyToRun())
 		{
 			//no input-monitor
@@ -480,7 +479,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 				this.addException(new PepperConvertException("Cannot start() step, because no input-monitor is given."));
 				return;
 			}
-			{//initialize everything, before start
+			//start: initialize everything, before start
 				this.listOfNotPipelinedOrders= new BasicEList<SElementId>();
 				//set started as true
 				this.started= true;
@@ -490,7 +489,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 				{	
 					cacheMonitor= PepperFWFactory.eINSTANCE.createPepperQueuedMonitor();
 				}
-			}	
+			//end: initialize everything, before start	
 				
 			//for all input monitors create an importController-thread
 			for (PepperQueuedMonitor inputMonitor: this.getInputPepperModuleMonitors())
@@ -508,7 +507,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 			} catch (Exception e) {
 				throw new PepperException("Cannot convert data. ", e); 
 			}
-			{//checking, that no order remains in input-monitors or in cache
+			//start: checking, that no order remains in input-monitors or in cache
 				for (PepperQueuedMonitor inputMonitor: this.getInputPepperModuleMonitors())
 				{
 					if ((!inputMonitor.isFinished()) || (!inputMonitor.isEmpty()))
@@ -522,7 +521,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 					this.addException(new PepperModuleException("An error occurs, there are document-ids which were not processed by module: "+this.getPepperModule().getName()));
 					return;
 				}	
-			}	
+			//end: checking, that no order remains in input-monitors or in cache
 			
 			//notifiying all output monitors for finished
 			for (PepperQueuedMonitor m2mMonitor: this.getOutputPepperModuleMonitors())
@@ -532,13 +531,13 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 			//notifiying m2j-monitor for finished
 			this.getPepperM2JMonitor().finish();
 			
-			{//controlling if every taken document was processed by PepperModule
+			//start: controlling if every taken document was processed by PepperModule
 				if (this.listOfNotPipelinedOrders.size()> 0)
 				{	
 					this.addException(new PepperModuleException("An error occurs, there are document-ids ("+this.listOfNotPipelinedOrders+") which were gettet by module, but not returned by calling put(element-id) or finish(element-id): "+this.getPepperModule().getName()));
 					return;
 				}
-			}//controlling if every taken document was processed by PepperModule
+			//end: controlling if every taken document was processed by PepperModule
 		}
 	}
 	
@@ -572,10 +571,6 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 			}	
 			((PepperImporter)this.getPepperModule()).importCorpusStructure(sCorpusGraph);
 						
-			{//potential checks if everything is ok
-				
-			}//potential checks if everything is ok
-			
 			//notifiying m2j-monitor for finished
 			this.getPepperM2JMonitor().finish();
 		}
@@ -619,7 +614,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 					this.cacheMonitor.put(sElementId);
 				}	
 			}
-			synchronized(numberOfFinishedCacheController)
+			synchronized(this)
 			{
 				numberOfFinishedCacheController++;
 				if (numberOfFinishedCacheController.equals(getInputPepperModuleMonitors().size()))
@@ -630,7 +625,9 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 		}
 		
 	}
-	
+	/**
+	 * a list of element ids, which are not part of the pipeline yet 
+	 */
 	private EList<SElementId> listOfNotPipelinedOrders= null;
 	
 	/**
@@ -648,11 +645,9 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 		
 		//puts the current element in list of not pipelined orders
 		if (sElementId!= null)
-		{
 			this.listOfNotPipelinedOrders.add(sElementId);
-		}
 		
-		{//notify, that sElementId is IN_PROCESS
+		//start: notify, that sElementId is IN_PROCESS
 			if (this.getPepperJobLogger()!= null)
 				this.getPepperJobLogger().logStatus(sElementId, PEPPER_SDOCUMENT_STATUS.IN_PROCESS, this.getPepperModule().getName());
 			if (sElementId!= null)
@@ -661,34 +656,33 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 					throw new PepperConvertException("The sElementId '"+sElementId.getSId()+"' which was requested has no sIdentifiableElement.");
 				if (sElementId.getSIdentifiableElement() instanceof SDocument)
 				{	
-					{//wait until a new document can be started in case of import
+					//start: wait until a new document can be started in case of import
 						if (this.getPepperModule() instanceof PepperImporter)
 						{
 							this.getPepperDocumentController().waitForSDocument();
 						}
-					}//wait until a new document can be started in case of import
-					{//notify the document controller, that a new document has been started
+					//end: wait until a new document can be started in case of import
+					//start: notify the document controller, that a new document has been started
 						if (this.getPepperDocumentController()== null)
 							throw new PepperFWException("No PepperDocumentController is given.");
 						this.getPepperDocumentController().setSDocumentStatus(sElementId, this, PEPPER_SDOCUMENT_STATUS.IN_PROCESS);
-					}//notify the document controller, that a new document has been started
+					//end: notify the document controller, that a new document has been started
 				}
 			}
-		}//notify, that sElementId is IN_PROCESS
+		//end: notify, that sElementId is IN_PROCESS
+		
 		return(sElementId);
 	}
 
 	@Override
 	public void put(SElementId sElementId) 
 	{
-		{//notify, that sElementId is COMPLETED
+		//start: notify, that sElementId is COMPLETED
 			if (this.getPepperJobLogger()!= null)
 				this.getPepperJobLogger().logStatus(sElementId, PEPPER_SDOCUMENT_STATUS.COMPLETED, this.getPepperModule().getName());
 			if (sElementId.getSIdentifiableElement() instanceof SDocument)
 				this.getPepperDocumentController().setSDocumentStatus(sElementId, this, PEPPER_SDOCUMENT_STATUS.COMPLETED);
-		}//notify, that sElementId is COMPLETED
-//		if (sElementId== null)
-//			throw new PepperConvertException("Cannot put the given element-id, because its null.");
+		//end: notify, that sElementId is COMPLETED
 		if (!this.started)
 			throw new PepperConvertException("Cannot finish the given element-id, because the module-controller was not started (please call sytart() first).");
 		for (PepperQueuedMonitor m2mMonitor: this.getOutputPepperModuleMonitors())
@@ -697,6 +691,11 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 		this.listOfNotPipelinedOrders.remove(sElementId);
 	}
 	
+	/**
+	 * Notifies the Pepper framework, that the {@link SDocument} having the given {@link SElementId} shall not be processed
+	 * in following Pepper modules.
+	 * @param sElementId the id corresponding to the {@link SDocument} object, which shall be not further processed
+	 */
 	@Override
 	public void finish(SElementId sElementId) 
 	{
@@ -705,12 +704,12 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 		if (!this.started)
 			throw new PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
 		
-		{//notify, that sElementId is DELETED
+		//start: notify, that sElementId is DELETED
 			if (this.getPepperJobLogger()!= null)
 				this.getPepperJobLogger().logStatus(sElementId, PEPPER_SDOCUMENT_STATUS.DELETED, this.getPepperModule().getName());
 			if (sElementId.getSIdentifiableElement() instanceof SDocument)
 				this.getPepperDocumentController().setSDocumentStatus(sElementId, this, PEPPER_SDOCUMENT_STATUS.DELETED);
-		}//notify, that sElementId is DELETED
+		//end: notify, that sElementId is DELETED
 		
 		//removes element id from list of not pipelined orders
 		this.listOfNotPipelinedOrders.remove(sElementId);

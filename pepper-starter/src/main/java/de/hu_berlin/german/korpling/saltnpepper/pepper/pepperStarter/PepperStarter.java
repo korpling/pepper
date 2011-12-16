@@ -562,6 +562,7 @@ public class PepperStarter
 		}
 		catch (Exception e) 
 		{
+			endedWithErrors= true;
 			staticLogger.error(e);
 			//TODO remove at delivery time
 //			e.printStackTrace();
@@ -569,7 +570,6 @@ public class PepperStarter
 		}
 		finally
 		{
-			
 			EclipseStarter.shutdown();
 		}
 		timestamp= System.currentTimeMillis() - timestamp;

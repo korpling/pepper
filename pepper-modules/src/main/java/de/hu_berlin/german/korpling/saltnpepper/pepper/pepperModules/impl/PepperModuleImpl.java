@@ -402,16 +402,15 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc PepperModule#setTemproraries(URI)}
 	 */
 	public void setTemproraries(URI newTemproraries) 
 	{
 		if (newTemproraries== null)
 			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri is empty.");
-		if (newTemproraries.toString()== null)
+		if (newTemproraries.toFileString()== null)
 			throw new PepperModuleException("Cannot create an uri out of given temprorary path '"+newTemproraries+"' for module '"+this.getName()+"'.");
-		File file= new File(newTemproraries.toString());
+		File file= new File(newTemproraries.toFileString());
 		if (!file.exists())
 			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri '"+newTemproraries+"' does not exists.");
 		if (!file.isDirectory())

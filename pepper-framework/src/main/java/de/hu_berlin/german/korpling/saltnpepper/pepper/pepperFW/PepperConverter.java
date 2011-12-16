@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperConverterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.PepperParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.test.IPepperConverter;
 
@@ -49,7 +50,14 @@ import org.osgi.service.log.LogService;
  */
 public interface PepperConverter extends EObject, IPepperConverter
 {
-
+	/**
+	 * Returns a static {@link LogService} object, which is created, when the first instance of {@link PepperConverter}
+	 * is created. The {@link LogService} object is given by the OSGi environment. Using the {@link PepperConverter#logService}
+	 * will enable a static access to a log service. 
+	 */
+	public static LogService logService= PepperConverterImpl.getLogger();
+	
+	
 	/**
 	 * Sets a LogService for logging.
 	 * @param logService

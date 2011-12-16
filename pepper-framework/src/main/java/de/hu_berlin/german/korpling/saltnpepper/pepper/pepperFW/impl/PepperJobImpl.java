@@ -593,7 +593,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 						(	(removeVal.equalsIgnoreCase("true"))||
 							(removeVal.equalsIgnoreCase("false"))))
 				{	
-					Boolean val= new Boolean(performanceVal);
+					Boolean val= Boolean.valueOf(performanceVal);
 					this.pepperDocumentController.setREMOVE_SDOCUMENT_AFTER_PROCESSING(val);
 				}
 				
@@ -988,7 +988,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 				this.getPepperJobLogger().getLogService().log(LogService.LOG_DEBUG, "waiting for monitor: "+ m2jMonitor.getId()+ "...");
 			m2jMonitor.waitUntilFinished();
 			if (pepperJobLogger!= null)
-				this.getPepperJobLogger().getLogService().log(LogService.LOG_DEBUG, "OK");
+				this.getPepperJobLogger().getLogService().log(LogService.LOG_DEBUG, "waiting for monitor: "+ m2jMonitor.getId()+ "... OK");
 			
 			//exception handling for exceptions in modulecontrollers
 			if (m2jMonitor.getExceptions().size()> 0)

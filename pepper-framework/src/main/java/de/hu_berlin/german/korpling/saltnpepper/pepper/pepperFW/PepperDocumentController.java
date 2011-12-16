@@ -209,8 +209,11 @@ public interface PepperDocumentController extends EObject {
 	EList<SElementId> getObservedSDocuments();
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Changes the internal status of a document corresponding to a PepperModule (via a PepperModuleController).
+	 * 
+	 * @param sDocumentId the id of the SDocument object, which is observed and whose status has been changed
+	 * @param pModuleController the PepperModuleController object corresponding to the PepperModule, which is currently working on the document and raised this method
+	 * @param status the now current status of the document which is supposed to be changed   
 	 * @model sDocumentIdDataType="de.hub.corpling.pepper.pepperInterface.SElementId"
 	 * @generated
 	 */

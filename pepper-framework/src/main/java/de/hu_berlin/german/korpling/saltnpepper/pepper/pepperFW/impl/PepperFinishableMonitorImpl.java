@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFinishableMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
@@ -126,7 +127,7 @@ public class PepperFinishableMonitorImpl extends PepperMonitorImpl implements Pe
 		//if sElementId is null throw exception
 //		old since 1.7.09
 		if (sElementId== null)
-			throw new NullPointerException("Cannot put an empty element-id into monitors queue.");
+			throw new PepperConvertException("Cannot put an empty element-id into monitors queue.");
 //		System.out.println("(m2m-monitor "+this.getId()+") monitor "+this.getId()+" puttet element: "+ sElementId.getSId());
 		//create a queue, if there is non
 		if (this.orderQueue== null)
@@ -152,7 +153,7 @@ public class PepperFinishableMonitorImpl extends PepperMonitorImpl implements Pe
 			try {
 				this.ifEmpty.await();
 			} catch (InterruptedException e) {
-				throw new NullPointerException(e.getMessage());
+				throw new PepperConvertException(e.getMessage());
 			}
 		}	
 		sElementId= (SElementId)this.orderQueue.poll();	

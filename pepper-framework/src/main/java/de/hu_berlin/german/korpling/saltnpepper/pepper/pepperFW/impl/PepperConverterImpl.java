@@ -216,12 +216,29 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 //		this.pepperModuleResolver= PepperFWFactory.eINSTANCE.createPepperModuleResolver();
 	}
 
+	
 // ========================================== start: LogService	
+	/**
+	 * Static logger, which is initialized, when the first {@link PepperConverterImpl} is created. The same object as set 
+	 * to that object, is set to the static {@link LogService}. One can get the static {@link LogService} via
+	 */
+	private static LogService logger= null;
+	
+	/**
+	 * {@inheritDoc PepperConverter#logService}
+	 */
+	public static LogService getLogger()
+	{
+		return(logger);
+	}
+	
 	@Reference(bind="setLogService", unbind="unsetLogService", cardinality=ReferenceCardinality.OPTIONAL_UNARY)
 	protected LogService logService;
 
 	public void setLogService(LogService logService) 
 	{
+		if (logger== null)
+			logger=logService;
 		this.logService = logService;
 	}
 	
