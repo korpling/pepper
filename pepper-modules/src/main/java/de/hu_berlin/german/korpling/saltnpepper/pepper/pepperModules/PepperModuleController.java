@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
@@ -33,7 +34,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModuleController()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModuleController()
  * @model interface="true" abstract="true"
  * @generated
  */
@@ -49,7 +50,7 @@ public interface PepperModuleController extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pepper Module</em>' containment reference.
 	 * @see #setPepperModule(PepperModule)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModuleController_PepperModule()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModuleController_PepperModule()
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getPepperModuleController
 	 * @model opposite="pepperModuleController" containment="true"
 	 * @generated
@@ -69,7 +70,7 @@ public interface PepperModuleController extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model sElementIdDataType="de.hub.corpling.pepper.pepperInterface.SElementId"
+	 * @model sElementIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
 	void put(SElementId sElementId);
@@ -77,7 +78,7 @@ public interface PepperModuleController extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.SElementId"
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
 	SElementId get();
@@ -85,9 +86,8 @@ public interface PepperModuleController extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model sElementIdDataType="de.hub.corpling.pepper.pepperInterface.SElementId"
+	 * @model sElementIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
 	void finish(SElementId sElementId);
-
 } // PepperModuleController

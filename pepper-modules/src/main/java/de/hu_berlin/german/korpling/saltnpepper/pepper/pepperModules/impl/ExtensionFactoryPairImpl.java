@@ -18,6 +18,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.ExtensionFactoryPair;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -100,7 +101,7 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.EXTENSION_FACTORY_PAIR;
+		return PepperModulesPackage.Literals.EXTENSION_FACTORY_PAIR;
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 		String oldFileExtension = fileExtension;
 		fileExtension = newFileExtension;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION, oldFileExtension, fileExtension));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION, oldFileExtension, fileExtension));
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 		ResourceFactoryImpl oldResourceFactory = resourceFactory;
 		resourceFactory = newResourceFactory;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY, oldResourceFactory, resourceFactory));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY, oldResourceFactory, resourceFactory));
 	}
 
 	/**
@@ -153,9 +154,9 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
 				return getFileExtension();
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
 				return getResourceFactory();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -169,10 +170,10 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
 				setFileExtension((String)newValue);
 				return;
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
 				setResourceFactory((ResourceFactoryImpl)newValue);
 				return;
 		}
@@ -187,10 +188,10 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
 				setFileExtension(FILE_EXTENSION_EDEFAULT);
 				return;
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
 				setResourceFactory(RESOURCE_FACTORY_EDEFAULT);
 				return;
 		}
@@ -205,9 +206,9 @@ public class ExtensionFactoryPairImpl extends EObjectImpl implements ExtensionFa
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__FILE_EXTENSION:
 				return FILE_EXTENSION_EDEFAULT == null ? fileExtension != null : !FILE_EXTENSION_EDEFAULT.equals(fileExtension);
-			case PepperInterfacePackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
+			case PepperModulesPackage.EXTENSION_FACTORY_PAIR__RESOURCE_FACTORY:
 				return RESOURCE_FACTORY_EDEFAULT == null ? resourceFactory != null : !RESOURCE_FACTORY_EDEFAULT.equals(resourceFactory);
 		}
 		return super.eIsSet(featureID);

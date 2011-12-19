@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -92,7 +93,7 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.CORPUS_DEFINITION;
+		return PepperModulesPackage.Literals.CORPUS_DEFINITION;
 	}
 
 	/**
@@ -113,7 +114,7 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 		URI oldCorpusPath = corpusPath;
 		corpusPath = newCorpusPath;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.CORPUS_DEFINITION__CORPUS_PATH, oldCorpusPath, corpusPath));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.CORPUS_DEFINITION__CORPUS_PATH, oldCorpusPath, corpusPath));
 	}
 
 	/**
@@ -134,7 +135,7 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 		FormatDefinition oldFormatDefinition = formatDefinition;
 		formatDefinition = newFormatDefinition;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION, oldFormatDefinition, newFormatDefinition);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION, oldFormatDefinition, newFormatDefinition);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -149,14 +150,14 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 		if (newFormatDefinition != formatDefinition) {
 			NotificationChain msgs = null;
 			if (formatDefinition != null)
-				msgs = ((InternalEObject)formatDefinition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION, null, msgs);
+				msgs = ((InternalEObject)formatDefinition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION, null, msgs);
 			if (newFormatDefinition != null)
-				msgs = ((InternalEObject)newFormatDefinition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION, null, msgs);
+				msgs = ((InternalEObject)newFormatDefinition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION, null, msgs);
 			msgs = basicSetFormatDefinition(newFormatDefinition, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION, newFormatDefinition, newFormatDefinition));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION, newFormatDefinition, newFormatDefinition));
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
+			case PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
 				return basicSetFormatDefinition(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -181,9 +182,9 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PepperInterfacePackage.CORPUS_DEFINITION__CORPUS_PATH:
+			case PepperModulesPackage.CORPUS_DEFINITION__CORPUS_PATH:
 				return getCorpusPath();
-			case PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
+			case PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
 				return getFormatDefinition();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -197,10 +198,10 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PepperInterfacePackage.CORPUS_DEFINITION__CORPUS_PATH:
+			case PepperModulesPackage.CORPUS_DEFINITION__CORPUS_PATH:
 				setCorpusPath((URI)newValue);
 				return;
-			case PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
+			case PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
 				setFormatDefinition((FormatDefinition)newValue);
 				return;
 		}
@@ -215,10 +216,10 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.CORPUS_DEFINITION__CORPUS_PATH:
+			case PepperModulesPackage.CORPUS_DEFINITION__CORPUS_PATH:
 				setCorpusPath(CORPUS_PATH_EDEFAULT);
 				return;
-			case PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
+			case PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
 				setFormatDefinition((FormatDefinition)null);
 				return;
 		}
@@ -233,9 +234,9 @@ public class CorpusDefinitionImpl extends EObjectImpl implements CorpusDefinitio
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.CORPUS_DEFINITION__CORPUS_PATH:
+			case PepperModulesPackage.CORPUS_DEFINITION__CORPUS_PATH:
 				return CORPUS_PATH_EDEFAULT == null ? corpusPath != null : !CORPUS_PATH_EDEFAULT.equals(corpusPath);
-			case PepperInterfacePackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
+			case PepperModulesPackage.CORPUS_DEFINITION__FORMAT_DEFINITION:
 				return formatDefinition != null;
 		}
 		return super.eIsSet(featureID);

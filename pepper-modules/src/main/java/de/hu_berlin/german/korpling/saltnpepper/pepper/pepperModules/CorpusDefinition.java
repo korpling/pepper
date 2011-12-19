@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getCorpusDefinition()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getCorpusDefinition()
  * @model
  * @generated
  */
@@ -49,8 +49,8 @@ public interface CorpusDefinition extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Corpus Path</em>' attribute.
 	 * @see #setCorpusPath(URI)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getCorpusDefinition_CorpusPath()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getCorpusDefinition_CorpusPath()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	URI getCorpusPath();
@@ -75,7 +75,7 @@ public interface CorpusDefinition extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Format Definition</em>' containment reference.
 	 * @see #setFormatDefinition(FormatDefinition)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getCorpusDefinition_FormatDefinition()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getCorpusDefinition_FormatDefinition()
 	 * @model containment="true"
 	 * @generated
 	 */

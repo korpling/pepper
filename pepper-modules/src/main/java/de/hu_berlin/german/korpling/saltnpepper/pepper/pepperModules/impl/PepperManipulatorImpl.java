@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperManipulator;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -48,7 +49,7 @@ public class PepperManipulatorImpl extends PepperModuleImpl implements PepperMan
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.PEPPER_MANIPULATOR;
+		return PepperModulesPackage.Literals.PEPPER_MANIPULATOR;
 	}
 
 } //PepperManipulatorImpl

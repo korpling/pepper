@@ -18,6 +18,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -120,7 +121,7 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.FORMAT_DEFINITION;
+		return PepperModulesPackage.Literals.FORMAT_DEFINITION;
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 		String oldFormatName = formatName;
 		formatName = newFormatName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_NAME, oldFormatName, formatName));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.FORMAT_DEFINITION__FORMAT_NAME, oldFormatName, formatName));
 	}
 
 	/**
@@ -162,7 +163,7 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 		String oldFormatVersion = formatVersion;
 		formatVersion = newFormatVersion;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_VERSION, oldFormatVersion, formatVersion));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.FORMAT_DEFINITION__FORMAT_VERSION, oldFormatVersion, formatVersion));
 	}
 
 	/**
@@ -183,7 +184,7 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 		URI oldFormatReference = formatReference;
 		formatReference = newFormatReference;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_REFERENCE, oldFormatReference, formatReference));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.FORMAT_DEFINITION__FORMAT_REFERENCE, oldFormatReference, formatReference));
 	}
 
 	/**
@@ -194,11 +195,11 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_NAME:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_NAME:
 				return getFormatName();
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_VERSION:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_VERSION:
 				return getFormatVersion();
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
 				return getFormatReference();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -212,13 +213,13 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_NAME:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_NAME:
 				setFormatName((String)newValue);
 				return;
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_VERSION:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_VERSION:
 				setFormatVersion((String)newValue);
 				return;
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
 				setFormatReference((URI)newValue);
 				return;
 		}
@@ -233,13 +234,13 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_NAME:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_NAME:
 				setFormatName(FORMAT_NAME_EDEFAULT);
 				return;
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_VERSION:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_VERSION:
 				setFormatVersion(FORMAT_VERSION_EDEFAULT);
 				return;
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
 				setFormatReference(FORMAT_REFERENCE_EDEFAULT);
 				return;
 		}
@@ -254,11 +255,11 @@ public class FormatDefinitionImpl extends EObjectImpl implements FormatDefinitio
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_NAME:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_NAME:
 				return FORMAT_NAME_EDEFAULT == null ? formatName != null : !FORMAT_NAME_EDEFAULT.equals(formatName);
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_VERSION:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_VERSION:
 				return FORMAT_VERSION_EDEFAULT == null ? formatVersion != null : !FORMAT_VERSION_EDEFAULT.equals(formatVersion);
-			case PepperInterfacePackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
+			case PepperModulesPackage.FORMAT_DEFINITION__FORMAT_REFERENCE:
 				return FORMAT_REFERENCE_EDEFAULT == null ? formatReference != null : !FORMAT_REFERENCE_EDEFAULT.equals(formatReference);
 		}
 		return super.eIsSet(featureID);

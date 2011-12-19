@@ -37,7 +37,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperImporter()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperImporter()
  * @model
  * @generated
  */
@@ -53,7 +53,7 @@ public interface PepperImporter extends PepperModule {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Supported Formats</em>' containment reference list.
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperImporter_SupportedFormats()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperImporter_SupportedFormats()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -69,7 +69,7 @@ public interface PepperImporter extends PepperModule {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Corpus Definition</em>' containment reference.
 	 * @see #setCorpusDefinition(CorpusDefinition)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperImporter_CorpusDefinition()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperImporter_CorpusDefinition()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -88,7 +88,7 @@ public interface PepperImporter extends PepperModule {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model exceptions="de.hub.corpling.pepper.pepperInterface.PepperModuleException" corpusGraphDataType="de.hub.corpling.pepper.pepperInterface.SCorpusGraph"
+	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException" corpusGraphDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SCorpusGraph"
 	 * @generated
 	 */
 	void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException;

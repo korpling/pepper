@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getExtensionFactoryPair()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getExtensionFactoryPair()
  * @model
  * @generated
  */
@@ -49,7 +49,7 @@ public interface ExtensionFactoryPair extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>File Extension</em>' attribute.
 	 * @see #setFileExtension(String)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getExtensionFactoryPair_FileExtension()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getExtensionFactoryPair_FileExtension()
 	 * @model
 	 * @generated
 	 */
@@ -75,8 +75,8 @@ public interface ExtensionFactoryPair extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Resource Factory</em>' attribute.
 	 * @see #setResourceFactory(ResourceFactoryImpl)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getExtensionFactoryPair_ResourceFactory()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.ResourceFactory"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getExtensionFactoryPair_ResourceFactory()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.ResourceFactory"
 	 * @generated
 	 */
 	ResourceFactoryImpl getResourceFactory();

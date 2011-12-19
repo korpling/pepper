@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 
 import org.eclipse.emf.ecore.EClass;
@@ -88,7 +89,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__NAME = PepperInterfacePackage.PEPPER_EXPORTER__NAME;
+	int PEPPER_XSLT_EXPORTER__NAME = PepperModulesPackage.PEPPER_EXPORTER__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Pepper Module Controller</b></em>' container reference.
@@ -97,7 +98,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__PEPPER_MODULE_CONTROLLER = PepperInterfacePackage.PEPPER_EXPORTER__PEPPER_MODULE_CONTROLLER;
+	int PEPPER_XSLT_EXPORTER__PEPPER_MODULE_CONTROLLER = PepperModulesPackage.PEPPER_EXPORTER__PEPPER_MODULE_CONTROLLER;
 
 	/**
 	 * The feature id for the '<em><b>Salt Project</b></em>' attribute.
@@ -106,7 +107,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__SALT_PROJECT = PepperInterfacePackage.PEPPER_EXPORTER__SALT_PROJECT;
+	int PEPPER_XSLT_EXPORTER__SALT_PROJECT = PepperModulesPackage.PEPPER_EXPORTER__SALT_PROJECT;
 
 	/**
 	 * The feature id for the '<em><b>Returning Mode</b></em>' attribute.
@@ -115,7 +116,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__RETURNING_MODE = PepperInterfacePackage.PEPPER_EXPORTER__RETURNING_MODE;
+	int PEPPER_XSLT_EXPORTER__RETURNING_MODE = PepperModulesPackage.PEPPER_EXPORTER__RETURNING_MODE;
 
 	/**
 	 * The feature id for the '<em><b>SCorpus Graph</b></em>' attribute.
@@ -124,7 +125,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__SCORPUS_GRAPH = PepperInterfacePackage.PEPPER_EXPORTER__SCORPUS_GRAPH;
+	int PEPPER_XSLT_EXPORTER__SCORPUS_GRAPH = PepperModulesPackage.PEPPER_EXPORTER__SCORPUS_GRAPH;
 
 	/**
 	 * The feature id for the '<em><b>Resources</b></em>' attribute.
@@ -133,7 +134,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__RESOURCES = PepperInterfacePackage.PEPPER_EXPORTER__RESOURCES;
+	int PEPPER_XSLT_EXPORTER__RESOURCES = PepperModulesPackage.PEPPER_EXPORTER__RESOURCES;
 
 	/**
 	 * The feature id for the '<em><b>Temproraries</b></em>' attribute.
@@ -142,7 +143,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__TEMPRORARIES = PepperInterfacePackage.PEPPER_EXPORTER__TEMPRORARIES;
+	int PEPPER_XSLT_EXPORTER__TEMPRORARIES = PepperModulesPackage.PEPPER_EXPORTER__TEMPRORARIES;
 
 	/**
 	 * The feature id for the '<em><b>Symbolic Name</b></em>' attribute.
@@ -151,7 +152,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__SYMBOLIC_NAME = PepperInterfacePackage.PEPPER_EXPORTER__SYMBOLIC_NAME;
+	int PEPPER_XSLT_EXPORTER__SYMBOLIC_NAME = PepperModulesPackage.PEPPER_EXPORTER__SYMBOLIC_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Persistence Connector</b></em>' containment reference.
@@ -160,7 +161,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__PERSISTENCE_CONNECTOR = PepperInterfacePackage.PEPPER_EXPORTER__PERSISTENCE_CONNECTOR;
+	int PEPPER_XSLT_EXPORTER__PERSISTENCE_CONNECTOR = PepperModulesPackage.PEPPER_EXPORTER__PERSISTENCE_CONNECTOR;
 
 	/**
 	 * The feature id for the '<em><b>Special Params</b></em>' attribute.
@@ -169,7 +170,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__SPECIAL_PARAMS = PepperInterfacePackage.PEPPER_EXPORTER__SPECIAL_PARAMS;
+	int PEPPER_XSLT_EXPORTER__SPECIAL_PARAMS = PepperModulesPackage.PEPPER_EXPORTER__SPECIAL_PARAMS;
 
 	/**
 	 * The feature id for the '<em><b>Supported Formats</b></em>' containment reference list.
@@ -178,7 +179,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__SUPPORTED_FORMATS = PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS;
+	int PEPPER_XSLT_EXPORTER__SUPPORTED_FORMATS = PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS;
 
 	/**
 	 * The feature id for the '<em><b>Corpus Definition</b></em>' containment reference.
@@ -187,7 +188,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__CORPUS_DEFINITION = PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION;
+	int PEPPER_XSLT_EXPORTER__CORPUS_DEFINITION = PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION;
 
 	/**
 	 * The feature id for the '<em><b>Xslt Transformer</b></em>' containment reference.
@@ -196,7 +197,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER__XSLT_TRANSFORMER = PepperInterfacePackage.PEPPER_EXPORTER_FEATURE_COUNT + 0;
+	int PEPPER_XSLT_EXPORTER__XSLT_TRANSFORMER = PepperModulesPackage.PEPPER_EXPORTER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Pepper XSLT Exporter</em>' class.
@@ -205,7 +206,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_XSLT_EXPORTER_FEATURE_COUNT = PepperInterfacePackage.PEPPER_EXPORTER_FEATURE_COUNT + 1;
+	int PEPPER_XSLT_EXPORTER_FEATURE_COUNT = PepperModulesPackage.PEPPER_EXPORTER_FEATURE_COUNT + 1;
 
 
 	/**
@@ -225,7 +226,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int XSLT_TRANSFORMER__EXTENSION_FACTORY_PAIRS = PepperInterfacePackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS;
+	int XSLT_TRANSFORMER__EXTENSION_FACTORY_PAIRS = PepperModulesPackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS;
 
 	/**
 	 * The number of structural features of the '<em>XSLT Transformer</em>' class.
@@ -234,7 +235,7 @@ public interface XsltModulesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int XSLT_TRANSFORMER_FEATURE_COUNT = PepperInterfacePackage.PERSISTENCE_CONNECTOR_FEATURE_COUNT + 0;
+	int XSLT_TRANSFORMER_FEATURE_COUNT = PepperModulesPackage.PERSISTENCE_CONNECTOR_FEATURE_COUNT + 0;
 
 
 	/**

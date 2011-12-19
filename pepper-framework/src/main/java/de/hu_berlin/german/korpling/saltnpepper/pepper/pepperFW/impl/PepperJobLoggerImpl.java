@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.osgi.service.log.LogService;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PEPPER_SDOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperJob;
@@ -34,9 +35,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Pepper Job Logger</b></em>'.
- * <!-- end-user-doc -->
+ * ...
+ * This class also starts an object requesting a given interval the progress of current conversion and prints it to log (info).  
  * <p>
  * The following features are implemented:
  * <ul>
@@ -60,10 +60,12 @@ public class PepperJobLoggerImpl extends EObjectImpl implements PepperJobLogger 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	protected PepperJobLoggerImpl() {
 		super();
+		ProgressRunner runner= new ProgressRunner();
+		Thread progressRunnerThread= new Thread(runner, "progress_logger");
+		progressRunnerThread.start();
 	}
 
 	/**
@@ -134,6 +136,31 @@ public class PepperJobLoggerImpl extends EObjectImpl implements PepperJobLogger 
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, PepperFWPackage.PEPPER_JOB_LOGGER__PEPPER_JOB, newPepperJob, newPepperJob));
+	}
+	
+	public static Long LOG_PROGRESS_INTERMEDIATE_TIME= 20000L;  
+	
+	/**
+	 * A class for printing the log status each {@link #LOG_PROGRESS_INTERMEDIATE_TIME} ms.
+	 * @author Florian Zipser
+	 *
+	 */
+	class ProgressRunner implements Runnable
+	{
+		@Override
+		public void run() 
+		{
+			while(true)
+			{
+				if (getLogService()!= null)
+					getLogService().log(LogService.LOG_INFO, getPepperJob().getPepperDocumentController().getStatus4Print());
+				try {
+					Thread.sleep(LOG_PROGRESS_INTERMEDIATE_TIME);
+				} catch (InterruptedException e) {
+					throw new PepperConvertException("An error occurs while in thread during waiting phase (only Progress logger).");
+				}
+			}
+		}
 	}
 	
 //=========================== start: setting LogService

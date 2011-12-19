@@ -230,7 +230,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_zR3X8VzYEd6A-bVjdTyCrg" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperJob"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zR3X8lzYEd6A-bVjdTyCrg" x="1570" y="460" width="282" height="152"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zR3X8lzYEd6A-bVjdTyCrg" x="1570" y="460" width="378" height="173"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_3F8fkGJUEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_3F8fk2JUEd6tA6cWJZKimQ" type="4001"/>
@@ -254,7 +254,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_3F8fkWJUEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperModuleController"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3F8fkmJUEd6tA6cWJZKimQ" x="1070" y="420" width="331" height="91"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3F8fkmJUEd6tA6cWJZKimQ" x="990" y="420" width="411" height="91"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_FrRtEGJcEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_FrXzsGJcEd6tA6cWJZKimQ" type="4001"/>

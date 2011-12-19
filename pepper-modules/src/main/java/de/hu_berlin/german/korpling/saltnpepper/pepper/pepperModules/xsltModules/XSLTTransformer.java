@@ -35,7 +35,7 @@ public interface XSLTTransformer extends PersistenceConnector {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model sourceURIDataType="de.hub.corpling.pepper.pepperInterface.URI" targetURIDataType="de.hub.corpling.pepper.pepperInterface.URI" xsltURIDataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @model sourceURIDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI" targetURIDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI" xsltURIDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	void transform(URI sourceURI, URI targetURI, URI xsltURI);

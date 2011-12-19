@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.ExtensionFactoryPair;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PersistenceConnector;
 
@@ -78,7 +79,7 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.PERSISTENCE_CONNECTOR;
+		return PepperModulesPackage.Literals.PERSISTENCE_CONNECTOR;
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 	 */
 	public EList<ExtensionFactoryPair> getExtensionFactoryPairs() {
 		if (extensionFactoryPairs == null) {
-			extensionFactoryPairs = new EObjectResolvingEList<ExtensionFactoryPair>(ExtensionFactoryPair.class, this, PepperInterfacePackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS);
+			extensionFactoryPairs = new EObjectResolvingEList<ExtensionFactoryPair>(ExtensionFactoryPair.class, this, PepperModulesPackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS);
 		}
 		return extensionFactoryPairs;
 	}
@@ -151,7 +152,7 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PepperInterfacePackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
+			case PepperModulesPackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
 				return getExtensionFactoryPairs();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -166,7 +167,7 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PepperInterfacePackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
+			case PepperModulesPackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
 				getExtensionFactoryPairs().clear();
 				getExtensionFactoryPairs().addAll((Collection<? extends ExtensionFactoryPair>)newValue);
 				return;
@@ -182,7 +183,7 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
+			case PepperModulesPackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
 				getExtensionFactoryPairs().clear();
 				return;
 		}
@@ -197,7 +198,7 @@ public class PersistenceConnectorImpl extends EObjectImpl implements Persistence
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
+			case PepperModulesPackage.PERSISTENCE_CONNECTOR__EXTENSION_FACTORY_PAIRS:
 				return extensionFactoryPairs != null && !extensionFactoryPairs.isEmpty();
 		}
 		return super.eIsSet(featureID);

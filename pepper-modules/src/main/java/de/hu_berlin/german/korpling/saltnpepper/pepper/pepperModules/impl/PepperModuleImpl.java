@@ -37,6 +37,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInter
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PersistenceConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
@@ -260,7 +261,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.PEPPER_MODULE;
+		return PepperModulesPackage.Literals.PEPPER_MODULE;
 	}
 
 	/**
@@ -278,7 +279,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	 * @generated
 	 */
 	public PepperModuleController getPepperModuleController() {
-		if (eContainerFeatureID() != PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER) return null;
+		if (eContainerFeatureID() != PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER) return null;
 		return (PepperModuleController)eContainer();
 	}
 
@@ -288,7 +289,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	 * @generated
 	 */
 	public NotificationChain basicSetPepperModuleController(PepperModuleController newPepperModuleController, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newPepperModuleController, PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, msgs);
+		msgs = eBasicSetContainer((InternalEObject)newPepperModuleController, PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, msgs);
 		return msgs;
 	}
 
@@ -298,19 +299,19 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	 * @generated
 	 */
 	public void setPepperModuleController(PepperModuleController newPepperModuleController) {
-		if (newPepperModuleController != eInternalContainer() || (eContainerFeatureID() != PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER && newPepperModuleController != null)) {
+		if (newPepperModuleController != eInternalContainer() || (eContainerFeatureID() != PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER && newPepperModuleController != null)) {
 			if (EcoreUtil.isAncestor(this, newPepperModuleController))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newPepperModuleController != null)
-				msgs = ((InternalEObject)newPepperModuleController).eInverseAdd(this, PepperInterfacePackage.PEPPER_MODULE_CONTROLLER__PEPPER_MODULE, PepperModuleController.class, msgs);
+				msgs = ((InternalEObject)newPepperModuleController).eInverseAdd(this, PepperModulesPackage.PEPPER_MODULE_CONTROLLER__PEPPER_MODULE, PepperModuleController.class, msgs);
 			msgs = basicSetPepperModuleController(newPepperModuleController, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, newPepperModuleController, newPepperModuleController));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, newPepperModuleController, newPepperModuleController));
 	}
 
 	/**
@@ -331,7 +332,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		SaltProject oldSaltProject = saltProject;
 		saltProject = newSaltProject;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__SALT_PROJECT, oldSaltProject, saltProject));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT, oldSaltProject, saltProject));
 	}
 
 	/**
@@ -361,7 +362,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		SCorpusGraph oldSCorpusGraph = sCorpusGraph;
 		sCorpusGraph = newSCorpusGraph;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__SCORPUS_GRAPH, oldSCorpusGraph, sCorpusGraph));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH, oldSCorpusGraph, sCorpusGraph));
 	}
 
 	/**
@@ -457,7 +458,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		String oldSymbolicName = symbolicName;
 		symbolicName = newSymbolicName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__SYMBOLIC_NAME, oldSymbolicName, symbolicName));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__SYMBOLIC_NAME, oldSymbolicName, symbolicName));
 	}
 
 	/**
@@ -478,7 +479,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		PersistenceConnector oldPersistenceConnector = persistenceConnector;
 		persistenceConnector = newPersistenceConnector;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, oldPersistenceConnector, newPersistenceConnector);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, oldPersistenceConnector, newPersistenceConnector);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -493,14 +494,14 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		if (newPersistenceConnector != persistenceConnector) {
 			NotificationChain msgs = null;
 			if (persistenceConnector != null)
-				msgs = ((InternalEObject)persistenceConnector).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, null, msgs);
+				msgs = ((InternalEObject)persistenceConnector).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, null, msgs);
 			if (newPersistenceConnector != null)
-				msgs = ((InternalEObject)newPersistenceConnector).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, null, msgs);
+				msgs = ((InternalEObject)newPersistenceConnector).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, null, msgs);
 			msgs = basicSetPersistenceConnector(newPersistenceConnector, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, newPersistenceConnector, newPersistenceConnector));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR, newPersistenceConnector, newPersistenceConnector));
 	}
 
 	/**
@@ -521,7 +522,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		URI oldSpecialParams = specialParams;
 		specialParams = newSpecialParams;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__SPECIAL_PARAMS, oldSpecialParams, specialParams));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS, oldSpecialParams, specialParams));
 	}
 
 	/**
@@ -646,6 +647,14 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		return(this.logService);
 	}
 
+	/**
+	 * {@inheritDoc PepperModule#getProgress(SElementId)}
+	 */
+	public Double getProgress(SElementId sDocumentId) 
+	{
+		return(null);
+	}
+
 	// ====================================== end: getting logger ======================================
 
 	/**
@@ -656,7 +665,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
 				return basicSetPepperModuleController((PepperModuleController)otherEnd, msgs);
@@ -672,9 +681,9 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
 				return basicSetPepperModuleController(null, msgs);
-			case PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
+			case PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
 				return basicSetPersistenceConnector(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -688,8 +697,8 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
-				return eInternalContainer().eInverseRemove(this, PepperInterfacePackage.PEPPER_MODULE_CONTROLLER__PEPPER_MODULE, PepperModuleController.class, msgs);
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+				return eInternalContainer().eInverseRemove(this, PepperModulesPackage.PEPPER_MODULE_CONTROLLER__PEPPER_MODULE, PepperModuleController.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -702,25 +711,25 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_MODULE__NAME:
+			case PepperModulesPackage.PEPPER_MODULE__NAME:
 				return getName();
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
 				return getPepperModuleController();
-			case PepperInterfacePackage.PEPPER_MODULE__SALT_PROJECT:
+			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				return getSaltProject();
-			case PepperInterfacePackage.PEPPER_MODULE__RETURNING_MODE:
+			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
 				return getReturningMode();
-			case PepperInterfacePackage.PEPPER_MODULE__SCORPUS_GRAPH:
+			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				return getSCorpusGraph();
-			case PepperInterfacePackage.PEPPER_MODULE__RESOURCES:
+			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
 				return getResources();
-			case PepperInterfacePackage.PEPPER_MODULE__TEMPRORARIES:
+			case PepperModulesPackage.PEPPER_MODULE__TEMPRORARIES:
 				return getTemproraries();
-			case PepperInterfacePackage.PEPPER_MODULE__SYMBOLIC_NAME:
+			case PepperModulesPackage.PEPPER_MODULE__SYMBOLIC_NAME:
 				return getSymbolicName();
-			case PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
+			case PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
 				return getPersistenceConnector();
-			case PepperInterfacePackage.PEPPER_MODULE__SPECIAL_PARAMS:
+			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				return getSpecialParams();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -734,28 +743,28 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
 				setPepperModuleController((PepperModuleController)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SALT_PROJECT:
+			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				setSaltProject((SaltProject)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SCORPUS_GRAPH:
+			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				setSCorpusGraph((SCorpusGraph)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__RESOURCES:
+			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
 				setResources((URI)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__TEMPRORARIES:
+			case PepperModulesPackage.PEPPER_MODULE__TEMPRORARIES:
 				setTemproraries((URI)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SYMBOLIC_NAME:
+			case PepperModulesPackage.PEPPER_MODULE__SYMBOLIC_NAME:
 				setSymbolicName((String)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
+			case PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
 				setPersistenceConnector((PersistenceConnector)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SPECIAL_PARAMS:
+			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				setSpecialParams((URI)newValue);
 				return;
 		}
@@ -770,28 +779,28 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
 				setPepperModuleController((PepperModuleController)null);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SALT_PROJECT:
+			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				setSaltProject(SALT_PROJECT_EDEFAULT);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SCORPUS_GRAPH:
+			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				setSCorpusGraph(SCORPUS_GRAPH_EDEFAULT);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__RESOURCES:
+			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
 				setResources(RESOURCES_EDEFAULT);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__TEMPRORARIES:
+			case PepperModulesPackage.PEPPER_MODULE__TEMPRORARIES:
 				setTemproraries(TEMPRORARIES_EDEFAULT);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SYMBOLIC_NAME:
+			case PepperModulesPackage.PEPPER_MODULE__SYMBOLIC_NAME:
 				setSymbolicName(SYMBOLIC_NAME_EDEFAULT);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
+			case PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
 				setPersistenceConnector((PersistenceConnector)null);
 				return;
-			case PepperInterfacePackage.PEPPER_MODULE__SPECIAL_PARAMS:
+			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				setSpecialParams(SPECIAL_PARAMS_EDEFAULT);
 				return;
 		}
@@ -806,25 +815,25 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_MODULE__NAME:
+			case PepperModulesPackage.PEPPER_MODULE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
+			case PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER:
 				return getPepperModuleController() != null;
-			case PepperInterfacePackage.PEPPER_MODULE__SALT_PROJECT:
+			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				return SALT_PROJECT_EDEFAULT == null ? saltProject != null : !SALT_PROJECT_EDEFAULT.equals(saltProject);
-			case PepperInterfacePackage.PEPPER_MODULE__RETURNING_MODE:
+			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
 				return returningMode != RETURNING_MODE_EDEFAULT;
-			case PepperInterfacePackage.PEPPER_MODULE__SCORPUS_GRAPH:
+			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				return SCORPUS_GRAPH_EDEFAULT == null ? sCorpusGraph != null : !SCORPUS_GRAPH_EDEFAULT.equals(sCorpusGraph);
-			case PepperInterfacePackage.PEPPER_MODULE__RESOURCES:
+			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
 				return RESOURCES_EDEFAULT == null ? resources != null : !RESOURCES_EDEFAULT.equals(resources);
-			case PepperInterfacePackage.PEPPER_MODULE__TEMPRORARIES:
+			case PepperModulesPackage.PEPPER_MODULE__TEMPRORARIES:
 				return TEMPRORARIES_EDEFAULT == null ? temproraries != null : !TEMPRORARIES_EDEFAULT.equals(temproraries);
-			case PepperInterfacePackage.PEPPER_MODULE__SYMBOLIC_NAME:
+			case PepperModulesPackage.PEPPER_MODULE__SYMBOLIC_NAME:
 				return SYMBOLIC_NAME_EDEFAULT == null ? symbolicName != null : !SYMBOLIC_NAME_EDEFAULT.equals(symbolicName);
-			case PepperInterfacePackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
+			case PepperModulesPackage.PEPPER_MODULE__PERSISTENCE_CONNECTOR:
 				return persistenceConnector != null;
-			case PepperInterfacePackage.PEPPER_MODULE__SPECIAL_PARAMS:
+			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				return SPECIAL_PARAMS_EDEFAULT == null ? specialParams != null : !SPECIAL_PARAMS_EDEFAULT.equals(specialParams);
 		}
 		return super.eIsSet(featureID);

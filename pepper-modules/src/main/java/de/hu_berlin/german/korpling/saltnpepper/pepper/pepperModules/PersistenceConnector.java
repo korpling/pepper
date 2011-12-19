@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPersistenceConnector()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPersistenceConnector()
  * @model
  * @generated
  */
@@ -50,7 +50,7 @@ public interface PersistenceConnector extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Extension Factory Pairs</em>' reference list.
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPersistenceConnector_ExtensionFactoryPairs()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPersistenceConnector_ExtensionFactoryPairs()
 	 * @model
 	 * @generated
 	 */
@@ -59,7 +59,7 @@ public interface PersistenceConnector extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model modelURIDataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @model modelURIDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	Resource save(EObject modelObject, URI modelURI);
@@ -67,7 +67,7 @@ public interface PersistenceConnector extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model resourceURIDataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @model resourceURIDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	Resource getResource(URI resourceURI);

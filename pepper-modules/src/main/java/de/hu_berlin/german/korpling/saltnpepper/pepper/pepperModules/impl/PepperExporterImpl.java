@@ -21,6 +21,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperCo
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
@@ -89,7 +90,7 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return PepperInterfacePackage.Literals.PEPPER_EXPORTER;
+		return PepperModulesPackage.Literals.PEPPER_EXPORTER;
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	 */
 	public EList<FormatDefinition> getSupportedFormats() {
 		if (supportedFormats == null) {
-			supportedFormats = new EObjectContainmentEList<FormatDefinition>(FormatDefinition.class, this, PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS);
+			supportedFormats = new EObjectContainmentEList<FormatDefinition>(FormatDefinition.class, this, PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS);
 		}
 		return supportedFormats;
 	}
@@ -122,7 +123,7 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 		CorpusDefinition oldCorpusDefinition = corpusDefinition;
 		corpusDefinition = newCorpusDefinition;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION, oldCorpusDefinition, newCorpusDefinition);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION, oldCorpusDefinition, newCorpusDefinition);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -137,14 +138,14 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 		if (newCorpusDefinition != corpusDefinition) {
 			NotificationChain msgs = null;
 			if (corpusDefinition != null)
-				msgs = ((InternalEObject)corpusDefinition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION, null, msgs);
+				msgs = ((InternalEObject)corpusDefinition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION, null, msgs);
 			if (newCorpusDefinition != null)
-				msgs = ((InternalEObject)newCorpusDefinition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION, null, msgs);
+				msgs = ((InternalEObject)newCorpusDefinition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION, null, msgs);
 			msgs = basicSetCorpusDefinition(newCorpusDefinition, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION, newCorpusDefinition, newCorpusDefinition));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION, newCorpusDefinition, newCorpusDefinition));
 	}
 
 	/**
@@ -178,9 +179,9 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
+			case PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
 				return ((InternalEList<?>)getSupportedFormats()).basicRemove(otherEnd, msgs);
-			case PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
+			case PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
 				return basicSetCorpusDefinition(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -194,9 +195,9 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
+			case PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
 				return getSupportedFormats();
-			case PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
+			case PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
 				return getCorpusDefinition();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -211,11 +212,11 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
+			case PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
 				getSupportedFormats().clear();
 				getSupportedFormats().addAll((Collection<? extends FormatDefinition>)newValue);
 				return;
-			case PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
+			case PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
 				setCorpusDefinition((CorpusDefinition)newValue);
 				return;
 		}
@@ -230,10 +231,10 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
+			case PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
 				getSupportedFormats().clear();
 				return;
-			case PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
+			case PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
 				setCorpusDefinition((CorpusDefinition)null);
 				return;
 		}
@@ -248,9 +249,9 @@ public class PepperExporterImpl extends PepperModuleImpl implements PepperExport
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PepperInterfacePackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
+			case PepperModulesPackage.PEPPER_EXPORTER__SUPPORTED_FORMATS:
 				return supportedFormats != null && !supportedFormats.isEmpty();
-			case PepperInterfacePackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
+			case PepperModulesPackage.PEPPER_EXPORTER__CORPUS_DEFINITION:
 				return corpusDefinition != null;
 		}
 		return super.eIsSet(featureID);

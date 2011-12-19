@@ -18,7 +18,6 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.log.LogService;
 
@@ -277,5 +276,4 @@ public interface PepperDocumentController extends EObject {
 	 * @generated
 	 */
 	void waitForSDocument();
-
 } // PepperDocumentController

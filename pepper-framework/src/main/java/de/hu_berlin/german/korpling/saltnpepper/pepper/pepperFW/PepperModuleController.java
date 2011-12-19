@@ -21,7 +21,10 @@ import org.eclipse.emf.common.util.EList;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 
 /**
@@ -202,4 +205,13 @@ public interface PepperModuleController extends de.hu_berlin.german.korpling.sal
 	 * @generated
 	 */
 	void importCorpusStructure(SCorpusGraph sCorpusGraph) throws PepperConvertException;
+	
+	/**
+	 * This method is invoked by the Pepper framework, to get the current progress concerning the {@link SDocument} object
+	 * corresponding to the given {@link SElementId} in percent. A valid value return must be between 0 and 1. This method can 
+	 * be overridden by a derived {@link PepperModule} class. If this method is not overridden, it will return null. 
+	 * @param sDocumentId identifier of the requested {@link SDocument} object.
+	 */
+	//TODO this method must be also specified in Pepper EMF model
+	public Double getProgress(SElementId sDocumentId);
 } // PepperModuleController

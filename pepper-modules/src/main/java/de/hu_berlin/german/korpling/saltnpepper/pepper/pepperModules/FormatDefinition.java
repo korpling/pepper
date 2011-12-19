@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getFormatDefinition()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getFormatDefinition()
  * @model
  * @generated
  */
@@ -50,7 +50,7 @@ public interface FormatDefinition extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Format Name</em>' attribute.
 	 * @see #setFormatName(String)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getFormatDefinition_FormatName()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getFormatDefinition_FormatName()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -76,7 +76,7 @@ public interface FormatDefinition extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Format Version</em>' attribute.
 	 * @see #setFormatVersion(String)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getFormatDefinition_FormatVersion()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getFormatDefinition_FormatVersion()
 	 * @model
 	 * @generated
 	 */
@@ -102,8 +102,8 @@ public interface FormatDefinition extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Format Reference</em>' attribute.
 	 * @see #setFormatReference(URI)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getFormatDefinition_FormatReference()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getFormatDefinition_FormatReference()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	URI getFormatReference();

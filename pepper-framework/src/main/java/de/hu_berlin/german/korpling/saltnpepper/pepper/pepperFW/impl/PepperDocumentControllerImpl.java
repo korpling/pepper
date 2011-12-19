@@ -561,8 +561,8 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 						waitingTime= spaceForNewSDocument.awaitNanos(10000000000L);
 						if (waitingTime> 0l)
 							wait= false;
-						if (getLogService()!= null)
-							getLogService().log(LogService.LOG_DEBUG, getStatus4Print());
+//						if (getLogService()!= null)
+//							getLogService().log(LogService.LOG_DEBUG, getStatus4Print());
 					}
 					if (getLogService()!= null)
 						getLogService().log(LogService.LOG_DEBUG, "waiting for a free slot for a new document... OK");
@@ -738,11 +738,11 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 					else printStatus.append("\t"+stepStatus.getpModuleController());
 					printStatus.append(" ["+stepStatus.getModuleStatus());
 					if (PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(stepStatus.getModuleStatus()))
-						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ]\n");
+						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... "+(stepStatus.getPercentage()*10000)/100.0+"%]\n");
 					else if (PEPPER_SDOCUMENT_STATUS.NOT_STARTED.equals(stepStatus.getModuleStatus()))
 						printStatus.append("]\n");
 					else
-						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ]\n");
+						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... "+(stepStatus.getPercentage()*10000)/100.0+"% ]\n");
 						
 				}
 			}
@@ -1028,5 +1028,4 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		result.append(')');
 		return result.toString();
 	}
-
 } //PepperDocumentControllerImpl

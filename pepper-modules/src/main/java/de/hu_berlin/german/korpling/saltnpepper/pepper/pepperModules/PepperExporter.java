@@ -35,7 +35,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperExporter()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperExporter()
  * @model
  * @generated
  */
@@ -51,7 +51,7 @@ public interface PepperExporter extends PepperModule {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Supported Formats</em>' containment reference list.
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperExporter_SupportedFormats()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperExporter_SupportedFormats()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -67,7 +67,7 @@ public interface PepperExporter extends PepperModule {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Corpus Definition</em>' containment reference.
 	 * @see #setCorpusDefinition(CorpusDefinition)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperExporter_CorpusDefinition()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperExporter_CorpusDefinition()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -86,7 +86,7 @@ public interface PepperExporter extends PepperModule {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model sElementIdDataType="de.hub.corpling.pepper.pepperInterface.SElementId"
+	 * @model sElementIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
 	void createFolderStructure(SElementId sElementId);

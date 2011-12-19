@@ -17,6 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModulesPackageImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperInterfacePackageImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.PepperXSLTExporter;
@@ -101,15 +103,15 @@ public class XsltModulesPackageImpl extends EPackageImpl implements XsltModulesP
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		PepperInterfacePackageImpl thePepperInterfacePackage = (PepperInterfacePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(PepperInterfacePackage.eNS_URI) instanceof PepperInterfacePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(PepperInterfacePackage.eNS_URI) : PepperInterfacePackage.eINSTANCE);
+		PepperModulesPackageImpl thePepperModulesPackage = (PepperModulesPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(PepperModulesPackage.eNS_URI) instanceof PepperModulesPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(PepperModulesPackage.eNS_URI) : PepperModulesPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theXsltModulesPackage.createPackageContents();
-		thePepperInterfacePackage.createPackageContents();
+		thePepperModulesPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theXsltModulesPackage.initializePackageContents();
-		thePepperInterfacePackage.initializePackageContents();
+		thePepperModulesPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theXsltModulesPackage.freeze();
@@ -205,15 +207,15 @@ public class XsltModulesPackageImpl extends EPackageImpl implements XsltModulesP
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		PepperInterfacePackage thePepperInterfacePackage = (PepperInterfacePackage)EPackage.Registry.INSTANCE.getEPackage(PepperInterfacePackage.eNS_URI);
+		PepperModulesPackage thePepperModulesPackage = (PepperModulesPackage)EPackage.Registry.INSTANCE.getEPackage(PepperModulesPackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		pepperXSLTExporterEClass.getESuperTypes().add(thePepperInterfacePackage.getPepperExporter());
-		xsltTransformerEClass.getESuperTypes().add(thePepperInterfacePackage.getPersistenceConnector());
+		pepperXSLTExporterEClass.getESuperTypes().add(thePepperModulesPackage.getPepperExporter());
+		xsltTransformerEClass.getESuperTypes().add(thePepperModulesPackage.getPersistenceConnector());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(pepperXSLTExporterEClass, PepperXSLTExporter.class, "PepperXSLTExporter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -222,9 +224,9 @@ public class XsltModulesPackageImpl extends EPackageImpl implements XsltModulesP
 		initEClass(xsltTransformerEClass, XSLTTransformer.class, "XSLTTransformer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		EOperation op = addEOperation(xsltTransformerEClass, null, "transform", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, thePepperInterfacePackage.getURI(), "sourceURI", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, thePepperInterfacePackage.getURI(), "targetURI", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, thePepperInterfacePackage.getURI(), "xsltURI", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePepperModulesPackage.getURI(), "sourceURI", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePepperModulesPackage.getURI(), "targetURI", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePepperModulesPackage.getURI(), "xsltURI", 0, 1, IS_UNIQUE, IS_ORDERED);
 	}
 
 } //XsltModulesPackageImpl

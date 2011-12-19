@@ -24,6 +24,7 @@ import org.osgi.service.log.LogService;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
@@ -47,7 +48,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * </ul>
  * </p>
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule()
  * @model
  * @generated
  */
@@ -61,7 +62,7 @@ public interface PepperModule extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_Name()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Name()
 	 * @model required="true" changeable="false"
 	 * @generated
 	 */
@@ -78,7 +79,7 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pepper Module Controller</em>' container reference.
 	 * @see #setPepperModuleController(PepperModuleController)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_PepperModuleController()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_PepperModuleController()
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController#getPepperModule
 	 * @model opposite="pepperModule" transient="false"
 	 * @generated
@@ -105,8 +106,8 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Salt Project</em>' attribute.
 	 * @see #setSaltProject(SaltProject)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_SaltProject()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.SaltProject" required="true"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SaltProject()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SaltProject" required="true"
 	 * @generated
 	 */
 	SaltProject getSaltProject();
@@ -133,7 +134,7 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Returning Mode</em>' attribute.
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_ReturningMode()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_ReturningMode()
 	 * @model default="PUT" changeable="false"
 	 * @generated
 	 */
@@ -149,8 +150,8 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>SCorpus Graph</em>' attribute.
 	 * @see #setSCorpusGraph(SCorpusGraph)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_SCorpusGraph()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.SCorpusGraph" required="true"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SCorpusGraph()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SCorpusGraph" required="true"
 	 * @generated
 	 */
 	SCorpusGraph getSCorpusGraph();
@@ -175,8 +176,8 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Resources</em>' attribute.
 	 * @see #setResources(URI)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_Resources()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Resources()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	URI getResources();
@@ -201,8 +202,8 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Temproraries</em>' attribute.
 	 * @see #setTemproraries(URI)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_Temproraries()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Temproraries()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	URI getTemproraries();
@@ -227,7 +228,7 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Symbolic Name</em>' attribute.
 	 * @see #setSymbolicName(String)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_SymbolicName()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SymbolicName()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -253,7 +254,7 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistence Connector</em>' containment reference.
 	 * @see #setPersistenceConnector(PersistenceConnector)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_PersistenceConnector()
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_PersistenceConnector()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -279,8 +280,8 @@ public interface PepperModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Special Params</em>' attribute.
 	 * @see #setSpecialParams(URI)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperModule_SpecialParams()
-	 * @model dataType="de.hub.corpling.pepper.pepperInterface.URI"
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SpecialParams()
+	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
 	 */
 	URI getSpecialParams();
@@ -298,7 +299,7 @@ public interface PepperModule extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model exceptions="de.hub.corpling.pepper.pepperInterface.PepperModuleException"
+	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
 	 * @generated
 	 */
 	void start() throws PepperModuleException;
@@ -306,7 +307,7 @@ public interface PepperModule extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model exceptions="de.hub.corpling.pepper.pepperInterface.PepperModuleException" sElementIdDataType="de.hub.corpling.pepper.pepperInterface.SElementId"
+	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException" sElementIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
 	void start(SElementId sElementId) throws PepperModuleException;
@@ -314,7 +315,7 @@ public interface PepperModule extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model exceptions="de.hub.corpling.pepper.pepperInterface.PepperModuleException"
+	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
 	 * @generated
 	 */
 	void end() throws PepperModuleException;
@@ -322,7 +323,7 @@ public interface PepperModule extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model logServiceDataType="de.hub.corpling.pepper.pepperInterface.LogService"
+	 * @model logServiceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
 	 * @generated
 	 */
 	void setLogService(LogService logService);
@@ -330,7 +331,7 @@ public interface PepperModule extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model logServiceDataType="de.hub.corpling.pepper.pepperInterface.LogService"
+	 * @model logServiceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
 	 * @generated
 	 */
 	void unsetLogService(LogService logService);
@@ -338,9 +339,19 @@ public interface PepperModule extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="de.hub.corpling.pepper.pepperInterface.LogService"
+	 * @model kind="operation" dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
 	 * @generated
 	 */
 	LogService getLogService();
+
+	/**
+	 * This method is invoked by the Pepper framework, to get the current progress concerning the {@link SDocument} object
+	 * corresponding to the given {@link SElementId} in percent. A valid value return must be between 0 and 1. This method can 
+	 * be overridden by a derived {@link PepperModule} class. If this method is not overridden, it will return null. 
+	 * @param sDocumentId identifier of the requested {@link SDocument} object.
+	 * @model sDocumentIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
+	 * @generated
+	 */
+	Double getProgress(SElementId sDocumentId);
 
 } // PepperModule

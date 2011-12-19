@@ -64,6 +64,10 @@
         <element xmi:type="ecore:EOperation" href="pepperModules.ecore#//PepperModule/unsetLogService"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_muFtMQH-Ed-UbI3fd4D9Gw"/>
       </children>
+      <children xmi:type="notation:Node" xmi:id="_88yNcCpDEeGo-deSzZ629g" type="2002">
+        <element xmi:type="ecore:EOperation" href="pepperModules.ecore#//PepperModule/getProgress"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_88yNcSpDEeGo-deSzZ629g"/>
+      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_Wlfjm2SuEd6hS_p1kv5AvQ"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_WlfjnGSuEd6hS_p1kv5AvQ"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_WlfjnWSuEd6hS_p1kv5AvQ"/>
@@ -195,7 +199,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_WllqRGSuEd6hS_p1kv5AvQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperModules.ecore#//PepperModuleController"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WllqRWSuEd6hS_p1kv5AvQ" x="470" y="140" width="186" height="91"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WllqRWSuEd6hS_p1kv5AvQ" x="470" y="125" width="253" height="106"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_WllqRmSuEd6hS_p1kv5AvQ" type="1004">
     <children xmi:type="notation:Node" xmi:id="_WllqR2SuEd6hS_p1kv5AvQ" type="4008"/>

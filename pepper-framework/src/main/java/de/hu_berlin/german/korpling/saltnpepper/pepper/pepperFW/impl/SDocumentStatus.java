@@ -89,6 +89,7 @@ public class SDocumentStatus
 			}
 		}
 		StepStatus stepStatus= new StepStatus();
+		stepStatus.setSDocumentId(this.getsDocumentId());
 		stepStatus.setpModuleController(pepperModuleController);
 		stepStatus.setModuleStatus(PEPPER_SDOCUMENT_STATUS.NOT_STARTED);
 		stepStatuses.add(stepStatus);
@@ -186,6 +187,25 @@ public class SDocumentStatus
 	}
 	
 	/**
+	 * Finds and returns the {@link StepStatus} object corresponding to the given {@link PepperModuleController} object. 
+	 * @param pModuleController {@link PepperModuleController} specifying the {@link StepStatus} to be found 
+	 * @return {@link StepStatus} object matching to the given {@link PepperModuleController} object
+	 */
+	public StepStatus findStepStatus(PepperModuleController pModuleController)
+	{
+		StepStatus retVal= null;
+		for (StepStatus stepStatus: this.getStepStatuses())
+		{
+			if (stepStatus.getpModuleController().equals(pModuleController))
+			{
+				retVal= stepStatus;
+				break;
+			}
+		}
+		return(retVal);
+	}
+	
+	/**
 	 * Returns all {@link StepStatus} object being part of this {@link SDocumentStatus} object. 
 	 * @return
 	 */
@@ -208,12 +228,13 @@ public class SDocumentStatus
 			return(1.0);
 		else
 		{
-			double p = 1l / Double.valueOf(stepStatuses.size());
+//			double p = 1l / Double.valueOf(stepStatuses.size());
 			double p_total= 0;
 			for (StepStatus status: stepStatuses)
 			{
-				if (PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(status.getModuleStatus()))
-					p_total=p_total+p;
+				p_total=p_total+ (status.getPercentage()/ Double.valueOf(stepStatuses.size()));
+//				if (PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(status.getModuleStatus()))
+//					p_total=p_total+p;
 			}
 			return(p_total);
 		}

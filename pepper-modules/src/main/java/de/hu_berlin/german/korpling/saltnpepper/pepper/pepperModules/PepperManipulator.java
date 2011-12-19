@@ -24,7 +24,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
  * <!-- end-user-doc -->
  *
  *
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getPepperManipulator()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperManipulator()
  * @model
  * @generated
  */

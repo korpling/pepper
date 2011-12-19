@@ -28,7 +28,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>RETURNING MODE</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage#getRETURNING_MODE()
+ * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getRETURNING_MODE()
  * @model
  * @generated
  */

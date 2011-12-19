@@ -16,6 +16,9 @@
       <eParameters name="logService" eType="#//LogService"/>
     </eOperations>
     <eOperations name="getLogService" eType="#//LogService"/>
+    <eOperations name="getProgress" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject">
+      <eParameters name="sDocumentId" eType="#//SElementId"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="pepperModuleController"
