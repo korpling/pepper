@@ -470,6 +470,9 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		 */
 		private volatile Condition spaceForNewSDocument=lock.newCondition();
 		
+		/**
+		 * maximal amount of documents to be computed at the same time
+		 */
 		private volatile Integer maxAmountOfDocuments= AMOUNT_OF_COMPUTABLE_SDOCUMENTS_EDEFAULT;
 		
 		/**
