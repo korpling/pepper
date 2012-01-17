@@ -89,7 +89,7 @@ public class PepperTestRunner implements Runnable
 	{
 		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE)== null)
 			throw new RuntimeException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for confersion.");
-		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE).equals(""))
+		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE).isEmpty())
 			throw new RuntimeException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for confersion. Currently it is empty.");
 		File workflowDescFile= new File(System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE));
 		if (!workflowDescFile.exists())
@@ -106,7 +106,7 @@ public class PepperTestRunner implements Runnable
 			{//checking environment variable PEPPER_TEST
 				String pepperTestPathStr= System.getenv(ENV_PEPPER_TEST);
 				if (	(pepperTestPathStr== null) ||
-						(pepperTestPathStr.equals("")))
+						(pepperTestPathStr.isEmpty()))
 					throw new PepperTestException("Cannot start PepperTest, because the environment variable '"+ENV_PEPPER_TEST+"' is not set. Please set this variable and try again.");
 				pepperTestPath= new File(pepperTestPathStr);
 				if (!pepperTestPath.exists())
