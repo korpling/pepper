@@ -14,7 +14,18 @@
     <module>pepper-parentModule</module>
     <module>pepper-starter</module>
   </modules>
-  <licenses>
+   <description>Pepper is a plugable converter framework to convert linguistic data between several formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged into the framework via creating a PepperModule.</description>
+   <url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
+   <issueManagement>
+   	<system>Redmine</system>
+   	<url>https://korpling.german.hu-berlin.de/p/projects/pepper/issues</url>
+   </issueManagement>
+   <ciManagement>
+   	<system>Jenkins</system>
+   	<url>https://korpling.german.hu-berlin.de/jenkins/</url>
+   </ciManagement>
+   <inceptionYear>2009</inceptionYear>
+   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
@@ -22,18 +33,20 @@
   </licenses>
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk</developerConnection>
+    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/</url>
   </scm>
   <distributionManagement>
     <repository>
-      <id>SaltNPepper Repository</id>
-      <name>SaltNPepper Repository</name>
-      <url>file:///home/annis/public_html/maven2/saltnpepper</url>
+      <id>korpling</id>
+      <name>korpling maven repo</name>
+      <url>scpexe://korpling.german.hu-berlin.de/srv/www/maven2/</url>
     </repository>
   </distributionManagement>
   <repositories>
     <repository>
-      <id>SaltNPepper Repository</id>
-      <url>https://korpling.german.hu-berlin.de/~annis/maven2/saltnpepper/</url>
+      <id>korpling</id>
+      <name>korpling maven repo</name>
+      <url>http://korpling.german.hu-berlin.de/maven2</url>
     </repository>
   </repositories>
   <properties>
@@ -116,7 +129,18 @@
 	  </dependencies>
 	
   
-  <build>
+    <organization>
+    	<name>Humboldt Univerity of Berlin, INRIA</name>
+    </organization>
+    <build>
+  	<extensions>
+      <!-- Enabling the use of FTP -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0</version>
+      </extension>
+    </extensions>
     <plugins>
    <!-- start: Plugin for automatic releasing -->
     <plugin>
