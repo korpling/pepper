@@ -187,7 +187,30 @@ public class PepperImporterImpl extends PepperModuleImpl implements PepperImport
 		
 		return(this.documentResourceTable);
 	}
-		
+	
+	/**
+	 * This method can be overridden by derived classes. This method is called by the method {@link #createCorpusStructureRec(URI, SElementId, EList)},
+	 * to check if a file shall be imported into a {@link SDocument} object. For instance, if the file type is not precise enough
+	 * to check that, a derived class of the given class can override that method to read the content of the file and to make a decision
+	 * corresponding to its content. 
+	 * @param checkUri the {@link URI} locating the file to check 
+	 * @return true, if and only if the file corresponding to the given {@link URI} shall be mapped to a {@link SDocument} object 
+	 */
+	protected boolean isFileToImport(URI checkUri)
+	{ 
+		if (checkUri== null)
+			throw new PepperModuleException("Cannot check if the given uri can be mapped to a SDocument object, because the uri is null.");
+		return(true); 
+	}
+	
+	/**
+	 * Traverses recursively the folder structure to create a corpus-structure from it and creates a {@link SDocument} object,
+	 * in case of the file type given in <code>endings</code> is correct and the method {@link #isFileASDocument()} returns true.
+	 * @param currURI
+	 * @param parentsID
+	 * @param endings
+	 * @throws IOException
+	 */
 	private void createCorpusStructureRec(URI currURI, SElementId parentsID, EList<String> endings) throws IOException
 	{
 		String corpGraphName= null;
@@ -239,9 +262,10 @@ public class PepperImporterImpl extends PepperModuleImpl implements PepperImport
 				currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
 				
 				{//create a new document 
-					if (	(endings== null) ||
-							(endings.contains(currURI.fileExtension())))
-					{//the file has corrct ending
+					if (	(	(endings== null) ||
+								(endings.contains(currURI.fileExtension())))&&
+							(this.isFileToImport(currURI)))
+					{//the file has the correct ending
 						SDocument sDocument= SaltCommonFactory.eINSTANCE.createSDocument();
 						sDocument.setSElementId(currId);
 						sDocument.setSName(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
@@ -258,7 +282,7 @@ public class PepperImporterImpl extends PepperModuleImpl implements PepperImport
 				
 				//setting name for corpus graph
 				if (	(this.getSCorpusGraph().getSName()== null) || 
-						(this.getSCorpusGraph().getSName().equalsIgnoreCase("")))
+						(this.getSCorpusGraph().getSName().isEmpty()))
 					this.getSCorpusGraph().setSName(corpGraphName);
 			}
 		}
