@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
   <artifactId>pepper</artifactId>
-  <version>1.1.3-SNAPSHOT</version>
+  <version>1.1.3</version>
   <packaging>pom</packaging>
    <modules>
    	<module>pepper-logReader</module>
@@ -32,8 +32,8 @@
     </license>
   </licenses>
   <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk</developerConnection>
-    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/</url>
+    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.3</developerConnection>
+    <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.3</url>
   </scm>
   <repositories>
     <repository>
