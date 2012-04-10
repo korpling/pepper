@@ -8,10 +8,33 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pepper-parentModule</artifactId>
   <packaging>pom</packaging>
+
+  <description>Provides shared POM-data.</description>
+  <ciManagement>
+  	<system>Jenkins</system>
+  	<url>https://korpling.german.hu-berlin.de/jenkins/</url>
+  </ciManagement>
+  <inceptionYear>2011</inceptionYear>
+
+  <repositories>
+    <repository>
+      <id>korpling</id>
+      <name>korpling maven repo</name>
+      <url>http://korpling.german.hu-berlin.de/maven2</url>
+    </repository>
+  </repositories>
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-parentModule/</developerConnection>
     <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-parentModule/</url>
   </scm>
+  <distributionManagement>
+    <repository>
+      <id>korpling</id>
+      <name>korpling maven repo</name>
+      <url>file:///srv/www/maven2/</url>
+      <!-- <url>scpexe://korpling.german.hu-berlin.de/srv/www/maven2/</url>-->
+    </repository>
+  </distributionManagement>
   <properties>
   	<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
   </properties>
