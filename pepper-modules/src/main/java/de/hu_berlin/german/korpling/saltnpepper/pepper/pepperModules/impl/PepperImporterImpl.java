@@ -17,20 +17,6 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusDocumentRelation;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusRelation;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -47,6 +33,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusDocumentRelation;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusRelation;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Pepper Importer</b></em>'.
@@ -61,7 +60,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class PepperImporterImpl extends PepperModuleImpl implements PepperImporter {
+public abstract class PepperImporterImpl extends PepperModuleImpl implements PepperImporter {
 	/**
 	 * The cached value of the '{@link #getSupportedFormats() <em>Supported Formats</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -162,6 +161,20 @@ public class PepperImporterImpl extends PepperModuleImpl implements PepperImport
 	 */
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
 		throw new PepperModuleException("An error occurs in this importer-module (name: "+this.getName()+"). The method importCorpusStructure() isn�t implemented.");
+	}
+
+	/**
+	 * Creates a new {@link FormatDefinitionImpl} objects, sets its values 
+	 * {@link FormatDefinition#setFormatName(String)}, {@link FormatDefinition#setFormatVersion(String)} and
+	 * {@link FormatDefinition#setFormatReference(URI)} to the given ones, adds the created object to
+	 * list of supported formats {@link #getSupportedFormats()} and returns it.
+	 * @param pepperModule the importer or exporter, to whichs supported formats list the format shall be added
+	 * @param formatName name of the supported format to add
+	 * @param formatVersion version of the supported format to add
+	 * @param formatReference uri reference where the supported format to add is described or defined
+	 */
+	public FormatDefinition addSupportedFormat(String formatName, String formatVersion, URI formatReference) {
+		return(PepperExporterImpl.addSupportedFormat(this, formatName, formatVersion, formatReference));
 	}
 
 	/**

@@ -45,11 +45,12 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getSymbolicName <em>Symbolic Name</em>}</li>
  *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getPersistenceConnector <em>Persistence Connector</em>}</li>
  *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getSpecialParams <em>Special Params</em>}</li>
+ *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getVersion <em>Version</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface PepperModule extends EObject {
@@ -295,6 +296,32 @@ public interface PepperModule extends EObject {
 	 * @generated
 	 */
 	void setSpecialParams(URI value);
+
+	/**
+	 * Returns the value of the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Version</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Version</em>' attribute.
+	 * @see #setVersion(String)
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Version()
+	 * @model
+	 * @generated
+	 */
+	String getVersion();
+
+	/**
+	 * Sets the value of the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getVersion <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Version</em>' attribute.
+	 * @see #getVersion()
+	 * @generated
+	 */
+	void setVersion(String value);
 
 	/**
 	 * <!-- begin-user-doc -->

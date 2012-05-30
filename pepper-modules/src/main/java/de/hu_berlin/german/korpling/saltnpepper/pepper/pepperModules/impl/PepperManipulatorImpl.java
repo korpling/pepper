@@ -17,11 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperManipulator;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import org.eclipse.emf.ecore.EClass;
+
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperManipulator;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,7 +31,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class PepperManipulatorImpl extends PepperModuleImpl implements PepperManipulator {
+public abstract class PepperManipulatorImpl extends PepperModuleImpl implements PepperManipulator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

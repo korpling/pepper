@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.common.util.URI;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 
@@ -36,7 +37,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * </p>
  *
  * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperExporter()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface PepperExporter extends PepperModule {
@@ -90,4 +91,12 @@ public interface PepperExporter extends PepperModule {
 	 * @generated
 	 */
 	void createFolderStructure(SElementId sElementId);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model formatReferenceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
+	 * @generated
+	 */
+	FormatDefinition addSupportedFormat(String formatName, String formatVersion, URI formatReference);
 } // PepperExporter

@@ -17,20 +17,17 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 
 /**
  * <!-- begin-user-doc -->

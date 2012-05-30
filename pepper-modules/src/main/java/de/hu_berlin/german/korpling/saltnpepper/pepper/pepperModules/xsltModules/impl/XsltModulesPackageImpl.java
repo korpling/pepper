@@ -17,23 +17,18 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModulesPackageImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperInterfacePackageImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.PepperXSLTExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.XSLTTransformer;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.XsltModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.XsltModulesPackage;
-
-
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
-
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->

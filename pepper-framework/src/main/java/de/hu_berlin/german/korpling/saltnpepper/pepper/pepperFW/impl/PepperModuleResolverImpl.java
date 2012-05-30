@@ -457,11 +457,11 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	{
 		String resURIStr= System.getProperty(this.resourcesPropertyName);
 		if (	(resURIStr== null) ||
-				(resURIStr.equals("")))
+				(resURIStr.isEmpty()))
 			throw new PepperFWException("Cannot start converting, because the system property '"+this.resourcesPropertyName+"' isn't set. This might be an internal failure.");
 		
 		if (	(module.getSymbolicName()== null) ||
-				(module.getSymbolicName().equals("")))
+				(module.getSymbolicName().isEmpty()))
 			throw new PepperModuleException("Cannot set resources to module '"+module.getName()+"', because its symbolic name is empty.");
 		
 		URI resURI= URI.createFileURI(resURIStr+"/"+module.getSymbolicName());
@@ -478,11 +478,11 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	{
 		String tempURIStr= System.getProperty(this.temprorariesPropertyName);
 		if (	(tempURIStr== null) ||
-				(tempURIStr.equals("")))
+				(tempURIStr.isEmpty()))
 			throw new PepperFWException("Cannot start converting, because the system property '"+this.temprorariesPropertyName+"' isn't set. This might be an internal failure.");
 		
 		if (	(module.getSymbolicName()== null) ||
-				(module.getSymbolicName().equals("")))
+				(module.getSymbolicName().isEmpty()))
 			throw new PepperModuleException("Cannot set temproraries to module '"+module.getName()+"', because its symbolic name is empty.");
 		URI tempURI= URI.createFileURI(tempURIStr+"/"+module.getSymbolicName()+"/"+this.numberOfModuleInstances.get(module.getSymbolicName()));
 		File tempFile= new File(tempURI.toFileString());
@@ -524,7 +524,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	private void increaseNumberOfModules(String moduleSymbolicName)
 	{
 		if (	(moduleSymbolicName== null) ||
-				(moduleSymbolicName.equals("")))
+				(moduleSymbolicName.isEmpty()))
 			throw new PepperModuleException("Cannot increase number of modules, because the symbolic name of module is empty.");
 		if (this.numberOfModuleInstances.containsKey(moduleSymbolicName))
 		{

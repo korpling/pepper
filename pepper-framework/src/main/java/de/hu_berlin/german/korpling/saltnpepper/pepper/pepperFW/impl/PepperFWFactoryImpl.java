@@ -47,9 +47,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperInterfaceFactoryImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModulesFactoryImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ExporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ImporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams;
@@ -60,7 +60,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.PepperParams
  * An implementation of the model <b>Factory</b>.
  * <!-- end-user-doc -->
  */
-public class PepperFWFactoryImpl extends PepperInterfaceFactoryImpl implements PepperFWFactory {
+public class PepperFWFactoryImpl extends PepperModulesFactoryImpl implements PepperFWFactory {
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
@@ -620,7 +620,7 @@ public class PepperFWFactoryImpl extends PepperInterfaceFactoryImpl implements P
 	 * @deprecated
 	 */
 	@Deprecated
-	public static PepperInterfacePackage getPackage() {
-		return PepperInterfacePackage.eINSTANCE;
+	public static PepperModulesPackage getPackage() {
+		return PepperModulesPackage.eINSTANCE;
 	}
 } //PepperFWFactoryImpl

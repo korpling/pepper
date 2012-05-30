@@ -358,6 +358,15 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getPepperModule_Version() {
+		return (EAttribute)pepperModuleEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getPepperImporter() {
 		return pepperImporterEClass;
 	}
@@ -662,6 +671,7 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 		createEAttribute(pepperModuleEClass, PEPPER_MODULE__SYMBOLIC_NAME);
 		createEReference(pepperModuleEClass, PEPPER_MODULE__PERSISTENCE_CONNECTOR);
 		createEAttribute(pepperModuleEClass, PEPPER_MODULE__SPECIAL_PARAMS);
+		createEAttribute(pepperModuleEClass, PEPPER_MODULE__VERSION);
 
 		pepperImporterEClass = createEClass(PEPPER_IMPORTER);
 		createEReference(pepperImporterEClass, PEPPER_IMPORTER__SUPPORTED_FORMATS);
@@ -745,7 +755,7 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 		pepperManipulatorEClass.getESuperTypes().add(this.getPepperModule());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(pepperModuleEClass, PepperModule.class, "PepperModule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(pepperModuleEClass, PepperModule.class, "PepperModule", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPepperModule_Name(), ecorePackage.getEString(), "name", null, 1, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPepperModule_PepperModuleController(), this.getPepperModuleController(), this.getPepperModuleController_PepperModule(), "pepperModuleController", null, 0, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPepperModule_SaltProject(), this.getSaltProject(), "saltProject", null, 1, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -756,6 +766,7 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 		initEAttribute(getPepperModule_SymbolicName(), ecorePackage.getEString(), "symbolicName", null, 1, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPepperModule_PersistenceConnector(), this.getPersistenceConnector(), null, "persistenceConnector", null, 0, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPepperModule_SpecialParams(), this.getURI(), "specialParams", null, 0, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPepperModule_Version(), ecorePackage.getEString(), "version", null, 0, 1, PepperModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(pepperModuleEClass, null, "start", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEException(op, this.getPepperModuleException());
@@ -778,7 +789,7 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 		op = addEOperation(pepperModuleEClass, ecorePackage.getEDoubleObject(), "getProgress", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getSElementId(), "sDocumentId", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(pepperImporterEClass, PepperImporter.class, "PepperImporter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(pepperImporterEClass, PepperImporter.class, "PepperImporter", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPepperImporter_SupportedFormats(), this.getFormatDefinition(), null, "supportedFormats", null, 1, -1, PepperImporter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPepperImporter_CorpusDefinition(), this.getCorpusDefinition(), null, "corpusDefinition", null, 1, 1, PepperImporter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -786,12 +797,22 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 		addEParameter(op, this.getSCorpusGraph(), "corpusGraph", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEException(op, this.getPepperModuleException());
 
-		initEClass(pepperExporterEClass, PepperExporter.class, "PepperExporter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		op = addEOperation(pepperImporterEClass, this.getFormatDefinition(), "addSupportedFormat", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "formatName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "formatVersion", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getURI(), "formatReference", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(pepperExporterEClass, PepperExporter.class, "PepperExporter", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPepperExporter_SupportedFormats(), this.getFormatDefinition(), null, "supportedFormats", null, 1, -1, PepperExporter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPepperExporter_CorpusDefinition(), this.getCorpusDefinition(), null, "corpusDefinition", null, 1, 1, PepperExporter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(pepperExporterEClass, null, "createFolderStructure", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getSElementId(), "sElementId", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(pepperExporterEClass, this.getFormatDefinition(), "addSupportedFormat", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "formatName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "formatVersion", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getURI(), "formatReference", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(formatDefinitionEClass, FormatDefinition.class, "FormatDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFormatDefinition_FormatName(), ecorePackage.getEString(), "formatName", null, 1, 1, FormatDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -813,7 +834,7 @@ public class PepperModulesPackageImpl extends EPackageImpl implements PepperModu
 		op = addEOperation(pepperModuleControllerEClass, null, "finish", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getSElementId(), "sElementId", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(pepperManipulatorEClass, PepperManipulator.class, "PepperManipulator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(pepperManipulatorEClass, PepperManipulator.class, "PepperManipulator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(extensionFactoryPairEClass, ExtensionFactoryPair.class, "ExtensionFactoryPair", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getExtensionFactoryPair_FileExtension(), ecorePackage.getEString(), "fileExtension", null, 0, 1, ExtensionFactoryPair.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

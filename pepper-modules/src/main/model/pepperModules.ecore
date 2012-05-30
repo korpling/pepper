@@ -3,7 +3,7 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="pepperModules"
     nsURI="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules" nsPrefix="pepperModules">
-  <eClassifiers xsi:type="ecore:EClass" name="PepperModule">
+  <eClassifiers xsi:type="ecore:EClass" name="PepperModule" abstract="true">
     <eOperations name="start" eExceptions="#//PepperModuleException"/>
     <eOperations name="start" eExceptions="#//PepperModuleException">
       <eParameters name="sElementId" eType="#//SElementId"/>
@@ -36,19 +36,30 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceConnector" eType="#//PersistenceConnector"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specialParams" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PepperImporter" eSuperTypes="#//PepperModule">
+  <eClassifiers xsi:type="ecore:EClass" name="PepperImporter" abstract="true" eSuperTypes="#//PepperModule">
     <eOperations name="importCorpusStructure" eExceptions="#//PepperModuleException">
       <eParameters name="corpusGraph" eType="#//SCorpusGraph"/>
+    </eOperations>
+    <eOperations name="addSupportedFormat" eType="#//FormatDefinition">
+      <eParameters name="formatName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="formatVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="formatReference" eType="#//URI"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="supportedFormats" lowerBound="1"
         upperBound="-1" eType="#//FormatDefinition" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="corpusDefinition" lowerBound="1"
         eType="#//CorpusDefinition" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PepperExporter" eSuperTypes="#//PepperModule">
+  <eClassifiers xsi:type="ecore:EClass" name="PepperExporter" abstract="true" eSuperTypes="#//PepperModule">
     <eOperations name="createFolderStructure">
       <eParameters name="sElementId" eType="#//SElementId"/>
+    </eOperations>
+    <eOperations name="addSupportedFormat" eType="#//FormatDefinition">
+      <eParameters name="formatName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="formatVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="formatReference" eType="#//URI"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="supportedFormats" lowerBound="1"
         upperBound="-1" eType="#//FormatDefinition" containment="true"/>
@@ -87,7 +98,7 @@
     <eLiterals name="FINISH"/>
     <eLiterals name="PUT" value="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PepperManipulator" eSuperTypes="#//PepperModule"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PepperManipulator" abstract="true" eSuperTypes="#//PepperModule"/>
   <eClassifiers xsi:type="ecore:EDataType" name="EPackage" instanceClassName="org.eclipse.emf.ecore.EPackage"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ResourceFactory" instanceClassName="org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl"/>
   <eClassifiers xsi:type="ecore:EClass" name="ExtensionFactoryPair">

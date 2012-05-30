@@ -173,13 +173,22 @@ public interface PepperModulesPackage extends EPackage {
 	int PEPPER_MODULE__SPECIAL_PARAMS = 9;
 
 	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PEPPER_MODULE__VERSION = 10;
+
+	/**
 	 * The number of structural features of the '<em>Pepper Module</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_FEATURE_COUNT = 10;
+	int PEPPER_MODULE_FEATURE_COUNT = 11;
 
 	/**
 	 * The meta object id for the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperImporterImpl <em>Pepper Importer</em>}' class.
@@ -280,6 +289,15 @@ public interface PepperModulesPackage extends EPackage {
 	 * @ordered
 	 */
 	int PEPPER_IMPORTER__SPECIAL_PARAMS = PEPPER_MODULE__SPECIAL_PARAMS;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PEPPER_IMPORTER__VERSION = PEPPER_MODULE__VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Supported Formats</b></em>' containment reference list.
@@ -407,6 +425,15 @@ public interface PepperModulesPackage extends EPackage {
 	 * @ordered
 	 */
 	int PEPPER_EXPORTER__SPECIAL_PARAMS = PEPPER_MODULE__SPECIAL_PARAMS;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PEPPER_EXPORTER__VERSION = PEPPER_MODULE__VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Supported Formats</b></em>' containment reference list.
@@ -645,6 +672,15 @@ public interface PepperModulesPackage extends EPackage {
 	 * @ordered
 	 */
 	int PEPPER_MANIPULATOR__SPECIAL_PARAMS = PEPPER_MODULE__SPECIAL_PARAMS;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PEPPER_MANIPULATOR__VERSION = PEPPER_MODULE__VERSION;
 
 	/**
 	 * The number of structural features of the '<em>Pepper Manipulator</em>' class.
@@ -930,6 +966,17 @@ public interface PepperModulesPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getPepperModule_SpecialParams();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getVersion <em>Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Version</em>'.
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getVersion()
+	 * @see #getPepperModule()
+	 * @generated
+	 */
+	EAttribute getPepperModule_Version();
 
 	/**
 	 * Returns the meta object for class '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter <em>Pepper Importer</em>}'.
@@ -1363,6 +1410,14 @@ public interface PepperModulesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PEPPER_MODULE__SPECIAL_PARAMS = eINSTANCE.getPepperModule_SpecialParams();
+
+		/**
+		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PEPPER_MODULE__VERSION = eINSTANCE.getPepperModule_Version();
 
 		/**
 		 * The meta object literal for the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperImporterImpl <em>Pepper Importer</em>}' class.

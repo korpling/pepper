@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl;
 
+import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -47,13 +48,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ExporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ImporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.PepperParams;
-import java.util.Properties;
 
 /**
  * <!-- begin-user-doc -->
@@ -298,7 +298,7 @@ public class PepperFWPackageImpl extends EPackageImpl implements PepperFWPackage
 		isInited = true;
 
 		// Initialize simple dependencies
-		PepperInterfacePackage.eINSTANCE.eClass();
+		PepperModulesPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		thePepperFWPackage.createPackageContents();
@@ -1072,7 +1072,7 @@ public class PepperFWPackageImpl extends EPackageImpl implements PepperFWPackage
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		PepperInterfacePackage thePepperInterfacePackage = (PepperInterfacePackage)EPackage.Registry.INSTANCE.getEPackage(PepperInterfacePackage.eNS_URI);
+		PepperModulesPackage thePepperInterfacePackage = (PepperModulesPackage)EPackage.Registry.INSTANCE.getEPackage(PepperModulesPackage.eNS_URI);
 
 		// Create type parameters
 

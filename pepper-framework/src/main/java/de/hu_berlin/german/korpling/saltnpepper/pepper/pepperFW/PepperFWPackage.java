@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -385,7 +385,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__PEPPER_MODULE = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER__PEPPER_MODULE;
+	int PEPPER_MODULE_CONTROLLER__PEPPER_MODULE = PepperModulesPackage.PEPPER_MODULE_CONTROLLER__PEPPER_MODULE;
 
 	/**
 	 * The feature id for the '<em><b>Pepper Job</b></em>' container reference.
@@ -394,7 +394,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__PEPPER_JOB = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 0;
+	int PEPPER_MODULE_CONTROLLER__PEPPER_JOB = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Input Pepper Module Monitors</b></em>' reference list.
@@ -403,7 +403,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__INPUT_PEPPER_MODULE_MONITORS = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 1;
+	int PEPPER_MODULE_CONTROLLER__INPUT_PEPPER_MODULE_MONITORS = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Output Pepper Module Monitors</b></em>' reference list.
@@ -412,7 +412,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__OUTPUT_PEPPER_MODULE_MONITORS = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 2;
+	int PEPPER_MODULE_CONTROLLER__OUTPUT_PEPPER_MODULE_MONITORS = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Pepper M2J Monitor</b></em>' reference.
@@ -421,7 +421,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__PEPPER_M2J_MONITOR = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 3;
+	int PEPPER_MODULE_CONTROLLER__PEPPER_M2J_MONITOR = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Pepper Job Logger</b></em>' reference.
@@ -430,7 +430,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__PEPPER_JOB_LOGGER = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 4;
+	int PEPPER_MODULE_CONTROLLER__PEPPER_JOB_LOGGER = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Pepper Document Controller</b></em>' reference.
@@ -439,7 +439,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER__PEPPER_DOCUMENT_CONTROLLER = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 5;
+	int PEPPER_MODULE_CONTROLLER__PEPPER_DOCUMENT_CONTROLLER = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Pepper Module Controller</em>' class.
@@ -448,7 +448,7 @@ public interface PepperFWPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PEPPER_MODULE_CONTROLLER_FEATURE_COUNT = PepperInterfacePackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 6;
+	int PEPPER_MODULE_CONTROLLER_FEATURE_COUNT = PepperModulesPackage.PEPPER_MODULE_CONTROLLER_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperMonitorImpl <em>Pepper Monitor</em>}' class.

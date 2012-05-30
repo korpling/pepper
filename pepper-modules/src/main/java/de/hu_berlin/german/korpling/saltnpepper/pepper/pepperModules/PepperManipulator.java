@@ -25,7 +25,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
  *
  *
  * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperManipulator()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface PepperManipulator extends PepperModule {

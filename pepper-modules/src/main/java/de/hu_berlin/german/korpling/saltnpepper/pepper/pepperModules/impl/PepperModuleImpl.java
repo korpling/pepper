@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import java.io.File;
 
+import org.apache.felix.scr.annotations.Activate;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
@@ -28,15 +29,15 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfaceFactory;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PersistenceConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE;
@@ -63,12 +64,13 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl#getSymbolicName <em>Symbolic Name</em>}</li>
  *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl#getPersistenceConnector <em>Persistence Connector</em>}</li>
  *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl#getSpecialParams <em>Special Params</em>}</li>
+ *   <li>{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl#getVersion <em>Version</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class PepperModuleImpl extends EObjectImpl implements PepperModule 
+public abstract class PepperModuleImpl extends EObjectImpl implements PepperModule 
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -241,6 +243,46 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	protected URI specialParams = SPECIAL_PARAMS_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String VERSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String version = VERSION_EDEFAULT;
+
+	/**
+	 * This method is called by OSGi framework and sets the component context, this class is running in. 
+	 * This method scans the given {@link ComponentContext} object for symbolic name and version and initializes its
+	 * values {@link #symbolicName} and {@link #version} with it. When running this class in OSGi context,
+	 * you do not have to set both values by hand. With the given architecture, the symbolic name and the bundle 
+	 * version will be given by pom.xml, via MMANIFEST.MF and finally read by this method. 
+	 * @param componentContext
+	 */
+	@Activate
+	protected void activate(ComponentContext componentContext) 
+	{
+		if (	(componentContext!= null)&&
+				(componentContext.getBundleContext()!= null)&&
+				(componentContext.getBundleContext().getBundle()!= null))
+		{		
+			this.setSymbolicName(componentContext.getBundleContext().getBundle().getSymbolicName());
+			this.setVersion(componentContext.getBundleContext().getBundle().getVersion().toString());
+		}
+	}
+	
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 */
@@ -251,7 +293,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 
 	private void init()
 	{
-		this.setPersistenceConnector(PepperInterfaceFactory.eINSTANCE.createPersistenceConnector());
+		this.setPersistenceConnector(PepperModulesFactory.eINSTANCE.createPersistenceConnector());
 	}
 	
 	/**
@@ -390,7 +432,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		URI oldResources = resources;
 		resources = newResources;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__RESOURCES, oldResources, resources));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__RESOURCES, oldResources, resources));
 	}
 
 	/**
@@ -422,7 +464,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		URI oldTemproraries = temproraries;
 		temproraries = newTemproraries;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PepperInterfacePackage.PEPPER_MODULE__TEMPRORARIES, oldTemproraries, temproraries));
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__TEMPRORARIES, oldTemproraries, temproraries));
 	}
 	
 	private void removeDirRec(File dir)
@@ -526,6 +568,27 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setVersion(String newVersion) {
+		String oldVersion = version;
+		version = newVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PepperModulesPackage.PEPPER_MODULE__VERSION, oldVersion, version));
+	}
+
+	/**
 	 * Checks if everything is set, so the module can be started.
 	 * Checking:
 	 * <ul>
@@ -600,7 +663,7 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 	}
 
 	/**
-	 * Calles method start(sElementId) for every root corpus of salt-project.
+	 * Calls method {@link #start(SElementId)} for every root {@link SCorpus} of {@link SaltProject} object.
 	 */
 	public void end() throws PepperModuleException 
 	{
@@ -615,6 +678,11 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 			
 			for (SCorpusGraph sCorpusGraph: corpGraphs)
 			{//for every corpus graph
+				//FIXME why does these lines do not work???
+//				for (SCorpus sCorpus: sCorpusGraph.getSRootCorpus())
+//				{//for every root corpus
+//					this.start(sCorpus.getSElementId());
+//				}//for every root corpus
 				SCorpusStructureAccessor acc= new SCorpusStructureAccessor();
 				acc.setSCorpusGraph(sCorpusGraph);
 				if (acc.getSRootCorpora()!= null)
@@ -731,6 +799,8 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 				return getPersistenceConnector();
 			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				return getSpecialParams();
+			case PepperModulesPackage.PEPPER_MODULE__VERSION:
+				return getVersion();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -766,6 +836,9 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 				return;
 			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				setSpecialParams((URI)newValue);
+				return;
+			case PepperModulesPackage.PEPPER_MODULE__VERSION:
+				setVersion((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -803,6 +876,9 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				setSpecialParams(SPECIAL_PARAMS_EDEFAULT);
 				return;
+			case PepperModulesPackage.PEPPER_MODULE__VERSION:
+				setVersion(VERSION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -835,6 +911,8 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 				return persistenceConnector != null;
 			case PepperModulesPackage.PEPPER_MODULE__SPECIAL_PARAMS:
 				return SPECIAL_PARAMS_EDEFAULT == null ? specialParams != null : !SPECIAL_PARAMS_EDEFAULT.equals(specialParams);
+			case PepperModulesPackage.PEPPER_MODULE__VERSION:
+				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -865,6 +943,8 @@ public class PepperModuleImpl extends EObjectImpl implements PepperModule
 		result.append(symbolicName);
 		result.append(", specialParams: ");
 		result.append(specialParams);
+		result.append(", version: ");
+		result.append(version);
 		result.append(')');
 		return result.toString();
 	}

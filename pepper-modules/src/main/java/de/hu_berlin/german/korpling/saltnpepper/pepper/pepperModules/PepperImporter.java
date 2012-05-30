@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.common.util.URI;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 
@@ -38,7 +39,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  * </p>
  *
  * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperImporter()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface PepperImporter extends PepperModule {
@@ -92,4 +93,12 @@ public interface PepperImporter extends PepperModule {
 	 * @generated
 	 */
 	void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model formatReferenceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
+	 * @generated
+	 */
+	FormatDefinition addSupportedFormat(String formatName, String formatVersion, URI formatReference);
 } // PepperImporter

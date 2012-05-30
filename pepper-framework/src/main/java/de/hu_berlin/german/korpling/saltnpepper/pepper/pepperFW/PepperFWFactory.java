@@ -17,7 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfaceFactory;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +27,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInter
  * <!-- end-user-doc -->
  * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage
  */
-public interface PepperFWFactory extends PepperInterfaceFactory {
+public interface PepperFWFactory extends PepperModulesFactory {
 	/**
 	 * The singleton instance of the factory.
 	 * <!-- begin-user-doc -->

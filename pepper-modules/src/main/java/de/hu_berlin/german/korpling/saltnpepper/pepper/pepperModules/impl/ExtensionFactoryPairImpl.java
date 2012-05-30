@@ -17,18 +17,14 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.ExtensionFactoryPair;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.ExtensionFactoryPair;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 
 /**
  * <!-- begin-user-doc -->

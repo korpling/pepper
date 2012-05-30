@@ -44,8 +44,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperJobLogger;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
@@ -182,9 +182,9 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 		if (newPepperModule != pepperModule) {
 			NotificationChain msgs = null;
 			if (pepperModule != null)
-				msgs = ((InternalEObject)pepperModule).eInverseRemove(this, PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, PepperModule.class, msgs);
+				msgs = ((InternalEObject)pepperModule).eInverseRemove(this, PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, PepperModule.class, msgs);
 			if (newPepperModule != null)
-				msgs = ((InternalEObject)newPepperModule).eInverseAdd(this, PepperInterfacePackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, PepperModule.class, msgs);
+				msgs = ((InternalEObject)newPepperModule).eInverseAdd(this, PepperModulesPackage.PEPPER_MODULE__PEPPER_MODULE_CONTROLLER, PepperModule.class, msgs);
 			msgs = basicSetPepperModule(newPepperModule, msgs);
 			if (msgs != null) msgs.dispatch();
 		}

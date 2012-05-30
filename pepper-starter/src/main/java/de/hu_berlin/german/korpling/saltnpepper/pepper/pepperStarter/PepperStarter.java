@@ -77,7 +77,7 @@ public class PepperStarter
 			 String PROP_EXTRA_PACKAGES= "org.osgi.framework.system.packages.extra";
 //			 String PROP_EXTRA_PACKAGES= "org.osgi.framework.system.packages";
 			 String extraPackages= System.getProperty(PROP_EXTRA_PACKAGES, "");
-			 if (extraPackages.equals(""))
+			 if (extraPackages.isEmpty())
 				 extraPackages= extraPackages +KW_EXTRA_PACKAGES;
 			 else
 				 extraPackages= extraPackages +", "+KW_EXTRA_PACKAGES;
@@ -149,7 +149,7 @@ public class PepperStarter
 			
 			//checking if property for core module is set
 			if (	(tmpUriStr== null) ||
-					(tmpUriStr.equals("")))
+					(tmpUriStr.isEmpty()))
 				throw new PepperException("Cannot set properties, because no path for temproraries folder is given.");
 			//replace KW_ENV_PEPPER_HOME if occurs
 			File tmpFile= new File(tmpUriStr);
@@ -162,7 +162,7 @@ public class PepperStarter
 			String resUriStr= props.getProperty(PepperProperties.PROP_RESOURCE_PATH);
 			//checking if property for core module is set
 			if (	(resUriStr== null) ||
-					(resUriStr.equals("")))
+					(resUriStr.isEmpty()))
 				throw new PepperException("Cannot set properties, because no path for resources folder for modules is given.");
 			//replace KW_ENV_PEPPER_HOME if occurs
 			File resFile= new File(resUriStr);
@@ -524,7 +524,7 @@ public class PepperStarter
 				try 
 				{
 					if (	(pepperWorkflowDescriptionFile== null) ||
-							(pepperWorkflowDescriptionFile.equals("")))
+							(pepperWorkflowDescriptionFile.isEmpty()))
 						throw new PepperException("No parameters for pepper converter are given.");	
 					//program call
 					else
@@ -536,7 +536,7 @@ public class PepperStarter
 					
 					{//if user-defined properties file is given are given
 						if (	(udPropFile!= null) &&
-								(udPropFile.equals("")))
+								(udPropFile.isEmpty()))
 							pepperParamsProp= PepperProperties.loadProperties(new File(udPropFile));
 						
 					}//if user-defined properties file is given are given

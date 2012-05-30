@@ -37,33 +37,6 @@ public interface PepperModulesFactory extends EFactory {
 	PepperModulesFactory eINSTANCE = de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModulesFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Pepper Module</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Pepper Module</em>'.
-	 * @generated
-	 */
-	PepperModule createPepperModule();
-
-	/**
-	 * Returns a new object of class '<em>Pepper Importer</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Pepper Importer</em>'.
-	 * @generated
-	 */
-	PepperImporter createPepperImporter();
-
-	/**
-	 * Returns a new object of class '<em>Pepper Exporter</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Pepper Exporter</em>'.
-	 * @generated
-	 */
-	PepperExporter createPepperExporter();
-
-	/**
 	 * Returns a new object of class '<em>Format Definition</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -80,15 +53,6 @@ public interface PepperModulesFactory extends EFactory {
 	 * @generated
 	 */
 	CorpusDefinition createCorpusDefinition();
-
-	/**
-	 * Returns a new object of class '<em>Pepper Manipulator</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Pepper Manipulator</em>'.
-	 * @generated
-	 */
-	PepperManipulator createPepperManipulator();
 
 	/**
 	 * Returns a new object of class '<em>Extension Factory Pair</em>'.

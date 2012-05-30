@@ -17,12 +17,11 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfacePackage;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -171,6 +170,15 @@ public interface XsltModulesPackage extends EPackage {
 	 * @ordered
 	 */
 	int PEPPER_XSLT_EXPORTER__SPECIAL_PARAMS = PepperModulesPackage.PEPPER_EXPORTER__SPECIAL_PARAMS;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PEPPER_XSLT_EXPORTER__VERSION = PepperModulesPackage.PEPPER_EXPORTER__VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Supported Formats</b></em>' containment reference list.

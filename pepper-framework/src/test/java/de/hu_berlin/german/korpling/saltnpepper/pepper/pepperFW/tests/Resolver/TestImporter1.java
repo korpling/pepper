@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperInterfaceFactory;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperImporterImpl;
 
 public class TestImporter1 extends PepperImporterImpl 
@@ -50,7 +50,7 @@ public class TestImporter1 extends PepperImporterImpl
 		EList<FormatDefinition> formatDefs= null;
 		formatDefs= new BasicEList<FormatDefinition>();
 		
-		FormatDefinition formatDef= PepperInterfaceFactory.eINSTANCE.createFormatDefinition();
+		FormatDefinition formatDef= PepperModulesFactory.eINSTANCE.createFormatDefinition();
 		formatDef.setFormatName("TestFormat");
 		formatDef.setFormatVersion("1.0");
 		

@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.JobCases;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl;
 
 import junit.framework.TestCase;
 
@@ -104,9 +105,14 @@ public class CreateAndWirePepperModuleControllerTest extends TestCase
 		setFixture(null);
 	}
 	
+	class MyPepperModule extends PepperModuleImpl
+	{
+		
+	}
+	
 	public void testOk()
 	{
-		PepperModule module= PepperFWFactory.eINSTANCE.createPepperModule();
+		PepperModule module= new MyPepperModule();
 		this.getFixture().createAndWirePepperModuleController(module);
 		
 		//module controllers

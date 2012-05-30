@@ -86,12 +86,8 @@ public class PepperModulesFactoryImpl extends EFactoryImpl implements PepperModu
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case PepperModulesPackage.PEPPER_MODULE: return createPepperModule();
-			case PepperModulesPackage.PEPPER_IMPORTER: return createPepperImporter();
-			case PepperModulesPackage.PEPPER_EXPORTER: return createPepperExporter();
 			case PepperModulesPackage.FORMAT_DEFINITION: return createFormatDefinition();
 			case PepperModulesPackage.CORPUS_DEFINITION: return createCorpusDefinition();
-			case PepperModulesPackage.PEPPER_MANIPULATOR: return createPepperManipulator();
 			case PepperModulesPackage.EXTENSION_FACTORY_PAIR: return createExtensionFactoryPair();
 			case PepperModulesPackage.PERSISTENCE_CONNECTOR: return createPersistenceConnector();
 			default:
@@ -166,36 +162,6 @@ public class PepperModulesFactoryImpl extends EFactoryImpl implements PepperModu
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PepperModule createPepperModule() {
-		PepperModuleImpl pepperModule = new PepperModuleImpl();
-		return pepperModule;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PepperImporter createPepperImporter() {
-		PepperImporterImpl pepperImporter = new PepperImporterImpl();
-		return pepperImporter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PepperExporter createPepperExporter() {
-		PepperExporterImpl pepperExporter = new PepperExporterImpl();
-		return pepperExporter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public FormatDefinition createFormatDefinition() {
 		FormatDefinitionImpl formatDefinition = new FormatDefinitionImpl();
 		return formatDefinition;
@@ -209,16 +175,6 @@ public class PepperModulesFactoryImpl extends EFactoryImpl implements PepperModu
 	public CorpusDefinition createCorpusDefinition() {
 		CorpusDefinitionImpl corpusDefinition = new CorpusDefinitionImpl();
 		return corpusDefinition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PepperManipulator createPepperManipulator() {
-		PepperManipulatorImpl pepperManipulator = new PepperManipulatorImpl();
-		return pepperManipulator;
 	}
 
 	/**
