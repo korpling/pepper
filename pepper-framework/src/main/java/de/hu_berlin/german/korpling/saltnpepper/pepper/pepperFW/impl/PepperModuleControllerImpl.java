@@ -512,13 +512,13 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 				{
 					if ((!inputMonitor.isFinished()) || (!inputMonitor.isEmpty()))
 					{
-						this.addException(new PepperModuleException("An error occurs, there are document-ids which were not processed by module: "+this.getPepperModule().getName()));
+						this.addException(new PepperModuleException("An error occurs, there are document-ids '"+inputMonitor.getOrderQueue()+"' which were not processed by module: "+this.getPepperModule().getName()));
 						return;
 					}
 				}
 				if ((!this.cacheMonitor.isFinished()) || (!this.cacheMonitor.isEmpty()))
 				{	
-					this.addException(new PepperModuleException("An error occurs, there are document-ids which were not processed by module: "+this.getPepperModule().getName()));
+					this.addException(new PepperModuleException("An error occurs, there are document-ids '"+cacheMonitor.getOrderQueue()+"' which were not processed by module: "+this.getPepperModule().getName()));
 					return;
 				}	
 			//end: checking, that no order remains in input-monitors or in cache
@@ -534,7 +534,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 			//start: controlling if every taken document was processed by PepperModule
 				if (this.listOfNotPipelinedOrders.size()> 0)
 				{	
-					this.addException(new PepperModuleException("An error occurs, there are document-ids ("+this.listOfNotPipelinedOrders+") which were gettet by module, but not returned by calling put(element-id) or finish(element-id): "+this.getPepperModule().getName()));
+					this.addException(new PepperModuleException("An error occurs, there are document-ids ("+this.listOfNotPipelinedOrders+") which were requested by module, but not responded by calling put(element-id) or finish(element-id): "+this.getPepperModule().getName()));
 					return;
 				}
 			//end: controlling if every taken document was processed by PepperModule
@@ -542,7 +542,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 	}
 	
 	/**
-	 * Stores the corpusGraph in which realImportCorpusStructure() shall import
+	 * Stores the {@link SCorpusGraph} in which realImportCorpusStructure() shall import
 	 */
 	private SCorpusGraph sCorpusGraph= null; 
 	

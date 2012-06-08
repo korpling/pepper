@@ -141,10 +141,8 @@ public class PepperQueuedMonitorImpl extends PepperMonitorImpl implements Pepper
 	{
 		lock.lock();
 		//if sElementId is null throw exception
-//		old since 1.7.09
 		if (sElementId== null)
 			throw new NullPointerException("Cannot put an empty element-id into monitors queue.");
-//		System.out.println("(m2m-monitor "+this.getId()+") monitor "+this.getId()+" puttet element: "+ sElementId.getSId());
 		//create a queue, if there is non
 		if (this.orderQueue== null)
 			this.orderQueue= new ConcurrentLinkedQueue<SElementId>();
@@ -166,7 +164,6 @@ public class PepperQueuedMonitorImpl extends PepperMonitorImpl implements Pepper
 		SElementId sElementId= null;
 		if ((this.orderQueue.size()== 0) && (!this.isFinished()))
 		{
-//			System.out.println("(m2m-monitor "+this.getId()+") monitor "+this.getId()+" waits on putting or finished.");
 			try {
 				this.ifEmpty.await();
 			} catch (InterruptedException e) {
@@ -174,8 +171,6 @@ public class PepperQueuedMonitorImpl extends PepperMonitorImpl implements Pepper
 			}
 		}	
 		sElementId= (SElementId)this.orderQueue.poll();	
-//		if ( sElementId!= null) System.out.println("(m2m-monitor "+this.getId()+") monitor "+this.getId()+" getting element: "+sElementId.getSId());
-//		else System.out.println("(m2m-monitor "+this.getId()+") monitor "+this.getId()+" getting element: "+sElementId);
 		lock.unlock();
 		return(sElementId);
 	}
