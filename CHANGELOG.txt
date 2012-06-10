@@ -16,6 +16,14 @@
 *	artifactId:		pepper-workflow                                               *
 ***********************************************************************************
 
+Version 1.1.4
+=============
+	pepepr-modules
+  ---------------
+  	*+ added method addSupportedFormat() for simpler creation of a supported format
+  	*+ added automatically method to create the symbolic name of a PepperModule
+  	
+  	
 Version 1.1.3
 =============
 

@@ -639,7 +639,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 		{
 			if (	(retVal< 0 )||
 					(retVal> 1))
-				throw new PepperConvertException("Cannot notify Pepper framework about progress, because the percentage of progress is out of range (0..1).");
+				throw new PepperConvertException("Cannot notify Pepper framework about progress, because the percentage of progress is out of range (0..1). It is '"+retVal+"'.");
 		}
 		return(retVal);
 	}
