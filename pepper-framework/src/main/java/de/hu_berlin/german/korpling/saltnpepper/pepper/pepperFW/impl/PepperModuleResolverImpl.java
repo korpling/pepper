@@ -553,6 +553,9 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 					if (pepperImporters== null)
 						pepperImporters= new BasicEList<PepperImporter>();
 					PepperImporter importer= (PepperImporter) instance;
+					if (	(importer.getSymbolicName()== null) ||
+							(importer.getSymbolicName().isEmpty()))
+						throw new PepperModuleException("Cannot register PepperModule, because the symbolic name of module '"+importer.getName()+"' is empty.");
 					this.increaseNumberOfModules(importer.getSymbolicName());
 					this.setTemproraries(importer);
 					this.setResources(importer);
