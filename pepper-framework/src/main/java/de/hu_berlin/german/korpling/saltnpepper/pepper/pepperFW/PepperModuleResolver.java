@@ -152,32 +152,44 @@ public interface PepperModuleResolver extends EObject {
 	void setResourcesPropertyName(String value);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns a {@link PepperImporter} object matching to the given {@link ImporterParams}. A new instance of
+	 * the specific {@link PepperImporter} class is created and returned. No references to the returned object will
+	 * be stored in this {@link PepperModuleResolver} object. When calling {@link #getPepperImporter(ImporterParams)}
+	 * a new instance of {@link PepperImporter} is created.
+	 * @param pepperImporterParams specifies the {@link PepperImporter} object to be found
+	 * @return a new instance of {@link PepperImporter} matching the given {@link ImporterParams}
 	 * @model pepperImporterParamsDataType="de.hub.corpling.pepper.pepperFW.PepperImporterParams"
 	 * @generated
 	 */
 	PepperImporter getPepperImporter(ImporterParams pepperImporterParams);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of {@link PepperManipulator} for each listed {@link ComponentFactory} in list 
+	 * {@link #pepperManipulatorComponentFactories} and returns that list. This {@link PepperModuleResolver} instance
+	 * does not store any link to the created object, so it can be used and removed as the caller like. Thus each call
+	 * creates a new list containing new objects.
+	 * @return a list of {@link PepperManipulator} objects.
 	 * @model pepperModuleParamsDataType="de.hub.corpling.pepper.pepperFW.PepperModuleParams"
 	 * @generated
 	 */
 	PepperManipulator getPepperManipulator(ModuleParams pepperModuleParams);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of {@link PepperExporter} for each listed {@link ComponentFactory} in list 
+	 * {@link #pepperExporterComponentFactories} and returns that list. This {@link PepperModuleResolver} instance
+	 * does not store any link to the created object, so it can be used and removed as the caller like. Thus each call
+	 * creates a new list containing new objects.
+	 * @return a list of {@link PepperExporter} objects.
 	 * @model pepperExporterParamsDataType="de.hub.corpling.pepper.pepperFW.PepperExporterParams"
 	 * @generated
 	 */
 	PepperExporter getPepperExporter(ExporterParams pepperExporterParams);
 
 	/**
-	 * Adds a new pepperImporterComponentFactory to internal list, which shall create new PepperImporter-objects.
-	 * @param pepperImporterComponentFactory factory which shall create new PepperImporter-objects
+	 * This method is called by OSGi framework and adds all registered {@link ComponentFactory} objects having the
+	 * name PepperImporterComponentFactory to this object. All {@link ComponentFactory} objects are stored in the 
+	 * internal object list {@link #pepperImporterComponentFactories}.
+	 * @param pepperImporterComponentFactory {@link ComponentFactory} object to be stored in internal list 
 	 * @model pepperImporterComponentFactoryDataType="de.hub.corpling.pepper.pepperFW.ComponentFactory"
 	 * @generated
 	 */
@@ -192,8 +204,10 @@ public interface PepperModuleResolver extends EObject {
 	void removePepperImporterComponentFactory(ComponentFactory pepperImporterComponentFactory);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This method is called by OSGi framework and adds all registered {@link ComponentFactory} objects having the
+	 * name PepperManipulatorComponentFactory to this object. All {@link ComponentFactory} objects are stored in the 
+	 * internal object list {@link #pepperManipulatorComponentFactories}.
+	 * @param pepperManipulatorComponentFactory {@link ComponentFactory} object to be stored in internal list 
 	 * @model pepperManipulatorComponentFactoryDataType="de.hub.corpling.pepper.pepperFW.ComponentFactory"
 	 * @generated
 	 */
@@ -208,8 +222,10 @@ public interface PepperModuleResolver extends EObject {
 	void removePepperManipulatorComponentFactory(ComponentFactory pepperManipulatorComponentFactory);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This method is called by OSGi framework and adds all registered {@link ComponentFactory} objects having the
+	 * name PepperExporterComponentFactory to this object. All {@link ComponentFactory} objects are stored in the 
+	 * internal object list {@link #pepperExporterComponentFactories}.
+	 * @param pepperExporterComponentFactory {@link ComponentFactory} object to be stored in internal list 
 	 * @model pepperExporterComponentFactoryDataType="de.hub.corpling.pepper.pepperFW.ComponentFactory"
 	 * @generated
 	 */
@@ -224,24 +240,33 @@ public interface PepperModuleResolver extends EObject {
 	void removePepperExporterComponentFactory(ComponentFactory pepperExporterComponentFactory);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of {@link PepperImporter} for each listed {@link ComponentFactory} in list 
+	 * {@link #pepperImporterComponentFactories} and returns that list. This {@link PepperModuleResolver} instance
+	 * does not store any link to the created object, so it can be used and removed as the caller like. Thus each call
+	 * creates a new list containing new objects.
+	 * @return a list of {@link PepperImporter} objects.
 	 * @model kind="operation" dataType="de.hub.corpling.pepper.pepperFW.PepperImporter"
 	 * @generated
 	 */
 	EList<PepperImporter> getPepperImporters();
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of {@link PepperManipulator} for each listed {@link ComponentFactory} in list 
+	 * {@link #pepperManipulatorComponentFactories} and returns that list. This {@link PepperModuleResolver} instance
+	 * does not store any link to the created object, so it can be used and removed as the caller like. Thus each call
+	 * creates a new list containing new objects.
+	 * @return a list of {@link PepperManipulator} objects.
 	 * @model kind="operation"
 	 * @generated
 	 */
 	EList<PepperManipulator> getPepperManipulators();
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of {@link PepperExporter} for each listed {@link ComponentFactory} in list 
+	 * {@link #pepperExporterComponentFactories} and returns that list. This {@link PepperModuleResolver} instance
+	 * does not store any link to the created object, so it can be used and removed as the caller like. Thus each call
+	 * creates a new list containing new objects.
+	 * @return a list of {@link PepperExporter} objects.
 	 * @model kind="operation" dataType="de.hub.corpling.pepper.pepperFW.PepperExporter"
 	 * @generated
 	 */

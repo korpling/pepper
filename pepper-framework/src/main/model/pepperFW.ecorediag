@@ -356,7 +356,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_J6rWoWJlEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperMonitor"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J6rWomJlEd6tA6cWJZKimQ" x="1695" y="15" width="156" height="111"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J6rWomJlEd6tA6cWJZKimQ" x="1565" y="15" width="286" height="111"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_JSe3sGM1Ed61Sf-gnRcwTw" type="1004">
     <children xmi:type="notation:Node" xmi:id="_JSk-UGM1Ed61Sf-gnRcwTw" type="4008"/>

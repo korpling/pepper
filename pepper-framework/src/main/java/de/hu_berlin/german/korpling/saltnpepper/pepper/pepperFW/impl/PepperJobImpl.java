@@ -542,7 +542,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 	}
 	
 	/**
-	 * Name of property for the flag if perfromance shall be measured and displayed 
+	 * Name of property for the flag if performance shall be measured and displayed 
 	 */
 	public static final String PROP_COMPUTE_PERFORMANCE= "pepper.computePerformance";
 	/**
@@ -692,8 +692,8 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 	protected EList<PepperFinishableMonitor> allM2JMonitors= null;
 	
 	/**
-	 * Creates and wires a {@link PepperModuleController} object, which looks on given {@link PepperModule}
-	 * @param module
+	 * Creates and wires a {@link PepperModuleController} object, which observes the given {@link PepperModule} object.
+	 * @param module observed {@link PepperModule} object
 	 */
 	protected void createAndWirePepperModuleController(PepperModule module)
 	{
@@ -761,20 +761,20 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 		for (PepperModuleController moduleController: listOfImportControllers)
 		{
 			//create graphs
-			SCorpusGraph corpGraph= SCorpusStructureFactory.eINSTANCE.createSCorpusGraph();
-			this.getSaltProject().getSCorpusGraphs().add((SCorpusGraph) corpGraph);
+			SCorpusGraph sCorpGraph= SCorpusStructureFactory.eINSTANCE.createSCorpusGraph();
+			this.getSaltProject().getSCorpusGraphs().add((SCorpusGraph) sCorpGraph);
 			
 			
 			//store a paired list
 			ImporterGraphPair importerGraphPair= new ImporterGraphPair();
 			importerGraphPair.importer= (PepperImporter) moduleController.getPepperModule();
-			importerGraphPair.sCorpusGraph= corpGraph;
+			importerGraphPair.sCorpusGraph= sCorpGraph;
 			importerGraphPairList.add(importerGraphPair);
 			//wire importer and corpus graph
-			importerGraphPair.importer.setSCorpusGraph(corpGraph);
+			importerGraphPair.importer.setSCorpusGraph(sCorpGraph);
 			
 			//start importing structure
-			moduleController.importCorpusStructure((SCorpusGraph) corpGraph);
+			moduleController.importCorpusStructure((SCorpusGraph) sCorpGraph);
 		}	
 		
 		//waiting until all monitors are finished
@@ -786,38 +786,38 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 	}
 	
 	/**
-	 * Seperates all modules into steps. 
+	 * Separates all modules into the three phases. 
 	 * <ul/>
-	 * 	<li>every manipulation-module has its own step</li>
-	 * 	<li>every manipulation-module has its own step</li>
-	 * 	<li>every exporter is in the same step</li>
+	 * 	<li>all {@link PepperImporter} objects are put into the import-phase</li>
+	 * 	<li>all {@link PepperManipulator} objects are put into the manipulation-phase</li>
+	 * 	<li>all {@link PepperExporter} objects are put into the export-phase</li>
 	 * </ul>
-	 * @return a list of steps, one step is a list of module-controllers
+	 * @return a list of phases containing all {@link PepperModuleController} objects corresponding to a dedicated phase
 	 */
-	protected EList<EList<PepperModuleController>> createSteps()
+	protected EList<EList<PepperModuleController>> createPhases()
 	{
-		EList<EList<PepperModuleController>> steps= new BasicEList<EList<PepperModuleController>>();
-		//every importer is in same step
-		EList<PepperModuleController> importerStep= new BasicEList<PepperModuleController>();
+		EList<EList<PepperModuleController>> phases= new BasicEList<EList<PepperModuleController>>();
+		//every importer is in same phase
+		EList<PepperModuleController> importerPhase= new BasicEList<PepperModuleController>();
 		for (PepperImporter importer: this.getPepperImporters())
-			importerStep.add((PepperModuleController)importer.getPepperModuleController());
-		steps.add(importerStep);
+			importerPhase.add((PepperModuleController)importer.getPepperModuleController());
+		phases.add(importerPhase);
 		
-		//every manipulation-module has its own step
+		//every manipulation-module has its own phase
 		for (PepperModule module: this.getPepperModules())
 		{
-			EList<PepperModuleController> moduleStep= new BasicEList<PepperModuleController>();
-			moduleStep.add((PepperModuleController)module.getPepperModuleController());
-			steps.add(moduleStep);
+			EList<PepperModuleController> modulePhase= new BasicEList<PepperModuleController>();
+			modulePhase.add((PepperModuleController)module.getPepperModuleController());
+			phases.add(modulePhase);
 		}	
 		
-		//every exporter is in the same step
-		EList<PepperModuleController> exporterStep= new BasicEList<PepperModuleController>();
+		//every exporter is in the same phase
+		EList<PepperModuleController> exporterPhase= new BasicEList<PepperModuleController>();
 		for (PepperExporter exporter: this.getPepperExporters())
-			exporterStep.add((PepperModuleController)exporter.getPepperModuleController());
-		steps.add(exporterStep);
+			exporterPhase.add((PepperModuleController)exporter.getPepperModuleController());
+		phases.add(exporterPhase);
 		
-		return(steps);
+		return(phases);
 	}
 	
 	/**
@@ -825,18 +825,17 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 	 * PepperModule2ModuleMonitor. This method takes all module-controllers of step n 
 	 * and uses them as input for PepperModule2ModuleMonitor, all module-controllers
 	 * of step n+1 and uses them for output of PepperModule2ModuleMonitor.
-	 * @param steps a list of steps, one step is a list of module-controllers
+	 * @param phases a list of steps, one step is a list of module-controllers
 	 */
-	protected void wireModuleControllers(EList<EList<PepperModuleController>> steps)
+	protected void wireModuleControllers(EList<EList<PepperModuleController>> phases)
 	{
 		int run= 1;
 		EList<PepperModuleController> lastStep= null;
-		//running throug all steps
-		for (EList<PepperModuleController> step: steps)
-		{
-			//just start at step 2 not before
+		
+		for (EList<PepperModuleController> step: phases)
+		{//running through all steps
 			if (run!= 1)
-			{
+			{//just start at step 2 not before
 				//creating cross-product of modules of last step and current step
 				for (PepperModuleController lastController: lastStep)
 				{
@@ -847,7 +846,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 						currController.getInputPepperModuleMonitors().add(m2mMonitor);
 					}	
 				}	
-			}	
+			}//just start at step 2 not before	
 			lastStep= step;
 			run++;
 		}	
@@ -904,9 +903,9 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 		}//wire all PepperModuleControllers with PepperDocumentController
 		{//wire all modules with each other, by creating a PepperModule2ModuleMonitor
 			//an ordered list which contain all steps, one step is a list of all modules in each step 
-			EList<EList<PepperModuleController>> steps= this.createSteps();
+			EList<EList<PepperModuleController>> phases= this.createPhases();
 			//wiring all module-controllers by steps
-			this.wireModuleControllers(steps);
+			this.wireModuleControllers(phases);
 		}
 		{//add all imported documents to PepperDocumentController to observe
 			for (ImporterGraphPair importerGraphPair: importerGraphPairs)

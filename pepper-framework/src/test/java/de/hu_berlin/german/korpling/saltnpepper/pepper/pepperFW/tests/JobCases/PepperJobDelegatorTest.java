@@ -75,9 +75,9 @@ public class PepperJobDelegatorTest extends PepperJobImpl
 		return(this.allM2JMonitors);
 	}
 	
-	public EList<EList<PepperModuleController>> createSteps()
+	public EList<EList<PepperModuleController>> createPhases()
 	{
-		return(super.createSteps());
+		return(super.createPhases());
 	}
 	
 	public void wireModuleControllers(EList<EList<PepperModuleController>> steps)

@@ -237,29 +237,12 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 			eNotify(new ENotificationImpl(this, Notification.SET, PepperFWPackage.PEPPER_MODULE_RESOLVER__RESOURCES_PROPERTY_NAME, oldResourcesPropertyName, resourcesPropertyName));
 	}
 
-	/**
-	 * Wird von der Service Component Runtime bei der Aktivierung der Komponente
-	 * aufgerufen und gibt einen Gruss auf der Konsole aus
-	 * 
-	 * @param componentContext
-	 *          Der Kontext der Komponente
-	 */
-	@Activate
-	protected void activate(ComponentContext componentContext) 
-	{
-		try
-		{
-//		System.out.println("status of PepperModuleResolver: ");
-//		System.out.println(this.getStatus());
-//			System.out.println(this.getClass().getName()+ " has been created.");
-//			System.out.println(this.getClass().getName()+ " LOGService: "+ this.getLogService());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 	
+	/**
+	 * Returns a status description as {@link String}. The returned {@link String} contains the number of all available
+	 * {@link PepperModule} objects in a readable format.
+	 * @return {@link String} representation of all {@link PepperModule} objects available by this {@link PepperModuleResolver} object.
+	 */
 	public String getStatus()
 	{
 		String infoString= "";
@@ -349,7 +332,12 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 * @ordered
 	 */
 	protected EList<ComponentFactory> pepperImporterComponentFactories;
-		
+	
+	/**
+	 * This method is called by OSGi framework and adds all registered {@link ComponentFactory} objects having the
+	 * name PepperImporterComponentFactory to this object. All {@link ComponentFactory} objects are stored in an internal object 
+	 * {@link #pepperImporterComponentFactories}
+	 */
 	public void addPepperImporterComponentFactory(ComponentFactory pepperImporterComponentFactory) 
 	{
 		if (pepperImporterComponentFactory== null)
@@ -386,8 +374,9 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	protected EList<ComponentFactory> pepperManipulatorComponentFactories;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This method is called by OSGi framework and adds all registered {@link ComponentFactory} objects having the
+	 * name PepperManipulatorComponentFactory to this object. All {@link ComponentFactory} objects are stored in an internal object 
+	 * {@link #pepperManipulatorComponentFactories}.
 	 */
 	public void addPepperManipulatorComponentFactory(ComponentFactory pepperManipulatorComponentFactory) 
 	{
@@ -426,8 +415,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 */
 	protected EList<ComponentFactory> pepperExporterComponentFactories;
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc PepperModuleResolver#addPepperExporterComponentFactory(ComponentFactory)}
 	 */
 	public void addPepperExporterComponentFactory(ComponentFactory pepperExporterComponentFactory) 
 	{
@@ -439,8 +427,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc PepperModuleResolver#removePepperExporterComponentFactory(ComponentFactory)}
 	 */
 	public void removePepperExporterComponentFactory(ComponentFactory pepperExporterComponentFactory) 
 	{
@@ -536,8 +523,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc PepperModuleResolver#getPepperImporters()}
 	 */
 	public EList<PepperImporter> getPepperImporters() 
 	{
@@ -568,8 +554,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc PepperModuleResolver#getPepperManipulators()}
 	 */
 	public EList<PepperManipulator> getPepperManipulators() 
 	{
@@ -597,8 +582,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc PepperModuleResolver#getPepperExporters()}
 	 */
 	public EList<PepperExporter> getPepperExporters() 
 	{
@@ -626,8 +610,12 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns a {@link PepperImporter} object matching to the given {@link ImporterParams}. A new instance of
+	 * the specific {@link PepperImporter} class is created and returned. No references to the returned object will
+	 * be stored in this {@link PepperModuleResolver} object. When calling {@link #getPepperImporter(ImporterParams)}
+	 * a new instance of {@link PepperImporter} is created.
+	 * @param pepperImporterParams specifies the {@link PepperImporter} object to be found
+	 * @return a new instance of {@link PepperImporter} matching the given {@link ImporterParams}
 	 */
 	public PepperImporter getPepperImporter(ImporterParams pepperImporterParams) 
 	{

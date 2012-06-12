@@ -179,7 +179,7 @@ public class CreateStepsAndWireTest extends TestCase
 				((PepperJobDelegatorTest)this.getFixture()).createAndWirePepperModuleController(exporter1);
 				
 				//wirinig with m2m-monitors
-				EList<EList<PepperModuleController>> steps= ((PepperJobDelegatorTest)this.getFixture()).createSteps();
+				EList<EList<PepperModuleController>> steps= ((PepperJobDelegatorTest)this.getFixture()).createPhases();
 				((PepperJobDelegatorTest)this.getFixture()).wireModuleControllers(steps);
 				
 				//checking if wireing was successfull
@@ -239,7 +239,7 @@ public class CreateStepsAndWireTest extends TestCase
 				((PepperJobDelegatorTest)this.getFixture()).createAndWirePepperModuleController(exporter2);
 				
 				//wirinig with m2m-monitors
-				EList<EList<PepperModuleController>> steps= ((PepperJobDelegatorTest)this.getFixture()).createSteps();
+				EList<EList<PepperModuleController>> steps= ((PepperJobDelegatorTest)this.getFixture()).createPhases();
 				((PepperJobDelegatorTest)this.getFixture()).wireModuleControllers(steps);
 				
 				//checking if wireing was successfull
@@ -300,7 +300,7 @@ public class CreateStepsAndWireTest extends TestCase
 				((PepperJobDelegatorTest)this.getFixture()).createAndWirePepperModuleController(exporter1);
 				
 				//wirinig with m2m-monitors
-				EList<EList<PepperModuleController>> steps= ((PepperJobDelegatorTest)this.getFixture()).createSteps();
+				EList<EList<PepperModuleController>> steps= ((PepperJobDelegatorTest)this.getFixture()).createPhases();
 				((PepperJobDelegatorTest)this.getFixture()).wireModuleControllers(steps);
 				
 				//checking if wireing was successfull

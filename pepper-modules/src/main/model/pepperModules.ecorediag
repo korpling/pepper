@@ -78,7 +78,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_WlfjnmSuEd6hS_p1kv5AvQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperModules.ecore#//PepperModule"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wlfjn2SuEd6hS_p1kv5AvQ" x="400" y="279" width="328" height="274"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wlfjn2SuEd6hS_p1kv5AvQ" x="400" y="250" width="328" height="309"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_WlfjoGSuEd6hS_p1kv5AvQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_WlfjoWSuEd6hS_p1kv5AvQ" type="4001"/>
@@ -98,7 +98,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_WlfjqmSuEd6hS_p1kv5AvQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperModules.ecore#//PepperImporter"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wlfjq2SuEd6hS_p1kv5AvQ" x="650" y="640" width="246" height="73"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wlfjq2SuEd6hS_p1kv5AvQ" x="650" y="640" width="288" height="103"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_WlfjrGSuEd6hS_p1kv5AvQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_WlfjrWSuEd6hS_p1kv5AvQ" type="4001"/>
