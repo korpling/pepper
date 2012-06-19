@@ -764,7 +764,6 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 			SCorpusGraph sCorpGraph= SCorpusStructureFactory.eINSTANCE.createSCorpusGraph();
 			this.getSaltProject().getSCorpusGraphs().add((SCorpusGraph) sCorpGraph);
 			
-			
 			//store a paired list
 			ImporterGraphPair importerGraphPair= new ImporterGraphPair();
 			importerGraphPair.importer= (PepperImporter) moduleController.getPepperModule();
@@ -822,10 +821,10 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 	
 	/**
 	 * Wire all module-controllers with each other, by creating a 
-	 * PepperModule2ModuleMonitor. This method takes all module-controllers of step n 
-	 * and uses them as input for PepperModule2ModuleMonitor, all module-controllers
-	 * of step n+1 and uses them for output of PepperModule2ModuleMonitor.
-	 * @param phases a list of steps, one step is a list of module-controllers
+	 * {@link PepperQueuedMonitor}. This method takes all module-controllers of step n 
+	 * and uses them as input for {@link PepperQueuedMonitor}, all module-controllers
+	 * of step n+1 and uses them for output of {@link PepperQueuedMonitor}.
+	 * @param phases a list of phases, one step is a list of module-controllers
 	 */
 	protected void wireModuleControllers(EList<EList<PepperModuleController>> phases)
 	{
@@ -872,41 +871,35 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 		//checks if everything necessary is set
 		this.validateBeforeStart();
 		
+		//import corpus-structure first, because of the module-controllers 
+		//can have only one m2j-monitor, and it will be overridden else
 		EList<ImporterGraphPair> importerGraphPairs= null;
-		{//import the corpus structure
-			importerGraphPairs= this.importCorpusStructure();
-		}
-		{//create and wire PepperModuleController for all modules
-			//import corpus-structure first, because of the module-controllers 
-			//can have only one m2j-monitor, and it will be overridden else
-			
+		//import the corpus structure
+		importerGraphPairs= this.importCorpusStructure();
+		
+		//start: create and wire PepperModuleController for all modules
 			//all importers
 			for (PepperImporter importer: this.getPepperImporters())
-			{
 				this.createAndWirePepperModuleController(importer);
-			}
 			
 			//all modules
 			for (PepperModule module: this.getPepperModules())
-			{ 
 				this.createAndWirePepperModuleController(module); 
-			}
 			
 			//all exporters
 			for (PepperExporter exporter: this.getPepperExporters())
-			{
 				this.createAndWirePepperModuleController(exporter);
-			}
-		}	
-		{//wire all PepperModuleControllers with PepperDocumentController
+		//end: create and wire PepperModuleController for all modules
+			
+		//start: wire all PepperModuleControllers with PepperDocumentController
 			this.wirePepperDocumentControllerWithPepperModuleControllers(this.allModuleControlers, this.getPepperDocumentController());
-		}//wire all PepperModuleControllers with PepperDocumentController
-		{//wire all modules with each other, by creating a PepperModule2ModuleMonitor
+		//end: wire all PepperModuleControllers with PepperDocumentController
+		//start: wire all modules with each other, by creating a PepperModule2ModuleMonitor
 			//an ordered list which contain all steps, one step is a list of all modules in each step 
 			EList<EList<PepperModuleController>> phases= this.createPhases();
 			//wiring all module-controllers by steps
 			this.wireModuleControllers(phases);
-		}
+		//end: wire all modules with each other, by creating a PepperModule2ModuleMonitor
 		{//add all imported documents to PepperDocumentController to observe
 			for (ImporterGraphPair importerGraphPair: importerGraphPairs)
 			{	

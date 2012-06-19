@@ -402,11 +402,11 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					if (importerParams== null)
 						throw new PepperParamsException("Cannot set parameter to PepperConverter, because one of the importers is null.");
 					if (	(	(importerParams.getModuleName()== null) ||
-								(importerParams.getModuleName().equals(""))) &&
+								(importerParams.getModuleName().isEmpty())) &&
 							(	(	(importerParams.getFormatName()== null) ||
-									(importerParams.getFormatName().equals("")))||
+									(importerParams.getFormatName().isEmpty()))||
 								(	(importerParams.getFormatVersion()== null) ||
-									(importerParams.getFormatName().equals(""))))) 
+									(importerParams.getFormatName().isEmpty())))) 
 						throw new PepperParamsException("Cannot set parameter to PepperConverter, because one of the importers does neither have a name nor a format description (format name and format version).");
 				}
 			}
@@ -420,11 +420,11 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					if (exporterParams== null)
 						throw new PepperParamsException("Cannot set parameter to PepperConverter, because one of the exporters is null.");
 					if (	(	(exporterParams.getModuleName()== null) ||
-								(exporterParams.getModuleName().equals(""))) &&
+								(exporterParams.getModuleName().isEmpty())) &&
 							(	(	(exporterParams.getFormatName()== null) ||
-									(exporterParams.getFormatName().equals("")))||
+									(exporterParams.getFormatName().isEmpty()))||
 								(	(exporterParams.getFormatVersion()== null) ||
-									(exporterParams.getFormatName().equals(""))))) 
+									(exporterParams.getFormatName().isEmpty())))) 
 						throw new PepperParamsException("Cannot set parameter to PepperConverter, because one of the exporters does neither have a name nor a format description (format name and format version).");
 				}
 			}
@@ -434,7 +434,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					if (moduleParams== null)
 						throw new PepperParamsException("Cannot set parameter to PepperConverter, because one of the modules is null.");
 					if (	(moduleParams.getModuleName()== null) &&
-							(moduleParams.getModuleName().equals("")))
+							(moduleParams.getModuleName().isEmpty()))
 						throw new PepperParamsException("Cannot set parameter to PepperConverter, because one of the modules has no name.");
 				}
 			}
@@ -455,7 +455,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 							errorPart= "special parameter for importer";
 							errorURI= importerParams.getSpecialParams();
 							if (	(importerParams.getSpecialParams()!= null)&&
-									(!importerParams.getSpecialParams().toFileString().equals("")))
+									(!importerParams.getSpecialParams().toFileString().isEmpty()))
 							{
 								importerParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), importerParams.getSpecialParams()));
 //								importerParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSpecialParams()));
@@ -469,7 +469,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 								errorPart= "special parameter for manipulator";
 								errorURI= manipulatorParams.getSpecialParams();
 								if (	(manipulatorParams.getSpecialParams()!= null)&&
-										(!manipulatorParams.getSpecialParams().toFileString().equals("")))
+										(!manipulatorParams.getSpecialParams().toFileString().isEmpty()))
 								{
 									
 									manipulatorParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), manipulatorParams.getSpecialParams()));
@@ -487,7 +487,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 							errorPart= "special parameter for exporter";
 							errorURI= exporterParams.getSpecialParams();
 							if (	(exporterParams.getSpecialParams()!= null)&&
-									(!exporterParams.getSpecialParams().toFileString().equals("")))
+									(!exporterParams.getSpecialParams().toFileString().isEmpty()))
 							{
 								exporterParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), exporterParams.getSpecialParams()));
 //								exporterParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getSpecialParams()));
@@ -821,7 +821,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					CorpusDefinition corpusDefinition= PepperFWFactory.eINSTANCE.createCorpusDefinition();
 					corpusDefinition.setCorpusPath(imParams.getSourcePath());
 					if (	(imParams.getFormatName()!= null) &&
-							(!imParams.getFormatName().equals("")))
+							(!imParams.getFormatName().isEmpty()))
 					{
 						FormatDefinition formatDefinition= PepperFWFactory.eINSTANCE.createFormatDefinition();
 						formatDefinition.setFormatName(imParams.getFormatName());
@@ -906,7 +906,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					CorpusDefinition corpusDefinition= PepperFWFactory.eINSTANCE.createCorpusDefinition();
 					corpusDefinition.setCorpusPath(exParams.getDestinationPath());
 					if (	(exParams.getFormatName()!= null) &&
-							(!exParams.getFormatName().equals("")))
+							(!exParams.getFormatName().isEmpty()))
 					{
 						FormatDefinition formatDefinition= PepperFWFactory.eINSTANCE.createFormatDefinition();
 						formatDefinition.setFormatName(exParams.getFormatName());

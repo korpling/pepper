@@ -116,7 +116,7 @@ public class PepperProperties
 		{//load user-defined properties
 			String udPropsName= pepperProps.getProperty(PROP_UD_PROPERTIES);
 			if (	(udPropsName== null)||
-					(udPropsName.equals("")))
+					(udPropsName.isEmpty()))
 				throw new PepperPropertyException("Cannot load user-defined properties, because the property '"+PROP_UD_PROPERTIES+"' in in pepperStarter-properties ('"+propFile.getAbsolutePath()+"'), is not given or empty.");
 			
 			if (udPropFile== null)

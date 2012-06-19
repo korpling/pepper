@@ -27,15 +27,19 @@ public class PepperFWProperties {
 	/**
 	 * flag if Pepper shall measure and display the performance of the used PepperModules
 	 */
-	public static final String PROP_COMPUTE_PERFORMANCE= "pepper.computePerformance";
+	public static final String PROP_PREFIX= "pepper";
+	/**
+	 * flag if Pepper shall measure and display the performance of the used PepperModules
+	 */
+	public static final String PROP_COMPUTE_PERFORMANCE= PROP_PREFIX+".computePerformance";
 	/**
 	 * the maximal number of currently processed SDocument-objects
 	 */
-	public static final String PROP_MAX_AMOUNT_OF_SDOCUMENTS= "pepper.maxAmountOfProcessedSDocuments";
+	public static final String PROP_MAX_AMOUNT_OF_SDOCUMENTS= PROP_PREFIX+".maxAmountOfProcessedSDocuments";
 	/**
 	 * the flag if an SDocument-object shall be removed after it was processed by all PepperModules
 	 */
-	public static final String PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING= "removeSDocumentAfterProcessing";
+	public static final String PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING= PROP_PREFIX+".removeSDocumentAfterProcessing";
 	
 	/**
 	 * This array contains all properties, which with the Pepper framework can be configured. 
