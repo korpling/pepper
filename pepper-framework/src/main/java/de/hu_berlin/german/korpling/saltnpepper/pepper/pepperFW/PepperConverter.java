@@ -17,18 +17,18 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW;
 
+import java.util.Properties;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.osgi.service.log.LogService;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperConverterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.PepperParams;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.test.IPepperConverter;
-
-import java.util.Properties;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.osgi.service.log.LogService;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,7 +48,7 @@ import org.osgi.service.log.LogService;
  * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage#getPepperConverter()
  * @model
  */
-public interface PepperConverter extends EObject, IPepperConverter
+public interface PepperConverter extends EObject
 {
 	/**
 	 * Returns a static {@link LogService} object, which is created, when the first instance of {@link PepperConverter}
