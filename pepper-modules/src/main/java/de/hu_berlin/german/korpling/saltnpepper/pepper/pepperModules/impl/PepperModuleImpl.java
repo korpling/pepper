@@ -679,6 +679,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			for (SCorpusGraph sCorpusGraph: corpGraphs)
 			{//for every corpus graph
 				//FIXME why does these lines do not work???
+				//--> hildebax 14.08.2012: getSRootCorpus() fixed, should work now <--
 //				for (SCorpus sCorpus: sCorpusGraph.getSRootCorpus())
 //				{//for every root corpus
 //					this.start(sCorpus.getSElementId());
