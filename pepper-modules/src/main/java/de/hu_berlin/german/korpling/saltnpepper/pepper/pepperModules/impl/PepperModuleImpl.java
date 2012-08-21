@@ -37,6 +37,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExpor
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PersistenceConnector;
@@ -262,6 +263,29 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	 */
 	protected String version = VERSION_EDEFAULT;
 
+	/**
+	 * A {@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}. 
+	 */
+	private PepperModuleProperties properties= null;
+	
+	/**
+	 * {@inheritDoc PepperModule#getProperties()}
+	 */
+	@Override
+	public PepperModuleProperties getProperties()
+	{
+		return(properties);
+	}
+	
+	/**
+	 * {@inheritDoc PepperModule#setProperties(PepperModuleProperties)}
+	 */
+	@Override
+	public void setProperties(PepperModuleProperties properties)
+	{
+		this.properties= properties;
+	}
+	
 	/**
 	 * This method is called by OSGi framework and sets the component context, this class is running in. 
 	 * This method scans the given {@link ComponentContext} object for symbolic name and version and initializes its

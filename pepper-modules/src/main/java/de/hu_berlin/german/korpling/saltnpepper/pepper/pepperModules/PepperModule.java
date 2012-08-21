@@ -142,6 +142,18 @@ public interface PepperModule extends EObject {
 	RETURNING_MODE getReturningMode();
 
 	/**
+	 * Returns a {@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}.
+	 * @return
+	 */
+	public PepperModuleProperties getProperties();
+	
+	/**
+	 * Sets the{@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}.
+	 * @param properties 
+	 */
+	public void setProperties(PepperModuleProperties properties);
+	
+	/**
 	 * Returns the value of the '<em><b>SCorpus Graph</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
