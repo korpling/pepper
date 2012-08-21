@@ -59,6 +59,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefin
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperManipulator;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ExporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ImporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams;
@@ -832,7 +834,10 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					
 					{//setting special parameter
 						if (imParams.getSpecialParams()!= null)
+						{
 							pepperImporter.setSpecialParams(imParams.getSpecialParams());
+							setModuleProperties(pepperImporter, imParams.getSpecialParams());
+						}
 					}
 					pepperJob.getPepperImporters().add(pepperImporter);
 				}
@@ -869,7 +874,10 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 					pepperJob.getPepperModules().add(pepperManipulator);
 					{//setting special parameter
 						if (moduleParams.getSpecialParams()!= null)
+						{
 							pepperManipulator.setSpecialParams(moduleParams.getSpecialParams());
+							setModuleProperties(pepperManipulator, moduleParams.getSpecialParams());
+						}
 					}
 				}
 				if (this.logService!= null) 
@@ -918,6 +926,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 						if (exParams.getSpecialParams()!= null)
 						{
 							pepperExporter.setSpecialParams(exParams.getSpecialParams());
+							setModuleProperties(pepperExporter, exParams.getSpecialParams());
 						}
 					}
 					pepperJob.getPepperExporters().add(pepperExporter);
@@ -938,6 +947,28 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 		
 		this.getPepperJobs().add(pepperJob);
 		return(pepperJob);
+	}
+	
+	/**
+	 * Loads and sets the module properties also called special params to a {@link PepperModule}. 
+	 * @param pepperModule
+	 * @param moduleProperties
+	 */
+	private void setModuleProperties(PepperModule pepperModule, URI moduleProperties)
+	{
+		if (	(moduleProperties!= null)&&
+				(pepperModule!= null))
+		{
+			PepperModuleProperties pepperModuleProperties= null;
+			pepperModuleProperties= pepperModule.getProperties();
+			if (pepperModuleProperties== null)
+			{
+				pepperModuleProperties= new PepperModuleProperties();
+				pepperModule.setProperties(pepperModuleProperties);
+			}
+			
+			pepperModuleProperties.addProperties(moduleProperties);
+		}
 	}
 	
 	/**
