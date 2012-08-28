@@ -108,18 +108,18 @@ public class PepperModuleProperties
 	
 	/**
 	 * Adds the given {@link PepperModuleProperty} object to the internal list.
-	 * @param propertyDescription
+	 * @param property
 	 */
-	public void addProperty(PepperModuleProperty<?> propertyDescription)
+	public void addProperty(PepperModuleProperty<?> property)
 	{
-		if (	(propertyDescription.getName()== null)||
-				(propertyDescription.getName().isEmpty()))
+		if (	(property.getName()== null)||
+				(property.getName().isEmpty()))
 			throw new PepperException("Cannot add a property description without a name.");
 		if (pepperModuleProperties== null)
 		{
 			pepperModuleProperties= new HashMap<String, PepperModuleProperty<?>>();
 		}
-		pepperModuleProperties.put(propertyDescription.getName(), propertyDescription);
+		pepperModuleProperties.put(property.getName(), property);
 	}
 	
 	/**
