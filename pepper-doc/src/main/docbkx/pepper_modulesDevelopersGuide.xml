@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Pepper</title>
+        <subtitle>Developer's Guide for PepperModules</subtitle>
+        <authorgroup>
+            <author>
+                <personname>
+                    <firstname>Florian</firstname>
+                    <surname>Zipser</surname>
+                </personname>
+                <email>saltnpepper@lists.hu-berlin.de</email>
+            </author>
+            <author>
+                <orgname xml:id="org1">INRIA</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org2">SFB 632 Information Structure / D1 Linguistic
+                    Database</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org3">Humboldt-Universität zu Berlin</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org4">Universität Potsdam</orgname>
+            </author>
+        </authorgroup>
+        <copyright>
+            <year>2012</year>
+            <holder><xref linkend="org1"/>, <xref linkend="org2"/>, <xref linkend="org3"/>, <xref
+                    linkend="org1"/>,<xref linkend="org4"/>, All rights reserved.</holder>
+        </copyright>
+        <releaseinfo>Version ${project.version}</releaseinfo>
+    </info>
+    <preface>
+        <title>Foreword</title>
+        <para>The aim of this document is to provide a helpful guide to create own PepperModules to
+            plug them into the pepper framework. Currently this document is not in a very good state so far. It is not more than a loose collection of
+        hopefully interesting information for developers. But are working on it, to fullfill its aim and to make a helpfull and readable guide out of it.
+        You are very welcome to help us improving this document by reporting us bugs, requests for more information or by writing sections. Please
+        write an email to <email>saltnpepper@lists.hu-berlin.de</email>.</para>
+    </preface>
+    <chapter>
+        <title>Documenting your PepperModule</title>
+        <para>
+            One of the most important but often forgotten tasks when creating a PepperModule is to document the behaviour of it and its functionalities. 
+            Therefore the template SampleModules contains a template for creating a documentation. The documentation in SaltNPepper in general is done
+            in DocBook (see <link xlink:href="docbook.org/">docbook.org/</link>). DocBook is a documentation language written in XML and enables to
+            transform the documentation into several target formats like html, pdf, odt, doc etc.. 
+            
+            <note><para>We recommend to use the template, for a uniform view to all PepperModules. That makes it possible not to forget important issues to be 
+            mentioned and makes it easier for the user to have a good understanding of what the PepperModule is doing.</para></note>
+            You will find the template in <filename>SAMPLE_MODULES_HOME/src/main/docbkx/manual.xml</filename> among other directories containing files necessary
+            for the transformation. Tor refer to images from the manual, put the into the image folder <filename>SAMPLE_MODULES_HOME/src/main/docbkx/images/</filename>
+            and make a relative reference.  
+        </para>
+        <sect1>
+            <title>Transformation</title>
+            <para>The standard transformation which is configured for SampleModules is the transformation to html and pdf. The configuration is done in the 
+                <filename>pom.xml</filename> of the pepper-parentModule project. To add further output formats, just copy the respective plugins to 
+                your pom and change them.</para>
+            <para>When executing the maven goal site <synopsis>mvn clean site</synopsis>, maven will create a manual folder under 
+                <filename>SAMPLE_MODULES_HOME/target/manual</filename>, where you can find the pdf documentation and the html documentation.</para>
+            <note><para>The current configuration does not need to be changed, just write your documentation by overriding the template. The rest shall
+            work automatically. In some cases it might be necessary to adopt the transformation, than please take a look to the xsl transformation files 
+            in <filename>SAMPLE_MODULES_HOME/docbook-xsl</filename>.</para></note>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>Customizing behaviour of your PepperModule</title>
+        <subtitle>via properties</subtitle>
+        <para> When creating a mapping inside to either map any format or model to salt or a salt
+            model to another salt model or a salt model to any model or format, it is often a matter
+            of choice to map some data this way or another. In such cases it might be clever not to
+            be that strict and allow only one possiblity. It could be a good idea to leave this
+            decision to the user. Customizing a mapping will increse the power of a PepperModule
+            enormously, because than it can be used for many purposes without rewriting parts of it.
+            Therefore the pepper framework provides a property system to access such user
+            customizations. Nevertheless, a PepperModule shall not be dependant on user
+            customization, the past showed, that it is very frustrating, when a PepperModule breaks
+            up, because of not specifified properties. There should always be a default behaviour in
+            case of the user has not specified one. </para>
+        <sect1>
+            <title>Property</title>
+            <para>A property is just an attribute-value pair, consisting of a name so called
+                property name and a value so called property value. Properties can be used for
+                customizing the behaviour of a mapping of a PepperModule. Such a property must be
+                specified by the user and determined in the pepper workflow description. The pepper
+                frsamework will pass all customization properties direct to the instance of the
+                PepperModule. </para>
+            <note>
+                <para>In the current version of pepper one has to specify a property file by its
+                    location in the pepper workflow description file (.pepperParams) in the
+                    attribute @specialParams inside the &lt;importerParams&gt;,
+                    &lt;exporterParams&gt; or &lt;moduleParams&gt; element. In the next versions
+                    this will change to a posibility for adding properties directly to the pepper
+                    workflow description file.</para>
+            </note>
+        </sect1>
+        <sect1>
+            <title>Property registration</title>
+            <para>The pepper framework provides a kind of a registration for customization
+                properties. This registry is called <classname>PepperModuleProperties</classname>
+                and can be accessed via <methodname>getProperties()</methodname> and
+                    <methodname>setProperties()</methodname>. This class only represents a container
+                object for a set of <classname>PepperModuleProperty</classname> objects and provides
+                accessing methods. An instance of <classname>PepperModuleProperty</classname>
+                represents an abstract description of a property and the concrete value at once. In
+                the registration phase it belongs to the tasks of a
+                    <classname>PepperModule</classname> to specify the abstract description which
+                consists of the name of the property, its datatype, a short description and a flag
+                specifying if this property is optional or mandatory. To create such an abstract
+                description of a property use the constructor: <constructorsynopsis>
+                    <methodname>PepperModuleProperty</methodname>
+                    <methodparam>
+                        <type>String</type>
+                        <parameter>name</parameter>
+                    </methodparam>
+                    <methodparam>
+                        <type>Class&gt;T&lt;</type>
+                        <parameter>clazz</parameter>
+                    </methodparam>
+                    <methodparam>
+                        <type>String</type>
+                        <parameter>description</parameter>
+                    </methodparam>
+                    <methodparam>
+                        <type>Boolean</type>
+                        <parameter>required</parameter>
+                    </methodparam>
+                </constructorsynopsis> and pass the created property object to the property registry
+                by calling the method <methodname>addProperty</methodname>. The pepper framework
+                uses the registry to first inform the user about usable properties for customization
+                and second to fullfill the property objects with the property values set by the
+                user. </para>
+            <para>The value of a specific property can be accessed by passing its name to the
+                registry. The method to be used is the following one: <methodsynopsis>
+                    <methodname>getProperty</methodname>
+                    <methodparam>
+                        <type>String</type>
+                        <parameter>propName</parameter>
+                    </methodparam>
+                </methodsynopsis>
+            </para>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>Testing your PepperModule</title>
+        <para>For running your own PepperModule in a test environment, the pepper framework provides a special project for doing this called 
+            pepper-testSuite. This project first contains an environment to run your module called pepper-testEnvironment and contains a second project called
+            pepper-moduleTest for checking the correctness of your PepperModule. Correctness means, that your module can be pluged into the environment and
+            does not mean the logical correctness of its functionality. This project directly runs in the OSGi container and therefore has to be started in it. Because of there is starter
+        outside the OSGi environment, you have to pass necessary resource locations and test corpora via environment variables.</para>
+        <sect1>
+            <title>environment variables</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>PEPPER_TEST to a folder, where the resources of the peppermodules are and the temprorary stuff can be stored</para></listitem>
+                    <listitem><para>PEPPER_TEST_WORKFLOW_FILE to the .pepperparams file</para></listitem>
+                </itemizedlist>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Configure OSGi environment</title>
+            <para>
+                For running pepper and also its test environment it is very important to use the correct start order for plugins. For instance it is of special
+                interest to start a logger as early as possible to get a logging and not to hide important messages like warnings or errors. For pepper it 
+                is important to run the the pepper framework after all plugins are started, otherwise, they will not be registrated to the pepper plugin
+                registry and can therefore not be resolved.
+            </para>
+            <para>
+                To avoid this, set the start level (in OSGi) of "pepper-framework" to default-value + 2 and set the start value of the pepper-logReader to 0.
+            </para>
+            <para>To make it easier, we provide a preconfigured file, which can be used for this, but only for eclipse. This file contains information for 
+                the run configurations of the pepper-testEnvironment project and can be found under <filename>PEPPER_TEST_ENVIRONMENT_HOME/pepper-testEnvironment.launch</filename>.
+                When using this configuration, it will not run correcly out of the box, because you have to enable your project first. Therefore open the run configuration in 
+                eclipse open the pepper-testEnvironment entry and click the box left to the name of your project. For checking not to forget one necessary dependency
+                you can click the vlidate button and the eclipse will retrieve all dependencies and list missing ones in case they exist.
+            </para> 
+        </sect1>
+    </chapter>
+</book>
