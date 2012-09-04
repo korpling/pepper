@@ -247,8 +247,8 @@
           </reportPlugins>
         </configuration>
       </plugin>
-      <!-- end: maven site plugin -->
-      <!-- start: of docbook plugin -->
+<!--       end: maven site plugin -->
+<!--       start: of docbook plugin -->
       <plugin>
         <groupId>com.agilejava.docbkx</groupId>
         <artifactId>docbkx-maven-plugin</artifactId>
@@ -272,7 +272,7 @@
               <useSvg>true</useSvg>
               <useExtensions>true</useExtensions>
               <sectionAutolabel>true</sectionAutolabel>
-              <!-- font configuration -->
+<!--               font configuration -->
               <bodyFontFamily>DejaVu Serif</bodyFontFamily>
               <monospaceFontFamily>DejaVu Sans Mono</monospaceFontFamily>
               <titleFontFamily>DejaVu Sans</titleFontFamily>
@@ -385,22 +385,6 @@
         <version>2.5</version>
         <executions>
           <execution>
-            <id>copy-filter-docbook</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/docbkx</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/src/main/docbkx/</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>             
-            </configuration>            
-          </execution>
-          <execution>
             <id>copy-resources</id>
             <phase>process-classes</phase>
             <goals>
@@ -416,6 +400,23 @@
               </resources>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-filter-docbook</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/docbkx</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/src/main/docbkx/</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>             
+            </configuration>            
+          </execution>
+
         </executions>
       </plugin>
       <!-- end: copying of OSGI-INF -->
