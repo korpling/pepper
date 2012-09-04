@@ -375,7 +375,7 @@
             <para>To make it easier, we provide a preconfigured file, which can be used for this,
                 but only for eclipse. This file contains information for the run configurations of
                 the pepper-testEnvironment project and can be found under
-                    <filename>PEPPER_TEST_ENVIRONMENT_HOME/pepper-testEnvironment.launch</filename>.
+                    <filename>PEPPER_HOME/pepper-testSuite/pepper-testEnvironment/pepper-testEnvironment.launch</filename>.
                 When using this configuration, it will not run correcly out of the box, because you
                 have to enable your project first. Therefore open the run configuration in eclipse
                 open the pepper-testEnvironment entry and click the box left to the name of your
