@@ -194,30 +194,6 @@
         </executions>
       </plugin>
        end: creation of OSGi Service components -->
-      <!-- start: copying of OSGI-INF -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.4.3</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/OSGI-INF</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>target/scr-plugin-generated/OSGI-INF</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- end: copying of OSGI-INF -->
       <!-- start: creation of bundle jar -->
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -403,7 +379,7 @@
           </execution>
         </executions>
       </plugin>
-      
+      <!-- start: copying of OSGI-INF -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.5</version>
@@ -424,8 +400,25 @@
               </resources>             
             </configuration>            
           </execution>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/OSGI-INF</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>target/scr-plugin-generated/OSGI-INF</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
+      <!-- end: copying of OSGI-INF -->
       <!-- end of docbook plugin -->
       
     </plugins>
