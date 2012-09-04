@@ -13,6 +13,7 @@
     <module>pepper-testSuite</module>
     <module>pepper-parentModule</module>
     <module>pepper-starter</module>
+    <module>pepper-doc</module>
   </modules>
    <description>Pepper is a plugable converter framework to convert linguistic data between several formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged into the framework via creating a PepperModule.</description>
    <url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
@@ -156,6 +157,7 @@
      </plugin>
       <!-- end: Plugin for automatic releasing -->
       <!-- start: site plugin -->
+      <!-- 
       <plugin>
 	    <groupId>org.apache.maven.plugins</groupId>
 	    <artifactId>maven-site-plugin</artifactId>
@@ -164,6 +166,7 @@
         	<outputDirectory>${basedir}/docs/site</outputDirectory>
         </configuration>
       </plugin>
+       -->
       <!-- end: site plugin -->
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>

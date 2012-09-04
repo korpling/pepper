@@ -36,35 +36,226 @@
     <preface>
         <title>Foreword</title>
         <para>The aim of this document is to provide a helpful guide to create own PepperModules to
-            plug them into the pepper framework. Currently this document is not in a very good state so far. It is not more than a loose collection of
-        hopefully interesting information for developers. But are working on it, to fullfill its aim and to make a helpfull and readable guide out of it.
-        You are very welcome to help us improving this document by reporting us bugs, requests for more information or by writing sections. Please
-        write an email to <email>saltnpepper@lists.hu-berlin.de</email>.</para>
+            plug them into the pepper framework. Currently this document is not in a very good state
+            so far. It is not more than a loose collection of hopefully interesting information for
+            developers. But are working on it, to fullfill its aim and to make a helpfull and
+            readable guide out of it. You are very welcome to help us improving this document by
+            reporting us bugs, requests for more information or by writing sections. Please write an
+            email to <email>saltnpepper@lists.hu-berlin.de</email>.</para>
     </preface>
     <chapter>
-        <title>Documenting your PepperModule</title>
-        <para>
-            One of the most important but often forgotten tasks when creating a PepperModule is to document the behaviour of it and its functionalities. 
-            Therefore the template SampleModules contains a template for creating a documentation. The documentation in SaltNPepper in general is done
-            in DocBook (see <link xlink:href="docbook.org/">docbook.org/</link>). DocBook is a documentation language written in XML and enables to
-            transform the documentation into several target formats like html, pdf, odt, doc etc.. 
-            
-            <note><para>We recommend to use the template, for a uniform view to all PepperModules. That makes it possible not to forget important issues to be 
-            mentioned and makes it easier for the user to have a good understanding of what the PepperModule is doing.</para></note>
-            You will find the template in <filename>SAMPLE_MODULES_HOME/src/main/docbkx/manual.xml</filename> among other directories containing files necessary
-            for the transformation. Tor refer to images from the manual, put the into the image folder <filename>SAMPLE_MODULES_HOME/src/main/docbkx/images/</filename>
-            and make a relative reference.  
+        <title>Introduction</title>
+        <para>Since Pepper is a plugable framework, we used an underlying framework called OSGi
+            (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>) providing
+            such a functiuonality. OSGi is a mighty framework and has a lot of impact in the way of
+            programming things in java. Because we do not want to force you to learn OSGi, when you
+            just want to create a new module for pepper, we tried to hide the OSGi layer as good as
+            possible. Therefore and for the lifecycle management of such projects, we used another
+            framework called maven (see: <link xlink:href="http://maven.apache.org/"
+                >http://maven.apache.org/</link>). Maven is configured via an xml file called
+            pom.xml, you will find it in all SaltNPepper projects and also in the root of the
+            SampleModule project. Maven makes things easier for use especially in dealing with
+            dependencies. For working with maven please install the program from <link
+                xlink:href="http://maven.apache.org/">http://maven.apache.org/</link> (where are
+            acutually using version 3.0.3). Most Java IDEs provide a support for maven like Eclipse
+            (see: <link xlink:href="www.eclipse.org/">www.eclipse.org/</link>) or NetBeans (see:
+                <link xlink:href="www.netbeans.org/">www.netbeans.org/</link>). Maven follows the
+            paradigm convention over configuration, therefore a lot of things are already
+            predefined. We adopt the settings for using OSGi and to create PepperModules, which are
+            simply plugable into the Pepper framework. So in the the good case, you can just follow
+            this guide, and run </para>
+        <synopsis>
+            mvn install assembly
+        </synopsis>
+        <para> and you will find a zip file in the target folder of your project
+            (YOUR_PROJECT/target/distribution), which can simply pluged into Pepper via extracting
+            its content to the plugin folder of Pepper. In the bad case some mean errors occur and
+            you have to dig in a lot of online tutorials and forums and lose a lot of time. Please
+            do not despair and write us an e-mail instead.
+                <email>saltnpepper@lists.hu-berlin.de</email>
         </para>
+        <para> We are trying to make things as easy to use as possible, but we are an non profit
+            project and we need your help. So please tell us if things are to difficult and help us
+            improving the framework. </para>
+        <para> Have fun developing with SaltNPepper!</para>
+        <sect1>
+            <title>Download the skeleton</title>
+            <para> To start with creating an own module for Pepper, please download the
+                SampleModule, to be used as a skeleton for your own module. SampleModules is stored
+                in our svn repository, therefore please export the project via an SVN client. The
+                SVN location depends on the version you want to use and can be found at
+                SampleModules. </para>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>Adopting the SampleModules</title>
+        <para> Before we start adapting the modules, please think about what kinds of modules you
+            want to provide in your project. If you just want to implement an importer, delete the
+            exporter and manipulator code from the SampleModule. Otherwise, you will end up with
+            non-functional modules in your project. </para>
+        <para> Here, we give a list of things to do to adapt the project to your needs. In some
+            cases, the order of the entries is arbitrary, but in some cases it is easier to respect
+            the given order. </para>
+        <sect1>
+            <title>Adopting the project</title>
+            <itemizedlist>
+                <listitem>
+                    <para>import the project as a Maven project (when working with eclipse, use the
+                        import option existing maven project)</para>
+                </listitem>
+                <listitem>
+                    <para>rename the project (when working with eclipse, right click on the project
+                        name and choose the menu entry refactor --> rename)</para>
+                </listitem>
+                <listitem>
+                    <para>rename the package (when working with eclipse, right click on the package
+                        name and choose the menu entry refactor --> rename)</para>
+                </listitem>
+            </itemizedlist>
+        </sect1>
+        <sect1>
+            <title>Adopting the pom.xml</title>
+            <para>The items in the numbered list correspond to the TODO entries in the pom.xml file.
+                You will find the pom.xml file in the parent directory of the SampleProject.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>change the groupId to the name of your module (conventionally, the groupId
+                        is the same as the package name)</para>
+                </listitem>
+                <listitem>
+                    <para>change the artifactId (to the module name)</para>
+                </listitem>
+                <listitem>
+                    <para>modify the description: Write what the module is supposed to do</para>
+                </listitem>
+                <listitem>
+                    <para>change the project homepage to the url of your project</para>
+                </listitem>
+                <listitem>
+                    <para>change the issue tracker to the one you are using, in case of you do not
+                        use any one, remove this entry</para>
+                </listitem>
+                <listitem>
+                    <para>change the continuous integration management system to the one you are
+                        using, in case of you do not use any one, remove this entry</para>
+                </listitem>
+                <listitem>
+                    <para>change the inception year to the current year</para>
+                </listitem>
+                <listitem>
+                    <para>change the name of the organization to the one you are working for</para>
+                </listitem>
+                <listitem>
+                    <para>modify the scm information or remove them (the scm specifies the location
+                        of your module's SVN repository)</para>
+                </listitem>
+                <listitem>
+                    <para>import needed maven dependencies (this is necessary to resolve
+                        dependencies to libraries handled by maven)</para>
+                </listitem>
+                <listitem>
+                    <para>change the connection to the tags folder of your scm, what you can see
+                        here is the subversion connection for the pepperModules-SampleModules
+                        project</para>
+                </listitem>
+                <listitem>
+                    <para>include libraries not handled by maven, i.e. jar files, by setting the
+                        bundle-path and extending the include-resources tag.</para>
+                </listitem>
+            </itemizedlist>
+        </sect1>
+        <sect1>
+            <title>Adopting the Java code</title>
+            <para> This section describes how to customize the importer, manipulator or exporter.
+                Therefore you will find in the <classname>SampleModule</classname> three classes
+                named <classname>SampleImporter</classname>,
+                    <classname>SampleManipulator</classname> and
+                    <classname>SampleExporter</classname>. All of them are located in the package
+                    <package>de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules</package>.
+                In most cases people do not want to create all of them sometimes people only want to
+                create an importer an exporter or a manipulator. Then just delete the classes you
+                won't implement, In case of you want to have several importer, manipulators or
+                exporters, just copy the classes and proceed with each class as described in the
+                following. The items in the numbered list correspond to the TODO entries in the
+                class files. <itemizedlist>
+                    <listitem>
+                        <para>change the name of the component, for example use the format name and
+                            the ending Importer or Exporter e.g. FORMATExporterComponent and
+                            FORMATExporterComponentFactory, in case of you want to create a
+                            manipulator, use a name describing the task e.g.
+                            MYTaskManipulatorComponent and MYTaskManipulatorComponentFactory</para>
+                    </listitem>
+                    <listitem>
+                        <para>change the name of the module, for example use the format name and the
+                            ending Exporter (<classname>FORMATExporter</classname>)</para>
+                    </listitem>
+                    <listitem>
+                        <para>in case of you are implementing an im- or exporter, change "sample"
+                            with format name and 1.0 with format version to support</para>
+                    </listitem>
+                    <listitem>
+                        <para>in case of you are creating an importer, override the method
+                                <methodname>importCorpusStructure()</methodname>, this method maps
+                            the corpus structure of the given format to a corpus structure in
+                            Salt</para>
+                    </listitem>
+                    <listitem>
+                        <para>if you want to have a specific handling with the document strcuture,
+                            override the method <methodname>start()</methodname>, for instance if
+                            you want to have athreading. Otherwise just delete this method or call
+                                <methodname>super.start()</methodname>, than the method
+                                <methodname>start(SElementId sElementId)</methodname> will be called
+                            for each <classname>SDocument</classname> automatically.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Override the <methodname>method start(SElementId
+                                sElementId)</methodname>, this is the point of mapping
+                            documentstructures between Salt and a format or to place the
+                            functionality of a manipulator</para>
+                    </listitem>
+                    <listitem>
+                        <para>If some clean ups left, override the method
+                                <methodname>end()</methodname></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>Documenting your PepperModule</title>
+        <para> One of the most important but often forgotten tasks when creating a PepperModule is
+            to document the behaviour of it and its functionalities. Therefore the template
+            SampleModules contains a template for creating a documentation. The documentation in
+            SaltNPepper in general is done in DocBook (see <link xlink:href="docbook.org/"
+                >docbook.org/</link>). DocBook is a documentation language written in XML and
+            enables to transform the documentation into several target formats like html, pdf, odt,
+            doc etc.. <note>
+                <para>We recommend to use the template, for a uniform view to all PepperModules.
+                    That makes it possible not to forget important issues to be mentioned and makes
+                    it easier for the user to have a good understanding of what the PepperModule is
+                    doing.</para>
+            </note> You will find the template in
+                <filename>SAMPLE_MODULES_HOME/src/main/docbkx/manual.xml</filename> among other
+            directories containing files necessary for the transformation. Tor refer to images from
+            the manual, put the into the image folder
+                <filename>SAMPLE_MODULES_HOME/src/main/docbkx/images/</filename> and make a relative
+            reference. </para>
         <sect1>
             <title>Transformation</title>
-            <para>The standard transformation which is configured for SampleModules is the transformation to html and pdf. The configuration is done in the 
-                <filename>pom.xml</filename> of the pepper-parentModule project. To add further output formats, just copy the respective plugins to 
-                your pom and change them.</para>
-            <para>When executing the maven goal site <synopsis>mvn clean site</synopsis>, maven will create a manual folder under 
-                <filename>SAMPLE_MODULES_HOME/target/manual</filename>, where you can find the pdf documentation and the html documentation.</para>
-            <note><para>The current configuration does not need to be changed, just write your documentation by overriding the template. The rest shall
-            work automatically. In some cases it might be necessary to adopt the transformation, than please take a look to the xsl transformation files 
-            in <filename>SAMPLE_MODULES_HOME/docbook-xsl</filename>.</para></note>
+            <para>The standard transformation which is configured for SampleModules is the
+                transformation to html and pdf. The configuration is done in the
+                    <filename>pom.xml</filename> of the pepper-parentModule project. To add further
+                output formats, just copy the respective plugins to your pom and change them.</para>
+            <para>When executing the maven goal site <synopsis>mvn clean site</synopsis>, maven will
+                create a manual folder under <filename>SAMPLE_MODULES_HOME/target/manual</filename>,
+                where you can find the pdf documentation and the html documentation.</para>
+            <note>
+                <para>The current configuration does not need to be changed, just write your
+                    documentation by overriding the template. The rest shall work automatically. In
+                    some cases it might be necessary to adopt the transformation, than please take a
+                    look to the xsl transformation files in
+                        <filename>SAMPLE_MODULES_HOME/docbook-xsl</filename>.</para>
+            </note>
         </sect1>
     </chapter>
     <chapter>
@@ -147,37 +338,59 @@
     </chapter>
     <chapter>
         <title>Testing your PepperModule</title>
-        <para>For running your own PepperModule in a test environment, the pepper framework provides a special project for doing this called 
-            pepper-testSuite. This project first contains an environment to run your module called pepper-testEnvironment and contains a second project called
-            pepper-moduleTest for checking the correctness of your PepperModule. Correctness means, that your module can be pluged into the environment and
-            does not mean the logical correctness of its functionality. This project directly runs in the OSGi container and therefore has to be started in it. Because of there is starter
-        outside the OSGi environment, you have to pass necessary resource locations and test corpora via environment variables.</para>
+        <para>For running your own PepperModule in a test environment, the pepper framework provides
+            a special project for doing this called pepper-testSuite. This project first contains an
+            environment to run your module called pepper-testEnvironment and contains a second
+            project called pepper-moduleTest for checking the correctness of your PepperModule.
+            Correctness means, that your module can be pluged into the environment and does not mean
+            the logical correctness of its functionality. This project directly runs in the OSGi
+            container and therefore has to be started in it. Because of there is starter outside the
+            OSGi environment, you have to pass necessary resource locations and test corpora via
+            environment variables.</para>
         <sect1>
             <title>environment variables</title>
             <para>
                 <itemizedlist>
-                    <listitem><para>PEPPER_TEST to a folder, where the resources of the peppermodules are and the temprorary stuff can be stored</para></listitem>
-                    <listitem><para>PEPPER_TEST_WORKFLOW_FILE to the .pepperparams file</para></listitem>
+                    <listitem>
+                        <para><envar>PEPPER_TEST</envar>to a folder, where the resources of the
+                            peppermodules are and the temprorary stuff can be stored</para>
+                    </listitem>
+                    <listitem>
+                        <para><envar>PEPPER_TEST_WORKFLOW_FILE</envar> to the .pepperparams
+                            file</para>
+                    </listitem>
                 </itemizedlist>
             </para>
         </sect1>
         <sect1>
             <title>Configure OSGi environment</title>
-            <para>
-                For running pepper and also its test environment it is very important to use the correct start order for plugins. For instance it is of special
-                interest to start a logger as early as possible to get a logging and not to hide important messages like warnings or errors. For pepper it 
-                is important to run the the pepper framework after all plugins are started, otherwise, they will not be registrated to the pepper plugin
-                registry and can therefore not be resolved.
-            </para>
-            <para>
-                To avoid this, set the start level (in OSGi) of "pepper-framework" to default-value + 2 and set the start value of the pepper-logReader to 0.
-            </para>
-            <para>To make it easier, we provide a preconfigured file, which can be used for this, but only for eclipse. This file contains information for 
-                the run configurations of the pepper-testEnvironment project and can be found under <filename>PEPPER_TEST_ENVIRONMENT_HOME/pepper-testEnvironment.launch</filename>.
-                When using this configuration, it will not run correcly out of the box, because you have to enable your project first. Therefore open the run configuration in 
-                eclipse open the pepper-testEnvironment entry and click the box left to the name of your project. For checking not to forget one necessary dependency
-                you can click the vlidate button and the eclipse will retrieve all dependencies and list missing ones in case they exist.
-            </para> 
+            <para> For running pepper and also its test environment it is very important to use the
+                correct start order for plugins. For instance it is of special interest to start a
+                logger as early as possible to get a logging and not to hide important messages like
+                warnings or errors. For pepper it is important to run the the pepper framework after
+                all plugins are started, otherwise, they will not be registrated to the pepper
+                plugin registry and can therefore not be resolved. </para>
+            <para> To avoid this, set the start level (in OSGi) of "pepper-framework" to
+                default-value + 2 and set the start value of the pepper-logReader to 0. </para>
+            <para>To make it easier, we provide a preconfigured file, which can be used for this,
+                but only for eclipse. This file contains information for the run configurations of
+                the pepper-testEnvironment project and can be found under
+                    <filename>PEPPER_TEST_ENVIRONMENT_HOME/pepper-testEnvironment.launch</filename>.
+                When using this configuration, it will not run correcly out of the box, because you
+                have to enable your project first. Therefore open the run configuration in eclipse
+                open the pepper-testEnvironment entry and click the box left to the name of your
+                project. For checking not to forget one necessary dependency you can click the
+                vlidate button and the eclipse will retrieve all dependencies and list missing ones
+                in case they exist. </para>
         </sect1>
+    </chapter>
+    <chapter>
+        <title>FAQ</title>
+        <sect1>
+            <title>Cannot run maven install under Eclipse?</title>
+            <para>Restart Eclipse and try again, sometimes Eclipse does not recognize a maven
+                project at first time.</para>
+        </sect1>
+
     </chapter>
 </book>
