@@ -227,7 +227,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private void createCorpusStructureRec(URI currURI, SElementId parentsID, EList<String> endings) throws IOException
 	{
 		String corpGraphName= null;
-		if (!currURI.lastSegment().equalsIgnoreCase(".svn"))
+		if (!".svn".equalsIgnoreCase(currURI.lastSegment()))
 		{	
 			File currFile= new File(currURI.toFileString());
 			//if uri is a directory, create a corpus
