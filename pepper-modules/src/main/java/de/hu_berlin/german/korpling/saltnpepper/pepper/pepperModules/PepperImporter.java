@@ -45,6 +45,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 public interface PepperImporter extends PepperModule {
 
 	/**
+	 * A character or character sequence to mark a file extension as not to be one of the imported ones.
+	 */
+	public static final String NEGATIVE_FILE_EXTENSION_MARKER="-";
+	/**
 	 * Returns the value of the '<em><b>Supported Formats</b></em>' containment reference list.
 	 * The list contents are of type {@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition}.
 	 * <!-- begin-user-doc -->

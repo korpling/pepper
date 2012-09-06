@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -214,6 +215,64 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		if (checkUri== null)
 			throw new PepperModuleException("Cannot check if the given uri can be mapped to a SDocument object, because the uri is null.");
 		return(true); 
+	}
+	
+	/**
+	 * This method returns if a given {@link URI} object shall be imported during import phase. 
+	 * This decision depends on the kind and the content of the given fileExtension list. The file
+	 * extension list can contain a set of file extensions (Strings without '.') to be imported or
+	 * marked as to be not imported (via the prefix {@link PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}).
+	 * The following list shows the condition of computation for returned value:
+	 * <ul>
+	 * <li>This method returns false, in case of the given {@link URI} obejct is null</li>
+	 * <li>This method returns true for every {@link URI} object in case of the list is null or empty.</li>
+	 * <li>This method returns true if the given list is a positive list (does not contain the negative marker '{@value PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}' at all) and the file extension of the uri is contained in the list.</li>
+	 * <li>This method returns true if the given list is a negative list (any item is prefixed with the negative marker '{@value PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}') and the file extension of the uri is <b>not</b>contained in the list.</li>
+	 * </ul> 
+	 * Note: When a list contains items prefixed with the negative marker and items which are not, the list is interpreted
+	 * as a negative list.
+	 * 
+	 * @param checkUri
+	 * @param fileExtensions
+	 * @return
+	 */
+	public boolean isFileToImport(URI checkUri, List<String> fileExtensions)
+	{
+		boolean retVal= true;
+		if (checkUri== null)
+			retVal= false;
+		if (	(fileExtensions!= null)&&
+				(fileExtensions.size()> 0))
+		{
+			boolean isNegativeList=false;
+			boolean isNegativeOccurance= false;
+			boolean isPositiveOccurance= false;
+			for (String fileExtension: fileExtensions)
+			{
+				
+				if (fileExtension.contains(NEGATIVE_FILE_EXTENSION_MARKER))
+				{
+					if (fileExtension.equalsIgnoreCase(NEGATIVE_FILE_EXTENSION_MARKER+checkUri.fileExtension()))
+						isNegativeOccurance= true;
+					isNegativeList= true;
+				}
+				else if (fileExtension.equalsIgnoreCase(checkUri.fileExtension()))
+					isPositiveOccurance= true;
+			}
+			if (isNegativeList)
+			{
+				if (isNegativeOccurance)
+					retVal= false;
+				else retVal=true;
+			}
+			else 
+			{
+				if (isPositiveOccurance)
+					retVal= true;
+				else retVal= false;
+			}
+		}
+		return(retVal);
 	}
 	
 	/**
