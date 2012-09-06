@@ -219,6 +219,15 @@
                     </listitem>
                 </itemizedlist>
             </para>
+            <sect2>
+                <title><methodname>importCorpusStructure</methodname></title>
+                <para>
+                    - imports corpus structure, into a SCorpusGraph, means creates a structure consisting of SDocument and SCorpus node objects and SCorpusRelations and SCorpDocRelations relation objects connecting them.
+                     - corpus structure super and sub corpus, a corpus can contain 0..* subcorpus and 0..* documents, a corpus not contain both document and corpus
+                    - creates a table document-id to uri for method start()
+                    - method isFileToImport does following and can be overridden
+                </para>
+            </sect2>
         </sect1>
     </chapter>
     <chapter>
