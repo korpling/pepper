@@ -1,11 +1,17 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.tests;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperImporterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 import junit.framework.TestCase;
 
 public class PepperImporterImplTest extends TestCase{
@@ -28,6 +34,7 @@ public class PepperImporterImplTest extends TestCase{
 	public void setUp()
 	{
 		this.setFixture(new FixtureImporter());
+		this.getFixture().setSCorpusGraph(SaltFactory.eINSTANCE.createSCorpusGraph());
 	}
 	
 	/**
@@ -105,5 +112,70 @@ public class PepperImporterImplTest extends TestCase{
 		fileExtensionDescs.add(endingEFG);
 		testFile= URI.createFileURI("test."+ endingEFG);
 		assertTrue(this.getFixture().isFileToImport(testFile, fileExtensionDescs));	
+	}
+	
+	/**
+	 * Tests if several folder structures are mapped correctly, with changing list of file extensions.
+	 * <pre>
+	 * |-root
+	 *   |-superCorpus1
+	 *     |-file1.abc
+	 *     |-file2.abc
+	 *     |-file3.def
+	 *   |-superCorpus2
+	 *     |-file4.abc
+	 *     |-file5.def
+	 * </pre>
+	 * 
+	 * set1:
+	 * list: empty
+	 * 
+	 * set2:
+	 * list: abc
+	 * 
+	 * set3:
+	 * list:-abc
+	 * @throws IOException 
+	 */
+	public void testCreateCorpusStructure() throws IOException
+	{
+		File tmpFolder= new File(System.getProperty("java.io.tmpdir"));
+		
+		File root= new File(tmpFolder+"/root");
+		root.mkdirs();
+		File superCorpus1=new File(root+"/superCorpus1");
+		superCorpus1.mkdirs();
+		File superCorpus2=new File(root+"/superCorpus2");
+		superCorpus2.mkdirs();
+		File file1= new File(superCorpus1+"/file1.abc");
+		file1.createNewFile();
+		File file2= new File(superCorpus1+"/file2.abc");
+		file2.createNewFile();
+		File file3= new File(superCorpus1+"/file3.def");
+		file3.createNewFile();
+		File file4= new File(superCorpus2+"/file4.abc");
+		file4.createNewFile();
+		File file5= new File(superCorpus2+"/file5.def");
+		file5.createNewFile();
+		EList<String> fileExtensions=null;
+		
+		Map<SElementId, URI>  table= null;
+		//set 1
+		fileExtensions= new BasicEList<String>();
+		table= this.getFixture().createCorpusStructure(URI.createFileURI(root.getAbsolutePath()), null, fileExtensions);
+		assertEquals(5, table.size());
+		
+		//set 2
+		fileExtensions= new BasicEList<String>();
+		fileExtensions.add("-abc");
+		table= this.getFixture().createCorpusStructure(URI.createFileURI(root.getAbsolutePath()), null, fileExtensions);
+		assertEquals(2, table.size());
+		
+		
+		//set 3
+		fileExtensions= new BasicEList<String>();
+		fileExtensions.add("abc");
+		table= this.getFixture().createCorpusStructure(URI.createFileURI(root.getAbsolutePath()), null, fileExtensions);
+		assertEquals(3, table.size());
 	}
 }

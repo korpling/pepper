@@ -18,11 +18,19 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -33,8 +41,13 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
@@ -157,8 +170,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@inheritDoc}
+	 * 
 	 */
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
 		throw new PepperModuleException("An error occurs in this importer-module (name: "+this.getName()+"). The method importCorpusStructure() isn�t implemented.");
@@ -184,25 +197,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private Map<SElementId, URI> documentResourceTable= null;
 	
 	/**
-	 * Generates a corpus structure out of the folder structure, that is given by uri.
-	 * 
-	 * @param currURI the parent folder of folder structure.
-	 * @param parentsID the elementid, reffering to the element, to which the corpus structure has to be added
-	 * @param endings a list of endings which identifiy a document in watched format. Please attend, that endings are without ".", e.g. (xml, dot, txt...). If endings is null, all files will be used.
-	 * @return a map of elementid corresponing to a directory
-	 * @throws IOException
-	 */
-	protected Map<SElementId, URI> createCorpusStructure(	URI currURI, 
-															SElementId parentsID, 
-															EList<String> endings) throws IOException
-	{
-		documentResourceTable= new Hashtable<SElementId, URI>();
-		this.createCorpusStructureRec(currURI, parentsID, endings);
-		
-		return(this.documentResourceTable);
-	}
-	
-	/**
 	 * This method can be overridden by derived classes. This method is called by the method {@link #createCorpusStructureRec(URI, SElementId, EList)},
 	 * to check if a file shall be imported into a {@link SDocument} object. For instance, if the file type is not precise enough
 	 * to check that, a derived class of the given class can override that method to read the content of the file and to make a decision
@@ -218,23 +212,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 	
 	/**
-	 * This method returns if a given {@link URI} object shall be imported during import phase. 
-	 * This decision depends on the kind and the content of the given fileExtension list. The file
-	 * extension list can contain a set of file extensions (Strings without '.') to be imported or
-	 * marked as to be not imported (via the prefix {@link PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}).
-	 * The following list shows the condition of computation for returned value:
-	 * <ul>
-	 * <li>This method returns false, in case of the given {@link URI} obejct is null</li>
-	 * <li>This method returns true for every {@link URI} object in case of the list is null or empty.</li>
-	 * <li>This method returns true if the given list is a positive list (does not contain the negative marker '{@value PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}' at all) and the file extension of the uri is contained in the list.</li>
-	 * <li>This method returns true if the given list is a negative list (any item is prefixed with the negative marker '{@value PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}') and the file extension of the uri is <b>not</b>contained in the list.</li>
-	 * </ul> 
-	 * Note: When a list contains items prefixed with the negative marker and items which are not, the list is interpreted
-	 * as a negative list.
-	 * 
-	 * @param checkUri
-	 * @param fileExtensions
-	 * @return
+	 * {@inheritDoc PepperImporter#isFileToImport(URI, List)}
 	 */
 	public boolean isFileToImport(URI checkUri, List<String> fileExtensions)
 	{
@@ -274,7 +252,18 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}
 		return(retVal);
 	}
-	
+	/**
+	 * {@inheritDoc PepperImporter#createCorpusStructure(URI, SElementId, EList)}
+	 */
+	public Map<SElementId, URI> createCorpusStructure(	URI currURI, 
+														SElementId parentsID, 
+														EList<String> endings) throws IOException
+	{
+		documentResourceTable= new Hashtable<SElementId, URI>();
+		this.createCorpusStructureRec(currURI, parentsID, endings);
+		
+		return(this.documentResourceTable);
+	}
 	/**
 	 * Traverses recursively the folder structure to create a corpus-structure from it and creates a {@link SDocument} object,
 	 * in case of the file type given in <code>endings</code> is correct and the method {@link #isFileASDocument()} returns true.
@@ -333,10 +322,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 				}
 				currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
 				
-				{//create a new document 
-					if (	(	(endings== null) ||
-								(endings.contains(currURI.fileExtension())))&&
-							(this.isFileToImport(currURI)))
+				//start: create a new document 
+					if (isFileToImport(currURI, endings))
 					{//the file has the correct ending
 						SDocument sDocument= SaltCommonFactory.eINSTANCE.createSDocument();
 						sDocument.setSElementId(currId);
@@ -349,7 +336,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						//link documentId with resource
 						this.documentResourceTable.put(currId, currURI);
 					}
-				}
+					
+				//end: create a new document
 				corpGraphName=parentsID.getSId();
 				
 				//setting name for corpus graph
@@ -357,6 +345,66 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						(this.getSCorpusGraph().getSName().isEmpty()))
 					this.getSCorpusGraph().setSName(corpGraphName);
 			}
+		}
+	}
+	
+	/**
+	 * Helper method to read an xml file with a {@link DefaultHandler2} implementation given as <em>contentHandler</em>. It is assumed,
+	 * that the file encoding is set to UTF-8. 
+	 * @param contentHandler {@link DefaultHandler2} implementation
+	 * @param documentLocation location of the xml-file
+	 */
+	protected void readXMLResource(	DefaultHandler2 contentHandler, 
+									URI documentLocation)
+	{
+		if (documentLocation== null)
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the given uri to locate file is null.");
+		
+		File exmaraldaFile= new File(documentLocation.toFileString());
+		if (!exmaraldaFile.exists()) 
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exists: " + exmaraldaFile);
+		
+		if (!exmaraldaFile.canRead())
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + exmaraldaFile);
+		
+		SAXParser parser;
+        XMLReader xmlReader;
+        
+        SAXParserFactory factory= SAXParserFactory.newInstance();
+        
+        try
+        {
+			parser= factory.newSAXParser();
+	        xmlReader= parser.getXMLReader();
+	        xmlReader.setContentHandler(contentHandler);
+        } catch (ParserConfigurationException e) {
+        	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+exmaraldaFile.getAbsolutePath()+"'.", e);
+        }catch (Exception e) {
+	    	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+exmaraldaFile.getAbsolutePath()+"'.", e);
+		}
+        try {
+	        InputStream inputStream= new FileInputStream(exmaraldaFile);
+			Reader reader = new InputStreamReader(inputStream, "UTF-8");
+			InputSource is = new InputSource(reader);
+			is.setEncoding("UTF-8");
+			xmlReader.parse(is);
+        } catch (SAXException e) 
+        {
+        	
+            try
+            {
+				parser= factory.newSAXParser();
+		        xmlReader= parser.getXMLReader();
+		        xmlReader.setContentHandler(contentHandler);
+				xmlReader.parse(exmaraldaFile.getAbsolutePath());
+            }catch (Exception e1) {
+            	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+exmaraldaFile.getAbsolutePath()+"'.", e1);
+			}
+		}
+        catch (Exception e) {
+			if (e instanceof PepperModuleException)
+				throw (PepperModuleException)e;
+			else throw new PepperModuleXMLResourceException("Cannot read xml-file'"+documentLocation+"', because of a nested exception. ",e);
 		}
 	}
 	
