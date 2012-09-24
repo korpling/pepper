@@ -52,6 +52,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefin
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
+import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusDocumentRelation;
@@ -259,6 +260,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 														SElementId parentsID, 
 														EList<String> endings) throws IOException
 	{
+		if (this.getSCorpusGraph()== null)
+			this.setSCorpusGraph(SaltFactory.eINSTANCE.createSCorpusGraph());
 		documentResourceTable= new Hashtable<SElementId, URI>();
 		this.createCorpusStructureRec(currURI, parentsID, endings);
 		
