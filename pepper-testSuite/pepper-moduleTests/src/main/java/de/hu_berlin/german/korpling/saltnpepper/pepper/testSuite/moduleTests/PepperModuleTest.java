@@ -164,6 +164,8 @@ public abstract class PepperModuleTest extends TestCase
 	 */
 	public void setTemprorariesURI(URI tempURI)
 	{
+		if (this.getFixture()== null)
+			throw new PepperModuleTestException("Please set the fixture first.");
 		if (tempURI== null)
 			throw new PepperModuleTestException("The given temprorary uri is empty.");
 		if (tempURI.toString()== null)
