@@ -37,6 +37,7 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperDocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage;
@@ -966,6 +967,17 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 			{	
 				if (pepperJobLogger!= null)
 					this.getPepperJobLogger().getLogService().log(LogService.LOG_DEBUG, "\tcontroller of module '"+ moduleController.getPepperModule().getName()+ "'...");
+				
+				if (moduleController.getPepperModule()!= null)
+				{
+					try{
+						if (!moduleController.getPepperModule().isReadyToStart())
+							throw new PepperModuleNotReadyException("PepperModule '"+moduleController.getPepperModule()+"' returned, that it is not ready to start.");
+					}catch (PepperModuleNotReadyException e) {
+						throw new PepperFWException("Cannot run pepper job, because module '"+moduleController.getPepperModule()+"' is not ready to start. ", e); 
+					}
+				}
+				
 				moduleController.start();
 				if (pepperJobLogger!= null)
 					this.getPepperJobLogger().getLogService().log(LogService.LOG_DEBUG, "OK");

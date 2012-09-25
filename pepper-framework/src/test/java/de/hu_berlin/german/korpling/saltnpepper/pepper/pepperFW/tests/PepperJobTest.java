@@ -179,8 +179,7 @@ public class PepperJobTest extends TestCase {
 	 */
 	public void testGetPepperDocumentController()
 	{
-		assertNotNull(this.getFixture().getPepperDocumentController());
-		
+		assertNotNull(this.getFixture().getPepperDocumentController());		
 	}
 	
 	/**

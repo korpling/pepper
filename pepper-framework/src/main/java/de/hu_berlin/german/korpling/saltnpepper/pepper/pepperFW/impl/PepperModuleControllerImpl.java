@@ -34,6 +34,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperCo
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PEPPER_SDOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperDocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
@@ -568,7 +569,7 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 			{
 				this.addException(new PepperFWException("The given module is not of type PepperImporter: "+this.getPepperModule().getName()));
 				return;
-			}	
+			}
 			((PepperImporter)this.getPepperModule()).importCorpusStructure(sCorpusGraph);
 						
 			//notifiying m2j-monitor for finished

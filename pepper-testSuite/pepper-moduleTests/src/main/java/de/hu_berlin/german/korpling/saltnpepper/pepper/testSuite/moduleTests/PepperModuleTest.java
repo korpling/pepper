@@ -30,8 +30,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFinishableMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util.FileComparator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.moduleTests.util.PepperModuleTestLogService;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
@@ -70,11 +73,22 @@ public abstract class PepperModuleTest extends TestCase
 	}
 	
 	/**
-	 * This methods starts the processing of Pepper in the developement environment. In case of the fixture is 
+	 * This methods starts the processing of Pepper in the development environment. In case of the fixture is 
 	 * {@link PepperImporter}, first the method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called.
 	 * For all kinds of fixture, the method {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
 	 * is called for each {@link SDocument} object contained in the variable {@link PepperModule#getSaltProject()}.
 	 * This method will wait, until each {@link PepperModuleController} return having finished the process.
+	 * <br/>
+	 * To create a test using this method do the following:<br/>
+	 * <ul>
+	 * <li>Create {@link CorpusDefinition} and add it to this object and set its {@link FormatDefinition} and corpus path </li>
+	 * <li>Create a {@link SCorpusGraph} object as the one to be filled and add it with  
+	 * 	<pre>
+	 *  this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
+	 *	this.getFixture().importCorpusStructure(importedCorpusGraph);
+	 * </pre>
+	 * </li>
+	 * </ul>
 	 */
 	public void start()
 	{
@@ -150,6 +164,8 @@ public abstract class PepperModuleTest extends TestCase
 	 */
 	public void setTemprorariesURI(URI tempURI)
 	{
+		if (this.getFixture()== null)
+			throw new PepperModuleTestException("Please set the fixture first.");
 		if (tempURI== null)
 			throw new PepperModuleTestException("The given temprorary uri is empty.");
 		if (tempURI.toString()== null)

@@ -33,6 +33,7 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
@@ -319,7 +320,13 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	{
 		this.setPersistenceConnector(PepperModulesFactory.eINSTANCE.createPersistenceConnector());
 	}
-	
+	/**
+	 * {@inheritDoc PepperModule#isReadyToStart()}
+	 */
+	public boolean isReadyToStart() throws PepperModuleNotReadyException
+	{
+		return(true);
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

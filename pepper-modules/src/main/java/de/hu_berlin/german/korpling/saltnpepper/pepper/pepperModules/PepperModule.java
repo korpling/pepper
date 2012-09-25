@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
@@ -392,5 +393,13 @@ public interface PepperModule extends EObject {
 	 * @generated
 	 */
 	Double getProgress(SElementId sDocumentId);
+	
+	/**
+	 * This method is called by the pepper framework after initializing this object and directly before start processing. 
+	 * Initializing means setting properties {@link PepperModuleProperties}, setting temprorary files, resources etc. .
+	 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason
+	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
+	 */
+	public boolean isReadyToStart() throws PepperModuleNotReadyException;
 
 } // PepperModule
