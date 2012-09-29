@@ -2,14 +2,14 @@
   <parent>
     <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     <artifactId>pepper-testSuite</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
+    <version>1.1.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pepper-testEnvironment</artifactId>
   <packaging>bundle</packaging>
   <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-testSuite/pepper-testEnvironment</developerConnection>
-    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-testSuite/pepper-testEnvironment/</url>
+    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.4/pepper-testSuite/pepper-testEnvironment</developerConnection>
+    <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.4/pepper-testSuite/pepper-testEnvironment</url>
   </scm>
   <properties>
   	<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
