@@ -33,7 +33,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperEx
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.*;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment.exceptions.PepperTestException;
-
+/**
+ * 
+ * @author Florian Zipser
+ *
+ */
 @Component(name="PepperTestComponent", immediate=true)
 @Service
 //TODO replace environment variables and parameters with a param file, which can be passed via OSGi to the test-environmet   
@@ -47,6 +51,15 @@ public class PepperTestRunner implements Runnable
 	 * name of environment variable, which is supposed to contain configurations for pepper modules
 	 */
 	public static final String ENV_PEPPER_TEST= "PEPPER_TEST";
+	
+	/**
+	 * extension of where to find plugins and resources
+	 */
+	public static final String DIR_PLUGINS= "/plugins";
+	/**
+	 * extension of where to find plugins and resources
+	 */
+	public static final String DIR_CONF= "/conf";
 	
 	public PepperTestRunner()
 	{}
@@ -115,10 +128,9 @@ public class PepperTestRunner implements Runnable
 			
 			//for module resolver
 			System.setProperty("PepperModuleResolver.TemprorariesURI", pepperTestPath.getAbsolutePath()+"/TMP");
-			System.setProperty("PepperModuleResolver.ResourcesURI", pepperTestPath.getAbsolutePath()+"/resources");
+			System.setProperty("PepperModuleResolver.ResourcesURI", pepperTestPath.getAbsolutePath()+DIR_PLUGINS);
 			{//for LogService
-				String logReaderResource= pepperTestPath.getAbsolutePath()+ "/resources/"+logReaderName+"/";
-				
+				String logReaderResource= pepperTestPath.getAbsolutePath()+ DIR_CONF+"/";
 				if (!new File(logReaderResource).exists())
 					throw new Exception("Cannot start PepperTest, because no log-file is given at resource '"+logReaderResource+"'.");
 				System.setProperty(logReaderName+".resources", logReaderResource);

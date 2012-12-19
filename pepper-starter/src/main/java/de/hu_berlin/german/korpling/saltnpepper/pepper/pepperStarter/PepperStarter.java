@@ -245,6 +245,7 @@ public class PepperStarter
 					{//set system property for ressource path for plugins
 						String resourceUri= pluginPath+"/"+bundleJar.getName().replace(".jar", "");
 						File resourceFile= new File(resourceUri);
+						
 						System.setProperty(persistenceBundle.getSymbolicName()+".resources", resourceFile.getAbsolutePath());
 					}//set system property for ressource path for plugins
 				}	
