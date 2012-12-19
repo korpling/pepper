@@ -243,9 +243,8 @@ public class PepperStarter
 					bundles.add(persistenceBundle);
 					this.logger.debug("\t\tinstalling bundle: "+persistenceBundle.getSymbolicName()+"-"+ persistenceBundle.getVersion());
 					{//set system property for ressource path for plugins
-						String resourceUri= pluginPath+"/"+bundleJar.getName().replace(".jar", "");
+						String resourceUri=new File(pluginPath).getAbsolutePath()+"/"+bundleJar.getName().replace(".jar", "");
 						File resourceFile= new File(resourceUri);
-						
 						System.setProperty(persistenceBundle.getSymbolicName()+".resources", resourceFile.getAbsolutePath());
 					}//set system property for ressource path for plugins
 				}	
