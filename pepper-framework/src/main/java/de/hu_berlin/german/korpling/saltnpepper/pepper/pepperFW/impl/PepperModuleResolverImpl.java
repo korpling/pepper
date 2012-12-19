@@ -436,13 +436,16 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	}
 // ============================================ end: resolve PepperExporters
 	
+	public static final String RESOURCES=".resources";
+	
 	/**
 	 * Sets resources to a given PepperModule-object.
 	 * @param module - the object for setting resources
 	 */
 	protected void setResources(PepperModule module)
 	{
-		String resURIStr= System.getProperty(this.resourcesPropertyName);
+		String resURIStr= System.getProperty(this.resourcesPropertyName);		
+		
 		if (	(resURIStr== null) ||
 				(resURIStr.isEmpty()))
 			throw new PepperFWException("Cannot start converting, because the system property '"+this.resourcesPropertyName+"' isn't set. This might be an internal failure.");
@@ -451,9 +454,25 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 				(module.getSymbolicName().isEmpty()))
 			throw new PepperModuleException("Cannot set resources to module '"+module.getName()+"', because its symbolic name is empty.");
 		
-		URI resURI= URI.createFileURI(resURIStr+"/"+module.getSymbolicName());
-		File resFile= new File(resURI.toFileString());
-		resFile.mkdirs();
+		String resourceDirectoryName= System.getProperty(module.getSymbolicName()+RESOURCES);
+		File resFile= null;
+		URI resURI= null;
+		if (resourceDirectoryName!= null)
+		{
+			resURI= URI.createFileURI(resourceDirectoryName);
+			resFile= new File(resURI.toFileString());
+		}
+		else 
+		{
+			resURI= URI.createFileURI(resURIStr+"/"+module.getSymbolicName());
+			resFile= new File(resURI.toFileString());
+		}
+		if (!resFile.exists())
+		{
+			resFile.mkdirs();
+			if (this.getLogService()!= null)
+				this.getLogService().log(LogService.LOG_WARNING, "Resource folder '"+resFile.getAbsolutePath()+"' for pepper module '"+module.getSymbolicName()+"' does not exists.");
+		}
 		module.setResources(resURI);
 	}
 	
