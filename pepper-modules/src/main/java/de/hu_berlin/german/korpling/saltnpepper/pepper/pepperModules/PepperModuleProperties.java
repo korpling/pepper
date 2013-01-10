@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +120,7 @@ public class PepperModuleProperties
 	/**
 	 * Internal map to correspond all {@link PepperModuleProperty} objects to their name.
 	 */
-	private Map<String, PepperModuleProperty<?>> pepperModuleProperties= null;
+	protected Map<String, PepperModuleProperty<?>> pepperModuleProperties= null;
 	
 	/**
 	 * Adds the given {@link PepperModuleProperty} object to the internal list.
@@ -137,6 +136,11 @@ public class PepperModuleProperties
 			pepperModuleProperties= new HashMap<String, PepperModuleProperty<?>>();
 		}
 		pepperModuleProperties.put(property.getName(), property);
+	}
+	
+	public <T> void addProperty(String propName,T propValue)
+	{
+		this.getProperty(propName).setValueString(propValue.toString());
 	}
 	
 	/**
