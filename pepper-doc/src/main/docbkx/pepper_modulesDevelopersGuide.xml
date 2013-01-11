@@ -423,6 +423,32 @@ protected boolean isFileToImport(URI checkUri, List&lt;String&gt; fileExtensions
                     </methodparam>
                 </methodsynopsis>
             </para>
+            <sect2>
+                <title>checking property constraints</title>
+                <para>Since the vlaue of a property can be required, you can check if its value is
+                    set by calling the method <methodname>checkProperties()</methodname>. To
+                    customize the constraints should be checked corresponding a property, you can
+                    override the methode
+                        <methodname>checkProperty(PepperModuleProperty&lt;?>)</methodname>. Imagine
+                    a property named 'myProp' having a file as file, you might want to check its existance. The
+                    following snippet shows the code how this could be done: 
+                    <programlisting>
+                        public boolean checkProperty(PepperModuleProperty&lt;?> prop)
+                       	{
+                       	    //calls the check of constraints in parent, for instance if a required value is set
+                       		super.checkProperty(prop);
+                       		if ("myProp".equals(prop.getName()))
+                       		{
+                       			File file= (File)prop.getValue();
+                       			//throws exception, in case of set file does not exist
+                       			if (!file.exists())
+                       				throw new PepperModuleException("The file set to property 'myProp' does not exist.");
+                       		}
+                       		return(true);
+                       	}
+                    </programlisting>
+                </para>
+            </sect2>
         </sect1>
     </chapter>
     <chapter>

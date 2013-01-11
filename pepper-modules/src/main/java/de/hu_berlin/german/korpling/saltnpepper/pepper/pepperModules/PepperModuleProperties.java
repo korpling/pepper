@@ -101,19 +101,6 @@ public class PepperModuleProperties
 			for (Object key: keys)
 			{
 				this.setPropertyValue(key.toString(), properties.get(key));
-//				PepperModuleProperty<?> prop= this.getProperty(key.toString());
-//				if (prop!= null)
-//				{
-//					String value= properties.get(key).toString();
-//					prop.setValueString(value);
-//				}
-//				else 
-//				{
-//					prop= new PepperModuleProperty<String>(key.toString(), String.class, "this entry is automatically created by pepper and no description exists.");
-//					String value= properties.get(key).toString();
-//					prop.setValueString(value);
-//					this.addProperty(prop);
-//				}
 			}
 		}
 	}
@@ -135,6 +122,7 @@ public class PepperModuleProperties
 			prop.setValueString(propValue.toString());
 			this.addProperty(prop);
 		}
+		this.checkProperty(prop);
 	}
 	
 	/**
