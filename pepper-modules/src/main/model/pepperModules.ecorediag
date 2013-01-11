@@ -122,7 +122,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_WlfjtmSuEd6hS_p1kv5AvQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperModules.ecore#//PepperExporter"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wlfjt2SuEd6hS_p1kv5AvQ" x="75" y="640" width="288" height="88"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Wlfjt2SuEd6hS_p1kv5AvQ" x="30" y="645" width="288" height="88"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_WlfjuGSuEd6hS_p1kv5AvQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_WlfjuWSuEd6hS_p1kv5AvQ" type="4001"/>

@@ -112,6 +112,8 @@ public abstract class PepperModuleTest extends TestCase
 		PepperFinishableMonitor m2jMonitor= PepperFWFactory.eINSTANCE.createPepperFinishableMonitor();
 		moduleController.setPepperM2JMonitor(m2jMonitor);
 		
+		if (!this.getFixture().isReadyToStart())
+			throw new PepperModuleTestException("Cannot start test of module '"+this.getFixture().getName()+"', because it is nnot ready to start.");
 		
 		if (this.getFixture() instanceof PepperImporter)
 		{//if fixture is an importer, import corpus structure first
