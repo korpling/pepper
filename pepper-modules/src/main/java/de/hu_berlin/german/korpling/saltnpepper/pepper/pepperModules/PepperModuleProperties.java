@@ -62,7 +62,7 @@ public class PepperModuleProperties
 	{
 		if (propURI!= null)
 		{
-			this.addProperties(new File(propURI.toFileString()));
+			this.setPropertyValues(new File(propURI.toFileString()));
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class PepperModuleProperties
 	 * and its value will be set to the one found in the passed {@link Properties} object. If no corresponding {@link PepperModuleProperties} object
 	 * corresponds to one of the properties contained in the passed {@link Property} object, a new one will be created.
 	 */
-	public void addProperties(File propFile)
+	public void setPropertyValues(File propFile)
 	{
 		if (	(propFile!= null)&&
 				(propFile.exists()))
@@ -84,7 +84,7 @@ public class PepperModuleProperties
 			} catch (IOException e) {
 				throw new PepperModulePropertyException("Cannot load property file.", e);
 			}
-			this.addProperties(props);
+			this.setPropertyValues(props);
 		}
 	}
 	
@@ -93,28 +93,74 @@ public class PepperModuleProperties
 	 * and its value will be set to the one found in the passed {@link Properties} object. If no corresponding {@link PepperModuleProperties} object
 	 * corresponds to one of the properties contained in the passed {@link Property} object, a new one will be created.
 	 */
-	public void addProperties(Properties properties)
+	public void setPropertyValues(Properties properties)
 	{
 		if (properties!= null)
 		{
 			Set<Object>keys= properties.keySet();
 			for (Object key: keys)
 			{
-				PepperModuleProperty<?> prop= this.getProperty(key.toString());
-				if (prop!= null)
-				{
-					String value= properties.get(key).toString();
-					prop.setValueString(value);
-				}
-				else 
-				{
-					prop= new PepperModuleProperty<String>(key.toString(), String.class, "this entry is automatically created by pepper and no description exists.");
-					String value= properties.get(key).toString();
-					prop.setValueString(value);
-					this.addProperty(prop);
-				}
+				this.setPropertyValue(key.toString(), properties.get(key));
+//				PepperModuleProperty<?> prop= this.getProperty(key.toString());
+//				if (prop!= null)
+//				{
+//					String value= properties.get(key).toString();
+//					prop.setValueString(value);
+//				}
+//				else 
+//				{
+//					prop= new PepperModuleProperty<String>(key.toString(), String.class, "this entry is automatically created by pepper and no description exists.");
+//					String value= properties.get(key).toString();
+//					prop.setValueString(value);
+//					this.addProperty(prop);
+//				}
 			}
 		}
+	}
+	
+	/**
+	 * Searches for a {@link PepperModuleProperty} object in registered {@link PepperModuleProperty} objects and
+	 * sets its value attribute, if a {@link PepperModuleProperty} object was found.
+	 * @param propName name of property to search for
+	 * @param propValue value to which {@link PepperModuleProperty}s value attribute is set to 
+	 */
+	public <T> void setPropertyValue(String propName,T propValue)
+	{
+		PepperModuleProperty<?> prop= this.getProperty(propName);
+		if (prop!= null)
+			prop.setValueString(propValue.toString());
+		else 
+		{
+			prop= new PepperModuleProperty<String>(propName, String.class, "this entry is automatically created by pepper and no description exists.");
+			prop.setValueString(propValue.toString());
+			this.addProperty(prop);
+		}
+	}
+	
+	/**
+	 * Checks if all properties marked as required are really set. Throws a {@link PepperModulePropertyException} if a 
+	 * required value is not set.
+	 */ 
+	public boolean checkProperties()
+	{
+		Collection<PepperModuleProperty<?>> properties= this.getPropertyDesctriptions();
+		for (PepperModuleProperty<?> prop: properties)
+		{
+			this.checkProperty(prop);
+		}
+		return(true);
+	}
+	
+	/**
+	 * Checks if the value of given property, when marked as required is really set. 
+	 * Throws a {@link PepperModulePropertyException} if a required value is not set.
+	 */ 
+	public boolean checkProperty(PepperModuleProperty<?> prop)
+	{
+		if (	(prop.isRequired())&&
+				(prop.getValue()== null))
+			throw new PepperModulePropertyException("The following property is required, but its value was not set: "+ prop);
+		return(true);
 	}
 	
 	/**
@@ -136,27 +182,6 @@ public class PepperModuleProperties
 			pepperModuleProperties= new HashMap<String, PepperModuleProperty<?>>();
 		}
 		pepperModuleProperties.put(property.getName(), property);
-	}
-	
-	public <T> void addProperty(String propName,T propValue)
-	{
-		this.getProperty(propName).setValueString(propValue.toString());
-	}
-	
-	/**
-	 * Checks if all properties marked as required are really set. Throws a {@link PepperModulePropertyException} if a 
-	 * required value is not set.
-	 */ 
-	public boolean checkProperties()
-	{
-		Collection<PepperModuleProperty<?>> properties= this.getPropertyDesctriptions();
-		for (PepperModuleProperty<?> prop: properties)
-		{
-			if (	(prop.isRequired())&&
-					(prop.getValue()== null))
-			throw new PepperModulePropertyException("The following property is required, but its value was not set: "+ prop);
-		}
-		return(true);
 	}
 	
 	/**

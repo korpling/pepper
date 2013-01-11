@@ -69,7 +69,7 @@ public class PepperModulePropertiesTest extends TestCase
 		properties.put(propName2, 123);
 		properties.put(propName3, 123);
 		
-		this.getFixture().addProperties(properties);
+		this.getFixture().setPropertyValues(properties);
 		assertEquals(this.getFixture().getProperty(propName1), prop1);
 		assertEquals(this.getFixture().getProperty(propName2), prop2);
 		assertEquals(this.getFixture().getProperty(propName3), prop3);
@@ -99,7 +99,7 @@ public class PepperModulePropertiesTest extends TestCase
 		properties.put(propName4, 78);
 		properties.put(propName5, 90);
 		
-		this.getFixture().addProperties(properties);
+		this.getFixture().setPropertyValues(properties);
 		assertEquals(this.getFixture().getProperty(propName1), prop1);
 		assertEquals(this.getFixture().getProperty(propName2), prop2);
 		assertEquals(this.getFixture().getProperty(propName3), prop3);
@@ -107,6 +107,26 @@ public class PepperModulePropertiesTest extends TestCase
 		assertFalse(this.getFixture().getProperty(propName4).getValue().equals(78));
 		assertEquals(this.getFixture().getProperty(propName5).getValue(), "90");
 		assertFalse(this.getFixture().getProperty(propName5).getValue().equals(90));		
+	}
+	
+	/**
+	 * Checks adding a bunch of properties via {@link Properties} object. Some of the properties are not desribed.
+	 */
+	public void testCheckProperties()
+	{
+		String propName1= "prop1";
+
+		PepperModuleProperty<Integer> prop1= new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+		this.getFixture().addProperty(prop1);
+		
+		try{
+			this.getFixture().checkProperties();
+			fail("a property, whichs value is marked as required is not given");
+		}catch (PepperModulePropertyException e) {
+		}
+		
+		this.getFixture().setPropertyValue(propName1, 12);
+		this.getFixture().checkProperties();
 	}
 
 	/**
@@ -136,7 +156,7 @@ public class PepperModulePropertiesTest extends TestCase
 		properties.put(propName2, 34);
 		properties.put(propName3, 56);
 		
-		this.getFixture().addProperties(properties);
+		this.getFixture().setPropertyValues(properties);
 		assertTrue(this.getFixture().checkProperties());
 	}
 	
@@ -160,12 +180,11 @@ public class PepperModulePropertiesTest extends TestCase
 		properties.put(propName1, 12);
 		properties.put(propName2, 34);
 		
-		this.getFixture().addProperties(properties);
+		this.getFixture().setPropertyValues(properties);
 		try {
 			this.getFixture().checkProperties();
 			fail("Check should not return true");
 		} catch (PepperModulePropertyException e) {
-			// TODO: handle exception
 		}
 	}
 }

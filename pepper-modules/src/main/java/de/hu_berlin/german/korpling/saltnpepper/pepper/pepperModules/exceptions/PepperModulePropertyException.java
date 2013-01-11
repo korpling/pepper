@@ -18,7 +18,14 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperty;
 
+/**
+ * Exception is used in case of an exception occurs concerning {@link PepperModuleProperty}. 
+ * Such an exception can occur while initialization or while working with properties.
+ * @author Florian Zipser
+ *
+ */
 public class PepperModulePropertyException extends PepperModuleException {
 
 	/**

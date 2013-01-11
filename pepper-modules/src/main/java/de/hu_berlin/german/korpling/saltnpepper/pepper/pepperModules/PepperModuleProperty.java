@@ -100,10 +100,6 @@ public class PepperModuleProperty<T> {
 		this.value= defaultValue;
 	}
 	
-	
-	
-
-	
 	/**
 	 * The unique name of the property. This name also serves as an identifier.
 	 */
