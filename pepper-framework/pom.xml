@@ -20,21 +20,21 @@
   		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
   		<artifactId>pepper-exceptions</artifactId>
   		<version>${project.version}</version>
-  		<type>bundle</type>
+  		<!--<type>bundle</type>-->
   		<scope>compile</scope>
   	</dependency>
 	<dependency>
   		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
   		<artifactId>pepper-workflow</artifactId>
   		<version>${project.version}</version>
-  		<type>bundle</type>
+  		<!--<type>bundle</type>-->
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
   		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
   		<artifactId>pepper-modules</artifactId>
   		<version>${project.version}</version>
-  		<type>bundle</type>
+  		<!--<type>bundle</type>-->
   		<scope>compile</scope>
   	</dependency>
   	<!-- OSGI service-component 
