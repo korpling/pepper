@@ -42,7 +42,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_-vNOYVHqEd6V3MngOa_sow" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperConverter"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-vNOYlHqEd6V3MngOa_sow" x="1565" y="1015" width="403" height="147"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-vNOYlHqEd6V3MngOa_sow" x="1580" y="1015" width="403" height="147"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_WihdIFHsEd6V3MngOa_sow" type="1001">
     <children xmi:type="notation:Node" xmi:id="_WihdI1HsEd6V3MngOa_sow" type="4001"/>
@@ -130,7 +130,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_WihdIVHsEd6V3MngOa_sow" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperModuleResolver"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WihdIlHsEd6V3MngOa_sow" x="890" y="985" width="408" height="302"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WihdIlHsEd6V3MngOa_sow" x="1575" y="1255" width="408" height="302"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_KMPDEFtGEd6k9POL3Ck4pg" type="1004">
     <children xmi:type="notation:Node" xmi:id="_KMPDE1tGEd6k9POL3Ck4pg" type="4008"/>
@@ -230,7 +230,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_zR3X8VzYEd6A-bVjdTyCrg" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperJob"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zR3X8lzYEd6A-bVjdTyCrg" x="1570" y="460" width="378" height="173"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zR3X8lzYEd6A-bVjdTyCrg" x="1570" y="430" width="378" height="173"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_3F8fkGJUEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_3F8fk2JUEd6tA6cWJZKimQ" type="4001"/>
@@ -254,7 +254,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_3F8fkWJUEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperModuleController"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3F8fkmJUEd6tA6cWJZKimQ" x="990" y="420" width="411" height="91"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3F8fkmJUEd6tA6cWJZKimQ" x="730" y="420" width="411" height="91"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_FrRtEGJcEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_FrXzsGJcEd6tA6cWJZKimQ" type="4001"/>
@@ -270,7 +270,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_FrRtEWJcEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//Runnable"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FrRtEmJcEd6tA6cWJZKimQ" x="1245" y="160" width="102" height="51"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FrRtEmJcEd6tA6cWJZKimQ" x="1240" y="290" width="102" height="51"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_Pau08GJcEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_Pau082JcEd6tA6cWJZKimQ" type="4001"/>
@@ -302,7 +302,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_Pau08WJcEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperQueuedMonitor"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Pau08mJcEd6tA6cWJZKimQ" x="1475" y="175" width="270" height="113"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Pau08mJcEd6tA6cWJZKimQ" x="1465" y="55" width="270" height="113"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_XQOxkGJcEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_XQOxk2JcEd6tA6cWJZKimQ" type="4001"/>
@@ -320,7 +320,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_XQOxkWJcEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperFinishableMonitor"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XQOxkmJcEd6tA6cWJZKimQ" x="1805" y="175" width="211" height="66"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XQOxkmJcEd6tA6cWJZKimQ" x="1815" y="-60" width="211" height="66"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_J6rWoGJlEd6tA6cWJZKimQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_J6xdQGJlEd6tA6cWJZKimQ" type="4001"/>
@@ -356,7 +356,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_J6rWoWJlEd6tA6cWJZKimQ" fontHeight="10" fillColor="13761016" lineColor="0"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperMonitor"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J6rWomJlEd6tA6cWJZKimQ" x="1565" y="15" width="286" height="111"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J6rWomJlEd6tA6cWJZKimQ" x="1630" y="-255" width="286" height="111"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_JSe3sGM1Ed61Sf-gnRcwTw" type="1004">
     <children xmi:type="notation:Node" xmi:id="_JSk-UGM1Ed61Sf-gnRcwTw" type="4008"/>
@@ -419,7 +419,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_dkYiEgaxEd-Hw5jzaoTmzQ" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperJobLogger"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dkYiEwaxEd-Hw5jzaoTmzQ" x="945" y="570" width="336" height="120"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dkYiEwaxEd-Hw5jzaoTmzQ" x="1125" y="570" width="336" height="120"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_cnkCkAazEd-k1N33D_KoWg" type="1005">
     <children xmi:type="notation:Node" xmi:id="_cnkCkwazEd-k1N33D_KoWg" type="4010"/>
@@ -450,7 +450,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_cnkCkQazEd-k1N33D_KoWg" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EEnum" href="pepperFW.ecore#//PEPPER_SDOCUMENT_STATUS"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cnkCkgazEd-k1N33D_KoWg" x="980" y="49" width="247" height="118"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cnkCkgazEd-k1N33D_KoWg" x="60" y="1195" width="247" height="118"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_Vm2F8S3QEd-oT8XdkLeCbw" type="1001">
     <children xmi:type="notation:Node" xmi:id="_VnIZ0C3QEd-oT8XdkLeCbw" type="4001"/>
@@ -522,7 +522,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_Vm2F8i3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="pepperFW.ecore#//PepperDocumentController"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Vm2F8y3QEd-oT8XdkLeCbw" x="1080" y="709" width="587" height="258"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Vm2F8y3QEd-oT8XdkLeCbw" x="735" y="760" width="587" height="258"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_vqPzYDs3Ed-6JOqmJx5gjw" type="1004">
     <children xmi:type="notation:Node" xmi:id="_vqV6ADs3Ed-6JOqmJx5gjw" type="4008"/>
@@ -544,7 +544,7 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_cG2BUlHsEd6V3MngOa_sow" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperConverter/pepperModuleResolver"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_cG2BU1HsEd6V3MngOa_sow" points="[0, 0, 124, 60]$[-124, -60, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MWJlEd6tA6cWJZKimQ" id="(0.33333334,0.0)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MWJlEd6tA6cWJZKimQ" id="(0.4813895781637717,0.9047619047619048)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MmJlEd6tA6cWJZKimQ" id="(0.5,1.0)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_1QaIQFzYEd6A-bVjdTyCrg" type="3002" source="_-vNOYFHqEd6V3MngOa_sow" target="_zR3X8FzYEd6A-bVjdTyCrg">
@@ -558,8 +558,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_1QaIQlzYEd6A-bVjdTyCrg" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperConverter/pepperJobs"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_1QaIQ1zYEd6A-bVjdTyCrg" points="[0, 0, 20, 164]$[-20, -164, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_1QgO5FzYEd6A-bVjdTyCrg" id="(0.6666667,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MGJlEd6tA6cWJZKimQ" id="(0.5,1.0)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_1QgO5FzYEd6A-bVjdTyCrg" id="(0.5955334987593052,0.08843537414965986)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4a5MGJlEd6tA6cWJZKimQ" id="(0.6507936507936508,0.9364161849710982)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_U0jOwGJbEd6tA6cWJZKimQ" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_3F8fkGJUEd6tA6cWJZKimQ">
     <children xmi:type="notation:Node" xmi:id="_U0jOxGJbEd6tA6cWJZKimQ" visible="false" type="4011">
@@ -572,8 +572,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_U0jOwmJbEd6tA6cWJZKimQ" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperModuleControllers"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_U0jOw2JbEd6tA6cWJZKimQ" points="[1, 0, 151, 60]$[-150, -60, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_Tromb3Ed6Xp8XDvt7MJw" id="(0.64634144,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_Tro2b3Ed6Xp8XDvt7MJw" id="(0.49707603,1.0)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTKr5Gb6EeKfr-OE-52IQA" id="(0.042328042328042326,0.16184971098265896)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTKr5Wb6EeKfr-OE-52IQA" id="(0.9927007299270073,0.4175824175824176)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_YsSVUGJbEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_zR3X8FzYEd6A-bVjdTyCrg">
     <children xmi:type="notation:Node" xmi:id="_YsSVVGJbEd6tA6cWJZKimQ" visible="false" type="4011">
@@ -586,15 +586,15 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_YsSVUmJbEd6tA6cWJZKimQ" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/pepperJob"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_YsSVU2JbEd6tA6cWJZKimQ" points="[0, 0, -150, -60]$[151, 60, 1, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_ZyQGb3Ed6Xp8XDvt7MJw" id="(0.49707603,1.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_T_ZyQWb3Ed6Xp8XDvt7MJw" id="(0.64634144,0.0)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_oQpzUGb6EeKfr-OE-52IQA" id="(0.9927007299270073,0.4175824175824176)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_oQpzUWb6EeKfr-OE-52IQA" id="(0.042328042328042326,0.16184971098265896)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_KuFfoGJcEd6tA6cWJZKimQ" type="3003" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_FrRtEGJcEd6tA6cWJZKimQ">
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_KuFfoWJcEd6tA6cWJZKimQ" routing="Tree" lineColor="0"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_KuFfomJcEd6tA6cWJZKimQ"/>
     <element xsi:nil="true"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KuFfo2JcEd6tA6cWJZKimQ" points="[0, 0, -220, 266]$[0, -231, -220, 35]$[154, -231, -66, 35]$[154, -266, -66, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KuLmQGJcEd6tA6cWJZKimQ" id="(0.19883041,0.0)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KuLmQGJcEd6tA6cWJZKimQ" id="(0.9197080291970803,0.08791208791208792)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4UylGJlEd6tA6cWJZKimQ" id="(0.75,1.0)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_M-8Y4GJlEd6tA6cWJZKimQ" type="3003" source="_Pau08GJcEd6tA6cWJZKimQ" target="_J6rWoGJlEd6tA6cWJZKimQ">
@@ -623,9 +623,9 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_VxwSUWJlEd6tA6cWJZKimQ" lineColor="0"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_VxwSUmJlEd6tA6cWJZKimQ" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/inputPepperModuleMonitors"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VxwSU2JlEd6tA6cWJZKimQ" points="[1, 0, 0, 60]$[1, -60, 0, 0]"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VxwSU2JlEd6tA6cWJZKimQ" points="[0, 0, -498, 304]$[0, -304, -498, 0]$[492, -304, -6, 0]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Vx2Y8GJlEd6tA6cWJZKimQ" id="(0.5964912,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4UylWJlEd6tA6cWJZKimQ" id="(0.06818182,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4UylWJlEd6tA6cWJZKimQ" id="(0.025925925925925925,0.5575221238938053)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_Xcn4sGJlEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_Pau08GJcEd6tA6cWJZKimQ">
     <children xmi:type="notation:Node" xmi:id="_Xcn4tGJlEd6tA6cWJZKimQ" visible="false" type="4011">
@@ -637,9 +637,9 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_Xcn4sWJlEd6tA6cWJZKimQ" lineColor="0"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_Xcn4smJlEd6tA6cWJZKimQ" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/outputPepperModuleMonitors"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Xcn4s2JlEd6tA6cWJZKimQ" points="[0, 0, -25, 60]$[26, -60, 1, 0]"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Xcn4s2JlEd6tA6cWJZKimQ" points="[0, 0, -581, 351]$[0, -351, -581, 0]$[573, -351, -8, 0]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Xct_UGJlEd6tA6cWJZKimQ" id="(0.39766082,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Xct_UWJlEd6tA6cWJZKimQ" id="(0.03181818,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Xct_UWJlEd6tA6cWJZKimQ" id="(0.03333333333333333,0.13274336283185842)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_e7xK0GJlEd6tA6cWJZKimQ" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_Pau08GJcEd6tA6cWJZKimQ">
     <children xmi:type="notation:Node" xmi:id="_e7xK1GJlEd6tA6cWJZKimQ" visible="false" type="4011">
@@ -652,7 +652,7 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_e7xK0mJlEd6tA6cWJZKimQ" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperM2MMonitors"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_e7xK02JlEd6tA6cWJZKimQ" points="[0, 0, 0, 186]$[0, -186, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_e7xK2GJlEd6tA6cWJZKimQ" id="(0.86585367,0.0)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_e7xK2GJlEd6tA6cWJZKimQ" id="(0.37037037037037035,0.057803468208092484)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4g_1GJlEd6tA6cWJZKimQ" id="(0.9227273,1.0)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_kn7cYGJlEd6tA6cWJZKimQ" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_XQOxkGJcEd6tA6cWJZKimQ">
@@ -667,7 +667,7 @@
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperM2JMonitors"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_kn7cY2JlEd6tA6cWJZKimQ" points="[0, 0, -166, 216]$[166, -216, 0, 0]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_koBjAGJlEd6tA6cWJZKimQ" id="(0.9308943,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4nGcGJlEd6tA6cWJZKimQ" id="(0.49289098,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_v4nGcGJlEd6tA6cWJZKimQ" id="(0.4976303317535545,0.9090909090909091)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_tYc20GJlEd6tA6cWJZKimQ" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_XQOxkGJcEd6tA6cWJZKimQ">
     <children xmi:type="notation:Node" xmi:id="_tYc21GJlEd6tA6cWJZKimQ" visible="false" type="4011">
@@ -679,9 +679,9 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_tYc20WJlEd6tA6cWJZKimQ" lineColor="0"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_tYc20mJlEd6tA6cWJZKimQ" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/pepperM2JMonitor"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tYc202JlEd6tA6cWJZKimQ" points="[0, 0, -153, 84]$[154, -84, 1, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tYi9cGJlEd6tA6cWJZKimQ" id="(0.79532164,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tYi9cWJlEd6tA6cWJZKimQ" id="(0.24644549,1.0)"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tYc202JlEd6tA6cWJZKimQ" points="[0, -11, -984, 449]$[0, -460, -984, 0]$[974, -460, -10, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tYi9cGJlEd6tA6cWJZKimQ" id="(0.2725060827250608,0.13186813186813187)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tYi9cWJlEd6tA6cWJZKimQ" id="(0.052132701421800945,0.48484848484848486)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_TYuMwGb3Ed6Xp8XDvt7MJw" type="3003" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_FrRtEGJcEd6tA6cWJZKimQ">
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_TYuMwWb3Ed6Xp8XDvt7MJw" routing="Tree" lineColor="0"/>
@@ -702,7 +702,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_ZWr7s2r3Ed61WPbwasXytA" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperJ2CMonitor"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZWr7tGr3Ed61WPbwasXytA" points="[11, -54, -79, 358]$[122, -394, 32, 18]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZXEWMGr3Ed61WPbwasXytA" id="(0.8699187,0.4864865)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ZXEWMGr3Ed61WPbwasXytA" id="(0.7513227513227513,0.046242774566473986)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ptQUMGb6EeKfr-OE-52IQA" id="(0.2037914691943128,0.7272727272727273)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_e6EEsGr3Ed61WPbwasXytA" type="3002" source="_-vNOYFHqEd6V3MngOa_sow" target="_XQOxkGJcEd6tA6cWJZKimQ">
     <children xmi:type="notation:Node" xmi:id="_e6EEtGr3Ed61WPbwasXytA" visible="false" type="4011">
@@ -728,8 +729,9 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_6AncsgayEd-k1N33D_KoWg" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_6AncswayEd-k1N33D_KoWg" fontColor="4210752" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperJobLogger"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_6AnctAayEd-k1N33D_KoWg" points="[91, -5, -75, 5]$[167, -49, 1, -39]"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_6Azp8AayEd-k1N33D_KoWg" id="(0.09655172413793103,0.44166666666666665)"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_6AnctAayEd-k1N33D_KoWg" points="[2, 31, -99, 36]$[93, -4, -8, 1]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTElTGb6EeKfr-OE-52IQA" id="(0.8455284552845529,0.6917293233082706)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTElTWb6EeKfr-OE-52IQA" id="(0.08275862068965517,0.7083333333333334)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_7fE-wAayEd-k1N33D_KoWg" type="3002" source="_dkYiEQaxEd-Hw5jzaoTmzQ" target="_zR3X8FzYEd6A-bVjdTyCrg">
     <children xmi:type="notation:Node" xmi:id="_7fE-xAayEd-k1N33D_KoWg" visible="false" type="4011">
@@ -742,8 +744,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_7fE-wgayEd-k1N33D_KoWg" fontColor="4210752" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJobLogger/pepperJob"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7fE-wwayEd-k1N33D_KoWg" points="[-8, 1, 93, -4]$[-99, 36, 2, 31]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7fLFYAayEd-k1N33D_KoWg" id="(0.08275862068965517,0.7083333333333334)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7fLFYQayEd-k1N33D_KoWg" id="(0.8455284552845529,0.6917293233082706)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTKr6mb6EeKfr-OE-52IQA" id="(0.08275862068965517,0.7083333333333334)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTKr62b6EeKfr-OE-52IQA" id="(0.8455284552845529,0.6917293233082706)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_hiRXIAa1Ed-k1N33D_KoWg" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_dkYiEQaxEd-Hw5jzaoTmzQ">
     <children xmi:type="notation:Node" xmi:id="_hiRXJAa1Ed-k1N33D_KoWg" visible="false" type="4011">
@@ -770,8 +772,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_hypUci3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperDocumentController/pepperModuleControllers"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_hypUcy3QEd-oT8XdkLeCbw" points="[-2, -9, 71, 203]$[-71, -190, 2, 22]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hyvbEy3QEd-oT8XdkLeCbw" id="(0.3380281690140845,0.19672131147540983)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hyvbFC3QEd-oT8XdkLeCbw" id="(0.8308157099697885,0.6703296703296703)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_PacHsGb6EeKfr-OE-52IQA" id="(0.3380281690140845,0.19672131147540983)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_PacHsWb6EeKfr-OE-52IQA" id="(0.48661800486618007,0.945054945054945)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_lIkucC3QEd-oT8XdkLeCbw" type="3002" source="_3F8fkGJUEd6tA6cWJZKimQ" target="_Vm2F8S3QEd-oT8XdkLeCbw">
     <children xmi:type="notation:Node" xmi:id="_lIkudC3QEd-oT8XdkLeCbw" visible="false" type="4011">
@@ -784,8 +786,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_lIkuci3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperModuleController/pepperDocumentController"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_lIkucy3QEd-oT8XdkLeCbw" points="[2, 22, -71, -190]$[71, 203, -2, -9]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_n_FBhC3QEd-oT8XdkLeCbw" id="(0.8308157099697885,0.6703296703296703)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_n_FBhS3QEd-oT8XdkLeCbw" id="(0.3380281690140845,0.19672131147540983)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTElVGb6EeKfr-OE-52IQA" id="(0.48661800486618007,0.945054945054945)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTElVWb6EeKfr-OE-52IQA" id="(0.3380281690140845,0.19672131147540983)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_o2ejkC3QEd-oT8XdkLeCbw" type="3002" source="_zR3X8FzYEd6A-bVjdTyCrg" target="_Vm2F8S3QEd-oT8XdkLeCbw">
     <children xmi:type="notation:Node" xmi:id="_o2ejlC3QEd-oT8XdkLeCbw" visible="false" type="4011">
@@ -797,9 +799,9 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_o2ejkS3QEd-oT8XdkLeCbw" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_o2ejki3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperJob/pepperDocumentController"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_o2ejky3QEd-oT8XdkLeCbw" points="[-38, 49, 125, -141]$[-107, 168, 56, -22]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF2YwC3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF2YwS3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_o2ejky3QEd-oT8XdkLeCbw" points="[0, 86, 731, -257]$[0, 343, 731, 0]$[-438, 343, 293, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTElRGb6EeKfr-OE-52IQA" id="(0.5,0.5)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KTElRWb6EeKfr-OE-52IQA" id="(0.5,0.5)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_q6j7MC3QEd-oT8XdkLeCbw" type="3002" source="_Vm2F8S3QEd-oT8XdkLeCbw" target="_zR3X8FzYEd6A-bVjdTyCrg">
     <children xmi:type="notation:Node" xmi:id="_q6j7NC3QEd-oT8XdkLeCbw" visible="false" type="4011">
@@ -811,8 +813,8 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_q6j7MS3QEd-oT8XdkLeCbw" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_q6j7Mi3QEd-oT8XdkLeCbw" fontColor="4210752" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="pepperFW.ecore#//PepperDocumentController/pepperJobController"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_q6j7My3QEd-oT8XdkLeCbw" points="[56, -22, -107, 168]$[125, -141, -38, 49]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF8fYC3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xF8fYS3QEd-oT8XdkLeCbw" id="(0.5,0.5)"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_q6j7My3QEd-oT8XdkLeCbw" points="[293, 0, -438, 343]$[731, 0, 0, 343]$[731, -257, 0, 86]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_QQg0Emb6EeKfr-OE-52IQA" id="(0.5,0.5)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_QQg0E2b6EeKfr-OE-52IQA" id="(0.5,0.5)"/>
   </edges>
 </notation:Diagram>
