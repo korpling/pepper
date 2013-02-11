@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5">
+  <help_text>
+</help_text>
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.SequenceDiagram</type>
+    <coordinates>
+      <x>20</x>
+      <y>20</y>
+      <w>580</w>
+      <h>860</h>
+    </coordinates>
+    <panel_attributes>title: pepper workflow
+_pepper-framework~pf_|_PepperModule~pm_|_Mapper~mp_
+pf-&gt;&gt;pm:pf1,pm:create()
+pm-&gt;&gt;pm:pm,pm:super()
+pm-&gt;&gt;pm:pm,pm:setVersion()
+pm-&gt;&gt;pm:pm,pm:setName()
+pm-&gt;&gt;pm:pm,pm:addSupportedFormat(String, String, URI)
+
+pf-&gt;&gt;pm:pf,pm:setTemporaries()
+pf-&gt;&gt;pm:pf,pm:setResources()
+pf-&gt;&gt;pm:pf,pm:setLogger(LogService)
+
+iframe{:optional [PepperModule==PepperImporter or PepperExporter]
+pf-&gt;&gt;pm:pf,pm:setCorpusDefinition(CorpusDefinition)
+iframe}
+
+pf-&gt;&gt;pm:pf,pm:setSaltProject(SaltProject)
+pf-&gt;&gt;pm:pf,pm:isReadyToStart()
+pm-&gt;&gt;pm:pm,pm:super()
+pm.&gt;pf:pm,pf:true|false
+
+iframe{:optional [PepperModule==PepperImporter]
+pf-&gt;&gt;pm:pf,pm:isImportable()
+pm.&gt;pf:pm,pf:true|false
+pf-&gt;&gt;pm:pf,pm:importCorpusStructure(SCorpusGraph)
+iframe}
+
+pf-&gt;&gt;pm:pf,pm:start()
+pm-&gt;&gt;pm:pm,pm:start(SElementId)
+pm-&gt;&gt;pm:pm,pm:(SElementId)
+pm-&gt;&gt;mp:pm,mp:create()
+pf-&gt;&gt;pm:pf,pm:end()</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
