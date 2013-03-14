@@ -22,21 +22,18 @@
       <artifactId>pepper-modules</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
-      <!--<type>bundle</type>-->
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>pepper-exceptions</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
-      <!--<type>bundle</type>-->
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>pepper-framework</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
-      <!--<type>bundle</type>-->
     </dependency>
   </dependencies>
 </project>

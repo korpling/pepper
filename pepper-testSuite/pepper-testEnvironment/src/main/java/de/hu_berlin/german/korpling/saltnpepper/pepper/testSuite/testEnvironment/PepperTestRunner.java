@@ -20,13 +20,14 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironmen
 import java.io.File;
 import java.util.Properties;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
-import org.apache.felix.scr.annotations.ReferencePolicy;
-import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
@@ -38,8 +39,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment
  * @author Florian Zipser
  *
  */
-@Component(name="PepperTestComponent", immediate=true)
-@Service
+@Component(name="PepperTestComponent", immediate=true, enabled=true)
 //TODO replace environment variables and parameters with a param file, which can be passed via OSGi to the test-environmet   
 public class PepperTestRunner implements Runnable
 {
@@ -65,9 +65,9 @@ public class PepperTestRunner implements Runnable
 	{}
 
 // ========================================== start: LogService	
-	@Reference(bind="setLogService", unbind="unsetLogService", cardinality=ReferenceCardinality.MANDATORY_UNARY, policy=ReferencePolicy.STATIC)
 	private LogService logService;
 
+	@Reference(unbind="unsetLogService", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setLogService(LogService logService) 
 	{
 		this.logService = logService;
@@ -85,13 +85,12 @@ public class PepperTestRunner implements Runnable
 // ========================================== end: LogService
 	
 // ========================================== start: PepperConverter		
-	@Reference(bind="setPepperConverter", unbind="unsetPepperConverter", cardinality=ReferenceCardinality.MANDATORY_UNARY, policy=ReferencePolicy.STATIC)
 	private PepperConverter converter= null;
 	public void unsetPepperConverter(PepperConverter pepperConverter)
 	{
 		this.converter= null;
 	}
-	
+	@Reference(unbind="unsetPepperConverter", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setPepperConverter(PepperConverter pepperConverter)
 	{
 		this.converter= pepperConverter;
@@ -192,25 +191,28 @@ public class PepperTestRunner implements Runnable
 	
 	private void printBye(long millis)
 	{
-		this.logService.log(LogService.LOG_INFO,"time to compute all comparisons: ");
-//		EqualsCounter.count();
-		
+		this.logService.log(LogService.LOG_INFO,"time to compute all comparisons: ");		
 		
 		this.logService.log(LogService.LOG_INFO,"Conversion ended, and needed (milli seconds): "+ millis);
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 	}
 	
+	@Activate
 	protected void activate(ComponentContext componentContext)
 	{
-		System.out.println("PepperTest Komponente wird aktiviert");
+		if (this.getLogService()!= null)
+			this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+		else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 		Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
 		pepperTestThread.start();
 	}
 	
+	@Deactivate
 	protected void deactivate(ComponentContext componentContext)
 	{
-		System.out.println("PepperTest Komponente wird deaktiviert");
-		this.logService.log(LogService.LOG_INFO,"PepperTest Komponente wird deaktiviert");
+		if (this.getLogService()!= null)
+			this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+		else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 	}
 
 	@Override
