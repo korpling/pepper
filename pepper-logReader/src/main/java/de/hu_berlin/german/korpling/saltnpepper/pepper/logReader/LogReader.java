@@ -109,14 +109,17 @@ public class LogReader implements LogListener
 					Logger.getLogger(this.getClass()).debug(log);
 				break;
 			case LogService.LOG_INFO:
-				if (	(entry.getMessage().startsWith("ServiceEvent REGISTERED")) ||
-						(entry.getMessage().startsWith("ServiceEvent UNREGISTERING")) ||
-						(entry.getMessage().startsWith("BundleEvent INSTALLED")) ||
-						(entry.getMessage().startsWith("BundleEvent RESOLVED")) ||
-						(entry.getMessage().startsWith("BundleEvent STARTED")) ||
-						(entry.getMessage().startsWith("BundleEvent STOPPED"))||
-						(entry.getMessage().startsWith("FrameworkEvent STARTED"))||
-						(entry.getMessage().startsWith("FrameworkEvent STARTLEVEL")))
+				if (	(entry!=null)&&
+						(entry.getMessage()!= null)&&
+						(
+							(entry.getMessage().startsWith("ServiceEvent REGISTERED")) ||
+							(entry.getMessage().startsWith("ServiceEvent UNREGISTERING")) ||
+							(entry.getMessage().startsWith("BundleEvent INSTALLED")) ||
+							(entry.getMessage().startsWith("BundleEvent RESOLVED")) ||
+							(entry.getMessage().startsWith("BundleEvent STARTED")) ||
+							(entry.getMessage().startsWith("BundleEvent STOPPED"))||
+							(entry.getMessage().startsWith("FrameworkEvent STARTED"))||
+							(entry.getMessage().startsWith("FrameworkEvent STARTLEVEL"))))
 					//ignore if message comes from OSGi FW
 					;
 				else
