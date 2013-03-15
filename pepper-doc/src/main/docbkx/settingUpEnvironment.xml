@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="5.0">
+    <title>Setting up environment</title>
+    <para>If you do not belong to the hardcore 'vi' developer community, you may want to use a
+        developement environment and an IDE for developing your pepper module. For that case we here
+        describe how to set up your environment along the eclipse IDE (see: <link
+            xlink:href="http://download.eclipse.org">http://download.eclipse.org</link>). If you
+        don't want to use eclipse, skip the eclipse specific parts, but make sure, setting up the
+        OSGi framework in your environment simultaneously.</para>
+    <sect1>
+        <title>Download and set up eclipse</title>
+        <para>eclipse is available in several flavours like for web developers, mobil developers
+            etc.. We recommend the eclipse Modeling Tools, since you might want to create or use a
+            model for the format you want to support. For this tutorial, we used the eclipse version
+            4.2 juno (see: <link
+                xlink:href="http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/junosr2"
+                >http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/junosr2</link>).
+            Unfortunatly, in this version eclipse does not come with an integrated OSGi console
+            anymore. It now uses the Apache Gogo Shell which is not part of the eclipse
+            distribution. Therefore we have to download the Equinox SDK from <link
+                xlink:href="http://download.eclipse.org/equinox/"
+                >http://download.eclipse.org/equinox/</link>, we used version 3.8.2 which is
+            available on <link
+                xlink:href="http://www.eclipse.org/downloads/download.php?file=/equinox/drops/R-3.8.2-201302041200/equinox-SDK-3.8.2.zip"
+                >http://www.eclipse.org/downloads/download.php?file=/equinox/drops/R-3.8.2-201302041200/equinox-SDK-3.8.2.zip</link>.</para>
+        <itemizedlist>
+            <listitem>
+                <para>Download eclipse IDE and unzip it to ECLIPSE_HOME</para>
+            </listitem>
+            <listitem>
+                <para>Unzip the equinox sdk and copy all (not already contained) bundles (.jar) from
+                    EQUINOX_SDK/plugins folder to ECLIPSE_HOME/plugins folder.</para>
+            </listitem>
+        </itemizedlist>
+    </sect1>
+    <sect1>
+        <title>Making eclipse ready for SaltNPepper</title>
+        <itemizedlist>
+            <listitem>
+                <para>Download the latest Pepper distribution from <link
+                        xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/repository/saltNpepper_full/"
+                        >http://korpling.german.hu-berlin.de/saltnpepper/repository/saltNpepper_full/</link></para>
+            </listitem>
+            <listitem>
+                <para>Unzip the Pepper distribution to PEPPER_HOME.</para>
+            </listitem>
+            <listitem>
+                <para>Copy all bundles (.jar files) from PEPPER_HOME/plugins to
+                    ECLIPSE_HOME/dropins.</para>
+            </listitem>
+            <listitem>
+                <para>Copy all folders having the same name as the bundles (.jar files) from
+                    PEPPER_HOME/plugins to a folder of your choice, lets say BUNDLE_RESOURCES.</para>
+            </listitem>
+        </itemizedlist>
+    </sect1>
+    <sect1>
+        <title>Starting eclipse</title>
+        <para>Now lets check if eclipse was set up correctly and is able to find all necessary
+            bundles.</para>
+        <itemizedlist>
+            <listitem>
+                <para>Start eclipse.</para>
+            </listitem>
+            <listitem>
+                <para>Open 'Plug-ins view' via 'Window -> Show View --> Others, see figure.</para>
+                <figure>
+                    <title/>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="images/moduleDevelopersGuide/showView.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>Type in 'plug-ins' and choose Plug-ins view.</para>
+                <figure>
+                    <title/>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="images/moduleDevelopersGuide/showView2.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>In that view, you will find all OSGi bundles, which are accessable from your
+                    eclipse installation.</para>
+            </listitem>
+            <listitem>
+                <para>Check if all bundles from SaltNPepper are there. The most important ones are <itemizedlist>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-exceptions.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-framework.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-logReader.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-modules.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-testEnvironment.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.pepper-workflow.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.salt-graph.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.salt-saltCommon.jar</para>
+                        </listitem>
+                        <listitem>
+                            <para>de.hu_berlin.german.korpling.saltnpepper.salt-saltCore.jar</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para>Congratulations, now you are done setting up your IDE.</para>
+    </sect1>
+    <sect1>
+        <title>Let's run</title>
+        <para>Now we want to let the ghost out of the bottle and run the pepper framework.</para>
+        <itemizedlist>
+            <listitem>
+                <para>Select 'Run --> Run configurations...'.</para>
+                <figure>
+                    <title/>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="images/moduleDevelopersGuide/runConfigurations.png"
+                            />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>Select 'OSGi Framework', press right mouse button and select 'New'.</para>
+                <figure>
+                    <title/>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="images/moduleDevelopersGuide/runConfigurations2.png"
+                            />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+
+            <listitem>
+                <para>Give your run configuration a name under 'Name:', (see A).</para>
+                <figure>
+                    <title/>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="images/moduleDevelopersGuide/runConfigurations4.png"
+                            />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>For not loading all available bundles, which could be more than 800 (see B),
+                    press the button 'Deselect All' (see C).</para>
+            </listitem>
+            <listitem>
+                <para>Now, activate all necessary bundles for running Pepper. In 'type filter text'
+                    (see D) type in 'de.hu_berlin' and you will see all bundles having this string
+                    in the package name. To active the necessary bundles, click the box on the left
+                    of their name. Make sure, that all bundles you have copied from PEPPER_HOME are
+                    activated. These are at least the following ones:</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-exceptions.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-framework.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-logReader.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-modules.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-testEnvironment.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.pepper-workflow.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.salt-graph.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.salt-saltCommon.jar</para>
+                    </listitem>
+                    <listitem>
+                        <para>de.hu_berlin.german.korpling.saltnpepper.salt-saltCore.jar</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para>There are some more bundles necessary for running Pepper to be
+                    activated:</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>org.eclipse.equinox.console</para>
+                    </listitem>
+                    <listitem>
+                        <para>org.eclipse.equinox.ds</para>
+                    </listitem>
+                    <listitem>
+                        <para>org.apache.felix.gogo.shell</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para>Since these are not all of the necessary bundles, we have to select some more,
+                    but eclipse now should be able to detect them automatically, by pressing the
+                    button 'Add Required Bundles' (see E).</para>
+                <note>
+                    <para>In case of this button is disabled, remove the string from the
+                        filter</para>
+                </note>
+                <para>Some more bundles are added now, on the right you can see, the number of
+                    currently selected bundles</para>
+            </listitem>
+            <listitem><para>Since the start order of some bundles is important, set 'Start Level' of the following bundles as follows.</para>
+                <table frame='all'><title>Sample Table</title>
+                    <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+                        <thead>
+                            <row>
+                                <entry>Bundles</entry>
+                                <entry>Start Level</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>de.hu_berlin.german.korpling.saltnpepper.pepper-logReader</entry>
+                                <entry>2</entry>
+                            </row>
+                            <row>
+                                <entry>de.hu_berlin.german.korpling.saltnpepper.pepper-framework</entry>
+                                <entry>5</entry>
+                            </row>
+                            <row>
+                                <entry>de.hu_berlin.german.korpling.saltnpepper.pepper-testEnvironment</entry>
+                                <entry>6</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+                <note><para>We assume, that the 'Default Start Level' is set to 4.</para></note>
+            </listitem>
+            <listitem><para>Now we need to set an environment variable named 'PEPPER_TEST' to register resources like configuration files to the bundles, if needed.</para>
+            <orderedlist>
+                <listitem><para>Go to tab 'Environment' (see A).</para>
+                    <figure>
+                        <title/>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="images/moduleDevelopersGuide/runConfigurations7.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+                <listitem><para>Press button 'New...' (see B).</para></listitem>
+                <listitem><para>Type in 'PEPPER_TEST' for name and the folder known as BUNDLE_RESOURCES as value.</para></listitem>
+            </orderedlist>
+            </listitem>
+            <listitem>
+                <para>Press button 'Run' (see F).</para>
+            </listitem>
+        </itemizedlist>
+        <para> Now Pepper is running and shows all registered importers, exporters and manipulators.
+            To install further pepper modules, 
+            <orderedlist>
+                <listitem>
+                    <para>Download a module of your choice from <link
+                            xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/repository/pepperModules/de/hu_berlin/german/korpling/saltnpepper/pepperModules/"
+                            >http://korpling.german.hu-berlin.de/saltnpepper/repository/pepperModules/de/hu_berlin/german/korpling/saltnpepper/pepperModules/</link>.</para>
+                </listitem>
+                <listitem>
+                    <para>Unzip the file to MODULE_HOME</para>
+                </listitem>
+                <listitem>
+                    <para>Copy the jar to ECLIPSE_HOME/dropins</para>
+                </listitem>
+                <listitem>
+                    <para>Copy the folder having the same name as the jar to BUNDLE_RESOURCES.</para>
+                </listitem>
+                <listitem>
+                    <para>Select the downloaded module in your run configurations.</para>
+                </listitem>
+            </orderedlist>
+        </para>
+    </sect1>
+    <sect1>
+        <title>Making a real run</title>
+        <para>Now we want to start a real run using a workflow description file. To do so, we need a
+            sample corpus and a sample workflow description file. The sample sample workflow
+            description file describes a aworkflow converting a corpus in paula to relANNIS. <note>
+                <para>Make sure, that the PAULAImporter and the RelANNISExporter is registered in
+                    your eclipse installation and in your run configurations.</para>
+            </note>
+        </para>
+        <itemizedlist>
+            <listitem><para>Download the sample corpus from <link xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/samples/corpora/pcc2.zip">http://korpling.german.hu-berlin.de/saltnpepper/samples/corpora/pcc2.zip</link> and unzip it to SAMPLE_CORPUS.</para></listitem>
+            <listitem><para>Set environment variable named 'PEPPER_TEST_WORKFLOW_FILE' in your run configurations pointing to SAMPLE_CORPUS/paula2paula.pepperparams (name='PEPPER_TEST_WORKFLOW_FILE', value='SAMPLE_CORPUS/paula2paula.pepperparams')</para></listitem>
+            <listitem><para>Press 'Run'.</para></listitem>
+        </itemizedlist>
+        <para>No the pepper test environment is set up, and pepper does the conversion task. 
+        </para>
+    </sect1>
+</chapter>
