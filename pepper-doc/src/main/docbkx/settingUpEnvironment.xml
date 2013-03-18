@@ -59,7 +59,7 @@
             <listitem>
                 <para>Copy all folders having the same name as the bundles (.jar files) from
                     PEPPER_HOME/plugins to a folder of your choice, lets say
-                    BUNDLE_RESOURCES.</para>
+                    BUNDLE_RESOURCES/plugins.</para>
             </listitem>
         </itemizedlist>
     </sect1>
@@ -330,7 +330,7 @@
                 </listitem>
                 <listitem>
                     <para>Copy the folder having the same name as the bundle (.jar file) to
-                        BUNDLE_RESOURCES.</para>
+                        BUNDLE_RESOURCES/plugins.</para>
                 </listitem>
                 <listitem>
                     <para>Select the downloaded module in your run configurations.</para>

@@ -100,12 +100,12 @@ public class PepperTestRunner implements Runnable
 	private static File getWorkflowDescripptionFile()
 	{
 		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE)== null)
-			throw new RuntimeException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for confersion.");
+			throw new PepperTestException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for conversion.");
 		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE).isEmpty())
-			throw new RuntimeException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for confersion. Currently it is empty.");
+			throw new PepperTestException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for conversion. Currently it is empty.");
 		File workflowDescFile= new File(System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE));
 		if (!workflowDescFile.exists())
-			throw new RuntimeException("Cannot start PepperTest, because environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' points to a non  existing file '"+workflowDescFile.getAbsolutePath()+"'.");
+			throw new PepperTestException("Cannot start PepperTest, because environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' points to a non  existing file '"+workflowDescFile.getAbsolutePath()+"'.");
 		return(workflowDescFile);
 	}
 	
@@ -142,41 +142,59 @@ public class PepperTestRunner implements Runnable
 			this.logService.log(LogService.LOG_INFO,"PepperModuleResolver.ResourcesURI:\t"+ System.getProperty("PepperModuleResolver.ResourcesURI"));
 			this.logService.log(LogService.LOG_INFO,logReaderName+".resources:\t"+ System.getProperty(logReaderName+".resources"));
 		}	
-		URI workflowDescURI= URI.createFileURI(getWorkflowDescripptionFile().getAbsolutePath());
 		if (this.logService!= null)
 			this.logService.log(LogService.LOG_DEBUG,"service registered(PepperConverter): "+this.converter);
 		if (converter== null)
 			throw new PepperException("No PepperConverter-object is given for PepperTest.");
-		converter.setPepperParams(workflowDescURI);
+		//print registered pepper modules 
+		if (this.logService!= null)
+		{
+			this.logService.log(LogService.LOG_INFO, converter.getPepperModuleResolver().getStatus());
+		}
 		
-		{//creating user-defined properties
-			//TODO this must be parameterized (but how to set parameters in an OSGi environment)
-			Properties props= new Properties();
-			props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
-			props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
-			props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
-			converter.setProperties(props);
-		}//creating user-defined properties
-		
+		URI workflowDescURI= null;
 		try {
-			converter.setParallelized(true);
-			converter.start();
-		} catch (PepperException e) 
-		{
-			System.err.println(e);
-			throw e;
+			workflowDescURI= URI.createFileURI(getWorkflowDescripptionFile().getAbsolutePath());
+		} catch (PepperTestException e) {
+			if (this.logService!= null)
+				this.logService.log(LogService.LOG_ERROR, e.getMessage());
+			else 
+				System.err.println(e.getMessage());
 		}
-		catch (Exception e)
-		{
-			System.err.println(e);
-			throw e;
-		}
+		
+		if (workflowDescURI!= null)
+		{// pepper can be started
+			converter.setPepperParams(workflowDescURI);
+			
+			{//creating user-defined properties
+				//TODO this must be parameterized (but how to set parameters in an OSGi environment)
+				Properties props= new Properties();
+				props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
+				props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
+				props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
+				converter.setProperties(props);
+			}//creating user-defined properties
+			
+			try {
+				converter.setParallelized(true);
+				converter.start();
+			} catch (PepperException e) 
+			{
+				System.err.println(e);
+				throw e;
+			}
+			catch (Exception e)
+			{
+				System.err.println(e);
+				throw e;
+			}
+		}// pepper can be started
 	}
 	
 	private void printHello()
 	{
 		if (this.logService== null)
-			throw new PepperTestException("Cannot go on, because no LogService is set. It shall not be possible to start a PepperTest-object without LogService-object.");
+			throw new PepperTestException("Pepper testEnvironment is running in stealth mode, because no LogService is set. Please check your configuration.");
 		
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 		this.logService.log(LogService.LOG_INFO,"***                      Test Pepper Converter                       ***");
@@ -186,7 +204,7 @@ public class PepperTestRunner implements Runnable
 		this.logService.log(LogService.LOG_INFO,"* for contact write an eMail to: saltnpepper@lists.hu-berlin.de        *");
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 		this.logService.log(LogService.LOG_INFO,"\n");
-		this.logService.log(LogService.LOG_INFO,"given workflow description file:\t"+ getWorkflowDescripptionFile());
+//		this.logService.log(LogService.LOG_INFO,"given workflow description file:\t"+ getWorkflowDescripptionFile());
 	}
 	
 	private void printBye(long millis)
