@@ -10,12 +10,12 @@
             xlink:href="http://download.eclipse.org">http://download.eclipse.org</link>). If you
         don't want to use eclipse, skip the eclipse specific parts, but make sure, setting up the
         OSGi framework in your environment simultaneously.</para>
-    <sect1>
+    <sect1 xml:id="sec_downloadEclipse">
         <title>Download and set up eclipse</title>
         <para>eclipse is available in several flavours like for web developers, mobil developers
             etc.. We recommend the eclipse Modeling Tools, since you might want to create or use a
-            model for the format you want to support. For this tutorial, we used the eclipse version
-            4.2 juno (see: <link
+            model for the format you want to support. For this tutorial, we used eclipse juno,
+            version 4.2 (see: <link
                 xlink:href="http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/junosr2"
                 >http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/junosr2</link>).
             Unfortunatly, in this version eclipse does not come with an integrated OSGi console
@@ -28,15 +28,20 @@
                 >http://www.eclipse.org/downloads/download.php?file=/equinox/drops/R-3.8.2-201302041200/equinox-SDK-3.8.2.zip</link>.</para>
         <itemizedlist>
             <listitem>
-                <para>Download eclipse IDE and unzip it to ECLIPSE_HOME</para>
+                <para>Download the eclipse IDE and unzip it to ECLIPSE_HOME (a folder of your
+                    choice).</para>
             </listitem>
             <listitem>
-                <para>Unzip the equinox sdk and copy all (not already contained) bundles (.jar) from
-                    EQUINOX_SDK/plugins folder to ECLIPSE_HOME/plugins folder.</para>
+                <para>Download the equinox sdk and unzip it to EQUINOX_SDK (a folder of your
+                    choice).</para>
+            </listitem>
+            <listitem>
+                <para>Copy all (not already contained) bundles (.jar) from EQUINOX_SDK/plugins
+                    folder to ECLIPSE_HOME/plugins folder.</para>
             </listitem>
         </itemizedlist>
     </sect1>
-    <sect1>
+    <sect1 xml:id="sec_eclipseForSNP">
         <title>Making eclipse ready for SaltNPepper</title>
         <itemizedlist>
             <listitem>
@@ -53,11 +58,12 @@
             </listitem>
             <listitem>
                 <para>Copy all folders having the same name as the bundles (.jar files) from
-                    PEPPER_HOME/plugins to a folder of your choice, lets say BUNDLE_RESOURCES.</para>
+                    PEPPER_HOME/plugins to a folder of your choice, lets say
+                    BUNDLE_RESOURCES.</para>
             </listitem>
         </itemizedlist>
     </sect1>
-    <sect1>
+    <sect1 xml:id="sec_startingEclipse">
         <title>Starting eclipse</title>
         <para>Now lets check if eclipse was set up correctly and is able to find all necessary
             bundles.</para>
@@ -66,8 +72,9 @@
                 <para>Start eclipse.</para>
             </listitem>
             <listitem>
-                <para>Open 'Plug-ins view' via 'Window -> Show View --> Others, see figure.</para>
-                <figure>
+                <para>Open 'Plug-ins view' via 'Window -> Show View --> Others (see <xref
+                        linkend="fig_showView"/>). </para>
+                <figure xml:id="fig_showView">
                     <title/>
                     <mediaobject>
                         <imageobject>
@@ -75,17 +82,25 @@
                         </imageobject>
                     </mediaobject>
                 </figure>
-                <para>Type in 'plug-ins' and choose Plug-ins view.</para>
-                <figure>
-                    <title/>
-                    <mediaobject>
-                        <imageobject>
-                            <imagedata fileref="images/moduleDevelopersGuide/showView2.png"/>
-                        </imageobject>
-                    </mediaobject>
-                </figure>
-                <para>In that view, you will find all OSGi bundles, which are accessable from your
-                    eclipse installation.</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Type in 'plug-ins' and choose Plug-ins view (see <xref
+                                linkend="fig_showView02"/>).</para>
+                        <figure xml:id="fig_showView02">
+                            <title/>
+                            <mediaobject>
+                                <imageobject>
+                                    <imagedata fileref="images/moduleDevelopersGuide/showView2.png"
+                                    />
+                                </imageobject>
+                            </mediaobject>
+                        </figure>
+                    </listitem>
+                    <listitem>
+                        <para>In that view, you will find all OSGi bundles, which are accessable
+                            from your eclipse installation.</para>
+                    </listitem>
+                </itemizedlist>
             </listitem>
             <listitem>
                 <para>Check if all bundles from SaltNPepper are there. The most important ones are <itemizedlist>
@@ -125,13 +140,13 @@
         </itemizedlist>
         <para>Congratulations, now you are done setting up your IDE.</para>
     </sect1>
-    <sect1>
+    <sect1 xml:id="sec_letsRun">
         <title>Let's run</title>
         <para>Now we want to let the ghost out of the bottle and run the pepper framework.</para>
         <itemizedlist>
             <listitem>
-                <para>Select 'Run --> Run configurations...'.</para>
-                <figure>
+                <para>Select 'Run --> Run configurations...' (see <xref linkend="fig_runConfig01"/>).</para>
+                <figure xml:id="fig_runConfig01">
                     <title/>
                     <mediaobject>
                         <imageobject>
@@ -142,8 +157,8 @@
                 </figure>
             </listitem>
             <listitem>
-                <para>Select 'OSGi Framework', press right mouse button and select 'New'.</para>
-                <figure>
+                <para>Select 'OSGi Framework', press right mouse button and select 'New' (see <xref linkend="fig_runConfig02"/>).</para>
+                <figure xml:id="fig_runConfig02">
                     <title/>
                     <mediaobject>
                         <imageobject>
@@ -155,8 +170,8 @@
             </listitem>
 
             <listitem>
-                <para>Give your run configuration a name under 'Name:', (see A).</para>
-                <figure>
+                <para>Give your run configuration a name under 'Name:', (see <xref linkend="fig_runConfig03"/> position A).</para>
+                <figure xml:id="fig_runConfig03">
                     <title/>
                     <mediaobject>
                         <imageobject>
@@ -167,12 +182,12 @@
                 </figure>
             </listitem>
             <listitem>
-                <para>For not loading all available bundles, which could be more than 800 (see B),
-                    press the button 'Deselect All' (see C).</para>
+                <para>For not loading all available bundles, which could be more than 800 (see <xref linkend="fig_runConfig03"/> position B),
+                    press the button 'Deselect All' (see <xref linkend="fig_runConfig03"/> position C).</para>
             </listitem>
             <listitem>
                 <para>Now, activate all necessary bundles for running Pepper. In 'type filter text'
-                    (see D) type in 'de.hu_berlin' and you will see all bundles having this string
+                    (see <xref linkend="fig_runConfig03"/> position D) type in 'de.hu_berlin' and you will see all bundles having this string
                     in the package name. To active the necessary bundles, click the box on the left
                     of their name. Make sure, that all bundles you have copied from PEPPER_HOME are
                     activated. These are at least the following ones:</para>
@@ -210,7 +225,7 @@
                 </itemizedlist>
             </listitem>
             <listitem>
-                <para>There are some more bundles necessary for running Pepper to be
+                <para>There are some other bundles necessary for running Pepper to be
                     activated:</para>
                 <itemizedlist>
                     <listitem>
@@ -227,17 +242,22 @@
             <listitem>
                 <para>Since these are not all of the necessary bundles, we have to select some more,
                     but eclipse now should be able to detect them automatically, by pressing the
-                    button 'Add Required Bundles' (see E).</para>
+                    button 'Add Required Bundles' (see <xref linkend="fig_runConfig03"/> position E).</para>
                 <note>
                     <para>In case of this button is disabled, remove the string from the
                         filter</para>
                 </note>
-                <para>Some more bundles are added now, on the right you can see, the number of
-                    currently selected bundles</para>
+                <para>Now some more bundles are added, on the right you can see the increased number of
+                    currently selected bundles (see <xref linkend="fig_runConfig03"/> position B).</para>
             </listitem>
-            <listitem><para>Since the start order of some bundles is important, set 'Start Level' of the following bundles as follows.</para>
-                <table frame='all'><title>Sample Table</title>
-                    <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+            <listitem>
+                <para>Since the start order of some bundles is important, set 'Start Level' of the
+                    following bundles as follows.</para>
+                <table frame="all">
+                    <title>Sample Table</title>
+                    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colnum="1" colname="c1" colwidth="7.3*"/>
+                        <colspec colnum="2" colname="c2" colwidth="1*"/>
                         <thead>
                             <row>
                                 <entry>Bundles</entry>
@@ -260,66 +280,93 @@
                         </tbody>
                     </tgroup>
                 </table>
-                <note><para>We assume, that the 'Default Start Level' is set to 4.</para></note>
-            </listitem>
-            <listitem><para>Now we need to set an environment variable named 'PEPPER_TEST' to register resources like configuration files to the bundles, if needed.</para>
-            <orderedlist>
-                <listitem><para>Go to tab 'Environment' (see A).</para>
-                    <figure>
-                        <title/>
-                        <mediaobject>
-                            <imageobject>
-                                <imagedata fileref="images/moduleDevelopersGuide/runConfigurations7.png"/>
-                            </imageobject>
-                        </mediaobject>
-                    </figure>
-                </listitem>
-                <listitem><para>Press button 'New...' (see B).</para></listitem>
-                <listitem><para>Type in 'PEPPER_TEST' for name and the folder known as BUNDLE_RESOURCES as value.</para></listitem>
-            </orderedlist>
+                <note>
+                    <para>We assume, that the 'Default Start Level' is set to 4.</para>
+                </note>
             </listitem>
             <listitem>
-                <para>Press button 'Run' (see F).</para>
+                <para>Now we need to set an environment variable named 'PEPPER_TEST' to register
+                    resources like configuration files of the bundles, if needed.</para>
+                <orderedlist>
+                    <listitem>
+                        <para>Go to tab 'Environment' (see <xref linkend="fig_runConfig04"/> position A).</para>
+                        <figure xml:id="fig_runConfig04">
+                            <title/>
+                            <mediaobject>
+                                <imageobject>
+                                    <imagedata
+                                        fileref="images/moduleDevelopersGuide/runConfigurations7.png"
+                                    />
+                                </imageobject>
+                            </mediaobject>
+                        </figure>
+                    </listitem>
+                    <listitem>
+                        <para>Press button 'New...' (see <xref linkend="fig_runConfig04"/> position B).</para>
+                    </listitem>
+                    <listitem>
+                        <para>Type in 'PEPPER_TEST' for name and the folder known as
+                            BUNDLE_RESOURCES as value.</para>
+                    </listitem>
+                </orderedlist>
+            </listitem>
+            <listitem>
+                <para>Press button 'Run' (see <xref linkend="fig_runConfig03"/> position F).</para>
             </listitem>
         </itemizedlist>
-        <para> Now Pepper is running and shows all registered importers, exporters and manipulators.
-            To install further pepper modules, 
+        <para> Now Pepper is running and shows all registered importers, exporters and manipulators.</para>
+        <para>To install further pepper modules, follow the given instructions:
             <orderedlist>
                 <listitem>
                     <para>Download a module of your choice from <link
                             xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/repository/pepperModules/de/hu_berlin/german/korpling/saltnpepper/pepperModules/"
-                            >http://korpling.german.hu-berlin.de/saltnpepper/repository/pepperModules/de/hu_berlin/german/korpling/saltnpepper/pepperModules/</link>.</para>
+                            >http://korpling.german.hu-berlin.de/saltnpepper/repository/pepperModules/de/hu_berlin/german/korpling/saltnpepper/pepperModules/</link> or any other source.</para>
                 </listitem>
                 <listitem>
                     <para>Unzip the file to MODULE_HOME</para>
                 </listitem>
                 <listitem>
-                    <para>Copy the jar to ECLIPSE_HOME/dropins</para>
+                    <para>Copy the bundel (.jar file) to ECLIPSE_HOME/dropins</para>
                 </listitem>
                 <listitem>
-                    <para>Copy the folder having the same name as the jar to BUNDLE_RESOURCES.</para>
+                    <para>Copy the folder having the same name as the bundle (.jar file) to
+                        BUNDLE_RESOURCES.</para>
                 </listitem>
                 <listitem>
                     <para>Select the downloaded module in your run configurations.</para>
                 </listitem>
+                <listitem><para>Press button 'Add required bundles' (see <xref linkend="fig_runConfig03"/> position E).</para></listitem>
+                <listitem><para>To check if all bundle dependencies could be resolved, press 'Validate Bundles'. (see <xref linkend="fig_runConfig03"/>)</para></listitem>
             </orderedlist>
         </para>
     </sect1>
-    <sect1>
+    <sect1 xml:id="sec_realRun">
         <title>Making a real run</title>
         <para>Now we want to start a real run using a workflow description file. To do so, we need a
-            sample corpus and a sample workflow description file. The sample sample workflow
-            description file describes a aworkflow converting a corpus in paula to relANNIS. <note>
+            sample corpus and a sample workflow description file. The sample workflow
+            description file specifies a workflow converting a corpus in paula to relANNIS. <note>
                 <para>Make sure, that the PAULAImporter and the RelANNISExporter is registered in
-                    your eclipse installation and in your run configurations.</para>
+                    your eclipse installation (see 'plugins view' <xref linkend="sec_startingEclipse"/>) and in your run configurations.</para>
             </note>
         </para>
         <itemizedlist>
-            <listitem><para>Download the sample corpus from <link xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/samples/corpora/pcc2.zip">http://korpling.german.hu-berlin.de/saltnpepper/samples/corpora/pcc2.zip</link> and unzip it to SAMPLE_CORPUS.</para></listitem>
-            <listitem><para>Set environment variable named 'PEPPER_TEST_WORKFLOW_FILE' in your run configurations pointing to SAMPLE_CORPUS/paula2paula.pepperparams (name='PEPPER_TEST_WORKFLOW_FILE', value='SAMPLE_CORPUS/paula2paula.pepperparams')</para></listitem>
-            <listitem><para>Press 'Run'.</para></listitem>
+            <listitem>
+                <para>Download the sample corpus from <link
+                        xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/samples/corpora/pcc2.zip"
+                        >http://korpling.german.hu-berlin.de/saltnpepper/samples/corpora/pcc2.zip</link>
+                    and unzip it to SAMPLE_CORPUS.</para>
+            </listitem>
+            <listitem>
+                <para>Create an environment variable named 'PEPPER_TEST_WORKFLOW_FILE' in your 'Run
+                    configurations' and point it to SAMPLE_CORPUS/paula2paula.pepperparams
+                    (see <xref linkend="fig_runConfig04"/> for creating environment variables; name='PEPPER_TEST_WORKFLOW_FILE',
+                    value='SAMPLE_CORPUS/paula2paula.pepperparams')</para>
+            </listitem>
+            <listitem>
+                <para>Press 'Run'.</para>
+            </listitem>
         </itemizedlist>
-        <para>No the pepper test environment is set up, and pepper does the conversion task. 
+        <para>Now the pepper test environment is set up, and pepper does the conversion task.
         </para>
     </sect1>
 </chapter>
