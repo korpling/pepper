@@ -94,6 +94,8 @@
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
         <carrot-maven-scr-plugin.version>2.0.1</carrot-maven-scr-plugin.version>
         <maven-notice-plugin.version>1.0.4</maven-notice-plugin.version>
+        <docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
+         <docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
     </properties>
     <dependencies>
         <dependency>
