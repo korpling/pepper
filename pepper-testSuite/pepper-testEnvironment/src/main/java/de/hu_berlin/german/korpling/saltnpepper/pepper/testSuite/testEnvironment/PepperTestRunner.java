@@ -20,13 +20,14 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironmen
 import java.io.File;
 import java.util.Properties;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
-import org.apache.felix.scr.annotations.ReferencePolicy;
-import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
@@ -38,8 +39,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment
  * @author Florian Zipser
  *
  */
-@Component(name="PepperTestComponent", immediate=true)
-@Service
+@Component(name="PepperTestComponent", immediate=true, enabled=true)
 //TODO replace environment variables and parameters with a param file, which can be passed via OSGi to the test-environmet   
 public class PepperTestRunner implements Runnable
 {
@@ -65,9 +65,9 @@ public class PepperTestRunner implements Runnable
 	{}
 
 // ========================================== start: LogService	
-	@Reference(bind="setLogService", unbind="unsetLogService", cardinality=ReferenceCardinality.MANDATORY_UNARY, policy=ReferencePolicy.STATIC)
 	private LogService logService;
 
+	@Reference(unbind="unsetLogService", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setLogService(LogService logService) 
 	{
 		this.logService = logService;
@@ -85,13 +85,12 @@ public class PepperTestRunner implements Runnable
 // ========================================== end: LogService
 	
 // ========================================== start: PepperConverter		
-	@Reference(bind="setPepperConverter", unbind="unsetPepperConverter", cardinality=ReferenceCardinality.MANDATORY_UNARY, policy=ReferencePolicy.STATIC)
 	private PepperConverter converter= null;
 	public void unsetPepperConverter(PepperConverter pepperConverter)
 	{
 		this.converter= null;
 	}
-	
+	@Reference(unbind="unsetPepperConverter", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setPepperConverter(PepperConverter pepperConverter)
 	{
 		this.converter= pepperConverter;
@@ -101,12 +100,12 @@ public class PepperTestRunner implements Runnable
 	private static File getWorkflowDescripptionFile()
 	{
 		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE)== null)
-			throw new RuntimeException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for confersion.");
+			throw new PepperTestException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for conversion.");
 		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE).isEmpty())
-			throw new RuntimeException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for confersion. Currently it is empty.");
+			throw new PepperTestException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for conversion. Currently it is empty.");
 		File workflowDescFile= new File(System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE));
 		if (!workflowDescFile.exists())
-			throw new RuntimeException("Cannot start PepperTest, because environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' points to a non  existing file '"+workflowDescFile.getAbsolutePath()+"'.");
+			throw new PepperTestException("Cannot start PepperTest, because environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' points to a non  existing file '"+workflowDescFile.getAbsolutePath()+"'.");
 		return(workflowDescFile);
 	}
 	
@@ -143,41 +142,59 @@ public class PepperTestRunner implements Runnable
 			this.logService.log(LogService.LOG_INFO,"PepperModuleResolver.ResourcesURI:\t"+ System.getProperty("PepperModuleResolver.ResourcesURI"));
 			this.logService.log(LogService.LOG_INFO,logReaderName+".resources:\t"+ System.getProperty(logReaderName+".resources"));
 		}	
-		URI workflowDescURI= URI.createFileURI(getWorkflowDescripptionFile().getAbsolutePath());
 		if (this.logService!= null)
 			this.logService.log(LogService.LOG_DEBUG,"service registered(PepperConverter): "+this.converter);
 		if (converter== null)
 			throw new PepperException("No PepperConverter-object is given for PepperTest.");
-		converter.setPepperParams(workflowDescURI);
+		//print registered pepper modules 
+		if (this.logService!= null)
+		{
+			this.logService.log(LogService.LOG_INFO, converter.getPepperModuleResolver().getStatus());
+		}
 		
-		{//creating user-defined properties
-			//TODO this must be parameterized (but how to set parameters in an OSGi environment)
-			Properties props= new Properties();
-			props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
-			props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
-			props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
-			converter.setProperties(props);
-		}//creating user-defined properties
-		
+		URI workflowDescURI= null;
 		try {
-			converter.setParallelized(true);
-			converter.start();
-		} catch (PepperException e) 
-		{
-			System.err.println(e);
-			throw e;
+			workflowDescURI= URI.createFileURI(getWorkflowDescripptionFile().getAbsolutePath());
+		} catch (PepperTestException e) {
+			if (this.logService!= null)
+				this.logService.log(LogService.LOG_ERROR, e.getMessage());
+			else 
+				System.err.println(e.getMessage());
 		}
-		catch (Exception e)
-		{
-			System.err.println(e);
-			throw e;
-		}
+		
+		if (workflowDescURI!= null)
+		{// pepper can be started
+			converter.setPepperParams(workflowDescURI);
+			
+			{//creating user-defined properties
+				//TODO this must be parameterized (but how to set parameters in an OSGi environment)
+				Properties props= new Properties();
+				props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
+				props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
+				props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
+				converter.setProperties(props);
+			}//creating user-defined properties
+			
+			try {
+				converter.setParallelized(true);
+				converter.start();
+			} catch (PepperException e) 
+			{
+				System.err.println(e);
+				throw e;
+			}
+			catch (Exception e)
+			{
+				System.err.println(e);
+				throw e;
+			}
+		}// pepper can be started
 	}
 	
 	private void printHello()
 	{
 		if (this.logService== null)
-			throw new PepperTestException("Cannot go on, because no LogService is set. It shall not be possible to start a PepperTest-object without LogService-object.");
+			throw new PepperTestException("Pepper testEnvironment is running in stealth mode, because no LogService is set. Please check your configuration.");
 		
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 		this.logService.log(LogService.LOG_INFO,"***                      Test Pepper Converter                       ***");
@@ -187,30 +204,33 @@ public class PepperTestRunner implements Runnable
 		this.logService.log(LogService.LOG_INFO,"* for contact write an eMail to: saltnpepper@lists.hu-berlin.de        *");
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 		this.logService.log(LogService.LOG_INFO,"\n");
-		this.logService.log(LogService.LOG_INFO,"given workflow description file:\t"+ getWorkflowDescripptionFile());
+//		this.logService.log(LogService.LOG_INFO,"given workflow description file:\t"+ getWorkflowDescripptionFile());
 	}
 	
 	private void printBye(long millis)
 	{
-		this.logService.log(LogService.LOG_INFO,"time to compute all comparisons: ");
-//		EqualsCounter.count();
-		
+		this.logService.log(LogService.LOG_INFO,"time to compute all comparisons: ");		
 		
 		this.logService.log(LogService.LOG_INFO,"Conversion ended, and needed (milli seconds): "+ millis);
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 	}
 	
+	@Activate
 	protected void activate(ComponentContext componentContext)
 	{
-		System.out.println("PepperTest Komponente wird aktiviert");
+		if (this.getLogService()!= null)
+			this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+		else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 		Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
 		pepperTestThread.start();
 	}
 	
+	@Deactivate
 	protected void deactivate(ComponentContext componentContext)
 	{
-		System.out.println("PepperTest Komponente wird deaktiviert");
-		this.logService.log(LogService.LOG_INFO,"PepperTest Komponente wird deaktiviert");
+		if (this.getLogService()!= null)
+			this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+		else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 	}
 
 	@Override

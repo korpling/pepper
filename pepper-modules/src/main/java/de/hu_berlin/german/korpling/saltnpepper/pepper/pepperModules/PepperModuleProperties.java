@@ -28,7 +28,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import org.apache.felix.scr.annotations.Property;
+//import org.apache.felix.scr.annotations.Property;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;

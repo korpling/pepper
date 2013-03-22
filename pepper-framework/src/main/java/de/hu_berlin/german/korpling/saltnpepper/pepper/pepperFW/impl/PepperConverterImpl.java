@@ -22,10 +22,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Properties;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
-import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -41,6 +37,11 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
@@ -70,6 +71,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.PepperParams
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Pepper Converter</b></em>'.
@@ -90,11 +92,9 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
  * @generated
  */
 @Component(name="PepperConverterImpl", immediate=true)
-@Service
 public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
 {
-//	private Logger logger= Logger.getLogger(PepperConverterImpl.class);
-/**
+	/**
 	 * The cached value of the '{@link #getPepperModuleResolver() <em>Pepper Module Resolver</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -102,7 +102,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	 * @generated
 	 * @ordered
 	 */
-	@Reference(bind="setPepperModuleResolver", unbind="unsetPepperModuleResolver", cardinality=ReferenceCardinality.MANDATORY_UNARY)
 	protected PepperModuleResolver pepperModuleResolver;
 	/**
 	 * This is true if the Pepper Module Resolver containment reference has been set.
@@ -215,7 +214,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	public PepperConverterImpl() 
 	{
 		super();
-//		this.pepperModuleResolver= PepperFWFactory.eINSTANCE.createPepperModuleResolver();
 	}
 
 	
@@ -234,9 +232,9 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 		return(logger);
 	}
 	
-	@Reference(bind="setLogService", unbind="unsetLogService", cardinality=ReferenceCardinality.OPTIONAL_UNARY)
 	protected LogService logService;
 
+	@Reference(unbind="unsetLogService", cardinality=ReferenceCardinality.OPTIONAL, policy=ReferencePolicy.STATIC)
 	public void setLogService(LogService logService) 
 	{
 		if (logger== null)
@@ -252,7 +250,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	public void unsetLogService(LogService logService) {
 		this.logService= null;
 	}
-
+	
 // ========================================== end: LogService
 	
 	/**
@@ -296,8 +294,9 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
+	@Reference(unbind="unsetPepperModuleResolver", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setPepperModuleResolver(PepperModuleResolver newPepperModuleResolver) {
 		if (newPepperModuleResolver != pepperModuleResolver) {
 			NotificationChain msgs = null;
@@ -443,8 +442,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 			{//fullfill all pathes if necessary and possible
 				if (this.getPepperParamsURI()!= null)
 				{// only if the path of pepper-workflow description is set	
-//					File pepperWorkflowDirectory= new File(this.getPepperParamsURI().toFileString());
-//					pepperWorkflowDirectory= pepperWorkflowDirectory.getParentFile();
 					String errorPart="";
 					URI errorURI= null;
 					try {
@@ -453,14 +450,12 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 							errorPart= "source path for importer";
 							errorURI= importerParams.getSourcePath();
 							importerParams.setSourcePath(this.checkAndResolveURI(this.getPepperParamsURI(), importerParams.getSourcePath()));
-//							importerParams.setSourcePath(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSourcePath()));
 							errorPart= "special parameter for importer";
 							errorURI= importerParams.getSpecialParams();
 							if (	(importerParams.getSpecialParams()!= null)&&
 									(!importerParams.getSpecialParams().toFileString().isEmpty()))
 							{
 								importerParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), importerParams.getSpecialParams()));
-//								importerParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, importerParams.getSpecialParams()));
 							}
 						}//check all uri parameters for importers
 						for (ModuleParams manipulatorParams: jobParams.getModuleParams())
@@ -475,7 +470,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 								{
 									
 									manipulatorParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), manipulatorParams.getSpecialParams()));
-//									manipulatorParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, manipulatorParams.getSpecialParams()));
 								}
 							}
 						}//check all uri parameters for manipulators
@@ -485,14 +479,12 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 							errorPart= "source path for exporter";
 							errorURI= exporterParams.getDestinationPath();
 							exporterParams.setDestinationPath(this.checkAndResolveURI(this.getPepperParamsURI(), exporterParams.getDestinationPath()));
-//							exporterParams.setDestinationPath(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getDestinationPath()));
 							errorPart= "special parameter for exporter";
 							errorURI= exporterParams.getSpecialParams();
 							if (	(exporterParams.getSpecialParams()!= null)&&
 									(!exporterParams.getSpecialParams().toFileString().isEmpty()))
 							{
 								exporterParams.setSpecialParams(this.checkAndResolveURI(this.getPepperParamsURI(), exporterParams.getSpecialParams()));
-//								exporterParams.setSpecialParams(this.createAbsoluteURI(pepperWorkflowDirectory, exporterParams.getSpecialParams()));
 							}
 						}//check all uri parameters for exporters
 					} catch (PepperConvertException e) {
@@ -584,50 +576,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 		}
 		return(retVal);
 	}
-	
-//	/**
-//	 * If possible adds the given currentFile to baseDir and returns the result as a canonical path.
-//	 * @param baseDir
-//	 * @param currentURI
-//	 * @return
-//	 */
-//	private URI createAbsoluteURI(File baseDir, URI currentURI) throws IOException
-//	{
-////		System.out.println("baseDir: "+ baseDir);
-////		System.out.println("baseURI: "+ baseDir.toURI());
-////		System.out.println("URI.create baseURI: "+ URI.createURI(baseDir.toURI().toString()));
-////		System.out.println("currentURI: "+ currentURI);
-////		System.out.println("currentURI isRelative: "+ currentURI.isRelative());
-////		System.out.println("resolve: "+ currentURI.resolve(URI.createURI(baseDir.toURI().toString())));
-//		
-//		URI retVal= null;
-//		if (currentURI== null)
-//			throw new PepperException("The given file 'currentFile' is null.");
-//		File path= null;
-//		if (currentURI.toFileString()== null)
-//		{
-//			if (currentURI.toString()==null)
-//				throw new PepperException("Cannot create an absolute uri for current file '"+currentURI+"'.");
-//			else 
-//			{
-//				path= new File(currentURI.toString());
-//			}
-//		}
-//		else 
-//		{
-//			path= new File(currentURI.toFileString());
-//		}
-//		if (!path.isAbsolute())
-//		{//path is a relative one, complete it to an absolute one (workflow-description-directory + path) 
-//			retVal= URI.createFileURI((new File(baseDir +"/"+ currentURI.toFileString())).getCanonicalPath());
-//		}//path is a relative one, complete it to an absolute one (workflow-description-directory + path
-//		else 
-//		{
-//			retVal= URI.createFileURI(path.getPath());
-//		}
-//		return(retVal);
-//	}
-	
+		
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1229,10 +1178,11 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	 * component.
 	 * @param context of this component
 	 */
+	@Activate
 	protected void activate(ComponentContext componentContext) 
 	{
 		//for DEBUG
-//		System.out.println("PepperConverter is initialized...");
+		System.out.println("PepperConverter is initialized...");
 		if (this.logService!= null)
 			this.logService.log(LogService.LOG_DEBUG, "PepperConverter is initialized...");
 	}

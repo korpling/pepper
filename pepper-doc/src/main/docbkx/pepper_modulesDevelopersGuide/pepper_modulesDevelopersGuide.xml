@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Pepper</title>
+        <subtitle>Developer's Guide for PepperModules</subtitle>
+        <authorgroup>
+            <author>
+                <personname>
+                    <firstname>Florian</firstname>
+                    <surname>Zipser</surname>
+                </personname>
+                <email>saltnpepper@lists.hu-berlin.de</email>
+            </author>
+            <author>
+                <orgname xml:id="org1">INRIA</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org2">SFB 632 Information Structure / D1 Linguistic
+                    Database</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org3">Humboldt-Universität zu Berlin</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org4">Universität Potsdam</orgname>
+            </author>
+        </authorgroup>
+        <copyright>
+            <year>2012</year>
+            <holder><xref linkend="org1"/>, <xref linkend="org2"/>, <xref linkend="org3"/>, <xref
+                    linkend="org1"/>,<xref linkend="org4"/>, All rights reserved.</holder>
+        </copyright>
+        <releaseinfo>Version ${project.version}</releaseinfo>
+    </info>
+    <preface>
+        <title>Foreword</title>
+        <para>The aim of this document is to provide a helpful guide to create own PepperModules to
+            plug them into the pepper framework. Currently this document is not in a very good state
+            so far. It is not more than a loose collection of hopefully interesting information for
+            developers. But we are working on it, to fullfill its aim and to make a helpfull and
+            readable guide out of it. </para>
+        <para>We are trying to make things as easy to use as possible, but we are a non profit
+            project and we need your help. So please tell us if things are to difficult and help us
+            improving the framework. </para>
+        <para>You are even very welcome to help us improving this documentation by reporting bugs,
+            requests for more information or by writing sections. Please write an email to
+                <email>saltnpepper@lists.hu-berlin.de</email>. Have fun developing with
+            SaltNPepper!</para>
+    </preface>
+
+    <chapter xml:id="ch_intro">
+        <title>Introduction</title>
+        <para>Since Pepper is a plugable framework, we used an underlying framework called OSGi
+            (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>) providing
+            such a functiuonality. OSGi is a mighty framework and has a lot of impact in the way of
+            programming things in java. Because we do not want to force you to learn OSGi, when you
+            just want to create a new module for pepper, we tried to hide the OSGi layer as good as
+            possible. Therefore and for the lifecycle management of such projects, we used another
+            framework called maven (see: <link xlink:href="http://maven.apache.org/"
+                >http://maven.apache.org/</link>). Maven is configured via an xml file called
+            pom.xml, you will find it in all SaltNPepper projects and also in the root of the
+            SampleModule project. Maven makes things easier for use especially in dealing with
+            dependencies. </para>
+        <para>In the following, <xref linkend="ch_setUpEnv"/> explains how to set up your
+            environment to start developing your pepper module. <xref linkend="ch_sampleModule"/>
+            explains how to download and adopt a template module to your own needs. This module than
+            is the base for your own module. In <xref linkend="ch_customization"/> we explain how to
+            add properties to your module, so that the user can dynamically customize the behaviour
+            of the mapping. <xref linkend="ch_documentation"/> shows the usage of a documentation
+            template written in doocbook (see <link xlink:href="http://www.docbook.org/"
+                >http://www.docbook.org/</link>) to make a standard documentation for the user of
+            your module. Since testing of software often is a pain in the back, the pepper-testSuite
+            already comes with some predefined tests. These should save you some time, not to test
+            even the simplest things. Last but not least, this documentation contains a FAQ. SInce a
+            FAQ lives of questions, if you have some, just help us increasing that part and send a
+            mail to <email>saltnpepper@lists.hu-berlin.de</email>.</para>
+    </chapter>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settingUpEnvironment.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sampleModule.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="customization.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="documentation.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testing.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faq.xml"/>
+</book>

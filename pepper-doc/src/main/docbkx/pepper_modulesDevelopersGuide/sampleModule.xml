@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="5.0" xml:id="ch_sampleModule">
+    <title>Adopting the SampleModules</title>
+    <sect1>
+        <title>Download the skeleton</title>
+        <para> To start with creating an own module for Pepper, please download the SampleModule, to
+            be used as a skeleton for your own module. SampleModules is stored in our svn
+            repository, therefore please export the project via an SVN client. The SVN location
+            depends on the version you want to use and can be found at SampleModules (see: <link
+                xlink:href="https://korpling.german.hu-berlin.de/svn/saltnpepper/PepperModules/SampleModules/"
+                >https://korpling.german.hu-berlin.de/svn/saltnpepper/PepperModules/SampleModules/</link>).</para>
+    </sect1>
+    <sect1>
+        <title>Adopting the project</title>
+        <para> Before we start adapting the modules, please think about what kinds of modules you
+            want to provide in your project. If you just want to implement an importer, delete the
+            exporter and manipulator code from the SampleModule. Otherwise, you will end up with
+            non-functional modules in your project. </para>
+        <para> Here, we give a list of things to do to adapt the project to your needs. In some
+            cases, the order of the entries is arbitrary, but in some cases it is easier to respect
+            the given order. </para>
+        <itemizedlist>
+            <listitem>
+                <para>import the project as a Maven project (when working with eclipse, use the
+                    import option existing maven project, it might be that you have to install
+                    further plugins)</para>
+            </listitem>
+            <listitem>
+                <para>rename the project (when working with eclipse, right click on the project name
+                    and choose the menu entry refactor --> rename)</para>
+            </listitem>
+            <listitem>
+                <para>rename the package (when working with eclipse, right click on the package name
+                    and choose the menu entry refactor --> rename)</para>
+            </listitem>
+        </itemizedlist>
+    </sect1>
+    <sect1>
+        <title>Adopting the pom.xml</title>
+        <para>Maven follows the paradigm convention over configuration, therefore a lot of things
+            are already predefined and not has to be changed. </para>
+        <para>But still, there are some things like the name of the project and so one, which are
+            project specific and therefore has to be adopted. Just follow the given instructions to
+            adopt the 'project object model' (pom). The items in the numbered list correspond to the
+            TODO entries in the pom.xml file. You will find the pom.xml file in the parent directory
+            of the SampleProject.</para>
+        <itemizedlist>
+            <listitem>
+                <para>change the groupId to the name of your module (conventionally, the groupId is
+                    the same as the package name)</para>
+            </listitem>
+            <listitem>
+                <para>change the artifactId (to the module name)</para>
+            </listitem>
+            <listitem>
+                <para>modify the description: Write what the module is supposed to do</para>
+            </listitem>
+            <listitem>
+                <para>change the project homepage to the url of your project</para>
+            </listitem>
+            <listitem>
+                <para>change the issue tracker to the one you are using, in case of you do not use
+                    any one, remove this entry</para>
+            </listitem>
+            <listitem>
+                <para>change the continuous integration management system to the one you are using,
+                    in case of you do not use any one, remove this entry</para>
+            </listitem>
+            <listitem>
+                <para>change the inception year to the current year</para>
+            </listitem>
+            <listitem>
+                <para>change the name of the organization to the one you are working for</para>
+            </listitem>
+            <listitem>
+                <para>modify the scm information or remove them (the scm specifies the location of
+                    your module's SVN repository)</para>
+            </listitem>
+            <listitem>
+                <para>import needed maven dependencies (this is necessary to resolve dependencies to
+                    libraries handled by maven)</para>
+            </listitem>
+            <listitem>
+                <para>change the connection to the tags folder of your scm, what you can see here is
+                    the subversion connection for the pepperModules-SampleModules project</para>
+            </listitem>
+            <listitem>
+                <para>include libraries not handled by maven, i.e. jar files, by setting the
+                    bundle-path and extending the include-resources tag.</para>
+            </listitem>
+        </itemizedlist>
+    </sect1>
+    <sect1>
+        <title>Adopting the Java code</title>
+        <para> This section describes how to customize the importer, manipulator or exporter.
+            Therefore you will find in the <classname>SampleModule</classname> three classes named
+                <classname>SampleImporter</classname>, <classname>SampleManipulator</classname> and
+                <classname>SampleExporter</classname>. All of them are located in the package
+                <package>de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules</package>.
+            In most cases people do not want to create all of them sometimes people only want to
+            create an importer an exporter or a manipulator. Then just delete the classes you won't
+            implement, In case of you want to have several importer, manipulators or exporters, just
+            copy the classes and proceed with each class as described in the following. The items in
+            the numbered list correspond to the TODO entries in the class files. <itemizedlist>
+                <listitem>
+                    <para>change the name of the component, for example use the format name and the
+                        ending Importer or Exporter e.g. FORMATExporterComponent and
+                        FORMATExporterComponentFactory, in case of you want to create a manipulator,
+                        use a name describing the task e.g. MYTaskManipulatorComponent and
+                        MYTaskManipulatorComponentFactory</para>
+                </listitem>
+                <listitem>
+                    <para>change the name of the module, for example use the format name and the
+                        ending Exporter (<classname>FORMATExporter</classname>)</para>
+                </listitem>
+                <listitem>
+                    <para>in case of you are implementing an im- or exporter, change "sample" with
+                        format name and 1.0 with format version to support</para>
+                </listitem>
+                <listitem>
+                    <para>in case of you are creating an importer, override the method
+                            <methodname>importCorpusStructure()</methodname>, this method maps the
+                        corpus structure of the given format to a corpus structure in Salt</para>
+                </listitem>
+                <listitem>
+                    <para>if you want to have a specific handling with the document strcuture,
+                        override the method <methodname>start()</methodname>, for instance if you
+                        want to have athreading. Otherwise just delete this method or call
+                            <methodname>super.start()</methodname>, than the method
+                            <methodname>start(SElementId sElementId)</methodname> will be called for
+                        each <classname>SDocument</classname> automatically.</para>
+                </listitem>
+                <listitem>
+                    <para>Override the <methodname>method start(SElementId sElementId)</methodname>,
+                        this is the point of mapping documentstructures between Salt and a format or
+                        to place the functionality of a manipulator</para>
+                </listitem>
+                <listitem>
+                    <para>If some clean ups left, override the method
+                        <methodname>end()</methodname></para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <sect2>
+            <title><methodname>importCorpusStructure</methodname></title>
+            <itemizedlist>
+                <listitem>
+                    <para> imports corpus structure, into a <classname>SCorpusGraph</classname>,
+                        means creates a structure consisting of <classname>SDocument</classname> and
+                            <classname>SCorpus</classname> node objects and
+                            <classname>SCorpusRelation</classname> and
+                            <classname>SCorpDocRelation</classname> relation objects connecting
+                        them.</para>
+                </listitem>
+                <listitem>
+                    <para> corpus structure super and sub corpus, a corpus can contain 0..*
+                        subcorpus and 0..* documents, a corpus not contain both document and
+                        corpus</para>
+                </listitem>
+                <listitem>
+                    <para>creates a table document-id to uri for method
+                            <methodname>start()</methodname></para>
+                </listitem>
+                <listitem>
+                    <para>method <methodname>isFileToImport()</methodname> does following and can be
+                        overridden</para>
+                </listitem>
+            </itemizedlist>
+            <para> Computes a corpus-structure given by the file-structure located by the address of
+                the given <classname>URI</classname> object. For the root folder (the direct
+                    <classname>URI</classname> location) a root-corpus
+                    (<classname>SCorpus</classname> object) is created. For each sub-folder a
+                sub-corpus (<classname>SCorpus</classname> object) is created. For each file for
+                which the method <methodname>isFileToImport(URI, List)</methodname> returns
+                    <code>true</code>, a <classname>SDocument</classname> object is created and
+                added to the current <classname>SCorpusGraph</classname> object. The objects are
+                connected via <classname>SCorpusRelation</classname> or
+                    <classname>SCorpusDocumentRelation</classname> objects. While traversing the
+                file-structure, an <classname>SElementId</classname> object is created representing
+                the corpus-hierarchie and added to the created <classname>SCorpus</classname> or
+                    <classname>SDocument</classname> objects. A map of these
+                    <classname>SElementId</classname> objects corresponding to the
+                    <classname>URI</classname> objects is returned, so that in method
+                    <methodname>start(SElementId)</methodname> this map can be used to identify the
+                    <classname>URI</classname> location of the <classname>SDocument</classname>
+                objects. </para>
+            <note>
+                <para>For a description of how to add entries to the file extension list, see
+                        <methodname>isFileToImport(URI, List)</methodname>.</para>
+            </note>
+        </sect2>
+        <sect2>
+            <title><methodname>isFileToImport</methodname></title>
+            <para> To customize the computation if a file shall be imported or not, you can override
+                the method <methodname>isFileToImport</methodname>. The method in its original
+                returns if a given <classname>URI</classname> object shall be imported during import
+                phase. This decision depends on the kind and the content of the given fileExtension
+                list. The file extension list can contain a set of file extensions (Strings without
+                '.') to be imported or marked as to be not imported (via the prefix
+                    <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname>). The following
+                list shows the condition of computation for returned value: <itemizedlist>
+                    <listitem>
+                        <para>This method returns false, in case of the given
+                                <classname>URI</classname> object is null.</para>
+                    </listitem>
+                    <listitem>
+                        <para>This method returns true for every <classname>URI</classname> object
+                            in case of the list is null or empty.</para>
+                    </listitem>
+                    <listitem>
+                        <para>This method returns true if the given list is a positive list (does
+                            not contain the negative marker
+                                <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname> at
+                            all) and the file extension of the uri is contained in the list.</para>
+                    </listitem>
+                    <listitem>
+                        <para>This method returns true if the given list is a negative list (any
+                            item is prefixed with the negative marker
+                                <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname>)
+                            and the file extension of the uri is not contained in the list.</para>
+                    </listitem>
+                </itemizedlist>
+                <note>
+                    <para>When a list contains items prefixed with the negative marker and items
+                        which are not, the list is interpreted as a negative list.</para>
+                </note>
+            </para>
+            <para> In case of you want to customize the method by overriding it, but not loosing its
+                functionality, you can use the following lines of code:
+                <programlisting>@Override
+protected boolean isFileToImport(URI checkUri, List&lt;String&gt; fileExtensions)
+{ 
+    if (super.isFileToImport(checkUri))
+    //TODO: do something, when super says yes
+    else
+    //TODO: do something, when super says no 
+}</programlisting>
+            </para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>building the project</title>
+        <para> We adopt the settings for using OSGi and to create PepperModules, which are simply
+            plugable into the Pepper framework. So in the the good case, you can just follow this
+            guide, and run </para>
+        <synopsis>
+            mvn install assembly
+        </synopsis>
+        <para> and you will find a zip file in the target folder of your project
+            (YOUR_PROJECT/target/distribution), which can simply pluged into Pepper via extracting
+            its content to the plugin folder of Pepper. In the bad case some mean errors occur and
+            you have to dig in a lot of online tutorials and forums and lose a lot of time. Please
+            do not despair and write us an e-mail instead.
+                <email>saltnpepper@lists.hu-berlin.de</email></para>
+    </sect1>
+</chapter>

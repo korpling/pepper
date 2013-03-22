@@ -1,262 +1,302 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-  <artifactId>pepper</artifactId>
-  <version>1.1.5-SNAPSHOT</version>
-  <packaging>pom</packaging>
-   <modules>
-   	<module>pepper-logReader</module>
-    <module>pepper-exceptions</module>
-    <module>pepper-modules</module>
-    <module>pepper-workflow</module>
-    <module>pepper-framework</module>
-    <module>pepper-testSuite</module>
-    <module>pepper-parentModule</module>
-    <module>pepper-starter</module>
-  </modules>
-   <description>Pepper is a plugable converter framework to convert linguistic data between several formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged into the framework via creating a PepperModule.</description>
-   <url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
-   <issueManagement>
-   	<system>Redmine</system>
-   	<url>https://korpling.german.hu-berlin.de/p/projects/pepper/issues</url>
-   </issueManagement>
-   <ciManagement>
-   	<system>Jenkins</system>
-   	<url>https://korpling.german.hu-berlin.de/jenkins/</url>
-   </ciManagement>
-   <inceptionYear>2009</inceptionYear>
-   <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
-  <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk</developerConnection>
-    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/</url>
-  </scm>
-  <repositories>
-    <repository>
-      <id>korpling</id>
-      <name>korpling maven repo</name>
-      <url>http://korpling.german.hu-berlin.de/maven2</url>
-    </repository>
-  </repositories>
-  <distributionManagement>
-    <repository>
-      <id>korpling</id>
-      <name>korpling maven repo</name>
-      <url>file:///srv/www/maven2/</url>
-      <!--<url>scpexe://korpling.german.hu-berlin.de/srv/www/maven2/</url>-->
-    </repository>
-  </distributionManagement>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
-    <assemblies.name>src/assemble/assemblies.xml</assemblies.name>
-    <license.file>${basedir}/LICENSE</license.file>
-    <notice.file>${basedir}/NOTICE</notice.file>
-  </properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+    <artifactId>pepper</artifactId>
+    <version>1.1.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>pepper-logReader</module>
+        <module>pepper-exceptions</module>
+        <module>pepper-modules</module>
+        <module>pepper-workflow</module>
+        <module>pepper-framework</module>
+        <module>pepper-testSuite</module>
+        <module>pepper-parentModule</module>
+        <module>pepper-starter</module>
+    </modules>
+    <description>Pepper is a plugable converter framework to convert linguistic data between several
+        formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged
+        into the framework via creating a PepperModule.</description>
+    <url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
+    <issueManagement>
+        <system>Redmine</system>
+        <url>https://korpling.german.hu-berlin.de/p/projects/pepper/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://korpling.german.hu-berlin.de/jenkins/</url>
+    </ciManagement>
+    <inceptionYear>2009</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <scm>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk</developerConnection>
+        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/</url>
+    </scm>
+    <repositories>
+        <repository>
+            <id>korpling</id>
+            <name>korpling maven repo</name>
+            <url>http://korpling.german.hu-berlin.de/maven2</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>korpling</id>
+            <name>korpling maven repo</name>
+            <url>file:///srv/www/maven2/</url>
+            <!--<url>scpexe://korpling.german.hu-berlin.de/srv/www/maven2/</url>-->
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.6</java.version>
+        
+        <bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
+        <assemblies.name>src/assemble/assemblies.xml</assemblies.name>
+        <license.file>${basedir}/LICENSE</license.file>
+        <notice.file>${basedir}/NOTICE</notice.file>
+        <OSGI-INF>OSGI-INF</OSGI-INF>
+        <META-INF>${basedir}/META-INF</META-INF>
+        <serviceComponents>${OSGI-INF}/service-component</serviceComponents>
+        <allServiceComponents>${serviceComponents}/*.xml</allServiceComponents>
+        <serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
+        <!-- versions of dependencies -->
+        <salt.version>1.1.6</salt.version>
+        <pepper.version>1.1.5-SNAPSHOT</pepper.version>
+        <junit.version>3.8.1</junit.version>
+        <org.osgi.core.version>4.3.1</org.osgi.core.version>
+        <org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
+        <org.eclipse.emf.common.version>2.6.0.v20100614-1136</org.eclipse.emf.common.version>
+        <org.eclipse.emf.ecore.version>2.6.0.v20100614-1136</org.eclipse.emf.ecore.version>
+        <org.eclipse.emf.ecore.xmi.version>2.5.0.v20100521-1846</org.eclipse.emf.ecore.xmi.version>
+        <org.eclipse.osgi.version>3.6.0.v20100517</org.eclipse.osgi.version>
+        <carrot-osgi-anno-scr-core.version>2.0.1</carrot-osgi-anno-scr-core.version>
+        <carrot-osgi-anno-scr-make.version>2.0.1</carrot-osgi-anno-scr-make.version>
+
+        <!-- versions of plugins -->
+        <maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
+        <!-- <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>-->
+        <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+        <maven-assembly-plugin.version>2.2</maven-assembly-plugin.version>
+        <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+        <maven-license-plugin.version>1.4.0</maven-license-plugin.version>
+        <maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+        <maven-release-plugin.version>2.1</maven-release-plugin.version>
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <carrot-maven-scr-plugin.version>2.0.1</carrot-maven-scr-plugin.version>
+        <maven-notice-plugin.version>1.0.4</maven-notice-plugin.version>
+        <docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
+         <docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
+    </properties>
     <dependencies>
-	    <dependency>
-	    	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-	    	<artifactId>salt-saltCommon</artifactId>
-	    	<version>1.1.6-SNAPSHOT</version>
-	    	<scope>compile</scope>
-	    </dependency>
-	   <dependency>
-	      <groupId>junit</groupId>
-	      <artifactId>junit</artifactId>
-	      <version>3.8.1</version>
-	      <scope>test</scope>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.apache.felix</groupId>
-	      <artifactId>org.osgi.core</artifactId>
-	      <version>1.4.0</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.apache.felix</groupId>
-	      <artifactId>org.osgi.compendium</artifactId>
-	      <version>1.0.0</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.eclipse.emf</groupId>
-	      <artifactId>org.eclipse.emf.common</artifactId>
-	      <version>2.6.0.v20100614-1136</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.eclipse.emf</groupId>
-	      <artifactId>org.eclipse.emf.ecore</artifactId>
-	      <version>2.6.0.v20100614-1136</version>
-	      <type>jar</type>
-	      <scope>compile</scope>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.eclipse.emf</groupId>
-	      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-	      <version>2.5.0.v20100521-1846</version>
-	      <type>jar</type>
-	      <scope>compile</scope>
-	    </dependency>
-	    <!-- OSGI service-component -->
-	    <dependency>
-	      <groupId>org.apache.felix</groupId>
-	      <artifactId>org.apache.felix.scr.annotations</artifactId>
-	      <version>1.6.0</version>
-	    </dependency>
-	    <!-- end OSGI service-component -->
+        <dependency>
+            <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+            <artifactId>salt-saltCommon</artifactId>
+            <version>${salt.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.common</artifactId>
+            <version>${org.eclipse.emf.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+            <version>${org.eclipse.emf.ecore.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+            <version>${org.eclipse.emf.ecore.xmi.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <!-- OSGI service-component -->
+        <!-- OSGI Annotations. Use standard first, override with custom. -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>${org.osgi.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <version>${org.osgi.compendium.version}</version>
+        </dependency>
+        <!--  start: OSGi declaractive services -->
+        <dependency>
+            <groupId>com.carrotgarden.osgi</groupId>
+            <artifactId>carrot-osgi-anno-scr-core</artifactId>
+            <version>${carrot-osgi-anno-scr-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.carrotgarden.osgi</groupId>
+            <artifactId>carrot-osgi-anno-scr-make</artifactId>
+            <version>${carrot-osgi-anno-scr-make.version}</version>
+        </dependency>
+        <!--  end: OSGi declaractive services -->
     </dependencies>
-	
-  
+
+
     <organization>
-    	<name>Humboldt Univerity of Berlin, INRIA</name>
+        <name>Humboldt Univerity of Berlin, INRIA</name>
     </organization>
     <build>
-    
-	<extensions>
-      <!-- currently does not work, because with this, wagon tries to download dependent projects like Salt via ftp also.
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh-external</artifactId>
-        <version>2.2</version>
-      </extension>
-    -->
-	</extensions>
-     
-	 
-    <plugins>
-   <!-- start: Plugin for automatic releasing -->
-    <plugin>
-       <artifactId>maven-release-plugin</artifactId>
-       <version>2.1</version>
-	   <configuration>
-         <tagBase>
-           https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags
-         </tagBase>
-         <releaseProfiles>release</releaseProfiles>
-     		<goals>package assembly:single deploy</goals>
-       </configuration>
-     </plugin>
-      <!-- end: Plugin for automatic releasing -->
-      <!-- start: site plugin -->
-<!--       <plugin> -->
-<!-- 	    <groupId>org.apache.maven.plugins</groupId> -->
-<!-- 	    <artifactId>maven-site-plugin</artifactId> -->
-<!-- 	    <version>3.0</version> -->
-<!-- 	    <configuration> -->
-<!--         	<outputDirectory>${basedir}/docs/site</outputDirectory> -->
-<!--         </configuration> -->
-<!--       </plugin> -->
-      <!-- end: site plugin -->
-      <!-- generate a jar for sources -->
-      <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.2.1</version>
-          <executions>
-              <execution>
-                  <id>attach-sources</id>
-                  <phase>verify</phase>
-                  <goals>
-                      <goal>jar-no-fork</goal>
-                  </goals>
-              </execution>
-          </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>2.4.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>clean</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>META-INF</directory>
-              <directory>OSGI-INF</directory>
-              <followSymlinks>false</followSymlinks>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-       <!-- creation of  OSGi Service components -->
-		<plugin>
-			<groupId>org.apache.felix</groupId>
-            <artifactId>maven-scr-plugin</artifactId>
-            <version>1.7.2</version>
-            <executions>
-                   <execution>
-                        <id>generate-scr-scrdescriptor</id>
+        <plugins>
+            <!-- start: Plugin for automatic releasing -->
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+                <configuration>
+                    <tagBase> https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags </tagBase>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>package assembly:single deploy</goals>
+                </configuration>
+            </plugin>
+            <!-- generate a jar for sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>scr</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
-                        <configuration>
-                        	 <finalName>${component.descriptor.name}</finalName>
-                        </configuration>
-                   </execution>
-            </executions>
-        </plugin>
-        <!-- end: creation of OSGi Service components -->
-      <!-- start: assembly plugin -->
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2.1</version>
-        <configuration>
-          <descriptors>
-            <descriptor>${assemblies.name}</descriptor>
-          </descriptors>
-          <appendAssemblyId>false</appendAssemblyId>
-          <finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName>
-          <outputDirectory>target/distribution</outputDirectory>
-          <workDirectory>target/assembly/work</workDirectory>
-        </configuration>
-      </plugin>
-      <!-- end: assembly plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <!-- start: for generating license headers in source files. Run mvn license:format -->
-      <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.4.0</version>
-        <configuration>
-          <header>${basedir}/src/etc/header.txt</header>
-          <includes>
-            <include>src/main/java/**</include>
-            <include>src/test/java/**</include>
-          </includes>
-        </configuration>
-      </plugin>
-      <!-- end: for generating license headers in source files. Run mvn license:format -->
-      <!-- start: creates a NOTICE file use mvn notice:generate -->
-      <plugin>
-        <groupId>org.jasig.maven</groupId>
-        <artifactId>maven-notice-plugin</artifactId>
-        <version>1.0.4</version>
-        <configuration>
-          <noticeTemplate>./src/etc/NOTICE_template.txt</noticeTemplate>
-          <licenseMapping>
-				<param>https://source.jasig.org/licenses/license-mappings.xml</param>
-				<param>https://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml</param>
-    		</licenseMapping>
-        </configuration>
-      </plugin>
-      <!-- end: creates a NOTICE file use mvn notice:generate -->
-    </plugins>
-    <finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
-  </build>
-  <name>${project.groupId}.${project.artifactId}</name>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${META-INF}</directory>
+                            <directory>${OSGI-INF}</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <!-- creation of  OSGi Service components -->
+            <plugin>
+                <groupId>com.carrotgarden.maven</groupId>
+                <artifactId>carrot-maven-scr-plugin</artifactId>
+                <version>${carrot-maven-scr-plugin.version}</version>
+                <configuration>
+                    <!-- Unwanted interfaces. -->
+                    <excludedServices>
+                        <service>java.lang.Runnable</service>
+                    </excludedServices>
+                    <!-- Eclipse maven console settings. -->
+                    <eclipseSettings>
+                        <logBuildTimes>true</logBuildTimes>
+                        <logErrorTraces>true</logErrorTraces>
+                        <logExcludedServices>true</logExcludedServices>
+                        <logInvocationDetails>true</logInvocationDetails>
+                        <logComponentDescriptors>true</logComponentDescriptors>
+                    </eclipseSettings>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- end: creation of OSGi Service components -->
+            <!-- start: assembly plugin -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${assemblies.name}</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName>
+                    <outputDirectory>target/distribution</outputDirectory>
+                    <workDirectory>target/assembly/work</workDirectory>
+                </configuration>
+            </plugin>
+            <!-- end: assembly plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <!-- start: for generating license headers in source files. Run mvn license:format -->
+            <plugin>
+                <groupId>com.google.code.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <header>${basedir}/src/etc/header.txt</header>
+                    <includes>
+                        <include>src/main/java/**</include>
+                        <include>src/test/java/**</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <!-- end: for generating license headers in source files. Run mvn license:format -->
+            <!-- start: creates a NOTICE file use mvn notice:generate -->
+            <plugin>
+                <groupId>org.jasig.maven</groupId>
+                <artifactId>maven-notice-plugin</artifactId>
+                <version>${maven-notice-plugin.version}</version>
+                <configuration>
+                    <noticeTemplate>./src/etc/NOTICE_template.txt</noticeTemplate>
+                    <licenseMapping>
+                        <param>https://source.jasig.org/licenses/license-mappings.xml</param>
+                        <param>https://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml</param>
+                    </licenseMapping>
+                </configuration>
+            </plugin>
+            <!-- end: creates a NOTICE file use mvn notice:generate -->
+        </plugins>
+        <finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
+    </build>
+    <name>${project.groupId}.${project.artifactId}</name>
 </project>

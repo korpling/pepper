@@ -22,11 +22,6 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
-import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -37,6 +32,11 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.ComponentFactory;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
@@ -53,6 +53,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModul
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ExporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ImporterParams;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Pepper Module Resolver</b></em>'.
@@ -70,8 +71,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams
  *
  * @generated
  */
-@Component(name="PepperModuleResolverComponent", immediate=true)
-@Service
+@Component(name="PepperModuleResolverComponent", configurationPid="PepperModuleResolverComponent", immediate=true, enabled=true, servicefactory=false)
 public class PepperModuleResolverImpl extends EObjectImpl implements PepperModuleResolver {
 	
 	/**
@@ -177,10 +177,17 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 		}
 		return pepperExporterComponentFactories;
 	}
+	
+	@Activate
+	public void activate(ComponentContext componentContext)
+	{
+		System.out.println("hello, PepperModuleResolver is activated");
+	}
+	
 // ====================================== start: getting logger ======================================
-	@Reference(bind="setLogService", unbind="unsetLogService", cardinality=ReferenceCardinality.OPTIONAL_UNARY)
 	private LogService logService;
 
+	@Reference(unbind="unsetLogService", cardinality=ReferenceCardinality.OPTIONAL, policy=ReferencePolicy.STATIC)
 	public void setLogService(LogService logService) 
 	{
 		this.logService = logService;
@@ -321,7 +328,6 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 * This unnecessary variable must be initialized, because of restrictions of the maven osgi scr plugin. Here
 	 * it is not possible to use a list as osgi-reference. (this is a workaround)
 	 */
-	@Reference(bind="addPepperImporterComponentFactory", unbind="removePepperImporterComponentFactory", cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE, target="(component.factory=PepperImporterComponentFactory)")
 	protected ComponentFactory pepperImporterComponentFactory= null;
 	
 	/**
@@ -338,6 +344,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 * name PepperImporterComponentFactory to this object. All {@link ComponentFactory} objects are stored in an internal object 
 	 * {@link #pepperImporterComponentFactories}
 	 */
+	@Reference(unbind="removePepperImporterComponentFactory", cardinality=ReferenceCardinality.MULTIPLE, policy=ReferencePolicy.STATIC ,target="(component.factory=PepperImporterComponentFactory)")
 	public void addPepperImporterComponentFactory(ComponentFactory pepperImporterComponentFactory) 
 	{
 		if (pepperImporterComponentFactory== null)
@@ -362,7 +369,6 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 * This unnecessary variable must be initialized, because of restrictions of the maven osgi scr plugin. Here
 	 * it is not possible to use a list as osgi-reference. (this is a workaround)
 	 */
-	@Reference(bind="addPepperManipulatorComponentFactory", unbind="removePepperManipulatorComponentFactory", cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE, target="(component.factory=PepperManipulatorComponentFactory)")
 	protected ComponentFactory pepperManipulatorComponentFactory;
 	/**
 	 * The cached value of the '{@link #getPepperManipulatorComponentFactories() <em>Pepper Manipulator Component Factories</em>}' attribute list.
@@ -378,6 +384,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 * name PepperManipulatorComponentFactory to this object. All {@link ComponentFactory} objects are stored in an internal object 
 	 * {@link #pepperManipulatorComponentFactories}.
 	 */
+	@Reference(unbind="removePepperManipulatorComponentFactory", cardinality=ReferenceCardinality.MULTIPLE, policy=ReferencePolicy.STATIC, target="(component.factory=PepperManipulatorComponentFactory)")
 	public void addPepperManipulatorComponentFactory(ComponentFactory pepperManipulatorComponentFactory) 
 	{
 		if (pepperManipulatorComponentFactory== null)
@@ -403,7 +410,6 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 * This unnecessary variable must be initialized, because of restrictions of the maven osgi scr plugin. Here
 	 * it is not possible to use a list as osgi-reference. (this is a workaround)
 	 */
-	@Reference(bind="addPepperExporterComponentFactory", unbind="removePepperExporterComponentFactory", cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE, target="(component.factory=PepperExporterComponentFactory)")
 	protected ComponentFactory pepperExporterComponentFactory;
 	
 	/**
@@ -417,6 +423,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	/**
 	 * {@inheritDoc PepperModuleResolver#addPepperExporterComponentFactory(ComponentFactory)}
 	 */
+	@Reference(unbind="removePepperExporterComponentFactory", cardinality=ReferenceCardinality.MULTIPLE, policy=ReferencePolicy.STATIC, target="(component.factory=PepperExporterComponentFactory)")
 	public void addPepperExporterComponentFactory(ComponentFactory pepperExporterComponentFactory) 
 	{
 		if (pepperExporterComponentFactory== null)
@@ -492,8 +499,6 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 			throw new PepperModuleException("Cannot set temproraries to module '"+module.getName()+"', because its symbolic name is empty.");
 		URI tempURI= URI.createFileURI(tempURIStr+"/"+module.getSymbolicName()+"/"+this.numberOfModuleInstances.get(module.getSymbolicName()));
 		File tempFile= new File(tempURI.toFileString());
-//		if (!tempFile.isDirectory())
-//			throw new PepperFWException("Cannot start converting, because the temprorary folder is not a directory '"+tempURI+"' isn't set. This might be an internal failure.");
 		try {
 			tempFile.mkdirs();
 		} catch (Exception e) 

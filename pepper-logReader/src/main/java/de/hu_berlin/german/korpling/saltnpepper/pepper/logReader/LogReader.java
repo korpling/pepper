@@ -17,11 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.logReader;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
-import org.apache.felix.scr.annotations.ReferencePolicy;
-import org.apache.felix.scr.annotations.Service;
+import javax.xml.ws.ServiceMode;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.osgi.framework.BundleEvent;
@@ -31,13 +28,18 @@ import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogReaderService;
 import org.osgi.service.log.LogService;
 
 @Component(name="LogReaderComponent", immediate=true)
-@Service
+@ServiceMode
 public class LogReader implements LogListener
 {
 	/**
@@ -64,7 +66,6 @@ public class LogReader implements LogListener
 	public void setLogProperties(String logProperties) 
 	{
 		this.logProperties = logProperties;
-//		PropertyConfigurator.configureAndWatch(this.getLogProperties(), 60*1000 );
 		PropertyConfigurator.configureAndWatch(this.getLogProperties());
 	}
 
@@ -102,32 +103,32 @@ public class LogReader implements LogListener
 		switch (entry.getLevel()) 
 		{
 			case LogService.LOG_DEBUG:
-//				logger.debug(log);
 				if (entry.getBundle()!= null)
 					Logger.getLogger(entry.getBundle().getSymbolicName()).debug(log);
 				else
 					Logger.getLogger(this.getClass()).debug(log);
 				break;
 			case LogService.LOG_INFO:
-				if (	(entry.getMessage().startsWith("ServiceEvent REGISTERED")) ||
-						(entry.getMessage().startsWith("ServiceEvent UNREGISTERING")) ||
-						(entry.getMessage().startsWith("BundleEvent INSTALLED")) ||
-						(entry.getMessage().startsWith("BundleEvent RESOLVED")) ||
-						(entry.getMessage().startsWith("BundleEvent STARTED")) ||
-						(entry.getMessage().startsWith("BundleEvent STOPPED"))||
-						(entry.getMessage().startsWith("FrameworkEvent STARTED"))||
-						(entry.getMessage().startsWith("FrameworkEvent STARTLEVEL")))
+				if (	(entry!=null)&&
+						(entry.getMessage()!= null)&&
+						(
+							(entry.getMessage().startsWith("ServiceEvent REGISTERED")) ||
+							(entry.getMessage().startsWith("ServiceEvent UNREGISTERING")) ||
+							(entry.getMessage().startsWith("BundleEvent INSTALLED")) ||
+							(entry.getMessage().startsWith("BundleEvent RESOLVED")) ||
+							(entry.getMessage().startsWith("BundleEvent STARTED")) ||
+							(entry.getMessage().startsWith("BundleEvent STOPPED"))||
+							(entry.getMessage().startsWith("FrameworkEvent STARTED"))||
+							(entry.getMessage().startsWith("FrameworkEvent STARTLEVEL"))))
 					//ignore if message comes from OSGi FW
 					;
 				else
 				{	
 					String infoLog= String.format("%s", entry.getMessage());
-//					logger.info(infoLog);
 					Logger.getLogger(entry.getBundle().getSymbolicName()).info(infoLog);
 				}
 				break;
 			case LogService.LOG_WARNING:
-//				logger.warn(log);
 				if (entry.getBundle()!= null)
 					Logger.getLogger(entry.getBundle().getSymbolicName()).warn(log);
 				else
@@ -168,9 +169,9 @@ public class LogReader implements LogListener
 		}
 	}
 // ============================= start: LogReaderService
-	@Reference(bind="setLogReaderService", unbind="unsetLogReaderService", cardinality=ReferenceCardinality.MANDATORY_UNARY, policy=ReferencePolicy.STATIC)
 	private LogReaderService logReaderService;
 	
+	@Reference(unbind="unsetLogReaderService", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setLogReaderService(LogReaderService logReaderService) 
 	{
 		this.logReaderService = logReaderService;
@@ -239,6 +240,7 @@ public class LogReader implements LogListener
 		}
 	}
 	
+	@Activate
 	public void activate(ComponentContext componentContext)
 	{
 		componentContext.getBundleContext().addBundleListener(new MyBundleListener());

@@ -1,101 +1,73 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-    <artifactId>pepper-testSuite</artifactId>
-    <version>1.1.5-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>pepper-testEnvironment</artifactId>
-  <packaging>bundle</packaging>
-  <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-testSuite/pepper-testEnvironment</developerConnection>
-    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-testSuite/pepper-testEnvironment/</url>
-  </scm>
-  <properties>
-  	<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
-  </properties>
-  <dependencies>
-  	<!-- OSGI service-component 
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <version>1.4.0</version>
-    </dependency>
-     end OSGI service-component -->
-  </dependencies>
-  <build>
-    <plugins>
-    <!-- start: creation of  OSGi Service components 
-		<plugin>
-			<groupId>org.apache.felix</groupId>
-            <artifactId>maven-scr-plugin</artifactId>
-            <version>1.4.4</version>
-            <executions>
-                   <execution>
-                        <id>generate-scr-scrdescriptor</id>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+        <artifactId>pepper-testSuite</artifactId>
+        <version>1.1.5-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>pepper-testEnvironment</artifactId>
+    <packaging>bundle</packaging>
+    <scm>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-testSuite/pepper-testEnvironment</developerConnection>
+        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-testSuite/pepper-testEnvironment/</url>
+    </scm>
+	<description>The aim of this project is to help pepper module developers developing and debugging their modules. This project contains a test environment for the pepper framework. The class TestRunner will be started automatically and retrieves all necessary classes of pepper-framework automatically by dependency injection.</description>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-classes</phase>
                         <goals>
-                            <goal>scr</goal>
+                            <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                        	 <finalName>${component.descriptor.name}</finalName>
+                            <outputDirectory>${serviceComponents}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${serviceComponentsTarget}</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
                         </configuration>
-                   </execution>
-            </executions>
-        </plugin>
-         end: creation of OSGi Service components -->
-        <!-- start: copying of OSGI-INF -->
-          <plugin>
-	        <artifactId>maven-resources-plugin</artifactId>
-	        <version>2.4.3</version>
-	        <executions>
-	          <execution>
-	            <id>copy-resources</id>
-	            <phase>process-classes</phase>
-	            <goals>
-	              <goal>copy-resources</goal>
-	            </goals>
-	            <configuration>
-	              <outputDirectory>${basedir}/OSGI-INF</outputDirectory>
-	              <resources>          
-	                <resource>
-	                  <directory>target/scr-plugin-generated/OSGI-INF</directory>
-	                  <filtering>true</filtering>
-	                </resource>
-	              </resources>              
-	            </configuration>            
-	          </execution>
-	        </executions>
-	      </plugin>
-        <!-- end: copying of OSGI-INF -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>2.1.0</version>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>bundle</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <manifestLocation>${basedir}/META-INF</manifestLocation>
-          <source>1.6</source>
-          <target>1.6</target>
-          <instructions>
-            <Bundle-Name>${project.artifactId}</Bundle-Name>
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-            <Bundle-Version>${project.version}</Bundle-Version>
-            <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
-            <Service-Component>OSGI-INF/${component.descriptor.name}</Service-Component>
-            <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-    <finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
-  </build>
-  <name>${project.groupId}.${project.artifactId}</name>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- end: copying of OSGI-INF -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${maven-bundle-plugin.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <manifestLocation>${META-INF}</manifestLocation>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <instructions>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+                        <Service-Component>${allServiceComponents}</Service-Component>
+                        <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+        <finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
+    </build>
+    <name>${project.groupId}.${project.artifactId}</name>
 </project>
