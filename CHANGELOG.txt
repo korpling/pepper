@@ -18,7 +18,12 @@
 
 Version 1.1.4
 =============
-	pepepr-modules
+	* adopted entire project to eclipse juno
+	* set notice plugin-in to a global accessable license-mappings.xml on http://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml
+
+Version 1.1.4
+=============
+	pepper-modules
   ---------------
   	*+ added method addSupportedFormat() for simpler creation of a supported format
   	*+ added automatically method to create the symbolic name of a PepperModule
