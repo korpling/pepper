@@ -54,13 +54,13 @@
                 </executions>
                 <configuration>
                     <manifestLocation>${META-INF}</manifestLocation>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <instructions>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
                         <Service-Component>${allServiceComponents}</Service-Component>
                         <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
                     </instructions>

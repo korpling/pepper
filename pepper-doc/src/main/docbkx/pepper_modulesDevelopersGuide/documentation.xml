@@ -5,9 +5,9 @@
     version="5.0" xml:id="ch_documentation">
     <title>Documenting your PepperModule</title>
     <para> One of the most important but often forgotten tasks when creating a PepperModule is to
-        document the behaviour of it and its functionalities. Therefore the template SampleModules
+        document the behaviour of it and its functionalities. Therefore the project SampleModules
         contains a template for creating a documentation. The documentation in SaltNPepper in
-        general is done in DocBook (see <link xlink:href="docbook.org/">docbook.org/</link>).
+        general is done in DocBook (see: <link xlink:href="docbook.org/">docbook.org/</link>).
         DocBook is a documentation language written in XML and enables to transform the
         documentation into several target formats like html, pdf, odt, doc etc.. <note>
             <para>We recommend to use the template, for a uniform view to all PepperModules. That
@@ -15,8 +15,8 @@
                 for the user to have a good understanding of what the PepperModule is doing.</para>
         </note> You will find the template in
             <filename>SAMPLE_MODULES_HOME/src/main/docbkx/manual.xml</filename> among other
-        directories containing files necessary for the transformation. Tor refer to images from the
-        manual, put the into the image folder
+        directories containing files necessary for the transformation. To refer to images from the
+        manual, put them into the image folder
             <filename>SAMPLE_MODULES_HOME/src/main/docbkx/images/</filename> and make a relative
         reference. </para>
     <sect1>

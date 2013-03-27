@@ -1182,7 +1182,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	protected void activate(ComponentContext componentContext) 
 	{
 		//for DEBUG
-		System.out.println("PepperConverter is initialized...");
 		if (this.logService!= null)
 			this.logService.log(LogService.LOG_DEBUG, "PepperConverter is initialized...");
 	}
@@ -1194,7 +1193,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 	 */
 	protected void deactivate(ComponentContext componentContext) 
 	{
-//		System.out.println("goodbye from PepperConverter...");
 		if (this.logService!= null)
 			this.logService.log(LogService.LOG_DEBUG, "goodbye from PepperConverter...");
 

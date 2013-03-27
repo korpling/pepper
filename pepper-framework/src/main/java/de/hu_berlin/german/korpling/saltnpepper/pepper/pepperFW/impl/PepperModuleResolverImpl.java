@@ -181,7 +181,6 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	@Activate
 	public void activate(ComponentContext componentContext)
 	{
-		System.out.println("hello, PepperModuleResolver is activated");
 	}
 	
 // ====================================== start: getting logger ======================================

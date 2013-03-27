@@ -331,6 +331,10 @@
         </itemizedlist>
         <para> Now Pepper is running and shows all registered importers, exporters and
             manipulators.</para>
+        <para>To make things easier, we provide a preconfigured file, which can be used for this, unfortunatly this configuration is for eclipse only.
+            This file contains information for the run configurations of the pepper-testEnvironment project and can be found under
+            <filename>PEPPER_HOME/pepper-testSuite/pepper-testEnvironment/pepper-testEnvironment.launch</filename>.
+        </para>
         <para>To install further pepper modules, follow the given instructions: <orderedlist>
                 <listitem>
                     <para>Download a module of your choice from <link
@@ -411,13 +415,13 @@
                         (we used version 3.0.3).</para>
                 </listitem>
                 <listitem>
-                    <para>Unzip the file to folder of your choice and you will get a folder like
-                        apache-maven-version. Lets call it MAVEN_HOME.</para>
+                    <para>Unzip the file to a folder of your choice and you will get a folder like
+                        apache-maven-version in it. Lets call it MAVEN_HOME.</para>
                 </listitem>
             </itemizedlist> Now, when switching to MAVEN_HOME/bin folder, you can run maven from the
-            command line via calling: <programlisting>mvn</programlisting>. If you want to run mvn
-            everywhere, write enter the path MAVEN_HOME/bin into your path environment variable
-            (under Windows) or create a symlink to that path (under linux). </para>
+            command line via calling: <programlisting>mvn</programlisting>If you want to run mvn
+            everywhere, write the path MAVEN_HOME/bin into your path environment variable (under
+            Windows) or create a symlink to that path (under linux). </para>
         <para>To enable maven even in eclipse you have to use a specific plugin called m2e. <itemizedlist>
                 <listitem>
                     <para>Open the 'Eclipse Marketplace' via 'Help --> Eclipse Marketplace...' (see
@@ -437,7 +441,7 @@
                 </listitem>
                 <listitem>
                     <para>The plugin 'Maven integration for Eclipse' should be displayed. Click
-                        install to install that plugin (see <xref linkend="fig_marketPlace_m2e"/>
+                        "Install" to install that plugin (see <xref linkend="fig_marketPlace_m2e"/>
                         position B).</para>
                 </listitem>
                 <listitem>
@@ -451,9 +455,9 @@
                         should contain an option/a folder named 'Maven'.</para>
                 </listitem>
             </itemizedlist> If you are working with eclipse and the command line simultaneously
-            (which might be very meaningful, since maven does not always run error-free in eclipse),
-            it might be useful, to synchronize the maven local repository of your m2e installation
-            and the one of your maven installation. <itemizedlist>
+            (which might be very helpful, since maven does not always run error-free in eclipse), it
+            might be useful, to synchronize the maven local repository of your m2e installation and
+            the one of your maven installation. <itemizedlist>
                 <listitem>
                     <para>Go to 'Window --> Preferences'.</para>
                 </listitem>
@@ -467,12 +471,12 @@
                     <para>Press the 'Add' button on the upper right and choose MAVEN_HOME.</para>
                 </listitem>
             </itemizedlist> A pepper module is created using the OSGi declarative service mechanism.
-            If you don't know what it is and you don't want to never mind, we put the OSGi layer in
-            the background so that you do not have to care about (as long as everything works fine
-            ;-)). But therefore we used maven to configure the OSGi part. To enable the declarative
-            service stuff, we used some maven dependencies called 'carrot-osgi-anno-scr'. Since
-            there is no m2e adapter installed in eclipse by default, you have to download a further
-            plugin. <itemizedlist>
+            If you don't know what this is and you don't want to know, never mind. We put the OSGi
+            layer in the background so that you do not have to care about (as long as everything
+            works fine ;-)). But therefore we used maven to configure the OSGi part. To enable the
+            declarative service stuff, we used some maven dependencies called
+            'carrot-osgi-anno-scr'. Since there is no m2e adapter installed in eclipse by default,
+            you have to download a further plugin. <itemizedlist>
                 <listitem>
                     <para>Go to the 'Eclipse Marketplace' via 'Help --> Eclipse
                         Marketplace...'.</para>

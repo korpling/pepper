@@ -81,14 +81,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <manifestLocation>${basedir}/META-INF</manifestLocation>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <manifestLocation>${META-INF}</manifestLocation>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <instructions>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
                         <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW,
                             de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util</Export-Package>
                         <Service-Component>${allServiceComponents}</Service-Component>
