@@ -711,7 +711,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter
 		
 		File file= new File(pepperParamUri.toFileString());
 		if (!file.exists())
-			throw new PepperException("Cannot read given pepperparams-file '"+file.getAbsolutePath()+"', because it does not exists.");
+			throw new PepperException("Cannot read given pepperparams-file '"+file.getAbsolutePath()+"', because it does not exist.");
 		//this unnecessary variable must be initialized, because of the initialization of the package (this is a workaround)
 		@SuppressWarnings("unused")
 		PepperParamsPackage pepperPackage= PepperParamsPackage.eINSTANCE;		

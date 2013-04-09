@@ -275,7 +275,7 @@ public class PepperDocumentControllerTest extends TestCase{
 		
 		try {
 			this.getFixture().setSDocumentStatus(sDocumentId1, pModuleController, PEPPER_SDOCUMENT_STATUS.COMPLETED);
-			fail("shall not add documentId to a moduleController, which does not exists in PepperDocumentController");
+			fail("shall not add documentId to a moduleController, which does not exist in PepperDocumentController");
 		} catch (Exception e) {}
 		
 		this.getFixture().getPepperModuleControllers().add(pModuleController);

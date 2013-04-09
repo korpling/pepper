@@ -44,9 +44,9 @@ public class FileComparator
 			throw new PepperModuleTestException("One of the files to compare are null.");
 		
 		if (!file1.exists())
-			throw new PepperModuleTestException("The file '"+file1+"' does not exists.");
+			throw new PepperModuleTestException("The file '"+file1+"' does not exist.");
 		if (!file2.exists())
-			throw new PepperModuleTestException("The file '"+file2+"' does not exists.");
+			throw new PepperModuleTestException("The file '"+file2+"' does not exist.");
 		String contentFile1= null;
 		String contentFile2= null;
 		BufferedReader brFile1= null;

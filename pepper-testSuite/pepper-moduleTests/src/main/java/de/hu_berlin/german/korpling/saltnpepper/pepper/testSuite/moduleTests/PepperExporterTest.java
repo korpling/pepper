@@ -64,7 +64,7 @@ public class PepperExporterTest extends PepperModuleTest
 						(formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
 					hasOpponend= true;
 			}
-			assertTrue("The format '"+formatCheck.getFormatName()+ " "+ formatCheck.getFormatVersion()+"' has to be supported, but does not exists in list of suppoted formats.", hasOpponend);
+			assertTrue("The format '"+formatCheck.getFormatName()+ " "+ formatCheck.getFormatVersion()+"' has to be supported, but does not exist in list of suppoted formats.", hasOpponend);
 		}
 	}
 }

@@ -477,7 +477,7 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 		{
 			resFile.mkdirs();
 			if (this.getLogService()!= null)
-				this.getLogService().log(LogService.LOG_WARNING, "Resource folder '"+resFile.getAbsolutePath()+"' for pepper module '"+module.getSymbolicName()+"' does not exists.");
+				this.getLogService().log(LogService.LOG_WARNING, "Resource folder '"+resFile.getAbsolutePath()+"' for pepper module '"+module.getSymbolicName()+"' does not exist.");
 		}
 		module.setResources(resURI);
 	}

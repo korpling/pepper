@@ -89,10 +89,10 @@ public class XSLTTransformerImpl extends PersistenceConnectorImpl implements XSL
 			throw new PepperModuleException("Cannot transform, because the uri of transformation file is empty.");
 		File sourceFile = new File(sourceURI.toFileString());
 		if (!sourceFile.exists())
-			throw new PepperModuleException("Cannot transform, because the source uri does not exists: "+ sourceURI);
+			throw new PepperModuleException("Cannot transform, because the source uri does not exist: "+ sourceURI);
         File xsltFile = new File(xsltURI.toFileString());
         if (!xsltFile.exists())
-			throw new PepperModuleException("Cannot transform, because the uri of transformation file does not exists: "+ xsltURI);
+			throw new PepperModuleException("Cannot transform, because the uri of transformation file does not exist: "+ xsltURI);
         File targetFile= new File(targetURI.toFileString());
         targetFile.getParentFile().mkdirs();
         

@@ -104,7 +104,7 @@ public class PepperProperties
 		
 		File propFile= new File (FILE_PEPPER_PROP.replace(KW_ENV_PEPPER_HOME, pepperStarterHome.getAbsolutePath()));
 		if (!propFile.exists())
-			throw new PepperPropertyException("Cannot load any properties, because the property file '"+pepperStarterHome+"' does not exists.");
+			throw new PepperPropertyException("Cannot load any properties, because the property file '"+pepperStarterHome+"' does not exist.");
 		
 		Properties pepperProps= new Properties();
 		try
@@ -148,7 +148,7 @@ public class PepperProperties
 	public static Properties loadUDProperties(File udPropFile)
 	{//load user-defined properties
 		if (!udPropFile.exists())
-			throw new PepperPropertyException("Cannot load user-defined properties, because the property file '"+udPropFile.getAbsolutePath()+"' does not exists.");
+			throw new PepperPropertyException("Cannot load user-defined properties, because the property file '"+udPropFile.getAbsolutePath()+"' does not exist.");
 		Properties udProps= new Properties();
 		try
 		{

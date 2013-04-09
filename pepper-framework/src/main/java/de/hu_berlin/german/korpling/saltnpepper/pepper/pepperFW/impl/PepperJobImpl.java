@@ -641,7 +641,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 				//check if importer has an existing uri
 				File corpusPath= new File(importer.getCorpusDefinition().getCorpusPath().toFileString());
 				if (!corpusPath.exists())
-					throw new PepperConvertException("Cannot start converting, because the given corpus path does not exists for importer: '"+importer.getName()+ "', path: '"+corpusPath.getAbsolutePath()+"'.");
+					throw new PepperConvertException("Cannot start converting, because the given corpus path does not exist for importer: '"+importer.getName()+ "', path: '"+corpusPath.getAbsolutePath()+"'.");
 				//setting saltProject to importer
 				importer.setSaltProject(this.getSaltProject());
 			}

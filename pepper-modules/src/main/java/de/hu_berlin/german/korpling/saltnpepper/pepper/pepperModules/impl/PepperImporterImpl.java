@@ -365,7 +365,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		
 		File exmaraldaFile= new File(documentLocation.toFileString());
 		if (!exmaraldaFile.exists()) 
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exists: " + exmaraldaFile);
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exist: " + exmaraldaFile);
 		
 		if (!exmaraldaFile.canRead())
 			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + exmaraldaFile);

@@ -458,7 +458,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			throw new PepperModuleException("The given resource path for module '"+this.getName()+"' with uri is empty.");
 		File file= new File(newResources.toFileString());
 		if (!file.exists())
-			throw new PepperModuleException("The given resource path for module '"+this.getName()+"' with uri '"+newResources+"' does not exists.");
+			throw new PepperModuleException("The given resource path for module '"+this.getName()+"' with uri '"+newResources+"' does not exist.");
 		if (!file.isDirectory())
 			throw new PepperModuleException("The given resource path for module '"+this.getName()+"' with uri '"+newResources+"' is not a directory.");
 		URI oldResources = resources;
@@ -487,7 +487,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			throw new PepperModuleException("Cannot create an uri out of given temprorary path '"+newTemproraries+"' for module '"+this.getName()+"'.");
 		File file= new File(newTemproraries.toFileString());
 		if (!file.exists())
-			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri '"+newTemproraries+"' does not exists.");
+			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri '"+newTemproraries+"' does not exist.");
 		if (!file.isDirectory())
 			throw new PepperModuleException("The given temprorary path for module '"+this.getName()+"' with uri '"+newTemproraries+"' is not a directory.");
 		

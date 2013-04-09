@@ -122,7 +122,7 @@ public class PepperTestRunner implements Runnable
 					throw new PepperTestException("Cannot start PepperTest, because the environment variable '"+ENV_PEPPER_TEST+"' is not set. Please set this variable and try again.");
 				pepperTestPath= new File(pepperTestPathStr);
 				if (!pepperTestPath.exists())
-					throw new PepperTestException("Cannot start PepperTest, because the path '"+pepperTestPathStr+"' to which the environment variable '"+ENV_PEPPER_TEST+"' points to does not exists.");
+					throw new PepperTestException("Cannot start PepperTest, because the path '"+pepperTestPathStr+"' to which the environment variable '"+ENV_PEPPER_TEST+"' points to does not exist.");
 			}//checking environment variable PEPPER_TEST
 			
 			//for module resolver

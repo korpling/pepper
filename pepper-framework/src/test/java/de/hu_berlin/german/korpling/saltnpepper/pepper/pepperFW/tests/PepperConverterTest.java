@@ -227,7 +227,7 @@ public class PepperConverterTest extends TestCase {
 		}
 		try {
 			FinishableRunner.startRunner(3000l, new Runner(), this.getFixture());
-			fail("the jobs does not exists");
+			fail("the jobs does not exist");
 		} catch (PepperException e) {
 		}
 	}
