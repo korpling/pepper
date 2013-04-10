@@ -3,6 +3,7 @@
 <?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
     version="5.0" xml:id="ch_customization">
+    <!-- TODO: create description of 'how to initialize specific PepperModuleProperties' see ElanImporterProperties -->
     <title>Customizing behaviour of your PepperModule</title>
     <subtitle>via properties</subtitle>
     <para> When creating a mapping, it is often a matter of choice to map some data this way or

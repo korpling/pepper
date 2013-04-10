@@ -35,7 +35,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.*;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment.exceptions.PepperTestException;
 /**
- * 
+ * Only starts test framework, if {@value #PROP_TEST_DISABLED} is not set or is set to false.  
  * @author Florian Zipser
  *
  */
@@ -43,6 +43,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment
 //TODO replace environment variables and parameters with a param file, which can be passed via OSGi to the test-environmet   
 public class PepperTestRunner implements Runnable
 {
+	public final static String PROP_TEST_DISABLED= "de.hu_berlin.german.korpling.saltnpepper.pepper.disableTest";
 	/**
 	 * name of environment variable, which is supposed to contain the workflow description file
 	 */
@@ -70,7 +71,10 @@ public class PepperTestRunner implements Runnable
 	@Reference(unbind="unsetLogService", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setLogService(LogService logService) 
 	{
-		this.logService = logService;
+		if (!this.isDisabled)
+		{	
+			this.logService = logService;
+		}
 	}
 	
 	public LogService getLogService() 
@@ -79,7 +83,10 @@ public class PepperTestRunner implements Runnable
 	}
 	
 	public void unsetLogService(LogService logService) {
-		logService= null;
+		if (!this.isDisabled)
+		{	
+			logService= null;
+		}
 	}
 
 // ========================================== end: LogService
@@ -88,16 +95,22 @@ public class PepperTestRunner implements Runnable
 	private PepperConverter converter= null;
 	public void unsetPepperConverter(PepperConverter pepperConverter)
 	{
-		this.converter= null;
+		if (!this.isDisabled)
+		{	
+			this.converter= null;
+		}
 	}
 	@Reference(unbind="unsetPepperConverter", cardinality=ReferenceCardinality.MANDATORY, policy=ReferencePolicy.STATIC)
 	public void setPepperConverter(PepperConverter pepperConverter)
 	{
-		this.converter= pepperConverter;
+		if (!this.isDisabled)
+		{	
+			this.converter= pepperConverter;
+		}
 	}
 // ========================================== end: PepperConverter
 	
-	private static File getWorkflowDescripptionFile()
+	private static File getWorkflowDescriptionFile()
 	{
 		if (System.getenv(ENV_PEPPER_TEST_WORKFLOW_FILE)== null)
 			throw new PepperTestException("Cannot start PepperTest, please set environment variable '"+ENV_PEPPER_TEST_WORKFLOW_FILE+"' to workflow description file which is supposed to be used for conversion.");
@@ -154,7 +167,7 @@ public class PepperTestRunner implements Runnable
 		
 		URI workflowDescURI= null;
 		try {
-			workflowDescURI= URI.createFileURI(getWorkflowDescripptionFile().getAbsolutePath());
+			workflowDescURI= URI.createFileURI(getWorkflowDescriptionFile().getAbsolutePath());
 		} catch (PepperTestException e) {
 			if (this.logService!= null)
 				this.logService.log(LogService.LOG_ERROR, e.getMessage());
@@ -215,24 +228,43 @@ public class PepperTestRunner implements Runnable
 		this.logService.log(LogService.LOG_INFO,"************************************************************************");
 	}
 	
+	private Boolean isDisabled= false;
+	
+	/**
+	 * Only starts test framework, if {@value #PROP_TEST_DISABLED} is not set or is set to false. 
+	 */
 	@Activate
 	protected void activate(ComponentContext componentContext)
 	{
-		if (this.getLogService()!= null)
-			this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
-		else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
-		Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
-		pepperTestThread.start();
+		if (	(System.getProperty(PROP_TEST_DISABLED)== null) ||
+				(!Boolean.valueOf(System.getProperty(PROP_TEST_DISABLED))))
+		{
+			this.isDisabled= false;
+		}
+		else 
+			this.isDisabled= true;
+		if (!this.isDisabled)
+		{	
+			if (this.getLogService()!= null)
+				this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+			else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+			Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
+			pepperTestThread.start();
+		}
 	}
 	
 	@Deactivate
 	protected void deactivate(ComponentContext componentContext)
 	{
-		if (this.getLogService()!= null)
-			this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
-		else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+		if (!this.isDisabled)
+		{	
+			if (this.getLogService()!= null)
+				this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+			else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
+		}
 	}
 
+	
 	@Override
 	public void run() 
 	{

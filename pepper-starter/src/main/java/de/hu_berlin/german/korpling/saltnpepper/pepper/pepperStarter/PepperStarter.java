@@ -41,7 +41,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.exceptions.
 
 public class PepperStarter 
 {
-	
+	private final static String PROP_TEST_DISABLED= "de.hu_berlin.german.korpling.saltnpepper.pepper.disableTest";
 	private final static String KW_EXTRA_PACKAGES= "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW";
 //	private final static String KW_EXTRA_PACKAGES= "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW, org.eclipse.emf.ecore, org.eclipse.emf.common";
 	/**
@@ -319,21 +319,6 @@ public class PepperStarter
 		if (pepperParams== null)
 			throw new RuntimeException("Cannot start, because no parameters are given.");
 		
-//		 if (PROFILE_TEST)
-//		 {//TODO remove this
-//			ServiceReference serviceReference = bundleContext.getServiceReference(IPepperConverter.class.getName());
-//			if (serviceReference== null) 
-//				throw new PepperException("----------> Cannot find an PepperConverter-object with name '"+KW_QNAME_PEPPER_CONVERTER+"'.");
-//			else
-//			{
-//				IPepperConverter pepperConverter= (IPepperConverter) bundleContext.getService(serviceReference);
-//				System.out.println("----------> scheint zu gehen");
-//				pepperConverter.start();
-//				System.out.println("----------> ach nee doch nicht");
-//
-//			}
-//		 }//TODO remove this
-		
 		ServiceReference[] serviceRefs= bundleContext.getServiceReferences(KW_QNAME_PEPPER_CONVERTER, null);
 		if ((serviceRefs== null) || (serviceRefs.length== 0))
 			throw new PepperException("Cannot find an PepperConverter-object with name '"+KW_QNAME_PEPPER_CONVERTER+"'.");
@@ -390,6 +375,10 @@ public class PepperStarter
 			throw new RuntimeException("Cannot start Pepper conversion, because no workflow-description is given.");
 		
 		this.loadProperties(this.getProperties());
+		
+		//disable pepper test environment
+		System.getProperties().put(PROP_TEST_DISABLED, Boolean.TRUE.toString());
+		
 		this.bundleContext= this.runEquinox(); 
 		this.installingAllBundles();
 		this.startPepperConverter(pepperParams);
@@ -402,14 +391,8 @@ public class PepperStarter
 	public static String getSynopsis()
 	{
 		StringBuilder retStr= new StringBuilder();
-//		retStr= retStr + "Synopsis:\tPepperStarter (-p PEPPER_PARAM | -s IMPORT_SETS -t EXPORT_SETS) \n";
-//		retStr= retStr + "\n";
-//		retStr= retStr + "\t\tIMPORT_SETS\t\t(IMPORT_SET;)*\n";
-//		retStr= retStr + "\t\tEXPORT_SETS\t\t(EXPORT_SET;)*\n";
-		
 		retStr.append("Synopsis:\tPepperStarter -p PEPPER_PARAM \n");
 		retStr.append("\n");
-//		retStr.append("\t\tPEPPER_PARAM\t\tthe file of pepper workflow definition in syntax of pepper param file.\n");
 		
 		return(retStr.toString());
 	}
@@ -565,7 +548,7 @@ public class PepperStarter
 			endedWithErrors= true;
 			staticLogger.error(e);
 			//TODO remove at delivery time
-//			e.printStackTrace();
+			e.printStackTrace();
 			
 		}
 		finally

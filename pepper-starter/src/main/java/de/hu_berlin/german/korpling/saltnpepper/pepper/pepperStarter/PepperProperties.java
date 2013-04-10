@@ -104,14 +104,14 @@ public class PepperProperties
 		
 		File propFile= new File (FILE_PEPPER_PROP.replace(KW_ENV_PEPPER_HOME, pepperStarterHome.getAbsolutePath()));
 		if (!propFile.exists())
-			throw new PepperPropertyException("Cannot load any properties, because the property file '"+pepperStarterHome+"' does not exist.");
+			throw new PepperPropertyException("Cannot load any properties, because the property file '"+propFile+"' does not exist.");
 		
 		Properties pepperProps= new Properties();
 		try
 		{
 			pepperProps.load(new FileInputStream(propFile));
 		}catch (Exception e) {
-			throw new PepperPropertyException("Cannot load any properties, because the property file '"+pepperStarterHome+"' because of nested exception.", e);
+			throw new PepperPropertyException("Cannot load any properties, because the property file '"+propFile+"' because of nested exception.", e);
 		}
 		{//load user-defined properties
 			String udPropsName= pepperProps.getProperty(PROP_UD_PROPERTIES);
