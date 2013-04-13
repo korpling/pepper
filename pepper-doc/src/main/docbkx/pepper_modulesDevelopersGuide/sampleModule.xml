@@ -6,7 +6,7 @@
     <title>Adopting the SampleModules</title>
     <sect1>
         <title>Download the skeleton</title>
-        <para> To start with creating an own module for Pepper, please download the SampleModule, to
+        <para> To start creating your own module for Pepper, please download the SampleModule, to
             be used as a skeleton for your own module. SampleModules is stored in our svn
             repository, therefore please export the project via an SVN client. The SVN location
             depends on the version you want to use and can be found at SampleModules (see: <link
@@ -20,17 +20,18 @@
             the given order. </para>
         <itemizedlist>
             <listitem>
-                <para>import the project as a Maven project (when working with eclipse, use the
+                <para>Import the project as a Maven project (when working with Eclipse, use the
                     import option existing maven project, it might be that you have to install
                     further plugins or m2e connectors. So don't be scared if a dialog pops
                     up.)</para>
             </listitem>
             <listitem>
-                <para>rename the project (when working with eclipse, right click on the project name
-                    and choose the menu entry "Refactor" --> "Rename...")</para>
+                <para>Rename the project to a name of your choice like 'pepperModules-MyModules'
+                    (when working with Eclipse, right click on the project name and choose the menu
+                    entry "Refactor" --> "Rename...")</para>
             </listitem>
             <listitem>
-                <para>rename the packages (when working with eclipse, right click on the package
+                <para>Rename the packages (when working with Eclipse, right click on the package
                     name and choose the menu entry "Refactor" --> "Rename...")</para>
             </listitem>
         </itemizedlist>
@@ -38,9 +39,9 @@
     <sect1>
         <title>Adopting the pom.xml</title>
         <para>Maven follows the paradigm convention over configuration, therefore a lot of things
-            are already predefined and not has to be changed. </para>
+            are already predefined and do not need to be changed.</para>
         <para>But still, there are some things like the name of the project and so on, which are
-            project specific and therefore has to be adopted. Just follow the given instructions to
+            project specific and therefore have to be adopted. Just follow the given instructions to
             adopt the 'project object model' (pom). The items in the numbered list correspond to the
             TODO entries in the pom.xml file. You will find the pom.xml file in the parent directory
             of the SampleProject.</para>
@@ -63,13 +64,13 @@
                     entry under '/project/url'.</para>
             </listitem>
             <listitem>
-                <para>Change the issue tracker to the one you are using, in case of you do not use
+                <para>Change the issue tracker to the one you are using, in case that you do not use
                     any one, remove this entry. You will find the entry under
                     '/project/issueManagement'.</para>
             </listitem>
             <listitem>
                 <para>Change the continuous integration management system to the one you are using,
-                    in case of you do not use any one, remove this entry. You will find the entry
+                    in case that you do not use any one, remove this entry. You will find the entry
                     under '/project/ciManagement'.</para>
             </listitem>
             <listitem>
@@ -97,7 +98,7 @@
                     '/project/build/plugins/plugin/configuration/tagBase'.</para>
             </listitem>
             <listitem>
-                <para>Sometimes it is necessary to include libraries, which are accessible via a
+                <para>Sometimes it is necessary to include libraries, which are not accessible via a
                     maven repository and therefore can not be resolved by maven. In that case we
                     recommend, to create a 'lib' folder in the project directory and to copy all the
                     libraries you need into it. Unfortunatly, you have register them twice, first
@@ -105,8 +106,8 @@
                 <para>To register such a library to maven, you need to install them to your local
                     maven repository. You can do that with:
                     <programlisting>
-                        mvn install:install-file -Dfile=JAR_FILE -DgroupId=GROUP_ID -DartifactId=ARTIFACT_ID \
-                        -Dversion=VERSION -Dpackaging=PACKAGING
+mvn install:install-file -Dfile=JAR_FILE -DgroupId=GROUP_ID -DartifactId=ARTIFACT_ID \
+-Dversion=VERSION -Dpackaging=PACKAGING
                     </programlisting>
                     Now you need to add the library as a dependency to your pom. The following
                     snippet shows an example:
@@ -127,9 +128,10 @@
                     'maven-bundle-plugin']/configuration/instructions/Include-Resource'. The
                     following snippet gives an example:
                     <programlisting>&lt;Bundle-ClassPath>.,{maven-dependencies}, lib/myLib.jar&lt;/Bundle-ClassPath>
-&lt;Include-Resource>{maven-resources}, LICENSE, NOTICE, lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
+&lt;Include-Resource>{maven-resources}, LICENSE, NOTICE, 
+lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                     </programlisting>
-                    You Include libraries not handled by maven, i.e. jar files, by setting the
+                    You include libraries not handled by maven, i.e. jar files, by setting the
                     bundle-path and extending the include-resources tag.
                     "/project/build/plugins/plugin[artifactId/text()=
                     'maven-bundle-plugin']/configuration/instructions/Include-Resource"</para>
@@ -145,11 +147,10 @@
                 <package>de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules</package>.
             In most cases people do not want to create all of them sometimes people only want to
             create an importer an exporter or a manipulator. Then just delete the classes you won't
-            implement, In case of you want to have several importer, manipulators or exporters, just
-            copy the classes and proceed with each class as described in the following. Otherwise,
-            you will end up with non-functional modules in your project.The items in the numbered
-            list correspond to the TODO entries in the class files. 
-            <orderedlist>
+            implement. In case of you want to have several importers, manipulators or exporters,
+            just copy the classes and proceed with each class as described in the following.
+            Otherwise, you will end up with non-functional modules in your project.The items in the
+            numbered list correspond to the TODO entries in the class files. <orderedlist>
                 <listitem>
                     <para>Change the name of the component, for example use the format name and the
                         ending Importer or Exporter e.g. FORMATExporterComponent and
@@ -162,61 +163,46 @@
                         ending Exporter (<classname>FORMATExporter</classname>).</para>
                 </listitem>
                 <listitem>
-                    <para>In case of you are implementing an im- or exporter, change "sample" with
-                        format name and 1.0 with format version to be supported.</para>
+                    <para>In case that you are implementing an im- or exporter, change "sample" with
+                        format name and 1.0 with the format version to be supported.</para>
                 </listitem>
                 <listitem>
-                    <para>In case of you are creating an importer, override the method
-                            <methodname>importCorpusStructure()</methodname> (see: <xref linkend="sec_importCorpusStructure"/>), this method maps the
-                        corpus structure of the given format to a corpus structure in Salt.</para>
+                    <para>In case that you are creating an importer, override the method
+                            <methodname>importCorpusStructure()</methodname> (see: <xref
+                            linkend="sec_importCorpusStructure"/>), this method maps the corpus
+                        structure of the given format to a corpus structure in Salt.</para>
                 </listitem>
                 <listitem>
-                    <para>If you want to have a specific handling with the document strcuture,
+                    <para>If you want to have a specific handling with the document strcutures,
                         override the method <methodname>start()</methodname>, for instance if you
-                        want to have athreading. Otherwise just delete this method or call
+                        want to use multithreading. Otherwise just delete this method or call
                             <methodname>super.start()</methodname>, than the method
                             <methodname>start(SElementId sElementId)</methodname> will be called for
                         each <classname>SDocument</classname> automatically.</para>
                 </listitem>
                 <listitem>
                     <para>Override the <methodname>method start(SElementId sElementId)</methodname>,
-                        this is the point of mapping documentstructures between Salt and a format or
-                        to place the functionality of a manipulator.</para>
+                        this is the point of mapping document structures between Salt and a format
+                        or to place the functionality of a manipulator.</para>
                 </listitem>
                 <listitem>
-                    <para>If some clean ups left, override the method
-                        <methodname>end()</methodname>.</para>
+                    <para>If you have to clean up (e.g. delete temporary files etc.), override the
+                        method <methodname>end()</methodname>.</para>
                 </listitem>
             </orderedlist>
         </para>
         <sect2 xml:id="sec_importCorpusStructure">
             <title><methodname>importCorpusStructure</methodname></title>
-            <itemizedlist>
-                <listitem>
-                    <para> imports corpus structure, into a <classname>SCorpusGraph</classname>,
-                        means creates a structure consisting of <classname>SDocument</classname> and
-                            <classname>SCorpus</classname> node objects and
-                            <classname>SCorpusRelation</classname> and
-                            <classname>SCorpDocRelation</classname> relation objects connecting
-                        them.</para>
-                </listitem>
-                <listitem>
-                    <para> corpus structure super and sub corpus, a corpus can contain 0..*
-                        subcorpus and 0..* documents, a corpus not contain both document and
-                        corpus</para>
-                </listitem>
-                <listitem>
-                    <para>creates a table document-id to uri for method
-                            <methodname>start()</methodname></para>
-                </listitem>
-                <listitem>
-                    <para>method <methodname>isFileToImport()</methodname> does following and can be
-                        overridden</para>
-                </listitem>
-            </itemizedlist>
             <para> Computes a corpus-structure given by the file-structure located by the address of
-                the given <classname>URI</classname> object. For the root folder (the direct
-                    <classname>URI</classname> location) a root-corpus
+                the given <classname>URI</classname> object. A corpus-structure consists of corpora
+                (represented via the Salt element <classname>SCorpus</classname>), documents
+                (represented represented via the Salt element  <classname>SDocument</classname>) and
+                a linking between corpora and a corpus and a document (represented via the Salt
+                element  <classname>SCorpusRelation</classname> and
+                    <classname>SCorpDocRelation</classname>). Each corpus corpus can contain 0..*
+                subcorpus and 0..* documents, but a corpus cannot contain both document and corpus. </para>
+            <para>When mapping file-structure to a corpus-structure the root folder (the direct
+                    <classname>URI</classname> location) is mapped into a root-corpus
                     (<classname>SCorpus</classname> object) is created. For each sub-folder a
                 sub-corpus (<classname>SCorpus</classname> object) is created. For each file for
                 which the method <methodname>isFileToImport(URI, List)</methodname> returns
@@ -225,7 +211,7 @@
                 connected via <classname>SCorpusRelation</classname> or
                     <classname>SCorpusDocumentRelation</classname> objects. While traversing the
                 file-structure, an <classname>SElementId</classname> object is created representing
-                the corpus-hierarchie and added to the created <classname>SCorpus</classname> or
+                the corpus-hierarchy and added to the created <classname>SCorpus</classname> or
                     <classname>SDocument</classname> objects. A map of these
                     <classname>SElementId</classname> objects corresponding to the
                     <classname>URI</classname> objects is returned, so that in method
@@ -237,23 +223,24 @@
                         <methodname>isFileToImport(URI, List)</methodname>.</para>
             </note>
         </sect2>
-        <sect2>
+        <sect2 xml:id="sec_isFileToImport">
             <title><methodname>isFileToImport</methodname></title>
-            <para> To customize the computation if a file shall be imported or not, you can override
-                the method <methodname>isFileToImport</methodname>. The method in its original
-                returns if a given <classname>URI</classname> object shall be imported during import
-                phase. This decision depends on the kind and the content of the given fileExtension
-                list. The file extension list can contain a set of file extensions (Strings without
-                '.') to be imported or marked as to be not imported (via the prefix
+            <para> This method returns whether a given <classname>URI</classname> object shall be
+                imported during import phase. To customize the computation whether a file shall be
+                imported or not, you can override the method
+                <methodname>isFileToImport</methodname>.  This decision depends on the kind and the
+                content of the given fileExtension list. The file extension list can contain a set
+                of file extensions (Strings without '.') to be imported or marked as to be not
+                imported (via the prefix
                     <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname>). The following
                 list shows the condition of computation for returned value: <itemizedlist>
                     <listitem>
-                        <para>This method returns false, in case of the given
+                        <para>This method returns false, in case that the given
                                 <classname>URI</classname> object is null.</para>
                     </listitem>
                     <listitem>
                         <para>This method returns true for every <classname>URI</classname> object
-                            in case of the list is null or empty.</para>
+                            in case that the list is null or empty.</para>
                     </listitem>
                     <listitem>
                         <para>This method returns true if the given list is a positive list (does
@@ -273,8 +260,8 @@
                         which are not, the list is interpreted as a negative list.</para>
                 </note>
             </para>
-            <para> In case of you want to customize the method by overriding it, but not loosing its
-                functionality, you can use the following lines of code:
+            <para> In case that you want to customize the method by overriding it, but not losing
+                its functionality, you can use the following lines of code:
                 <programlisting>@Override
 protected boolean isFileToImport(URI checkUri, List&lt;String&gt; fileExtensions)
 { 
@@ -288,17 +275,17 @@ protected boolean isFileToImport(URI checkUri, List&lt;String&gt; fileExtensions
     </sect1>
     <sect1>
         <title>building the project</title>
-        <para> We adopt the settings for using OSGi and to create PepperModules, which are simply
-            plugable into the Pepper framework. So in the best case, you can just follow this
+        <para> We adopt the settings for using OSGi and to create Pepper modules, which are simply
+            pluggable into the Pepper framework. So in the best case, you can just follow this
             guide, and run </para>
         <synopsis>
             mvn install assembly
         </synopsis>
         <para> and you will find a zip file in the target folder of your project
-            (YOUR_PROJECT/target/distribution), which can simply pluged into Pepper via extracting
-            its content to the plugin folder of Pepper (PEPPER_HOME/plugins). In the bad case some mean errors occur and
-            you have to dig in a lot of online tutorials and forums and lose a lot of time. Please
-            do not despair and write us an e-mail instead.
+            (YOUR_PROJECT/target/distribution), which can simply plugged into Pepper via extracting
+            its content to the plugin folder of Pepper (PEPPER_HOME/plugins). In the bad case some
+            mean errors occur and you have to dig in a lot of online tutorials and forums and lose a
+            lot of time. Please do not despair and write us an e-mail instead.
                 <email>saltnpepper@lists.hu-berlin.de</email></para>
     </sect1>
 </chapter>

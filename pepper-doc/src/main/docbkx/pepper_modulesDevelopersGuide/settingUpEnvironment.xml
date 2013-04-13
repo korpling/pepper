@@ -3,24 +3,24 @@
 <?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
     version="5.0" xml:id="ch_setUpEnv">
-    <title>Setting up environment</title>
+    <title>Setting up your environment</title>
     <para>If you do not belong to the hardcore 'vi' developer community, you may want to use a
-        developement environment and an IDE for developing your pepper module. For that case we here
-        describe how to set up your environment along the eclipse IDE (see: <link
-            xlink:href="http://download.eclipse.org">http://download.eclipse.org</link>). May you
-        rather want to use a different IDE like NetBeans (see: <link xlink:href="www.netbeans.org/"
-            >www.netbeans.org/</link>). In that case, skip the eclipse specific parts, but make
-        sure, setting up the OSGi framework in your environment simultaneously.</para>
+        developement environment and an IDE for developing your Pepper module. For that case we here
+        describe how to set up your environment for the Eclipse IDE (see: <link
+            xlink:href="http://download.eclipse.org">http://download.eclipse.org</link>). You also
+        can stick to another IDE like NetBeans (see: <link xlink:href="www.netbeans.org/"
+            >www.netbeans.org/</link>) but you should make sure that the OSGi framework is set up
+        correctly for your IDE. In that case, skip the Eclipse specific parts.</para>
     <sect1 xml:id="sec_downloadEclipse">
-        <title>Download and set up eclipse</title>
-        <para>eclipse is available in several flavours like for web developers, mobil developers
-            etc.. We recommend the eclipse Modeling Tools, since you might want to create or use a
-            model for the format you want to support. For this tutorial, we used eclipse juno,
-            version 4.2 (see: <link
+        <title>Download and set up Eclipse</title>
+        <para>Eclipse is available in several flavours e.g. for web developers, mobile developers,
+            C++ developers etc.. We recommend the Eclipse Modeling Tools, since you might want to
+            create or use a model for the format you want to support. For this tutorial, we used
+            Eclipse juno, version 4.2 (see: <link
                 xlink:href="http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/junosr2"
                 >http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/junosr2</link>).
-            Unfortunatly, in this version eclipse does not come with an integrated OSGi console
-            anymore. It now uses the Apache Gogo Shell which is not part of the eclipse
+            Unfortunately, in this version Eclipse does not come with an integrated OSGi console
+            anymore. It now uses the Apache Gogo Shell which is not part of the Eclipse
             distribution. Therefore we have to download the Equinox SDK from <link
                 xlink:href="http://download.eclipse.org/equinox/"
                 >http://download.eclipse.org/equinox/</link>, we used version 3.8.2 which is
@@ -29,7 +29,7 @@
                 >http://www.eclipse.org/downloads/download.php?file=/equinox/drops/R-3.8.2-201302041200/equinox-SDK-3.8.2.zip</link>.</para>
         <itemizedlist>
             <listitem>
-                <para>Download the eclipse IDE and unzip it to ECLIPSE_HOME (a folder of your
+                <para>Download the Eclipse IDE and unzip it to ECLIPSE_HOME (a folder of your
                     choice).</para>
             </listitem>
             <listitem>
@@ -51,7 +51,7 @@
         </itemizedlist>
     </sect1>
     <sect1 xml:id="sec_eclipseForSNP">
-        <title>Making eclipse ready for SaltNPepper</title>
+        <title>Making Eclipse ready for SaltNPepper</title>
         <itemizedlist>
             <listitem>
                 <para>Download the latest Pepper distribution from <link
@@ -66,19 +66,21 @@
                     ECLIPSE_HOME/dropins.</para>
             </listitem>
             <listitem>
-                <para>Copy all folders having the same name as the bundles (.jar files) from
-                    PEPPER_HOME/plugins to a folder of your choice, lets say
-                    BUNDLE_RESOURCES/plugins.</para>
+                <para>Either copy all folders having the same name as the bundles (.jar files) from
+                    PEPPER_HOME/plugins to a folder of your choice, or let them be where they are.
+                    But in any way, let's call that location BUNDLE_RESOURCES/plugins for the
+                    following steps.</para>
             </listitem>
         </itemizedlist>
     </sect1>
     <sect1 xml:id="sec_startingEclipse">
-        <title>Starting eclipse</title>
-        <para>Now lets check if eclipse was set up correctly and is able to find all necessary
+        <title>Starting Eclipse</title>
+        <para>Now lets check wether Eclipse was set up correctly and is able to find all necessary
             bundles.</para>
         <itemizedlist>
             <listitem>
-                <para>Start eclipse.</para>
+                <para>Start Eclipse. (When starting Eclipse, having no projects registered in your
+                    workspace, a welcome tab may appears. Just close this tab and go on.)</para>
             </listitem>
             <listitem>
                 <para>Open 'Plug-ins view' via 'Window --> Show View --> Others (see <xref
@@ -93,8 +95,7 @@
                 </figure>
                 <itemizedlist>
                     <listitem>
-                        <para>Type in 'plug-ins' and choose Plug-ins view (see <xref
-                                linkend="fig_showView02"/>).</para>
+                        <para>Type in 'plug-ins' and choose 'Plug-ins' to open the corresponding view (see <xref linkend="fig_showView02"/>).</para>
                         <figure xml:id="fig_showView02">
                             <title/>
                             <mediaobject>
@@ -106,12 +107,12 @@
                     </listitem>
                     <listitem>
                         <para>In that view, you will find all OSGi bundles, which are accessable
-                            from your eclipse installation.</para>
+                            from your Eclipse installation.</para>
                     </listitem>
                 </itemizedlist>
             </listitem>
             <listitem>
-                <para>Check if all bundles from SaltNPepper are there. The most important ones are <itemizedlist>
+                <para>Check wether all bundles from SaltNPepper are there. The main ones are <itemizedlist>
                         <listitem>
                             <para>de.hu_berlin.german.korpling.saltnpepper.pepper-exceptions.jar</para>
                         </listitem>
@@ -150,7 +151,7 @@
     </sect1>
     <sect1 xml:id="sec_letsRun">
         <title>Let's run</title>
-        <para>Now we want to let the ghost out of the bottle and run the pepper framework.</para>
+        <para>Now we want to let the ghost out of the bottle and run the Pepper framework.</para>
         <itemizedlist>
             <listitem>
                 <para>Select 'Run --> Run configurations...' (see <xref linkend="fig_runConfig01"
@@ -193,12 +194,13 @@
                 <para>For not loading all available bundles, which could be more than 800 (see <xref
                         linkend="fig_runConfig03"/> position B), press the button 'Deselect All'
                     (see <xref linkend="fig_runConfig03"/> position C).</para>
+                <note><para>This may take a while, so don't be feared, in general your computer is not frozen.</para></note>
             </listitem>
             <listitem>
                 <para>Now, activate all necessary bundles for running Pepper. In 'type filter text'
                     (see <xref linkend="fig_runConfig03"/> position D) type in 'de.hu_berlin' and
                     you will see all bundles having this string in the package name. To active the
-                    necessary bundles, click the box on the left of their name. Make sure, that all
+                    necessary bundles, click the box on the left of their name. Make sure that all
                     bundles you have copied from PEPPER_HOME are activated. These are at least the
                     following ones:</para>
                 <itemizedlist>
@@ -236,7 +238,7 @@
             </listitem>
             <listitem>
                 <para>There are some other bundles necessary for running Pepper to be
-                    activated:</para>
+                    activated:</para><note><para>These packages also have to be select manually. Filtering them can even take a while.</para></note>
                 <itemizedlist>
                     <listitem>
                         <para>org.eclipse.equinox.console</para>
@@ -254,7 +256,7 @@
             </listitem>
             <listitem>
                 <para>Since these are not all of the necessary bundles, we have to select some more,
-                    but eclipse now should be able to detect them automatically, by pressing the
+                    but Eclipse now should be able to detect them automatically, by pressing the
                     button 'Add Required Bundles' (see <xref linkend="fig_runConfig03"/> position
                     E).</para>
                 <note>
@@ -296,7 +298,7 @@
                     </tgroup>
                 </table>
                 <note>
-                    <para>We assume, that the 'Default Start Level' is set to 4.</para>
+                    <para>We assume that the 'Default Start Level' is set to 4.</para>
                 </note>
             </listitem>
             <listitem>
@@ -321,7 +323,7 @@
                     </listitem>
                     <listitem>
                         <para>Type in 'PEPPER_TEST' for name and the folder known as
-                            BUNDLE_RESOURCES as value.</para>
+                            BUNDLE_RESOURCES (without the 'plugins' subfolder) as value.</para>
                     </listitem>
                 </orderedlist>
             </listitem>
@@ -330,12 +332,21 @@
             </listitem>
         </itemizedlist>
         <para> Now Pepper is running and shows all registered importers, exporters and
-            manipulators.</para>
-        <para>To make things easier, we provide a preconfigured file, which can be used for this, unfortunatly this configuration is for eclipse only.
-            This file contains information for the run configurations of the pepper-testEnvironment project and can be found under
-            <filename>PEPPER_HOME/pepper-testSuite/pepper-testEnvironment/pepper-testEnvironment.launch</filename>.
+            manipulators. A screen like shown in <xref linkend="fig_runConfig03"/> comes up. </para>
+        <note><para>The output can vary, depending on the modules you have registered and the version of the OSGi console. Eventually a lot of log messages are outputted as well.</para></note>
+        <figure xml:id="fig_pepperHello01">
+            <title/>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/pepper_hello.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>To make things easier, we provide a preconfigured file, which can be used for this, unfortunately this configuration is for Eclipse only.
+            This file contains information for the run configurations of the <classname>pepper-testEnvironment</classname> project and can be found under
+            <filename>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-XXX/pepper-testSuite/pepper-testEnvironment/pepper-testEnvironment.launch</filename> (where XXX is the version number). Just copy that file into your poject, update the view in your project or package explorer by pressing 'F5', right click that file and select 'run as...' --> 'pepper-testEnvironment'.
         </para>
-        <para>To install further pepper modules, follow the given instructions: <orderedlist>
+        <para>To install further Pepper modules, follow the given instructions: <orderedlist>
                 <listitem>
                     <para>Download a module of your choice from <link
                             xlink:href="http://korpling.german.hu-berlin.de/saltnpepper/repository/pepperModules/de/hu_berlin/german/korpling/saltnpepper/pepperModules/"
@@ -343,7 +354,7 @@
                         or any other source.</para>
                 </listitem>
                 <listitem>
-                    <para>Unzip the file to MODULE_HOME</para>
+                    <para>Unzip the file to a folder of your choice, let's call it MODULE_HOME</para>
                 </listitem>
                 <listitem>
                     <para>Copy the bundel (.jar file) to ECLIPSE_HOME/dropins</para>
@@ -371,8 +382,8 @@
         <para>Now we want to start a real run using a workflow description file. To do so, we need a
             sample corpus and a sample workflow description file. The sample workflow description
             file specifies a workflow converting a corpus in paula to relANNIS. <note>
-                <para>Make sure, that the PAULAImporter and the RelANNISExporter is registered in
-                    your eclipse installation (see 'plugins view' <xref
+                <para>Make sure, that the PAULAImporter and the RelANNISExporter (or more precisely the PAULAModules and the RelANNISModules bundles) are registered in
+                    your Eclipse installation (see 'plugins view' <xref
                         linkend="sec_startingEclipse"/>) and in your run configurations.</para>
             </note>
         </para>
@@ -385,16 +396,16 @@
             </listitem>
             <listitem>
                 <para>Create an environment variable named 'PEPPER_TEST_WORKFLOW_FILE' in your 'Run
-                    configurations' and point it to SAMPLE_CORPUS/paula2paula.pepperparams (see
+                    configurations' and point it to SAMPLE_CORPUS/paula2relANNIS.pepperParams (see
                         <xref linkend="fig_runConfig04"/> for creating environment variables;
                     name='PEPPER_TEST_WORKFLOW_FILE',
-                    value='SAMPLE_CORPUS/paula2paula.pepperparams')</para>
+                    value='SAMPLE_CORPUS/paula2relANNIS.pepperParams')</para>
             </listitem>
             <listitem>
                 <para>Press 'Run'.</para>
             </listitem>
         </itemizedlist>
-        <para>Now the pepper test environment is set up, and pepper does the conversion task.
+        <para>Now the Pepper test environment is set up, and Pepper does the conversion task.
         </para>
     </sect1>
     <sect1 xml:id="sec_maven">
@@ -406,8 +417,8 @@
                 <link xlink:href="http://www.gradle.org/">http://www.gradle.org/</link>) or
             none.</para>
         <para>If you are working with Netbeans, you can skip the rest of this section, because
-            Netbeans already comes with an integrated maven. In the case of you are working with
-            eclipse, or even want to compile your pepper module via the command line, you have to
+            Netbeans already comes with an integrated maven. In the case that you are working with
+            Eclipse, or even want to compile your Pepper module via the command line, you have to
             install maven. Therefore just follow the given instructions: <itemizedlist>
                 <listitem>
                     <para>Download the latest maven distribution from <link
@@ -417,12 +428,16 @@
                 <listitem>
                     <para>Unzip the file to a folder of your choice and you will get a folder like
                         apache-maven-version in it. Lets call it MAVEN_HOME.</para>
+                    <para>For Linux: Or install maven from your distribution repositories.</para>
                 </listitem>
             </itemizedlist> Now, when switching to MAVEN_HOME/bin folder, you can run maven from the
-            command line via calling: <programlisting>mvn</programlisting>If you want to run mvn
+            command line via calling: <programlisting>mvn</programlisting>
+            </para>
+            <para>For Windows: If you want to run mvn
             everywhere, write the path MAVEN_HOME/bin into your path environment variable (under
-            Windows) or create a symlink to that path (under linux). </para>
-        <para>To enable maven even in eclipse you have to use a specific plugin called m2e. <itemizedlist>
+            Windows).</para>
+        <para>For Linux: Maven should automatically be installed in the default directory if you use the Distribution repository (e.g. /bin or /usr/bin ) and thus be runnable.</para>
+        <para>To enable maven in Eclipse you have to use a specific plugin called m2e. <itemizedlist>
                 <listitem>
                     <para>Open the 'Eclipse Marketplace' via 'Help --> Eclipse Marketplace...' (see
                             <xref linkend="fig_marketPlace_m2e"/>)</para>
@@ -440,22 +455,22 @@
                             linkend="fig_marketPlace_m2e"/> position A).</para>
                 </listitem>
                 <listitem>
-                    <para>The plugin 'Maven integration for Eclipse' should be displayed. Click
+                    <para>The plugin 'Maven integration for Eclipse' should be displayed (you may have to scroll down). Click
                         "Install" to install that plugin (see <xref linkend="fig_marketPlace_m2e"/>
                         position B).</para>
                 </listitem>
                 <listitem>
-                    <para>During the installation eclipse asks you to agree to the license of this
-                        plugin and may be recommends to restart eclipse. Just follow the
+                    <para>During the installation Eclipse asks you to agree to the license of this
+                        plugin it may be recommended to restart Eclipse. Just follow the
                         instructions and go ahead.</para>
                 </listitem>
                 <listitem>
-                    <para>After restarting eclipse, the plugin should be installed. You can check
+                    <para>After restarting Eclipse, the plugin should be installed. You can check
                         the installation, when clicking on 'File --> Import'. The dialog which opens
                         should contain an option/a folder named 'Maven'.</para>
                 </listitem>
-            </itemizedlist> If you are working with eclipse and the command line simultaneously
-            (which might be very helpful, since maven does not always run error-free in eclipse), it
+            </itemizedlist> If you are working with Eclipse and the command line simultaneously
+            (which might be very helpful, since maven does not always run error-free in Eclipse), it
             might be useful, to synchronize the maven local repository of your m2e installation and
             the one of your maven installation. <itemizedlist>
                 <listitem>
@@ -468,14 +483,14 @@
                     <para>Select the 'Installations' view.</para>
                 </listitem>
                 <listitem>
-                    <para>Press the 'Add' button on the upper right and choose MAVEN_HOME.</para>
+                    <para>Press the 'Add' button on the upper right and choose MAVEN_HOME (location of the maven installation, not of the maven repository).</para>
                 </listitem>
-            </itemizedlist> A pepper module is created using the OSGi declarative service mechanism.
+            </itemizedlist> A Pepper module is created using the OSGi declarative service mechanism.
             If you don't know what this is and you don't want to know, never mind. We put the OSGi
             layer in the background so that you do not have to care about (as long as everything
             works fine ;-)). But therefore we used maven to configure the OSGi part. To enable the
-            declarative service stuff, we used some maven dependencies called
-            'carrot-osgi-anno-scr'. Since there is no m2e adapter installed in eclipse by default,
+            declarative service mechanism, we used some maven dependencies called
+            'carrot-osgi-anno-scr'. Since there is no m2e adapter installed in Eclipse by default,
             you have to download a further plugin. <itemizedlist>
                 <listitem>
                     <para>Go to the 'Eclipse Marketplace' via 'Help --> Eclipse
@@ -486,7 +501,7 @@
                 </listitem>
                 <listitem>
                     <para>The dialog will show the 'CarrotGarden SCR' plugin. Press the 'install'
-                        button and follow the instructions.</para>
+                        button and follow the instructions. Eclipse may recommends to restart itself.</para>
                 </listitem>
             </itemizedlist>
         </para>

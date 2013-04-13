@@ -3,45 +3,44 @@
 <?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
     version="5.0" xml:id="ch_customization">
-    <!-- TODO: create description of 'how to initialize specific PepperModuleProperties' see ElanImporterProperties -->
-    <title>Customizing behaviour of your PepperModule</title>
+    <title>Customizing behaviour of your Pepper module</title>
     <subtitle>via properties</subtitle>
     <para> When creating a mapping, it is often a matter of choice to map some data this way or
         another. In such cases it might be clever not to be that strict and allow only one
-        possiblity. It could be beneficialy to leave this decision to the user. Customizing a
-        mapping will increse the power of a PepperModule enormously, because than it can be used for
-        wider range of purposes without rewriting parts of it. The pepper framework provides a
-        property system to access such user customizations. Nevertheless, a PepperModule shall not
+        possiblity. It could be beneficially to leave this decision to the user. Customizing a
+        mapping will increase the power of a Pepper module enormously, since it can be used for
+        wider range of purposes without rewriting parts of it. The Pepper framework provides a
+        property system to access such user customizations. Nevertheless, a Pepper module shall not
         be dependant on user customization. The past showed, that it is very frustrating for a user,
-        when a PepperModule breaks up, because of not specifified properties. You should always
+        when a Pepper module breaks up, because of not specifified properties. You should always
         define a default behaviour in case of the user has not specified one. </para>
     <sect1>
         <title>Property</title>
         <para>A property is just an attribute-value pair, consisting of a name so called property
             name and a value so called property value. Properties can be used for customizing the
-            behaviour of a mapping of a PepperModule. Such a property must be specified by the user
-            and determined in the pepper workflow description. The pepper frsamework will pass all
-            customization properties direct to the instance of the PepperModule. </para>
+            behaviour of a mapping of a Pepper module. Such a property must be specified by the user
+            and determined in the Pepper workflow description. The Pepper framework will pass all
+            customization properties directly to the instance of the Pepper module. </para>
         <note>
-            <para>In the current version of pepper one has to specify a property file by its
-                location in the pepper workflow description file (.pepperParams) in the attribute
+            <para>In the current version of Pepper one has to specify a property file by its
+                location in the Pepper workflow description file (.pepperParams) in the attribute
                 @specialParams inside the &lt;importerParams&gt;, &lt;exporterParams&gt; or
                 &lt;moduleParams&gt; element. In the next versions this will change to a posibility
-                for adding properties directly to the pepper workflow description file.</para>
+                for adding properties directly to the Pepper workflow description file.</para>
         </note>
     </sect1>
     <sect1>
         <title>Property registration</title>
-        <para>The pepper framework provides a kind of a registration for customization properties.
-            This registry is called <classname>PepperModuleProperties</classname> and can be
-            accessed via <methodname>getProperties()</methodname> and
+        <para>The Pepper framework provides a registry mechanism to customize properties. This
+            registry is called <classname>PepperModuleProperties</classname> and can be accessed via
+                <methodname>getProperties()</methodname> and
                 <methodname>setProperties()</methodname>. This class only represents a container
             object for a set of <classname>PepperModuleProperty</classname> objects and provides
             accessing methods. An instance of <classname>PepperModuleProperty</classname> represents
             an abstract description of a property and the concrete value at once. In the
             registration phase it belongs to the tasks of a <classname>PepperModule</classname> to
             specify the abstract description which consists of the name of the property, its
-            datatype, a short description and a flag specifying if this property is optional or
+            datatype, a short description and a flag specifying whether this property is optional or
             mandatory. To create such an abstract description of a property use the constructor: <constructorsynopsis>
                 <methodname>PepperModuleProperty</methodname>
                 <methodparam>
@@ -61,7 +60,7 @@
                     <parameter>required</parameter>
                 </methodparam>
             </constructorsynopsis> and pass the created property object to the property registry by
-            calling the method <methodname>addProperty</methodname>. The pepper framework uses the
+            calling the method <methodname>addProperty</methodname>. The Pepper framework uses the
             registry to first inform the user about usable properties for customization and second
             to fullfill the property objects with the property values set by the user. </para>
         <para>The value of a specific property can be accessed by passing its name to the registry.
@@ -77,7 +76,7 @@
             derive it from the provided class <classname>PepperModuleProperties</classname>. Imagine
             you want to register a property named 'MyProp' being of type String, which is mandatory
             to a property class called 'MyModuleProperties'. For having an easier access in your
-            pepper module, you can enhance the MyModuleProperties class with a getter method for
+            Pepper module, you can enhance the MyModuleProperties class with a getter method for
             property MyProp (see: getMyProp()).
             <programlisting>
 //...
@@ -90,7 +89,8 @@ public class MyModuleProperties extends PepperModuleProperties
     public MyModuleProperties()
 	{  
 	   //...
-	   this.addProperty(new PepperModuleProperty&lt;String>("MyProp", String.class, "description of MyProp", true));
+	   this.addProperty(new PepperModuleProperty&lt;String>
+	       ("MyProp", String.class, "description of MyProp", true));
 	   //...
 	}
 	//...
@@ -103,28 +103,38 @@ public class MyModuleProperties extends PepperModuleProperties
         </para>
         <sect2>
             <title>checking property constraints</title>
-            <para>Since the vlaue of a property can be required, you can check if its value is set
+            <para>Since the value of a property can be required, you can check whether its value is set
                 by calling the method <methodname>checkProperties()</methodname>. To customize the
-                constraints of a property, you can override the methode
+                constraints of a property, you can override the method
                     <methodname>checkProperty(PepperModuleProperty&lt;?>)</methodname>. Imagine a
                 property named 'myProp' having a file as value, you might want to check its
                 existance. The following snippet shows the code how this could be done:
                 <programlisting>
 public boolean checkProperty(PepperModuleProperty&lt;?> prop)
 {
-   //calls the check of constraints in parent, for instance if a required value is set
+   //calls the check of constraints in parent, 
+   //for instance if a required value is set
    super.checkProperty(prop);
    if ("myProp".equals(prop.getName()))
    {
        File file= (File)prop.getValue();
        //throws exception, in case of set file does not exist
        if (!file.exists())
-           throw new PepperModuleException("The file set to property 'myProp' does not exist.");
+           throw new PepperModuleException("The file "+
+           "set to property 'myProp' does not exist.");
    }
    return(true);
 }
                     </programlisting>
             </para>
+        </sect2>
+        <sect2>
+            <title>Initializing <classname>MyModuleProperties</classname></title>
+            <para>
+                Last but not least, you need to initialize your property object. The place for best doing that is the constructor of your module. Such an early initialization ensures, that the Pepper framework, will use the correct object and will not create a general <classname>PepperModuleProperties</classname> object. Initialize your property object via calling:
+            </para>
+            <programlisting>this.setProperties(new MyModuleProperties());</programlisting>
+            
         </sect2>
     </sect1>
 </chapter>
