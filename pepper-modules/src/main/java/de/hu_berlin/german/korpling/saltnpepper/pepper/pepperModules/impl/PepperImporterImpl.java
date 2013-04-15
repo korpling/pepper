@@ -203,10 +203,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private Map<SElementId, URI> sElementId2ResourceTable= null;
 	
 	/**
-	 * Returns table correspondence between {@link SElementId} and a resource.
-	 * See: {@inheritDoc #sElementId2ResourceTable}
-	 * @return table correspondence between {@link SElementId} and a resource.
+	 * {@inheritDoc PepperImporter#getSElementId2ResourceTable()}
 	 */
+	@Override
 	public synchronized Map<SElementId, URI> getSElementId2ResourceTable() {
 		if (sElementId2ResourceTable== null)
 			sElementId2ResourceTable= new Hashtable<SElementId, URI>();
@@ -214,9 +213,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 * 
+	 * {@inheritDoc PepperImporter#importCorpusStructure(SCorpusGraph)}
 	 */
+	@Override
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException 
 	{
 		this.setSCorpusGraph(corpusGraph);
@@ -253,7 +252,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param endings
 	 * @throws IOException
 	 */
-	public void importCorpusStructureRec(URI currURI, SElementId parentsID)
+	protected void importCorpusStructureRec(URI currURI, SElementId parentsID)
 	{
 		//set name for corpus graph
 		if (	(this.getSCorpusGraph().getSName()== null) || 
@@ -263,7 +262,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}
 		
 		if (	(currURI.lastSegment()!= null)&&
-				(!this.getImportIgnoreList().contains(currURI.lastSegment())))
+				(!this.getIgnoreEndings().contains(currURI.lastSegment())))
 		{//if file is not part of ignore list	
 			STYPE_NAME type= this.setTypeOfResource(currURI);
 			if (type!= null)
@@ -341,10 +340,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	private Collection<String> sDocumentEndings= null;
 	/**
-	 * Returns a collection of all file endings for a {@link SDocument} object.
-	 * See {@inheritDoc #sDocumentEndings}.
-	 * @return a collection of endings
+	 * {@inheritDoc PepperImporter#getSDocumentEndings()}
 	 */
+	@Override
 	public synchronized Collection<String> getSDocumentEndings()
 	{
 		if (sDocumentEndings== null)
@@ -357,11 +355,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	private Collection<String> sCorpusEndings= null;
 	/**
-	 * Returns a collection of all file endings for a {@link SCorpus} object.
-	 * See {@inheritDoc #sCorpusEndings}. This list contains per default value {@value #ENDING_FOLDER}. To remove the
-	 * default value, call {@link Collection#remove(Object)} on {@link #getSCorpusEndings()}.
-	 * @return a collection of endings
+	 * {@inheritDoc PepperImporter#getSCorpusEndings()}
 	 */
+	@Override
 	public synchronized Collection<String> getSCorpusEndings()
 	{
 		if (sCorpusEndings== null)
@@ -373,22 +369,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 	
 	/**
-	 * This method is a callback and can be overridden by derived importers. This method is called via the import of the 
-	 * corpus-structure ({@link #importCorpusStructure(SCorpusGraph)}). During the traversal of the file-structure the method
-	 * {@link #importCorpusStructure(SCorpusGraph)} calls this method for each resource, to determine if the resource either 
-	 * represents a {@link SCorpus}, a {@link SDocument} object or shall be ignored. <br/>
-	 * If this method is not overridden, the default behavior is:
-	 * <ul>
-	 * 	<li>For each file having an ending, which is contained in {@link #getSDocumentEndings()} {@link STYPE_NAME#SDOCUMENT} is returned</li>
-	 *  <li>For each file having an ending, which is contained in {@link #getSCorpusEndings()} {@link STYPE_NAME#SCorpus} is returned</li>
-	 *  <li>If {@link #getSDocumentEndings()} contains {@link #ENDING_LEAF_FOLDER}, for each leaf folder {@link STYPE_NAME#SDOCUMENT} is returned</li>
-	 *  <li>If {@link #getSCorpusEndings()} contains {@link #ENDING_FOLDER}, for each folder {@link STYPE_NAME#SCORPUS} is returned</li>
-	 *  <li>null otherwise</li>
-	 * </ul>
-	 * 
-	 * @param resource {@link URI} resource to be specified
-	 * @return {@link STYPE_NAME#SCORPUS} if resource represents a {@link SCorpus} object, {@link STYPE_NAME#SDOCUMENT} if resource represents a {@link SDocument} object or null, if it shall be igrnored.
+	 * {@inheritDoc PepperImporter#setTypeOfResource(URI)}
 	 */
+	@Override
 	public STYPE_NAME setTypeOfResource(URI resource)
 	{
 		String ending= resource.fileExtension();
@@ -450,7 +433,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * Returns a collection of filenames, not to be imported. {@inheritDoc #importIgnoreList}}.
 	 * @return
 	 */
-	public synchronized Collection<String> getImportIgnoreList()
+	@Override
+	public synchronized Collection<String> getIgnoreEndings()
 	{
 		if (importIgnoreList== null)
 		{

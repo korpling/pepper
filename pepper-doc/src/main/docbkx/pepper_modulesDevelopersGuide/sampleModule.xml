@@ -149,7 +149,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
             create an importer an exporter or a manipulator. Then just delete the classes you won't
             implement. In case of you want to have several importers, manipulators or exporters,
             just copy the classes and proceed with each class as described in the following.
-            Otherwise, you will end up with non-functional modules in your project.The items in the
+            Otherwise, you will end up with non-functional modules in your project. The items in the
             numbered list correspond to the TODO entries in the class files. <orderedlist>
                 <listitem>
                     <para>Change the name of the component, for example use the format name and the
@@ -167,10 +167,9 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                         format name and 1.0 with the format version to be supported.</para>
                 </listitem>
                 <listitem>
-                    <para>In case that you are creating an importer, override the method
-                            <methodname>importCorpusStructure()</methodname> (see: <xref
-                            linkend="sec_importCorpusStructure"/>), this method maps the corpus
-                        structure of the given format to a corpus structure in Salt.</para>
+                    <para>In case that you are creating an importer, check if the default behavior
+                        of the corpus-structure import mechanism fits for your need. For tfurther
+                        details, see: <xref linkend="sec_importCorpusStructure"/>.</para>
                 </listitem>
                 <listitem>
                     <para>If you want to have a specific handling with the document strcutures,
@@ -190,91 +189,172 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                         method <methodname>end()</methodname>.</para>
                 </listitem>
             </orderedlist>
+            The following sections will give a brief overview to the single items. For a more detailed view, please take a look into the corresponding JavaDoc.
         </para>
         <sect2 xml:id="sec_importCorpusStructure">
-            <title><methodname>importCorpusStructure</methodname></title>
-            <para> This method is supposed to create a corpus-structure in the Salt model which will
-                be filled via the method <function>start()</function>. A corpus-structure consists
-                of corpora (represented via the Salt element <classname>SCorpus</classname>),
-                documents (represented represented via the Salt element
-                    <classname>SDocument</classname>) and a linking between corpora and a corpus and
-                a document (represented via the Salt element <classname>SCorpusRelation</classname>
-                and <classname>SCorpDocRelation</classname>). Each corpus corpus can contain 0..*
-                subcorpus and 0..* documents, but a corpus cannot contain both document and corpus.
-                For more information, please take a look into the Salt User Guide. </para>
-            <para>In many cases, the corpus structure is simulatneaus to the file structure of a
-                corpus to import, since a lot of formats does not care about the corpus-structure.
-                For that case, Pepper already provide a mechanism to more or less automatically
-                create the corpus-structure. Here we give a short overview on that (for more
-                details, please take a look into the JavaDoc).When mapping the file-structure to a
-                corpus-structure the root folder (the direct <classname>URI</classname> location) is
-                mapped into a root-corpus (<classname>SCorpus</classname> object) is created. For
-                each sub-folder a sub-corpus (<classname>SCorpus</classname> object) is created. For
-                each file for which the method <methodname>isFileToImport(URI, List)</methodname>
-                returns <code>true</code>, a <classname>SDocument</classname> object is created and
-                added to the current <classname>SCorpusGraph</classname> object. The objects are
-                connected via <classname>SCorpusRelation</classname> or
-                    <classname>SCorpusDocumentRelation</classname> objects. While traversing the
+            <title>Importing the corpus-structure</title>
+            <para> A corpus-structure consists of corpora (represented via the Salt element
+                    <classname>SCorpus</classname>), documents (represented represented via the Salt
+                element <classname>SDocument</classname>), a linking between corpora and a linking
+                between a corpus and a document (represented via the Salt element
+                    <classname>SCorpusRelation</classname> and
+                    <classname>SCorpDocRelation</classname>). Each corpus can contain 0..* subcorpus
+                and 0..* documents, but a corpus cannot contain both document and corpus. For more
+                information, please take a look into the Salt User Guide. </para>
+            <para>The general class <classname>PepperImporter</classname> provides an adoptable and
+                automatical mechanism to create a corpus-structure. This mechanism is adoptable step
+                by step, according to your specific purpose. In many cases, the corpus structure is
+                simulatneaus to the file structure of a corpus. Since many formats does not care
+                about the corpus-structure, they only encode the document-strcuture. </para>
+            <para>Peppers default mapping maps the root folder (the direct
+                    <classname>URI</classname> location) into a root-corpus
+                    (<classname>SCorpus</classname> object). For each sub-folder a sub-corpus
+                    (<classname>SCorpus</classname> object) is created and added to the
+                    <classname>SCorpusGraph</classname>. For each super- and sub-corpus relation, a
+                <classname>SCorpusRelation</classname> object is created. For each interesting<footnote><para>
+                    interesting here means, a file whichs ending is registered in a collection (see: <methodname>getSDocumentEndings()</methodname>)
+                </para></footnote>
+                file a <classname>SDocument</classname> object is created and added to the current
+                    <classname>SCorpusGraph</classname> object. The <classname>SCorpus</classname>
+                and <classname>SDocument</classname> objects are connected via a
+                    <classname>SCorpusDocumentRelation</classname> object. While traversing the
                 file-structure, an <classname>SElementId</classname> object is created representing
                 the corpus-hierarchy and added to the created <classname>SCorpus</classname> or
-                    <classname>SDocument</classname> objects. A map of these
+                    <classname>SDocument</classname> object. A map of these
                     <classname>SElementId</classname> objects corresponding to the
                     <classname>URI</classname> objects is returned, so that in method
                     <methodname>start(SElementId)</methodname> this map can be used to identify the
                     <classname>URI</classname> location of the <classname>SDocument</classname>
                 objects. </para>
-            <note>
-                <para>For a description of how to add entries to the file extension list, see
-                        <methodname>isFileToImport(URI, List)</methodname>.</para>
-            </note>
+            <para>To customize the default behaviour, Pepper provides three steps ascending in their
+                implementation efforts: <orderedlist>
+                    <listitem>
+                        <para>Adopting the one or more of the collections:
+                                <classname>sDocumentEndings</classname>,
+                                <classname>sCorpusEndings</classname> or
+                                <classname>ignoreEndings</classname>, accessible via the methods
+                                <methodname>getSDocumentEndings</methodname>,
+                                <methodname>getSCorpusEndings</methodname> and
+                                <methodname>getIgnoreEndings</methodname>. To
+                                <classname>sDocumentEndings</classname>you can add all endings of
+                            files, containing the document-structure (you can even add a value for
+                            leaf folders <classname>ENDING_LEAF_FOLDER</classname>). To
+                                <classname>sCorpusEndings</classname> you can add all endings of
+                            files, containing data for the corpus-structure (the value
+                                <classname>ENDING_FOLDER</classname> for folders is set by default).
+                            And to <classname>ignoreEndings</classname> you can add all endings of
+                            files, to be ignored for the import process.</para>
+                        <para>Lets give an example: <figure xml:id="fig_importCorpusStructure">
+                                <title/>
+                                <mediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="images/importCorpusStructure.png"/>
+                                    </imageobject>
+                                </mediaobject>
+                            </figure> To map this structure, you just have to add the ending 'xml'
+                            to the collection <classname>sDocumentEndings</classname>, you can do
+                            this using the constant <classname>ENDING_XML</classname> (even others
+                            are predefined). </para>
+                        <para>To give another example, the following file-structure will result in
+                            the same corpus-structure, when setting the collection
+                                <classname>sDocumentEndings</classname> to the value
+                                <classname>ENDING_LEAF_FOLDER</classname>. <figure
+                                xml:id="fig_importCorpusStructure2">
+                                <title/>
+                                <mediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="images/importCorpusStructure2.png"/>
+                                    </imageobject>
+                                </mediaobject>
+                            </figure>
+                        </para>
+                        <para>You can do the collection adoptions anywhere you want to, but make
+                            sure, that they have to be done, before the method
+                                <methodname>importCorpusStructure</methodname> was called by the
+                            framework. A good location for instance is the constructor:
+                            <programlisting>
+public MyImporter()
+{
+  ...
+  this.getSDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
+  ...
+}
+                        </programlisting></para>
+                    </listitem>
+                    <listitem>
+                        <para>If the previous step does not fully fit your needs, Pepper uses a
+                            callback mechanism which can be overridden. Using the method
+                                <methodname>setTypeOfResource</methodname> Pepper checks for each
+                            resource (folder and pure file) whether it represents a
+                                <classname>SDocument</classname> or a <classname>SCorpus</classname>
+                            object. The origin implementation therefore uses the above mentioned
+                            collections. If adopting these collections does not fullfill your
+                            specific purpose, you can override it with a more complex
+                            behavior.</para>
+                    </listitem>
+                    <listitem>
+                        <para>The last opportunity to adopt the behavior is to override the methode
+                                <classname>importCorpusStructure</classname>. This is the main
+                            method called by the Pepper framework. This method must generate a map
+                            containing the correspondence between a
+                                <classname>SElementId</classname> (representing a
+                                <classname>SDocument</classname> or a <classname>SCorpus</classname>
+                            object) and a resource. For instance, remember the sample of <xref
+                                linkend="fig_importCorpusStructure"/>, this could result in the
+                            following map: <table frame="all">
+                                <title/>
+                                <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                                    <tbody>
+                                        <row>
+                                            <entry>salt://corp1</entry>
+                                            <entry>/superCorpus</entry>
+                                        </row>
+                                        <row>
+                                            <entry>salt://corp1/subCorpus1</entry>
+                                            <entry>/superCorpus/subCorpus1</entry>
+                                        </row>
+                                        <row>
+                                            <entry>salt://corp1/subCorpus1#doc1</entry>
+                                            <entry>/superCorpus/subCorpus1/doc1.xml</entry>
+                                        </row>
+                                        <row>
+                                            <entry>salt://corp1/subCorpus1#doc2</entry>
+                                            <entry>/superCorpus/subCorpus1/doc2.xml</entry>
+                                        </row>
+                                        <row>
+                                            <entry>salt://corp1/subCorpus2</entry>
+                                            <entry>/superCorpus/subCorpus2</entry>
+                                        </row>
+                                        <row>
+                                            <entry>salt://corp1/subCorpus2#doc3</entry>
+                                            <entry>/superCorpus/subCorpus2/doc3.xml</entry>
+                                        </row>
+                                        <row>
+                                            <entry>salt://corp1/subCorpus2#doc4</entry>
+                                            <entry>/superCorpus/subCorpus2/doc4.xml</entry>
+                                        </row>
+                                    </tbody>
+                                </tgroup>
+                            </table>
+                        </para>
+                    </listitem>
+                </orderedlist> Later on, this map is used when importing the document-structure, to
+                locate the content of a <classname>SDocument</classname> object.</para>
         </sect2>
-        <sect2 xml:id="sec_isFileToImport">
-            <title><methodname>isFileToImport</methodname></title>
-            <para> This method returns whether a given <classname>URI</classname> object shall be
-                imported during import phase. To customize the computation whether a file shall be
-                imported or not, you can override the method
-                <methodname>isFileToImport</methodname>.  This decision depends on the kind and the
-                content of the given fileExtension list. The file extension list can contain a set
-                of file extensions (Strings without '.') to be imported or marked as to be not
-                imported (via the prefix
-                    <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname>). The following
-                list shows the condition of computation for returned value: <itemizedlist>
-                    <listitem>
-                        <para>This method returns false, in case that the given
-                                <classname>URI</classname> object is null.</para>
-                    </listitem>
-                    <listitem>
-                        <para>This method returns true for every <classname>URI</classname> object
-                            in case that the list is null or empty.</para>
-                    </listitem>
-                    <listitem>
-                        <para>This method returns true if the given list is a positive list (does
-                            not contain the negative marker
-                                <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname> at
-                            all) and the file extension of the uri is contained in the list.</para>
-                    </listitem>
-                    <listitem>
-                        <para>This method returns true if the given list is a negative list (any
-                            item is prefixed with the negative marker
-                                <varname>PepperImporter.NEGATIVE_FILE_EXTENSION_MARKER</varname>)
-                            and the file extension of the uri is not contained in the list.</para>
-                    </listitem>
-                </itemizedlist>
-                <note>
-                    <para>When a list contains items prefixed with the negative marker and items
-                        which are not, the list is interpreted as a negative list.</para>
-                </note>
+        <sect2 xml:id="sec_mapDocumentStructure">
+            <title>Mapping the document-structure</title>
+            <para>Mapping the document-structure, can mean to map one Salt model to another one, like a manipulator does, it can mean to import a document-structure like an importer does or to export a document-structure like an exporter does. 
             </para>
-            <para> In case that you want to customize the method by overriding it, but not losing
-                its functionality, you can use the following lines of code:
-                <programlisting>@Override
-protected boolean isFileToImport(URI checkUri, List&lt;String&gt; fileExtensions)
-{ 
-    if (super.isFileToImport(checkUri))
-    //TODO: do something, when super says yes
-    else
-    //TODO: do something, when super says no 
-}</programlisting>
+            <orderedlist>
+                <listitem><para>What is document structure</para></listitem>
+                <listitem><para>even corpus-structure can be processed (manipulated, infos can be added etc.)</para></listitem>
+                <listitem><para>core of mapping, importing, exporting</para></listitem>
+                <listitem><para>what is multithreading, for what is it good for, Pepper tries to keep it simple for you, explain step mechanism first Mapper, second start(SElementId), third start() (same procedure as import coprus structure (first easy done adoptions, than the more complex ones and so on.))</para></listitem>                
+            </orderedlist>
+        </sect2>
+        <sect2 xml:id="sec_cleanUp">
+            <title>Cleaning up after all</title>
+            <para>Sometimes it might be necessary to make a clean up, after module did the job. For instance when writing an im- or an exporter it might be necessary to close file streams or a db connection. Therefore, after all the processing was done, the Pepper framework calls the method <methodname>end</methodname>. To run your clean up, just override it and your done. 
             </para>
         </sect2>
     </sect1>

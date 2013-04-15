@@ -18,19 +18,19 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.common.util.URI;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusDocumentRelation;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusRelation;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STYPE_NAME;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 
@@ -117,10 +117,79 @@ public interface PepperImporter extends PepperModule {
 	void setCorpusDefinition(CorpusDefinition value);
 
 	/**
-	 * This method is called by Pepper at the start of conversion process. 
-	 * It shall create the corpus-structure of the corpus to import. That means creating all necessary {@link SCorpus}, 
-	 * {@link SDocument} and all Relation-objects between them. The path to the corpus to import is given by
-	 * this.getCorpusDefinition().getCorpusPath().
+	 * Returns table correspondence between {@link SElementId} and a resource.
+	 * Stores {@link SElementId} objects corresponding to either a {@link SDocument} or a {@link SCorpus} object, which has
+	 * been created during the run of {@link #importCorpusStructure(SCorpusGraph)}. Corresponding to the {@link SElementId} object
+	 * this table stores the resource from where the element shall be imported.<br/>
+	 * For instance:
+	 * <table>
+	 * 	<tr><td>corpus_1</td><td>/home/me/corpora/myCorpus</td></tr>
+	 *  <tr><td>corpus_2</td><td>/home/me/corpora/myCorpus/subcorpus</td></tr>
+	 *  <tr><td>doc_1</td><td>/home/me/corpora/myCorpus/subcorpus/document1.xml</td></tr>
+	 *  <tr><td>doc_2</td><td>/home/me/corpora/myCorpus/subcorpus/document2.xml</td></tr>
+	 * </table>
+	 * @return table correspondence between {@link SElementId} and a resource.
+	 */
+	public Map<SElementId, URI> getSElementId2ResourceTable();
+	
+	/**
+	 * Returns a collection of all file endings for a {@link SDocument} object.
+	 * See {@inheritDoc #sDocumentEndings}.
+	 * To add endings to the collection, call {@link Collection#add(Ending)} and to remove endings from the
+	 * collection, call {@link Collection#remove(Ending)}.
+	 * @return a collection of endings
+	 */
+	public Collection<String> getSDocumentEndings();
+	
+	/**
+	 * Returns a collection of all file endings for a {@link SCorpus} object.
+	 * See {@inheritDoc #sCorpusEndings}. This list contains per default value {@value #ENDING_FOLDER}. To remove the
+	 * default value, call {@link Collection#remove(Object)} on {@link #getSCorpusEndings()}.
+	 * To add endings to the collection, call {@link Collection#add(Ending)} and to remove endings from the
+	 * collection, call {@link Collection#remove(Ending)}.
+	 * @return a collection of endings
+	 */
+	public Collection<String> getSCorpusEndings();
+	
+	/**
+	 * Returns a collection of filenames, not to be imported. {@inheritDoc #importIgnoreList}}.
+	 * To add endings to the collection, call {@link Collection#add(Ending)} and to remove endings from the
+	 * collection, call {@link Collection#remove(Ending)}.
+	 * @return a collection of endings to be ignored
+	 */
+	public Collection<String> getIgnoreEndings();
+	
+	/**
+	 * This method is a callback and can be overridden by derived importers. This method is called via the import of the 
+	 * corpus-structure ({@link #importCorpusStructure(SCorpusGraph)}). During the traversal of the file-structure the method
+	 * {@link #importCorpusStructure(SCorpusGraph)} calls this method for each resource, to determine if the resource either 
+	 * represents a {@link SCorpus}, a {@link SDocument} object or shall be ignored. <br/>
+	 * If this method is not overridden, the default behavior is:
+	 * <ul>
+	 * 	<li>For each file having an ending, which is contained in {@link #getSDocumentEndings()} {@link STYPE_NAME#SDOCUMENT} is returned</li>
+	 *  <li>For each file having an ending, which is contained in {@link #getSCorpusEndings()} {@link STYPE_NAME#SCorpus} is returned</li>
+	 *  <li>If {@link #getSDocumentEndings()} contains {@link #ENDING_LEAF_FOLDER}, for each leaf folder {@link STYPE_NAME#SDOCUMENT} is returned</li>
+	 *  <li>If {@link #getSCorpusEndings()} contains {@link #ENDING_FOLDER}, for each folder {@link STYPE_NAME#SCORPUS} is returned</li>
+	 *  <li>null otherwise</li>
+	 * </ul>
+	 * 
+	 * @param resource {@link URI} resource to be specified
+	 * @return {@link STYPE_NAME#SCORPUS} if resource represents a {@link SCorpus} object, {@link STYPE_NAME#SDOCUMENT} if resource represents a {@link SDocument} object or null, if it shall be igrnored.
+	 */
+	public STYPE_NAME setTypeOfResource(URI resource);
+	/**
+	 * This method is called by Pepper at the start of a conversion process to create the corpus-structure. 
+	 * A corpus-structure consists of corpora (represented via the Salt element {@link SCorpus}), documents 
+	 * (represented represented via the Salt element {@link SDocument}) and a linking between corpora and a corpus 
+	 * and a document (represented via the Salt element {@link SCorpusRelation} and {@link SCorpusDocumentRelation}). 
+	 * Each corpus corpus can contain 0..* subcorpus and 0..* documents, but a corpus cannot contain both document and corpus.  
+	 * <br/>
+	 * For many cases the creation of the corpus-struccture can be done automatically, therefore, just adopt the two lists #gets
+	 * <br/>
+	 * This method creates the corpus-structure via a top down traversal in file structure. For each found file (real file and folder), the method 
+	 * {@link #setTypeOfResource(URI)} is called to set the type of the resource. If the type is a {@link STYPE_NAME#SDOCUMENT} a {@link SDocument}
+	 * object is created for the resource, if the type is a {@link STYPE_NAME#SCORPUS} a {@link SCorpus} object is created, if the type
+	 * is null, the resource is ignored.  
 	 * @param corpusGraph an empty graph given by Pepper, which shall contains the corpus structure
 	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException" corpusGraphDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SCorpusGraph"
 	 * @generated
