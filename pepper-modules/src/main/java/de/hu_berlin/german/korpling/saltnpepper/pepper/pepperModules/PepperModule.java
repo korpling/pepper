@@ -23,7 +23,9 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
@@ -56,29 +58,51 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 public interface PepperModule extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+	 * Returns the name of this module. In most cases, the name somehow describes the task of the module.
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Name()
 	 * @model required="true" changeable="false"
 	 * @generated
 	 */
 	String getName();
+	
+	/**
+	 * Returns the version of this module.
+	 * @return the value of the '<em>Version</em>' attribute.
+	 * @see #setVersion(String)
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Version()
+	 * @model
+	 * @generated
+	 */
+	String getVersion();
 
 	/**
-	 * Returns the value of the '<em><b>Pepper Module Controller</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController#getPepperModule <em>Pepper Module</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Pepper Module Controller</em>' container reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+	 * Sets the version of this module. The version normally is set internally, this method only exists for 
+	 * dependency injection, by the modules project itself. But this method is never called by the pepper framework.
+	 * @param value the new value of the '<em>Version</em>' attribute.
+	 * @see #getVersion()
+	 * @generated
+	 */
+	void setVersion(String value);
+
+	/**
+	 * Returns a {@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}.
+	 * @return
+	 */
+	public PepperModuleProperties getProperties();
+	
+	/**
+	 * Sets the{@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}.
+	 * Please make sure, that this method is called in constructor of your module. If not, a general {@link PepperModuleProperties} 
+	 * object is created by the pepper framework and will be initialized. This means, when calling this method later,
+	 * all properties for customizing the module will be overridden.  
+	 * @param properties 
+	 */
+	public void setProperties(PepperModuleProperties properties);
+	
+	/**
+	 * Returns the container and controller object for the current module. The {@link PepperModuleController} object is a kind
+	 * of communicator between a {@link PepperModule} and the pepper framework. 
 	 * @return the value of the '<em>Pepper Module Controller</em>' container reference.
 	 * @see #setPepperModuleController(PepperModuleController)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_PepperModuleController()
@@ -89,9 +113,9 @@ public interface PepperModule extends EObject {
 	PepperModuleController getPepperModuleController();
 
 	/**
-	 * Sets the value of the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getPepperModuleController <em>Pepper Module Controller</em>}' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the container and controller object for the current module. The {@link PepperModuleController} object is a kind
+	 * of communicator between a {@link PepperModule} and the pepper framework. 
+	 * Note, this method only should be called by pepper framework.
 	 * @param value the new value of the '<em>Pepper Module Controller</em>' container reference.
 	 * @see #getPepperModuleController()
 	 * @generated
@@ -99,13 +123,7 @@ public interface PepperModule extends EObject {
 	void setPepperModuleController(PepperModuleController value);
 
 	/**
-	 * Returns the value of the '<em><b>Salt Project</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Salt Project</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+	 * Returns the {@link SaltProject} object, which is filled, manipulated or exported by the current module.
 	 * @return the value of the '<em>Salt Project</em>' attribute.
 	 * @see #setSaltProject(SaltProject)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SaltProject()
@@ -115,9 +133,8 @@ public interface PepperModule extends EObject {
 	SaltProject getSaltProject();
 
 	/**
-	 * Sets the value of the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getSaltProject <em>Salt Project</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the {@link SaltProject} object, which is filled, manipulated or exported by the current module.
+	 * Note: This method only should be called by the pepper framework.
 	 * @param value the new value of the '<em>Salt Project</em>' attribute.
 	 * @see #getSaltProject()
 	 * @generated
@@ -125,43 +142,8 @@ public interface PepperModule extends EObject {
 	void setSaltProject(SaltProject value);
 
 	/**
-	 * Returns the value of the '<em><b>Returning Mode</b></em>' attribute.
-	 * The default value is <code>"PUT"</code>.
-	 * The literals are from the enumeration {@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Returning Mode</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Returning Mode</em>' attribute.
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_ReturningMode()
-	 * @model default="PUT" changeable="false"
-	 * @generated
-	 */
-	RETURNING_MODE getReturningMode();
-
-	/**
-	 * Returns a {@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}.
-	 * @return
-	 */
-	public PepperModuleProperties getProperties();
-	
-	/**
-	 * Sets the{@link PepperModuleProperties} object containing properties to customize the behaviour of this {@link PepperModule}.
-	 * @param properties 
-	 */
-	public void setProperties(PepperModuleProperties properties);
-	
-	/**
-	 * Returns the value of the '<em><b>SCorpus Graph</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>SCorpus Graph</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+	 * Returns the {@link SCorpusGraph} object which is filled, manipulated or exported by the current module. The 
+	 * {@link SCorpusGraph} object is contained in the salt project {@link #getSaltProject()}.
 	 * @return the value of the '<em>SCorpus Graph</em>' attribute.
 	 * @see #setSCorpusGraph(SCorpusGraph)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SCorpusGraph()
@@ -171,14 +153,26 @@ public interface PepperModule extends EObject {
 	SCorpusGraph getSCorpusGraph();
 
 	/**
-	 * Sets the value of the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getSCorpusGraph <em>SCorpus Graph</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the {@link SCorpusGraph} object which is filled, manipulated or exported by the current module. The 
+	 * {@link SCorpusGraph} object is contained in the salt project {@link #getSaltProject()}.
+	 * Note: This method only should be called by the pepper framework. 
 	 * @param value the new value of the '<em>SCorpus Graph</em>' attribute.
 	 * @see #getSCorpusGraph()
 	 * @generated
 	 */
 	void setSCorpusGraph(SCorpusGraph value);
+	
+	/**
+	 * Only for internal use, returns the mode of module corresponding to current processed object like
+	 * {@link SDocument} or {@link SCorpus}. This method must be replaced.
+	 * @return the value of the '<em>Returning Mode</em>' attribute.
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE
+	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_ReturningMode()
+	 * @model default="PUT" changeable="false"
+	 * @generated
+	 * @deprecated
+	 */
+	RETURNING_MODE getReturningMode();
 
 	/**
 	 * Returns the value of the '<em><b>Resources</b></em>' attribute.
@@ -233,13 +227,7 @@ public interface PepperModule extends EObject {
 	void setTemproraries(URI value);
 
 	/**
-	 * Returns the value of the '<em><b>Symbolic Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Symbolic Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+	 * Returns the symbolic name of this OSGi bundle. 
 	 * @return the value of the '<em>Symbolic Name</em>' attribute.
 	 * @see #setSymbolicName(String)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SymbolicName()
@@ -249,9 +237,10 @@ public interface PepperModule extends EObject {
 	String getSymbolicName();
 
 	/**
-	 * Sets the value of the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getSymbolicName <em>Symbolic Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the symbolic name of this OSGi bundle. This value is set automatically inside the activate method, which is 
+	 * implemented in {@link PepperModuleImpl} class. If you want to manipulate that method. make sure to set the 
+	 * symbolic name and make sure, that it is set to the bundles symbolic name.
+	 * 
 	 * @param value the new value of the '<em>Symbolic Name</em>' attribute.
 	 * @see #getSymbolicName()
 	 * @generated
@@ -297,6 +286,7 @@ public interface PepperModule extends EObject {
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_SpecialParams()
 	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.URI"
 	 * @generated
+	 * @deprecated
 	 */
 	URI getSpecialParams();
 
@@ -307,38 +297,19 @@ public interface PepperModule extends EObject {
 	 * @param value the new value of the '<em>Special Params</em>' attribute.
 	 * @see #getSpecialParams()
 	 * @generated
+	 * @deprecated
 	 */
 	void setSpecialParams(URI value);
-
+	
 	/**
-	 * Returns the value of the '<em><b>Version</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Version</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Version</em>' attribute.
-	 * @see #setVersion(String)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_Version()
-	 * @model
-	 * @generated
+	 * This method is called by the pepper framework after initializing this object and directly before start processing. 
+	 * Initializing means setting properties {@link PepperModuleProperties}, setting temprorary files, resources etc. .
+	 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason
+	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
 	 */
-	String getVersion();
-
+	public boolean isReadyToStart() throws PepperModuleNotReadyException;
 	/**
-	 * Sets the value of the '{@link de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule#getVersion <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Version</em>' attribute.
-	 * @see #getVersion()
-	 * @generated
-	 */
-	void setVersion(String value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Starts the conversion process. This method is the main method of a pepper module.
 	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
 	 * @generated
 	 */
@@ -353,38 +324,6 @@ public interface PepperModule extends EObject {
 	void start(SElementId sElementId) throws PepperModuleException;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
-	 * @generated
-	 */
-	void end() throws PepperModuleException;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model logServiceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
-	 * @generated
-	 */
-	void setLogService(LogService logService);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model logServiceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
-	 * @generated
-	 */
-	void unsetLogService(LogService logService);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
-	 * @generated
-	 */
-	LogService getLogService();
-
-	/**
 	 * This method is invoked by the Pepper framework, to get the current progress concerning the {@link SDocument} object
 	 * corresponding to the given {@link SElementId} in percent. A valid value return must be between 0 and 1. This method can 
 	 * be overridden by a derived {@link PepperModule} class. If this method is not overridden, it will return null. 
@@ -395,11 +334,37 @@ public interface PepperModule extends EObject {
 	Double getProgress(SElementId sDocumentId);
 	
 	/**
-	 * This method is called by the pepper framework after initializing this object and directly before start processing. 
-	 * Initializing means setting properties {@link PepperModuleProperties}, setting temprorary files, resources etc. .
-	 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason
-	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
+	 * This method is called by the pepper framework at the end of a conversion process. Means after all objects (
+	 * {@link SDocument} and {@link SCorpus} objects) have been processed. This method can be used to do some clean up
+	 * (e.g. to close streams etc.). 
+	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
+	 * @generated
 	 */
-	public boolean isReadyToStart() throws PepperModuleNotReadyException;
+	void end() throws PepperModuleException;
+
+	/**
+	 * Sets the OSGi logging service.
+	 * Note, this method only should be called by pepper framework.
+	 * @model logServiceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
+	 * @generated
+	 */
+	void setLogService(LogService logService);
+
+	/**
+	 * Unsets the OSGi logging service.
+	 * Note, this method only should be called by pepper framework.
+	 * @model logServiceDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
+	 * @generated
+	 */
+	void unsetLogService(LogService logService);
+
+	/**
+	 * Returns an OSGi logging service, to log events during the processing. OSGi provides several log levels like:
+	 * {@link LogService#LOG_ERROR}, {@link LogService#LOG_WARNING}, {@link LogService#LOG_INFO} and 
+	 * {@link LogService#LOG_DEBUG}.
+	 * @model kind="operation" dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.LogService"
+	 * @generated
+	 */
+	LogService getLogService();
 
 } // PepperModule

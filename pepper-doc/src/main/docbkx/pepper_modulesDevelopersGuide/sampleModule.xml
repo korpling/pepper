@@ -193,20 +193,25 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
         </para>
         <sect2 xml:id="sec_importCorpusStructure">
             <title><methodname>importCorpusStructure</methodname></title>
-            <para> Computes a corpus-structure given by the file-structure located by the address of
-                the given <classname>URI</classname> object. A corpus-structure consists of corpora
-                (represented via the Salt element <classname>SCorpus</classname>), documents
-                (represented represented via the Salt element  <classname>SDocument</classname>) and
-                a linking between corpora and a corpus and a document (represented via the Salt
-                element  <classname>SCorpusRelation</classname> and
-                    <classname>SCorpDocRelation</classname>). Each corpus corpus can contain 0..*
-                subcorpus and 0..* documents, but a corpus cannot contain both document and corpus. </para>
-            <para>When mapping file-structure to a corpus-structure the root folder (the direct
-                    <classname>URI</classname> location) is mapped into a root-corpus
-                    (<classname>SCorpus</classname> object) is created. For each sub-folder a
-                sub-corpus (<classname>SCorpus</classname> object) is created. For each file for
-                which the method <methodname>isFileToImport(URI, List)</methodname> returns
-                    <code>true</code>, a <classname>SDocument</classname> object is created and
+            <para> This method is supposed to create a corpus-structure in the Salt model which will
+                be filled via the method <function>start()</function>. A corpus-structure consists
+                of corpora (represented via the Salt element <classname>SCorpus</classname>),
+                documents (represented represented via the Salt element
+                    <classname>SDocument</classname>) and a linking between corpora and a corpus and
+                a document (represented via the Salt element <classname>SCorpusRelation</classname>
+                and <classname>SCorpDocRelation</classname>). Each corpus corpus can contain 0..*
+                subcorpus and 0..* documents, but a corpus cannot contain both document and corpus.
+                For more information, please take a look into the Salt User Guide. </para>
+            <para>In many cases, the corpus structure is simulatneaus to the file structure of a
+                corpus to import, since a lot of formats does not care about the corpus-structure.
+                For that case, Pepper already provide a mechanism to more or less automatically
+                create the corpus-structure. Here we give a short overview on that (for more
+                details, please take a look into the JavaDoc).When mapping the file-structure to a
+                corpus-structure the root folder (the direct <classname>URI</classname> location) is
+                mapped into a root-corpus (<classname>SCorpus</classname> object) is created. For
+                each sub-folder a sub-corpus (<classname>SCorpus</classname> object) is created. For
+                each file for which the method <methodname>isFileToImport(URI, List)</methodname>
+                returns <code>true</code>, a <classname>SDocument</classname> object is created and
                 added to the current <classname>SCorpusGraph</classname> object. The objects are
                 connected via <classname>SCorpusRelation</classname> or
                     <classname>SCorpusDocumentRelation</classname> objects. While traversing the
