@@ -357,6 +357,26 @@ public MyImporter()
             <para>Sometimes it might be necessary to make a clean up, after module did the job. For instance when writing an im- or an exporter it might be necessary to close file streams or a db connection. Therefore, after all the processing was done, the Pepper framework calls the method <methodname>end</methodname>. To run your clean up, just override it and your done. 
             </para>
         </sect2>
+        <sect2 xml:id="sec_monitoring">
+            <title>Monitoring the progress</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>annoying, but very valuable, pepepr keeps the user informed, aout the conversion progress</para></listitem>
+                    <listitem><para>which method to be used</para></listitem>
+                    <listitem><para>just compute it for one document, the rest is done by pepper, is it???</para></listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+        <sect2 xml:id="sec_analyzing">
+            <title>Analyzing the unknown</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>Pepper provides a mechanism to detect if an importer applicable to a given unknown format</para></listitem>
+                    <listitem><para>Not a must, but very helpful to the user, so if he don't care about formats, he still can convert his corpus</para></listitem>
+                    <listitem><para>which method to be used and what is the main (very simple) idea (just read first lines of format)</para></listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
     </sect1>
     <sect1>
         <title>building the project</title>
