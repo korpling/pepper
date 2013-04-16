@@ -39,6 +39,7 @@
     </distributionManagement>
     <properties>
         <component.descriptor.name>serviceComponents.xml</component.descriptor.name>
+        <pepper.version>1.1.5-SNAPSHOT</pepper.version>
     </properties>
     <dependencies>
         <dependency>
