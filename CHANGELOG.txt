@@ -16,10 +16,11 @@
 *	artifactId:		pepper-workflow                                               *
 ***********************************************************************************
 
-Version 1.1.4
+Version 1.1.5
 =============
 	* adopted entire project to eclipse juno
 	* set notice plugin-in to a global accessable license-mappings.xml on http://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml
+	* removed bundle as packaging of dependencies in pom 
 
 Version 1.1.4
 =============
