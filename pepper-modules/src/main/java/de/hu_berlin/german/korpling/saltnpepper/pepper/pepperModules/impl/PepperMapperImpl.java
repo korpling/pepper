@@ -150,7 +150,14 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	@Override
 	public void start()
 	{
-		this.map();
+		try
+		{
+			this.map();
+		}catch (Exception e)
+		{
+			//TODO make some exception handling like having an exception list in PepperMapperConnector, to which the exception is added
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * {@inheritDoc PepperMapper#map()}
@@ -159,12 +166,14 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	public void map() 
 	{
 		MAPPING_RESULT mappingResult= null;
+	
 		if (this.getSCorpus()!= null)
 			mappingResult= this.mapSCorpus();
 		else if (this.getSDocument()!= null)
 			mappingResult= this.mapSDocument();
 		else
 			throw new PepperMapperNotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
+		
 		this.setMappingResult(mappingResult);
 	}
 	
