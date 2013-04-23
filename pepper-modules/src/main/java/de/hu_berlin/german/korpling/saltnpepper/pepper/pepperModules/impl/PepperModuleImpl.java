@@ -35,6 +35,7 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
@@ -115,16 +116,16 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	 */
 	protected SaltProject saltProject = SALT_PROJECT_EDEFAULT;
 
-	/**
-	 * The default value of the '{@link #getReturningMode() <em>Returning Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturningMode()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final RETURNING_MODE RETURNING_MODE_EDEFAULT = RETURNING_MODE.PUT;
-
+//	/**
+//	 * The default value of the '{@link #getReturningMode() <em>Returning Mode</em>}' attribute.
+//	 * <!-- begin-user-doc -->
+//	 * <!-- end-user-doc -->
+//	 * @see #getReturningMode()
+//	 * @generated
+//	 * @ordered
+//	 */
+//	protected static final RETURNING_MODE RETURNING_MODE_EDEFAULT = RETURNING_MODE.PUT;
+//
 	/**
 	 * The cached value of the '{@link #getReturningMode() <em>Returning Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -132,8 +133,9 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	 * @see #getReturningMode()
 	 * @generated
 	 * @ordered
+	 * @deprecated and replaced by {@link MAPPING_RESULT}
 	 */
-	protected RETURNING_MODE returningMode = RETURNING_MODE_EDEFAULT;
+	protected RETURNING_MODE returningMode = RETURNING_MODE.PUT;
 
 	/**
 	 * The default value of the '{@link #getSCorpusGraph() <em>SCorpus Graph</em>}' attribute.
@@ -649,6 +651,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		while ((isStart) || (sElementId!= null))
 		{	
 			isStart= false;
+			//only returns a new SElementId, if one is available by a preceding module if exists, 
+			// also checks that maximal number of threads is not exceeded
 			sElementId= this.getPepperModuleController().get();
 			if (sElementId== null)
 				break;
@@ -818,8 +822,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				return getPepperModuleController();
 			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				return getSaltProject();
-			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
-				return getReturningMode();
+//			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
+//				return getReturningMode();
 			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				return getSCorpusGraph();
 			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
@@ -930,8 +934,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				return getPepperModuleController() != null;
 			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				return SALT_PROJECT_EDEFAULT == null ? saltProject != null : !SALT_PROJECT_EDEFAULT.equals(saltProject);
-			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
-				return returningMode != RETURNING_MODE_EDEFAULT;
+//			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
+//				return returningMode != RETURNING_MODE_EDEFAULT;
 			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				return SCORPUS_GRAPH_EDEFAULT == null ? sCorpusGraph != null : !SCORPUS_GRAPH_EDEFAULT.equals(sCorpusGraph);
 			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
@@ -964,8 +968,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		result.append(name);
 		result.append(", saltProject: ");
 		result.append(saltProject);
-		result.append(", returningMode: ");
-		result.append(returningMode);
+//		result.append(", returningMode: ");
+//		result.append(returningMode);
 		result.append(", sCorpusGraph: ");
 		result.append(sCorpusGraph);
 		result.append(", resources: ");

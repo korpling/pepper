@@ -26,6 +26,13 @@ public interface PepperMapper extends Runnable{
 	 * @return
 	 */
 	public LogService getLogService();
+	
+	/** Returns the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
+	public PepperMapperConnector getMapperConnector();
+	
+	/** Sets the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
+	public void setMapperConnector(PepperMapperConnector mapperConnector);
+	
 	/**
 	 * Returns {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
 	 * @return uri of resource

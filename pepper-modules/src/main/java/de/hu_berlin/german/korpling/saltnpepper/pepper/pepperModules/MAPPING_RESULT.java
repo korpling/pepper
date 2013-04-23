@@ -5,9 +5,11 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 
 /**
  * Determines possible return modes of a mapping (see {@link PepperMapper#map()} and {@link PepperMapper#start()}).
- * {@link MAPPING_RESULT#FINISHED} means, mapping was successful
- * {@link MAPPING_RESULT#FAILED} means, mapping was not successful and ended with an error
- * {@link MAPPING_RESULT#FINISHED} means, mapping was successful and Mapped object {@link SDocument} or {@link SCorpus} was deleted (for instance when merging objects, and no further processing of mapped object is necessary) 
+ * <ul>
+ *   <li>{@link MAPPING_RESULT#FINISHED} means, mapping was successful</li>
+ *   <li>{@link MAPPING_RESULT#FAILED} means, mapping was not successful and ended with an error</li>
+ *   <li>{@link MAPPING_RESULT#DELETED} means, mapping was successful and Mapped object {@link SDocument} or {@link SCorpus} was deleted (for instance when merging objects, and no further processing of mapped object is necessary)</li>
+ * </ul> 
  * @author Florian Zipser
  *
  */

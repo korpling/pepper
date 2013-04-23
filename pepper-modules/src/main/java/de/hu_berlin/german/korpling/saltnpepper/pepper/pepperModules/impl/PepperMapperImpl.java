@@ -1,10 +1,14 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
+import java.io.ObjectInputStream.GetField;
+
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperConnector;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.PepperMapperNotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
@@ -24,9 +28,10 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	 * @param threadGroup
 	 * @param threadName
 	 */
-	public PepperMapperImpl(ThreadGroup threadGroup, String threadName)
+	public PepperMapperImpl(PepperMapperConnector connector, ThreadGroup threadGroup, String threadName)
 	{
 		super(threadGroup,threadName);
+		this.setMapperConnector(connector);
 	}
 	
 	/**
@@ -44,6 +49,19 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	{
 		return(this.logService);
 	}
+	
+	/** connector class between calling {@link PepperModule} and this {@link PepperMapper}**/
+	protected PepperMapperConnector mapperConnector= null;
+	
+	/** {@inheritDoc PepperMapper#getMapperConnector()} **/
+	public PepperMapperConnector getMapperConnector() {
+		return mapperConnector;
+	}
+	/** {@inheritDoc PepperMapper#setMapperConnector(PepperMapperConnector)} **/
+	public void setMapperConnector(PepperMapperConnector mapperConnector) {
+		this.mapperConnector = mapperConnector;
+	}
+
 	/**
 	 * {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
 	 */
@@ -110,20 +128,19 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 		this.props = props;
 	}
 
-	private MAPPING_RESULT mappingResult= MAPPING_RESULT.DELETED;
 	/**
 	 * {@inheritDoc PepperMapper#setMappingResult(MAPPING_RESULT)}
 	 */
 	@Override
 	public void setMappingResult(MAPPING_RESULT mappingResult) {
-		this.mappingResult= mappingResult;
+		this.getMapperConnector().setMappingResult(mappingResult);
 	}
 	/**
 	 * {@inheritDoc PepperMapper#getMappingResult()}
 	 */
 	@Override
 	public MAPPING_RESULT getMappingResult() {
-		return(this.mappingResult);
+		return(this.getMapperConnector().getMappingResult());
 	}
 	
 	/**
