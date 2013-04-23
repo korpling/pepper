@@ -248,4 +248,41 @@ public class PepperImporterImplTest extends TestCase{
 		assertEquals(3, sCorpusGraph.getSCorpora().size());
 		assertEquals(4, sCorpusGraph.getSDocuments().size());
 	}
+	
+	/**
+	 * Checks, that the structure is imported correctly (one folder contains a '.'):
+	 * <pre>
+	 * |-corp1
+	 *   |-corp2.1
+	 *     |-doc1.xml
+	 *     |-doc2.xml
+	 * </pre>
+	 * @throws IOException 
+	 */
+	public void testImportCorpusStructure_STRUCTURE4() throws IOException
+	{
+		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE4");
+		tmpFolder.mkdirs();
+		File corpFolder= new File(tmpFolder.getCanonicalPath()+"/corp1");
+		corpFolder.mkdirs();
+		
+		CorpusDefinition corpDef= PepperModulesFactory.eINSTANCE.createCorpusDefinition();
+		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
+		this.getFixture().setCorpusDefinition(corpDef);
+		
+		File corp2= new File(tmpFolder.getCanonicalPath()+"/corp1/corp2.1");
+		corp2.mkdirs();
+		
+		File.createTempFile("doc1", "."+PepperImporter.ENDING_XML, corp2).deleteOnExit();
+		File.createTempFile("doc2", "."+PepperImporter.ENDING_XML, corp2).deleteOnExit();
+		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_XML);
+		
+		this.getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals(4, sCorpusGraph.getSNodes().size());
+		assertEquals(3, sCorpusGraph.getSRelations().size());
+		assertEquals(1, sCorpusGraph.getSCorpusRelations().size());
+		assertEquals(2, sCorpusGraph.getSCorpusDocumentRelations().size());
+		assertEquals(2, sCorpusGraph.getSCorpora().size());
+		assertEquals(2, sCorpusGraph.getSDocuments().size());
+	}
 }

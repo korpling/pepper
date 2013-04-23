@@ -267,7 +267,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			STYPE_NAME type= this.setTypeOfResource(currURI);
 			if (type!= null)
 			{//do not ignore resource
-				
 				//create new id
 				SElementId currId= SaltCommonFactory.eINSTANCE.createSElementId();
 				
@@ -374,19 +373,21 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public STYPE_NAME setTypeOfResource(URI resource)
 	{
-		String ending= resource.fileExtension();
-		
-		if (	(ending== null)||
-				("".equals(ending)))
+		File file= new File(resource.toFileString());
+		if (file.isDirectory())
 		{//resource is a folder 
 			File folder= new File(resource.toFileString());
 			if (isLeafFolder(folder))
 			{//resource is leaf folder
 				if (this.getSDocumentEndings().contains(ENDING_LEAF_FOLDER))
+				{
 					return(STYPE_NAME.SDOCUMENT);
+				}
 				else if (	(this.getSCorpusEndings().contains(ENDING_FOLDER))||
 							(this.getSCorpusEndings().contains(ENDING_LEAF_FOLDER)))
+				{
 					return(STYPE_NAME.SCORPUS);
+				}
 				else return(null);
 			}//resource is leaf folder
 			else
@@ -399,6 +400,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}//resource is a folder
 		else
 		{// resource is not a folder
+			String ending= resource.fileExtension();
 			if (this.getSDocumentEndings().contains(ending))
 				return(STYPE_NAME.SDOCUMENT);
 			else if (this.getSCorpusEndings().contains(ending))
@@ -443,181 +445,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}
 		return(importIgnoreList);
 	}
-	
-	
-	
-	
-	
-	
-//	/**
-//	 * {@inheritDoc}
-//	 * 
-//	 */
-//	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
-//		throw new PepperModuleException("An error occurs in this importer-module (name: "+this.getName()+"). The method importCorpusStructure() isn�t implemented.");
-//	}
-	
-//	/**
-//	 * Stores relation between documents and their resource 
-//	 */
-//	private Map<SElementId, URI> documentResourceTable= null;
-//	
-//	/**
-//	 * This method can be overridden by derived classes. This method is called by the method {@link #createCorpusStructureRec(URI, SElementId, EList)},
-//	 * to check if a file shall be imported into a {@link SDocument} object. For instance, if the file type is not precise enough
-//	 * to check that, a derived class of the given class can override that method to read the content of the file and to make a decision
-//	 * corresponding to its content. 
-//	 * @param checkUri the {@link URI} locating the file to check 
-//	 * @return true, if and only if the file corresponding to the given {@link URI} shall be mapped to a {@link SDocument} object 
-//	 */
-//	protected boolean isFileToImport(URI checkUri)
-//	{ 
-//		if (checkUri== null)
-//			throw new PepperModuleException("Cannot check if the given uri can be mapped to a SDocument object, because the uri is null.");
-//		return(true); 
-//	}
-//	
-//	/**
-//	 * {@inheritDoc PepperImporter#isFileToImport(URI, List)}
-//	 */
-//	public boolean isFileToImport(URI checkUri, List<String> fileExtensions)
-//	{
-//		boolean retVal= true;
-//		if (checkUri== null)
-//			retVal= false;
-//		if (	(fileExtensions!= null)&&
-//				(fileExtensions.size()> 0))
-//		{
-//			boolean isNegativeList=false;
-//			boolean isNegativeOccurance= false;
-//			boolean isPositiveOccurance= false;
-//			for (String fileExtension: fileExtensions)
-//			{
-//				
-//				if (fileExtension.contains(NEGATIVE_FILE_EXTENSION_MARKER))
-//				{
-//					if (fileExtension.equalsIgnoreCase(NEGATIVE_FILE_EXTENSION_MARKER+checkUri.fileExtension()))
-//						isNegativeOccurance= true;
-//					isNegativeList= true;
-//				}
-//				else if (fileExtension.equalsIgnoreCase(checkUri.fileExtension()))
-//					isPositiveOccurance= true;
-//			}
-//			if (isNegativeList)
-//			{
-//				if (isNegativeOccurance)
-//					retVal= false;
-//				else retVal=true;
-//			}
-//			else 
-//			{
-//				if (isPositiveOccurance)
-//					retVal= true;
-//				else retVal= false;
-//			}
-//		}
-//		return(retVal);
-//	}
-//	/**
-//	 * {@inheritDoc PepperImporter#createCorpusStructure(URI, SElementId, EList)}
-//	 */
-//	public Map<SElementId, URI> createCorpusStructure(	URI currURI, 
-//														SElementId parentsID, 
-//														EList<String> endings) throws IOException
-//	{
-//		if (this.getSCorpusGraph()== null)
-//			this.setSCorpusGraph(SaltFactory.eINSTANCE.createSCorpusGraph());
-//		documentResourceTable= new Hashtable<SElementId, URI>();
-//		this.createCorpusStructureRec(currURI, parentsID, endings);
-//		
-//		return(this.documentResourceTable);
-//	}
-//	/**
-//	 * Traverses recursively the folder structure to create a corpus-structure from it and creates a {@link SDocument} object,
-//	 * in case of the file type given in <code>endings</code> is correct and the method {@link #isFileASDocument()} returns true.
-//	 * @param currURI
-//	 * @param parentsID
-//	 * @param endings
-//	 * @throws IOException
-//	 */
-//	private void createCorpusStructureRec(URI currURI, SElementId parentsID, EList<String> endings) throws IOException
-//	{
-//		String corpGraphName= null;
-//		if (!".svn".equalsIgnoreCase(currURI.lastSegment()))
-//		{	
-//			File currFile= new File(currURI.toFileString());
-//			//if uri is a directory, create a corpus
-//			if (currFile.isDirectory())
-//			{
-//				//create new id
-//				SElementId currId= SaltCommonFactory.eINSTANCE.createSElementId();
-//				if (parentsID== null)
-//					currId.setSId("/"+currURI.lastSegment());
-//				else currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment());
-//				//create corpus
-//				SCorpus sCorpus= SaltCommonFactory.eINSTANCE.createSCorpus();
-//				sCorpus.setSElementId(currId);
-//				sCorpus.setSName(currURI.lastSegment());
-//				this.getSCorpusGraph().addSNode(sCorpus);
-//				//if corpus has a parent
-//				if (parentsID!= null)
-//				{
-//					SCorpus parentCorpus= this.getSCorpusGraph().getSCorpus(parentsID);
-//					SCorpusRelation sCorpRel= SaltCommonFactory.eINSTANCE.createSCorpusRelation();
-//					sCorpRel.setSSuperCorpus(parentCorpus);
-//					sCorpRel.setSSubCorpus(sCorpus);
-//					this.getSCorpusGraph().addSRelation(sCorpRel);
-//				}	
-//				for (File file: currFile.listFiles())
-//				{
-//					this.createCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), currId, endings);
-//				}
-//			}	
-//			//if uri is a file create document and possibly a corpus 
-//			else 
-//			{
-//				SElementId currId= SaltCommonFactory.eINSTANCE.createSElementId();
-//				
-//				if (parentsID== null)
-//				{//if there is no corpus given, create one with name of document
-//					parentsID = SaltCommonFactory.eINSTANCE.createSElementId();
-//					parentsID.setSId(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
-//					//create corpus
-//					SCorpus sCorpus= SaltCommonFactory.eINSTANCE.createSCorpus();
-//					sCorpus.setSElementId(parentsID);	
-//					this.getSCorpusGraph().addSNode(sCorpus);
-//					sCorpus.setSName(parentsID.getSId());
-//				}
-//				currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
-//				
-//				//start: create a new document 
-//					if (isFileToImport(currURI, endings))
-//					{//the file has the correct ending
-//						SDocument sDocument= SaltCommonFactory.eINSTANCE.createSDocument();
-//						sDocument.setSElementId(currId);
-//						sDocument.setSName(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
-//						this.getSCorpusGraph().addSNode(sDocument);
-//						SCorpusDocumentRelation sCorpDocRel= SaltCommonFactory.eINSTANCE.createSCorpusDocumentRelation();
-//						sCorpDocRel.setSCorpus(this.getSCorpusGraph().getSCorpus(parentsID));
-//						sCorpDocRel.setSDocument(sDocument);
-//						this.getSCorpusGraph().addSRelation(sCorpDocRel);
-//						//link documentId with resource
-//						this.documentResourceTable.put(currId, currURI);
-//					}
-//					
-//				//end: create a new document
-//				corpGraphName=parentsID.getSId();
-//				
-//				//setting name for corpus graph
-//				if (	(this.getSCorpusGraph().getSName()== null) || 
-//						(this.getSCorpusGraph().getSName().isEmpty()))
-//					this.getSCorpusGraph().setSName(corpGraphName);
-//			}
-//		}
-//	}
-	
-	
-	
 	
 	/**
 	 * Helper method to read an xml file with a {@link DefaultHandler2} implementation given as <em>contentHandler</em>. It is assumed,
