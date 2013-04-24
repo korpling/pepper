@@ -384,7 +384,7 @@ public MyImporter()
             pluggable into the Pepper framework. So in the best case, you can just follow this
             guide, and run </para>
         <synopsis>
-            mvn install assembly
+            mvn install assembly:single
         </synopsis>
         <para> and you will find a zip file in the target folder of your project
             (YOUR_PROJECT/target/distribution), which can simply plugged into Pepper via extracting
