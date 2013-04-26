@@ -19,13 +19,11 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperConnector;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperController;
 
 /**
  * This exception class is a general exception class for all exceptions occur in a {@link PepperMapper} object.
- * This objects takes a {@link PepperMapperConnector} object, to create error messages. 
+ * This objects takes a {@link PepperMapperController} object, to create error messages. 
  *
  **/
 public class PepperMapperException extends PepperModuleException {
@@ -35,33 +33,13 @@ public class PepperMapperException extends PepperModuleException {
 	 */
 	private static final long serialVersionUID = -1250997974486962691L;
 
-	private static String generateMeassage(PepperMapperConnector connector, String s)
-	{
-		if (connector!= null)
-		{
-			String type= "unknown";
-			if (	(connector.getSElementId()!= null)&&
-					(connector.getSElementId().getSIdentifiableElement()!= null))
-			{
-				if (connector.getSElementId().getSIdentifiableElement() instanceof SDocument)
-					type= "SDocument";
-				else if (connector.getSElementId().getSIdentifiableElement() instanceof SCorpus)
-					type= "SCorpus";
-			}
-			return("Exception occured while mapping "+type+" '"+connector.getSElementId()+"' from or to resource '"+connector.getResourceURI()+"'. "+s);
-		}
-		else
-			return(s);
-	}
-	
-	public PepperMapperException(PepperMapperConnector connector, String s)
+	public PepperMapperException(String s)
     { 
-		super(generateMeassage(connector, s));
-//		super((connector!= null) ? "Exception occured while mapping SDocument '"+connector.getSElementId()+"' from or to resource '"+connector.getResourceURI()+"'. "+s : s);
+		super(s);
 	}
     
-	public PepperMapperException(PepperMapperConnector connector, String s, Throwable ex)
+	public PepperMapperException(String s, Throwable ex)
 	{
-		super((connector!= null) ? "Exception occured while mapping SDocument '"+connector.getSElementId()+"' from or to resource '"+connector.getResourceURI()+"'. "+s : s, ex);
+		super(s, ex);
 	}
 }

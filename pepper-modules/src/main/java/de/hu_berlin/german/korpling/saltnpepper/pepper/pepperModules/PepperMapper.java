@@ -5,7 +5,6 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
  * This interface can be used in a threaded environment, where the {@link PepperModule} is used for delegating thread jobs,
@@ -14,7 +13,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * @author Florian Zipser
  *
  */
-public interface PepperMapper extends Runnable{
+public interface PepperMapper {
 	/**
 	 * Sets the OSGi logger for this mapper. To be removed, when abstract logging via slf4j is used.
 	 * @deprecated
@@ -28,12 +27,17 @@ public interface PepperMapper extends Runnable{
 	 */
 	public LogService getLogService();
 	
-	/** Returns the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
-	public PepperMapperConnector getMapperConnector();
+//	/** Returns the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
+//	public PepperMapperConnector getMapperConnector();
+//	
+//	/** Sets the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
+//	public void setMapperConnector(PepperMapperConnector mapperConnector);
 	
-	/** Sets the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
-	public void setMapperConnector(PepperMapperConnector mapperConnector);
-	
+	/**
+	 * Sets {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
+	 * @param resourceURI uri of resource
+	 */
+	public void setResourceURI(URI resourceURI);
 	/**
 	 * Returns {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
 	 * @return uri of resource
@@ -93,29 +97,11 @@ public interface PepperMapper extends Runnable{
 	 * Starts to map a given {@link SCorpus} object, if one is given.
 	 */
 	public MAPPING_RESULT mapSCorpus();
-	/**
-	 * {@link Thread#join()}
-	 * Waits for this thread to die. An invocation of this method behaves in exactly the same way as the invocation
-	 * join(0) 
-	 * @throws InterruptedException - if any thread has interrupted the current thread. The interrupted status of the current thread is cleared when this exception is thrown.
-	 */
-	public void join() throws InterruptedException;
 	
-	/**
-	 * Calls method map.
-	 * Delegation of {@link Thread#start()}.
-	 * 
-	 * Causes this thread to begin execution; the Java Virtual Machine calls the run method of this thread.
-	 * The result is that two threads are running concurrently: the current thread (which returns from the call to the start method) and the other thread (which executes its run method).
-	 * It is never legal to start a thread more than once. In particular, a thread may not be restarted once it has completed execution.
-	 * @throws IllegalThreadStateException - if the thread was already started.
-	 */
-	public void start();
-	
-	/**
-	 * Delegation of {@link Thread#getName()}.
-	 * Returns this thread's name.
-	 * @return this thread's name.
-	 */
-	public String getName();
+//	/**
+//	 * Delegation of {@link Thread#getName()}.
+//	 * Returns this thread's name.
+//	 * @return this thread's name.
+//	 */
+//	public String getName();
 }

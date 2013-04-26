@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-//import org.apache.felix.scr.annotations.Activate;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
@@ -43,7 +42,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RES
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperConnector;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
@@ -56,8 +55,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.modules.SCorpusStructureAccessor;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+//import org.apache.felix.scr.annotations.Activate;
 
 /**
  * <!-- begin-user-doc -->
@@ -647,30 +646,30 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	}
 	
 	/**
-	 * A threadsafe map of all {@link PepperMapperConnector} objects which are connected with a started {@link PepperMapper} corresponding to their
+	 * A threadsafe map of all {@link PepperMapperController} objects which are connected with a started {@link PepperMapper} corresponding to their
 	 * {@link SElementId}.
 	 */
-	private Map<SElementId, PepperMapperConnector> mappersConnectors= null;
+	private Map<SElementId, PepperMapperController> mappersControllers= null;
 	
 	/**
 	 * A lock for method {@link #getMappers()} to create a new mappers list.
 	 */
 	private Lock getMapperConnectorLock= new ReentrantLock(); 
 	/**
-	 * Returns a threadsafe map of all {@link PepperMapperConnector} objects which are connected with a started {@link PepperMapper} corresponding to their
+	 * Returns a threadsafe map of all {@link PepperMapperController} objects which are connected with a started {@link PepperMapper} corresponding to their
 	 * @return
 	 */
-	protected Map<SElementId, PepperMapperConnector> getMapperConnectors()
+	protected Map<SElementId, PepperMapperController> getMapperControllers()
 	{
-		if (mappersConnectors== null)
+		if (mappersControllers== null)
 		{
 			getMapperConnectorLock.lock();
 			try{
-				mappersConnectors= new Hashtable<SElementId, PepperMapperConnector>();
+				mappersControllers= new Hashtable<SElementId, PepperMapperController>();
 			}finally
 			{getMapperConnectorLock.unlock();}
 		}
-		return(mappersConnectors);
+		return(mappersControllers);
 	}
 	
 	/**
