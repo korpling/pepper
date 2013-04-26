@@ -1,5 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
+import org.eclipse.emf.common.util.URI;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperConnector;
@@ -19,7 +21,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 public class PepperMapperConnectorImpl implements PepperMapperConnector{
 
-	protected volatile MAPPING_RESULT mappingResult= MAPPING_RESULT.DELETED;
+//	protected volatile MAPPING_RESULT mappingResult= MAPPING_RESULT.DELETED;
+	protected volatile MAPPING_RESULT mappingResult= null;
 	/** {@inheritDoc PepperMapperConnector#setMappingResult(MAPPING_RESULT)} **/
 	@Override
 	public synchronized void setMappingResult(MAPPING_RESULT mappingResult) {
@@ -36,15 +39,51 @@ public class PepperMapperConnectorImpl implements PepperMapperConnector{
 	/**
 	 * {@inheritDoc PepperMapperConnector#getSElementId()}
 	 */
+	@Override
 	public SElementId getSElementId() {
 		return sElementId;
 	}
 	/**
 	 * {@inheritDoc PepperMapperConnector#setSElementId(SElementId)}
 	 */
+	@Override
 	public void setSElementId(SElementId sElementId) {
 		this.sElementId = sElementId;
 	}
 	
-
+	/**
+	 * {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
+	 */
+	protected URI resourceURI= null;
+	/**
+	 * {@inheritDoc PepperMapper#getResourceURI()}
+	 */
+	public URI getResourceURI() {
+		return(resourceURI);
+	}
+	/**
+	 * {@inheritDoc PepperMapper#setResourceURI(URI)}
+	 */
+	public void setResourceURI(URI resourceURI) {
+		this.resourceURI= resourceURI;
+	}
+	
+	protected volatile Double progress= null;
+	/**
+	 * {@inheritDoc PepperMapperConnector#getProgress()}
+	 */
+	@Override
+	public Double getProgress() 
+	{
+		return(progress);
+	}
+	
+	/**
+	 * {@inheritDoc PepperMapperConnector#setProgress(Double)}
+	 */
+	@Override
+	public synchronized void setProgress(Double progress) 
+	{
+		this.progress= progress;
+	}
 }

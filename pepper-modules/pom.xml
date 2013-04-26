@@ -45,7 +45,7 @@
           	<Bundle-Version>${project.version}</Bundle-Version>
           	<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
           	<Import-Package>*; de.hu_berlin.german.korpling.saltnpepper.salt.graph</Import-Package>
-          	<Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl</Export-Package>
+          	<Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules; de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.xsltModules.impl, de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions</Export-Package>
           	<Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
 		  </instructions>
         </configuration>

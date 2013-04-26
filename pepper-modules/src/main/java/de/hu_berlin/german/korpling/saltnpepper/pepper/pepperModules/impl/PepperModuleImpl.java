@@ -18,6 +18,10 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import java.io.File;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 //import org.apache.felix.scr.annotations.Activate;
 import org.eclipse.emf.common.notify.Notification;
@@ -38,6 +42,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperMo
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
@@ -45,10 +51,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModul
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PersistenceConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.modules.SCorpusStructureAccessor;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
@@ -639,6 +647,33 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	}
 	
 	/**
+	 * A threadsafe map of all {@link PepperMapperConnector} objects which are connected with a started {@link PepperMapper} corresponding to their
+	 * {@link SElementId}.
+	 */
+	private Map<SElementId, PepperMapperConnector> mappersConnectors= null;
+	
+	/**
+	 * A lock for method {@link #getMappers()} to create a new mappers list.
+	 */
+	private Lock getMapperConnectorLock= new ReentrantLock(); 
+	/**
+	 * Returns a threadsafe map of all {@link PepperMapperConnector} objects which are connected with a started {@link PepperMapper} corresponding to their
+	 * @return
+	 */
+	protected Map<SElementId, PepperMapperConnector> getMapperConnectors()
+	{
+		if (mappersConnectors== null)
+		{
+			getMapperConnectorLock.lock();
+			try{
+				mappersConnectors= new Hashtable<SElementId, PepperMapperConnector>();
+			}finally
+			{getMapperConnectorLock.unlock();}
+		}
+		return(mappersConnectors);
+	}
+	
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 */
@@ -699,6 +734,14 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	}
 
 	/**
+	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
+	 */
+	public PepperMapper createPepperMapper(SElementId sElementId)
+	{
+		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '"+this.getName()+"' has not been overridden. Please check that first.");
+	}
+	
+	/**
 	 * Calls method {@link #start(SElementId)} for every root {@link SCorpus} of {@link SaltProject} object.
 	 */
 	public void end() throws PepperModuleException 
@@ -733,6 +776,21 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		}//if salt model contain corpus graphs	
 	}
 
+	/**
+	 * {@inheritDoc PepperModule#getProgress(SElementId)}
+	 */
+	public Double getProgress(SElementId sDocumentId) 
+	{
+		return(null);
+	}
+	/**
+	 * {@inheritDoc PepperModule#getProgress()}
+	 */
+	public Double getProgress() 
+	{
+		return(null);
+	}
+	
 // ====================================== start: getting logger ======================================
 	private LogService logService;
 
@@ -751,17 +809,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	{
 		return(this.logService);
 	}
-
-	/**
-	 * {@inheritDoc PepperModule#getProgress(SElementId)}
-	 */
-	public Double getProgress(SElementId sDocumentId) 
-	{
-		return(null);
-	}
-
 	// ====================================== end: getting logger ======================================
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

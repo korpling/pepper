@@ -24,19 +24,19 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMappe
  *	This exception class is used, in case of a {@link PepperMapper} object was not correctly initialized. 
  *
  **/
-public class PepperMapperNotInitializedException extends PepperModuleException {
+public class NotInitializedException extends PepperModuleException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8100717436792012869L;
 	
-	public PepperMapperNotInitializedException()
+	public NotInitializedException()
 	{ super(); }
 	
-    public PepperMapperNotInitializedException(String s)
+    public NotInitializedException(String s)
     { super(s); }
     
-	public PepperMapperNotInitializedException(String s, Throwable ex)
+	public NotInitializedException(String s, Throwable ex)
 	{super(s, ex); }
 }

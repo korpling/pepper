@@ -1,7 +1,5 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import java.io.ObjectInputStream.GetField;
-
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.log.LogService;
 
@@ -10,7 +8,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMappe
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.PepperMapperNotInitializedException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
@@ -23,6 +21,11 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  */
 public class PepperMapperImpl extends Thread implements PepperMapper {
 	
+//	public PepperMapperImpl()
+//	{
+//		throw new PepperMapperNotInitializedException("Please call constructor PepperMapperImpl(PepperMapperConnector connector, ThreadGroup threadGroup, String threadName) instead.");
+//	}
+	
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of the thread.
 	 * @param threadGroup
@@ -31,7 +34,10 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	public PepperMapperImpl(PepperMapperConnector connector, ThreadGroup threadGroup, String threadName)
 	{
 		super(threadGroup,threadName);
+		System.out.println("---------------------------> after super super: ");
 		this.setMapperConnector(connector);
+		this.initialize();
+		System.out.println("---------------------------> end of constructor PepperMapper: ");
 	}
 	
 	/**
@@ -63,20 +69,10 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	}
 
 	/**
-	 * {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
-	 */
-	protected URI resourceURI= null;
-	/**
 	 * {@inheritDoc PepperMapper#getResourceURI()}
 	 */
 	public URI getResourceURI() {
-		return(resourceURI);
-	}
-	/**
-	 * {@inheritDoc PepperMapper#setResourceURI(URI)}
-	 */
-	public void setResourceURI(URI resourceURI) {
-		this.resourceURI= resourceURI;
+		return(this.getMapperConnector().getResourceURI());
 	}
 	/**
 	 * {@link SDocument} object to be created/ fullfilled during the mapping.
@@ -172,9 +168,19 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 		else if (this.getSDocument()!= null)
 			mappingResult= this.mapSDocument();
 		else
-			throw new PepperMapperNotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
+			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		
 		this.setMappingResult(mappingResult);
+	}
+	
+	/**
+	 * This method initializes this object and is called by the constructor.
+	 * 
+	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+	 */
+	protected void initialize()
+	{
+		
 	}
 	
 	/**
@@ -193,6 +199,6 @@ public class PepperMapperImpl extends Thread implements PepperMapper {
 	 */
 	@Override
 	public MAPPING_RESULT mapSCorpus() {
-		throw new UnsupportedOperationException("OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.");
+		return(MAPPING_RESULT.FINISHED);
 	}
 }

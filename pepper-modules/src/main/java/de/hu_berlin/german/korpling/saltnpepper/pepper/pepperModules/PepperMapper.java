@@ -5,6 +5,7 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
  * This interface can be used in a threaded environment, where the {@link PepperModule} is used for delegating thread jobs,
@@ -38,11 +39,6 @@ public interface PepperMapper extends Runnable{
 	 * @return uri of resource
 	 */
 	public URI getResourceURI();
-	/**
-	 * Sets {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
-	 * @param resourceURI uri of resource
-	 */
-	public void setResourceURI(URI resourceURI);
 	/**
 	 * Returns the {@link SDocument} object to be mapped by this mapper. 
 	 * @return {@link SDocument} object to be mapped

@@ -322,6 +322,20 @@ public interface PepperModule extends EObject {
 	 * @generated
 	 */
 	void start(SElementId sElementId) throws PepperModuleException;
+	
+	/**
+	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+	 * 
+	 * This method creates a customized {@link PepperMapper} object and returns it. You can here do some additional initialisations. 
+	 * Thinks like setting the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object and the {@link URI} resource is done
+	 * by the framework (or more in detail in method {@link #start()}).  
+	 * The parameter <code>sElementId</code>, if a {@link PepperMapper} object should be created in case of the object to map is either 
+	 * an {@link SDocument} object or an {@link SCorpus} object of the mapper should be initialized differently. 
+	 * 
+	 * @param sElementId {@link SElementId} of the {@link SCorpus} or {@link SDocument} to be processed. 
+	 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link SElementId}
+	 */
+	public PepperMapper createPepperMapper(SElementId sElementId);
 
 	/**
 	 * This method is invoked by the Pepper framework, to get the current progress concerning the {@link SDocument} object
@@ -332,6 +346,13 @@ public interface PepperModule extends EObject {
 	 * @generated
 	 */
 	Double getProgress(SElementId sDocumentId);
+	
+	/**
+	 * This method is invoked by the Pepper framework, to get the current total progress of all {@link SDocument} objects
+	 * being processed by this module. A valid value return must be between 0 and 1. This method can 
+	 * be overridden by a derived {@link PepperModule} class. If this method is not overridden, it will return null. 
+	 */
+	Double getProgress();
 	
 	/**
 	 * This method is called by the pepper framework at the end of a conversion process. Means after all objects (
