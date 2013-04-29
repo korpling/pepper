@@ -5,10 +5,7 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleProperties;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
@@ -26,20 +23,6 @@ public class PepperMapperImpl implements PepperMapper {
 		this.initialize();
 	}
 	
-//	/**
-//	 * Initializes this object and sets its {@link ThreadGroup} and the name of the thread.
-//	 * @param threadGroup
-//	 * @param threadName
-//	 */
-//	public PepperMapperImpl(PepperMapperConnector connector, ThreadGroup threadGroup, String threadName)
-//	{
-//		super(threadGroup,threadName);
-//		System.out.println("---------------------------> after super super: ");
-//		this.setMapperConnector(connector);
-//		this.initialize();
-//		System.out.println("---------------------------> end of constructor PepperMapper: ");
-//	}
-	
 	/**
 	 * OSGi logger for this mapper. To be removed, when abstract logging via slf4j is used.
 	 * @deprecated
@@ -55,18 +38,6 @@ public class PepperMapperImpl implements PepperMapper {
 	{
 		return(this.logService);
 	}
-	
-//	/** connector class between calling {@link PepperModule} and this {@link PepperMapper}**/
-//	protected PepperMapperConnector mapperConnector= null;
-//	
-//	/** {@inheritDoc PepperMapper#getMapperConnector()} **/
-//	public PepperMapperConnector getMapperConnector() {
-//		return mapperConnector;
-//	}
-//	/** {@inheritDoc PepperMapper#setMapperConnector(PepperMapperConnector)} **/
-//	public void setMapperConnector(PepperMapperConnector mapperConnector) {
-//		this.mapperConnector = mapperConnector;
-//	}
 
 	/**
 	 * {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.

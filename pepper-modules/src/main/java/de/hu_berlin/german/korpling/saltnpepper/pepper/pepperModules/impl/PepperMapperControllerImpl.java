@@ -1,6 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperController;
@@ -39,7 +40,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperMapper(PepperMapper pepperMapper)
 	{
-		System.out.println("Set peppermapper");
+		System.out.println("Set peppermapper: "+ pepperMapper);
 		this.pepperMapper= pepperMapper;
 	}
 	
@@ -62,7 +63,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		else if (mappingResult!= null)
 			return(mappingResult);
 		else
-			throw new PepperFWException("this.getPepperMapper() is empty and internal mappingResult is null, this might be a bug of pepper.");
+			throw new PepperModuleException("this.getPepperMapper() is empty and internal mappingResult is null, this might be a bug of pepper.");
 	}
 	/** {@link SElementId} object of the {@link SCorpus} or {@link SDocument} object, which is contained by containing {@link PepperMapper}**/
 	protected volatile SElementId sElementId= null;
@@ -80,13 +81,21 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	public void setSElementId(SElementId sElementId) {
 		this.sElementId = sElementId;
 	}
+	
+	/** when {@link #getPepperMapper()} is set to null, in {@link #map()}, the progress value has to be stored here.  **/
+	protected volatile Double progress= null;
 	/**
 	 * {@inheritDoc PepperMapperConnector#getProgress()}
 	 */
 	@Override
 	public Double getProgress() 
 	{
-		return(this.getPepperMapper().getProgress());
+		if (this.getPepperMapper()!= null)
+			return(this.getPepperMapper().getProgress());
+		else if (progress!= null)
+			return(progress);
+		else
+			throw new PepperModuleException("Cannot return progress, because no PepperMapper is given. This might be a bug of the Pepper module, please make sure, that method PepperModule.createPepperMapper() is implemented.");
 	}
 	
 	
@@ -109,6 +118,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		{
 			//reset mapper object, in case it uses a big amount of main memory
 			this.mappingResult= this.getPepperMapper().getMappingResult();
+			this.progress= this.getPepperMapper().getProgress();
+			System.out.println("----------->> Reset pepper mapper");
 			this.setPepperMapper(null);
 		}
 	}
