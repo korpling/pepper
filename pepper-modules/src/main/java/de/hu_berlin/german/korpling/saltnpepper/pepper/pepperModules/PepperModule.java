@@ -161,18 +161,6 @@ public interface PepperModule extends EObject {
 	 * @generated
 	 */
 	void setSCorpusGraph(SCorpusGraph value);
-	
-//	/**
-//	 * Only for internal use, returns the mode of module corresponding to current processed object like
-//	 * {@link SDocument} or {@link SCorpus}. This method must be replaced.
-//	 * @return the value of the '<em>Returning Mode</em>' attribute.
-//	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE
-//	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage#getPepperModule_ReturningMode()
-//	 * @model default="PUT" changeable="false"
-//	 * @generated
-//	 * @deprecated
-//	 */
-//	RETURNING_MODE getReturningMode();
 
 	/**
 	 * Returns the value of the '<em><b>Resources</b></em>' attribute.

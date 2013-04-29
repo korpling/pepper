@@ -31,7 +31,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFinishableMonitor;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperQueuedMonitor;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperModuleControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperModuleImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;

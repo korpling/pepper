@@ -54,18 +54,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	}
 	/** when {@link #getPepperMapper()} is set to null, in {@link #map()}, the {@link MAPPING_RESULT} value has to be stored here.  **/
 	protected volatile MAPPING_RESULT mappingResult= null;
-//	/** {@inheritDoc PepperMapperConnector#setMappingResult(MAPPING_RESULT)} **/
-//	@Override
-//	public synchronized void setMappingResult(MAPPING_RESULT mappingResult) {
-//		this.mappingResult= mappingResult;
-//		
-//	}
 	/** {@inheritDoc PepperMapperConnector#getMappingResult()} **/
 	@Override
 	public MAPPING_RESULT getMappingResult() {
-//		if (this.getPepperMapper()== null)
-//			throw new PepperFWException("this.getPepperMapper() is empty, this might be a bug of pepper.");
-//		else return(this.getPepperMapper().getMappingResult());
 		if (this.getPepperMapper()!= null)
 			return(this.getPepperMapper().getMappingResult());
 		else if (mappingResult!= null)
@@ -89,24 +80,6 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	public void setSElementId(SElementId sElementId) {
 		this.sElementId = sElementId;
 	}
-	
-//	/**
-//	 * {@inheritDoc PepperMapper#getResourceURI()}
-//	 */
-//	public URI getResourceURI() {
-//		if (this.getPepperMapper()== null)
-//			throw new PepperFWException("this.getResourceURI() is empty, this might be a bug of pepper.");
-//		else return(this.getPepperMapper().getResourceURI());
-//	}
-//	/**
-//	 * {@inheritDoc PepperMapper#setResourceURI(URI)}
-//	 */
-//	public void setResourceURI(URI resourceURI) {
-//		if (this.getPepperMapper()== null)
-//			throw new PepperFWException("this.setResourceURI() is empty, this might be a bug of pepper.");
-//		else this.getPepperMapper().setResourceURI(resourceURI);
-//	}
-	
 	/**
 	 * {@inheritDoc PepperMapperConnector#getProgress()}
 	 */
@@ -134,7 +107,6 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		}
 		finally
 		{
-			System.out.println("----------------> Set PepperMapper to null");
 			//reset mapper object, in case it uses a big amount of main memory
 			this.mappingResult= this.getPepperMapper().getMappingResult();
 			this.setPepperMapper(null);

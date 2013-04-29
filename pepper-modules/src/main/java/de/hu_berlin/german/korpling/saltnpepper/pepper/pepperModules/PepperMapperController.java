@@ -1,7 +1,5 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
-import org.eclipse.emf.common.util.URI;
-
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
@@ -35,12 +33,6 @@ public interface PepperMapperController extends Runnable{
 	 * @throws IllegalThreadStateException - if the thread was already started.
 	 */
 	public void start();
-	
-//	/**
-//	 * Sets the result of the current mapping, when it is finished. 
-//	 * @param status of mapping
-//	 */
-//	public void setMappingResult(MAPPING_RESULT mappingResult);
 	/**
 	 * Returns the result of the mapping, when finished.
 	 * @return mapping result
@@ -56,18 +48,6 @@ public interface PepperMapperController extends Runnable{
 	 * @param sElementId
 	 */
 	public void setSElementId(SElementId sElementId);
-	
-//	/**
-//	 * Returns {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
-//	 * @return uri of resource
-//	 */
-//	public URI getResourceURI();
-//	/**
-//	 * Sets {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
-//	 * @param resourceURI uri of resource
-//	 */
-//	public void setResourceURI(URI resourceURI);
-	
 	/**
 	 * This method is invoked by the containing {@link PepperModule} object, to get the current progress concerning the {@link SDocument} or 
 	 * {@link SCorpus} object handled by this object. A valid value return must be between 0 and 1 or null if method the {@link PepperModule} does
@@ -81,14 +61,6 @@ public interface PepperMapperController extends Runnable{
 	 * {@link #mapSCorpus()} is called, if {@link #getSDocument()} is not null, {@link #mapSDocument()} is called.
 	 */
 	public void map();
-	
-//	/**
-//	 * Sets the progress of the current handled {@link SDocument} or {@link SCorpus} object. This method should be called by the {@link PepperMapper}
-//	 * containing this connector object.
-//	 * @param progress the progress must be a value between 0 for 0% and 1 for 100%
-//	 */
-//	public void setProgress(Double progress);
-	
 	/**
 	 * Sets the mapper, controlled by this object.
 	 * @param pepperMapper

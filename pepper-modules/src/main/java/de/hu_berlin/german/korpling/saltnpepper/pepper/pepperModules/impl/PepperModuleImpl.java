@@ -22,14 +22,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -44,7 +42,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFW
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperController;
@@ -54,14 +51,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModul
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PersistenceConnector;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.RETURNING_MODE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-//import org.apache.felix.scr.annotations.Activate;
 
 /**
  * <!-- begin-user-doc -->
@@ -127,27 +122,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	 * @ordered
 	 */
 	protected SaltProject saltProject = SALT_PROJECT_EDEFAULT;
-
-//	/**
-//	 * The default value of the '{@link #getReturningMode() <em>Returning Mode</em>}' attribute.
-//	 * <!-- begin-user-doc -->
-//	 * <!-- end-user-doc -->
-//	 * @see #getReturningMode()
-//	 * @generated
-//	 * @ordered
-//	 */
-//	protected static final RETURNING_MODE RETURNING_MODE_EDEFAULT = RETURNING_MODE.PUT;
-//
-	/**
-	 * The cached value of the '{@link #getReturningMode() <em>Returning Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturningMode()
-	 * @generated
-	 * @ordered
-	 * @deprecated and replaced by {@link MAPPING_RESULT}
-	 */
-	protected RETURNING_MODE returningMode = RETURNING_MODE.PUT;
 
 	/**
 	 * The default value of the '{@link #getSCorpusGraph() <em>SCorpus Graph</em>}' attribute.
@@ -428,15 +402,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RETURNING_MODE getReturningMode() {
-		return returningMode;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public SCorpusGraph getSCorpusGraph() {
 		return sCorpusGraph;
 	}
@@ -677,66 +642,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		return(mappersControllers);
 	}
 	
-//	/**
-//	 * <!-- begin-user-doc -->
-//	 * <!-- end-user-doc -->
-//	 */
-//	public void start() throws PepperModuleException 
-//	{
-////		TODO uncomment this line
-////		this.readyToStart();
-//		boolean isStart= true;
-//		SElementId sElementId= null;
-//		while ((isStart) || (sElementId!= null))
-//		{	
-//			isStart= false;
-//			//only returns a new SElementId, if one is available by a preceding module if exists, 
-//			// also checks that maximal number of threads is not exceeded
-//			sElementId= this.getPepperModuleController().get();
-//			if (sElementId== null)
-//				break;
-//			//call for using push-method
-//			try
-//			{
-//				this.start(sElementId);
-//			}
-//			catch (Exception e) {
-//				if (this.getLogService()!= null)
-//				{
-//					String moduleAction= null;
-//					if (this instanceof PepperImporter)
-//						moduleAction= "import";
-//					else if (this instanceof PepperExporter)
-//						moduleAction= "export";
-//					else moduleAction= "manipulate";
-//					this.getLogService().log(LogService.LOG_WARNING, "Cannot "+moduleAction+" the SDocument '"+sElementId.getSId()+"' with pepper module '"+this.getName()+"', because of a nested exception.", e);
-//				}
-//			}
-//			if (this.returningMode== RETURNING_MODE.PUT)
-//			{	
-//				this.getPepperModuleController().put(sElementId);
-//			}
-//			else if (this.returningMode== RETURNING_MODE.FINISH)
-//			{	
-//				this.getPepperModuleController().finish(sElementId);
-//			}
-//			else 
-//			{	
-//				throw new PepperModuleException("An error occurs in this module (name: "+this.getName()+"). The returningMode isn't correctly set (it's "+this.getReturningMode()+"). Please contact module supplier.");
-//			}
-//		}
-//		this.end();
-//	}
-//
-//	/**
-//	 * <!-- begin-user-doc -->
-//	 * <!-- end-user-doc -->
-//	 */
-//	public void start(SElementId sElementId) throws PepperModuleException 
-//	{
-//		throw new PepperModuleException("An error occurs in this module (name: "+this.getName()+"). The method start(SElementId) isn't implemented. Please contact module supplier.");
-//	}
-	
 	protected boolean isMultithreaded= true;
 	/**
 	 * {@inheritDoc PepperModule#setIsMultithreaded(boolean)}
@@ -770,10 +675,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		//creating new thread group for mapper threads
 		mapperThreadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup(), this.getName()+"_mapperGroup");
 		
-		//stores all SElementId objects started for conversion, this is for later checking, that every id 
-		//is either set as put or finished to pepper fw even for older modules
-//		Collection<SElementId> startedSelementIds= new Vector<SElementId>();
-		
 		boolean isStart= true;
 		SElementId sElementId= null;
 		while ((isStart) || (sElementId!= null))
@@ -783,67 +684,38 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			if (sElementId== null)
 				break;
 			
-//			startedSelementIds.add(sElementId);
 			//call for using push-method
 			try{
-				System.out.println("------------------> start: "+ sElementId);
 				this.start(sElementId);
-				System.out.println(">>>>> isStartOverridden: "+ isStartOverridden);
-				System.out.println("------------------> go on: "+ sElementId);
 			}catch (Exception e)
 			{
 				e.printStackTrace();
 				if (this.isStartOverridden)
 				{// if start was overridden, than old dealing (waiting for return)
-					System.out.println(">FINISH1  "+ sElementId);
 					this.getPepperModuleController().finish(sElementId);
 				}// if start was overridden, than old dealing (waiting for return)
 				throw new PepperFWException("",e);
-				
-				
-				//for older modules
-//				startedSelementIds.remove(sElementId);
-				//TODO error management
 			}
 			if (this.isStartOverridden)
 			{// if start was overridden, than old dealing (waiting for return)
-				System.out.println(">PUT1  "+ sElementId);
 				this.getPepperModuleController().put(sElementId);
 			}// if start was overridden, than old dealing (waiting for return)
 		}	
-		System.out.println("------------------> HELLO"+ this.getName());
 		for (PepperMapperController controller: this.getMapperControllers().values())
 		{
-			System.out.println("waiting for: "+ controller.getSElementId());
 			MAPPING_RESULT result= controller.getMappingResult();
 			try {
-				System.out.println("join of thread: "+ controller);
 				controller.join();
 			} catch (InterruptedException e) {
 				throw new PepperFWException("Cannot wait for thread to '"+controller+"' end. ", e);
 			}
 			
 			if (MAPPING_RESULT.DELETED.equals(result))
-			{
-				System.out.println(">FINISH2  "+ controller.getSElementId());
 				this.getPepperModuleController().finish(controller.getSElementId());
-//				startedSelementIds.remove(controller.getSElementId());
-			}
 			else if (MAPPING_RESULT.FINISHED.equals(result))
-			{
-				System.out.println(">PUT2  "+ controller.getSElementId());
 				this.getPepperModuleController().put(controller.getSElementId());
-//				startedSelementIds.remove(controller.getSElementId());
-			}
 			//TODO: set UncoughtExceptionHandler and read it here
 		}
-		System.out.println("------------------> "+ this.getName());
-//		for (SElementId unterminatedSElementId: startedSelementIds)
-//		{
-//			// put all unterminated SElementIds, this can only happen for older modules,
-//			// if sElementId was not processed correctly, it will be filtered out before
-//			this.getPepperModuleController().put(unterminatedSElementId);
-//		}
 		this.end();
 	}
 		
@@ -859,7 +731,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	public void start(SElementId sElementId) throws PepperModuleException 
 	{
 		
-		System.out.println("------------> PepperModule start(id)");
 		if (	(sElementId!= null) &&
 				(sElementId.getSIdentifiableElement()!= null) &&
 				((sElementId.getSIdentifiableElement() instanceof SDocument) ||
@@ -870,7 +741,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			controller.setSElementId(sElementId);
 			
 			PepperMapper mapper= this.createPepperMapper(sElementId);
-			System.out.println("module: "+ this);
 			if (this instanceof PepperImporter)
 			{
 				URI resource= ((PepperImporter)this).getSElementId2ResourceTable().get(sElementId);
@@ -885,7 +755,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			controller.setPepperMapper(mapper);
 			
 			isStartOverridden= false;
-			System.out.println(">>>>> isStartOverridden: "+ isStartOverridden);
 			//check if mapper has to be called in multi-threaded or single-threaded mode.
 			if (this.isMultithreaded())
 				controller.start();
@@ -935,8 +804,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		
 		PepperMapperController controller=  this.getMapperControllers().get(sDocumentId);
 		//outcommented for downwards compatibility
-//		if (controller== null)
-//			throw new PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
+		//if (controller== null)
+		//	throw new PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
 		if (controller!= null)
 			return(controller.getProgress());
 		else return(null);
@@ -1039,8 +908,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				return getPepperModuleController();
 			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				return getSaltProject();
-//			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
-//				return getReturningMode();
 			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				return getSCorpusGraph();
 			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
@@ -1151,8 +1018,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				return getPepperModuleController() != null;
 			case PepperModulesPackage.PEPPER_MODULE__SALT_PROJECT:
 				return SALT_PROJECT_EDEFAULT == null ? saltProject != null : !SALT_PROJECT_EDEFAULT.equals(saltProject);
-//			case PepperModulesPackage.PEPPER_MODULE__RETURNING_MODE:
-//				return returningMode != RETURNING_MODE_EDEFAULT;
 			case PepperModulesPackage.PEPPER_MODULE__SCORPUS_GRAPH:
 				return SCORPUS_GRAPH_EDEFAULT == null ? sCorpusGraph != null : !SCORPUS_GRAPH_EDEFAULT.equals(sCorpusGraph);
 			case PepperModulesPackage.PEPPER_MODULE__RESOURCES:
@@ -1185,8 +1050,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		result.append(name);
 		result.append(", saltProject: ");
 		result.append(saltProject);
-//		result.append(", returningMode: ");
-//		result.append(returningMode);
 		result.append(", sCorpusGraph: ");
 		result.append(sCorpusGraph);
 		result.append(", resources: ");
