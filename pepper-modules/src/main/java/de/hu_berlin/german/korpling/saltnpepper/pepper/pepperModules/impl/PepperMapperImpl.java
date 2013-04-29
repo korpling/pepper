@@ -147,25 +147,6 @@ public class PepperMapperImpl implements PepperMapper {
 		return(this.mappingResult);
 	}
 	
-	
-	/**
-	 * {@inheritDoc PepperMapper#map()}
-	 */
-	@Override
-	public void map() 
-	{
-		MAPPING_RESULT mappingResult= null;
-	
-		if (this.getSCorpus()!= null)
-			mappingResult= this.mapSCorpus();
-		else if (this.getSDocument()!= null)
-			mappingResult= this.mapSDocument();
-		else
-			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
-		
-		this.setMappingResult(mappingResult);
-	}
-	
 	/**
 	 * This method initializes this object and is called by the constructor.
 	 * 
@@ -193,5 +174,25 @@ public class PepperMapperImpl implements PepperMapper {
 	@Override
 	public MAPPING_RESULT mapSCorpus() {
 		return(MAPPING_RESULT.FINISHED);
+	}
+	/** stores the current progress (between 0 and 1)**/
+	protected volatile Double progress= null;
+	/**
+	 * {@inheritDoc PepperMapperConnector#getProgress()}
+	 */
+	@Override
+	public Double getProgress() 
+	{
+		return(progress);
+	}
+	
+	/**
+	 * {@inheritDoc PepperMapperConnector#setProgress(Double)}
+	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+	 */
+	@Override
+	public void setProgress(Double progress) 
+	{
+		this.progress= progress;
 	}
 }

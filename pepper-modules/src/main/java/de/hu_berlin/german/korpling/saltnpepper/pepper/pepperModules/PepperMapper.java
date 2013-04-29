@@ -85,11 +85,6 @@ public interface PepperMapper {
 	 */
 	public MAPPING_RESULT getMappingResult();
 	/**
-	 * This method starts the {@link PepperMapper} object. If {@link #getSCorpus()} is not null,
-	 * {@link #mapSCorpus()} is called, if {@link #getSDocument()} is not null, {@link #mapSDocument()} is called.
-	 */
-	public void map();
-	/**
 	 * Starts to map a given {@link SDocument} object, if one is given.
 	 */
 	public MAPPING_RESULT mapSDocument();
@@ -97,6 +92,21 @@ public interface PepperMapper {
 	 * Starts to map a given {@link SCorpus} object, if one is given.
 	 */
 	public MAPPING_RESULT mapSCorpus();
+	
+	/**
+	 * This method is invoked by the containing {@link PepperModule} object, to get the current progress concerning the {@link SDocument} or 
+	 * {@link SCorpus} object handled by this object. A valid value return must be between 0 and 1 or null if method the {@link PepperModule} does
+	 * not call the method {@link #setProgress(Double)}.   
+	 * @param sDocumentId identifier of the requested {@link SDocument} object.
+	 */
+	public Double getProgress();
+	
+	/**
+	 * Sets the progress of the current handled {@link SDocument} or {@link SCorpus} object. This method should be called by the {@link PepperMapper}
+	 * containing this connector object.
+	 * @param progress the progress must be a value between 0 for 0% and 1 for 100%
+	 */
+	public void setProgress(Double progress);
 	
 //	/**
 //	 * Delegation of {@link Thread#getName()}.

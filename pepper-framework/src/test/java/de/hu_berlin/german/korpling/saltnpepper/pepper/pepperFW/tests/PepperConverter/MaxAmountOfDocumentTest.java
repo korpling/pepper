@@ -168,6 +168,7 @@ public class MaxAmountOfDocumentTest extends TestCase
 						break;
 					}
 				this.elementIds.remove(removeSElementId);
+				System.out.println("---> importing document ENDE "+ sElementId.getSId());
 			}
 		}
 		

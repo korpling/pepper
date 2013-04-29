@@ -13,10 +13,10 @@ public class PepperModuleTest_progress extends TestCase {
 	class MyPepperMapper extends PepperMapperImpl
 	{
 
-		public MyPepperMapper(PepperMapperController connector,
-				ThreadGroup threadGroup, String threadName) {
-			super(connector, threadGroup, threadName);
-		}
+//		public MyPepperMapper(PepperMapperController connector,
+//				ThreadGroup threadGroup, String threadName) {
+//			super(connector, threadGroup, threadName);
+//		}
 		
 		@Override
 		public MAPPING_RESULT mapSDocument() 

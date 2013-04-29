@@ -1,12 +1,11 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import org.eclipse.emf.common.util.URI;
-
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
@@ -53,7 +52,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	{
 		return(pepperMapper);
 	}
-	
+	/** when {@link #getPepperMapper()} is set to null, in {@link #map()}, the {@link MAPPING_RESULT} value has to be stored here.  **/
 	protected volatile MAPPING_RESULT mappingResult= null;
 //	/** {@inheritDoc PepperMapperConnector#setMappingResult(MAPPING_RESULT)} **/
 //	@Override
@@ -64,9 +63,15 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	/** {@inheritDoc PepperMapperConnector#getMappingResult()} **/
 	@Override
 	public MAPPING_RESULT getMappingResult() {
-		if (this.getPepperMapper()== null)
-			throw new PepperFWException("this.getPepperMapper() is empty, this might be a bug of pepper.");
-		else return(this.getPepperMapper().getMappingResult());
+//		if (this.getPepperMapper()== null)
+//			throw new PepperFWException("this.getPepperMapper() is empty, this might be a bug of pepper.");
+//		else return(this.getPepperMapper().getMappingResult());
+		if (this.getPepperMapper()!= null)
+			return(this.getPepperMapper().getMappingResult());
+		else if (mappingResult!= null)
+			return(mappingResult);
+		else
+			throw new PepperFWException("this.getPepperMapper() is empty and internal mappingResult is null, this might be a bug of pepper.");
 	}
 	/** {@link SElementId} object of the {@link SCorpus} or {@link SDocument} object, which is contained by containing {@link PepperMapper}**/
 	protected volatile SElementId sElementId= null;
@@ -102,23 +107,13 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 //		else this.getPepperMapper().setResourceURI(resourceURI);
 //	}
 	
-	protected volatile Double progress= null;
 	/**
 	 * {@inheritDoc PepperMapperConnector#getProgress()}
 	 */
 	@Override
 	public Double getProgress() 
 	{
-		return(progress);
-	}
-	
-	/**
-	 * {@inheritDoc PepperMapperConnector#setProgress(Double)}
-	 */
-	@Override
-	public synchronized void setProgress(Double progress) 
-	{
-		this.progress= progress;
+		return(this.getPepperMapper().getProgress());
 	}
 	
 	
@@ -131,7 +126,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	{
 		try
 		{
-			this.getPepperMapper().map();
+			this.map();
 		}catch (Exception e)
 		{
 			//TODO make some exception handling like having an exception list in PepperMapperConnector, to which the exception is added
@@ -141,7 +136,26 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		{
 			System.out.println("----------------> Set PepperMapper to null");
 			//reset mapper object, in case it uses a big amount of main memory
+			this.mappingResult= this.getPepperMapper().getMappingResult();
 			this.setPepperMapper(null);
 		}
+	}
+	
+	/**
+	 * {@inheritDoc PepperMapper#map()}
+	 */
+	@Override
+	public void map() 
+	{
+		MAPPING_RESULT mappingResult= null;
+	
+		if (this.getPepperMapper().getSCorpus()!= null)
+			mappingResult= this.getPepperMapper().mapSCorpus();
+		else if (this.getPepperMapper().getSDocument()!= null)
+			mappingResult= this.getPepperMapper().mapSDocument();
+		else
+			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
+		
+		this.getPepperMapper().setMappingResult(mappingResult);
 	}
 }

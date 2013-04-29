@@ -308,16 +308,44 @@ public interface PepperModule extends EObject {
 	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
 	 */
 	public boolean isReadyToStart() throws PepperModuleNotReadyException;
+	
 	/**
-	 * Starts the conversion process. This method is the main method of a pepper module.
+	 * Sets whether this {@link PepperModule} is able to run multithreaded. This method only should be called by the module itself.
+	 * @param isThreaded true, if module can run in multithread mode.
+	 */
+	public void setIsMultithreaded(boolean isMultithreaded);
+	/**
+	 * Returns whether this {@link PepperModule} is able to run multithreaded. The behavior only should be set by the module itself
+	 * via calling {@link #setIsMultithreaded(boolean)}.
+	 * @return true, if module can run in multithread mode.
+	 */
+	public boolean isMultithreaded();
+	/**
+	 * Starts the conversion process. This method is the main method of a pepper module. I fthis method is not overridden, it will call
+	 * {@link #start(SElementId)} for each {@link SDocument} and {@link SCorpus} object being contained in the set {@link SCorpusGraph}.
+	 * This is done in a multithreaded way by default. 
+	 * <strong>Note: When your module should not run in multithreaded mode, call {@link #setIsMultithreaded(boolean)}.</strong>
 	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
 	 * @generated
 	 */
 	void start() throws PepperModuleException;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This method is called by the method {@link #start()}. This is the only call in Pepper. You do not need to override this method,
+	 * in case of you are happy with the default behavior. In default, this method invokes a multithreaded process, which creates {@link PepperMapper}
+	 * objects for each given {@link SElementId} object, to process the corresponding  {@link SDocument} or {@link SCorpus} object. The 
+	 * {@link PepperMapper} objects are not created by the method itself, the creation is delegated to {@link #createPepperMapper(SElementId)}, which
+	 * has to be overridden. Default initializations are done there (for more details, please take a look into the doc of that method). Further this 
+	 * method links the created {@link PepperMapper} object to a {@link PepperMapperController} object and makes sure, that the process runs
+	 * in a by Pepper controlled manner.
+	 * <br/>
+	 * <strong>Note: When your module should not run in multithreaded mode, call {@link #setIsMultithreaded(boolean)}.</strong>
+	 * <br/>
+	 * <strong>Note: In case of you override this method, please make sure to also override the following methods:
+	 * <ul>
+	 * 	<li>{@link #getProgress(SElementId)}</li>
+	 * </ul>
+	 * </strong>
 	 * @model exceptions="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException" sElementIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
@@ -331,6 +359,8 @@ public interface PepperModule extends EObject {
 	 * by the framework (or more in detail in method {@link #start()}).  
 	 * The parameter <code>sElementId</code>, if a {@link PepperMapper} object should be created in case of the object to map is either 
 	 * an {@link SDocument} object or an {@link SCorpus} object of the mapper should be initialized differently. 
+	 * <br/>
+	 * <strong>Note: Override this method.</strong>
 	 * 
 	 * @param sElementId {@link SElementId} of the {@link SCorpus} or {@link SDocument} to be processed. 
 	 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link SElementId}
@@ -339,8 +369,10 @@ public interface PepperModule extends EObject {
 
 	/**
 	 * This method is invoked by the Pepper framework, to get the current progress concerning the {@link SDocument} object
-	 * corresponding to the given {@link SElementId} in percent. A valid value return must be between 0 and 1. This method can 
-	 * be overridden by a derived {@link PepperModule} class. If this method is not overridden, it will return null. 
+	 * corresponding to the given {@link SElementId} in percent. A valid value return must be between 0 and 1. 
+	 * <br/>
+	 * <strong>Note: In case, you have overridden the method {@link #start(SElementId)} or {@link #start()}, please also override this method,
+	 * because it accesses an internal list of all mappers, which initialized in {@link #start(SElementId)}.</strong>
 	 * @param sDocumentId identifier of the requested {@link SDocument} object.
 	 * @model sDocumentIdDataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
