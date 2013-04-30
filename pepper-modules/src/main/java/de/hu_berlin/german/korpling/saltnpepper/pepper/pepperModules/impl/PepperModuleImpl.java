@@ -758,7 +758,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			//check if mapper has to be called in multi-threaded or single-threaded mode.
 			if (this.isMultithreaded())
 				controller.start();
-			else controller.map();
+			else
+				controller.map();
 		}//only if given sElementId belongs to an object of type SDocument or SCorpus
 	}
 
@@ -818,12 +819,18 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		Collection<PepperMapperController> controllers= Collections.synchronizedCollection(this.getMapperControllers().values());
 		Double progress= 0d;
 		//walk through all controllers to aggregate progresses
-		for (PepperMapperController controller: controllers)
+		if (	(controllers!= null )&&
+				(controllers.size()> 0))
 		{
-			if (controller!= null)
+			for (PepperMapperController controller: controllers)
 			{
-				progress= progress+ controller.getProgress();
+				if (controller!= null)
+				{
+					progress= progress+ controller.getProgress();
+				}
 			}
+			if (progress>0d)
+				progress= progress/controllers.size();
 		}
 		return(progress);
 	}

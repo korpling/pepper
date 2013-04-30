@@ -25,7 +25,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
-public class PepperModuleTest_progress extends TestCase {
+public class PepperModuleProgressTest extends TestCase {
 
 	/**
 	 * The fixture for this Pepper Job test case.
@@ -68,10 +68,8 @@ public class PepperModuleTest_progress extends TestCase {
 		@Override
 		public MAPPING_RESULT mapSDocument() 
 		{
-			System.out.println(">>PepperMapper: "+ this.getSDocument().getSElementId());
 			while (clock < 10)
 			{
-				System.out.println("mapper>> "+ clock);
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
@@ -79,7 +77,6 @@ public class PepperModuleTest_progress extends TestCase {
 				}
 				this.setProgress(myProgress);
 			}
-			System.out.println(">>PepperMapper (bye bye): "+ this.getSDocument().getSElementId());
 			return(MAPPING_RESULT.FINISHED);
 		}
 	}
@@ -89,6 +86,7 @@ public class PepperModuleTest_progress extends TestCase {
 		@Override
 		public void importCorpusStructure(SCorpusGraph sCorpusGraph)
 		{
+			
 			SCorpus corpus= SaltCommonFactory.eINSTANCE.createSCorpus();
 			sCorpusGraph.addSNode(corpus);
 			for (int i=0; i< 5; i++)
@@ -114,7 +112,7 @@ public class PepperModuleTest_progress extends TestCase {
 	}
 	
 	/** dummy progress of all mappers**/
-	private Double myProgress= 0d;
+	private volatile Double myProgress= 0d;
 	/** clock to increase progress **/
 	private volatile Integer clock=0;
 	
@@ -131,9 +129,6 @@ public class PepperModuleTest_progress extends TestCase {
 		
 		//create sample corpus graph with 5 SDocuments
 		SaltProject saltProject= SaltCommonFactory.eINSTANCE.createSaltProject();
-		SCorpusGraph cGraph= SaltCommonFactory.eINSTANCE.createSCorpusGraph();
-		saltProject.getSCorpusGraphs().add(cGraph);
-		
 		
 		URI uri = URI.createFileURI(file.getAbsolutePath());
 		CorpusDefinition corpDef= null;
@@ -160,7 +155,6 @@ public class PepperModuleTest_progress extends TestCase {
 						
 		PepperFinishableMonitor jobMonitor= PepperFWFactory.eINSTANCE.createPepperFinishableMonitor();
 		((PepperJob)this.getFixture()).setPepperJ2CMonitor(jobMonitor);
-		System.out.println("LOS GEHTS");
 		Runnable runner= new Runnable() {
 			@Override
 			public void run() {
@@ -169,16 +163,19 @@ public class PepperModuleTest_progress extends TestCase {
 		};
 		new Thread(runner).start();
 		
-		Thread.sleep(500);
+		Thread.sleep(1000);
 		 for (int i=0; i<= 10;i++)
 		 {
-			 System.out.println("test>> wait for run : "+ i);
 			 assertEquals(myProgress, myImporter.getProgress());
-			 System.out.println("-------------------> GREEN");
-			 for (SDocument sDoc: cGraph.getSDocuments())
+			 for (SDocument sDoc: saltProject.getSCorpusGraphs().get(0).getSDocuments())
+			 {
 				 assertEquals(myProgress, myImporter.getProgress(sDoc.getSElementId()));
-			 
-			 myProgress= myProgress +0.1;
+			 }
+			 if (myProgress==0.7d)
+			 {
+				 myProgress= 0.8d;
+			 }
+			 else myProgress= myProgress +0.1d;
 			 clock++;
 			 Thread.sleep(100);
 		 }

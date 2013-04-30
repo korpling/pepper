@@ -6,7 +6,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
  * The interface {@link PepperMapperController} is a communicator class between a {@link PepperModule} and a {@link PepperMapper} object. The aim of this
- * class is to provide some fields, whicch can be set by the {@link PepperMapper} and be read by the {@link PepperModule} object. It does not
+ * class is to provide some fields, which can be set by the {@link PepperMapper} and be read by the {@link PepperModule} object. It does not
  * contain any reference to the {@link PepperMapper} object. This mechanism is used, to make sure that in case of a forgotten clean up, the 
  * {@link PepperMapper} object can be removed by the java garbage collector and does not overfill the main memory. 
  * 

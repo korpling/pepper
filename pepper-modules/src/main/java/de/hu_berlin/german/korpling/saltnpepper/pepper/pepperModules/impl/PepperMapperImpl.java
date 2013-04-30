@@ -146,8 +146,8 @@ public class PepperMapperImpl implements PepperMapper {
 	public MAPPING_RESULT mapSCorpus() {
 		return(MAPPING_RESULT.FINISHED);
 	}
-	/** stores the current progress (between 0 and 1)**/
-	protected volatile Double progress= null;
+	/** Stores the current progress (between 0 and 1)**/
+	protected volatile Double progress= 0d;
 	/**
 	 * {@inheritDoc PepperMapperConnector#getProgress()}
 	 */

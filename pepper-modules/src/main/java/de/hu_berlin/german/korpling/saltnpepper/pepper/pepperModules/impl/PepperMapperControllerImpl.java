@@ -1,6 +1,5 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
@@ -40,7 +39,6 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperMapper(PepperMapper pepperMapper)
 	{
-		System.out.println("Set peppermapper: "+ pepperMapper);
 		this.pepperMapper= pepperMapper;
 	}
 	
@@ -100,11 +98,11 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	
 	
 	/**
-	 * This method starts the {@link PepperMapper} object as a thread. If {@link #getSCorpus()} is not null,
+	 * This method starts the {@link PepperMapper} object in a thread. If {@link #getSCorpus()} is not null,
 	 * {@link #mapSCorpus()} is called, if {@link #getSDocument()} is not null, {@link #mapSDocument()} is called.
 	 */
 	@Override
-	public void start()
+	public void run()
 	{
 		try
 		{
@@ -118,8 +116,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		{
 			//reset mapper object, in case it uses a big amount of main memory
 			this.mappingResult= this.getPepperMapper().getMappingResult();
-			this.progress= this.getPepperMapper().getProgress();
-			System.out.println("----------->> Reset pepper mapper");
+			this.progress= 1d;
 			this.setPepperMapper(null);
 		}
 	}
