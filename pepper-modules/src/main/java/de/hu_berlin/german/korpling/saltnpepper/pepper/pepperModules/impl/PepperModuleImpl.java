@@ -672,6 +672,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	@Override
 	public void start() throws PepperModuleException
 	{
+		System.out.println("================================> START CALLED!!!!!");
+		
 		//creating new thread group for mapper threads
 		mapperThreadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup(), this.getName()+"_mapperGroup");
 		
@@ -692,15 +694,20 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				e.printStackTrace();
 				if (this.isStartOverridden)
 				{// if start was overridden, than old dealing (waiting for return)
+					System.out.println("FINISH 1"+ sElementId);
 					this.getPepperModuleController().finish(sElementId);
 				}// if start was overridden, than old dealing (waiting for return)
 				throw new PepperFWException("",e);
 			}
 			if (this.isStartOverridden)
 			{// if start was overridden, than old dealing (waiting for return)
+				System.out.println("PUT 1"+ sElementId);
 				this.getPepperModuleController().put(sElementId);
+				
 			}// if start was overridden, than old dealing (waiting for return)
 		}	
+		
+		System.out.println("mapper controllers: "+ this.getMapperControllers().values());
 		for (PepperMapperController controller: this.getMapperControllers().values())
 		{
 			MAPPING_RESULT result= controller.getMappingResult();
@@ -711,12 +718,19 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			}
 			
 			if (MAPPING_RESULT.DELETED.equals(result))
+			{
+				System.out.println("FINISH 2"+ sElementId);
 				this.getPepperModuleController().finish(controller.getSElementId());
+			}
 			else if (MAPPING_RESULT.FINISHED.equals(result))
+			{
+				System.out.println("PUT 2"+ controller.getSElementId());
 				this.getPepperModuleController().put(controller.getSElementId());
+			}
 			//TODO: set UncoughtExceptionHandler and read it here
 		}
 		this.end();
+		System.out.println("------------------------------> FINISHED");
 	}
 		
 
@@ -750,9 +764,15 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			if (sElementId.getSIdentifiableElement() instanceof SDocument)
 				mapper.setSDocument((SDocument)sElementId.getSIdentifiableElement());
 			else if (sElementId.getSIdentifiableElement() instanceof SCorpus)
+			{
+				System.out.println("============> CORPUS");
 				mapper.setSCorpus((SCorpus)sElementId.getSIdentifiableElement());
+			}
 			
 			controller.setPepperMapper(mapper);
+			
+			System.out.println("start mapper for: "+controller.getSElementId());
+			
 			
 			isStartOverridden= false;
 			//check if mapper has to be called in multi-threaded or single-threaded mode.
@@ -776,23 +796,32 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	 */
 	public void end() throws PepperModuleException 
 	{
-		if (this.getSaltProject().getSCorpusGraphs()!= null)
-		{//if salt model contain corpus graphs
-			BasicEList<SCorpusGraph> corpGraphs= new BasicEList<SCorpusGraph>();
-			//the list has to be copied, because of a possible MultibleModificationException in some PepperModules (e.g. DOTExporter)
-			for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
+		if (this.getSCorpusGraph()!= null)
+		{
+			Collection<SCorpus> sCorpora= Collections.synchronizedCollection(this.getSCorpusGraph().getSCorpora()); 
+			for (SCorpus sCorpus: sCorpora)
 			{
-				corpGraphs.add(sCorpusGraph);
+				this.start(sCorpus.getSElementId());
 			}
-			
-			for (SCorpusGraph sCorpusGraph: corpGraphs)
-			{//for every corpus graph
-				for (SCorpus sCorpus: sCorpusGraph.getSRootCorpus())
-				{//for every root corpus
-					this.start(sCorpus.getSElementId());
-				}//for every root corpus
-			}//for every corpus graph
-		}//if salt model contain corpus graphs	
+		}
+		
+//		if (this.getSaltProject().getSCorpusGraphs()!= null)
+//		{//if salt model contain corpus graphs
+//			BasicEList<SCorpusGraph> corpGraphs= new BasicEList<SCorpusGraph>();
+//			//the list has to be copied, because of a possible MultibleModificationException in some PepperModules (e.g. DOTExporter)
+//			for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
+//			{
+//				corpGraphs.add(sCorpusGraph);
+//			}
+//			
+//			for (SCorpusGraph sCorpusGraph: corpGraphs)
+//			{//for every corpus graph
+//				for (SCorpus sCorpus: sCorpusGraph.getSRootCorpus())
+//				{//for every root corpus
+//					this.start(sCorpus.getSElementId());
+//				}//for every root corpus
+//			}//for every corpus graph
+//		}//if salt model contain corpus graphs	
 	}
 
 	/**

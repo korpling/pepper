@@ -1,5 +1,6 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.MAPPING_RESULT;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperMapper;
@@ -77,6 +78,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void setSElementId(SElementId sElementId) {
+		if (sElementId== null)
+			throw new PepperModuleException("Cannot set an empty sElementId.");
 		this.sElementId = sElementId;
 	}
 	
