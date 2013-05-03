@@ -203,47 +203,6 @@ public interface PepperImporter extends PepperModule {
 	 * @generated
 	 */
 	FormatDefinition addSupportedFormat(String formatName, String formatVersion, URI formatReference);
-	
-//	/**
-//	 * This method returns if a given {@link URI} object shall be imported during import phase. 
-//	 * This decision depends on the kind and the content of the given fileExtension list. The file
-//	 * extension list can contain a set of file extensions (Strings without '.') to be imported or
-//	 * marked as to be not imported (via the prefix {@link PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}).
-//	 * The following list shows the condition of computation for returned value:
-//	 * <ul>
-//	 * <li>This method returns false, in case of the given {@link URI} obejct is null</li>
-//	 * <li>This method returns true for every {@link URI} object in case of the list is null or empty.</li>
-//	 * <li>This method returns true if the given list is a positive list (does not contain the negative marker '{@value PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}' at all) and the file extension of the uri is contained in the list.</li>
-//	 * <li>This method returns true if the given list is a negative list (any item is prefixed with the negative marker '{@value PepperImporter#NEGATIVE_FILE_EXTENSION_MARKER}') and the file extension of the uri is <b>not</b>contained in the list.</li>
-//	 * </ul> 
-//	 * Note: When a list contains items prefixed with the negative marker and items which are not, the list is interpreted
-//	 * as a negative list.
-//	 * 
-//	 * @param checkUri
-//	 * @param fileExtensions
-//	 * @return
-//	 */
-//	public boolean isFileToImport(URI checkUri, List<String> fileExtensions);
-//	/**
-//	 * Computes a corpus-structure given by the file-structure located by the address of the given {@link URI} object. For the root folder 
-//	 * (the direct URI location) a root-corpus ({@link SCorpus} object) is created. For each sub-folder a sub-corpus ({@link SCorpus} object) is created.
-//	 * For each file for which the method {@link #isFileToImport(URI, List)} returns <code>true</code>, a {@link SDocument} object is created and added
-//	 * to the current {@link SCorpusGraph} object. The objects are connected via {@link SCorpusRelation}
-//	 * or {@link SCorpusDocumentRelation} objects. While traversing the file-structure, an {@link SElementId} object is created representing the 
-//	 * corpus-hierarchie and added to the created {@link SCorpus} or {@link SDocument} objects. A map of these {@link SElementId} objects corresponding
-//	 * to the {@link URI} objects is returned, so that in method {@link #start(SElementId)} this map can be used to identify the {@link URI} location
-//	 * of the {@link SDocument} objects. 
-//	 * Note: For a description of how to add entries to the file extension list, see {@link #isFileToImport(URI, List)}.
-//	 * 
-//	 * @param currURI the parent folder of folder structure.
-//	 * @param parentsID the elementid, reffering to the element, to which the corpus structure has to be added
-//	 * @param endings a list of endings which identifiy a document in watched format. Please attend, that endings are without ".", e.g. (xml, dot, txt...). If endings is null, all files will be used.
-//	 * @return a map of elementid corresponing to a directory
-//	 * @throws IOException
-//	 */
-//	public Map<SElementId, URI> createCorpusStructure(	URI currURI, 
-//														SElementId parentsID, 
-//														EList<String> endings) throws IOException;
 	/**
 	 * This method is called by the pepper framework and returns if a corpus located at the given {@link URI} is importable
 	 * by this importer. If yes, 1 must be returned, if no 0 must be returned. If it is not quite sure, if the given corpus

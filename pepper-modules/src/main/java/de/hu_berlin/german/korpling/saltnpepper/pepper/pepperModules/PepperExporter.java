@@ -20,6 +20,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.common.util.URI;
+
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 
@@ -92,6 +95,15 @@ public interface PepperExporter extends PepperModule {
 	 */
 	void createFolderStructure(SElementId sElementId);
 
+	/**
+	 * This method is called by {@link #start()} to export the corpus-structure. This method than can create the 
+	 * folder-structure to store the document-structure into it, if necessary. 
+	 * 
+	 * OVERRIDE THIS METHOD FOR CUSTOMIZATION 
+	 * @param corpusGraph
+	 * @throws PepperModuleException
+	 */
+	void exportCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
