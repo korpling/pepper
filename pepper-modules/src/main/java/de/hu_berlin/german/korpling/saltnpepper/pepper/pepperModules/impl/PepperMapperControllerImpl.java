@@ -121,6 +121,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			this.mappingResult= this.getPepperMapper().getMappingResult();
 			this.progress= 1d;
 			this.setPepperMapper(null);
+			if (this.getPepperModule()== null)
+				throw new PepperFWException("The containing PepperModule object is not set.");
+			this.getPepperModule().done(this);
 		}
 	}
 	
@@ -140,5 +143,23 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		
 		this.getPepperMapper().setMappingResult(mappingResult);
+	}
+	
+	/** PepperModule containing this object**/
+	protected PepperModule pepperModule= null;
+	/**
+	 * {@inheritDoc PepperMapperController#setPepperModule(PepperModule)}
+	 */
+	@Override
+	public void setPepperModule(PepperModule pepperModule) {
+		this.pepperModule= pepperModule;
+	}
+	
+	/**
+	 * Returns {@link PepperModule} object containing this object
+	 * @return
+	 */
+	public PepperModule getPepperModule() {
+		return(this.pepperModule);
 	}
 }

@@ -407,5 +407,12 @@ public interface PepperModule extends EObject {
 	 * @generated
 	 */
 	LogService getLogService();
+	
+	/**
+	 * This method is called by a {@link PepperMapperController} object to notify the {@link PepperModule} object, that the
+	 * mapping is done.
+	 * @param controller The object which is done with its job
+	 */
+	public void done(PepperMapperController controller);
 
 } // PepperModule

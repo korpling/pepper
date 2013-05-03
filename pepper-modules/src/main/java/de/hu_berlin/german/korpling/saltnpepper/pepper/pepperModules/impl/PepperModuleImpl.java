@@ -18,16 +18,17 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 
 import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -81,7 +82,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  *
  * @generated
  */
-public abstract class PepperModuleImpl extends EObjectImpl implements PepperModule 
+public abstract class PepperModuleImpl extends EObjectImpl implements PepperModule, UncaughtExceptionHandler 
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -635,7 +636,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		{
 			getMapperConnectorLock.lock();
 			try{
-				mappersControllers= new Hashtable<SElementId, PepperMapperController>();
+				if (mappersControllers== null)
+					mappersControllers= new Hashtable<SElementId, PepperMapperController>();
 			}finally
 			{getMapperConnectorLock.unlock();}
 		}
@@ -663,7 +665,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	private ThreadGroup mapperThreadGroup= null;
 	
 	// ========================== end: extract corpus-path
-	/** an internal flag, to check if {@link #start(SElementId)} has been overridden or not. **/
+	/** an internal flag, to check if {@link #start(SElementId)} has been overridden or not. For downwards compatibility to modules implemented with < pepper 1.1.6**/
 	private boolean isStartOverridden= true;
 	
 	/**
@@ -672,8 +674,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	@Override
 	public void start() throws PepperModuleException
 	{
-		System.out.println("================================> START CALLED!!!!!");
-		
 		//creating new thread group for mapper threads
 		mapperThreadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup(), this.getName()+"_mapperGroup");
 		
@@ -685,7 +685,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			sElementId= this.getPepperModuleController().get();
 			if (sElementId== null)
 				break;
-			
 			//call for using push-method
 			try{
 				this.start(sElementId);
@@ -693,48 +692,79 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			{
 				e.printStackTrace();
 				if (this.isStartOverridden)
-				{// if start was overridden, than old dealing (waiting for return)
-					System.out.println("FINISH 1"+ sElementId);
-					this.getPepperModuleController().finish(sElementId);
-				}// if start was overridden, than old dealing (waiting for return)
+				{// if start was overridden, for downwards compatibility to modules implemented with < pepper 1.1.6
+					this.done(sElementId, MAPPING_RESULT.DELETED);
+				}// if start was overridden, for downwards compatibility to modules implemented with < pepper 1.1.6
 				throw new PepperFWException("",e);
 			}
 			if (this.isStartOverridden)
-			{// if start was overridden, than old dealing (waiting for return)
-				System.out.println("PUT 1"+ sElementId);
-				this.getPepperModuleController().put(sElementId);
-				
-			}// if start was overridden, than old dealing (waiting for return)
+			{// if start was overridden, for downwards compatibility to modules implemented with < pepper 1.1.6
+				this.done(sElementId, MAPPING_RESULT.FINISHED);
+			}// if start was overridden, for downwards compatibility to modules implemented with < pepper 1.1.6
 		}	
 		
-		System.out.println("mapper controllers: "+ this.getMapperControllers().values());
-		for (PepperMapperController controller: this.getMapperControllers().values())
+		Collection<PepperMapperController> controllers= Collections.synchronizedCollection(this.getMapperControllers().values());
+		for (PepperMapperController controller: controllers)
 		{
-			MAPPING_RESULT result= controller.getMappingResult();
 			try {
 				controller.join();
 			} catch (InterruptedException e) {
-				throw new PepperFWException("Cannot wait for thread to '"+controller+"' end. ", e);
+				throw new PepperFWException("Cannot wait for mapper thread '"+controller+"' in "+this.getName()+" to end. ", e);
 			}
-			
-			if (MAPPING_RESULT.DELETED.equals(result))
-			{
-				System.out.println("FINISH 2"+ sElementId);
-				this.getPepperModuleController().finish(controller.getSElementId());
-			}
-			else if (MAPPING_RESULT.FINISHED.equals(result))
-			{
-				System.out.println("PUT 2"+ controller.getSElementId());
-				this.getPepperModuleController().put(controller.getSElementId());
-			}
-			//TODO: set UncoughtExceptionHandler and read it here
+			this.done(controller);
 		}
 		this.end();
-		System.out.println("------------------------------> FINISHED");
 	}
-		
-
-			
+	
+	/** A list containing all {@link SElementId} objects, which have been mapped and for which the pepper fw has been notified, that they are processed. **/
+	private Collection<SElementId> mappedIds= null; 
+	/** 
+	 * Returns a  list containing all {@link SElementId} objects, which have been mapped and for which the pepper fw has been notified, 
+	 * that they are processed.
+	 * @return list containing all already processed {@link SElementId} objects
+	 **/
+	private synchronized Collection<SElementId> getMappedIds()
+	{
+		if (mappedIds== null)
+			mappedIds= new Vector<SElementId>();
+		return(mappedIds);
+	}
+	
+	/**
+	 * {@inheritDoc PepperModule#done(PepperMapperController)}
+	 */
+	public synchronized void done(SElementId sElementId, MAPPING_RESULT result)
+	{
+		if (!(sElementId.getIdentifiableElement() instanceof SCorpus))
+		{
+			if (MAPPING_RESULT.DELETED.equals(result))
+				this.getPepperModuleController().finish(sElementId);
+			else if (MAPPING_RESULT.FINISHED.equals(result))
+				this.getPepperModuleController().put(sElementId);
+			else if (MAPPING_RESULT.FAILED.equals(result))
+			{
+				if (this.getLogService()!= null)
+					this.getLogService().log(LogService.LOG_ERROR, "Cannot map '"+sElementId+"' with module '"+this.getName()+"', because of a mapping result was '"+MAPPING_RESULT.FAILED+"'.");
+				this.getPepperModuleController().finish(sElementId);
+			}
+			else throw new PepperFWException("Cannot notify pepper framework for process of SElementId '"+sElementId+"', because the mapping result was '"+result+"', and only '"+MAPPING_RESULT.FINISHED+"', '"+MAPPING_RESULT.FAILED+"' and '"+MAPPING_RESULT.DELETED+"' is permitted.");
+		}
+	}
+	
+	/**
+	 * {@inheritDoc PepperModule#done(PepperMapperController)}
+	 */
+	@Override
+	public synchronized void done(PepperMapperController controller)
+	{
+		if (!getMappedIds().contains(controller.getSElementId()))
+		{//only if framework has not already been notified
+			MAPPING_RESULT result= controller.getMappingResult();
+			this.done(controller.getSElementId(), result);
+			this.getMappedIds().add(controller.getSElementId());
+		}//only if framework has not already been notified
+	}
+				
 	/**
 	 * This method is called by method start() of superclass PepperImporter, if the method was not overridden
 	 * by the current class. If this is not the case, this method will be called for every document which has
@@ -753,6 +783,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			PepperMapperController controller= new PepperMapperControllerImpl(mapperThreadGroup, this.getName()+"_mapper_"+ sElementId);
 			this.getMapperControllers().put(sElementId, controller);
 			controller.setSElementId(sElementId);
+			controller.setUncaughtExceptionHandler(this);
+			controller.setPepperModule(this);
 			
 			PepperMapper mapper= this.createPepperMapper(sElementId);
 			if (this instanceof PepperImporter)
@@ -765,15 +797,12 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				mapper.setSDocument((SDocument)sElementId.getSIdentifiableElement());
 			else if (sElementId.getSIdentifiableElement() instanceof SCorpus)
 			{
-				System.out.println("============> CORPUS");
 				mapper.setSCorpus((SCorpus)sElementId.getSIdentifiableElement());
 			}
 			
 			controller.setPepperMapper(mapper);
 			
-			System.out.println("start mapper for: "+controller.getSElementId());
-			
-			
+			//for downwards compatibility to modules implemented with < pepper 1.1.6
 			isStartOverridden= false;
 			//check if mapper has to be called in multi-threaded or single-threaded mode.
 			if (this.isMultithreaded())
@@ -794,36 +823,42 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	/**
 	 * Calls method {@link #start(SElementId)} for every root {@link SCorpus} of {@link SaltProject} object.
 	 */
+	@Override
 	public void end() throws PepperModuleException 
 	{
-		if (this.getSCorpusGraph()!= null)
+		for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
 		{
-			Collection<SCorpus> sCorpora= Collections.synchronizedCollection(this.getSCorpusGraph().getSCorpora()); 
-			for (SCorpus sCorpus: sCorpora)
+			if (sCorpusGraph!= null)
 			{
-				this.start(sCorpus.getSElementId());
+				Collection<SCorpus> sCorpora= Collections.synchronizedCollection(sCorpusGraph.getSCorpora()); 
+				for (SCorpus sCorpus: sCorpora)
+				{
+					this.start(sCorpus.getSElementId());
+				}
 			}
 		}
-		
-//		if (this.getSaltProject().getSCorpusGraphs()!= null)
-//		{//if salt model contain corpus graphs
-//			BasicEList<SCorpusGraph> corpGraphs= new BasicEList<SCorpusGraph>();
-//			//the list has to be copied, because of a possible MultibleModificationException in some PepperModules (e.g. DOTExporter)
-//			for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
-//			{
-//				corpGraphs.add(sCorpusGraph);
-//			}
-//			
-//			for (SCorpusGraph sCorpusGraph: corpGraphs)
-//			{//for every corpus graph
-//				for (SCorpus sCorpus: sCorpusGraph.getSRootCorpus())
-//				{//for every root corpus
-//					this.start(sCorpus.getSElementId());
-//				}//for every root corpus
-//			}//for every corpus graph
-//		}//if salt model contain corpus graphs	
 	}
 
+	/**
+	 * Takes uncaught exception thrown by mapper threads and logs them.
+	 */
+	@Override
+	public synchronized void uncaughtException(Thread t, Throwable e) {
+		if (t instanceof PepperMapperController)
+		{
+			PepperMapperController controller= (PepperMapperController) t;
+			if (this.getLogService()!= null)
+				this.getLogService().log(LogService.LOG_ERROR, "Cannot map '"+controller.getSElementId().getSId()+"' with module '"+this.getName()+"', because of a nested exception.",e);
+			this.getPepperModuleController().finish(controller.getSElementId());
+		}
+		else
+		{
+			if (this.getLogService()!= null)
+				this.getLogService().log(LogService.LOG_ERROR, "An exception was thrown by one of the mapper threads, but the thread having thrown that exception is not of type PepperMapperController. ",e);
+		}	
+		
+	}
+	
 	/**
 	 * {@inheritDoc PepperModule#getProgress(SElementId)}
 	 */
@@ -833,7 +868,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			throw new PepperFWException("Cannot return the progress for an empty sDocumentId.");
 		
 		PepperMapperController controller=  this.getMapperControllers().get(sDocumentId);
-		//outcommented for downwards compatibility
+		//outcommented for downwards compatibility to modules implemented with < pepper 1.1.6
 		//if (controller== null)
 		//	throw new PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
 		if (controller!= null)
@@ -1101,5 +1136,4 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		result.append(')');
 		return result.toString();
 	}
-
 } //PepperModuleImpl

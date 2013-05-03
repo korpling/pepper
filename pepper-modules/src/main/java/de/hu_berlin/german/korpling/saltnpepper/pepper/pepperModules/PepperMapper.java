@@ -26,13 +26,6 @@ public interface PepperMapper {
 	 * @return
 	 */
 	public LogService getLogService();
-	
-//	/** Returns the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
-//	public PepperMapperConnector getMapperConnector();
-//	
-//	/** Sets the connector between calling {@link PepperModule} and this {@link PepperMapper}**/
-//	public void setMapperConnector(PepperMapperConnector mapperConnector);
-	
 	/**
 	 * Sets {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.
 	 * @param resourceURI uri of resource
@@ -102,16 +95,17 @@ public interface PepperMapper {
 	public Double getProgress();
 	
 	/**
+	 * Adds the given progress to the already existing progress of the current handled {@link SDocument} or {@link SCorpus} object.
+	 * This method should be called by the {@link PepperMapper}
+	 * containing this connector object.
+	 * @param progress the progress must be a value between 0 for 0% and 1 for 100% 
+	 */
+	public void addProgress(Double progress);
+	
+	/**
 	 * Sets the progress of the current handled {@link SDocument} or {@link SCorpus} object. This method should be called by the {@link PepperMapper}
 	 * containing this connector object.
 	 * @param progress the progress must be a value between 0 for 0% and 1 for 100%
 	 */
 	public void setProgress(Double progress);
-	
-//	/**
-//	 * Delegation of {@link Thread#getName()}.
-//	 * Returns this thread's name.
-//	 * @return this thread's name.
-//	 */
-//	public String getName();
 }

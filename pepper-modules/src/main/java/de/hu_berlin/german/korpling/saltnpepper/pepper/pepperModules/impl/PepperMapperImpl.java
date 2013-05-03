@@ -149,16 +149,24 @@ public class PepperMapperImpl implements PepperMapper {
 	/** Stores the current progress (between 0 and 1)**/
 	protected volatile Double progress= 0d;
 	/**
-	 * {@inheritDoc PepperMapperConnector#getProgress()}
+	 * {@inheritDoc PepperMapper#getProgress()}
 	 */
 	@Override
 	public Double getProgress() 
 	{
 		return(progress);
 	}
+	/**
+	 * {@inheritDoc PepperMapper#addProgress(Double)}
+	 */
+	@Override
+	public void addProgress(Double progress)
+	{
+		this.setProgress(getProgress()+ progress);
+	}
 	
 	/**
-	 * {@inheritDoc PepperMapperConnector#setProgress(Double)}
+	 * {@inheritDoc PepperMapper#setProgress(Double)}
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 	 */
 	@Override

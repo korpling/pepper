@@ -33,6 +33,15 @@ public interface PepperMapperController extends Runnable{
 	 * @throws IllegalThreadStateException - if the thread was already started.
 	 */
 	public void start();
+	
+	/**
+	 * Calls method map.
+	 * Delegation of {@link Thread#start()}.
+	 * 
+	 * {@inheritDoc Thread#setUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)}
+	 */ 
+	public void setUncaughtExceptionHandler(Thread.UncaughtExceptionHandler eh);
+	
 	/**
 	 * Returns the result of the mapping, when finished.
 	 * @return mapping result
@@ -72,5 +81,12 @@ public interface PepperMapperController extends Runnable{
 	 * @return
 	 */
 	public PepperMapper getPepperMapper();
+	
+	/**
+	 * Sets the {@link PepperModule} object, which contains the {@link PepperMapperController} as a callback reference. This is necessary,
+	 * that the {@link PepperMapperController} can notify the containing object that its job is done via calling {@link PepperModule#done(PepperMapperController)}
+	 * @param pepperModule containing {@link PepperModule} object
+	 */
+	public void setPepperModule(PepperModule pepperModule);
 	
 }
