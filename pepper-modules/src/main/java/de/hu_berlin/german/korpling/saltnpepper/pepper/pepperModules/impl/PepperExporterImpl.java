@@ -195,7 +195,7 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 			for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
 				exportCorpusStructure(sCorpusGraph);
 		}
-		start();
+		super.start();
 	}
 	
 	/**

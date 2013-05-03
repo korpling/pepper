@@ -101,9 +101,8 @@ public interface PepperExporter extends PepperModule {
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZATION 
 	 * @param corpusGraph
-	 * @throws PepperModuleException
 	 */
-	void exportCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException;
+	void exportCorpusStructure(SCorpusGraph corpusGraph);
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
