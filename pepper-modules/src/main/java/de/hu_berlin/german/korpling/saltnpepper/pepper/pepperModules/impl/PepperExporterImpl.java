@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
@@ -193,7 +194,11 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 		if (this.getSaltProject()!= null)
 		{
 			for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
+			{
+				if (sCorpusGraph== null)
+					throw new PepperFWException("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
 				exportCorpusStructure(sCorpusGraph);
+			}
 		}
 		super.start();
 	}

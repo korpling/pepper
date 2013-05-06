@@ -62,7 +62,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		else if (mappingResult!= null)
 			return(mappingResult);
 		else
-			throw new PepperModuleException("this.getPepperMapper() is empty and internal mappingResult is null, this might be a bug of pepper.");
+			throw new PepperModuleException("this.getPepperMapper() is empty and internal mappingResult is null for '"+this.getSElementId()+"', this might be a bug of pepper.");
 	}
 	/** {@link SElementId} object of the {@link SCorpus} or {@link SDocument} object, which is contained by containing {@link PepperMapper}**/
 	protected volatile SElementId sElementId= null;

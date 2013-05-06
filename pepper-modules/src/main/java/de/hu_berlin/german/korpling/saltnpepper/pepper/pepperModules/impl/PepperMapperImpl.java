@@ -93,15 +93,15 @@ public class PepperMapperImpl implements PepperMapper {
 	 */
 	protected PepperModuleProperties props= null;
 	/**
-	 * {@inheritDoc PepperMapper#getProps()} 
+	 * {@inheritDoc PepperMapper#getProperties()} 
 	 */
-	public PepperModuleProperties getProps() {
+	public PepperModuleProperties getProperties() {
 		return props;
 	}
 	/**
-	 * {@inheritDoc PepperMapper#setProps(PepperModuleProperties)} 
+	 * {@inheritDoc PepperMapper#setProperties(PepperModuleProperties)} 
 	 */
-	public void setProps(PepperModuleProperties props) {
+	public void setProperties(PepperModuleProperties props) {
 		this.props = props;
 	}
 

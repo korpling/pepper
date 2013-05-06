@@ -787,6 +787,8 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			controller.setPepperModule(this);
 			
 			PepperMapper mapper= this.createPepperMapper(sElementId);
+			mapper.setProperties(this.getProperties());
+			
 			if (this instanceof PepperImporter)
 			{
 				URI resource= ((PepperImporter)this).getSElementId2ResourceTable().get(sElementId);

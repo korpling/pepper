@@ -61,12 +61,12 @@ public interface PepperMapper {
 	 * Returns the {@link PepperModuleProperties} object containing user customizations to be observed during the mapping.
 	 * @return {@link PepperModuleProperties} object to be used
 	 */
-	public PepperModuleProperties getProps();
+	public PepperModuleProperties getProperties();
 	/**
 	 * Sets the {@link PepperModuleProperties} object containing user customizations to be observed during the mapping.
 	 * @param props {@link PepperModuleProperties} object to be used
 	 */
-	public void setProps(PepperModuleProperties props);
+	public void setProperties(PepperModuleProperties props);
 	/**
 	 * Sets the result of the current mapping, when it is finished. 
 	 * @param status of mapping
