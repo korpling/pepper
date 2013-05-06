@@ -24,8 +24,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,19 +46,20 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperImporterException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusDocumentRelation;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusRelation;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STYPE_NAME;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
@@ -171,14 +172,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 */
-	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
-		throw new PepperModuleException("An error occurs in this importer-module (name: "+this.getName()+"). The method importCorpusStructure() isn�t implemented.");
-	}
-
-	/**
 	 * Creates a new {@link FormatDefinitionImpl} objects, sets its values 
 	 * {@link FormatDefinition#setFormatName(String)}, {@link FormatDefinition#setFormatVersion(String)} and
 	 * {@link FormatDefinition#setFormatReference(URI)} to the given ones, adds the created object to
@@ -192,163 +185,265 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		return(PepperExporterImpl.addSupportedFormat(this, formatName, formatVersion, formatReference));
 	}
 
-	/**
-	 * Stores relation between documents and their resource 
-	 */
-	private Map<SElementId, URI> documentResourceTable= null;
+	
 	
 	/**
-	 * This method can be overridden by derived classes. This method is called by the method {@link #createCorpusStructureRec(URI, SElementId, EList)},
-	 * to check if a file shall be imported into a {@link SDocument} object. For instance, if the file type is not precise enough
-	 * to check that, a derived class of the given class can override that method to read the content of the file and to make a decision
-	 * corresponding to its content. 
-	 * @param checkUri the {@link URI} locating the file to check 
-	 * @return true, if and only if the file corresponding to the given {@link URI} shall be mapped to a {@link SDocument} object 
+	 * Stores {@link SElementId} objects corresponding to either a {@link SDocument} or a {@link SCorpus} object, which has
+	 * been created during the run of {@link #importCorpusStructure(SCorpusGraph)}. Corresponding to the {@link SElementId} object
+	 * this table stores the resource from where the element shall be imported.<br/>
+	 * For instance:
+	 * <table>
+	 * 	<tr><td>corpus_1</td><td>/home/me/corpora/myCorpus</td></tr>
+	 *  <tr><td>corpus_2</td><td>/home/me/corpora/myCorpus/subcorpus</td></tr>
+	 *  <tr><td>doc_1</td><td>/home/me/corpora/myCorpus/subcorpus/document1.xml</td></tr>
+	 *  <tr><td>doc_2</td><td>/home/me/corpora/myCorpus/subcorpus/document2.xml</td></tr>
+	 * </table>
+	 * 
 	 */
-	protected boolean isFileToImport(URI checkUri)
-	{ 
-		if (checkUri== null)
-			throw new PepperModuleException("Cannot check if the given uri can be mapped to a SDocument object, because the uri is null.");
-		return(true); 
+	private Map<SElementId, URI> sElementId2ResourceTable= null;
+	
+	/**
+	 * {@inheritDoc PepperImporter#getSElementId2ResourceTable()}
+	 */
+	@Override
+	public synchronized Map<SElementId, URI> getSElementId2ResourceTable() {
+		if (sElementId2ResourceTable== null)
+			sElementId2ResourceTable= new Hashtable<SElementId, URI>();
+		return sElementId2ResourceTable;
 	}
 	
 	/**
-	 * {@inheritDoc PepperImporter#isFileToImport(URI, List)}
+	 * {@inheritDoc PepperImporter#importCorpusStructure(SCorpusGraph)}
 	 */
-	public boolean isFileToImport(URI checkUri, List<String> fileExtensions)
+	@Override
+	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException 
 	{
-		boolean retVal= true;
-		if (checkUri== null)
-			retVal= false;
-		if (	(fileExtensions!= null)&&
-				(fileExtensions.size()> 0))
-		{
-			boolean isNegativeList=false;
-			boolean isNegativeOccurance= false;
-			boolean isPositiveOccurance= false;
-			for (String fileExtension: fileExtensions)
-			{
-				
-				if (fileExtension.contains(NEGATIVE_FILE_EXTENSION_MARKER))
-				{
-					if (fileExtension.equalsIgnoreCase(NEGATIVE_FILE_EXTENSION_MARKER+checkUri.fileExtension()))
-						isNegativeOccurance= true;
-					isNegativeList= true;
-				}
-				else if (fileExtension.equalsIgnoreCase(checkUri.fileExtension()))
-					isPositiveOccurance= true;
-			}
-			if (isNegativeList)
-			{
-				if (isNegativeOccurance)
-					retVal= false;
-				else retVal=true;
-			}
-			else 
-			{
-				if (isPositiveOccurance)
-					retVal= true;
-				else retVal= false;
-			}
-		}
-		return(retVal);
-	}
-	/**
-	 * {@inheritDoc PepperImporter#createCorpusStructure(URI, SElementId, EList)}
-	 */
-	public Map<SElementId, URI> createCorpusStructure(	URI currURI, 
-														SElementId parentsID, 
-														EList<String> endings) throws IOException
-	{
+		this.setSCorpusGraph(corpusGraph);
 		if (this.getSCorpusGraph()== null)
-			this.setSCorpusGraph(SaltFactory.eINSTANCE.createSCorpusGraph());
-		documentResourceTable= new Hashtable<SElementId, URI>();
-		this.createCorpusStructureRec(currURI, parentsID, endings);
+			throw new PepperImporterException(this.name+": Cannot start with importing corpus, because salt project isn�t set.");
 		
-		return(this.documentResourceTable);
+		if (this.getCorpusDefinition()== null)
+			throw new PepperImporterException(this.name+": Cannot start with importing corpus, because no corpus definition to import is given.");
+		if (this.getCorpusDefinition().getCorpusPath()== null)
+			throw new PepperImporterException(this.name+": Cannot start with importing corpus, because the path of given corpus definition is null.");
+		
+		
+		if (!this.getCorpusDefinition().getCorpusPath().isFile())
+			throw new PepperImporterException(this.name+": Cannot start with importing corpus, because the given corpus path does not locate a file.");
+		
+		
+		//clean uri in corpus path (if it is a folder and ends with/, / has to be removed)
+		if (	(this.getCorpusDefinition().getCorpusPath().toFileString().endsWith("/")) || 
+				(this.getCorpusDefinition().getCorpusPath().toFileString().endsWith("\\")))
+		{
+			this.getCorpusDefinition().setCorpusPath(this.getCorpusDefinition().getCorpusPath().trimSegments(1));
+		}
+		importCorpusStructureRec(this.getCorpusDefinition().getCorpusPath(), null);
 	}
+	
 	/**
-	 * Traverses recursively the folder structure to create a corpus-structure from it and creates a {@link SDocument} object,
-	 * in case of the file type given in <code>endings</code> is correct and the method {@link #isFileASDocument()} returns true.
+	 * Top down traversal in file given structure. This method is called by {@link #importCorpusStructure(SCorpusGraph)} and creates
+	 * the corpus-structure via a top down traversal in file structure. For each found file (real file and folder), the method 
+	 * {@link #setTypeOfResource(URI)} is called to set the type of the resource. If the type is a {@link STYPE_NAME#SDOCUMENT} a {@link SDocument}
+	 * object is created for the resource, if the type is a {@link STYPE_NAME#SCORPUS} a {@link SCorpus} object is created, if the type
+	 * is null, the resource is ignored.  
 	 * @param currURI
 	 * @param parentsID
 	 * @param endings
 	 * @throws IOException
 	 */
-	private void createCorpusStructureRec(URI currURI, SElementId parentsID, EList<String> endings) throws IOException
+	protected void importCorpusStructureRec(URI currURI, SElementId parentsID)
 	{
-		String corpGraphName= null;
-		if (!".svn".equalsIgnoreCase(currURI.lastSegment()))
-		{	
-			File currFile= new File(currURI.toFileString());
-			//if uri is a directory, create a corpus
-			if (currFile.isDirectory())
-			{
+		//set name for corpus graph
+		if (	(this.getSCorpusGraph().getSName()== null) || 
+				(this.getSCorpusGraph().getSName().isEmpty()))
+		{
+			this.getSCorpusGraph().setSName(currURI.lastSegment());
+		}
+		
+		if (	(currURI.lastSegment()!= null)&&
+				(!this.getIgnoreEndings().contains(currURI.lastSegment())))
+		{//if file is not part of ignore list	
+			STYPE_NAME type= this.setTypeOfResource(currURI);
+			if (type!= null)
+			{//do not ignore resource
 				//create new id
 				SElementId currId= SaltCommonFactory.eINSTANCE.createSElementId();
-				if (parentsID== null)
-					currId.setSId("/"+currURI.lastSegment());
-				else currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment());
-				//create corpus
-				SCorpus sCorpus= SaltCommonFactory.eINSTANCE.createSCorpus();
-				sCorpus.setSElementId(currId);
-				sCorpus.setSName(currURI.lastSegment());
-				this.getSCorpusGraph().addSNode(sCorpus);
-				//if corpus has a parent
-				if (parentsID!= null)
-				{
-					SCorpus parentCorpus= this.getSCorpusGraph().getSCorpus(parentsID);
-					SCorpusRelation sCorpRel= SaltCommonFactory.eINSTANCE.createSCorpusRelation();
-					sCorpRel.setSSuperCorpus(parentCorpus);
-					sCorpRel.setSSubCorpus(sCorpus);
-					this.getSCorpusGraph().addSRelation(sCorpRel);
-				}	
-				for (File file: currFile.listFiles())
-				{
-					this.createCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), currId, endings);
-				}
-			}	
-			//if uri is a file create document and possibly a corpus 
-			else 
-			{
-				SElementId currId= SaltCommonFactory.eINSTANCE.createSElementId();
 				
-				if (parentsID== null)
-				{//if there is no corpus given, create one with name of document
-					parentsID = SaltCommonFactory.eINSTANCE.createSElementId();
-					parentsID.setSId(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
+				File currFile= new File(currURI.toFileString());
+				
+				if (STYPE_NAME.SCORPUS.equals(type))
+				{//resource is a SCorpus
+					if (parentsID== null)
+						currId.setSId("/"+currURI.lastSegment());
+					else currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment());
 					//create corpus
 					SCorpus sCorpus= SaltCommonFactory.eINSTANCE.createSCorpus();
-					sCorpus.setSElementId(parentsID);	
+					sCorpus.setSElementId(currId);
+					sCorpus.setSName(currURI.lastSegment());
 					this.getSCorpusGraph().addSNode(sCorpus);
-					sCorpus.setSName(parentsID.getSId());
-				}
-				currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
-				
-				//start: create a new document 
-					if (isFileToImport(currURI, endings))
-					{//the file has the correct ending
-						SDocument sDocument= SaltCommonFactory.eINSTANCE.createSDocument();
-						sDocument.setSElementId(currId);
-						sDocument.setSName(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
-						this.getSCorpusGraph().addSNode(sDocument);
-						SCorpusDocumentRelation sCorpDocRel= SaltCommonFactory.eINSTANCE.createSCorpusDocumentRelation();
-						sCorpDocRel.setSCorpus(this.getSCorpusGraph().getSCorpus(parentsID));
-						sCorpDocRel.setSDocument(sDocument);
-						this.getSCorpusGraph().addSRelation(sCorpDocRel);
-						//link documentId with resource
-						this.documentResourceTable.put(currId, currURI);
-					}
+					//if corpus has a parent
+					if (parentsID!= null)
+					{
+						SCorpus parentCorpus= this.getSCorpusGraph().getSCorpus(parentsID);
+						SCorpusRelation sCorpRel= SaltCommonFactory.eINSTANCE.createSCorpusRelation();
+						sCorpRel.setSSuperCorpus(parentCorpus);
+						sCorpRel.setSSubCorpus(sCorpus);
+						this.getSCorpusGraph().addSRelation(sCorpRel);
+					}	
 					
-				//end: create a new document
-				corpGraphName=parentsID.getSId();
-				
-				//setting name for corpus graph
-				if (	(this.getSCorpusGraph().getSName()== null) || 
-						(this.getSCorpusGraph().getSName().isEmpty()))
-					this.getSCorpusGraph().setSName(corpGraphName);
-			}
+					if (currFile.isDirectory())
+					{
+						for (File file: currFile.listFiles())
+						{
+							try {
+								this.importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), currId);
+							} catch (IOException e) {
+								throw new PepperImporterException("Cannot import corpus structure, because cannot create a URI out of file '"+file+"'. ", e);
+							}
+						}
+					}
+				}//resource is a SCorpus
+				else if (STYPE_NAME.SDOCUMENT.equals(type))
+				{//resource is a SDocument
+					if (parentsID== null)
+					{//if there is no corpus given, create one with name of document
+						parentsID = SaltCommonFactory.eINSTANCE.createSElementId();
+						parentsID.setSId(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
+						//create corpus
+						SCorpus sCorpus= SaltCommonFactory.eINSTANCE.createSCorpus();
+						sCorpus.setSElementId(parentsID);	
+						this.getSCorpusGraph().addSNode(sCorpus);
+						sCorpus.setSName(parentsID.getSId());
+					}
+					currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
+					
+					//start: create a new document 
+					SDocument sDocument= SaltCommonFactory.eINSTANCE.createSDocument();
+					sDocument.setSElementId(currId);
+					sDocument.setSName(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
+					this.getSCorpusGraph().addSNode(sDocument);
+					SCorpusDocumentRelation sCorpDocRel= SaltCommonFactory.eINSTANCE.createSCorpusDocumentRelation();
+					sCorpDocRel.setSCorpus(this.getSCorpusGraph().getSCorpus(parentsID));
+					sCorpDocRel.setSDocument(sDocument);
+					this.getSCorpusGraph().addSRelation(sCorpDocRel);
+				}//resource is a SDocument
+				//link documentId with resource
+				this.getSElementId2ResourceTable().put(currId, currURI);
+			}//do not ignore resource
+		}//if file is not part of ignore list
+	}
+	
+	/**
+	 * Contains all endings, which determine a resource to be a resource for a {@link SDocument} object. 
+	 */
+	private Collection<String> sDocumentEndings= null;
+	/**
+	 * {@inheritDoc PepperImporter#getSDocumentEndings()}
+	 */
+	@Override
+	public synchronized Collection<String> getSDocumentEndings()
+	{
+		if (sDocumentEndings== null)
+			sDocumentEndings= new HashSet<String>();
+		return(sDocumentEndings);
+	}
+	
+	/**
+	 * Contains all endings, which determine a resource to be a resource for a {@link SCorpus} object. 
+	 */
+	private Collection<String> sCorpusEndings= null;
+	/**
+	 * {@inheritDoc PepperImporter#getSCorpusEndings()}
+	 */
+	@Override
+	public synchronized Collection<String> getSCorpusEndings()
+	{
+		if (sCorpusEndings== null)
+		{
+			sCorpusEndings= new HashSet<String>();
+			sCorpusEndings.add(ENDING_FOLDER);
 		}
+		return(sCorpusEndings);
+	}
+	
+	/**
+	 * {@inheritDoc PepperImporter#setTypeOfResource(URI)}
+	 */
+	@Override
+	public STYPE_NAME setTypeOfResource(URI resource)
+	{
+		File file= new File(resource.toFileString());
+		if (file.isDirectory())
+		{//resource is a folder 
+			File folder= new File(resource.toFileString());
+			if (isLeafFolder(folder))
+			{//resource is leaf folder
+				if (this.getSDocumentEndings().contains(ENDING_LEAF_FOLDER))
+				{
+					return(STYPE_NAME.SDOCUMENT);
+				}
+				else if (	(this.getSCorpusEndings().contains(ENDING_FOLDER))||
+							(this.getSCorpusEndings().contains(ENDING_LEAF_FOLDER)))
+				{
+					return(STYPE_NAME.SCORPUS);
+				}
+				else return(null);
+			}//resource is leaf folder
+			else
+			{//resource is no leaf folder
+				if (this.getSCorpusEndings().contains(ENDING_FOLDER))
+					return(STYPE_NAME.SCORPUS);
+				else return(null);
+			}//resource is no leaf folder
+			
+		}//resource is a folder
+		else
+		{// resource is not a folder
+			String ending= resource.fileExtension();
+			if (this.getSDocumentEndings().contains(ending))
+				return(STYPE_NAME.SDOCUMENT);
+			else if (this.getSCorpusEndings().contains(ending))
+				return(STYPE_NAME.SCORPUS);
+			else return(null);
+		}// resource is not a folder
+	}
+	
+	/** 
+	 * Computes if a folder is a leaf folder or not.
+	 * @return true, if folder is a leaf folder, false otherwise
+	 **/
+	private boolean isLeafFolder(File folder)
+	{
+		if (folder.isDirectory())
+		{
+			for (File file: folder.listFiles())
+			{
+				if (file.isDirectory())
+					return(false);
+			}
+			return(true);
+		}
+		else return(false);
+	}
+	
+	/**
+	 * Collection of filenames, not to be imported, like '.svn'
+	 */
+	private Collection<String> importIgnoreList= null;
+	/**
+	 * Returns a collection of filenames, not to be imported. {@inheritDoc #importIgnoreList}}.
+	 * @return
+	 */
+	@Override
+	public synchronized Collection<String> getIgnoreEndings()
+	{
+		if (importIgnoreList== null)
+		{
+			importIgnoreList= new HashSet<String>();
+			importIgnoreList.add(".svn");
+		}
+		return(importIgnoreList);
 	}
 	
 	/**
@@ -497,4 +592,11 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		return super.eIsSet(featureID);
 	}
 
+	/**
+	 *  {@inheritDoc PepperImporter#isImportable(URI)}}
+	 */
+	@Override
+	public Double isImportable(URI corpusPath) {
+		return null;
+	}
 } //PepperImporterImpl

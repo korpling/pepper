@@ -691,18 +691,23 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 		
 		if (this.pepperManipulatorComponentFactories!= null)
 		{	
-			//run through all pepperManipulatorComponentFactories and search for mapping PepperManipulator
-			for (PepperManipulator manipulator: this.getPepperManipulators())
+			EList<PepperManipulator> manipulators=this.getPepperManipulators();
+			if (	(manipulators!= null) &&
+					(manipulators.size()> 0))
 			{
-				//emit by name
-				if(pepperModuleParams.getModuleName()!= null)
+				//run through all pepperManipulatorComponentFactories and search for mapping PepperManipulator
+				for (PepperManipulator manipulator: manipulators)
 				{
-					if (pepperModuleParams.getModuleName().equalsIgnoreCase(manipulator.getName()))
-					{	
-						pepperManipulator= manipulator;
-						break;
-					}
-				}	
+					//emit by name
+					if(pepperModuleParams.getModuleName()!= null)
+					{
+						if (pepperModuleParams.getModuleName().equalsIgnoreCase(manipulator.getName()))
+						{	
+							pepperManipulator= manipulator;
+							break;
+						}
+					}	
+				}
 			}
 		}
 		return(pepperManipulator);

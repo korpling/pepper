@@ -244,6 +244,7 @@ public class DocumentGraphRemovingTest extends TestCase
 		{
 			for (SDocument sDocument: sCorpGraph.getSDocuments())
 			{
+				System.out.println("check document status: "+ sDocument.getSElementId());
 				assertEquals(PEPPER_SDOCUMENT_STATUS.COMPLETED, this.getFixture().getPepperDocumentController().getStatus(sDocument.getSElementId()));
 				assertNull("A document shall not contain a document graph any more.", sDocument.getSDocumentGraph());
 			}
@@ -276,6 +277,11 @@ public class DocumentGraphRemovingTest extends TestCase
 				}	
 				
 			} 
+			@Override
+			public Double getProgress(SElementId sElementId)
+			{
+				return(0d);
+			}
 			
 			@Override
 			public void start(SElementId sElementId) 
@@ -307,6 +313,11 @@ public class DocumentGraphRemovingTest extends TestCase
 			public void start(SElementId sElementId) 
 			{
 				this.elementIds.remove(sElementId);
+			}
+			@Override
+			public Double getProgress(SElementId sElementId)
+			{
+				return(0d);
 			}
 		}
 		

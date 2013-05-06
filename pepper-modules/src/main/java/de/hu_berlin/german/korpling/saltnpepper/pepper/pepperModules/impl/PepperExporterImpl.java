@@ -32,6 +32,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
@@ -40,6 +42,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModul
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesPackage;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
@@ -183,8 +186,33 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Adds the call of method {@link #exportCorpusStructure(SCorpusGraph)}, than calls {@link PepperModule#start()}.
+	 */
+	@Override
+	public void start() throws PepperModuleException
+	{
+		if (this.getSaltProject()!= null)
+		{
+			for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
+			{
+				if (sCorpusGraph== null)
+					throw new PepperFWException("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
+				exportCorpusStructure(sCorpusGraph);
+			}
+		}
+		super.start();
+	}
+	
+	/**
+	 * {@inheritDoc PepperExporter#exportCorpusStructure(SCorpusGraph)}
+	 */
+	public void exportCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException
+	{
+		
+	}
+	
+	/**
+	 * {@inheritDoc PepperExporter#createFolderStructure(SElementId)}
 	 */
 	public void createFolderStructure(SElementId sElementId)
 	{

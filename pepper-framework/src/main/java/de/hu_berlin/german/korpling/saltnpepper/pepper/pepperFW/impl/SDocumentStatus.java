@@ -164,7 +164,7 @@ public class SDocumentStatus
 			stepStatus.setModuleStatus(status);
 		}
 		else 
-			throw new PepperConvertException("Cannot update status of sDocument '"+sDocumentId+"', because the level of current status '"+stepStatus.getModuleStatus().getValue()+"' is higher or equal than the givenstatus '"+status+"'.");
+			throw new PepperConvertException("Cannot update status of sDocument '"+sDocumentId+"', because the level of current status '"+PEPPER_SDOCUMENT_STATUS.get(stepStatus.getModuleStatus().getValue())+"' is higher or equal to the given status '"+status+"'.");
 		this.updateGlobalStatus();
 	}
 	

@@ -71,6 +71,9 @@
                     But in any way, let's call that location BUNDLE_RESOURCES/plugins for the
                     following steps.</para>
             </listitem>
+            <listitem>
+                <para>Copy the folder PEPPER_HOME/conf to BUNDLE_RESOURCES/conf.</para>
+            </listitem>
         </itemizedlist>
     </sect1>
     <sect1 xml:id="sec_startingEclipse">

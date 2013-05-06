@@ -76,8 +76,10 @@ public interface PepperModuleController extends EObject {
 	void put(SElementId sElementId);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns an {@link SElementId} of a {@link SDocument} which can be processed next. If no {@link SDocument} object
+	 * processed by a preceding module is available, the {@link #get()} method waits until one gets available and first
+	 * returns than. 
+	 * TODO This method also checks if the number of current mapper threads is not higher the maximum number of mapper threads for this module. See issue #257.  
 	 * @model dataType="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
 	 * @generated
 	 */
