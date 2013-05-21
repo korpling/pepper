@@ -193,6 +193,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <!-- 
                 <configuration>
                     <filesets>
                         <fileset>
@@ -202,6 +203,7 @@
                         </fileset>
                     </filesets>
                 </configuration>
+                 -->
             </plugin>
             <!-- creation of  OSGi Service components -->
             <plugin>
