@@ -3,6 +3,7 @@
         <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
         <artifactId>pepper-testSuite</artifactId>
         <version>1.1.6-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>pepper-testEnvironment</artifactId>
