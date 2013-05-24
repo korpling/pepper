@@ -454,6 +454,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param contentHandler {@link DefaultHandler2} implementation
 	 * @param documentLocation location of the xml-file
 	 */
+	//TODO moved to PepperMapperIMpl
 	protected void readXMLResource(	DefaultHandler2 contentHandler, 
 									URI documentLocation)
 	{
