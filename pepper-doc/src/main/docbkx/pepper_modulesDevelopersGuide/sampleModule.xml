@@ -140,17 +140,116 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
     </sect1>
     <sect1>
         <title>Adopting the Java code</title>
-        <para> This section describes how to customize the importer, manipulator or exporter.
-            Therefore you will find in the <classname>SampleModule</classname> three classes named
-                <classname>SampleImporter</classname>, <classname>SampleManipulator</classname> and
+        <para> In Pepper we tried to avoid as much as complexity as possible without reducing the
+            funtionality. We want to enable you to concentrate on the main issues, which are the
+            mapping of objects. This trade-off has been realized by first using some default
+            assumptions, which reduces complexity in a lot of cases and second by class derivation
+            and call-back methods, to still provide the full functionality if necessary.</para>
+        <para>In Salt and in Pepper we differeciate betwwen the corpus-structure and the document-structure. The document-structure contains the primary data (datasoruces) and the linguistic annotations. A bunch of such information is grouped to a document (<classname>SDocument</classname> in Salt). The corpus-structure now is a grouping mechanism to group a bunch of documents to a corpus or sub-corpus (<classname>SCorpus</classname> in Salt).</para>
+        <para>In Pepper we talk about three different kinds of modules, the
+                <classname>PepperImporter</classname>, the <classname>PepperExporter</classname> and
+            the <classname>PepperManipulator</classname>. An importer is used, to map data to a salt
+            model, an exporter is used to map a Salt model to other kind of data and a manipoulator
+            is used to map a Salt model to another Salt model for instance, for renaming data,
+            merging data etc.. A mapping process is separated into three phases: import-phase,
+            manipulation-phase and export-phase. In each phase an unbound number of Pepper modules
+            can be used. Other than in the manipulation phase, in the import and export-phase at
+            least one module must be involved. Each phase again is separated into mapping steps. A
+            mapping step more or less is a pair of a Pepper module and a Salt object (which can be a
+                <classname>SCorpus</classname> or a <classname>SDocument</classname>). In Salt, an
+                <classname>SDocument</classname> object can be seen as a partition, allowing no
+            links between onjects contained in such a document to the outside. The same goes for
+                <classname>SCorpus</classname> objects. This allows, several steps to work
+            independently to each other. Each module can be sure to be the only one processing a
+            Salt object at a time. Since a mapping process can be relative time consuming, we could
+            decrease the needed time to map an entire corpus, if we are able to process mapping
+            tasks simultaneously. In Pepper each module can be ran in multi-threading mode by
+            default. But keep in mind, that multi-threading can not be added to a module as a new
+            feature, it more needs an implementor to take care of during all the implementation
+            work. If you are not very familar with multi-threading in java, we want to give you the
+            hint to avoid class variables and methods. The same goes for static variables and methods<footnote>
+                <para>If such a variable never is changed or such a method only returns constants,
+                    you can even use them. Marking methods with the keyword synchronized and
+                    variables with the keyword volatile can also help to avoid mult-threading
+                    problems.</para>
+            </footnote>. If it is still necessary, to use such constructs, we recommand, to go
+            deeper in the sometimes annoying but powerfull world of multi-threading. If you do not
+            want to blow up things and don't want to benefit of the better performance, you can also
+            switch of multi-threading by a flag (just call the method
+                <methodname>setIsMultithreaded(false)</methodname> in your modules constructor). </para>
+        <para>Enough of theory, lets step into the code now. In the SampleModules project, you will find three classes according to the three sorts of modules: <classname>SampleImporter</classname>, <classname>SampleManipulator</classname> and
                 <classname>SampleExporter</classname>. All of them are located in the package
                 <package>de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules</package>.
-            In most cases people do not want to create all of them sometimes people only want to
-            create an importer an exporter or a manipulator. Then just delete the classes you won't
-            implement. In case of you want to have several importers, manipulators or exporters,
-            just copy the classes and proceed with each class as described in the following.
-            Otherwise, you will end up with non-functional modules in your project. The items in the
-            numbered list correspond to the TODO entries in the class files. <orderedlist>
+            In most cases users do not want to implement all three sorts of modules. Users often
+            want to implement only an importer an exporter or a manipulator. Then just delete the
+            classes you won't implement. In case of you want to have several importers, manipulators
+            or exporters, just duplicate the classes. Otherwise, you will end up with non-functional
+            modules in your project.</para>
+        <para> A Pepper module (derived from class <classname>PepperModule</classname>) represents
+            an interface to be accessed by the Pepper framework. Most of the provided methods
+            therefore have a default implementation, which should be overridden, to have a real
+            functional module, but do not have to be. Other mthods have to be overridden, since they
+            do not contain any functionality. If you want to go along the Pepper bestpractices, we
+            recommand to give each implementation of <classname>PepperImporter</classname>,
+                <classname>PepperExporter</classname> and <classname>PepperManipulator</classname>
+            an own implementation of <classname>PepperMapper</classname> by hand. Doing this has to
+            benefits, first the multi-threading part is realized with this distinction and second,
+            it will take a lot of comlexity from your shoulders.</para>
+        <para>We now want to give a brief overview of what to do to adopt the classes of SampleModules project. Inside the single items, you will find links to further explanaitions.
+            <orderedlist> 
+                <listitem>
+                    <para>Change the name of the module, for instance to MyImporter etc. We recommend to use the format name and the
+                        ending Importer, Exporter or Manipulator (like <classname>FORMATImporter</classname>).</para>
+                </listitem>
+                <listitem>
+                    <para>constructor</para>
+                </listitem>
+                <listitem>
+                    <para>isReadyToStart</para>
+                </listitem>
+                
+                
+            <listitem>
+                <para>Change the name of the component, for example use the format name and the
+                    ending Importer or Exporter e.g. FORMATExporterComponent and
+                    FORMATExporterComponentFactory, in case of you want to create a manipulator,
+                    use a name describing the task e.g. MYTaskManipulatorComponent and
+                    MYTaskManipulatorComponentFactory.</para>
+            </listitem>
+            
+            <listitem>
+                <para>In case that you are implementing an im- or exporter, change "sample" with
+                    format name and 1.0 with the format version to be supported.</para>
+            </listitem>
+            <listitem>
+                <para>In case that you are creating an importer, check if the default behavior
+                    of the corpus-structure import mechanism fits for your need. For tfurther
+                    details, see: <xref linkend="sec_importCorpusStructure"/>.</para>
+            </listitem>
+            <listitem>
+                <para>If you want to have a specific handling with the document strcutures,
+                    override the method <methodname>start()</methodname>, for instance if you
+                    want to use multithreading. Otherwise just delete this method or call
+                    <methodname>super.start()</methodname>, than the method
+                    <methodname>start(SElementId sElementId)</methodname> will be called for
+                    each <classname>SDocument</classname> automatically.</para>
+            </listitem>
+            <listitem>
+                <para>Override the <methodname>method start(SElementId sElementId)</methodname>,
+                    this is the point of mapping document structures between Salt and a format
+                    or to place the functionality of a manipulator.</para>
+            </listitem>
+            <listitem>
+                <para>If you have to clean up (e.g. delete temporary files etc.), override the
+                    method <methodname>end()</methodname>.</para>
+            </listitem>
+            </orderedlist> 
+        
+        
+        
+        </para>
+        <para> The items
+            in the numbered list correspond to the TODO entries in the class files. <orderedlist>
                 <listitem>
                     <para>Change the name of the component, for example use the format name and the
                         ending Importer or Exporter e.g. FORMATExporterComponent and
@@ -188,9 +287,8 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                     <para>If you have to clean up (e.g. delete temporary files etc.), override the
                         method <methodname>end()</methodname>.</para>
                 </listitem>
-            </orderedlist>
-            The following sections will give a brief overview to the single items. For a more detailed view, please take a look into the corresponding JavaDoc.
-        </para>
+            </orderedlist> The following sections will give a brief overview to the single items.
+            For a more detailed view, please take a look into the corresponding JavaDoc. </para>
         <sect2 xml:id="sec_importCorpusStructure">
             <title>Importing the corpus-structure</title>
             <para> A corpus-structure consists of corpora (represented via the Salt element
@@ -267,6 +365,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                                     </imageobject>
                                 </mediaobject>
                             </figure>
+                            In case of the ending of a file does not matter, you can use <classname>ENDING_ALL_FILES</classname> to correspond all types of files to a <classname>SDocument</classname> object.
                         </para>
                         <para>You can do the collection adoptions anywhere you want to, but make
                             sure, that they have to be done, before the method

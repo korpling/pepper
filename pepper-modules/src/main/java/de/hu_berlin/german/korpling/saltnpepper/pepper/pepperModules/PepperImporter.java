@@ -68,7 +68,10 @@ public interface PepperImporter extends PepperModule {
 	/**Ending for an txt file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}*/
 	public static final String ENDING_TXT="txt";
 	/**Ending for an tab file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}*/
-	public static final String ENDING_tab="tab";
+	public static final String ENDING_TAB="tab";
+	/** All kinds of file endings **/
+	public static final String ENDING_ALL_FILES="ALL_FILES";
+	
 	
 	/**
 	 * A character or character sequence to mark a file extension as not to be one of the imported ones.
@@ -168,6 +171,7 @@ public interface PepperImporter extends PepperModule {
 	 * <ul>
 	 * 	<li>For each file having an ending, which is contained in {@link #getSDocumentEndings()} {@link STYPE_NAME#SDOCUMENT} is returned</li>
 	 *  <li>For each file having an ending, which is contained in {@link #getSCorpusEndings()} {@link STYPE_NAME#SCorpus} is returned</li>
+	 *  <li>If {@link #getSDocumentEndings()} contains {@link #ENDING_ALL_FILES}, for each file (which is not a folder) {@link STYPE_NAME#SDOCUMENT} is returned</li>
 	 *  <li>If {@link #getSDocumentEndings()} contains {@link #ENDING_LEAF_FOLDER}, for each leaf folder {@link STYPE_NAME#SDOCUMENT} is returned</li>
 	 *  <li>If {@link #getSCorpusEndings()} contains {@link #ENDING_FOLDER}, for each folder {@link STYPE_NAME#SCORPUS} is returned</li>
 	 *  <li>null otherwise</li>
