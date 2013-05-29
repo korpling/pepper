@@ -743,21 +743,18 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 		EList<PepperFinishableMonitor> listOfImportMonitors= new BasicEList<PepperFinishableMonitor>();
 		EList<PepperModuleController> listOfImportControllers= new BasicEList<PepperModuleController>();
 		
-		//create a controller and monitor for import
-		for (PepperImporter importer: this.getPepperImporters())
+		for (PepperModuleController controller: this.allModuleControlers)
 		{
-			//create controller
-			PepperModuleController importController= PepperFWFactory.eINSTANCE.createPepperModuleController();
-			importController.setPepperModule(importer);
-			listOfImportControllers.add(importController);
-			//set PepperJob Logger to ModuleController
-			importController.setPepperJobLogger(this.getPepperJobLogger());
-			
-			//create monitors
-			PepperFinishableMonitor importMonitor= PepperFWFactory.eINSTANCE.createPepperFinishableMonitor();
-			importController.setPepperM2JMonitor(importMonitor);
-			listOfImportMonitors.add(importMonitor);
+			if (	(controller!= null)&&
+					(controller.getPepperModule()!= null)&&
+					(controller.getPepperModule() instanceof PepperImporter))
+			{
+				listOfImportControllers.add(controller);
+				listOfImportMonitors.add(controller.getPepperM2JMonitor());
+			}
 		}
+		
+		
 		//start importing all
 		for (PepperModuleController moduleController: listOfImportControllers)
 		{
@@ -872,17 +869,10 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 		//checks if everything necessary is set
 		this.validateBeforeStart();
 		
-		//import corpus-structure first, because of the module-controllers 
-		//can have only one m2j-monitor, and it will be overridden else
-		EList<ImporterGraphPair> importerGraphPairs= null;
-		//import the corpus structure
-		importerGraphPairs= this.importCorpusStructure();
-		
 		//start: create and wire PepperModuleController for all modules
 			//all importers
 			for (PepperImporter importer: this.getPepperImporters())
 				this.createAndWirePepperModuleController(importer);
-			
 			//all modules
 			for (PepperModule module: this.getPepperModules())
 				this.createAndWirePepperModuleController(module); 
@@ -901,6 +891,29 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 			//wiring all module-controllers by steps
 			this.wireModuleControllers(phases);
 		//end: wire all modules with each other, by creating a PepperModule2ModuleMonitor
+			
+			
+		//check whether modules are ready to be started
+			for (PepperModuleController moduleController: this.allModuleControlers)
+			{	
+				if (moduleController.getPepperModule()!= null)
+				{
+					try{
+						if (!moduleController.getPepperModule().isReadyToStart())
+							throw new PepperModuleNotReadyException("PepperModule '"+moduleController.getPepperModule()+"' returned, that it is not ready to start.");
+					}catch (PepperModuleNotReadyException e) {
+						throw new PepperFWException("Cannot run pepper job, because module '"+moduleController.getPepperModule()+"' is not ready to start. ", e); 
+					}
+				}
+			}
+		//check whether modules are ready to be started
+		
+		//import corpus-structure first, because of the module-controllers 
+		//can have only one m2j-monitor, and it will be overridden else
+		EList<ImporterGraphPair> importerGraphPairs= null;
+		//import the corpus structure
+		importerGraphPairs= this.importCorpusStructure();
+					
 		{//add all imported documents to PepperDocumentController to observe
 			for (ImporterGraphPair importerGraphPair: importerGraphPairs)
 			{	
@@ -967,16 +980,6 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 			{	
 				if (pepperJobLogger!= null)
 					this.getPepperJobLogger().getLogService().log(LogService.LOG_DEBUG, "\tcontroller of module '"+ moduleController.getPepperModule().getName()+ "'...");
-				
-				if (moduleController.getPepperModule()!= null)
-				{
-					try{
-						if (!moduleController.getPepperModule().isReadyToStart())
-							throw new PepperModuleNotReadyException("PepperModule '"+moduleController.getPepperModule()+"' returned, that it is not ready to start.");
-					}catch (PepperModuleNotReadyException e) {
-						throw new PepperFWException("Cannot run pepper job, because module '"+moduleController.getPepperModule()+"' is not ready to start. ", e); 
-					}
-				}
 				
 				moduleController.start();
 				if (pepperJobLogger!= null)

@@ -83,5 +83,5 @@ public class PepperJobDelegatorTest extends PepperJobImpl
 	public void wireModuleControllers(EList<EList<PepperModuleController>> steps)
 	{
 		super.wireModuleControllers(steps);
-	}
+	}	
 }

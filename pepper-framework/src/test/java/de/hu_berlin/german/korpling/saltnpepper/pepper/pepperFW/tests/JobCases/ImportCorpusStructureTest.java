@@ -182,8 +182,12 @@ public class ImportCorpusStructureTest extends TestCase
 		this.getFixture().setSaltProject(saltProject);
 		TestImporter importer= new TestImporter();
 		
+		this.getFixture().createAndWirePepperModuleController(importer);
+		
 		this.getFixture().getPepperImporters().add(importer);
 		EList<ImporterGraphPairDelegator> igPairList= this.getFixture().importCorpusStructureTest();
+		if (igPairList.size()< 1)
+			throw new RuntimeException("There are no corpus-graphs in project");
 		if (igPairList.size()!= 1)
 			throw new RuntimeException("There are more than one corpus-graphs in project");
 		boolean importerFound= false;
@@ -234,7 +238,12 @@ public class ImportCorpusStructureTest extends TestCase
 		importers.add(importer2);
 		this.getFixture().getPepperImporters().add(importer2);
 		
+		this.getFixture().createAndWirePepperModuleController(importer1);
+		this.getFixture().createAndWirePepperModuleController(importer2);
+		
 		EList<ImporterGraphPairDelegator> igPairList= this.getFixture().importCorpusStructureTest();
+		if (igPairList.size()< 1)
+			throw new RuntimeException("There are no corpus-graphs in project");
 		if (igPairList.size()!= 2)
 			throw new RuntimeException("There are more than one corpus-graphs in project");
 		for (ImporterGraphPairDelegator pair: igPairList)

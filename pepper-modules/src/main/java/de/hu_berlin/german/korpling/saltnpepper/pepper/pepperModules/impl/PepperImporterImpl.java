@@ -373,6 +373,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public STYPE_NAME setTypeOfResource(URI resource)
 	{
+		System.out.println("RESOURCE: "+ resource);
+		System.out.println("ENDINGS: "+ this.getSDocumentEndings());
+		
 		File file= new File(resource.toFileString());
 		if (file.isDirectory())
 		{//resource is a folder 
@@ -402,12 +405,25 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		{// resource is not a folder
 			String ending= resource.fileExtension();
 			if (this.getSDocumentEndings().contains(ENDING_ALL_FILES))
+			{
+				System.out.println("SDOCUMENT");
 				return(STYPE_NAME.SDOCUMENT);
+			}
 			else if (this.getSDocumentEndings().contains(ending))
+			{
+				System.out.println("SCORPUS");
 				return(STYPE_NAME.SDOCUMENT);
+			}
 			else if (this.getSCorpusEndings().contains(ending))
+			{
+				System.out.println("SCORPUS_2");
 				return(STYPE_NAME.SCORPUS);
-			else return(null);
+			}
+			else 
+			{
+				System.out.println("NULL");
+				return(null);
+			}
 		}// resource is not a folder
 	}
 	
