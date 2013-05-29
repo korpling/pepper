@@ -403,22 +403,18 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			String ending= resource.fileExtension();
 			if (this.getSDocumentEndings().contains(ENDING_ALL_FILES))
 			{
-				System.out.println("SDOCUMENT");
 				return(STYPE_NAME.SDOCUMENT);
 			}
 			else if (this.getSDocumentEndings().contains(ending))
 			{
-				System.out.println("SCORPUS");
 				return(STYPE_NAME.SDOCUMENT);
 			}
 			else if (this.getSCorpusEndings().contains(ending))
 			{
-				System.out.println("SCORPUS_2");
 				return(STYPE_NAME.SCORPUS);
 			}
 			else 
 			{
-				System.out.println("NULL");
 				return(null);
 			}
 		}// resource is not a folder
