@@ -18,10 +18,8 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.common.util.URI;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 

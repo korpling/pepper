@@ -703,7 +703,10 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			}// if start was overridden, for downwards compatibility to modules implemented with < pepper 1.1.6
 		}	
 		
-		Collection<PepperMapperController> controllers= Collections.synchronizedCollection(this.getMapperControllers().values());
+		Collection<PepperMapperController> controllers=null;
+		
+		//wait for all SDocuments to be finished
+		controllers= Collections.synchronizedCollection(this.getMapperControllers().values());
 		for (PepperMapperController controller: controllers)
 		{
 			try {
@@ -714,6 +717,17 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			this.done(controller);
 		}
 		this.end();
+		//wait for all SDocuments to be finished
+		controllers= Collections.synchronizedCollection(this.getMapperControllers().values());
+		for (PepperMapperController controller: controllers)
+		{
+			try {
+				controller.join();
+			} catch (InterruptedException e) {
+				throw new PepperFWException("Cannot wait for mapper thread '"+controller+"' in "+this.getName()+" to end. ", e);
+			}
+			this.done(controller);
+		}
 	}
 	
 	/** A list containing all {@link SElementId} objects, which have been mapped and for which the pepper fw has been notified, that they are processed. **/
@@ -759,7 +773,12 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	{
 		if (!getMappedIds().contains(controller.getSElementId()))
 		{//only if framework has not already been notified
-			MAPPING_RESULT result= controller.getMappingResult();
+			MAPPING_RESULT result= null;
+			try{	
+				result= controller.getMappingResult();
+			}catch (Exception e){
+				result= MAPPING_RESULT.FAILED;
+			}
 			this.done(controller.getSElementId(), result);
 			this.getMappedIds().add(controller.getSElementId());
 		}//only if framework has not already been notified

@@ -301,9 +301,22 @@ public class MyImporter extends PepperImporterImpl implements PepperImporter</pr
                         override the method <methodname>end()</methodname>, see: <xref
                             linkend="sec_cleanUp"/>.</para>
                 </listitem>
-            </orderedlist> In the following sections, you will find more detailed explanaitions to
-            the prior given single steps. If the information we are giving here still not enough,
-            please take a look into the corresponding JavaDoc. </para>
+            </orderedlist> The following figure shows a sequence diagram displaying the sequence of
+            method calls between the Pepper framework and the classes to implemented
+                <classname>Peppermodule</classname> and <classname>PepperMapper</classname>. Please
+            note, that this is just a simplified representation, some methods are not shown, and
+            even a further class called <classname>PepperMapperController</classname>, which
+            interacts between the <classname>PepperModule</classname> and the
+                <classname>PepperMapper</classname> class. <figure xml:id="fig_pepperWorkflow">
+                <title>Pepper workflow overview</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/pepper_workflow.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure> In the following sections, you will find more detailed explanaitions to the
+            prior given single steps. If the information we are giving here still not enough, please
+            take a look into the corresponding JavaDoc. </para>
         <sect2 xml:id="sec_importCorpusStructure">
             <title>Importing the corpus-structure</title>
             <para> A corpus-structure consists of corpora (represented via the Salt element
