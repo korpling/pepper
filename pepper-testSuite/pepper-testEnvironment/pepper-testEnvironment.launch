@@ -13,7 +13,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="PEPPER_TEST" value="d:\projects_work\SaltNPepper\PEPPER_TEST\"/>
-<mapEntry key="PEPPER_TEST_WORKFLOW_FILE" value="d:\Test\KirchenSlavistik\PaulTheSimple\PaulTheSimple\xml2relANNIS.pepperparams"/>
+<mapEntry key="PEPPER_TEST_WORKFLOW_FILE" value="d:\projects_work\corpora\pcc\pcc2\paula2paula.pepperparams"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>

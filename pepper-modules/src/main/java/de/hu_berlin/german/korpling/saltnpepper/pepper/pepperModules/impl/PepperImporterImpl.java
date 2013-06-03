@@ -430,7 +430,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		{
 			for (File file: folder.listFiles())
 			{
-				if (file.isDirectory())
+				if (	(file.isDirectory())&&
+						(!getIgnoreEndings().contains(file.getName())))
 					return(false);
 			}
 			return(true);
