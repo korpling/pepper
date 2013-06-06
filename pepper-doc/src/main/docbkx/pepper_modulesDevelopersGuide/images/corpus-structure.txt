@@ -1,0 +1,8 @@
+Class Diagram to be visualized on: http://yuml.me/diagram/scruffy/class/draw
+
+[superCorpus]->[subCorpus2]
+[subCorpus2]->[doc3]
+[subCorpus2]->[doc4]
+[superCorpus]->[subCorpus1]
+[subCorpus1]->[doc1]
+[subCorpus1]->[doc2]

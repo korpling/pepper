@@ -112,8 +112,8 @@
     </chapter>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settingUpEnvironment.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sampleModule.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="customization.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="documentation.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="codeIt.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testing.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="documentation.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faq.xml"/>
 </book>
