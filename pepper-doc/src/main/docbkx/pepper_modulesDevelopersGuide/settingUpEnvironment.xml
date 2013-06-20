@@ -65,6 +65,7 @@
                 <para>Copy all bundles (.jar files) from PEPPER_HOME/plugins to
                     ECLIPSE_HOME/dropins.</para>
             </listitem>
+            <!-- not necessary, if directly pointing to PEPPER_HOME
             <listitem>
                 <para>Either copy all folders having the same name as the bundles (.jar files) from
                     PEPPER_HOME/plugins to a folder of your choice, or let them be where they are.
@@ -74,11 +75,12 @@
             <listitem>
                 <para>Copy the folder PEPPER_HOME/conf to BUNDLE_RESOURCES/conf.</para>
             </listitem>
+             -->
         </itemizedlist>
     </sect1>
     <sect1 xml:id="sec_startingEclipse">
         <title>Starting Eclipse</title>
-        <para>Now lets check wether Eclipse was set up correctly and is able to find all necessary
+        <para>Now lets check whether Eclipse was set up correctly and is able to find all necessary
             bundles.</para>
         <itemizedlist>
             <listitem>
@@ -89,7 +91,7 @@
                 <para>Open 'Plug-ins view' via 'Window --> Show View --> Others (see <xref
                         linkend="fig_showView"/>). </para>
                 <figure xml:id="fig_showView">
-                    <title/>
+                    <title>Open Plug-ins view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="images/showView.png"/>
@@ -100,7 +102,7 @@
                     <listitem>
                         <para>Type in 'plug-ins' and choose 'Plug-ins' to open the corresponding view (see <xref linkend="fig_showView02"/>).</para>
                         <figure xml:id="fig_showView02">
-                            <title/>
+                            <title>Plug-ins view</title>
                             <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="images/showView2.png"/>
@@ -115,7 +117,7 @@
                 </itemizedlist>
             </listitem>
             <listitem>
-                <para>Check wether all bundles from SaltNPepper are there. The main ones are <itemizedlist>
+                <para>Check whether all bundles from SaltNPepper are there. The main ones are <itemizedlist>
                         <listitem>
                             <para>de.hu_berlin.german.korpling.saltnpepper.pepper-exceptions.jar</para>
                         </listitem>
@@ -160,7 +162,7 @@
                 <para>Select 'Run --> Run configurations...' (see <xref linkend="fig_runConfig01"
                     />).</para>
                 <figure xml:id="fig_runConfig01">
-                    <title/>
+                    <title>Open Run configurations</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="images/runConfigurations.png"/>
@@ -172,7 +174,7 @@
                 <para>Select 'OSGi Framework', press right mouse button and select 'New' (see <xref
                         linkend="fig_runConfig02"/>).</para>
                 <figure xml:id="fig_runConfig02">
-                    <title/>
+                    <title>Run configurations</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="images/runConfigurations2.png"/>
@@ -185,7 +187,7 @@
                 <para>Give your run configuration a name under 'Name:', (see <xref
                         linkend="fig_runConfig03"/> position A).</para>
                 <figure xml:id="fig_runConfig03">
-                    <title/>
+                    <title>Run configurations Bundles view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="images/runConfigurations4.png"/>
@@ -197,7 +199,7 @@
                 <para>For not loading all available bundles, which could be more than 800 (see <xref
                         linkend="fig_runConfig03"/> position B), press the button 'Deselect All'
                     (see <xref linkend="fig_runConfig03"/> position C).</para>
-                <note><para>This may take a while, so don't be feared, in general your computer is not frozen.</para></note>
+                <note><para>This may take a while, so don't be afraid, in general your computer is not frozen.</para></note>
             </listitem>
             <listitem>
                 <para>Now, activate all necessary bundles for running Pepper. In 'type filter text'
@@ -241,7 +243,7 @@
             </listitem>
             <listitem>
                 <para>There are some other bundles necessary for running Pepper to be
-                    activated:</para><note><para>These packages also have to be select manually. Filtering them can even take a while.</para></note>
+                    activated:</para><note><para>These packages also have to be select manually. Filtering them can take a while.</para></note>
                 <itemizedlist>
                     <listitem>
                         <para>org.eclipse.equinox.console</para>
@@ -263,7 +265,7 @@
                     button 'Add Required Bundles' (see <xref linkend="fig_runConfig03"/> position
                     E).</para>
                 <note>
-                    <para>In case of this button is disabled, remove the string from the
+                    <para>In case that this button is disabled, remove the string from the
                         filter</para>
                 </note>
                 <para>Now some more bundles are added, on the right you can see the increased number
@@ -312,7 +314,7 @@
                         <para>Go to tab 'Environment' (see <xref linkend="fig_runConfig04"/>
                             position A).</para>
                         <figure xml:id="fig_runConfig04">
-                            <title/>
+                            <title>Run configurations Environment view</title>
                             <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="images/runConfigurations7.png"/>
@@ -325,9 +327,14 @@
                             B).</para>
                     </listitem>
                     <listitem>
+                        <para>Type in 'PEPPER_TEST' for name the path to PEPPER_HOME as value.</para>
+                    </listitem>
+                    <!-- replaced by item above  
+                    <listitem>
                         <para>Type in 'PEPPER_TEST' for name and the folder known as
                             BUNDLE_RESOURCES (without the 'plugins' subfolder) as value.</para>
                     </listitem>
+                    -->
                 </orderedlist>
             </listitem>
             <listitem>
@@ -335,10 +342,10 @@
             </listitem>
         </itemizedlist>
         <para> Now Pepper is running and shows all registered importers, exporters and
-            manipulators. A screen like shown in <xref linkend="fig_runConfig03"/> comes up. </para>
+            manipulators. A screen as shown in <xref linkend="fig_runConfig03"/> comes up. </para>
         <note><para>The output can vary, depending on the modules you have registered and the version of the OSGi console. Eventually a lot of log messages are outputted as well.</para></note>
         <figure xml:id="fig_pepperHello01">
-            <title/>
+            <title>Pepper console</title>
             <mediaobject>
                 <imageobject>
                     <imagedata fileref="images/pepper_hello.png"/>
@@ -360,11 +367,12 @@
                     <para>Unzip the file to a folder of your choice, let's call it MODULE_HOME</para>
                 </listitem>
                 <listitem>
-                    <para>Copy the bundel (.jar file) to ECLIPSE_HOME/dropins</para>
+                    <para>Copy the bundel (.jar file) and sub-directory (if exists) to
+                        ECLIPSE_HOME/dropins</para>
                 </listitem>
                 <listitem>
                     <para>Copy the folder having the same name as the bundle (.jar file) to
-                        BUNDLE_RESOURCES/plugins.</para>
+                        PEPPER_HOME/plugins.</para>
                 </listitem>
                 <listitem>
                     <para>Select the downloaded module in your run configurations.</para>
@@ -375,7 +383,7 @@
                 </listitem>
                 <listitem>
                     <para>To check if all bundle dependencies could be resolved, press 'Validate
-                        Bundles'. (see <xref linkend="fig_runConfig03"/>)</para>
+                        Bundles' (see <xref linkend="fig_runConfig03"/>). If this is not the case, check each single step again.</para>
                 </listitem>
             </orderedlist>
         </para>
@@ -421,7 +429,7 @@
             none.</para>
         <para>If you are working with Netbeans, you can skip the rest of this section, because
             Netbeans already comes with an integrated maven. In the case that you are working with
-            Eclipse, or even want to compile your Pepper module via the command line, you have to
+            Eclipse, or when you want to compile your Pepper module via the command line, you have to
             install maven. Therefore just follow the given instructions: <itemizedlist>
                 <listitem>
                     <para>Download the latest maven distribution from <link
@@ -445,7 +453,7 @@
                     <para>Open the 'Eclipse Marketplace' via 'Help --> Eclipse Marketplace...' (see
                             <xref linkend="fig_marketPlace_m2e"/>)</para>
                     <figure xml:id="fig_marketPlace_m2e">
-                        <title/>
+                        <title>Eclipse marketplace</title>
                         <mediaobject>
                             <imageobject>
                                 <imagedata fileref="images/marketPlace_m2e.png"/>
@@ -464,7 +472,7 @@
                 </listitem>
                 <listitem>
                     <para>During the installation Eclipse asks you to agree to the license of this
-                        plugin it may be recommended to restart Eclipse. Just follow the
+                        plugin and it may be recommended to restart Eclipse. Just follow the
                         instructions and go ahead.</para>
                 </listitem>
                 <listitem>
@@ -504,7 +512,7 @@
                 </listitem>
                 <listitem>
                     <para>The dialog will show the 'CarrotGarden SCR' plugin. Press the 'install'
-                        button and follow the instructions. Eclipse may recommends to restart itself.</para>
+                        button and follow the instructions. Eclipse may recommend to restart itself.</para>
                 </listitem>
             </itemizedlist>
         </para>

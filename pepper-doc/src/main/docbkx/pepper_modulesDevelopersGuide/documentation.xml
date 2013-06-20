@@ -30,7 +30,7 @@
             where you can find the pdf documentation and the html documentation.</para>
         <note>
             <para>The current configuration does not need to be changed, just write your
-                documentation by overriding the template. The rest shall work automatically. In some
+                documentation by overriding the template. The rest will work automatically. In some
                 cases it might be necessary to adopt the transformation, then please take a look to
                 the xsl transformation files in
                 <filename>SAMPLE_MODULES_HOME/docbook-xsl</filename>.</para>

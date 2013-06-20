@@ -139,7 +139,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
         </orderedlist>
     </sect1>
     <sect1>
-        <title>building the project</title>
+        <title>Building the project</title>
         <para> We adopt the settings for using OSGi and to create Pepper modules, which are simply
             pluggable into the Pepper framework. So in the best case, you can just follow this
             guide, and run </para>
@@ -147,10 +147,10 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
             mvn install assembly:single
         </synopsis>
         <para> and you will find a zip file in the target folder of your project
-            (YOUR_PROJECT/target/distribution), which can simply plugged into Pepper via extracting
-            its content to the plugin folder of Pepper (PEPPER_HOME/plugins). In the bad case some
-            mean errors occur and you have to dig in a lot of online tutorials and forums and lose a
-            lot of time. Please do not despair and write us an e-mail instead.
+            (YOUR_PROJECT/target/distribution), which can simply be plugged into Pepper via extracting
+            its content to the plugin folder of Pepper (PEPPER_HOME/plugins). In the worst case some
+            mean errors occur and you have to dig in a lot of online tutorials and forums and lose
+            plenty of time. Please do not despair and write us an e-mail instead.
             <email>saltnpepper@lists.hu-berlin.de</email></para>
     </sect1>
 </chapter>

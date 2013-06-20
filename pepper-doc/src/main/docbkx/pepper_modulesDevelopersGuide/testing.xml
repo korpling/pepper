@@ -24,7 +24,7 @@
             module. <note>
                 <para>We strongly recommend, to add some module specific test methods, to increase
                     the quality of your code and even to make it easier changing things and still
-                    having a correct running module.</para>
+                    having a correctly running module.</para>
             </note>
         </para>
         <sect2>
@@ -49,10 +49,10 @@ protected void setUp() throws Exception
                 more than one <classname>FormatDefinition</classname> object.</para>
         </sect2>
         <sect2>
-            <title>Writing own tests</title>
+            <title>Writing your own tests</title>
             <para> The provided test classes are faking the Pepper environment, so that you can run
                 your entire module and just check the in- or output. </para>
-            <para> In case of you write an importer, you can create an input file containing a
+            <para> In case that you write an importer, you can create an input file containing a
                 corpus in the format you want to support, run your importer and check its output
                 against a defined template. The test will return a processed Salt graph which can be
                 checked for its nodes, edges and so on. The following snippet shows how to read a

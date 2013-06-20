@@ -37,7 +37,7 @@
         <title>Foreword</title>
         <para>The aim of this document is to provide a helpful guide to create your own Pepper
             module, that can be plugged into the Pepper framework.</para>
-        <para>We are trying to make things as easy to use as possible, but we are a non profit
+        <para>We are trying to make things as easy to use as possible, but we are a non-profit
             project and we need your help. So please tell us if things are too difficult and help us
             improving the framework. </para>
         <para>You are even very welcome to help us improving this documentation by reporting bugs,
@@ -48,16 +48,16 @@
 
     <chapter xml:id="ch_intro">
         <title>Introduction</title>
-        <para>With SaltNPepper we provide two powerful frameworks for dealing with linguistic
+        <para>With SaltNPepper we provide two powerful frameworks for dealing with linguistically
             annotated data. SaltNPepper is an Open Source project developed at the Humboldt
             University of Berlin (see: <link xlink:href="http://www.hu-berlin.de/"
                 >http://www.hu-berlin.de/</link>) and INRIA (Institut national de recherche en
             informatique et automatique, see: <link xlink:href="http://www.inria.fr/"
-                >http://www.inria.fr/</link>) as well. In linguistic research a variety of formats
-            exists, but no unified way of processing them. To fill that gap, we developed a meta
-            model called Salt which abstracts over linguistic data. Based on this model, we also
-            developed the pluggable universal converter framework Pepper to convert linguistic data
-            between various formats. </para>
+                >http://www.inria.fr/</link>). In linguistic research a variety of formats exists,
+            but no unified way of processing them. To fill that gap, we developed a meta model
+            called Salt which abstracts over linguistic data. Based on this model, we also developed
+            the pluggable universal converter framework Pepper to convert linguistic data between
+            various formats. </para>
         <para>Pepper is a container controlling the workflow of a conversion process, the conversion
             itself is done by a set of modules called Pepper modules mapping the linguistic data
             between a given format and Salt and vice versa. Pepper is a highly pluggable framework
@@ -65,7 +65,7 @@
             formats. The architecture of Pepper is flexible and makes it possible to benefit from
             all already existing modules. This means that when adding a new or previously unknown
             format Z to Pepper, it is automatically possible to map data between Z and all already
-            supported formats A,B, C, … . A Pepper workflow consists of three phases: <orderedlist>
+            supported formats A, B, C, … . A Pepper workflow consists of three phases: <orderedlist>
                 <listitem>
                     <para>the import phase (mapping data from a given fromat to Salt),</para>
                 </listitem>
@@ -80,35 +80,35 @@
             data during conversion, for example by adding additional information or linguistic
             annotations, or by merging data from different sources.</para>
         <para>Since Pepper is a pluggable framework, we used an underlying framework called OSGi
-            (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>) providing
+            (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>) that provides
             such a functionality. OSGi is a mighty framework and has a lot of impact in the way of
             programming things in java. Because we do not want to force you to learn OSGi, when you
             just want to create a new module for pepper, we tried to hide the OSGi layer as good as
-            possible. Therefore and for the lifecycle management of such projects, we used another
+            possible. Therefore, and for the lifecycle management of such projects, we used another
             framework named maven (see: <link xlink:href="http://maven.apache.org/"
                 >http://maven.apache.org/</link>). Maven is configured via an xml file called
             pom.xml, you will find it in all SaltNPepper projects and also in the root of the
             SampleModule project. Maven makes things easier for use especially in dealing with
             dependencies. </para>
         <para>The SaltNPepper framework also comes with an environment for a direct start up in
-            Eclipse. for an easier developement of a Pepper module. It further contains a test bed
+            Eclipse. for an easier development of a Pepper module. It further contains a test bed
             for checking simple consistency issues of Pepper modules. This test bed is based on
             JUnit (see: <link xlink:href="junit.org">junit.org</link>) and can easily be extended
             for a specific module test.</para>
         <para>In the following, <xref linkend="ch_setUpEnv"/> explains how to set up your
             environment to start developing your Pepper module. <xref linkend="ch_sampleModule"/>
             explains how to download and adopt a template module to your own needs. This module then
-            is the base for your own module. In <xref linkend="ch_customization"/> we explain how to
-            add properties to your module, so that the user can dynamically customize the behaviour
-            of the mapping. <xref linkend="ch_documentation"/> shows the usage of a documentation
-            template written in doocbook (see <link xlink:href="http://www.docbook.org/"
-                >http://www.docbook.org/</link>) to make a standard documentation for the user of
-            your module. Since testing of software often is a pain in the back, the
-                <classname>pepper-testSuite</classname> already comes with some predefined tests.
-            These should save you some time, not to test even the simplest things. Last but not
-            least, this documentation contains a FAQ. Since a FAQ lives of questions, if you have
-            some, just help us increasing that part and send a mail to
-                <email>saltnpepper@lists.hu-berlin.de</email>.</para>
+            is the base for your own module. In <xref linkend="sec_customization"/> we explain how
+            to add properties to your module, so that the user can dynamically customize the
+            behaviour of the mapping. <xref linkend="ch_documentation"/> shows the usage of a
+            documentation template written in doocbook (see <link
+                xlink:href="http://www.docbook.org/">http://www.docbook.org/</link>) to make a
+            standard documentation for the user of your module. Since testing of software often is a
+            pain in the back, the <classname>pepper-testSuite</classname> already comes with some
+            predefined tests. They should save you some time. Last but not least, this documentation
+            contains a FAQ. Since a FAQ lives of questions, if you have some, just help us
+            increasing that part and send a mail to
+            <email>saltnpepper@lists.hu-berlin.de</email>.</para>
     </chapter>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settingUpEnvironment.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sampleModule.xml"/>
