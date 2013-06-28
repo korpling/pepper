@@ -47,8 +47,8 @@
             of the SampleProject.</para>
         <orderedlist>
             <listitem>
-                <para>Change the "groupId" to the name of your module (conventionally, the groupId
-                    is the same as the package name). You will find the entry under
+                <para>Change the "groupId" to the name of your working group (conventionally, the
+                    groupId is the same as the package name). You will find the entry under
                     '/project/groupId'.</para>
             </listitem>
             <listitem>
@@ -106,8 +106,8 @@
                 <para>To register such a library to maven, you need to install them to your local
                     maven repository. You can do that with:
                     <programlisting>
-mvn install:install-file -Dfile=JAR_FILE -DgroupId=GROUP_ID -DartifactId=ARTIFACT_ID \
--Dversion=VERSION -Dpackaging=PACKAGING
+mvn install:install-file -Dfile=JAR_FILE -DgroupId=GROUP_ID \
+-DartifactId=ARTIFACT_ID -Dversion=VERSION -Dpackaging=PACKAGING
                     </programlisting>
                     Now you need to add the library as a dependency to your pom. The following
                     snippet shows an example:

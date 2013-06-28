@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW;
 
+import java.util.Collection;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.EList;
@@ -123,6 +124,14 @@ public interface PepperConverter extends EObject
 	 */
 	boolean isSetPepperModuleResolver();
 
+	
+	/**
+	 * Checks if the Pepper framework is ready to run. This means, it checks if everything necessary is given and if all registered modules
+	 * could be ran. This method can be used as a kind of integration test.
+	 * @return returns an empty list, if check was positive; if list is not empty, each entry describes a single problem. 
+	 */
+	public Collection<String> selfTest();
+	
 	/**
 	 * Returns the value of the '<em><b>Pepper Params</b></em>' attribute.
 	 * <!-- begin-user-doc -->

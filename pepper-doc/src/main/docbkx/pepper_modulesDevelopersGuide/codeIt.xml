@@ -22,16 +22,16 @@
         to map one Salt model into another Salt model, for instance, for renaming data, merging data
         etc.. A mapping process is separated into three phases: import-phase, manipulation-phase and
         export-phase. In each phase an unbound number of Pepper modules can be used. Other than in
-        the manipulation phase, in the import and export-phase at least one module must be involved.
-        Each phase again is separated into mapping steps. A mapping step more or less is a pair of a
-        Pepper module and a Salt object (which can be a <classname>SCorpus</classname> or a
-            <classname>SDocument</classname>). In Salt, an <classname>SDocument</classname> object
+        the manipulation phase, in the import and export-phase it is compulsory to involve at least
+        one module. Each phase again is separated into mapping steps. A mapping step more or less is
+        a pair of a Pepper module and a Salt object (which can be a <classname>SCorpus</classname>
+        or a <classname>SDocument</classname>). In Salt, an <classname>SDocument</classname> object
         can be seen as a partition, allowing no links between objects contained in such a document
         to objects outside the document. The same goes for <classname>SCorpus</classname> objects.
         This allows, several steps to work independently from each other. Each module can be sure to
-        be the only one processing a Salt object at a time. Since a mapping process can be relatively
-        time consuming, we could decrease the needed time to map an entire corpus, if we are able to
-        process mapping tasks simultaneously. </para>
+        be the only one processing a Salt object at a time. Since a mapping process can be
+        relatively time consuming, we could decrease the needed time to map an entire corpus, if we
+        are able to process mapping tasks simultaneously. </para>
     <para> In Pepper each module can be ran in multi-threading mode by default. But keep in mind,
         that multi-threading can not be added to a module as a new feature. It needs an implementor
         to take care of this during all the implementation work. If you are not familar with
@@ -218,7 +218,8 @@ public class MyImporter extends PepperImporterImpl implements PepperImporter</pr
                 <classname>URI</classname> objects is returned, so that in the following methods
             like <methodname>start(SElementId)</methodname> this map can be used to identify the
                 <classname>URI</classname> location of the <classname>SDocument</classname> objects. </para>
-        <para>To customize the default behaviour, Pepper provides three different options, which we will explain in ascending order of complexity.<orderedlist>
+        <para>To customize the default behaviour, Pepper provides three different options, which we
+            will explain in ascending order of complexity.<orderedlist>
                 <listitem>
                     <para>Lists of interesting and uninteresting file-endings: The collections
                             <classname>sDocumentEndings</classname>,
@@ -256,9 +257,12 @@ public class MyImporter extends PepperImporterImpl implements PepperImporter</pr
                             </imageobject>
                         </mediaobject>
                     </figure>
-                    <para>To give another example, the following file-structure will result in the
-                        same corpus-structure, when setting the collection
-                            <classname>sDocumentEndings</classname> to the value
+                    <para>Since there are formats, in which the document-structure is encoded in
+                        more than one file. Therefore it does not work, to map a file to a
+                            <classname>SDocument</classname>. With respect to these formats, it is
+                        also possible, to map a sub-folder to a <classname>SDocument</classname>.
+                        The following file-structure will result in the same corpus-structure, when
+                        setting the collection <classname>sDocumentEndings</classname> to the value
                             <classname>ENDING_LEAF_FOLDER</classname>. <figure
                             xml:id="fig_importCorpusStructure2">
                             <title/>
@@ -401,16 +405,22 @@ public MyImporter()
                 a value determining the success of the mapping. Therefore the following three
                 possible values are predefined <constant>MAPPING_RESULT.FINISHED</constant>,
                     <constant>MAPPING_RESULT.FAILED</constant> and
-                    <constant>MAPPING_RESULT.DELETED</constant>. 
-                <itemizedlist>
-                    <listitem><para>Finished means, that a document or corpus has been processed successfully.</para></listitem>
-                    <listitem><para>Failed means, that the corpus or document could not be processed because of any kind of error.</para></listitem>
-                    <listitem><para>Deleted means, that the document or corpus was deleted and shall not be processed any further (by following
-                        modules).</para></listitem>
-                </itemizedlist>
-                In case, the mapping failed, the Pepper framework will print a warning,
-                but proceed. The failed document will be not processed any further by following
-                modules. </para>
+                    <constant>MAPPING_RESULT.DELETED</constant>. <itemizedlist>
+                    <listitem>
+                        <para>Finished means, that a document or corpus has been processed
+                            successfully.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Failed means, that the corpus or document could not be processed
+                            because of any kind of error.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Deleted means, that the document or corpus was deleted and shall not
+                            be processed any further (by following modules).</para>
+                    </listitem>
+                </itemizedlist> In case, the mapping failed, the Pepper framework will print a
+                warning, but proceed. The failed document will be not processed any further by
+                following modules. </para>
             <para>If you need to do some initializations before the methods
                     <methodname>mapSDocument()</methodname> and or
                     <methodname>mapSCorpus()</methodname> are called, but after the constructor has
@@ -502,7 +512,7 @@ public void start(SElementId sElementId) throws PepperModuleException
                     <classname>SCorpus</classname>) are exchanged via a queue to which both
                 controllers have access. The module you are implementing can get the current
                     <classname>SElementId</classname> object via
-                    <methodname>getPepperModuleController().get()</methodname>. But take, care that
+                    <methodname>getPepperModuleController().get()</methodname>. But be advised, that
                 this method will first return a result when the preceding module has processed its
                 object. Until then the method will let your module wait. </para>
             <para><note>
@@ -637,11 +647,12 @@ addProgress(0.2);
             should always define a default behaviour in case that the user has not specified one. </para>
         <sect2>
             <title>Property</title>
-            <para>A property is just an attribute-value pair, consisting of a name so called property
-                name and a value so called property value. Properties can be used for customizing the
-                behaviour of a mapping of a Pepper module. Such a property must be specified by the user
-                and determined in the Pepper workflow description. The Pepper framework will pass all
-                customization properties directly to the instance of the Pepper module. </para>
+            <para>A property is just an attribute-value pair, consisting of a name so called
+                property name and a value so called property value. Properties can be used for
+                customizing the behaviour of a mapping of a Pepper module. Such a property must be
+                specified by the user and determined in the Pepper workflow description. The Pepper
+                framework will pass all customization properties directly to the instance of the
+                Pepper module. </para>
             <note>
                 <para>In the current version of Pepper, one has to specify a property file by its
                     location in the Pepper workflow description file (.pepperParams) in the
@@ -654,16 +665,17 @@ addProgress(0.2);
         <sect2>
             <title>Property registration</title>
             <para>The Pepper framework provides a registry mechanism to customize properties. This
-                registry is called <classname>PepperModuleProperties</classname> and can be accessed via
-                <methodname>getProperties()</methodname> and
-                <methodname>setProperties()</methodname>. This class only represents a container
+                registry is called <classname>PepperModuleProperties</classname> and can be accessed
+                via <methodname>getProperties()</methodname> and
+                    <methodname>setProperties()</methodname>. This class only represents a container
                 object for a set of <classname>PepperModuleProperty</classname> objects and provides
-                accessing methods. An instance of <classname>PepperModuleProperty</classname> represents
-                an abstract description of a property and the concrete value at once. In the
-                registration phase it belongs to the tasks of a <classname>PepperModule</classname> to
-                specify the abstract description which consists of the name of the property, its
-                datatype, a short description and a flag specifying whether this property is optional or
-                mandatory. To create such an abstract description of a property use the constructor: <constructorsynopsis>
+                accessing methods. An instance of <classname>PepperModuleProperty</classname>
+                represents an abstract description of a property and the concrete value at once. In
+                the registration phase it belongs to the tasks of a
+                    <classname>PepperModule</classname> to specify the abstract description which
+                consists of the name of the property, its datatype, a short description and a flag
+                specifying whether this property is optional or mandatory. To create such an
+                abstract description of a property use the constructor: <constructorsynopsis>
                     <methodname>PepperModuleProperty</methodname>
                     <methodparam>
                         <type>String</type>
@@ -681,12 +693,13 @@ addProgress(0.2);
                         <type>Boolean</type>
                         <parameter>required</parameter>
                     </methodparam>
-                </constructorsynopsis> and pass the created property object to the property registry by
-                calling the method <methodname>addProperty</methodname>. The Pepper framework uses the
-                registry to first inform the user about usable properties for customization and second
-                to fullfill the property objects with the property values set by the user. </para>
-            <para>The value of a specific property can be accessed by passing its name to the registry.
-                The method to be used is the following one: <methodsynopsis>
+                </constructorsynopsis> and pass the created property object to the property registry
+                by calling the method <methodname>addProperty</methodname>. The Pepper framework
+                uses the registry to first inform the user about usable properties for customization
+                and second to fullfill the property objects with the property values set by the
+                user. </para>
+            <para>The value of a specific property can be accessed by passing its name to the
+                registry. The method to be used is the following one: <methodsynopsis>
                     <methodname>getProperty</methodname>
                     <methodparam>
                         <type>String</type>
@@ -760,9 +773,9 @@ public boolean checkProperty(PepperModuleProperty&lt;?> prop)
                     and will not create a general <classname>PepperModuleProperties</classname>
                     object. Initialize your property object via calling: </para>
                 <programlisting>this.setProperties(new MyModuleProperties());</programlisting>
-                
+
             </sect3>
         </sect2>
     </sect1>
-    
+
 </chapter>

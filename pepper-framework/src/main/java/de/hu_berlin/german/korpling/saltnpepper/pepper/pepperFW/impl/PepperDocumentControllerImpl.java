@@ -626,7 +626,7 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 		
 		SDocumentStatus sDocumentStatus= this.sDocumentStatusTable.get(sDocumentId);
 		if (sDocumentStatus!= null)
-			throw new PepperConvertException("The document corresponding to the given sDocumentId is already observed.");
+			throw new PepperConvertException("The document corresponding to the given sDocumentId '"+sDocumentId+"' is already observed.");
 		
 		sDocumentStatus= new SDocumentStatus();
 		sDocumentStatus.setsDocumentId(sDocumentId);

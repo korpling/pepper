@@ -1,15 +1,15 @@
 Sequence Diagram to be visualized on: http://bramp.github.io/js-sequence-diagrams/
 
-Pepper->PepperModule:creation
-Pepper->PepperModule:initialization
-Pepper->PepperModule:isReadyToStart()
-PepperModule-->Pepper:{true|false}
-Pepper->PepperModule:isImportable(URI)
-PepperModule-->Pepper:{0<=x<=1}
-Pepper->PepperModule:setCorpusDefinition(CorpusDefinition)
-Pepper->PepperModule:importCorpusStructure(SCorpusGraph)
-Pepper->PepperModule:exportCorpusStructure(SCorpusGraph)
-Pepper->PepperModule:start()
+Pepper framework->PepperModule:creation
+Pepper framework->PepperModule:initialization
+Pepper framework->PepperModule:isReadyToStart()
+PepperModule-->Pepper framework:{true|false}
+Pepper framework->PepperModule:isImportable(URI)
+PepperModule-->Pepper framework:{0<=x<=1}
+Pepper framework->PepperModule:setCorpusDefinition(CorpusDefinition)
+Pepper framework->PepperModule:importCorpusStructure(SCorpusGraph)
+Pepper framework->PepperModule:exportCorpusStructure(SCorpusGraph)
+Pepper framework->PepperModule:start()
 PepperModule->PepperModule:start(SElementId)
 PepperModule->PepperModule:createPepperMapper()
 PepperModule->PepperMapper:creation
@@ -19,4 +19,4 @@ PepperMapper-->PepperModule:{MAPPING_RESULT}
 PepperModule->PepperMapper:mapSCorpus()
 PepperMapper-->PepperModule:{MAPPING_RESULT}
 PepperModule->PepperModule:end()
-Pepper-->PepperModule:
+PepperModule-->Pepper framework:

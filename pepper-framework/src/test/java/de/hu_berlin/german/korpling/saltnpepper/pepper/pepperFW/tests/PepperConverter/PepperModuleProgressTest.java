@@ -163,7 +163,7 @@ public class PepperModuleProgressTest extends TestCase {
 		myImporter.setCorpusDefinition(corpDef);
 		((PepperJob)this.getFixture()).getPepperImporters().add(myImporter);
 		
-		//init importer
+		//init exporter
 		MyExporter myExporter= new MyExporter();
 		corpDef= PepperFWFactory.eINSTANCE.createCorpusDefinition();
 		corpDef.setCorpusPath(uri);

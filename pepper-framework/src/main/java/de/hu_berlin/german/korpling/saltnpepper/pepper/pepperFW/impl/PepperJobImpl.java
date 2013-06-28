@@ -914,7 +914,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 		//import the corpus structure
 		importerGraphPairs= this.importCorpusStructure();
 					
-		{//add all imported documents to PepperDocumentController to observe
+		//add all imported documents to PepperDocumentController to observe
 			for (ImporterGraphPair importerGraphPair: importerGraphPairs)
 			{	
 				for (SDocument sDocument: importerGraphPair.sCorpusGraph.getSDocuments())
@@ -922,7 +922,7 @@ public class PepperJobImpl extends EObjectImpl implements PepperJob
 					this.getPepperDocumentController().observeSDocument(sDocument.getSElementId());
 				}
 			}
-		}//add all imported documents to PepperDocumentController to observe
+		//add all imported documents to PepperDocumentController to observe
 		LogService pepperJobLogger= null;
 		if (this.getPepperJobLogger()!= null)
 			pepperJobLogger= this.getPepperJobLogger().getLogService();

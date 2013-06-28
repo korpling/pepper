@@ -690,7 +690,6 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 				this.start(sElementId);
 			}catch (Exception e)
 			{
-				e.printStackTrace();
 				if (this.isStartOverridden)
 				{// if start was overridden, for downwards compatibility to modules implemented with < pepper 1.1.6
 					this.done(sElementId, MAPPING_RESULT.DELETED);
@@ -807,6 +806,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 			
 			PepperMapper mapper= this.createPepperMapper(sElementId);
 			mapper.setProperties(this.getProperties());
+			mapper.setLogService(this.getLogService());
 			
 			if (this instanceof PepperImporter)
 			{

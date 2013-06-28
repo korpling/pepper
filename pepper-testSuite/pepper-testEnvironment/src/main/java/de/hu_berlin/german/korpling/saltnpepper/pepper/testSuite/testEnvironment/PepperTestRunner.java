@@ -18,6 +18,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.URI;
@@ -123,6 +124,23 @@ public class PepperTestRunner implements Runnable
 	}
 	
 	public static final String logReaderName= "de.hu_berlin.german.korpling.saltnpepper.pepper-logReader";
+	/** params passed to this application**/
+	public static final String ARG_COMMAND_LINE_PARAMS="sun.java.command";
+	/** argument on command line call to determine, that pepper should make a self test**/
+	public static final String ARG_SELFTEST="-selfTest";
+	
+	/**
+	 * Returns if Pepper framework should make a self test.
+	 * @return
+	 */
+	private boolean isSelfTest()
+	{
+	    String args= System.getProperties().getProperty(ARG_COMMAND_LINE_PARAMS);
+	    if (args.contains(ARG_SELFTEST))
+		return(true);
+	    else return(false);
+	    
+	}
 	
 	public void start() throws Exception 
 	{
@@ -165,43 +183,59 @@ public class PepperTestRunner implements Runnable
 			this.logService.log(LogService.LOG_INFO, converter.getPepperModuleResolver().getStatus());
 		}
 		
-		URI workflowDescURI= null;
-		try {
-			workflowDescURI= URI.createFileURI(getWorkflowDescriptionFile().getAbsolutePath());
-		} catch (PepperTestException e) {
-			if (this.logService!= null)
-				this.logService.log(LogService.LOG_ERROR, e.getMessage());
-			else 
-				System.err.println(e.getMessage());
+		if (isSelfTest())
+		{
+		    this.logService.log(LogService.LOG_INFO, "Run pepper in self test mode");
+		    Collection<String> problems= converter.selfTest();
+		    if (problems.size()==0)
+			this.logService.log(LogService.LOG_INFO, "- no problems detected -");
+		    else
+		    {
+			this.logService.log(LogService.LOG_INFO, "following problems have been found:");
+			for (String problem: problems)
+			    this.logService.log(LogService.LOG_INFO, "\t"+ problem);
+		    }
 		}
-		
-		if (workflowDescURI!= null)
-		{// pepper can be started
-			converter.setPepperParams(workflowDescURI);
-			
-			{//creating user-defined properties
-				//TODO this must be parameterized (but how to set parameters in an OSGi environment)
-				Properties props= new Properties();
-				props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
-				props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
-				props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
-				converter.setProperties(props);
-			}//creating user-defined properties
-			
-			try {
-				converter.setParallelized(true);
-				converter.start();
-			} catch (PepperException e) 
-			{
-				System.err.println(e);
-				throw e;
-			}
-			catch (Exception e)
-			{
-				System.err.println(e);
-				throw e;
-			}
-		}// pepper can be started
+		else
+		{
+        		URI workflowDescURI= null;
+        		try {
+        			workflowDescURI= URI.createFileURI(getWorkflowDescriptionFile().getAbsolutePath());
+        		} catch (PepperTestException e) {
+        			if (this.logService!= null)
+        				this.logService.log(LogService.LOG_ERROR, e.getMessage());
+        			else 
+        				System.err.println(e.getMessage());
+        		}
+        		
+        		if (workflowDescURI!= null)
+        		{// pepper can be started
+        			converter.setPepperParams(workflowDescURI);
+        			
+        			{//creating user-defined properties
+        				//TODO this must be parameterized (but how to set parameters in an OSGi environment)
+        				Properties props= new Properties();
+        				props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
+        				props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
+        				props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
+        				converter.setProperties(props);
+        			}//creating user-defined properties
+        			
+        			try {
+        				converter.setParallelized(true);
+        				converter.start();
+        			} catch (PepperException e) 
+        			{
+        				System.err.println(e);
+        				throw e;
+        			}
+        			catch (Exception e)
+        			{
+        				System.err.println(e);
+        				throw e;
+        			}
+        		}// pepper can be started
+		}
 	}
 	
 	private void printHello()
