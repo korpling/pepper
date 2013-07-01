@@ -35,6 +35,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModul
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModulesFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
@@ -292,5 +293,37 @@ public class PepperImporterImplTest extends TestCase{
 		assertEquals(2, sCorpusGraph.getSCorpusDocumentRelations().size());
 		assertEquals(2, sCorpusGraph.getSCorpora().size());
 		assertEquals(2, sCorpusGraph.getSDocuments().size());
+	}
+	
+	/**
+	 * Checks, that the structure is imported correctly, even if no corpus folder exists. Endings set to {@link PepperImporter#ENDING_LEAF_FOLDER}.
+	 * <pre>
+	 * |-doc1
+	 *   |-text.xml
+	 *   |-token.xml
+	 * </pre>
+	 * @throws IOException 
+	 */
+	public void testImportCorpusStructure_STRUCTURE5() throws IOException
+	{
+		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE5");
+		tmpFolder.mkdirs();
+		File docFolder= new File(tmpFolder.getCanonicalPath()+"/doc1");
+		docFolder.mkdirs();
+		File.createTempFile("text", "."+PepperImporter.ENDING_XML, docFolder).deleteOnExit();
+		File.createTempFile("token", "."+PepperImporter.ENDING_XML, docFolder).deleteOnExit();
+		
+		CorpusDefinition corpDef= PepperModulesFactory.eINSTANCE.createCorpusDefinition();
+		corpDef.setCorpusPath(URI.createFileURI(docFolder.getCanonicalPath()));
+		this.getFixture().setCorpusDefinition(corpDef);
+		
+		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
+		this.getFixture().importCorpusStructure(sCorpusGraph);
+		
+		assertNotNull(sCorpusGraph);
+		assertNotNull(sCorpusGraph.getSCorpora());
+		assertEquals(1, sCorpusGraph.getSCorpora().size());
+		assertNotNull(sCorpusGraph.getSDocuments());
+		assertEquals(1, sCorpusGraph.getSDocuments().size());
 	}
 }

@@ -315,6 +315,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						sCorpus.setSElementId(parentsID);	
 						this.getSCorpusGraph().addSNode(sCorpus);
 						sCorpus.setSName(parentsID.getSId());
+						this.getSElementId2ResourceTable().put(sCorpus.getSElementId(), currURI);
 					}
 					currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
 					
