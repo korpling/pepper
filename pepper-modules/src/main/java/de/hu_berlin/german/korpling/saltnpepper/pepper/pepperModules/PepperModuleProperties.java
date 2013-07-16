@@ -22,7 +22,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -64,6 +66,26 @@ public class PepperModuleProperties
 		{
 			this.setPropertyValues(new File(propURI.toFileString()));
 		}
+	}
+	/**
+	 * Returns a new {@link Properties} obkect containing all all property names and their values.
+	 * @return new {@link Properties} object 
+	 */
+	public Properties getProperties() 
+	{
+		Properties retVal= new Properties();
+		Collection<String> names= this.getPropertyNames();
+		if (names!= null){
+			for (String name: names)
+			{
+				if (name!= null){
+					PepperModuleProperty<?> prop= getProperty(name);
+					if (prop.getValue()!= null)
+						retVal.put(name, prop.getValue());
+				}
+			}
+		}
+		return(retVal);
 	}
 	
 	/**
@@ -210,5 +232,18 @@ public class PepperModuleProperties
 	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions()
 	{
 		return(pepperModuleProperties.values());
+	}
+	
+	public String toString()
+	{
+		StringBuffer buf= new StringBuffer();
+		buf.append("[");
+		for (String name: getPropertyNames())
+		{
+			PepperModuleProperty prop= getProperty(name);
+			buf.append(prop+", ");
+		}
+		buf.append("]");
+		return(buf.toString());
 	}
 }
