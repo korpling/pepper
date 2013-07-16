@@ -17,10 +17,14 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
+import java.util.Map;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 
@@ -85,6 +89,22 @@ public interface PepperExporter extends PepperModule {
 	 */
 	void setCorpusDefinition(CorpusDefinition value);
 
+	/**
+	 * Returns table correspondence between {@link SElementId} and a resource.
+	 * Stores {@link SElementId} objects corresponding to either a {@link SDocument} or a {@link SCorpus} object, which has
+	 * been created during the run of {@link #importCorpusStructure(SCorpusGraph)}. Corresponding to the {@link SElementId} object
+	 * this table stores the resource from where the element shall be imported.<br/>
+	 * For instance:
+	 * <table>
+	 * 	<tr><td>corpus_1</td><td>/home/me/corpora/myCorpus</td></tr>
+	 *  <tr><td>corpus_2</td><td>/home/me/corpora/myCorpus/subcorpus</td></tr>
+	 *  <tr><td>doc_1</td><td>/home/me/corpora/myCorpus/subcorpus/document1.xml</td></tr>
+	 *  <tr><td>doc_2</td><td>/home/me/corpora/myCorpus/subcorpus/document2.xml</td></tr>
+	 * </table>
+	 * @return table correspondence between {@link SElementId} and a resource.
+	 */
+	public Map<SElementId, URI> getSElementId2ResourceTable();
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

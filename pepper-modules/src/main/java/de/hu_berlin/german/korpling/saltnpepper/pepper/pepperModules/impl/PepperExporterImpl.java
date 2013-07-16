@@ -20,6 +20,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -201,6 +203,31 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 			}
 		}
 		super.start();
+	}
+	
+	/**
+	 * Stores {@link SElementId} objects corresponding to either a {@link SDocument} or a {@link SCorpus} object, which has
+	 * been created during the run of {@link #importCorpusStructure(SCorpusGraph)}. Corresponding to the {@link SElementId} object
+	 * this table stores the resource from where the element shall be imported.<br/>
+	 * For instance:
+	 * <table>
+	 * 	<tr><td>corpus_1</td><td>/home/me/corpora/myCorpus</td></tr>
+	 *  <tr><td>corpus_2</td><td>/home/me/corpora/myCorpus/subcorpus</td></tr>
+	 *  <tr><td>doc_1</td><td>/home/me/corpora/myCorpus/subcorpus/document1.xml</td></tr>
+	 *  <tr><td>doc_2</td><td>/home/me/corpora/myCorpus/subcorpus/document2.xml</td></tr>
+	 * </table>
+	 * 
+	 */
+	private Map<SElementId, URI> sElementId2ResourceTable= null;
+	
+	/**
+	 * {@inheritDoc PepperImporter#getSElementId2ResourceTable()}
+	 */
+	@Override
+	public synchronized Map<SElementId, URI> getSElementId2ResourceTable() {
+		if (sElementId2ResourceTable== null)
+			sElementId2ResourceTable= new Hashtable<SElementId, URI>();
+		return sElementId2ResourceTable;
 	}
 	
 	/**
