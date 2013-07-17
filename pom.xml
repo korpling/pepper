@@ -288,8 +288,8 @@
                 <configuration>
                     <noticeTemplate>./src/etc/NOTICE_template.txt</noticeTemplate>
                     <licenseMapping>
-                        <param>https://source.jasig.org/licenses/license-mappings.xml</param>
-                        <!--  <param>https://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml</param> -->
+                        <!--  <param>https://source.jasig.org/licenses/license-mappings.xml</param>-->
+                        <param>https://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml</param>
                     </licenseMapping>
                 </configuration>
             </plugin>
