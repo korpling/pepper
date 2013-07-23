@@ -186,6 +186,7 @@ public class PepperModuleProperty<T> {
 			this.value=null;
 		else
 		{//start: checks type of value
+			value= value.trim();
 			if (String.class.isAssignableFrom(clazz))
 				this.value= (T)value;
 			else if (Character.class.isAssignableFrom(clazz))
