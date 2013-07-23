@@ -847,7 +847,7 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 	@Override
 	public void end() throws PepperModuleException 
 	{
-		for (SCorpusGraph sCorpusGraph: this.getSaltProject().getSCorpusGraphs())
+		for (SCorpusGraph sCorpusGraph: Collections.synchronizedCollection(this.getSaltProject().getSCorpusGraphs()))
 		{
 			if (sCorpusGraph!= null)
 			{
