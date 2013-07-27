@@ -6,12 +6,12 @@
     <parent>
         <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
         <artifactId>pepper</artifactId>
-        <version>1.1.6-SNAPSHOT</version>
+        <version>1.1.6</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <scm>
-        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-logReader/</developerConnection>
-        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-logReader/</url>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.6/pepper-logReader</developerConnection>
+        <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.6/pepper-logReader</url>
     </scm>
     <dependencies>
         <dependency>
