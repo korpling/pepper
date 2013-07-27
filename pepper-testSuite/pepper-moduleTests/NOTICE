@@ -22,6 +22,7 @@ This project includes:
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
   de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   JUnit under Common Public License Version 1.0
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
   org.eclipse.emf.common under Eclipse Public License - v 1.0
