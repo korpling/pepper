@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pepperParams:PepperParams xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pepperParams="de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams">
-  <pepperJobParams id="1">
-	<importerParams moduleName="TreetaggerImporter" sourcePath="./treetagger/input/myCorpus/"/>
-	<exporterParams moduleName="TreetaggerExporter" destinationPath="./treetagger/output/"/>
-  </pepperJobParams>
-</pepperParams:PepperParams>
