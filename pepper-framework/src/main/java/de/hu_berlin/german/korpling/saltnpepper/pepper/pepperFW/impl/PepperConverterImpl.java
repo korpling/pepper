@@ -55,7 +55,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFinishable
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperJobLogger;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleResolver;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.PepperFWProperties;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.CorpusDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
@@ -277,13 +277,24 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
 	return PepperFWPackage.Literals.PEPPER_CONVERTER;
     }
 
+    private boolean pepperModuleResolverInited= false;
+    
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
+     * Returns the {@link PepperModuleResolver} and if not already done, initializes it
+     * in sense of passing the {@link PepperConfiguration}.
+     * @return module resolver object
      */
     public PepperModuleResolver getPepperModuleResolver() {
-	return pepperModuleResolver;
+    	if (!pepperModuleResolverInited)
+    	{
+    		synchronized (this) {
+    			if (!pepperModuleResolverInited)
+    			{
+    				pepperModuleResolver.setConfiguration(getConfiguration());
+    			}
+			}
+    	}
+    	return pepperModuleResolver;
     }
 
     /**
@@ -801,28 +812,59 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the configuration object for this Pepper converter.
+     * See {@link #getConfiguration()}.
      * 
-     * @generated
      */
     public Properties getProperties() {
-	return properties;
+    	return getConfiguration();
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
+     * Creates a new {@link PepperConfiguration} object and copies all entries
+     * given in the passed {@link Properties} object.
      */
     public void setProperties(Properties newProperties) {
-	Properties oldProperties = properties;
-	properties = newProperties;
-	if (eNotificationRequired())
-	    eNotify(new ENotificationImpl(this, Notification.SET,
-		    PepperFWPackage.PEPPER_CONVERTER__PROPERTIES,
-		    oldProperties, properties));
+		setConfiguration(new PepperConfiguration(newProperties));
     }
-
+    
+    /**
+     * configuration object to configure Pepper framework
+     */
+    private PepperConfiguration pepperConfiguration= null;
+    /**
+     * Sets the configuration object for this converter object. Note, that a null value will
+     * triggers a new load of configuration file, when {@link #getConfiguration()} is called
+     * next time.
+     * @param pepperConfiguration
+     */
+    public void setConfiguration(PepperConfiguration pepperConfiguration)
+    {
+    	this.pepperConfiguration= pepperConfiguration;
+    }
+    /**
+     * Returns the configuration object for this converter object. If no {@link PepperConfiguration}
+     * object was set, an automatic detection of configuration file will be started. 
+     * @return configuration object
+     */
+    public PepperConfiguration getConfiguration()
+    {
+    	if (pepperConfiguration== null)
+    	{
+    		if (pepperConfiguration== null)
+    		{
+	    		synchronized (this) {
+	    			PepperConfiguration config= new PepperConfiguration();
+	        		config.load(componentContext);
+	        		pepperConfiguration= config;
+	    		}
+			}
+    	}
+    	
+    	return(pepperConfiguration);
+    }
+    
+    
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
@@ -1179,7 +1221,7 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
 	}
 	if (currPepperJobParam == null)
 	    throw new PepperParamsException("Cannot start with job " + id
-		    + ". A job with this id wasn�t found.");
+		    + ". A job with this id wasn't found.");
 
 	// create a new PepperJob
 	PepperJob pepperJob = this.createPepperJob(currPepperJobParam);
@@ -1212,11 +1254,12 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
 	    if (this.getLogService() != null) {
 		this.getLogService().log(LogService.LOG_INFO,
 			"user-defined properties:");
-		for (String prop : PepperFWProperties.ALL_PROP_NAMES) {
-		    this.getLogService().log(
+		
+		for (String prop : PepperConfiguration.ALL_PROP_NAMES) {
+			this.getLogService().log(
 			    LogService.LOG_INFO,
 			    "\t" + prop + ":\t"
-				    + this.getProperties().getProperty(prop));
+				    + this.getConfiguration().getProperty(prop));
 		}
 	    }
 	}// print all user-defined configurations
@@ -1429,7 +1472,8 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
      */
     @Activate
     protected void activate(ComponentContext componentContext) {
-	// for DEBUG
+    this.componentContext= componentContext;	
+    	// for DEBUG
 	if (this.logService != null)
 	    this.logService.log(LogService.LOG_DEBUG,
 		    "PepperConverter is initialized...");
@@ -1446,7 +1490,6 @@ public class PepperConverterImpl extends EObjectImpl implements PepperConverter 
 	if (this.logService != null)
 	    this.logService.log(LogService.LOG_DEBUG,
 		    "goodbye from PepperConverter...");
-
 	this.componentContext = null;
     }
     // ========================= end: OSGi-stuff

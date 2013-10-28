@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Vector;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
@@ -45,6 +46,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFW
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleResolver;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperProperties;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.FormatDefinition;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
@@ -56,7 +59,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.ModuleParams
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Pepper Module Resolver</b></em>'.
+ * An object of this class should be always created as a singleton. Such an object retrieves Pepper modules registered in
+ * the current OSGi environment (the one, this object was created in). Further this class intializes a Pepper module in sense
+ * of setting the resource and temprorary path. For more details on the policy of retrieving the resources please see the 
+ * documentation of {@link #setResources(PepperModule)}
+ * 
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -177,10 +184,24 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 		}
 		return pepperExporterComponentFactories;
 	}
-	
+	/** The {@link ComponentContext} of the OSGi environment the bundle was started in.**/
+	private ComponentContext componentContext=null;
+	/**
+	 * Returns the {@link ComponentContext} of the OSGi environment the bundle was started in.
+	 * @return
+	 */
+	public ComponentContext getComponentContext()
+	{
+		return(this.componentContext);
+	}
+	/**
+	 * Sets the {@link ComponentContext} of the OSGi environment the bundle was started in. 
+	 * @param componentContext
+	 */
 	@Activate
 	public void activate(ComponentContext componentContext)
 	{
+		this.componentContext= componentContext;
 	}
 	
 // ====================================== start: getting logger ======================================
@@ -441,46 +462,159 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 			this.getPepperExporterComponentFactories().remove(pepperExporterComponentFactory);
 	}
 // ============================================ end: resolve PepperExporters
-	
+//	public static final String  SOURCES_RESOURCES="src/main/resources/";
 	public static final String RESOURCES=".resources";
-	
+	/** stores a list of all bundle locations generated out of system property osgi.bundles**/
+	private Collection<String> bundleLocations=null;
 	/**
-	 * Sets resources to a given PepperModule-object.
+	 * Sets resources to a given PepperModule-object. The policy of computing the resource path is the following:
+	 * <ol>
+	 * 	<li>If a system property named SYMBOLIC_NAME_OF_MODULE+{@link #RESOURCES} is set, the {@link PepperModule#getResources()} would be directed the value contained by this property</li>
+	 * 	<li>If environment variable {@value PepperProperties#ENV_PEPPER_MODULE_RESOURCES} is set, {@link PepperModule#getResources()} would be directed to value of {@value PepperProperties#ENV_PEPPER_MODULE_RESOURCES}/SYMBOLIC_NAME_OF_MODULE</li>
+	 *  <li>If system property {@value PepperProperties#PROP_PEPPER_MODULE_RESOURCES} is set, {@link PepperModule#getResources()} would be directed to value of {@value PepperProperties#PROP_PEPPER_MODULE_RESOURCES}/SYMBOLIC_NAME_OF_MODULE</li>
+	 *  <li>If nothing is set, {@link PepperModule#getResources()} would be directed to a subfolder having the name equal to the symbolic name of the bundle, which is located in the same folder as the bundle is located </li>
+	 * </ol>
 	 * @param module - the object for setting resources
 	 */
 	protected void setResources(PepperModule module)
 	{
-		String resURIStr= System.getProperty(this.resourcesPropertyName);		
-		
-		if (	(resURIStr== null) ||
-				(resURIStr.isEmpty()))
-			throw new PepperFWException("Cannot start converting, because the system property '"+this.resourcesPropertyName+"' isn't set. This might be an internal failure.");
-		
 		if (	(module.getSymbolicName()== null) ||
 				(module.getSymbolicName().isEmpty()))
 			throw new PepperModuleException("Cannot set resources to module '"+module.getName()+"', because its symbolic name is empty.");
 		
-		String resourceDirectoryName= System.getProperty(module.getSymbolicName()+RESOURCES);
-		File resFile= null;
-		URI resURI= null;
-		if (resourceDirectoryName!= null)
+		// check case 1 (specific module resource property)
+		String propName= module.getSymbolicName()+RESOURCES;
+		String resourcePathStr=	null;
+		resourcePathStr=System.getProperty(propName);
+		
+		// check case 2 (general system environment for module resources)
+		if (	(resourcePathStr== null)||
+				(resourcePathStr.isEmpty()))
 		{
-			resURI= URI.createFileURI(resourceDirectoryName);
-			resFile= new File(resURI.toFileString());
+			String env=System.getenv(PepperProperties.ENV_PEPPER_MODULE_RESOURCES);
+			if (	(env!= null)&&
+					(!env.isEmpty()))
+			{
+				resourcePathStr= env+"/"+module.getSymbolicName();
+			}
 		}
-		else 
+		
+		// check case 3 (general system property for module resources)
+		if (	(resourcePathStr== null)||
+				(resourcePathStr.isEmpty()))
 		{
-			resURI= URI.createFileURI(resURIStr+"/"+module.getSymbolicName());
-			resFile= new File(resURI.toFileString());
+			String prop=System.getProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES);
+			if (	(prop!= null)&&
+					(!prop.isEmpty()))
+			{
+				resourcePathStr= prop+"/"+module.getSymbolicName();
+			}
 		}
-		if (!resFile.exists())
+		
+		// check case 4 (retrieve path from location where bundle is)
+		if (	(resourcePathStr== null)||
+				(resourcePathStr.isEmpty()))
 		{
-			resFile.mkdirs();
-			if (this.getLogService()!= null)
-				this.getLogService().log(LogService.LOG_WARNING, "Resource folder '"+resFile.getAbsolutePath()+"' for pepper module '"+module.getSymbolicName()+"' does not exist.");
+			resourcePathStr= retrieveResourcePathFromBundle(module);
 		}
-		module.setResources(resURI);
+		
+		if (resourcePathStr== null)
+			getLogService().log(LogService.LOG_WARNING, "Cannot set resource for pepper module '"+module.getName()+"'.");
+		else
+		{	
+			URI resourcePathURI= URI.createFileURI(resourcePathStr);
+			
+			File resourcePathFile= new File(resourcePathURI.toFileString());
+			
+			if (!resourcePathFile.exists())
+			{
+				resourcePathFile.mkdirs();
+				if (this.getLogService()!= null)
+					this.getLogService().log(LogService.LOG_WARNING, "Resource folder '"+resourcePathFile.getAbsolutePath()+"' for pepper module '"+module.getSymbolicName()+"' does not exist.");
+			}
+			module.setResources(resourcePathURI);
+		}
 	}
+	
+	/**
+	 * Retrieves the path, where the bundle is located and extractes the path, where resources are estimated 
+	 * @return
+	 */
+	protected String retrieveResourcePathFromBundle(PepperModule module)
+	{
+		String resourcePathStr= null;
+		
+		if (	(module.getComponentContext()!= null)&&
+				(module.getComponentContext().getBundleContext()!= null)&&
+				(module.getComponentContext().getBundleContext().getBundle()!= null)&&
+				(module.getComponentContext().getBundleContext().getBundle().getLocation()!= null))
+		{
+			if (module.getComponentContext()!= null)
+			{
+				if (bundleLocations== null)
+				{
+					bundleLocations= new Vector<String>();
+					String[] bundleNames= System.getProperty("osgi.bundles").split(",");
+					if (bundleNames.length>0)
+					{
+						for (String bundleName: bundleNames)
+						{
+							bundleName= bundleName.replace("reference:", "");
+							bundleName= bundleName.replace("@start", "");
+							bundleLocations.add(bundleName);
+						}
+					}
+				}
+				
+				String currLocation=module.getComponentContext().getBundleContext().getBundle().getLocation();
+				currLocation= currLocation.replace("initial@reference:file:", "");
+				currLocation= currLocation.replace("../", "");
+				if (currLocation.endsWith("/"))
+					currLocation= currLocation.substring(0, currLocation.length()-1);
+				String location=null;
+				for (String bundleLocation: bundleLocations)
+				{
+					if (bundleLocation.endsWith(currLocation))
+					{
+						location= bundleLocation;
+						break;
+					}
+				}
+				if (location.endsWith(".jar"))
+					location= location.replace(".jar", "/");
+				else
+				{
+					if (!location.endsWith("/"))
+						location= location+"/";
+					location= location+ PepperConfiguration.SOURCES_RESOURCES;
+					
+				}
+				resourcePathStr= location;
+				if (resourcePathStr.startsWith("file:"))
+					resourcePathStr= resourcePathStr.replace("file:", "");
+			}	
+		}
+		return(resourcePathStr);
+	}
+	
+	private PepperConfiguration pepperConfiguration= null;
+	 /**
+     * Sets the configuration object for this object.
+     * @param pepperConfiguration
+     */
+    public void setConfiguration(PepperConfiguration pepperConfiguration)
+    {
+    	this.pepperConfiguration= pepperConfiguration;
+    }
+    /**
+     * Returns the configuration object for this converter object. If no {@link PepperConfiguration}
+     * object was set, an automatic detection of configuration file will be started. 
+     * @return configuration object
+     */
+    public PepperConfiguration getConfiguration()
+    {
+    	return(pepperConfiguration);
+    }
 	
 	/**
 	 * Sets Temproraries to a given PepperModule-object.
@@ -488,7 +622,14 @@ public class PepperModuleResolverImpl extends EObjectImpl implements PepperModul
 	 */
 	protected void setTemproraries(PepperModule module)
 	{
-		String tempURIStr= System.getProperty(this.temprorariesPropertyName);
+		String tempURIStr= null;
+		
+		if (getConfiguration()== null)
+		{// just for unit tests
+			tempURIStr= System.getProperty(this.temprorariesPropertyName);
+		}// just for unit tests
+		else
+			tempURIStr= getConfiguration().getTempPath().getAbsolutePath();
 		if (	(tempURIStr== null) ||
 				(tempURIStr.isEmpty()))
 			throw new PepperFWException("Cannot start converting, because the system property '"+this.temprorariesPropertyName+"' isn't set. This might be an internal failure.");

@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.component.ComponentFactory;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperManipulator;
@@ -279,5 +280,17 @@ public interface PepperModuleResolver extends EObject {
 	 * @generated
 	 */
 	String getStatus();
+	
+	 /**
+     * Sets the configuration object for this object.
+     * @param pepperConfiguration
+     */
+    public void setConfiguration(PepperConfiguration pepperConfiguration);
+    /**
+     * Returns the configuration object for this converter object. If no {@link PepperConfiguration}
+     * object was set, an automatic detection of configuration file will be started. 
+     * @return configuration object
+     */
+    public PepperConfiguration getConfiguration();
 
 } // PepperModuleResolver

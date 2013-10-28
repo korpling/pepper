@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.URI;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleResolver;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.util.Logger;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.util.TestComponentFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperExporter;
@@ -128,7 +129,7 @@ public class PepperConverterAdapter
 				File tmpFolder= new File(this.tmpFolderURI.toFileString());
 				File resFolder= new File(resFolderStr);
 				System.setProperty(moduleResolver.getTemprorariesPropertyName(), tmpFolder.getCanonicalPath());
-				System.setProperty(moduleResolver.getResourcesPropertyName(), resFolder.getCanonicalPath());
+				System.setProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES, resFolder.getCanonicalPath());
 				
 			}//resource and temprorary folder
 
@@ -189,7 +190,7 @@ public class PepperConverterAdapter
 				File tmpFolder= new File(tmpFolderURI.toFileString());
 				File resFolder= new File(resFolderStr);
 				System.setProperty(moduleResolver.getTemprorariesPropertyName(), tmpFolder.getCanonicalPath());
-				System.setProperty(moduleResolver.getResourcesPropertyName(), resFolder.getCanonicalPath());
+				System.setProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES, resFolder.getCanonicalPath());
 				
 			}//resource and temprorary folder
 

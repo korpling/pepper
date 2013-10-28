@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="false"/>
+<booleanAttribute key="automaticValidate" value="true"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pepper-testEnvironment_modules_test"/>
+<booleanAttribute key="default" value="true"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="PEPPER_TEST_WORKFLOW_FILE" value="/home/florian/Test/pcc2/paula2relANNIS.pepperParams"/>
+</mapAttribute>
+<stringAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_ENCODING" value="ISO-8859-1"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console -bla=blub"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="target_bundles" value="com.google.guava*11.0.2.v201303041551@default:default,com.google.guava*14.0.1@default:default,com.ibm.icu@default:default,de.hu_berlin.german.korpling.saltnpepper.pepper-testEnvironment@default:default,de.hu_berlin.german.korpling.saltnpepper.pepperModules-DotModules@default:default,de.hu_berlin.german.korpling.saltnpepper.pepperModules-GenericXMLModules@default:default,javax.xml@default:default,org.apache.commons.lang@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.apache.log4j@default:default,org.eclipse.compare.core@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.filesystem@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.resources@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,org.eclipse.core.runtime@default:true,org.eclipse.emf.cdo.ecore.retrofit@default:false,org.eclipse.emf.common@default:default,org.eclipse.emf.ecore.xmi@default:default,org.eclipse.emf.ecore@default:default,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.team.core@default:default,org.slf4j.api*1.6.4.v20120130-2120@default:default,org.slf4j.api*1.7.2.v20121108-1250@default:default"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="de.hu_berlin.german.korpling.saltnpepper.misc-RelANNISModel@default:default,de.hu_berlin.german.korpling.saltnpepper.misc-TupleConnector@default:default,de.hu_berlin.german.korpling.saltnpepper.pepper-exceptions@default:default,de.hu_berlin.german.korpling.saltnpepper.pepper-framework@6:default,de.hu_berlin.german.korpling.saltnpepper.pepper-logReader@1:default,de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests@default:default,de.hu_berlin.german.korpling.saltnpepper.pepper-modules@default:default,de.hu_berlin.german.korpling.saltnpepper.pepper-testEnvironment@default:default,de.hu_berlin.german.korpling.saltnpepper.pepper-workflow@default:default,de.hu_berlin.german.korpling.saltnpepper.pepperModules-PAULAModules@default:default,de.hu_berlin.german.korpling.saltnpepper.pepperModules-RelANNISModules@default:default,de.hu_berlin.german.korpling.saltnpepper.salt-graph@default:default,de.hu_berlin.german.korpling.saltnpepper.salt-saltCommon@default:default,de.hu_berlin.german.korpling.saltnpepper.salt-saltCore@default:default,de.hu_berlin.german.korpling.saltnpepper.salt-saltSample@default:default"/>
+</launchConfiguration>

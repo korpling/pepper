@@ -19,7 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironmen
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Properties;
+import java.util.Enumeration;
 
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
@@ -33,7 +33,7 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperConverter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.*;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testSuite.testEnvironment.exceptions.PepperTestException;
 /**
  * Only starts test framework, if {@value #PROP_TEST_DISABLED} is not set or is set to false.  
@@ -49,11 +49,6 @@ public class PepperTestRunner implements Runnable
 	 * name of environment variable, which is supposed to contain the workflow description file
 	 */
 	public static final String ENV_PEPPER_TEST_WORKFLOW_FILE= "PEPPER_TEST_WORKFLOW_FILE";
-	/**
-	 * name of environment variable, which is supposed to contain configurations for pepper modules
-	 */
-	public static final String ENV_PEPPER_TEST= "PEPPER_TEST";
-	
 	/**
 	 * extension of where to find plugins and resources
 	 */
@@ -144,33 +139,19 @@ public class PepperTestRunner implements Runnable
 	
 	public void start() throws Exception 
 	{
-		{//setting system properties for several bundles (resource respectively tmp-folders)
-			File pepperTestPath= null;
-			{//checking environment variable PEPPER_TEST
-				String pepperTestPathStr= System.getenv(ENV_PEPPER_TEST);
-				if (	(pepperTestPathStr== null) ||
-						(pepperTestPathStr.isEmpty()))
-					throw new PepperTestException("Cannot start PepperTest, because the environment variable '"+ENV_PEPPER_TEST+"' is not set. Please set this variable and try again.");
-				pepperTestPath= new File(pepperTestPathStr);
-				if (!pepperTestPath.exists())
-					throw new PepperTestException("Cannot start PepperTest, because the path '"+pepperTestPathStr+"' to which the environment variable '"+ENV_PEPPER_TEST+"' points to does not exist.");
-			}//checking environment variable PEPPER_TEST
-			
-			//for module resolver
-			System.setProperty("PepperModuleResolver.TemprorariesURI", pepperTestPath.getAbsolutePath()+"/TMP");
-			System.setProperty("PepperModuleResolver.ResourcesURI", pepperTestPath.getAbsolutePath()+DIR_PLUGINS);
-			{//for LogService
-				String logReaderResource= pepperTestPath.getAbsolutePath()+ DIR_CONF+"/";
+		//setting system properties for several bundles (resource respectively tmp-folders)
+			//for LogService
+				String logReaderResource= converter.getConfiguration().getConfFolder().getAbsolutePath();
 				if (!new File(logReaderResource).exists())
 					throw new Exception("Cannot start PepperTest, because no log-file is given at resource '"+logReaderResource+"'.");
 				System.setProperty(logReaderName+".resources", logReaderResource);
-			}//for LogService
-		}//setting system properties for several bundles (resource respectively tmp-folders)
+			//for LogService
+		//setting system properties for several bundles (resource respectively tmp-folders)
 		
 		if (this.logService!= null)
 		{
 			this.logService.log(LogService.LOG_INFO,"PepperModuleResolver.TemprorariesURI:\t"+ System.getProperty("PepperModuleResolver.TemprorariesURI"));
-			this.logService.log(LogService.LOG_INFO,"PepperModuleResolver.ResourcesURI:\t"+ System.getProperty("PepperModuleResolver.ResourcesURI"));
+			this.logService.log(LogService.LOG_INFO,PepperProperties.PROP_PEPPER_MODULE_RESOURCES+":\t"+ System.getProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES));
 			this.logService.log(LogService.LOG_INFO,logReaderName+".resources:\t"+ System.getProperty(logReaderName+".resources"));
 		}	
 		if (this.logService!= null)
@@ -211,15 +192,6 @@ public class PepperTestRunner implements Runnable
         		if (workflowDescURI!= null)
         		{// pepper can be started
         			converter.setPepperParams(workflowDescURI);
-        			
-        			{//creating user-defined properties
-        				//TODO this must be parameterized (but how to set parameters in an OSGi environment)
-        				Properties props= new Properties();
-        				props.setProperty(PepperFWProperties.PROP_COMPUTE_PERFORMANCE, "true");
-        				props.setProperty(PepperFWProperties.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
-        				props.setProperty(PepperFWProperties.PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING, "true");
-        				converter.setProperties(props);
-        			}//creating user-defined properties
         			
         			try {
         				converter.setParallelized(true);
@@ -270,6 +242,16 @@ public class PepperTestRunner implements Runnable
 	@Activate
 	protected void activate(ComponentContext componentContext)
 	{
+		System.out.println("================================== Welcome to Pepper ==================================");
+		
+		Enumeration<Object> keys= componentContext.getProperties().keys();
+		
+		while (keys.hasMoreElements())
+		{
+			Object key= keys.nextElement();
+			System.out.println(key+"= "+componentContext.getProperties().get(key));
+		}		
+		
 		if (	(System.getProperty(PROP_TEST_DISABLED)== null) ||
 				(!Boolean.valueOf(System.getProperty(PROP_TEST_DISABLED))))
 		{
@@ -279,7 +261,7 @@ public class PepperTestRunner implements Runnable
 			this.isDisabled= true;
 		if (!this.isDisabled)
 		{	
-			if (this.getLogService()!= null)
+			if (this.getLogService()!= null) 
 				this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 			else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 			Thread pepperTestThread= new Thread(this, "PepperTest-Thread");
@@ -296,6 +278,7 @@ public class PepperTestRunner implements Runnable
 				this.logService.log(LogService.LOG_INFO,"----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 			else System.out.println("----------------------- bundle pepper-testEnvironment is deactivated -----------------------");
 		}
+		System.out.println("================================== Good bye ==================================");
 	}
 
 	

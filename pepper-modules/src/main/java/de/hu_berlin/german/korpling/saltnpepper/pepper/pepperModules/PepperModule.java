@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
@@ -57,6 +58,12 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * @generated
  */
 public interface PepperModule extends EObject {
+	/**
+	 * Returns the {@link ComponentContext} of the OSGi environment the bundle was started in.
+	 * @return
+	 */
+	public ComponentContext getComponentContext();
+	
 	/**
 	 * Returns the name of this module. In most cases, the name somehow describes the task of the module.
 	 * @return the value of the '<em>Name</em>' attribute.

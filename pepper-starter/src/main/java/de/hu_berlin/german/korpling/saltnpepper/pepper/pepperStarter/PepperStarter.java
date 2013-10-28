@@ -167,7 +167,7 @@ public class PepperStarter
 			//replace KW_ENV_PEPPER_HOME if occurs
 			File resFile= new File(resUriStr);
 			try {
-				System.setProperty("PepperModuleResolver.ResourcesURI", resFile.getCanonicalPath());
+				System.setProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES, resFile.getCanonicalPath());
 			} catch (Exception e) 
 			{
 				throw new PepperException("Cannot identify temprorary or resource folder. Nested Exception: "+ e);

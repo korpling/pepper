@@ -29,6 +29,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperCo
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.impl.PepperConverterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperParams.PepperParams;
 
 /**
@@ -292,4 +293,19 @@ public interface PepperConverter extends EObject
 	 * @generated
 	 */
 	void startPepperConvertJob(Integer id) throws PepperException;
+	
+	 /**
+     * Sets the configuration object for this converter object. Note, that a null value will
+     * triggers a new load of configuration file, when {@link #getConfiguration()} is called
+     * next time.
+     * @param pepperConfiguration
+     */
+    public void setConfiguration(PepperConfiguration pepperConfiguration);
+  
+    /**
+     * Returns the configuration object for this converter object. If no {@link PepperConfiguration}
+     * object was set, an automatic detection of configuration file will be started. 
+     * @return configuration object
+     */
+    public PepperConfiguration getConfiguration();
 } // PepperConverter

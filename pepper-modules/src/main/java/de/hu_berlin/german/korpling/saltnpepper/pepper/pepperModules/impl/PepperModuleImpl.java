@@ -277,17 +277,31 @@ public abstract class PepperModuleImpl extends EObjectImpl implements PepperModu
 		this.properties= properties;
 	}
 	
+	
+	/** The {@link ComponentContext} of the OSGi environment the bundle was started in.**/
+	private ComponentContext componentContext=null;
+	/**
+	 * Returns the {@link ComponentContext} of the OSGi environment the bundle was started in.
+	 * @return
+	 */
+	public ComponentContext getComponentContext()
+	{
+		return(this.componentContext);
+	}
+	
 	/**
 	 * This method is called by OSGi framework and sets the component context, this class is running in. 
 	 * This method scans the given {@link ComponentContext} object for symbolic name and version and initializes its
 	 * values {@link #symbolicName} and {@link #version} with it. When running this class in OSGi context,
 	 * you do not have to set both values by hand. With the given architecture, the symbolic name and the bundle 
-	 * version will be given by pom.xml, via MMANIFEST.MF and finally read by this method. 
+	 * version will be given by pom.xml, via MANIFEST.MF and finally read by this method. Also sets the internal
+	 * field storing the {@link ComponentContext} which can be retrieved via {@link #getComponentContext()}. 
 	 * @param componentContext
 	 */
 	@Activate
 	protected void activate(ComponentContext componentContext) 
 	{
+		this.componentContext= componentContext;
 		if (	(componentContext!= null)&&
 				(componentContext.getBundleContext()!= null)&&
 				(componentContext.getBundleContext().getBundle()!= null))

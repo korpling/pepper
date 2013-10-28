@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperModuleResolver;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.Resolver.TestComponentFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.Resolver.TestExporter1;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.tests.Resolver.TestImporter1;
@@ -118,7 +119,7 @@ public class PepperModuleResolverTest extends TestCase {
 	protected void setUp() throws Exception {
 		setFixture(PepperFWFactory.eINSTANCE.createPepperModuleResolver());
 		System.setProperty(this.getFixture().getTemprorariesPropertyName(), "./data/TMP");
-		System.setProperty(this.getFixture().getResourcesPropertyName(), "./data/moduleResources");
+		System.setProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES, "./data/moduleResources");
 	}
 
 	/**
