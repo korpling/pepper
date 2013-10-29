@@ -129,52 +129,6 @@ public class PepperStarter
 		return properties;
 	}
 //========================== end: Property handling
-	
-		
-	private void loadProperties(Properties props) throws URISyntaxException
-	{
-		if (props== null)
-			throw new PepperPropertyException("Cannot read properties, because no properties are given.");
-		
-		if (this.logger!= null)
-		{
-			this.logger.debug("-------------------------- Pepper Properties --------------------------");
-			for (Object key: Collections.synchronizedSet(props.keySet()))
-			 this.logger.debug(key+":\t\t"+ props.get(key));
-			this.logger.debug("-----------------------------------------------------------------------");
-		}
-		
-		{//setting system properties for temprorary and resource folder for modules
-			String tmpUriStr= props.getProperty(PepperProperties.PROP_TMP_PATH);
-			
-			//checking if property for core module is set
-			if (	(tmpUriStr== null) ||
-					(tmpUriStr.isEmpty()))
-				throw new PepperException("Cannot set properties, because no path for temproraries folder is given.");
-			//replace KW_ENV_PEPPER_HOME if occurs
-			File tmpFile= new File(tmpUriStr);
-			try {
-				System.setProperty("PepperModuleResolver.TemprorariesURI", tmpFile.getCanonicalPath());
-			} catch (Exception e) 
-			{
-				throw new PepperException("Cannot identify temprorary or resource folder. Nested Exception: "+ e);
-			}
-			String resUriStr= props.getProperty(PepperProperties.PROP_RESOURCE_PATH);
-			//checking if property for core module is set
-			if (	(resUriStr== null) ||
-					(resUriStr.isEmpty()))
-				throw new PepperException("Cannot set properties, because no path for resources folder for modules is given.");
-			//replace KW_ENV_PEPPER_HOME if occurs
-			File resFile= new File(resUriStr);
-			try {
-				System.setProperty(PepperProperties.PROP_PEPPER_MODULE_RESOURCES, resFile.getCanonicalPath());
-			} catch (Exception e) 
-			{
-				throw new PepperException("Cannot identify temprorary or resource folder. Nested Exception: "+ e);
-			}
-		}//setting system properties for temprorary and resource folder for modules
-	}
-	
 	/**
 	 * The home directory of pepper.
 	 */
@@ -373,8 +327,6 @@ public class PepperStarter
 	
 		if (pepperParams== null)
 			throw new RuntimeException("Cannot start Pepper conversion, because no workflow-description is given.");
-		
-		this.loadProperties(this.getProperties());
 		
 		//disable pepper test environment
 		System.getProperties().put(PROP_TEST_DISABLED, Boolean.TRUE.toString());

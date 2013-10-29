@@ -249,7 +249,6 @@ public class PepperTestRunner implements Runnable
 		while (keys.hasMoreElements())
 		{
 			Object key= keys.nextElement();
-			System.out.println(key+"= "+componentContext.getProperties().get(key));
 		}		
 		
 		if (	(System.getProperty(PROP_TEST_DISABLED)== null) ||
