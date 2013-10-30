@@ -7,11 +7,11 @@
     <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     <artifactId>pepper</artifactId>
     <relativePath>../pom.xml</relativePath>
-    <version>1.1.7</version>
+    <version>1.1.8-SNAPSHOT</version>
   </parent>
   <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-exceptions</developerConnection>
-    <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-exceptions</url>
+    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-exceptions/</developerConnection>
+    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-exceptions/</url>
   </scm>
   <build>
   <plugins>

@@ -6,12 +6,12 @@
     <parent>
         <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
         <artifactId>pepper</artifactId>
-        <version>1.1.7</version>
+        <version>1.1.8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <scm>
-        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-workflow</developerConnection>
-        <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-workflow</url>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-workflow/</developerConnection>
+        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-workflow/</url>
     </scm>
     <build>
         <plugins>
