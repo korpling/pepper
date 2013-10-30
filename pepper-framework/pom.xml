@@ -6,12 +6,12 @@
     <parent>
         <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
         <artifactId>pepper</artifactId>
-        <version>1.1.7-SNAPSHOT</version>
+        <version>1.1.7</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <scm>
-        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-framework/</developerConnection>
-        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-framework/</url>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-framework</developerConnection>
+        <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-framework</url>
     </scm>
     <description>This project contains the core of pepper.</description>
     <dependencies>

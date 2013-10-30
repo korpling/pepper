@@ -3,14 +3,14 @@
   <parent>
     <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     <artifactId>pepper-testSuite</artifactId>
-    <version>1.1.7-SNAPSHOT</version>
+    <version>1.1.7</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pepper-moduleTests</artifactId>
   <packaging>bundle</packaging>
   <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-testSuite/pepper-moduleTests</developerConnection>
-    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-testSuite/pepper-moduleTests/</url>
+    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-testSuite/pepper-moduleTests</developerConnection>
+    <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-1.1.7/pepper-testSuite/pepper-moduleTests</url>
   </scm>
   <dependencies>
     <dependency>
