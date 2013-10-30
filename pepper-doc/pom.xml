@@ -7,7 +7,8 @@
   <parent>
     <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     <artifactId>pepper</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+    <version>1.1.7-SNAPSHOT</version>
   </parent>
   <scm>
     <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-doc/</developerConnection>
@@ -54,7 +55,7 @@
               <sourceDirectory>${project.build.directory}/docbkx</sourceDirectory>
               <targetDirectory>${project.build.directory}/manual</targetDirectory>
               <targetFileExtension>${project.version}.pdf</targetFileExtension>
-              <includes>pepper_usersGuide.xml, pepper_modulesDevelopersGuide.xml, pepper_developersGuide.xml</includes>
+              <includes>pepper_usersGuide.xml, pepper_modulesDevelopersGuide/pepper_modulesDevelopersGuide.xml, pepper_developersGuide.xml</includes>
               <foCustomization>${basedir}/src/main/docbkx/custom.xsl</foCustomization>
               <highlightSource>true</highlightSource>
               <admonGraphics>true</admonGraphics>

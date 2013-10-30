@@ -777,5 +777,16 @@ public boolean checkProperty(PepperModuleProperty&lt;?> prop)
             </sect3>
         </sect2>
     </sect1>
-
+    <sect1>
+        <title>Running the project</title>
+        <para>Now, that you now how to code your module, we want to show you how to run your module.</para>
+        <itemizedlist>
+            <listitem><para>Build your project by right-clicking on your project. Choose the entry 'Run As', and than click on 'Maven Install'. You project will be build</para></listitem>
+            <listitem><para>Open the 'Run configuration' dialog and select the 'pepper-testEnvironment' entry. The tab 'Bundles' shows you all bundles, which are resolvable by Eclipse. The Bundles having a crossed box next to their names are enabled to run in the current run configuration. To also enable your bundle to be run, Search for the name of your bundle, or find it in the list under 'Workspace'. Click the box left from its name and than click the button 'Run' to start the conversion process.</para></listitem>
+        </itemizedlist>
+            <para>
+            In case of something does not work, please do not despair and write us an e-mail instead.
+            <email>saltnpepper@lists.hu-berlin.de</email></para>
+    </sect1>
+    
 </chapter>
