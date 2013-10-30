@@ -15,7 +15,9 @@
 *	artifactId:		pepper-testSuite                                              *
 *	artifactId:		pepper-workflow                                               *
 ***********************************************************************************
-
+Version 1.1.7
+=============
+	* reorganized detection of Pepper module resources, now PEPPER_TEST environment variable is necessary any more, resources now can be directly loaded from same path, where the bundle is located 
 Version 1.1.6
 =============
 	* added a multi threadable handling for all Pepper modules
