@@ -113,7 +113,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		else if (progress!= null)
 			return(progress);
 		else
-			throw new PepperModuleException("Cannot return progress, because no PepperMapper is given. This might be a bug of the Pepper module, please make sure, that method PepperModule.createPepperMapper() is implemented.");
+			throw new PepperModuleException("Cannot return progress, because no PepperMapper '"+getName()+"' is given. This might be a bug of the Pepper module, please make sure, that method PepperModule.createPepperMapper() is implemented.");
 	}
 	
 	

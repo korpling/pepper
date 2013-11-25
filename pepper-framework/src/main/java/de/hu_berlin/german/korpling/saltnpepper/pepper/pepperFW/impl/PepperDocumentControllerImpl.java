@@ -41,6 +41,7 @@ import org.osgi.service.log.LogService;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperFWException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperExceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PEPPER_SDOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperDocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.PepperFWPackage;
@@ -725,7 +726,13 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 				(this.sDocumentStatusTable.size()> 0))
 		{	
 			StringBuffer printStatus= new StringBuffer();
-			printStatus.append("total progress: "+ Math.round(this.getTotalPercentage()*10000)/100.0+"%\n");
+			String status= null;
+			try{
+				status= new Double(Math.round(this.getTotalPercentage()*10000)/100.0).toString();
+			}catch (PepperModuleException e){
+				status= "UNKNOWN";
+			}
+			printStatus.append("total progress: "+ status+"%\n");
 			Enumeration<SElementId> sDocumentIds= this.sDocumentStatusTable.keys();
 			SElementId sDocumentId= null;
 			while (sDocumentIds.hasMoreElements())
@@ -740,12 +747,16 @@ public class PepperDocumentControllerImpl extends EObjectImpl implements PepperD
 						printStatus.append("\t"+stepStatus.getpModuleController().getPepperModule().getName());
 					else printStatus.append("\t"+stepStatus.getpModuleController());
 					printStatus.append(" ["+stepStatus.getModuleStatus());
-					if (PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(stepStatus.getModuleStatus()))
-						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... "+(stepStatus.getPercentage()*10000)/100.0+"%]\n");
-					else if (PEPPER_SDOCUMENT_STATUS.NOT_STARTED.equals(stepStatus.getModuleStatus()))
-						printStatus.append("]\n");
-					else
-						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... "+(stepStatus.getPercentage()*10000)/100.0+"% ]\n");
+					try{
+						if (PEPPER_SDOCUMENT_STATUS.COMPLETED.equals(stepStatus.getModuleStatus()))
+							printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... "+(stepStatus.getPercentage()*10000)/100.0+"%]\n");
+						else if (PEPPER_SDOCUMENT_STATUS.NOT_STARTED.equals(stepStatus.getModuleStatus()))
+							printStatus.append("]\n");
+						else
+							printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... "+(stepStatus.getPercentage()*10000)/100.0+"% ]\n");
+					}catch (PepperModuleException e){
+						printStatus.append(" "+ stepStatus.getRunTime()/100000+" ms ... UNKNOWN ]\n");
+					}
 						
 				}
 			}

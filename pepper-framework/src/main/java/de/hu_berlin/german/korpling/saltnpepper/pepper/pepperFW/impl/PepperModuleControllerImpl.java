@@ -633,13 +633,13 @@ public class PepperModuleControllerImpl extends EObjectImpl implements PepperMod
 	public Double getProgress(SElementId sDocumentId)
 	{
 		if (sDocumentId== null)
-			throw new PepperConvertException("Cannot notify Pepper framework about progress, because given sDocumentId was null.");
+			throw new PepperConvertException("Cannot notify Pepper framework about progress for '"+getPepperModule().getName()+"', because given sDocumentId was null.");
 		Double retVal= this.getPepperModule().getProgress(sDocumentId);
 		if (retVal!= null)
 		{
 			if (	(retVal< 0 )||
 					(retVal> 1))
-				throw new PepperConvertException("Cannot notify Pepper framework about progress, because the percentage of progress is out of range (0..1). It is '"+retVal+"'.");
+				throw new PepperConvertException("Cannot notify Pepper framework about progress for '"+getPepperModule().getName()+"', because the percentage of progress is out of range (0..1). It is '"+retVal+"'.");
 		}
 		return(retVal);
 	}
