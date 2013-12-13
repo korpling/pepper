@@ -21,6 +21,7 @@ This project includes:
   Apache Log4j under The Apache Software License, Version 2.0
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
+  Commons Lang under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepper under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepper-moduleTests under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepper-parentModule under The Apache Software License, Version 2.0
