@@ -38,19 +38,18 @@
     </distributionManagement>
     <properties>
         <component.descriptor.name>serviceComponents.xml</component.descriptor.name>
-        <pepper.version>1.1.6</pepper.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
             <artifactId>pepper-moduleTests</artifactId>
-            <version>${pepper.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
             <artifactId>pepper-framework</artifactId>
-            <version>${pepper.version}</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
