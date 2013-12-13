@@ -38,18 +38,20 @@
     </distributionManagement>
     <properties>
         <component.descriptor.name>serviceComponents.xml</component.descriptor.name>
+        <!-- NOTE: This has to be updated to current version. It can not be replaced by using project.version, since project.version would be the version of concrete Pepper module and not of Pepper. -->
+        <pepper.version>1.1.8-SNAPSHOT</pepper.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
             <artifactId>pepper-moduleTests</artifactId>
-            <version>${project.version}</version>
+            <version>${pepper.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
             <artifactId>pepper-framework</artifactId>
-            <version>${project.version}</version>
+            <version>${pepper.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
