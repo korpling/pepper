@@ -115,5 +115,6 @@
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="codeIt.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testing.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="documentation.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="helpers.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faq.xml"/>
 </book>

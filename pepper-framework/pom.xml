@@ -6,7 +6,7 @@
     <parent>
         <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
         <artifactId>pepper</artifactId>
-        <version>1.1.8-SNAPSHOT</version>
+        <version>2.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <scm>
@@ -15,30 +15,7 @@
     </scm>
     <description>This project contains the core of pepper.</description>
     <dependencies>
-        <dependency>
-            <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-            <artifactId>pepper-exceptions</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-            <artifactId>pepper-workflow</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-            <artifactId>pepper-modules</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-            <scope>test</scope>
-        </dependency>
+        
     </dependencies>
     <build>
         <plugins>
@@ -88,10 +65,11 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
-                        <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW,
-                            de.hu_berlin.german.korpling.saltnpepper.pepper.pepperFW.util</Export-Package>
+                        <Import-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.common,de.hu_berlin.german.korpling.saltnpepper.pepper.core,de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions,de.hu_berlin.german.korpling.saltnpepper.pepper.modules,de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl,de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework,*</Import-Package>
+                        <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.*</Export-Package>
                         <Service-Component>${allServiceComponents}</Service-Component>
-                        <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
+                        <Bundle-ClassPath>.,{maven-dependencies},lib/commons-lang3-3.0.jar</Bundle-ClassPath>
+                        <Include-Resource>{maven-resources}, LICENSE, NOTICE, lib/commons-lang3-3.0.jar=lib/commons-lang3-3.0.jar</Include-Resource>
                     </instructions>
                 </configuration>
             </plugin>
