@@ -18,17 +18,21 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 public class PepperStarter 
 {
@@ -91,10 +95,11 @@ public class PepperStarter
 		
 		//if help shall be printed
 		boolean isHelp= false;
+		// determines if a status should be displayed
+		boolean isStatus= false;
 		
 		//check parameters
-		for (int i=0; i < args.length; i++)
-		{
+		for (int i=0; i < args.length; i++){
 			// user-defined properties
 			if (args[i].equalsIgnoreCase("-udProp"))
 			{
@@ -121,51 +126,82 @@ public class PepperStarter
 			else if (args[i].equalsIgnoreCase("-h"))
 			{
 				isHelp= true;
-			}	
+			}
+			else if (args[i].equalsIgnoreCase("status"))
+			{
+				isStatus= true;
+			}
 		}
 		boolean endedWithErrors= false;
 		//marks if parameter for program call are ok
 		boolean paramsOk= false;
 		URI paramUri= null;
-		try
-		{
-			if (isHelp)
-				logger.info(getHelp());
-			else
-			{//no flag for help	
-				try 
-				{
-					if (	(pepperWorkflowDescriptionFile== null) ||
-							(pepperWorkflowDescriptionFile.isEmpty()))
-						throw new PepperException("No parameters for pepper converter are given.");	
-					//program call
-					else
-					{
-						pepperWorkflowDescriptionFile= pepperWorkflowDescriptionFile.replace("\\", "/");
-						paramUri= URI.createFileURI(pepperWorkflowDescriptionFile);
-						paramsOk= true;
+		if (isHelp)
+			logger.info(getHelp());
+		else if(isStatus){
+			PepperConnector pepper= new PepperOSGiConnector();
+			pepper.setProperties(pepperProps);
+			pepper.init();
+			Collection<PepperModuleDesc> moduleDescs= pepper.getRegisteredModules();
+			if (	(moduleDescs== null)||
+					(moduleDescs.size()== 0)){
+				logger.info("- no modules registered -");
+			}else{
+				String format = "| %1$-30s | %2$-15s | %3$-15s | %4$-40s | %5$-20s |";
+				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
+				logger.info(String.format(format, "module-name", "module-version", "module-type", "formats", "supplier-contact"));
+				format = "| %1$-30s | %2$-15s | %3$-15s | %4$-40s | %5$-20s |";
+				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
+				for (PepperModuleDesc desc: moduleDescs){
+					String formatString= "";
+							
+					if (	(desc.getSupportedFormats()!= null)&&
+							(desc.getSupportedFormats().size()> 0)){
+						int i= 0;
+						for (FormatDesc formatDesc: desc.getSupportedFormats()){
+							if (i!= 0){
+								formatString= formatString +"; ";
+							}
+							formatString= formatString+ formatDesc.getFormatName() + ", "+ formatDesc.getFormatVersion();
+							i++;
+						}
 					}
 					
-					{//if user-defined properties file is given are given
-						if (	(udPropFile!= null) &&
-								(udPropFile.isEmpty()))
-							pepperProps.load(new File(udPropFile));
-						
-					}//if user-defined properties file is given are given
-				} catch (Exception e) 
-				{
-	//				e.printStackTrace();
-					StringBuilder errorStr= new StringBuilder();
-					errorStr.append("Error in program call:\n");
-					errorStr.append("\t"+e+"\n");
-					errorStr.append("\n");
-					errorStr.append(getHelp());
-					logger.error(errorStr.toString());
+					if (desc!= null){
+						logger.info(String.format(format, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
+					}
 				}
-				
-				//starts converting
-				if (paramsOk)
-				{
+				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
+			}
+			
+		}
+		else{//no flag for help	
+			try {
+				if (	(pepperWorkflowDescriptionFile== null) ||
+						(pepperWorkflowDescriptionFile.isEmpty())){
+					throw new PepperException("No parameters for pepper converter are given.");	
+				//program call
+				}else{
+					pepperWorkflowDescriptionFile= pepperWorkflowDescriptionFile.replace("\\", "/");
+					paramUri= URI.createFileURI(pepperWorkflowDescriptionFile);
+					paramsOk= true;
+				}
+				if (	(udPropFile!= null) &&
+						(udPropFile.isEmpty())){
+					pepperProps.load(new File(udPropFile));
+				}
+			} catch (Exception e){
+				StringBuilder errorStr= new StringBuilder();
+				errorStr.append("Error in program call:\n");
+				errorStr.append("\t"+e+"\n");
+				errorStr.append("\n");
+				errorStr.append(getHelp());
+				logger.error(errorStr.toString());
+			}
+			
+			//starts converting
+			if (paramsOk){
+				try{
 					if(logger.isDebugEnabled()){
 						for (Object key: pepperProps.keySet()){
 							logger.debug(String.format("%-40s%-16s", key+":", pepperProps.get(key)));
@@ -192,32 +228,25 @@ public class PepperStarter
 						observer.setStop(true);
 					}
 					
-					
 					pepper.removeJob(jobId);
+				}catch (Exception e) {
+					endedWithErrors= true;
+					logger.error("", e);
+				}	
+				timestamp= System.currentTimeMillis() - timestamp;
+				if (endedWithErrors){
+					logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: "+ timestamp +" milliseconds");
+				}else{
+					logger.info("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: "+timestamp +" milliseconds");
 				}
-			}//no flag for help
-		}
-		catch (Exception e) 
-		{
-			endedWithErrors= true;
-			logger.error("", e);
-			//TODO remove at delivery time
-			e.printStackTrace();
-			
-		}
-		finally
-		{
-//			EclipseStarter.shutdown();
-		}
-		timestamp= System.currentTimeMillis() - timestamp;
-		
-		if (endedWithErrors)
-			logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: "+ timestamp +" milliseconds");
-		else
-			logger.info("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: "+timestamp +" milliseconds");
+			}
+		}//no flag for help
 		logger.info(getGoodBye());
-		
-		System.exit(0);
+		if (endedWithErrors){
+			System.exit(-1);
+		}else{
+			System.exit(0);
+		}
 	}
 
 }

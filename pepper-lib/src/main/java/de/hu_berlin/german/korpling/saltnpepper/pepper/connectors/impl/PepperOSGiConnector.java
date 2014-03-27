@@ -78,7 +78,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 			
 			logger.debug("plugin path:\t\t"+getProperties().getPlugInPath());			
 			
-			logger.info("installing OSGI-bundles...");
+			logger.debug("installing OSGI-bundles...");
 			logger.debug("-------------------- installing bundles --------------------");
 			Collection<Bundle> bundles= null;
 			{//installing module-bundles
@@ -86,12 +86,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 				bundles= this.installBundles(new File(getProperties().getPlugInPath()).toURI());
 			}//installing module-bundles
 			logger.debug("----------------------------------------------------------");
-			logger.info("installing OSGI-bundles...FINISHED");
-			logger.info("starting OSGI-bundles...");
+			logger.debug("installing OSGI-bundles...FINISHED");
+			logger.debug("starting OSGI-bundles...");
 			logger.debug("-------------------- starting bundles --------------------");
 			this.startBundles(bundles);
 			logger.debug("----------------------------------------------------------");
-			logger.info("starting OSGI-bundles...FINISHED");
+			logger.debug("starting OSGI-bundles...FINISHED");
 		} catch (Exception e) {
 			throw new PepperException("An exception occured setting up the OSGi environment. ", e);
 		}
