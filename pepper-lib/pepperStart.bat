@@ -16,4 +16,4 @@
 @REM
 @REM
 
-java -Xmx1024m -XX:-UseGCOverheadLimit -cp lib/*;plugins/*;  de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter %1 %2
+java -Xmx1024m -XX:-UseGCOverheadLimit -cp lib/*;plugins/*; -Dlogback.configurationFile=./conf/logback.xml de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter %1 %2
