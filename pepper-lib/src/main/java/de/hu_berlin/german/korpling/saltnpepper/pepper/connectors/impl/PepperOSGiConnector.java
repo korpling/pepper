@@ -315,7 +315,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 					try{
 						bundle.start();
 					}catch (BundleException e){
-						logger.warn("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly. This could cause other problems. The reason was: ",e);
+						logger.warn("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly. This could cause other problems. ");
+						logger.debug("The reason was: ",e);
 					}
 				}
 				if (bundle.getState()!= Bundle.ACTIVE){
