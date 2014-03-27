@@ -97,6 +97,8 @@ public class PepperStarter
 		boolean isHelp= false;
 		// determines if a status should be displayed
 		boolean isStatus= false;
+		// determines if pepper should run in debug mode
+		boolean isDebug= false;
 		
 		//check parameters
 		for (int i=0; i < args.length; i++){
@@ -126,11 +128,12 @@ public class PepperStarter
 			else if (args[i].equalsIgnoreCase("-h"))
 			{
 				isHelp= true;
-			}
-			else if (args[i].equalsIgnoreCase("status"))
-			{
+			}else if (args[i].equalsIgnoreCase("status")){
 				isStatus= true;
+			}else if (args[i].equalsIgnoreCase("debug")){
+				isDebug= true;
 			}
+			
 		}
 		boolean endedWithErrors= false;
 		//marks if parameter for program call are ok
@@ -174,8 +177,14 @@ public class PepperStarter
 				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
 			}
 			
-		}
-		else{//no flag for help	
+		}else if (isDebug){
+			PepperConnector pepper= new PepperOSGiConnector();
+			pepper.setProperties(pepperProps);
+			pepper.init();
+			while(true){
+				
+			}
+		}else{//no flag for help	
 			try {
 				if (	(pepperWorkflowDescriptionFile== null) ||
 						(pepperWorkflowDescriptionFile.isEmpty())){
@@ -213,7 +222,6 @@ public class PepperStarter
 					pepper.setProperties(pepperProps);
 					pepper.init();
 					
-
 					logger.debug(pepper.getRegisteredModulesAsString());
 					
 					String jobId= pepper.createJob();

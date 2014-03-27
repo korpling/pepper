@@ -19,12 +19,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.Vector;
@@ -81,10 +77,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 			logger.debug("installing OSGI-bundles...");
 			logger.debug("-------------------- installing bundles --------------------");
 			Collection<Bundle> bundles= null;
-			{//installing module-bundles
-				logger.debug("\tinstalling OSGI-bundles:");
-				bundles= this.installBundles(new File(getProperties().getPlugInPath()).toURI());
-			}//installing module-bundles
+			
+			//installing module-bundles
+			logger.debug("\tinstalling OSGI-bundles:");
+			bundles= this.installBundles(new File(getProperties().getPlugInPath()).toURI());
+			
 			logger.debug("----------------------------------------------------------");
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
@@ -147,53 +144,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 	 * The context of all pepper bundles.
 	 */
 	private BundleContext bundleContext= null;	
-	
 	/**
-	 * This method loads a profile via the current classloader and returns its Properties.
-	 * This is necessary for passing the OSGi bridge. This method also contains a hack to load
-	 * the folder containing the profile file into the classpath.  
-	 * @param profileFile
-	 * @return
-	 */
-	protected Properties readCustomProfile(final File profileFile) {
-		if (profileFile== null)
-			throw new PepperException("Cannot initialize OSGi framework, because given OSGi profile file is null.");
-		if (!profileFile.exists())
-			throw new PepperException("Cannot initialize OSGi framework, because given OSGi profile file '"+profileFile.getAbsolutePath()+"' does not exist.");
-		
-		URL u;
-		try {
-			u = profileFile.getParentFile().toURI().toURL();
-			URLClassLoader urlClassLoader = (URLClassLoader) this.getClass().getClassLoader();
-			Class<URLClassLoader> urlClass = URLClassLoader.class;
-			Method method = urlClass.getDeclaredMethod("addURL", new Class[]{URL.class});
-			method.setAccessible(true);
-			method.invoke(urlClassLoader, new Object[]{u});
-		} catch (Exception e) {
-			throw new PepperException("Cannot initialize OSGi environment, because cannot load OSGi profile, because cannot add profile folder '"+profileFile.getAbsolutePath()+"' to classpath.", e);
-		}
-		
-		final ClassLoader classLoader = this.getClass().getClassLoader();
-		
-		final InputStream inputStream = classLoader.getResourceAsStream(profileFile.getName());
-
-		if (inputStream == null) {
-			throw new PepperException("Cannot load osgi profile from "+ profileFile.getAbsolutePath());
-		}
-
-		final Properties profileProperties = new Properties();
-
-		try {
-			profileProperties.load(inputStream);
-			inputStream.close();
-			return profileProperties;
-		} catch (final Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	/**
-	 * Returns a String, conatining a formatted list of packages to be shared between current classloader
+	 * Returns a String, containing a formatted list of packages to be shared between current classloader
 	 * and OSGi classloaders. The list is formatted as it could be taken of the property {@link Constants#FRAMEWORK_SYSTEMPACKAGES_EXTRA}. 
 	 */
 	protected String getSharedPackages(){
@@ -308,21 +260,27 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 	{
 		if (bundles!= null)
 		{
-			for (Bundle bundle: bundles)
-			{
-				logger.debug("\t\tstarting bundle: "+bundle.getSymbolicName()+ "-"+ bundle.getVersion());
-				if (bundle.getState()!= Bundle.ACTIVE){
-					try{
-						bundle.start();
-					}catch (BundleException e){
-						logger.warn("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly. This could cause other problems. ");
-						logger.debug("The reason was: ",e);
+			Bundle pepperBundle= null;
+			for (Bundle bundle: bundles){
+				//TODO this is a workaround, to fix that module resolver is loaded as last bundle, otherwise, some modules will be ignored
+				if ("de.hu_berlin.german.korpling.saltnpepper.pepper-framework".equalsIgnoreCase(bundle.getSymbolicName())){
+					pepperBundle= bundle;
+				}else{
+					logger.debug("\t\tstarting bundle: "+bundle.getSymbolicName()+ "-"+ bundle.getVersion());
+					if (bundle.getState()!= Bundle.ACTIVE){
+						try{
+							bundle.start();
+						}catch (BundleException e){
+							logger.warn("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly. This could cause other problems. ");
+							logger.debug("The reason was: ",e);
+						}
+					}
+					if (bundle.getState()!= Bundle.ACTIVE){
+						logger.error("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly.");
 					}
 				}
-				if (bundle.getState()!= Bundle.ACTIVE){
-					logger.error("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly.");
-				}
 			}
+			pepperBundle.start();
 		}
 	}
 
