@@ -166,12 +166,19 @@ public class PepperStarter
 				//starts converting
 				if (paramsOk)
 				{
+					if(logger.isDebugEnabled()){
+						for (Object key: pepperProps.keySet()){
+							logger.debug(String.format("%-40s%-16s", key+":", pepperProps.get(key)));
+						}
+					}
+					
+					
 					PepperConnector pepper= new PepperOSGiConnector();
 					pepper.setProperties(pepperProps);
 					pepper.init();
 					
-					//just for testing
-					System.out.println(pepper.getRegisteredModulesAsString());
+
+					logger.debug(pepper.getRegisteredModulesAsString());
 					
 					String jobId= pepper.createJob();
 					
