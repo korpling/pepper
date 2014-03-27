@@ -76,9 +76,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 			if (bundleContext== null)
 				bundleContext= this.startEquinox();
 			
-			logger.debug("plugin path:\t\t"+getProperties().getPlugInPath());
-			logger.debug("pepper properties:\t"+getProperties());
-			
+			logger.debug("plugin path:\t\t"+getProperties().getPlugInPath());			
 			
 			logger.info("installing OSGI-bundles...");
 			logger.debug("-------------------- installing bundles --------------------");
@@ -138,7 +136,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 					pepperOSGi = (Pepper) bundleContext.getService(serviceReference);
 				}
 			}else{
-				throw new PepperException("No Pepper found for '"+Pepper.class.getName()+"'.");
+				throw new PepperException("The pepper-framework was not found in OSGi environment for '"+Pepper.class.getName()+"'.");
 			}
 			pepper= pepperOSGi;
 		}
@@ -314,7 +312,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 			{
 				logger.debug("\t\tstarting bundle: "+bundle.getSymbolicName()+ "-"+ bundle.getVersion());
 				if (bundle.getState()!= Bundle.ACTIVE){
-					bundle.start();
+					try{
+						bundle.start();
+					}catch (BundleException e){
+						logger.warn("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly. This could cause other problems. The reason was: ",e);
+					}
 				}
 				if (bundle.getState()!= Bundle.ACTIVE){
 					logger.error("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly.");

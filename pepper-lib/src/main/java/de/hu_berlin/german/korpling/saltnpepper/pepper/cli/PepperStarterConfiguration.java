@@ -71,7 +71,9 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	/** A key for using the a variable for the pepper home path inside of property files. */
 	public static final String KEY_PEPPER_HOME="$"+ ENV_PEPPER_HOME;
 	/** Name of the file containing all pepper properties.*/
-	public static final String FILE_PEPPER_PROP=PROP_PREFIX+"properties";
+	public static final String FILE_PEPPER_PROP="pepper.properties";
+	/** Name of the file containing all pepper properties.*/
+	public static final String FILE_PEPPER_TEST_PROP="pepper-test.properties";
 	/** Folder, where to find all configuration files for Pepper*/
 	public static final String FILE_PEPPER_CONF="conf";
 	/** name of the property of where to find the plugin path */
@@ -132,12 +134,17 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	}
 
 	/**
-	 * Properties are load from the file {@link #FILE_PEPPER_PROP}, which is
-	 * assumed to be in the {@link #FILE_PEPPER_CONF} folder in the pepper home path.
+	 * For test purposes, properties are load from the file {@link #FILE_PEPPER_TEST_PROP}, which is
+	 * assumed to be in the {@link #FILE_PEPPER_CONF} folder in the pepper home path. 
+	 * If this file does not exists, the properties are tried to load from the file {@link #FILE_PEPPER_PROP}
+	 * in the same folder.
 	 */
 	public void load(){
 		File pepperHome= findPepperHome();
-		File propFile= new File(pepperHome.getAbsolutePath()+ "/"+FILE_PEPPER_CONF+"/"+FILE_PEPPER_PROP+"/");
+		File propFile= new File(pepperHome.getAbsolutePath()+ "/"+FILE_PEPPER_CONF+"/"+FILE_PEPPER_TEST_PROP+"/");
+		if (!propFile.exists()){
+			propFile= new File(pepperHome.getAbsolutePath()+ "/"+FILE_PEPPER_CONF+"/"+FILE_PEPPER_PROP+"/");
+		}
 		load(propFile);
 	}
 	
