@@ -7,7 +7,7 @@
       </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>/home/florian/Test/slf4j/logback_out/out.txt</file>
+        <file>pepper_out.txt</file>
  
         <encoder>
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
