@@ -361,9 +361,9 @@ public class ModuleControllerImpl implements ModuleController{
 //			throw new PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.DELETED);
 		//if document is not processed any further, release slot
-		if (getJob()!= null)
+		if (getJob()!= null){
 			getJob().releaseDocument();
-		
+		}
 		//removes document controller of list of to be processed document controllers
 		getControllList().remove(documentController);
 	}

@@ -310,7 +310,6 @@ public class DocumentBus
 	{
 		if (documentController== null)
 			throw new PepperFWException("Cannot add a null value as DocumentController into documentBus.");
-		
 		lock.lock();
 		try{
 			//add new document controller to all queues

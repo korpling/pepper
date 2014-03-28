@@ -864,17 +864,18 @@ public class PepperJobImpl extends PepperJob{
 		 */
 		public boolean getPermissionForProcessDoument(){
 			numOfDocsLock.lock();
-			try{
-				if (getCurrNumberOfDocuments()>= getMaxNumberOfDocuments()){
-					numOfDocsCondition.await();
+			if (!MEMORY_POLICY.GREEDY.equals(getMemPolicy())){
+				try{
+					if (getCurrNumberOfDocuments()>= getMaxNumberOfDocuments()){
+						numOfDocsCondition.await();
+					}
+					currNumOfDocuments++;
+				}catch (InterruptedException e) {
+					throw new PepperFWException("Something went wrong, when waiting for lock 'numOfDocsCondition'.", e);
+				}finally{
+					numOfDocsLock.unlock();
 				}
-				currNumOfDocuments++;
-			}catch (InterruptedException e) {
-				throw new PepperFWException("Something went wrong, when waiting for lock 'numOfDocsCondition'.", e);
-			}finally{
-				numOfDocsLock.unlock();
 			}
-			
 			return(true);
 		}
 		/**

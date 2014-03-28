@@ -279,12 +279,12 @@ public class PepperConfiguration extends Properties{
 	 * @return
 	 */
 	public Integer getMaxAmountOfDocuments(){
-		String memPolicyStr= getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, new Integer(10).toString());
-		return(new Integer(memPolicyStr));
+		String amountOfDocs= getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, new Integer(10).toString());
+		return(new Integer(amountOfDocs));
 	}
 	
 	public Boolean getGcAfterDocumentSleep(){
-		String memPolicyStr= getProperty(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE.toString());
-		return(Boolean.valueOf(memPolicyStr));
+		String callGC= getProperty(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE.toString());
+		return(Boolean.valueOf(callGC));
 	}
 }

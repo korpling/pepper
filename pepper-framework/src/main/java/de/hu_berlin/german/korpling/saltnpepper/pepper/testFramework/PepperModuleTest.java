@@ -132,7 +132,7 @@ public abstract class PepperModuleTest
 		
 		PepperImpl pepper= new PepperImpl();
 		PepperConfiguration conf= new PepperConfiguration();
-		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.GREEDY.toString());
+		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
 		pepper.setConfiguration(conf);
 		PepperJob job= pepper.getJob(pepper.createJob());
 		
