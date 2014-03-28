@@ -24,15 +24,16 @@ import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import asg.cliche.Command;
+import asg.cliche.ShellFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 public class PepperStarter 
 {
@@ -41,6 +42,27 @@ public class PepperStarter
 	 */
 	private static final Logger logger= LoggerFactory.getLogger(PepperStarter.class);
 
+	/**
+	 * Initializes an instance of PepperStarter.
+	 * @param pepperConnector a {@link PepperConnector} object via which the {@link PepperStarter} communicates with a {@link Pepper} instance 
+	 */
+	public PepperStarter(PepperConnector pepperConnector){
+		setPepper(pepperConnector);
+		pepper.init();
+	}
+	
+	/**
+	 * A reference to Pepper via a {@link PepperConnector}
+	 */
+	private PepperConnector pepper= null;
+	public PepperConnector getPepper() {
+		return pepper;
+	}
+
+	public void setPepper(PepperConnector pepper) {
+		this.pepper = pepper;
+	}	
+	
 	/**
 	 * Returns synopsis for program call
 	 * @return
@@ -72,6 +94,108 @@ public class PepperStarter
 		return(retVal.toString());
 	}
 	
+	public static final String COMMAND_INFO="info";
+	public static final String COMMAND_HELP="help";
+	
+	/**
+	 * Help to all commands for Pepper
+	 * @return
+	 */
+	@Command(description="Shows all available commands.")
+	public String help(){
+		StringBuilder retVal= new StringBuilder();
+		String format = "| %1$-20s | %2$-15s | %3$-70s |\n";
+		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
+		retVal.append(String.format(format, "command", "parameters", "description"));
+		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
+		format = "| %1$20s | %2$15s | %3$70s |\n";
+		retVal.append(String.format(format, COMMAND_INFO, "--", "A table with information about all available Pepper modules."));
+		retVal.append(String.format(format, COMMAND_INFO, "module-name", "A table with information about the passed Pepper module."));
+		retVal.append(String.format(format, COMMAND_HELP, "--", "Prints this help."));
+		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
+		return(retVal.toString());
+	}
+
+	/**
+	 * Returns a String containing a table with information about all available Pepper modules.
+	 * @return
+	 */
+    @Command(description="A table with information about all available Pepper modules.") 
+    public String info() {
+    	StringBuilder retVal= new StringBuilder();
+
+		Collection<PepperModuleDesc> moduleDescs= getPepper().getRegisteredModules();
+		if (	(moduleDescs== null)||
+				(moduleDescs.size()== 0)){
+			retVal.append("- no modules registered -\n");
+		}else{
+			String format = "| %1$-30s | %2$-15s | %3$-15s | %4$-40s | %5$-20s |\n";
+			retVal.append("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+\n");
+			retVal.append(String.format(format, "module-name", "module-version", "module-type", "formats", "supplier-contact"));
+			format = "| %1$-30s | %2$-15s | %3$-15s | %4$-40s | %5$-20s |\n";
+			retVal.append("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+\n");
+			for (PepperModuleDesc desc: moduleDescs){
+				String formatString= "";
+						
+				if (	(desc.getSupportedFormats()!= null)&&
+						(desc.getSupportedFormats().size()> 0)){
+					int i= 0;
+					for (FormatDesc formatDesc: desc.getSupportedFormats()){
+						if (i!= 0){
+							formatString= formatString +"; ";
+						}
+						formatString= formatString+ formatDesc.getFormatName() + ", "+ formatDesc.getFormatVersion();
+						i++;
+					}
+				}
+				
+				if (desc!= null){
+					retVal.append(String.format(format, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
+				}
+			}
+			retVal.append("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+\n");
+		}
+		return(retVal.toString());
+    }
+    
+    /**
+	 * Returns a String containing a table with information about the passed Pepper module.
+	 * @return
+	 */
+    @Command(description="A table with information about the passed Pepper module.") 
+    public String info(String moduleName) {
+    	StringBuilder retVal= new StringBuilder();
+    	
+    	PepperModuleDesc moduleDesc= null;
+    	Collection<PepperModuleDesc> moduleDescs= getPepper().getRegisteredModules();
+		if (	(moduleName!= null)&&
+				(moduleDescs!= null)&&
+				(moduleDescs.size()> 0)){
+			for (PepperModuleDesc desc: moduleDescs){
+				if (moduleName.equals(desc.getName())){
+					moduleDesc= desc;
+					break;
+				}
+			}
+		}
+		if (moduleDesc!= null){
+			retVal.append(moduleDesc.getName());
+			retVal.append(", ");
+			retVal.append(moduleDesc.getVersion());
+			retVal.append("\n");
+			retVal.append("supplier:");
+			retVal.append(moduleDesc.getSupplierContact());
+			retVal.append("\n");
+			retVal.append("-------------------------------------------------------------------------\n");
+			retVal.append((moduleDesc.getDesc()== null)? "- no description available -":moduleDesc.getDesc());
+			retVal.append("\n");
+		}else{
+			retVal.append("- no Pepper module was found for given name '"+moduleName+"' -");
+		}
+    	return(retVal.toString());
+    }
+	
+	
 	/**
 	 * @param args
 	 */
@@ -96,9 +220,7 @@ public class PepperStarter
 		//if help shall be printed
 		boolean isHelp= false;
 		// determines if a status should be displayed
-		boolean isStatus= false;
-		// determines if pepper should run in debug mode
-		boolean isDebug= false;
+		boolean isInfo= false;
 		
 		//check parameters
 		for (int i=0; i < args.length; i++){
@@ -128,67 +250,29 @@ public class PepperStarter
 			else if (args[i].equalsIgnoreCase("-h"))
 			{
 				isHelp= true;
-			}else if (args[i].equalsIgnoreCase("status")){
-				isStatus= true;
-			}else if (args[i].equalsIgnoreCase("debug")){
-				isDebug= true;
+			}else if (args[i].equalsIgnoreCase("info")){
+				isInfo= true;
 			}
-			
 		}
 		boolean endedWithErrors= false;
 		//marks if parameter for program call are ok
 		boolean paramsOk= false;
 		URI paramUri= null;
+		
+		PepperConnector pepper= new PepperOSGiConnector();
+		pepper.setProperties(pepperProps);
+		PepperStarter starter= new PepperStarter(pepper);
+		
 		if (isHelp)
 			logger.info(getHelp());
-		else if(isStatus){
-			PepperConnector pepper= new PepperOSGiConnector();
-			pepper.setProperties(pepperProps);
-			pepper.init();
-			Collection<PepperModuleDesc> moduleDescs= pepper.getRegisteredModules();
-			if (	(moduleDescs== null)||
-					(moduleDescs.size()== 0)){
-				logger.info("- no modules registered -");
-			}else{
-				String format = "| %1$-30s | %2$-15s | %3$-15s | %4$-40s | %5$-20s |";
-				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
-				logger.info(String.format(format, "module-name", "module-version", "module-type", "formats", "supplier-contact"));
-				format = "| %1$-30s | %2$-15s | %3$-15s | %4$-40s | %5$-20s |";
-				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
-				for (PepperModuleDesc desc: moduleDescs){
-					String formatString= "";
-							
-					if (	(desc.getSupportedFormats()!= null)&&
-							(desc.getSupportedFormats().size()> 0)){
-						int i= 0;
-						for (FormatDesc formatDesc: desc.getSupportedFormats()){
-							if (i!= 0){
-								formatString= formatString +"; ";
-							}
-							formatString= formatString+ formatDesc.getFormatName() + ", "+ formatDesc.getFormatVersion();
-							i++;
-						}
-					}
-					
-					if (desc!= null){
-						logger.info(String.format(format, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
-					}
-				}
-				logger.info("+--------------------------------+-----------------+-----------------+------------------------------------------+----------------------+");
-			}
+		else if(isInfo){
+			logger.info(starter.info()); 
 			
-		}else if (isDebug){
-			PepperConnector pepper= new PepperOSGiConnector();
-			pepper.setProperties(pepperProps);
-			pepper.init();
-			while(true){
-				
-			}
 		}else{//no flag for help	
 			try {
 				if (	(pepperWorkflowDescriptionFile== null) ||
 						(pepperWorkflowDescriptionFile.isEmpty())){
-					throw new PepperException("No parameters for pepper converter are given.");	
+					ShellFactory.createConsoleShell("pepper", "Welcome to the interactive console of Pepper. Type in 'h' or 'help' for help. ", starter).commandLoop();
 				//program call
 				}else{
 					pepperWorkflowDescriptionFile= pepperWorkflowDescriptionFile.replace("\\", "/");
@@ -216,11 +300,6 @@ public class PepperStarter
 							logger.debug(String.format("%-40s%-16s", key+":", pepperProps.get(key)));
 						}
 					}
-					
-					
-					PepperConnector pepper= new PepperOSGiConnector();
-					pepper.setProperties(pepperProps);
-					pepper.init();
 					
 					logger.debug(pepper.getRegisteredModulesAsString());
 					

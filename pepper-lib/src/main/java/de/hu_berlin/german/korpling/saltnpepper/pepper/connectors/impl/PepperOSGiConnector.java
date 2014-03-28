@@ -199,8 +199,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		 
 		//it seems, that program will not terminate because of flag 
-		//bc = EclipseStarter.startup(new String[]{"-console"}, null);
-		bc = EclipseStarter.startup(new String[] { "-console", "-dev", "bin", "-noExit", "osgi.noShutdown"}, null);
+//		bc = EclipseStarter.startup(new String[] { "-console", "-dev", "bin", "-noExit", "osgi.noShutdown"}, null);
+//		bc = EclipseStarter.startup(new String[] { "-dev", "bin", "-noExit", "osgi.noShutdown"}, null);
+		bc = EclipseStarter.startup(new String[]{}, null);
 		 
 		return bc;
 	}
