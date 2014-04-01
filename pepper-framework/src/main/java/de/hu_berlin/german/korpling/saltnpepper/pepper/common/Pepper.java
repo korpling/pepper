@@ -61,4 +61,11 @@ public interface Pepper {
 	 * @return a string representation of all registered modules
 	 */
 	public String getRegisteredModulesAsString();
+	
+	/**
+	 * Checks if the Pepper framework is ready to run. This means, it checks if everything necessary is given and if all registered modules
+	 * could be ran. This method can be used as a kind of integration test.
+	 * @return returns an empty list, if check was positive; if list is not empty, each entry describes a single problem. 
+	 */
+    public Collection<String> selfTest();
 }

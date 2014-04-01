@@ -39,6 +39,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperTestException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
@@ -70,6 +71,9 @@ public abstract class PepperModuleTest
 	 */
 	protected void setFixture(PepperModule fixture) {
 		this.fixture = fixture;
+		if (resourceURI!= null){
+			getFixture().setResources(resourceURI);
+		}
 	}
 
 	/**
@@ -79,6 +83,24 @@ public abstract class PepperModuleTest
 	protected PepperModule getFixture() {
 		return fixture;
 	}
+	
+	/**
+	 * Creates an object of type {@link PepperModuleTest}. To initialize it, the overridable method
+	 * {@link #initilaize()} is called.
+	 */
+	public PepperModuleTest(){
+		initilaize();
+	}
+	/**
+	 * Initializes this object. This means:
+	 * <ul>
+	 * 	<li>the resource folder {@link #setResourcesURI(URI)} is set to mavens default 'src/main/resources'</li>
+	 * </ul>
+	 */
+	public void initilaize(){
+		setResourcesURI(URI.createFileURI("src/main/resources"));
+	}
+	
 	/**
 	 * Name of the directory where tests for Pepper and Pepper modules can be stored.
 	 */
@@ -91,7 +113,7 @@ public abstract class PepperModuleTest
 	 * @param testDirectory last part of the temporary path
 	 * @return a file object locating to a temporary folder, where files can be stored temporarily
 	 */
-	public File getTempPtah(String testDirectory){
+	public File getTempPath(String testDirectory){
 		if 	(	(testDirectory== null)||
 				(testDirectory.isEmpty())){
 			throw new PepperModuleTestException("Cannot return a temporary directory, since the given last part is empty.");
@@ -100,6 +122,14 @@ public abstract class PepperModuleTest
 		retVal= new File(System.getProperty("java.io.tmpdir")+"/"+TMP_TEST_DIR+"/"+testDirectory+"/");
 		retVal.mkdirs();
 		return(retVal);
+	}
+	/**
+	 * Returns a default test folder, where to find resources for tests. When using the default
+	 * maven structure, this folder is located at 'src/test/resources/'.  
+	 * @return a folder where to find test resources
+	 */
+	public static String getTestResources(){
+		return("src/test/resources/");
 	}
 	
 	/**
@@ -237,12 +267,15 @@ public abstract class PepperModuleTest
 		if (resourceURI!= null)
 		{	
 			File resourceDir= new File(resourceURI.toFileString());
-			if (!resourceDir.exists())
+			if (!resourceDir.exists()){
 				resourceDir.mkdirs();
-			this.getFixture().setResources(resourceURI);
+			}
 			this.resourceURI= resourceURI;
+			if (getFixture()!= null){
+				getFixture().setResources(resourceURI);
+			}
 		}
-		else throw new RuntimeException("A resource uri must be set.");
+		else throw new PepperTestException("A resource uri must be set.");
 	}
 	
 	/**
