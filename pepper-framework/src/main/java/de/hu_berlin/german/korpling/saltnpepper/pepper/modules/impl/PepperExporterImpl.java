@@ -94,19 +94,36 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void start() throws PepperModuleException
 	{
-		if (this.getSaltProject()!= null)
-		{
-			Collection<SCorpusGraph> corpGraphs= Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
-			for (SCorpusGraph sCorpusGraph: corpGraphs)
-			{
-				if (sCorpusGraph== null)
-					throw new PepperFWException("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
-				exportCorpusStructure(sCorpusGraph);
-			}
-		}
+		exportCorpusStructure();
 		super.start();
 	}
+	private String sDocumentEnding= null; 
+	/**
+	 * {@inheritDoc PepperExporter#getSDocumentEnding()}
+	 */
+	@Override
+	public String getSDocumentEnding(){
+		return(sDocumentEnding);
+	}
+	/**
+	 *  {@inheritDoc PepperExporter#setSDocumentEnding(String)}
+	 */
+	@Override
+	public void setSDocumentEnding(String sDocumentEnding){
+		this.sDocumentEnding= sDocumentEnding;
+	}
 	
+	/** Determines how the corpus-structure should be exported.**/
+	private EXPORT_MODE exportMode= EXPORT_MODE.NO_EXPORT;
+	/** {@inheritDoc PepperExporter#getExportMode()} */
+	public EXPORT_MODE getExportMode() {
+		return exportMode;
+	}
+	/** {@inheritDoc PepperExporter#setExportMode(de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter.EXPORT_MODE)} */
+	public void setExportMode(EXPORT_MODE exportMode) {
+		this.exportMode = exportMode;
+	}
+
 	/**
 	 * Stores {@link SElementId} objects corresponding to either a {@link SDocument} or a {@link SCorpus} object, which has
 	 * been created during the run of {@link #importCorpusStructure(SCorpusGraph)}. Corresponding to the {@link SElementId} object
@@ -132,20 +149,55 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 		return sElementId2ResourceTable;
 	}
 	
-	/**
-	 * {@inheritDoc PepperExporter#exportCorpusStructure(SCorpusGraph)}
-	 */
-	@Override
-	public void exportCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException
-	{
-		
+	/** {@inheritDoc PepperExporter#exportCorpusStructure()} **/
+	public void exportCorpusStructure(){
+		if (	(getExportMode()!= null)&&
+				(!getExportMode().equals(EXPORT_MODE.NO_EXPORT))){
+			if (this.getSaltProject()!= null)
+			{
+				Collection<SCorpusGraph> corpGraphs= Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
+				for (SCorpusGraph sCorpusGraph: corpGraphs)
+				{
+					if (sCorpusGraph== null){
+						logger.warn("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
+					}
+					else{
+						if (getCorpusDesc()== null)
+							throw new PepperFWException("Cannot export the corpus-structure to file structure, because no corpus description was given. ");
+						if (getCorpusDesc().getCorpusPath()== null)
+							throw new PepperFWException("Cannot export the corpus-structure to file structure, because the corpus path for module '"+getName()+"' is empty. ");
+						for (SCorpus sCorpus: sCorpusGraph.getSCorpora()){
+							URI resourceURI= getCorpusDesc().getCorpusPath();
+							for (String segment: sCorpus.getSElementPath().segments()){
+								resourceURI= resourceURI.appendSegment(segment);
+							}
+							getSElementId2ResourceTable().put(sCorpus.getSElementId(), resourceURI);
+						}
+						if (getExportMode().equals(EXPORT_MODE.DOCUMENTS_IN_FILES)){
+							String ending= getSDocumentEnding();
+							if (ending== null){
+								ending= "";
+							}
+							for (SDocument sDocument: sCorpusGraph.getSDocuments()){
+								URI resourceURI= getCorpusDesc().getCorpusPath();
+								for (String segment: sDocument.getSElementPath().segments()){
+									resourceURI= resourceURI.appendSegment(segment);
+								}
+								getSElementId2ResourceTable().put(sDocument.getSElementId(), resourceURI.appendFileExtension(ending));
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**
 	 * {@inheritDoc PepperExporter#createFolderStructure(SElementId)}
 	 */
 	@Override
-	public void createFolderStructure(SElementId sElementId)
+	@Deprecated
+	public URI createFolderStructure(SElementId sElementId)
 	{
 		if (sElementId== null)
 			throw new PepperConvertException("Cannot export the given sElementID, because given SElementId-object is null.");
@@ -155,16 +207,17 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 				((!(sElementId.getSIdentifiableElement() instanceof SCorpus))))
 			throw new PepperConvertException("Cannot export the given sElementID, because the element corresponding to it, isn't of type SDocument or SCorpus.");
 		if (getCorpusDesc()== null)
-			throw new PepperFWException("Cannot export the corpus structure to file structure, because no corpus definition was given. ");
+			throw new PepperFWException("Cannot export the corpus-structure to file structure, because no corpus description was given. ");
 		if (getCorpusDesc().getCorpusPath()== null)
-			throw new PepperFWException("Cannot export the corpus structure to file structure, because the corpus path for module '"+getName()+"' is empty. ");
+			throw new PepperFWException("Cannot export the corpus-structure to file structure, because the corpus path for module '"+getName()+"' is empty. ");
 		
 		try {
 			File folder= new File(getCorpusDesc().getCorpusPath().toFileString());
 			File newFolder= new File(folder.getCanonicalPath() + "/"+ sElementId.getSElementPath().toString());
 			newFolder.mkdirs();
+			return(URI.createFileURI(newFolder.getAbsolutePath()));
 		} catch (IOException e) {
-			throw new PepperConvertException("Cannot create corpus path as folders.", e);
+			throw new PepperConvertException("Cannot create corpus path as folders for '"+sElementId+"'.", e);
 		}
 	}
 }

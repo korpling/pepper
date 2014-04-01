@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.osgi.service.dmt.Uri;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
@@ -31,6 +32,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusRelation;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STYPE_NAME;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
@@ -64,7 +66,7 @@ public interface PepperImporter extends PepperModule {
 	 */
 	public static final String NEGATIVE_FILE_EXTENSION_MARKER="-";
 	/**
-	 * TODO docu
+	 * Returns a list of formats, which are importable by this {@link PepperImporter} object. 
 	 * @return
 	 */	
 	List<FormatDesc> getSupportedFormats();
@@ -82,14 +84,24 @@ public interface PepperImporter extends PepperModule {
 	void setCorpusDesc(CorpusDesc corpusDesc);
 
 	/**
-	 * TODO docu
-	 * @return
-	 */	
+	 * Stores {@link SElementId} objects corresponding to either a {@link SDocument} or a {@link SCorpus} object, which has
+	 * been created during the run of {@link #importCorpusStructure(SCorpusGraph)}. Corresponding to the {@link SElementId} object
+	 * this table stores the resource from where the element shall be imported.<br/>
+	 * For instance:
+	 * <table>
+	 * 	<tr><td>corpus_1</td><td>/home/me/corpora/myCorpus</td></tr>
+	 *  <tr><td>corpus_2</td><td>/home/me/corpora/myCorpus/subcorpus</td></tr>
+	 *  <tr><td>doc_1</td><td>/home/me/corpora/myCorpus/subcorpus/document1.xml</td></tr>
+	 *  <tr><td>doc_2</td><td>/home/me/corpora/myCorpus/subcorpus/document2.xml</td></tr>
+	 * </table>
+	 * 
+	 */
 	public Map<SElementId, URI> getSElementId2ResourceTable();
 	
 	/**
-	 * TODO docu
-	 * @return
+	 * Returns list containing all format endings for files, which are importable and
+	 * could be mapped to {@link SDocument} or {@link SDocumentGraph} objects by this Pepper module.
+	 * @return a collection of endings
 	 */	
 	public Collection<String> getSDocumentEndings();
 	

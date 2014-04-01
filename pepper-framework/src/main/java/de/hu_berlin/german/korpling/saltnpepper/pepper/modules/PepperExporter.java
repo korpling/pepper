@@ -49,6 +49,17 @@ public interface PepperExporter extends PepperModule {
 	CorpusDesc getCorpusDesc();
 
 	/**
+	 * Returns the format ending for files to be exported and related to {@link SDocument} objects. 
+	 * @return file ending for {@link SDocument} objects to be exported.
+	 */
+	public String getSDocumentEnding();
+	/**
+	 * Sets the format ending for files to be exported and related to {@link SDocument} objects. 
+	 * @param file ending for {@link SDocument} objects to be exported.
+	 */
+	public void setSDocumentEnding(String sDocumentEnding);
+	
+	/**
 	 * TODO docu
 	 * @return
 	 */	
@@ -71,19 +82,48 @@ public interface PepperExporter extends PepperModule {
 	public Map<SElementId, URI> getSElementId2ResourceTable();
 	
 	/**
-	 * TODO docu
-	 * @return
+	 * Creates a folder structure basing on the passed corpus path in ({@link CorpusDesc#getCorpusPath()}).
+	 * For each segment in {@link SElementId} a folder is created. 
+	 * @return the entire path of {@link SElementId} as file path, which was created on disk 
 	 */	
-	void createFolderStructure(SElementId sElementId);
+	URI createFolderStructure(SElementId sElementId);
 
 	/**
-	 * This method is called by {@link #start()} to export the corpus-structure. This method than can create the 
-	 * folder-structure to store the document-structure into it, if necessary. 
-	 * 
-	 * OVERRIDE THIS METHOD FOR CUSTOMIZATION 
-	 * @param corpusGraph
+	 * Determines how the corpus-structure should be exported.
+	 * @author Florian Zipser
+	 *
 	 */
-	void exportCorpusStructure(SCorpusGraph corpusGraph);
+	public enum EXPORT_MODE{
+		/** corpus-structure should not be exported**/
+		NO_EXPORT,
+		/** {@link SCorpus} objects are exported into a folder structure, but {@link SDocument} objects are not exported **/
+		CORPORA_ONLY,
+		/** {@link SCorpus} objects are exported into a folder structure and {@link SDocument} objects are stored in files having the ending determined by PepperExporter#getSDocumentEnding() **/
+		DOCUMENTS_IN_FILES
+	}
+	/**
+	 * Returns how corpus-structure is exported.
+	 * @return
+	 */
+	public EXPORT_MODE getExportMode();
+	/**
+	 * Determines how the corpus-structure should be exported.  
+	 * <ul>
+	 * 	<li>EXPORT_MODE#NO_EXPORT - corpus-structure should not be exported</li>
+	 *  <li>EXPORT_MODE#CORPORA_ONLY {@link SCorpus} objects are exported into a folder structure, but {@link SDocument} objects are not exported</li>
+	 *  <li>EXPORT_MODE#DOCUMENTS_IN_FILES - {@link SCorpus} objects are exported into a folder structure and {@link SDocument} objects are stored in files having the ending determined by PepperExporter#getSDocumentEnding()</li>
+	 * </ul>
+	 * @param exportMode
+	 */
+	public void setExportMode(EXPORT_MODE exportMode);
+	
+	/**
+	 * This method is called by {@link #start()} to export the corpus-structure into a folder-structure. 
+	 * Each {@link SElementId} and its corresponding file on disk is stored in {@link #getSElementId2ResourceTable()}.
+	 * <br/>
+	 * To customize the behaviour of this method, please use {@link #setSDocumentEnding(String)} and {@link #setExportMode(EXPORT_MODE)}
+	 */
+	public void exportCorpusStructure();
 	/**
 	 * {@inheritDoc PepperModuleDesc#addSupportedFormat(String, String, URI)}
 	 */	

@@ -20,9 +20,10 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.eclipse.emf.common.util.URI;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
@@ -30,7 +31,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImport
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 
-public class PepperImporterImplTest extends TestCase{
+public class PepperImporterImplTest{
 
 	class FixtureImporter extends PepperImporterImpl
 	{
@@ -46,7 +47,7 @@ public class PepperImporterImplTest extends TestCase{
 	public FixtureImporter getFixture() {
 		return fixture;
 	}
-	
+	@Before
 	public void setUp()
 	{
 		this.setFixture(new FixtureImporter());
@@ -68,6 +69,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * Checks, that .svn file are ignored.
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_SVN1() throws IOException
 	{
 		
@@ -87,6 +89,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * Checks, that .svn file are ignored.
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_SVN2() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_SVN2");
@@ -108,6 +111,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * Checks, that name of {@link SCorpusGraph} is set correctly.
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_CORP_GRAPH_NAME() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_CORP_GRAPH_NAME");
@@ -137,6 +141,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * </pre>
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_STRUCTURE1() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE1");
@@ -174,6 +179,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * </pre>
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_STRUCTURE2() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE2");
@@ -218,6 +224,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * </pre>
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_STRUCTURE3() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE3");
@@ -258,6 +265,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * </pre>
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_STRUCTURE4() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE4");
@@ -294,6 +302,7 @@ public class PepperImporterImplTest extends TestCase{
 	 * </pre>
 	 * @throws IOException 
 	 */
+	@Test
 	public void testImportCorpusStructure_STRUCTURE5() throws IOException
 	{
 		File tmpFolder= new File(this.getTempFolder().getAbsolutePath()+"/case_STRUCTURE5");
