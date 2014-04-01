@@ -17,14 +17,20 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
+import java.io.Console;
 import java.io.File;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Scanner;
 
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import asg.cliche.Command;
+import asg.cliche.CommandTable;
+import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
@@ -34,6 +40,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 public class PepperStarter 
 {
@@ -96,6 +103,7 @@ public class PepperStarter
 	
 	public static final String COMMAND_INFO="info";
 	public static final String COMMAND_HELP="help";
+	public static final String COMMAND_SELFTEST="selfTest";
 	
 	/**
 	 * Help to all commands for Pepper
@@ -112,6 +120,7 @@ public class PepperStarter
 		retVal.append(String.format(format, COMMAND_INFO, "--", "A table with information about all available Pepper modules."));
 		retVal.append(String.format(format, COMMAND_INFO, "module-name", "A table with information about the passed Pepper module."));
 		retVal.append(String.format(format, COMMAND_HELP, "--", "Prints this help."));
+		retVal.append(String.format(format, COMMAND_SELFTEST, "--", "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."));
 		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
 		return(retVal.toString());
 	}
@@ -159,6 +168,26 @@ public class PepperStarter
     }
     
     /**
+     * Calls {@link PepperModule#isReadyToStart()} for all Pepper modules.
+     * @return
+     */
+    @Command(description="Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module.")
+    public String selfTest(){
+    	StringBuilder retVal= new StringBuilder();
+    	Collection<String> problems= getPepper().selfTest();
+	    if (problems.size()==0)
+	    	retVal.append("- no problems detected -");
+	    else
+	    {
+	    	retVal.append("following problems have been found:");
+			for (String problem: problems){
+				retVal.append("\t"+ problem);
+			}
+	    }
+    	return(retVal.toString());
+    }
+    
+    /**
 	 * Returns a String containing a table with information about the passed Pepper module.
 	 * @return
 	 */
@@ -195,6 +224,9 @@ public class PepperStarter
     	return(retVal.toString());
     }
 	
+    public String hello(){
+    	return("UNBELIEVABLE IT WORKS!!!!!");
+    }
 	
 	/**
 	 * @param args
@@ -221,6 +253,7 @@ public class PepperStarter
 		boolean isHelp= false;
 		// determines if a status should be displayed
 		boolean isInfo= false;
+		boolean isSelfTest= false;
 		
 		//check parameters
 		for (int i=0; i < args.length; i++){
@@ -250,7 +283,9 @@ public class PepperStarter
 			else if (args[i].equalsIgnoreCase("-h"))
 			{
 				isHelp= true;
-			}else if (args[i].equalsIgnoreCase("info")){
+			}else if (args[i].equalsIgnoreCase(COMMAND_INFO)){
+				isInfo= true;
+			}else if (args[i].equalsIgnoreCase(COMMAND_SELFTEST)){
 				isInfo= true;
 			}
 		}
@@ -268,11 +303,19 @@ public class PepperStarter
 		else if(isInfo){
 			logger.info(starter.info()); 
 			
+		}else if (isSelfTest){
+			logger.info(starter.selfTest());
 		}else{//no flag for help	
 			try {
 				if (	(pepperWorkflowDescriptionFile== null) ||
 						(pepperWorkflowDescriptionFile.isEmpty())){
-					ShellFactory.createConsoleShell("pepper", "Welcome to the interactive console of Pepper. Type in 'h' or 'help' for help. ", starter).commandLoop();
+					Shell shell= ShellFactory.createConsoleShell("pepper", "Welcome to the interactive console of Pepper. Type in 'h' or 'help' for help. ", starter);
+					CommandTable commands= shell.getCommandTable();
+					System.out.println("commands: "+ commands);
+					Method method= PepperStarter.class.getMethod("hello");
+					commands.addMethod(method, starter, "pepper");
+					
+					shell.commandLoop();
 				//program call
 				}else{
 					pepperWorkflowDescriptionFile= pepperWorkflowDescriptionFile.replace("\\", "/");
@@ -335,5 +378,4 @@ public class PepperStarter
 			System.exit(0);
 		}
 	}
-
 }

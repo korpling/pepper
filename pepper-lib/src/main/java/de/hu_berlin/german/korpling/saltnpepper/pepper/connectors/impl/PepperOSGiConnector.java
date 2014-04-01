@@ -335,4 +335,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 		
 		return(getPepper().getRegisteredModulesAsString());
 	}
+
+	@Override
+	public Collection<String> selfTest() {
+		if (getPepper()== null)
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		
+		return(getPepper().selfTest());
+	}
 }
