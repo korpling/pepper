@@ -17,18 +17,22 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
-import java.io.File;
-import java.lang.reflect.Method;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import asg.cliche.Command;
-import asg.cliche.CommandTable;
-import asg.cliche.Shell;
-import asg.cliche.ShellFactory;
+//import asg.cliche.Command;
+//import asg.cliche.CommandTable;
+//import asg.cliche.Shell;
+//import asg.cliche.ShellFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
@@ -67,19 +71,6 @@ public class PepperStarter
 		this.pepper = pepper;
 	}	
 	
-	/**
-	 * Returns synopsis for program call
-	 * @return
-	 */
-	public static String getSynopsis()
-	{
-		StringBuilder retStr= new StringBuilder();
-		retStr.append("Synopsis:\tPepperStarter -p PEPPER_PARAM \n");
-		retStr.append("\n");
-		
-		return(retStr.toString());
-	}
-	
 	private static String getGoodBye()
 	{
 		StringBuilder retVal= new StringBuilder();
@@ -87,37 +78,55 @@ public class PepperStarter
 		return(retVal.toString());
 	}
 	
-	private static String getHelp()
-	{
-		StringBuilder retVal= new StringBuilder();
-		retVal.append("short description of how to use Pepper:\n");
-		retVal.append(getSynopsis());
-		retVal.append("-h\t\t\t prints this help message, does not convert\n");
-		retVal.append("-p[WORKFLOW]\t\t the file containing the workflow description (.pepperparams)\n");
-		retVal.append("-udProp[PROP_FILE]\t absolute filename, whose file contains user-defined property definition (.properties)\n");
-		return(retVal.toString());
+	public enum COMMAND{
+		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."),
+		LIST("list", "l", "module-name", "A table with information about the passed Pepper module."),
+		HELP("help", "h", null, "Prints this help."),
+		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
+		EXIT("exit", "e", null, "exits Pepper"),
+		CONVERT("convert", "c", "workflow-file", "Loads the passed 'workflow-file' and starts the conversion.");
+		
+		private String name= null;
+		private String abbreviation= null;
+		private String description= null;
+		private String parameters= null;
+		
+		private COMMAND(String name, String abbreviation, String parameters, String description){
+			this.name= name;
+			this.abbreviation= abbreviation;
+			this.parameters= parameters;
+			this.description= description;
+		}
+		
+		public String getName(){
+			return(name);
+		}
+		public String getAbbreviations(){
+			return(abbreviation);
+		}
+		public String getParameters(){
+			return(parameters);
+		}
+		public String getDescription(){
+			return(description);
+		}
 	}
-	
-	public static final String COMMAND_INFO="info";
-	public static final String COMMAND_HELP="help";
-	public static final String COMMAND_SELFTEST="selfTest";
 	
 	/**
 	 * Help to all commands for Pepper
 	 * @return
 	 */
-	@Command(description="Shows all available commands.")
+//	@Command(description="Shows all available commands.")
 	public String help(){
 		StringBuilder retVal= new StringBuilder();
 		String format = "| %1$-20s | %2$-15s | %3$-70s |\n";
 		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
 		retVal.append(String.format(format, "command", "parameters", "description"));
 		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
-		format = "| %1$20s | %2$15s | %3$70s |\n";
-		retVal.append(String.format(format, COMMAND_INFO, "--", "A table with information about all available Pepper modules."));
-		retVal.append(String.format(format, COMMAND_INFO, "module-name", "A table with information about the passed Pepper module."));
-		retVal.append(String.format(format, COMMAND_HELP, "--", "Prints this help."));
-		retVal.append(String.format(format, COMMAND_SELFTEST, "--", "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."));
+		format = "| %1$-20s | %2$-15s | %3$-70s |\n";
+		for (COMMAND command: COMMAND.values()){
+			retVal.append(String.format(format, command.getName(), (command.getParameters()== null)?" -- ":command.getParameters(), command.getDescription()));
+		}
 		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
 		return(retVal.toString());
 	}
@@ -126,8 +135,8 @@ public class PepperStarter
 	 * Returns a String containing a table with information about all available Pepper modules.
 	 * @return
 	 */
-    @Command(description="A table with information about all available Pepper modules.") 
-    public String info() {
+//    @Command(description="A table with information about all available Pepper modules.") 
+    public String list() {
     	StringBuilder retVal= new StringBuilder();
 
 		Collection<PepperModuleDesc> moduleDescs= getPepper().getRegisteredModules();
@@ -165,33 +174,12 @@ public class PepperStarter
     }
     
     /**
-     * Calls {@link PepperModule#isReadyToStart()} for all Pepper modules.
-     * @return
-     */
-    @Command(description="Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module.")
-    public String selfTest(){
-    	StringBuilder retVal= new StringBuilder();
-    	Collection<String> problems= getPepper().selfTest();
-	    if (problems.size()==0)
-	    	retVal.append("- no problems detected -");
-	    else
-	    {
-	    	retVal.append("following problems have been found:");
-			for (String problem: problems){
-				retVal.append("\t"+ problem);
-			}
-	    }
-    	return(retVal.toString());
-    }
-    
-    /**
 	 * Returns a String containing a table with information about the passed Pepper module.
 	 * @return
 	 */
-    @Command(description="A table with information about the passed Pepper module.") 
-    public String info(String moduleName) {
+//    @Command(description="A table with information about the passed Pepper module.") 
+    public String list(String moduleName) {
     	StringBuilder retVal= new StringBuilder();
-    	
     	PepperModuleDesc moduleDesc= null;
     	Collection<PepperModuleDesc> moduleDescs= getPepper().getRegisteredModules();
 		if (	(moduleName!= null)&&
@@ -220,11 +208,120 @@ public class PepperStarter
 		}
     	return(retVal.toString());
     }
-	
-    public String hello(){
-    	return("UNBELIEVABLE IT WORKS!!!!!");
+    /**
+     * Loads the passed workflow description file and starts the conversion.
+     * @param workFlowFile
+     */
+    public void convert(String workFlowFile){
+    	
+    	URI workFlowUri= URI.createFileURI(workFlowFile);	
+    	String jobId= pepper.createJob();
+			
+		PepperJob pepperJob= pepper.getJob(jobId);
+		pepperJob.load(workFlowUri);
+		PepperJobReporter observer= new PepperJobReporter(pepperJob);
+		observer.start();
+		try{
+			pepperJob.convert();
+		}finally{
+			observer.setStop(true);
+		}
+		
+		pepper.removeJob(jobId);	
     }
-	
+    
+    /**
+     * Calls {@link PepperModule#isReadyToStart()} for all Pepper modules.
+     * @return
+     */
+//    @Command(description="Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module.")
+    public String selfTest(){
+    	StringBuilder retVal= new StringBuilder();
+    	Collection<String> problems= getPepper().selfTest();
+	    if (problems.size()==0)
+	    	retVal.append("- no problems detected -");
+	    else
+	    {
+	    	retVal.append("following problems have been found:");
+			for (String problem: problems){
+				retVal.append("\t"+ problem);
+			}
+	    }
+    	return(retVal.toString());
+    }
+
+    /**
+     * Starts the interactive console of Pepper.
+     */
+    public void runInteractive(){
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		PrintStream output= System.out;
+		
+		boolean exit= false;
+		String userInput= null;
+		output.println("Welcome to Pepper, type 'help' for help.");
+		while (!exit){
+			try {
+				output.print("pepper>");
+				userInput = input.readLine();
+			} catch (IOException ioe) {				
+		         output.println("Cannot read command, type in 'help' for help.");
+		    }
+			userInput= userInput.trim();
+			String[] parts=userInput.split(" ");
+			String command= parts[0];
+			List<String> params= new Vector<String>();
+			int i= 0;
+			for (String part: parts){
+				if (i> 0){
+					params.add(part);
+				}
+				i++;
+			}
+			if (	(COMMAND.HELP.getName().equalsIgnoreCase(command))||
+					(COMMAND.HELP.getAbbreviations().equalsIgnoreCase(command))){
+				output.println(help());
+			}else if (	(params.size()== 0)&&
+						(	(COMMAND.LIST.getName().equalsIgnoreCase(command))||
+								(COMMAND.LIST.getAbbreviations().equalsIgnoreCase(command)))){
+				output.println(list());
+			}else if (	((params.size()> 0))&&
+						(	(COMMAND.LIST.getName().equalsIgnoreCase(command))||
+							(COMMAND.LIST.getAbbreviations().equalsIgnoreCase(command)))){
+				if (params.size()== 1){
+					output.println(list(params.get(0)));
+				}else{
+					output.println("Please pass exactly one module name.");
+				}
+			}else if (	(COMMAND.SELFTEST.getName().equalsIgnoreCase(command))||
+						(COMMAND.SELFTEST.getAbbreviations().equalsIgnoreCase(command))){
+				output.println(selfTest());
+			}else if (	(COMMAND.EXIT.getName().equalsIgnoreCase(command))||
+						(COMMAND.EXIT.getAbbreviations().equalsIgnoreCase(command))){
+				break;
+			}else if (	((params.size()> 0))&&
+						(	(COMMAND.CONVERT.getName().equalsIgnoreCase(command))||
+							(COMMAND.CONVERT.getAbbreviations().equalsIgnoreCase(command)))){
+				if (params.size()== 1){
+					Long timestamp= System.currentTimeMillis();
+					try{
+						convert(params.get(0));
+						timestamp= System.currentTimeMillis() - timestamp;
+						output.println("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: "+timestamp +" milliseconds");
+					}catch (Exception e){
+						e.printStackTrace();
+						timestamp= System.currentTimeMillis() - timestamp;
+						output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: "+ timestamp +" milliseconds");
+					}
+				}else{
+					output.println("Please pass exactly one workflow file.");
+				}
+			}else{
+				output.println("Type 'help' for help.");
+			}
+		}
+    }
+    
 	/**
 	 * @param args
 	 */
@@ -237,142 +334,75 @@ public class PepperStarter
 		String hp= pepperProps.getPepperHomepage();
 		
 		logger.info(PepperUtil.getHello(eMail, hp));
-		//setting timer to stop needed time
-		Long timestamp= System.currentTimeMillis();
-		
-		//path of property file
-		String udPropFile= null;
-		
-		//path of pepper parameters
-		String pepperWorkflowDescriptionFile= null;
-		
-		//if help shall be printed
-		boolean isHelp= false;
-		// determines if a status should be displayed
-		boolean isInfo= false;
-		boolean isSelfTest= false;
-		
-		//check parameters
-		for (int i=0; i < args.length; i++){
-			// user-defined properties
-			if (args[i].equalsIgnoreCase("-udProp"))
-			{
-				if (args.length> i+1)
-					udPropFile= args[i+1];
-				i++;
-			}	
-			
-			//workflow file
-			else if (args[i].equalsIgnoreCase("-p"))
-			{
-				if (args.length> i+1)
-					pepperWorkflowDescriptionFile= args[i+1];
-				i++;
-			}	
-			//workflow file
-			else if (args[i].equalsIgnoreCase("-w"))
-			{
-				if (args.length> i+1)
-					pepperWorkflowDescriptionFile= args[i+1];
-				i++;
-			}	
-			// print help
-			else if (args[i].equalsIgnoreCase("-h"))
-			{
-				isHelp= true;
-			}else if (args[i].equalsIgnoreCase(COMMAND_INFO)){
-				isInfo= true;
-			}else if (args[i].equalsIgnoreCase(COMMAND_SELFTEST)){
-				isInfo= true;
-			}
-		}
 		boolean endedWithErrors= false;
-		//marks if parameter for program call are ok
-		boolean paramsOk= false;
-		URI paramUri= null;
 		
 		PepperConnector pepper= new PepperOSGiConnector();
 		pepper.setProperties(pepperProps);
 		PepperStarter starter= new PepperStarter(pepper);
 		
-		if (isHelp)
-			logger.info(getHelp());
-		else if(isInfo){
-			logger.info(starter.info()); 
-			
-		}else if (isSelfTest){
+		if (args.length== 0){
+			//run interactive console
+			try{
+				starter.runInteractive();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+		}else if (	(COMMAND.HELP.getName().equalsIgnoreCase(args[0])||
+					(COMMAND.HELP.getAbbreviations().equalsIgnoreCase(args[0])))){
+			//print help
+			logger.info(starter.help());
+ 
+		}else if (	(COMMAND.LIST.getName().equalsIgnoreCase(args[0])||
+					(COMMAND.LIST.getAbbreviations().equalsIgnoreCase(args[0])))){
+			logger.info(starter.list());
+		}else if (	(COMMAND.SELFTEST.getName().equalsIgnoreCase(args[0])||
+					(COMMAND.SELFTEST.getAbbreviations().equalsIgnoreCase(args[0])))){
 			logger.info(starter.selfTest());
-		}else{//no flag for help	
-			try {
-				if (	(pepperWorkflowDescriptionFile== null) ||
-						(pepperWorkflowDescriptionFile.isEmpty())){
-					Shell shell= ShellFactory.createConsoleShell("pepper", "Welcome to the interactive console of Pepper. Type in 'h' or 'help' for help. ", starter);
-					CommandTable commands= shell.getCommandTable();
-					System.out.println("commands: "+ commands);
-					Method method= PepperStarter.class.getMethod("hello");
-					commands.addMethod(method, starter, "pepper");
-					
-					shell.commandLoop();
-				//program call
-				}else{
-					pepperWorkflowDescriptionFile= pepperWorkflowDescriptionFile.replace("\\", "/");
-					paramUri= URI.createFileURI(pepperWorkflowDescriptionFile);
-					paramsOk= true;
-				}
-				if (	(udPropFile!= null) &&
-						(udPropFile.isEmpty())){
-					pepperProps.load(new File(udPropFile));
-				}
-			} catch (Exception e){
-				StringBuilder errorStr= new StringBuilder();
-				errorStr.append("Error in program call:\n");
-				errorStr.append("\t"+e+"\n");
-				errorStr.append("\n");
-				errorStr.append(getHelp());
-				logger.error(errorStr.toString());
-			}
-			
-			//starts converting
-			if (paramsOk){
-				try{
-					if(logger.isDebugEnabled()){
-						for (Object key: pepperProps.keySet()){
-							logger.debug(String.format("%-40s%-16s", key+":", pepperProps.get(key)));
-						}
-					}
-					
-					logger.debug(pepper.getRegisteredModulesAsString());
-					
-					String jobId= pepper.createJob();
-					
-					PepperJob pepperJob= pepper.getJob(jobId);
-					pepperJob.load(paramUri);
-					PepperJobReporter observer= new PepperJobReporter(pepperJob);
-        			observer.start();
-					try{
-						pepperJob.convert();
-					}finally{
-						observer.setStop(true);
-					}
-					
-					pepper.removeJob(jobId);
-				}catch (Exception e) {
+		} else if (	("-p".equalsIgnoreCase(args[0]))||
+					("-w".equalsIgnoreCase(args[0]))||
+					(args[0]!= null)){
+			String workFlowFile=null;
+			if(	("-p".equalsIgnoreCase(args[0]))||
+				("-w".equalsIgnoreCase(args[0]))){
+				if (args[1]== null){
+					logger.error("Cannot start conversion, since no workflow description file is given.");
 					endedWithErrors= true;
-					logger.error("", e);
-				}	
-				timestamp= System.currentTimeMillis() - timestamp;
-				if (endedWithErrors){
-					logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: "+ timestamp +" milliseconds");
 				}else{
-					logger.info("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: "+timestamp +" milliseconds");
+					workFlowFile= args[1];
 				}
+			}else {
+				workFlowFile= args[0];
 			}
-		}//no flag for help
+			Long timestamp= System.currentTimeMillis();
+			try{
+				if(logger.isDebugEnabled()){
+					for (Object key: pepperProps.keySet()){
+						logger.debug(String.format("%-40s%-16s", key+":", pepperProps.get(key)));
+					}
+				}
+				logger.debug(pepper.getRegisteredModulesAsString());
+				workFlowFile= workFlowFile.replace("\\", "/");
+				
+				starter.convert(workFlowFile);
+			}catch (Exception e) {
+				endedWithErrors= true;
+				logger.error("", e);
+			}finally{
+				timestamp= System.currentTimeMillis() - timestamp;
+			}
+			if (endedWithErrors){
+				logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: "+ timestamp +" milliseconds");
+			}else{
+				logger.info("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: "+timestamp +" milliseconds");
+
+			}
+		}
+		
 		logger.info(getGoodBye());
 		if (endedWithErrors){
 			System.exit(-1);
 		}else{
 			System.exit(0);
-		}
+		}	
 	}
 }
