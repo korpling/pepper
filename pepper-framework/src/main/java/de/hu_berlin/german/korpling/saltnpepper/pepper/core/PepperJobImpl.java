@@ -281,25 +281,29 @@ public class PepperJobImpl extends PepperJob{
 		if (	(step.getModuleController()== null)||
 				(step.getModuleController().getPepperModule()== null))
 		{
-			if (getModuleResolver()== null)
+			if (getModuleResolver()== null){
 				throw new PepperFWException("Cannot add the given step '"+step.getId()+"', because it does not contain a module controller and the module resolver for this job '"+getId()+"' is not set. So the Pepper module can not be estimated.");
-			if (getSaltProject()== null)
+			}
+			if (getSaltProject()== null){
 				throw new PepperFWException("Cannot add a step '"+step.getId()+"', since no '"+SaltProject.class.getSimpleName()+"' is set for job '"+getId()+"'.");
+			}
 			PepperModule pepperModule= getModuleResolver().getPepperModule(step);
-			if (pepperModule== null)
+			if (pepperModule== null){
 				throw new WorkflowException("No Pepper module matching to step '"+step.getId()+"' was found: "+step);
+			}
 			pepperModule.setSaltProject(getSaltProject());
 			step.setPepperModule(pepperModule);
 		}
 		
 		step.getModuleController().setJob(this);
 		
-		if (MODULE_TYPE.MANIPULATOR.equals(step.getModuleType()))
+		if (MODULE_TYPE.MANIPULATOR.equals(step.getModuleType())){
 			getManipulationSteps().add(step);
-		else if (MODULE_TYPE.IMPORTER.equals(step.getModuleType()))
+		}else if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())){
 			getImportSteps().add(step);
-		else if (MODULE_TYPE.EXPORTER.equals(step.getModuleType()))
+		}else if (MODULE_TYPE.EXPORTER.equals(step.getModuleType())){
 			getExportSteps().add(step);
+		}
 	}
 	/** A list of all buses between the {@link ModuleControllerImpl} objects**/
 	protected List<DocumentBus> documentBuses= null;

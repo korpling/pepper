@@ -98,6 +98,35 @@ public class FormatDesc{
 	public void setFormatReference(URI formatReference) {
 		this.formatReference = formatReference;
 	}
+	
+	/**
+	 * Two objects are equal: 
+	 * <ul>
+	 *  <li>if they are the same object</li>
+	 *  <li>if the passed object is of type {@link FormatDesc} and both {@link FormatDesc#formatName} and both {@link FormatDesc#formatName} are the same</li>
+	 * </ul>
+	 */
+	@Override
+	public boolean equals(Object obj){
+		if (this== obj){
+			return(true);
+		}
+		if (obj!= null){
+			if (obj instanceof FormatDesc){
+				if (	(getFormatName()!= null)&&
+						(getFormatName().equals(((FormatDesc) obj).getFormatName()))&&
+						(getFormatVersion()!= null)&&
+						(getFormatVersion().equals(((FormatDesc) obj).getFormatVersion()))){
+					return(true);
+				}else{
+					return(false);
+				}
+			}else{
+				return(false);
+			}
+		}else return(false);
+	}
+	
 	/**
 	 * Returns a String representation of this object.
 	 * <strong>Note: This String cannot be used for serialization/ deserialization.</string>

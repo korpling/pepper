@@ -641,55 +641,39 @@ public class ModuleResolverImpl implements ModuleResolver{
 		if (this.pepperImporterComponentFactories!= null)
 		{	
 			if (	(this.getPepperImporters()== null)||
-					(this.getPepperImporters().size()== 0))
+					(this.getPepperImporters().size()== 0)){
 				throw new PepperConvertException("Cannot convert data, because no Pepper module is registered.");
+			}
 			//run through all pepperImporterComponentFactories and search for mapping PepperImporter
 			List<PepperModule> modules= null;
-			if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType()))
+			if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())){
 				modules= (List<PepperModule>)(List<? extends PepperModule>)getPepperImporters();
-			else if (MODULE_TYPE.MANIPULATOR.equals(stepDesc.getModuleType()))
+			}else if (MODULE_TYPE.MANIPULATOR.equals(stepDesc.getModuleType())){
 				modules= (List<PepperModule>)(List<? extends PepperModule>)getPepperManipulators();
-			else if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType()))
+			}else if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())){
 				modules= (List<PepperModule>)(List<? extends PepperModule>)getPepperExporters();
-			
+			}
 			if (modules== null){
 				throw new PepperException("Cannot resolve a module for step description '"+stepDesc+"', since no Pepper modules are registered.");
 			}
-			
 			for (PepperModule module: modules){
-				//emit by name
-				if(stepDesc.getName()!= null)
-				{
-					if (stepDesc.getName().equalsIgnoreCase(module.getName()))
-					{	
+				if(stepDesc.getName()!= null){//emit by name
+					if (stepDesc.getName().equalsIgnoreCase(module.getName())){	
 						pepperModule= module;
 						break;
 					}
-				}
-				//emit by format Definition
-				else
-				{
-					if (	(pepperModule instanceof PepperImporter)||
-							(pepperModule instanceof PepperExporter))
-					{
-						if (	(stepDesc.getCorpusDesc().getFormatDesc().getFormatName()!= null) &&
-								(stepDesc.getCorpusDesc().getFormatDesc().getFormatVersion()!= null))
-						{
-							List<FormatDesc> supportedFormats= null;
-							if (pepperModule instanceof PepperImporter)
-								supportedFormats= ((PepperImporter)pepperModule).getSupportedFormats();
-							else if (pepperModule instanceof PepperExporter)
-								supportedFormats= ((PepperExporter)pepperModule).getSupportedFormats();
-							for (FormatDesc format: supportedFormats)
-							{
-								if (	(stepDesc.getCorpusDesc().getFormatDesc().getFormatName().equalsIgnoreCase(format.getFormatName())) &&
-										(stepDesc.getCorpusDesc().getFormatDesc().getFormatVersion().equalsIgnoreCase(format.getFormatVersion())))
-								{	
-									pepperModule= module;
-									break;
-								}
-							}	
-						}	
+				}else if (	(stepDesc.getCorpusDesc()!= null)&&
+							(stepDesc.getCorpusDesc().getFormatDesc()!= null)){//emit by format name and version
+					if (module instanceof PepperImporter){
+						if (((PepperImporter)module).getSupportedFormats().contains(stepDesc.getCorpusDesc().getFormatDesc())){
+							pepperModule= module;
+							break;
+						}
+					}else if (module instanceof PepperExporter){
+						if (((PepperExporter)module).getSupportedFormats().contains(stepDesc.getCorpusDesc().getFormatDesc())){
+							pepperModule= module;
+							break;
+						}
 					}
 				}
 			}
