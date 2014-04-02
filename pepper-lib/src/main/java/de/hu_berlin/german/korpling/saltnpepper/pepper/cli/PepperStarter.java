@@ -17,12 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
-import java.io.Console;
 import java.io.File;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Scanner;
 
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
