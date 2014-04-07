@@ -43,26 +43,11 @@
     <chapter>
         <title>Subprojects</title>
         <para>
-            Pepper is a mavenized (see: ) Java project basing on the plugIn System OSGi (see: ). It is separated into several sub projects.
-            <itemizedlist>
-                <listitem><para>pepper-exceptions
-                Including a hierarchie of several java exceptions derived from the super class RuntimeException (see).</para></listitem>
-                <listitem><para>pepper-modules
-                    Contains the three pepper-module classes PepperImporter, PepperExporter and PepperManipulator. These are the classes manipulating the salt model and doing the linguistic work. We also provide a set of modules to import several formats into salt, to export salt to several formats and to manipulate a salt model, for instance by enhancing the annotations.</para></listitem>
-                <listitem><para>pepper-workflow
-                    This sub project contains the model of the workflow specification (.pepperparams files).</para></listitem>
-                <listitem><para>pepper-framework
-                    This project is the core of pepper and provides the architecture of Pepper to convert data.</para></listitem>
-                <listitem><para>pepper-starter
-                    This is a rather simple project, just for starting the pepper-framework. Both was separated, because of the use of OSGi. Pepper-starter is not an OSGi project, but pepper-framework is.</para></listitem>
-                <listitem><para> pepper-testSuite
-                    With the project pepper-testSuite, we provide a set of sub-projects, which are very useful, when creating own pepper-modules. This project is also a maven parent project and itself contains the sub-projects:</para></listitem>
-                <listitem><para>pepper-moduleTests
-                    This project contains three test-classes PepperImporterTest, PepperExporterTest and PepperManipulatorTest. All are derived from the class TestCase coming from Junit(see:  ). With these classes you can use a set of predefined tests, your new module has to pass. It is very simple, to use these classes, just Create a test-class for your module and derive it from one of the three classes. Now you can enhance your class by own tests, which are specific for your module.
-                    For testing, just start your test class in a Junit environment, or let them test by maven. The derived tests will be launched automatically.</para></listitem>
-                <listitem><para>pepper-testEnvironment
-                    The project pepper-testEnvironment provides the class TestRunner. This class is an OSGi bundle having an activator (see: ) and realizes an entry point to run pepper and to test your new module without compiling all sources. This is a nice way for developing and debugging single modules. When you use an IDE, supporting OSGi for instance like Eclipse (see: ) just start this class in Run configurations → OSGi. Select all OSGi bundles, you need (especially your new module) and run it.</para></listitem>
-            </itemizedlist>
+        - Pepper is a service infrastructure, therefore more parallel jobs are possible, so one conversion is a job, job is identified by unique id
+        - a job consists of steps (identifying module, carrying customization of step and im-or export path if neccessary)
+        - DocumentController (abstraction for SDocument, knows the status global and of each module, can send SDcoument to sleep or awake)
+        - ModuleController and DocumentBus between controllers
+        - some (very simple) modules are part of pepper distribution like SaltXML importer and DoNothing to make sure, something is there
         </para>
     </chapter>
 </book>
