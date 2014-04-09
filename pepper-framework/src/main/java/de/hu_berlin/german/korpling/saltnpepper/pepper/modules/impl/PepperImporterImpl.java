@@ -164,7 +164,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param endings
 	 * @throws IOException
 	 */
-	protected void importCorpusStructureRec(URI currURI, SElementId parentsID)
+	protected void importCorpusStructureRec(URI currURI, SCorpus parent)
 	{
 		//set name for corpus graph
 		if (	(this.getSCorpusGraph().getSName()== null) || 
@@ -179,36 +179,19 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			if (type!= null)
 			{//do not ignore resource
 				//create new id
-				SElementId currId= SaltFactory.eINSTANCE.createSElementId();
-				
 				File currFile= new File(currURI.toFileString());
 				
 				if (STYPE_NAME.SCORPUS.equals(type))
 				{//resource is a SCorpus
-					if (parentsID== null)
-						currId.setSId("/"+currURI.lastSegment());
-					else currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment());
 					//create corpus
-					SCorpus sCorpus= SaltFactory.eINSTANCE.createSCorpus();
-					sCorpus.setSElementId(currId);
-					sCorpus.setSName(currURI.lastSegment());
-					this.getSCorpusGraph().addSNode(sCorpus);
-					//if corpus has a parent
-					if (parentsID!= null)
-					{
-						SCorpus parentCorpus= this.getSCorpusGraph().getSCorpus(parentsID);
-						SCorpusRelation sCorpRel= SaltFactory.eINSTANCE.createSCorpusRelation();
-						sCorpRel.setSSuperCorpus(parentCorpus);
-						sCorpRel.setSSubCorpus(sCorpus);
-						this.getSCorpusGraph().addSRelation(sCorpRel);
-					}	
-					
+					SCorpus sCorpus= getSCorpusGraph().createSCorpus(parent, currURI.lastSegment());
+					this.getSElementId2ResourceTable().put(sCorpus.getSElementId(), currURI);
 					if (currFile.isDirectory())
 					{
 						for (File file: currFile.listFiles())
 						{
 							try {
-								this.importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), currId);
+								this.importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
 							} catch (IOException e) {
 								throw new PepperModuleException("Cannot import corpus structure, because cannot create a URI out of file '"+file+"'. ", e);
 							}
@@ -217,31 +200,15 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 				}//resource is a SCorpus
 				else if (STYPE_NAME.SDOCUMENT.equals(type))
 				{//resource is a SDocument
-					if (parentsID== null)
+					if (parent== null)
 					{//if there is no corpus given, create one with name of document
-						parentsID = SaltFactory.eINSTANCE.createSElementId();
-						parentsID.setSId(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
-						//create corpus
-						SCorpus sCorpus= SaltFactory.eINSTANCE.createSCorpus();
-						sCorpus.setSElementId(parentsID);	
-						this.getSCorpusGraph().addSNode(sCorpus);
-						sCorpus.setSName(parentsID.getSId());
-						this.getSElementId2ResourceTable().put(sCorpus.getSElementId(), currURI);
+						parent= getSCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
+						this.getSElementId2ResourceTable().put(parent.getSElementId(), currURI);
 					}
-					currId.setSId(parentsID.getSId()+"/"+currURI.lastSegment().replace("."+currURI.fileExtension(), ""));			
-					
-					//start: create a new document 
-					SDocument sDocument= SaltFactory.eINSTANCE.createSDocument();
-					sDocument.setSElementId(currId);
-					sDocument.setSName(currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
-					this.getSCorpusGraph().addSNode(sDocument);
-					SCorpusDocumentRelation sCorpDocRel= SaltFactory.eINSTANCE.createSCorpusDocumentRelation();
-					sCorpDocRel.setSCorpus(this.getSCorpusGraph().getSCorpus(parentsID));
-					sCorpDocRel.setSDocument(sDocument);
-					this.getSCorpusGraph().addSRelation(sCorpDocRel);
+					SDocument sDocument= getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("."+currURI.fileExtension(), ""));
+					this.getSElementId2ResourceTable().put(sDocument.getSElementId(), currURI);
 				}//resource is a SDocument
 				//link documentId with resource
-				this.getSElementId2ResourceTable().put(currId, currURI);
 			}//do not ignore resource
 		}//if file is not part of ignore list
 	}

@@ -101,6 +101,12 @@ public class DocumentControllerImpl implements DocumentController
 	@Override
 	public String getGlobalId(){
 		String globalId= SaltFactory.eINSTANCE.getGlobalId(getsDocumentId());
+		
+		//TODO remove this
+		if ("salt:".equals(globalId)){
+			System.out.println(">>>>>>>>>>>>>>>>>< PROBLEM, docId: "+ getsDocumentId()+", "+isAsleep());
+		}
+		
 		return(globalId);
 	}
 	/**

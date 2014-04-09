@@ -33,7 +33,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.graph.Node;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.resources.dot.DOTResource;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
-@Component(name="DOTExporterComponent", factory="PepperExporterComponentFactory", enabled=true, immediate=true)
+@Component(name="DOTExporterComponent", factory="PepperExporterComponentFactory", enabled=true)
 public class DOTExporter extends PepperExporterImpl
 {
 	public DOTExporter()

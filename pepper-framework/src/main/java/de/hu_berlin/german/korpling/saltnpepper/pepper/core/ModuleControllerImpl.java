@@ -23,6 +23,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
@@ -42,6 +45,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  * @author Florian Zipser
  */
 public class ModuleControllerImpl implements ModuleController{
+	private static final Logger logger= LoggerFactory.getLogger(ModuleController.class);
 	/**
 	 * Creates an instance of {@link ModuleControllerImpl}. Sets the internal id to the passed one. 
 	 * <strong>Note: the id is unchangable.</strong>
@@ -307,6 +311,7 @@ public class ModuleControllerImpl implements ModuleController{
 		DocumentController documentController= getInputDocumentBus().pop(getId(), ignorePermissionForDocument);
 		if (documentController!= null)
 		{
+			logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' started processing of document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
 			//notify documentController, that SDocument now is in progress
 			documentController.updateStatus(getId(), DOCUMENT_STATUS.IN_PROGRESS);
 			//puts the current element in list of not pipelined orders
@@ -338,8 +343,8 @@ public class ModuleControllerImpl implements ModuleController{
 			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because the passed document controller '"+documentController.getGlobalId()+"' has never been add to internal controll list.");
 		if (documentController.getSDocument()== null)
 			throw new PepperFWException("Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '"+documentController.getGlobalId()+"' has never been add to internal controll list.");
-		
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.COMPLETED);
+		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' completed document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
 //		if (!this.started)
 //			throw new PepperConvertException("Cannot finish the given element-id, because the module-controller was not started (please call sytart() first).");
 		getOutputDocumentBus().put(documentController);
@@ -359,7 +364,9 @@ public class ModuleControllerImpl implements ModuleController{
 			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '"+documentController.getGlobalId()+"' shall not be proessed any further by Pepper module '"+getId()+"', because it has never been add to internal controll list '"+getControllList()+"'.");
 //		if (!this.started)
 //			throw new PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
+
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.DELETED);
+		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' deleted document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
 		//if document is not processed any further, release slot
 		if (getJob()!= null){
 			getJob().releaseDocument();

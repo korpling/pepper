@@ -81,6 +81,7 @@ public class PepperImporterImplTest{
 		
 		new File(tmpFolder.getCanonicalPath()+"/.svn").mkdirs();
 		this.getFixture().importCorpusStructure(sCorpusGraph);
+		
 		assertEquals("sNodes: "+ sCorpusGraph.getSNodes(), 1, sCorpusGraph.getSNodes().size());
 		assertEquals(0, sCorpusGraph.getSRelations().size());
 	}
@@ -102,6 +103,7 @@ public class PepperImporterImplTest{
 		new File(tmpFolder.getCanonicalPath()+"/corp1/.svn").mkdirs();
 		sCorpusGraph= SaltFactory.eINSTANCE.createSCorpusGraph();
 		this.getFixture().importCorpusStructure(sCorpusGraph);
+		
 		assertEquals(2, sCorpusGraph.getSNodes().size());
 		assertEquals(2, sCorpusGraph.getSCorpora().size());
 		assertEquals(1, sCorpusGraph.getSRelations().size());
@@ -158,7 +160,6 @@ public class PepperImporterImplTest{
 		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_XML);
 		
 		this.getFixture().importCorpusStructure(sCorpusGraph);
-		System.out.println("nodes: "+sCorpusGraph.getSNodes());
 		assertEquals(3, sCorpusGraph.getSNodes().size());
 		assertEquals(2, sCorpusGraph.getSRelations().size());
 		assertEquals(1, sCorpusGraph.getSCorpora().size());
