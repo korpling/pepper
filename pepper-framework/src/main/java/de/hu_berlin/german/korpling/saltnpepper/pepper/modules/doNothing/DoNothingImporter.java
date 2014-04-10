@@ -37,7 +37,6 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 	public void activate(ComponentContext componentContext)
 	{
 		super.activate(componentContext);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>><<<< DoNothingImporter resolver is activated");
 	}
 	
 	/**

@@ -30,7 +30,7 @@ public abstract class PepperUtil {
 	 */
 	public static String getHello()
 	{
-		return(getHello("http://u.hu-berlin.de/saltnpepper", "saltnpepper@lists.hu-berlin.de"));
+		return(getHello("saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
 	}
 	/**
 	 * Returns a formatted String, a kind of a welcome screen of Pepper.

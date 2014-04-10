@@ -47,7 +47,6 @@ public class DOTManipulator extends PepperManipulatorImpl
 	public void activate(ComponentContext componentContext)
 	{
 		super.activate(componentContext);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>><<<< "+getClass().getSimpleName()+" is activated");
 	}
 	
 	@Override

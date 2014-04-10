@@ -60,7 +60,6 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	public void activate(ComponentContext componentContext)
 	{
 		super.activate(componentContext);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>><<<< "+getClass().getSimpleName()+" is activated");
 	}
 	
 	/**
