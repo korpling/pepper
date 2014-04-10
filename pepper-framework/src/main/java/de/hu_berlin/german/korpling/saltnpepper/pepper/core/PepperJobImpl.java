@@ -33,6 +33,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.DebugGraphics;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -104,6 +105,7 @@ public class PepperJobImpl extends PepperJob{
 			throw new PepperFWException("Cannot initialize a PepperJob with an empty id.");
 		id= jobId;
 		setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		
 	}
 	
 	/** The {@link SaltProject} which is converted by this job. **/

@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
@@ -45,7 +44,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperOSGiRunn
  *
  */
 @Component(name="PepperTestComponent", immediate=true, enabled=true)
-//TODO replace environment variables and parameters with a param file, which can be passed via OSGi to the test-environmet   
 public class PepperOSGiRunner implements Runnable
 {
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiRunner.class);
@@ -139,15 +137,25 @@ public class PepperOSGiRunner implements Runnable
 		try{
 			logger.info(PepperUtil.getHello());
 			
-			logger.info("PepperModuleResolver.TemprorariesURI:\t"+ System.getProperty("PepperModuleResolver.TemprorariesURI"));
-			logger.info(PepperConfiguration.PROP_PEPPER_MODULE_RESOURCES+":\t"+ System.getProperty(PepperConfiguration.PROP_PEPPER_MODULE_RESOURCES));
-			logger.info("service registered(PepperConverter): "+this.pepper);
-			
 			if (pepper== null)
 				throw new PepperException("No PepperConverter-object is given for pepper-osgi-runner.");
 			
 			if (pepper.getModuleResolver()== null)
 				throw new PepperException("No '"+ModuleResolverImpl.class+"' is given for passed '"+Pepper.class+"' object.");
+			
+			logger.info("+--------------------------------------------------------------------------------+");
+			logger.info(String.format("|%-80s|", " configuration for Pepper"));
+			logger.info("+--------------------------------------------------------------------------------+");
+			if (	(pepper.getConfiguration()!= null)&&
+					(pepper.getConfiguration().size()!= 0)){
+				for (Object key: pepper.getConfiguration().keySet()){
+					logger.info(String.format("| %-28s: %-48s |", key, pepper.getConfiguration().get(key)));
+				}
+			}else{
+				logger.info(String.format("|%-80s|", "- no configurations set -"));
+			}
+			logger.info("+--------------------------------------------------------------------------------+");
+			
 			//print registered pepper modules 
 			logger.info(pepper.getModuleResolver().getStatus());
 			

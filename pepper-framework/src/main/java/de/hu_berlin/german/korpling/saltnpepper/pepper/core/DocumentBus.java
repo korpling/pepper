@@ -25,6 +25,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
@@ -51,6 +54,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  */
 public class DocumentBus 
 {
+	private static final Logger logger= LoggerFactory.getLogger(DocumentBus.class);
 	/**
 	 * Creates an object of this type and sets the passes the given input controller and output controller.
 	 * @param inputModuleControllerId  identifier of controller, which produces documents for this bus 
@@ -310,7 +314,13 @@ public class DocumentBus
 	{
 		if (documentController== null)
 			throw new PepperFWException("Cannot add a null value as DocumentController into documentBus.");
+		if (logger.isDebugEnabled()){
+			logger.debug("new document '{}' added to document bus. Following documents are waiting in bus: '{}'. ", documentController.getGlobalId(), getDocumentBus().values());
+		}
 		lock.lock();
+		if (logger.isTraceEnabled()){
+			logger.trace("blocking lock for new document '{}' in document bus. ", documentController.getGlobalId());
+		}
 		try{
 			//add new document controller to all queues
 			Collection<ConcurrentLinkedQueue<DocumentController>> queues= getDocumentBus().values();
@@ -338,6 +348,9 @@ public class DocumentBus
 			waitUntilAllDocumentsArePut.signalAll();
 		}finally{
 			lock.unlock();
+			if (logger.isTraceEnabled()){
+				logger.trace("unlocked lock for new document '{}' in document bus. ", documentController.getGlobalId());
+			}
 		}
 	}
 	
@@ -387,7 +400,13 @@ public class DocumentBus
 	public DocumentController pop(String outputControllerId, boolean ignorePermissionForDocument) 
 	{
 		DocumentController documentController= null;
+		if (logger.isDebugEnabled()){
+			logger.debug("remove document for controller {} from document bus. Following documents are still waiting in bus: '{}'. ", outputControllerId, getDocumentBus().values());
+		}
 		lock.lock();
+		if (logger.isTraceEnabled()){
+			logger.trace("blocking lock for remove document for controller {}. ", outputControllerId);
+		}
 		ConcurrentLinkedQueue<DocumentController> queue= getDocumentBus().get(outputControllerId);
 		if (queue== null)
 			throw new PepperFWException("Document bus '"+getId()+"' cannot pop a document controller, because there is no entry for module controller '"+outputControllerId+"'.");
@@ -415,6 +434,9 @@ public class DocumentBus
 			throw new PepperFWException("Something went wrong, when waiting for lock 'waitUntilAllDocumentsArePut'.", e);
 		}finally{
 			lock.unlock();
+			if (logger.isTraceEnabled()){
+				logger.trace("unlocked lock for remove document for controller {} and return document '{}'. ", outputControllerId, documentController.getGlobalId());
+			}
 		}
 		return(documentController);
 	}

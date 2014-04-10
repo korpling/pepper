@@ -328,6 +328,7 @@ public class ModuleControllerImpl implements ModuleController{
 	@Override
 	public DocumentController next() 
 	{
+		logger.debug("module '{}' is waiting for further documents in pipeline.", (getPepperModule()!= null)?getPepperModule().getName():"NO_NAME");
 		return(next(false));
 	}
 	
@@ -344,12 +345,13 @@ public class ModuleControllerImpl implements ModuleController{
 		if (documentController.getSDocument()== null)
 			throw new PepperFWException("Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '"+documentController.getGlobalId()+"' has never been add to internal controll list.");
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.COMPLETED);
-		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' completed document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
+		
 //		if (!this.started)
 //			throw new PepperConvertException("Cannot finish the given element-id, because the module-controller was not started (please call sytart() first).");
 		getOutputDocumentBus().put(documentController);
 		//removes document controller of list of to be processed document controllers
 		getControllList().remove(documentController);
+		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' completed document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
 	}
 	
 	/* (non-Javadoc)

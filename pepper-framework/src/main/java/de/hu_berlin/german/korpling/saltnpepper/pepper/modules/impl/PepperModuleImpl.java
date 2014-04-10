@@ -512,7 +512,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler
 			} catch (InterruptedException e) {
 				throw new PepperFWException("Cannot wait for mapper thread '"+controller+"' in "+this.getName()+" to end. ", e);
 			}
-			this.done(controller);
+//			this.done(controller);
 		}
 		
 		this.end();

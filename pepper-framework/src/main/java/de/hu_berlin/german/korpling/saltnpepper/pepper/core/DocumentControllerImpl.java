@@ -104,12 +104,6 @@ public class DocumentControllerImpl implements DocumentController
 	@Override
 	public String getGlobalId(){
 		String globalId= SaltFactory.eINSTANCE.getGlobalId(getsDocumentId());
-		
-		//TODO remove this
-		if ("salt:".equals(globalId)){
-			System.out.println(">>>>>>>>>>>>>>>>>< PROBLEM, docId: "+ getsDocumentId()+", "+isAsleep());
-		}
-		
 		return(globalId);
 	}
 	/**
@@ -143,13 +137,13 @@ public class DocumentControllerImpl implements DocumentController
 	}
 
 	/** Determines whether the contained {@link SDocumentGraph} was send to sleep.**/
-	private boolean asleep= false;
+	private boolean aSleep= false;
 	/* (non-Javadoc)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController#isAsleep()
 	 */
 	@Override
 	public boolean isAsleep(){
-		return(asleep);
+		return(aSleep);
 	}
 	
 	/**
@@ -170,10 +164,11 @@ public class DocumentControllerImpl implements DocumentController
 			throw new PepperFWException("Cannot send SDocument to sleep, since no location to store document '"+getsDocumentId()+"' is set.");
 		sleepLock.lock();
 		try{
-			logger.debug("send document '"+SaltFactory.eINSTANCE.getGlobalId(getsDocumentId())+"' to sleep");
-			asleep= true;
+			aSleep= true;
 			if (getSDocument().getSDocumentGraph()!= null){
 				getSDocument().saveSDocumentGraph(getLocation());
+				logger.debug("Sent document '{}' to sleep. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
+				
 				Runtime runtime= Runtime.getRuntime();
 				long usedMem= runtime.totalMemory() - runtime.freeMemory();
 				long time= System.currentTimeMillis();
@@ -197,6 +192,11 @@ public class DocumentControllerImpl implements DocumentController
 		}
 	}
 	
+	@Override
+	public void sendToSleep_FORCE(){
+		sleep();
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController#awake()
 	 */
@@ -207,9 +207,9 @@ public class DocumentControllerImpl implements DocumentController
 		}
 		sleepLock.lock();
 		try{
-			logger.debug("wake up document '"+SaltFactory.eINSTANCE.getGlobalId(getsDocumentId())+"'");
 			getSDocument().loadSDocumentGraph(getLocation());
-			asleep= false;
+			aSleep= false;
+			logger.debug("woke up document '{}'. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
 		}catch (Exception e) {
 			throw new PepperFWException("Cannot awake the document '"+getsDocumentId().getSId()+"', because an exception occured, loading it from location '"+getLocation()+"'. ", e);
 		}finally{

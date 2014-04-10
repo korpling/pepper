@@ -111,7 +111,8 @@ public class PepperConfiguration extends Properties{
 	 */
 	public PepperConfiguration()
 	{
-		
+		put(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE);
+		put(PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE);
 	}
 	
 	/**

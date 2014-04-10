@@ -90,6 +90,15 @@ public interface DocumentController {
 	 * to this method is {@link #awake()}. Both methods are synchronized.
 	 */
 	public void sendToSleep();
+	
+	/**
+	 * Sends the {@link DocumentControllerImpl} object, that the contained {@link SDocument} or
+	 * more precisely the {@link SDocumentGraph} object could be send to sleep as method {@link #sendToSleep()}.
+	 * <br/>
+	 * <strong>But note, this method does not check if the {@link SDocumentGraph} is still in use by 
+	 * any other module. Therfore handle with care.</strong>
+	 */
+	public void sendToSleep_FORCE();
 
 	/**
 	 * Wakes up the contained {@link SDocument}, which means, it the {@link SDocumentGraph} of the {@link SDocument} will
