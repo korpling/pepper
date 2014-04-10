@@ -25,6 +25,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
@@ -44,6 +46,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 public class DocumentControllerImpl implements DocumentController
 {	
+	private static final Logger logger= LoggerFactory.getLogger(DocumentControllerImpl.class);
 	/**
 	 * Initializes an object of this class. The default value of {@link DOCUMENT_STATUS} will be set to 
 	 * {@link DOCUMENT_STATUS#NOT_STARTED}.
@@ -167,6 +170,7 @@ public class DocumentControllerImpl implements DocumentController
 			throw new PepperFWException("Cannot send SDocument to sleep, since no location to store document '"+getsDocumentId()+"' is set.");
 		sleepLock.lock();
 		try{
+			logger.debug("send document '"+SaltFactory.eINSTANCE.getGlobalId(getsDocumentId())+"' to sleep");
 			asleep= true;
 			if (getSDocument().getSDocumentGraph()!= null){
 				getSDocument().saveSDocumentGraph(getLocation());
@@ -203,6 +207,7 @@ public class DocumentControllerImpl implements DocumentController
 		}
 		sleepLock.lock();
 		try{
+			logger.debug("wake up document '"+SaltFactory.eINSTANCE.getGlobalId(getsDocumentId())+"'");
 			getSDocument().loadSDocumentGraph(getLocation());
 			asleep= false;
 		}catch (Exception e) {

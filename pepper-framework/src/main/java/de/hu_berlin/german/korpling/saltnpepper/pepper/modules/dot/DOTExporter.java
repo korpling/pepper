@@ -20,8 +20,6 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.dot;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -30,7 +28,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExport
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.graph.Node;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.resources.dot.DOTResource;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 @Component(name="DOTExporterComponent", factory="PepperExporterComponentFactory", enabled=true)
@@ -44,13 +42,6 @@ public class DOTExporter extends PepperExporterImpl
 		this.addSupportedFormat("dot", "1.0", null);
 	}
 	
-	@Activate
-	public void activate(ComponentContext componentContext)
-	{
-		super.activate(componentContext);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>><<<< "+getClass().getSimpleName()+" is activated");
-	}
-	
 	@Override
 	public PepperMapper createPepperMapper(SElementId sElementId)
 	{
@@ -58,9 +49,17 @@ public class DOTExporter extends PepperExporterImpl
 		{
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				DOTResource.save(getSDocument(), getResourceURI());				
-				addProgress(1.0);
+				//workaround to deal with a bug in salt
+				SCorpusGraph sCorpusGraph= getSDocument().getSCorpusGraph();  
 				
+				SaltFactory.eINSTANCE.save_DOT(getSDocument(), getResourceURI());
+				
+				//workaround to deal with a bug in salt
+				if (getSDocument().getSCorpusGraph()== null){
+					getSDocument().setSCorpusGraph(sCorpusGraph);
+				}
+				
+				addProgress(1.0);
 				return(DOCUMENT_STATUS.COMPLETED);
 			}
 			
@@ -70,7 +69,7 @@ public class DOTExporter extends PepperExporterImpl
 				if (	(roots!= null)&&
 						(!roots.isEmpty())){
 					if (getSCorpus().equals(roots.get(0))){
-						DOTResource.save(getSCorpus().getSCorpusGraph(), getCorpusDesc().getCorpusPath());
+						SaltFactory.eINSTANCE.save_DOT(getSCorpus().getSCorpusGraph(), getCorpusDesc().getCorpusPath());
 					}
 				}
 				

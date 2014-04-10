@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CancellationException;
@@ -45,6 +46,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.JOB_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
@@ -633,7 +635,7 @@ public class PepperJobImpl extends PepperJob{
 	public String getStatusReport() {
 		StringBuilder retVal= new StringBuilder();
 		
-		retVal.append("=========================== pepper job status ===========================");
+		retVal.append("--------------------------- pepper job status ---------------------------");
 		retVal.append("\n");
 		
 		retVal.append("id:\t\t\t'");
@@ -642,6 +644,8 @@ public class PepperJobImpl extends PepperJob{
 		
 		retVal.append("active documents:\t");
 		retVal.append(getCurrNumberOfDocuments());
+		retVal.append(" of ");
+		retVal.append(getMaxNumberOfDocuments());
 		retVal.append("\n");
 		
 		retVal.append("status:\t\t\t");
@@ -674,27 +678,34 @@ public class PepperJobImpl extends PepperJob{
 					distance= globalId.length();
 				}
 			}
-			distance= distance+ 4+ sleep.length();
+			// distance is distance plus 4??? plus length of string sleep
+			distance= distance+ 4+ sleep.length()+ DOCUMENT_STATUS.IN_PROGRESS.toString().length();
+			StringBuilder docInfo= null;
 			for (DocumentController docController: getDocumentControllers()){
+				docInfo= new StringBuilder();
 				numOfDocuments++;
 				double progress= docController.getProgress();
 				progressOverAll= progressOverAll + progress; 
+				String progressStr= new DecimalFormat("###.##").format(progress*100)+"%";
+				docInfo.append(docController.getGlobalId());
+				docInfo.append("(");
+				docInfo.append(docController.getGlobalStatus());
 				if (docController.isAsleep()){
-					detailedStr.append(String.format("%-"+distance+"s%16s", docController.getGlobalId()+ sleep+":", progress));	
-				}else{
-					detailedStr.append(String.format("%-"+distance+"s%16s", docController.getGlobalId()+ ":", progress));
+					docInfo.append("/sleep");
 				}
+				docInfo.append(")");
+				detailedStr.append(String.format("%-"+distance+"s%8s", docInfo.toString(), progressStr));
 				detailedStr.append("\n");
 			}
 		}
 		
 		retVal.append("total progress:\t\t");
 		if (numOfDocuments!= 0){
-			retVal.append(progressOverAll/ numOfDocuments);
+			retVal.append(new DecimalFormat("###.##").format(progressOverAll/ numOfDocuments*100)+"%");
 		}
 		retVal.append("\n");
 		retVal.append(detailedStr.toString());
-		retVal.append("=========================================================================");
+		retVal.append("-------------------------------------------------------------------------");
 		retVal.append("\n");
 		return(retVal.toString());
 	}
