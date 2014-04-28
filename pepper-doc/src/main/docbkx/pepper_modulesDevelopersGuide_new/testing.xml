@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="ch_testing">
+    <title>Testing your Pepper module</title>
+    <sect1>
+        <title>Running Unit Test</title>
+        <para> In every good book about computer programming it is written that testing the software
+            you are developing is a very important issue. Since testing increases the quality of
+            software enormously, we agree to that. Spending time on developing test may seem wasted, but it will decrease development time in the long run. 
+            Therefore we help you to write test code faster by providing a test suite skeleton. In the project
+            pepper-moduleTests (part of project pepper-testSuite) you will find three test classes
+            named PepperManipulatorTest, PepperImporterTest and PepperExporterTest. These classes
+            use the JUnit test framework (see: <link xlink:href="junit.org">junit.org</link>) and
+            implement some very basic tests for checking the consistency of a Pepper module. Just
+            benefit from these classes by creating an own test class derived from one of the
+            provided ones and your tests will be ran during the maven build cycle. For getting an
+            immediate feedback, you can also run them directly in your developement environment by
+            running a JUnit task. On the one hand the test classes provide tests which can be
+            adopted to your need and check if your module can be plugged into the Pepper framework
+            (by checking if necessary values are set like the supported format for an im- or
+            exporter). And on the other hand, they provide some helper classes and functions, which
+            can be used when adding further test methods for checking the functionality of your
+            module. <note>
+                <para>We strongly recommend, to add some module specific test methods, to increase
+                    the quality of your code and even to make it easier changing things and still
+                    having a correctly running module.</para>
+            </note>
+        </para>
+        <sect2>
+            <title>Adopting consistency tests</title>
+            <para>In case of you are implementing an im- or exporter, you need to set the supported
+                formats and versions in your test case. Pepper will check them automatically, but
+                the test environment need to know the correct pairs of format name and version. To
+                do so, just add the following lines to method <methodname>setUp()</methodname>:
+                <programlisting>
+protected void setUp() throws Exception 
+{
+    //...
+    FormatDefinition formatDef= PepperModulesFactory
+        .eINSTANCE.createFormatDefinition();
+    formatDef.setFormatName("FORMAT_NAME");
+    formatDef.setFormatVersion("FORMAT_VERSION");
+    this.supportedFormatsCheck.add(formatDef);
+    //...
+}
+                </programlisting>
+                Replace FORMAT_NAME and FORMAT_VERSION, with your specific ones. You can even add
+                more than one <classname>FormatDefinition</classname> object.</para>
+        </sect2>
+        <sect2>
+            <title>Writing your own tests</title>
+            <para> The provided test classes are faking the Pepper environment, so that you can run
+                your entire module and just check the in- or output. </para>
+            <para> In case that you write an importer, you can create an input file containing a
+                corpus in the format you want to support, run your importer and check its output
+                against a defined template. The test will return a processed Salt graph which can be
+                checked for its nodes, edges and so on. The following snippet shows how to read a
+                document and how to check the returned Salt model:
+                <programlisting>
+public void testSomeTest()
+{
+    //start: creating and setting corpus definition
+		CorpusDefinition corpDef= PepperModulesFactory
+            .eINSTANCE.createCorpusDefinition();
+		FormatDefinition formatDef= PepperModulesFactory
+            .eINSTANCE.createFormatDefinition();
+		formatDef.setFormatName(FORMAT_NAME);
+		formatDef.setFormatVersion(FORMAT_VERSION);
+		corpDef.setFormatDefinition(formatDef);
+		corpDef.setCorpusPath(URI.createFileURI(PATH_TO_SAMPLE_CORPUS));
+		this.getFixture().setCorpusDefinition(corpDef);
+	//end: creating and setting corpus definition
+    
+    //...
+    
+    //create an empty corpus graph, which is filled by your module 
+    SCorpusGraph importedSCorpusGraph= SaltCommonFactory
+            .eINSTANCE.createSCorpusGraph();
+    // add the corpus graph to your module
+    this.getFixture().getSaltProject().getSCorpusGraphs()
+            .add(importedSCorpusGraph);
+    
+    //run your Pepper module
+    this.start();
+    
+    //check the processed corpus graph object
+        //checks that the corpus graph object 
+        //is not empty any more
+        assertNotNull(importedSCorpusGraph.getSCorpora());
+        //checks for instance, that the corpus 
+        //graph contains X SCorpus objects
+        assertEquals(X, importedSCorpusGraph.getSCorpora().size());
+    //...
+}
+            </programlisting>
+            </para>
+            <para>For testing an exporter, you may want to use the sample creator for Salt models,
+                which is part of the Salt project. You will find it as a subproject named
+                salt-saltSample. Here you will find a lot of methods creating a sample Salt model
+                with the possibility to just create the layers, you want to use.</para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Running live tests</title>
+        <para>For running an integration test of your module in the Pepper framework and for testing
+            interferences between your module and other modules, Pepper comes with a test
+            environment. Therefore, you need to set up the OSGi environment correctly and set some
+            environment variables. If you have not done that already, please check <link
+                xlink:href="#sec_letsRun"/>. </para>
+    </sect1>
+</chapter>
