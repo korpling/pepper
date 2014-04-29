@@ -7,6 +7,7 @@
     <modules>
         <module>pepper-framework</module>
         <module>pepper-parentModule</module>
+        <module>pepper-sampleModules</module>
         <module>pepper-lib</module>
     </modules>
     <description>Pepper is a plugable converter framework to convert linguistic data between several
