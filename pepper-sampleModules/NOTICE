@@ -18,21 +18,29 @@ carefully, which should be located in the corresponding jar-files
 inside the folders plugins or lib.
 
 This project includes:
-  Annotations for SCR under The Apache Software License, Version 2.0
   Apache Log4j under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper.PepperExceptions under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper.PepperFW under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper.PepperModules under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepper.PepperWorkflow under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.pepperModules.SampleModules under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.salt.Graph under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.salt.SaltCommon under The Apache Software License, Version 2.0
-  de.hu_berlin.german.korpling.saltnpepper.salt.saltCore under The Apache Software License, Version 2.0
+  carrot-osgi-anno-scr-core under The BSD License
+  carrot-osgi-anno-scr-make under The BSD License
+  Commons Lang under The Apache Software License, Version 2.0
+  de.hu_berlin.german.korpling.saltnpepper.pepperModules-SampleModules under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
+  Hamcrest Core under New BSD License
+  JUnit under Common Public License Version 1.0
+  Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
   org.eclipse.emf.common under Eclipse Public License - v 1.0
+  org.eclipse.emf.ecore under Eclipse Public License - v 1.0
+  org.eclipse.emf.ecore.xmi under Eclipse Public License - v 1.0
   OSGi R4 Compendium Bundle under The Apache Software License, Version 2.0
   OSGi R4 Core Bundle under The Apache Software License, Version 2.0
   OSGi R4 Foundation EE under The Apache Software License, Version 2.0
+  osgi.cmpn under Apache License, Version 2.0
+  osgi.core under Apache License, Version 2.0
+  pepper-framework under The Apache Software License, Version 2.0
+  salt-graph under The Apache Software License, Version 2.0
+  salt-saltCommon under The Apache Software License, Version 2.0
+  salt-saltCore under The Apache Software License, Version 2.0
+  salt-saltSample under The Apache Software License, Version 2.0
   Servlet 2.1 API under The Apache Software License, Version 2.0
-  Unnamed - org.eclipse.emf:org.eclipse.emf.ecore.xmi:jar:2.5.0.v20100521-1846 under Eclipse Public License - v 1.0
-  Unnamed - org.eclipse.emf:org.eclipse.emf.ecore:jar:2.6.0.v20100614-1136 under Eclipse Public License - v 1.0
+  SLF4J API Module under MIT License
+  textcat under LGPL
 
