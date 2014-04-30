@@ -63,7 +63,7 @@
                         instructions and go ahead.</para>
                 </listitem>
                 <listitem><para>Now click on the menue item 'File' --> 'Import...'.  When the maven integration for Eclipse was set up correctly, you will find an entry named maven in the popped up dialog.</para></listitem>
-                <listitem><para>For an easier start, we provide a sample Pepper module, which could be used as a template for your own Pepper module. Download it from XXX to let's say SAMPLE_MODULE_HOME.</para></listitem>
+                <listitem><para>For an easier start, we provide a sample Pepper module, which could be used as a template for your own Pepper module. Download it from XXX<!-- via svn like: svn export https://github.com/aivarsk/scruffy/trunk/samples from Pepper project either in korpling svn or in github--> to let's say SAMPLE_MODULE_HOME.</para></listitem>
                 <listitem><para>Back in Eclipse, in the import dialog, click the entry 'Existing Maven Projects' as shown in figure XXX.</para></listitem>
                 <listitem><para>In the opening wizzard choose SAMPLE_MODULE_HOME as location of your maven project and click finish.</para></listitem>
                 <listitem><para>Now Eclipse should import your first Pepper module project and your Eclipse should look very similar to figure <xref

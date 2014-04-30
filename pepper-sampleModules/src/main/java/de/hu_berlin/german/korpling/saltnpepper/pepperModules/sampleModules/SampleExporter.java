@@ -94,7 +94,7 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
 		 * 
 		 * This method is called by the pepper framework after initializing this object and directly before start processing. 
-		 * Initializing means setting properties {@link PepperModuleProperties}, setting temprorary files, resources etc. .
+		 * Initializing means setting properties {@link PepperModuleProperties}, setting temporary files, resources etc. .
 		 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason.
 		 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
 		 */

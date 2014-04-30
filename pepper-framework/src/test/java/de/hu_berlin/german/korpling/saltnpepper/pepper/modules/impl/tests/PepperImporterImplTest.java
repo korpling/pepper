@@ -21,10 +21,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
@@ -54,6 +55,7 @@ public class PepperImporterImplTest{
 		sCorpusGraph= SaltFactory.eINSTANCE.createSCorpusGraph();
 	}
 	
+	@After
 	public void tearDown()
 	{
 		this.getTempFolder().deleteOnExit();
