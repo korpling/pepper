@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <!-- TODO /1/: change the groupId to the name of your module -->
-  <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  <!-- TODO /1/: change the groupId to the name of your module and remove the comments, it is just outcommented for not producing warnings-->
+  <!-- <groupId></groupId> -->
   <!-- TODO /2/: change the artifactId to the name of your module -->
   <artifactId>pepperModules-SampleModules</artifactId>
   <name>${project.groupId}.${project.artifactId}</name>
