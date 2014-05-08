@@ -359,9 +359,9 @@ public class XMLTagExtractor extends DefaultHandler2
 			attributeNames= new HashSet<String>();
 		return(attributeNames);
 	}
-	/** contains all ńamespaces of xml file, having the prefix as key and the namespace as value **/
+	/** contains all namespaces of xml file, having the prefix as key and the namespace as value **/
 	private Map<String, String> namespaceDeclaration= null;
-	/** Returns a map containing all ńamespaces of xml file, having the prefix as key and the namespace as value **/
+	/** Returns a map containing all namespaces of xml file, having the prefix as key and the namespace as value **/
 	private Map<String, String> getNamespaces(){
 		if (namespaceDeclaration== null){
 			namespaceDeclaration= new Hashtable<String, String>();
