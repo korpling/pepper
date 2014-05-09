@@ -34,6 +34,13 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModulePropertyException;
 
+/**
+ * This class reads the 'old' pepperParams file and fills a {@link PepperJob} with the content of the file.
+ * The pepperParams file is a relict of the times where Pepper was based on EMF.
+ * Therefore the pepperParams file is an xmi file. 
+ * @author Florian Zipser
+ *
+ */
 public class PepperParamsReader extends DefaultHandler2 {
 	public static final String NS_XMI="http://www.omg.org/XMI";
 	public static final String PREFIX_XMI="xmi";
@@ -102,13 +109,11 @@ public class PepperParamsReader extends DefaultHandler2 {
 					stepDesc.getCorpusDesc().setCorpusPath(path);	
 				}
 			}
-			getJob().addStepDesc(stepDesc);
 		}else if (ELEMENT_MODULE_PARAMS.equals(qName)){
 			stepDesc= new StepDesc();
 			stepDesc.setModuleType(MODULE_TYPE.MANIPULATOR);
 			if (attributes.getValue(ATT_MODULE_NAME)!= null)
 				stepDesc.setName(attributes.getValue(ATT_MODULE_NAME));
-			getJob().addStepDesc(stepDesc);
 		}else if (ELEMENT_EXPORTER_PARAMS.equals(qName)){
 			stepDesc= new StepDesc();
 			stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
@@ -129,7 +134,6 @@ public class PepperParamsReader extends DefaultHandler2 {
 					stepDesc.getCorpusDesc().setCorpusPath(path);	
 				}
 			}
-			getJob().addStepDesc(stepDesc);
 		}
 		if (stepDesc!= null){
 			if (attributes.getValue(ATT_SPECIAL_PARAMS)!= null){
@@ -144,6 +148,7 @@ public class PepperParamsReader extends DefaultHandler2 {
 				}
 				stepDesc.setProps(props);
 			}
+			getJob().addStepDesc(stepDesc);
 		}
     }
 	

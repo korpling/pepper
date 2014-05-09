@@ -59,28 +59,25 @@ public class PepperModuleProperties implements Serializable
 	 * and its value will be set to the one found in the passed {@link Properties} object. If no corresponding {@link PepperModuleProperties} object
 	 * corresponds to one of the properties contained in the passed {@link Property} object, a new one will be created.
 	 */
-	public void addProperties(URI propURI)
-	{
-		if (propURI!= null)
-		{
+	public void addProperties(URI propURI){
+		if (propURI!= null){
 			this.setPropertyValues(new File(propURI.toFileString()));
 		}
 	}
 	/**
-	 * Returns a new {@link Properties} object containing all all property names and their values.
+	 * Returns a new {@link Properties} object containing all property names and their values.
 	 * @return new {@link Properties} object 
 	 */
-	public Properties getProperties() 
-	{
+	public Properties getProperties() {
 		Properties retVal= new Properties();
 		Collection<String> names= this.getPropertyNames();
 		if (names!= null){
-			for (String name: names)
-			{
+			for (String name: names){
 				if (name!= null){
 					PepperModuleProperty<?> prop= getProperty(name);
-					if (prop.getValue()!= null)
+					if (prop.getValue()!= null){
 						retVal.put(name, prop.getValue());
+					}
 				}
 			}
 		}
@@ -92,11 +89,9 @@ public class PepperModuleProperties implements Serializable
 	 * and its value will be set to the one found in the passed {@link Properties} object. If no corresponding {@link PepperModuleProperties} object
 	 * corresponds to one of the properties contained in the passed {@link Property} object, a new one will be created.
 	 */
-	public void setPropertyValues(File propFile)
-	{
+	public void setPropertyValues(File propFile){
 		if (	(propFile!= null)&&
-				(propFile.exists()))
-		{
+				(propFile.exists())){
 			Properties props= new Properties();
 			try {
 				props.load(new FileInputStream(propFile));
@@ -114,13 +109,10 @@ public class PepperModuleProperties implements Serializable
 	 * and its value will be set to the one found in the passed {@link Properties} object. If no corresponding {@link PepperModuleProperties} object
 	 * corresponds to one of the properties contained in the passed {@link Property} object, a new one will be created.
 	 */
-	public void setPropertyValues(Properties properties)
-	{
-		if (properties!= null)
-		{
+	public void setPropertyValues(Properties properties){
+		if (properties!= null){
 			Set<Object>keys= properties.keySet();
-			for (Object key: keys)
-			{
+			for (Object key: keys){
 				this.setPropertyValue(key.toString(), properties.get(key));
 			}
 		}
@@ -132,13 +124,11 @@ public class PepperModuleProperties implements Serializable
 	 * @param propName name of property to search for
 	 * @param propValue value to which {@link PepperModuleProperty}s value attribute is set to 
 	 */
-	public <T> void setPropertyValue(String propName,T propValue)
-	{
+	public <T> void setPropertyValue(String propName,T propValue){
 		PepperModuleProperty<?> prop= this.getProperty(propName);
-		if (prop!= null)
+		if (prop!= null){
 			prop.setValueString(propValue.toString());
-		else 
-		{
+		}else {
 			prop= new PepperModuleProperty<String>(propName, String.class, "this entry is automatically created by pepper and no description exists.");
 			prop.setValueString(propValue.toString());
 			this.addProperty(prop);
@@ -150,11 +140,9 @@ public class PepperModuleProperties implements Serializable
 	 * Checks if all properties marked as required are really set. Throws a {@link PepperModulePropertyException} if a 
 	 * required value is not set.
 	 */ 
-	public boolean checkProperties()
-	{
+	public boolean checkProperties(){
 		Collection<PepperModuleProperty<?>> properties= this.getPropertyDesctriptions();
-		for (PepperModuleProperty<?> prop: properties)
-		{
+		for (PepperModuleProperty<?> prop: properties){
 			this.checkProperty(prop);
 		}
 		return(true);
@@ -164,8 +152,7 @@ public class PepperModuleProperties implements Serializable
 	 * Checks if the value of given property, when marked as required is really set. 
 	 * Throws a {@link PepperModulePropertyException} if a required value is not set.
 	 */ 
-	public boolean checkProperty(PepperModuleProperty<?> prop)
-	{
+	public boolean checkProperty(PepperModuleProperty<?> prop){
 		if (	(prop.isRequired())&&
 				(prop.getValue()== null))
 			throw new PepperModulePropertyException("The following property is required, but its value was not set: "+ prop);
@@ -181,13 +168,11 @@ public class PepperModuleProperties implements Serializable
 	 * Adds the given {@link PepperModuleProperty} object to the internal list.
 	 * @param property
 	 */
-	public void addProperty(PepperModuleProperty<?> property)
-	{
+	public void addProperty(PepperModuleProperty<?> property){
 		if (	(property.getName()== null)||
 				(property.getName().isEmpty()))
 			throw new PepperException("Cannot add a property description without a name.");
-		if (pepperModuleProperties== null)
-		{
+		if (pepperModuleProperties== null){
 			pepperModuleProperties= new HashMap<String, PepperModuleProperty<?>>();
 		}
 		pepperModuleProperties.put(property.getName(), property);
@@ -198,11 +183,9 @@ public class PepperModuleProperties implements Serializable
 	 * @param propName name of the property
 	 * @return {@link PepperModuleProperty} object
 	 */
-	public PepperModuleProperty<?> getProperty(String propName)
-	{
+	public PepperModuleProperty<?> getProperty(String propName){
 		PepperModuleProperty<?> retVal= null;
-		if (this.pepperModuleProperties!= null)
-		{
+		if (this.pepperModuleProperties!= null){
 			retVal= this.pepperModuleProperties.get(propName); 
 		}
 		return(retVal);
@@ -212,14 +195,13 @@ public class PepperModuleProperties implements Serializable
 	 * Returns all property names registered in that object, and therefore usable for the corresponding {@link PepperModule}.
 	 * @return
 	 */
-	public Collection<String> getPropertyNames()
-	{
+	public Collection<String> getPropertyNames(){
 		Collection<String> names= new Vector<String>();
-		if (pepperModuleProperties!= null)
-		{
+		if (pepperModuleProperties!= null){
 			Set<String> keys= pepperModuleProperties.keySet();
-			for (String key: keys)
+			for (String key: keys){
 				names.add(key);
+			}
 		}
 		return(names);
 	}
@@ -228,17 +210,14 @@ public class PepperModuleProperties implements Serializable
 	 * Returns all registered {@link PepperModuleProperty} objects, which are usable for the corresponding {@link PepperModule}.
 	 * @return
 	 */
-	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions()
-	{
+	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions(){
 		return(pepperModuleProperties.values());
 	}
 	
-	public String toString()
-	{
+	public String toString(){
 		StringBuffer buf= new StringBuffer();
 		buf.append("[");
-		for (String name: getPropertyNames())
-		{
+		for (String name: getPropertyNames()){
 			PepperModuleProperty prop= getProperty(name);
 			buf.append(prop+", ");
 		}

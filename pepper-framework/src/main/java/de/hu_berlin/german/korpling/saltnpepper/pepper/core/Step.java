@@ -57,7 +57,6 @@ public class Step extends StepDesc{
 	 */
 	public Step(String id, StepDesc stepDesc){
 		this(id);
-		
 		setName(stepDesc.getName());
 		setVersion(stepDesc.getVersion());
 		setModuleType(stepDesc.getModuleType());
@@ -123,9 +122,9 @@ public class Step extends StepDesc{
 			}else if (pepperModule instanceof PepperExporter){
 				((PepperExporter)pepperModule).setCorpusDesc(getCorpusDesc());
 			}
-			
-			if(getProps()!= null)
+			if(getProps()!= null){
 				pepperModule.getProperties().setPropertyValues(getProps());
+			}
 		}
 	}
 	/**
@@ -164,9 +163,10 @@ public class Step extends StepDesc{
 	 * @param props properties to customize processing
 	 */
 	public synchronized void setProps(Properties props) {
-		if (getModuleController()!= null)
-		{
+		if (getModuleController()!= null){
 			getModuleController().getPepperModule().getProperties().setPropertyValues(props);
-		} else super.setProps(props);
+		} else{
+			super.setProps(props);
+		}
 	}
 }
