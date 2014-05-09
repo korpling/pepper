@@ -20,12 +20,14 @@ package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.tes
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleImporter;
+import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
@@ -107,6 +109,7 @@ public class SampleImporterTest extends PepperImporterTest{
 			//checks that all pointing relations (subclass of relations) are contained
 			assertEquals(1, sDocument.getSDocumentGraph().getSPointingRelations().size());
 		}
+		SaltFactory.eINSTANCE.save_DOT(getFixture().getSaltProject(), URI.createFileURI("/home/florian/Test/SampleImportTest/"));
 	}
 
 	//TODO add further tests for any test cases you can think of and which are necessary

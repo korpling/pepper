@@ -121,7 +121,7 @@ public interface PepperExporter extends PepperModule {
 	 * This method is called by {@link #start()} to export the corpus-structure into a folder-structure. 
 	 * Each {@link SElementId} and its corresponding file on disk is stored in {@link #getSElementId2ResourceTable()}.
 	 * <br/>
-	 * To customize the behaviour of this method, please use {@link #setSDocumentEnding(String)} and {@link #setExportMode(EXPORT_MODE)}
+	 * To customize the behavior of this method, please use {@link #setSDocumentEnding(String)} and {@link #setExportMode(EXPORT_MODE)}
 	 */
 	public void exportCorpusStructure();
 	/**

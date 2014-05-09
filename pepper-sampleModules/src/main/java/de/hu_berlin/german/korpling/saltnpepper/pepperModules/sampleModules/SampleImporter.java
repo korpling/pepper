@@ -46,15 +46,35 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructu
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * This is a sample {@link PepperImporter}, which can be used for creating individual Importers for the 
- * Pepper Framework. Therefore you have to take a look to todo's and adapt the code.
- * 
+ * This is a dummy implementation of a {@link PepperImporter}, which can be used as a template to create your own
+ * module from. The current implementation creates a corpus-structure looking like this:
+ * <pre>
+ *       c1
+ *    /      \
+ *   c2      c3
+ *  /  \    /  \
+ * d1  d2  d3  d4
+ * </pre>
+ * For each document d1, d2, d3 and d4 the same document-structure is created. The document-structure contains 
+ * the following structure and annotations:
+ * <ol>
+ * 	<li>primary data</li>
+ *  <li>tokenization</li>
+ *  <li>part-of-speech annotation for tokenization</li>
+ *  <li>information structure annotation via spans</li>
+ *  <li>anaphoric relation via pointing relation</li>
+ *  <li>syntactic annotations</li>
+ * </ol> 
+ * This dummy implementation is supposed to give you an impression, of how Pepper works and how you can create
+ * your own implementation along that dummy. It further shows some basics of creating a simple Salt model. 
+ * <br/>
+ * <strong>This code contains a lot of TODO's. Please have a look at them and adapt the code for your needs
+ * </strong>
+ * At least, a list of not used but helpful methods:
  * <ul>
- *  <li>the salt model to fill, manipulate or export can be accessed via {@link #getSaltProject()}</li>
- * 	<li>special parameters given by Pepper workflow can be accessed via {@link #getSpecialParams()}</li>
- *  <li>a place to store temporary datas for processing can be accessed via {@link #getTemproraries()}</li>
+ *  <li>the salt model to fill can be accessed via {@link #getSaltProject()}</li>
+ * 	<li>customization properties can be accessed via {@link #getProperties()}</li>
  *  <li>a place where resources of this bundle are, can be accessed via {@link #getResources()}</li>
- *  <li>a logService can be accessed via {@link #getLogService()}</li>
  * </ul>
  * If this is the first time, you are implementing a Pepper module, we strongly recommend, to take a look into the
  * 'Developer's Guide for Pepper modules', you will find on <a href="https://korpling.german.hu-berlin.de/saltnpepper/">https://korpling.german.hu-berlin.de/saltnpepper/</a>.
@@ -77,8 +97,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * The coordinates (modules name, version and supported formats) are a kind of a fingerprint, 
 	 * which should make your module unique.
 	 */
-	public SampleImporter()
-	{
+	public SampleImporter(){
 		super();
 		//TODO change the name of the module, for example use the format name and the ending Importer (FORMATImporter)
 		this.setName("SampleImporter");
@@ -88,6 +107,74 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		this.addSupportedFormat("sample", "1.0", null);
 		//TODO change the endings in endings of files you want to import, see also predefined endings beginning with 'ENDING_' 
 		this.getSDocumentEndings().add("ENDING OF FILES TO IMPORT");
+	}
+	
+	/**
+	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
+	 * <br/>
+	 * This method is called by the pepper framework to import the corpus-structure for the passed {@link SCorpusGraph} object. 
+	 * In Pepper each import step gets an own {@link SCorpusGraph} to work on. This graph has to be filled with {@link SCorpus} 
+	 * and {@link SDocument} objects representing the corpus-structure of the corpus to be imported. 
+	 * <br/>
+	 * In many cases, the corpus-structure can be retrived from the file-structure of the source files. Therefore Pepper provides
+	 * a default mechanism to map the file-structure to corpus-structure. This default mechanism can be configured. To
+	 * adapt the default bevavior to your needs, we recommend, to take a look into the 'Developer's Guide for Pepper modules', 
+	 * you will find on <a href="https://u.hu-berlin.de/saltnpepper/">https://u.hu-berlin.de/saltnpepper/</a>.
+	 * <br/>
+	 * Just to show the creation of a corpus-structure for our sample purpose, we here create a simple corpus-structure 
+	 * manually. The simple contains a root-corpus <i>c1</i> having two sub-corpora <i>c2</i> and <i>c3</i>. 
+	 * Each sub-corpus contains two documents <i>d1</i> and <i>d2</i> for <i>d3</i> and <i>d4</i> and <i>c1</i> for <i>c3</i>.
+	 * <pre>
+	 *       c1
+	 *    /      \
+	 *   c2      c3
+	 *  /  \    /  \
+	 * d1  d2  d3  d4
+	 * </pre>
+	 * The URIs of the corpora and documents would be:
+	 * <ul>
+	 *  <li>salt:/c1</li>
+	 *  <li>salt:/c1/c2</li>
+	 *  <li>salt:/c1/c2/d1</li>
+	 *  <li>salt:/c1/c2/d2</li>
+	 *  <li>salt:/c1/c3</li>
+	 *  <li>salt:/c1/c3/d3</li>
+	 *  <li>salt:/c1/c3/d4</li>
+	 * </ul>
+	 * 
+	 * @param corpusGraph the CorpusGraph object, which has to be filled.
+	 */
+	@Override
+	public void importCorpusStructure(SCorpusGraph sCorpusGraph) throws PepperModuleException{	
+		/**
+		 * TODO this implementation is just a showcase, in production you might want to use the default. 
+		 * If yes, uncomment the following line and delete the rest of the implementation, or delete
+		 * the entire method to trigger the default method.
+		 */
+		//super.importCorpusStructure(sCorpusGraph);
+		
+		// creates the super-corpus c1, in Salt you can create corpora via a URI
+		SCorpus c1= sCorpusGraph.createSCorpus(URI.createURI("salt:/c1")).get(0);
+		//creates the sub-corpora c2 and c3, in Salt you can also create corpora adding a corpus to a parent
+		SCorpus c2= sCorpusGraph.createSCorpus(c1, "c2");
+		SCorpus c3= sCorpusGraph.createSCorpus(c1, "c3");
+		
+		//creates the documents d1, d2 as children of c2 
+		SDocument d1= sCorpusGraph.createSDocument(c2, "d1");
+		SDocument d2= sCorpusGraph.createSDocument(c2, "d2");
+		
+		//creates the documents d3, d4 as children of c3 via the URI mechanism 
+		SDocument d3= sCorpusGraph.createSDocument(URI.createURI("salt:/c1/c3/d3"));
+		SDocument d4= sCorpusGraph.createSDocument(URI.createURI("salt:/c1/c3/d4"));
+		
+		//adds a meta-annotation 'author' to all documents, a meta-annotation has a namespace, a name and a value
+		d1.createSMetaAnnotation(null, "author", "Bart Simpson");
+		d2.createSMetaAnnotation(null, "author", "Lisa Simpson");
+		d3.createSMetaAnnotation(null, "author", "Marge Simpson");
+		d4.createSMetaAnnotation(null, "author", "Homer Simpson");
+		
+		//also corpora can take meta-annotations
+		c3.createSMetaAnnotation(null, "author", "Maggie Simpson");
 	}
 	
 	/**
@@ -119,7 +206,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	}
 	
 	/**
-	 * This class is just a dummy implementation for a mapper, to show how it works. This  sample mapper 
+	 * This class is a dummy implementation for a mapper, to show how it works. This  sample mapper 
 	 * only produces a fixed document-structure in method  {@link SampleMapper#mapSDocument()} and enhances the 
 	 * corpora for further meta-annotations in the method {@link SampleMapper#mapSCorpus()}.
 	 * <br/>
@@ -310,9 +397,25 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			SStructure s2    = SaltFactory.eINSTANCE.createSStructure();
 			SStructure vp2   = SaltFactory.eINSTANCE.createSStructure();
 			SStructure vp3   = SaltFactory.eINSTANCE.createSStructure();
+			
+			//we add annotations to each SStructure node
+			root.createSAnnotation(null, "cat", "ROOT");
+			sq.createSAnnotation(null, "cat", "SQ");
+			np1.createSAnnotation(null, "cat", "NP");
+			adjp1.createSAnnotation(null, "cat", "ADJP");
+			adjp2.createSAnnotation(null, "cat", "ADJP");
+			sbar.createSAnnotation(null, "cat", "SBAR");
+			s1.createSAnnotation(null, "cat", "S");
+			np2.createSAnnotation(null, "cat", "NP");
+			vp1.createSAnnotation(null, "cat", "VP");
+			s2.createSAnnotation(null, "cat", "S");
+			vp2.createSAnnotation(null, "cat", "VP");
+			vp3.createSAnnotation(null, "cat", "VP");
+			
 			//we add the root node first
 			getSDocument().getSDocumentGraph().addSNode(root);
 			STYPE_NAME domRel = STYPE_NAME.SDOMINANCE_RELATION;
+			//than we add the rest and connect them to each other
 			getSDocument().getSDocumentGraph().addSNode(root,  sq,      domRel);
 			getSDocument().getSDocumentGraph().addSNode(sq,    tok_is,  domRel); // "Is"
 			getSDocument().getSDocumentGraph().addSNode(sq,    np1,     domRel);
@@ -353,8 +456,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * null is returned.
 	 * @return 1 if corpus is importable, 0 if corpus is not importable, 0 < X < 1, if no definitive answer is possible,  null if method is not overridden 
 	 */
-	public Double isImportable(URI corpusPath)
-	{
+	public Double isImportable(URI corpusPath){
 		//TODO some code to analyze the given corpus-structure
 		return(null);
 	}
@@ -371,78 +473,8 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
 	 */
 	@Override
-	public boolean isReadyToStart() throws PepperModuleNotReadyException
-	{
+	public boolean isReadyToStart() throws PepperModuleNotReadyException{
 		//TODO make some initializations if necessary
 		return(super.isReadyToStart());
-	}
-	
-	/**
-	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-	 * <br/>
-	 * This method is called by the pepper framework to import the corpus-structure for the passed {@link SCorpusGraph} object. 
-	 * In Pepper each import step gets an own {@link SCorpusGraph} to work on. This graph has to be filled with {@link SCorpus} 
-	 * and {@link SDocument} objects representing the corpus-structure of the corpus to be imported. 
-	 * <br/>
-	 * In many cases, the corpus-structure can be retrived from the file-structure of the source files. Therefore Pepper provides
-	 * a default mechanism to map the file-structure to corpus-structure. This default mechanism can be configured. To
-	 * adapt the default bevavior to your needs, we recommend, to take a look into the 'Developer's Guide for Pepper modules', 
-	 * you will find on <a href="https://u.hu-berlin.de/saltnpepper/">https://u.hu-berlin.de/saltnpepper/</a>.
-	 * <br/>
-	 * Just to show the creation of a corpus-structure for our sample purpose, we here create a simple corpus-structure 
-	 * manually. The simple contains a root-corpus <i>c1</i> having two sub-corpora <i>c2</i> and <i>c3</i>. 
-	 * Each sub-corpus contains two documents <i>d1</i> and <i>d2</i> for <i>d3</i> and <i>d4</i> and <i>c1</i> for <i>c3</i>.
-	 * <pre>
-	 *       c1
-	 *    /      \
-	 *   c2      c3
-	 *  /  \    /  \
-	 * d1  d2  d3  d4
-	 * </pre>
-	 * The URIs of the corpora and documents would be:
-	 * <ul>
-	 *  <li>salt:/c1</li>
-	 *  <li>salt:/c1/c2</li>
-	 *  <li>salt:/c1/c2/d1</li>
-	 *  <li>salt:/c1/c2/d2</li>
-	 *  <li>salt:/c1/c3</li>
-	 *  <li>salt:/c1/c3/d3</li>
-	 *  <li>salt:/c1/c3/d4</li>
-	 * </ul>
-	 * 
-	 * @param corpusGraph the CorpusGraph object, which has to be filled.
-	 */
-	@Override
-	public void importCorpusStructure(SCorpusGraph sCorpusGraph) throws PepperModuleException{
-		
-		/**
-		 * TODO this implementation is just a showcase, in production you might want to use the default. 
-		 * If yes, uncomment the following line and delete the rest of the implementation, or delete
-		 * the entire method to trigger the default method.
-		 */
-		//super.importCorpusStructure(sCorpusGraph);
-		
-		// creates the super-corpus c1, in Salt you can create corpora via a URI
-		SCorpus c1= sCorpusGraph.createSCorpus(URI.createURI("salt:/c1")).get(0);
-		//creates the sub-corpora c2 and c3, in Salt you can also create corpora adding a corpus to a parent
-		SCorpus c2= sCorpusGraph.createSCorpus(c1, "c2");
-		SCorpus c3= sCorpusGraph.createSCorpus(c1, "c3");
-		
-		//creates the documents d1, d2 as children of c2 
-		SDocument d1= sCorpusGraph.createSDocument(c2, "d1");
-		SDocument d2= sCorpusGraph.createSDocument(c2, "d2");
-		
-		//creates the documents d3, d4 as children of c3 via the URI mechanism 
-		SDocument d3= sCorpusGraph.createSDocument(URI.createURI("salt:/c1/c3/d3"));
-		SDocument d4= sCorpusGraph.createSDocument(URI.createURI("salt:/c1/c3/d4"));
-		
-		//adds a meta-annotation 'author' to all documents, a meta-annotation has a namespace, a name and a value
-		d1.createSMetaAnnotation(null, "author", "Bart Simpson");
-		d2.createSMetaAnnotation(null, "author", "Lisa Simpson");
-		d3.createSMetaAnnotation(null, "author", "Marge Simpson");
-		d4.createSMetaAnnotation(null, "author", "Homer Simpson");
-		
-		//also corpora can take meta-annotations
-		c3.createSMetaAnnotation(null, "author", "Maggie Simpson");
 	}
 }
