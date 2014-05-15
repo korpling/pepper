@@ -27,7 +27,6 @@ import org.osgi.service.component.annotations.Component;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
@@ -67,7 +66,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	 */
 	@Override
 	public PepperMapper createPepperMapper(SElementId sElementId) {
-		PepperMapper mapper = new DoNothingMapper();
+		PepperMapper mapper = new TextMapper();
 		mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
 		return (mapper);
 	}
@@ -89,7 +88,6 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 			if (getSDocument().getSDocumentGraph()== null){
 				getSDocument().setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
 			}
-			
 			StringBuilder sb = new StringBuilder();
 	        BufferedReader br = null;
 		    try {
@@ -118,7 +116,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 				}
 		    }
 		    getSDocument().getSDocumentGraph().createSTextualDS(sb.toString());
-		    
+		    System.out.println("imported text: "+ sb.toString());
 			return(DOCUMENT_STATUS.COMPLETED);
 		}
 	}
