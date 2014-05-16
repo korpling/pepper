@@ -371,7 +371,7 @@ public class ModuleControllerImpl implements ModuleController{
 		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' deleted document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
 		//if document is not processed any further, release slot
 		if (getJob()!= null){
-			getJob().releaseDocument();
+			getJob().releaseDocument(documentController);
 		}
 		//removes document controller of list of to be processed document controllers
 		getControllList().remove(documentController);

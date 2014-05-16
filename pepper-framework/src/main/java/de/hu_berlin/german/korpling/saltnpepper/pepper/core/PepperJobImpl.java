@@ -981,15 +981,16 @@ public class PepperJobImpl extends PepperJob {
 	 * {@link SDocumentGraph} could be woken up or imported. This is the case,
 	 * as long as: <br/>
 	 * {@link #getCurrNumberOfDocuments()} < {@link #getMaxNumberOfDocuments()}. <br/>
+	 * Must be synchronized, 
 	 * 
 	 * @return true, when #getCurrNumberOfDocuments()} <
 	 *         {@link #getMaxNumberOfDocuments(), false otherwise
 	 */
-	public boolean getPermissionForProcessDoument() {
+	public boolean getPermissionForProcessDoument(DocumentController controller) {
 		numOfDocsLock.lock();
 		if (!MEMORY_POLICY.GREEDY.equals(getMemPolicy())) {
 			try {
-				if (getCurrNumberOfDocuments() >= getMaxNumberOfDocuments()) {
+				while (getCurrNumberOfDocuments() >= getMaxNumberOfDocuments()) {
 					numOfDocsCondition.await();
 				}
 				currNumOfDocuments++;
@@ -1006,7 +1007,7 @@ public class PepperJobImpl extends PepperJob {
 	 * Releases a document and reduces the internal counter for the number of
 	 * currently processed documents ({@link #getCurrNumberOfDocuments()}).
 	 */
-	public void releaseDocument() {
+	public void releaseDocument(DocumentController controller) {
 		numOfDocsLock.lock();
 		try {
 			currNumOfDocuments--;

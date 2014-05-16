@@ -78,7 +78,7 @@ public class TerminalDocumentBus extends DocumentBus
 				}
 			}	
 			if (getPepperJob()!= null){
-				getPepperJob().getPermissionForProcessDoument();
+				getPepperJob().getPermissionForProcessDoument(documentController);
 			}
 			documentController= queue.poll();
 			documentController.sendToSleep();

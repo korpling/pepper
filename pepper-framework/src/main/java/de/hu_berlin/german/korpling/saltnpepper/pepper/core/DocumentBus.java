@@ -323,7 +323,7 @@ public class DocumentBus
 			if (getPepperJob()!= null){
 				//next line is inside of block, for not causing failing test cases
 				documentController.sendToSleep();
-				getPepperJob().releaseDocument();
+				getPepperJob().releaseDocument(documentController);
 			}
 		} else if (MEMORY_POLICY.MODERATE.equals(getMemPolicy())){
 //			if (!lock.hasWaiters(waitUntilAllDocumentsArePut))
@@ -331,7 +331,7 @@ public class DocumentBus
 				if (getPepperJob()!= null){
 					//next line is inside of block, for not causing failing test cases
 					documentController.sendToSleep();
-					getPepperJob().releaseDocument();
+					getPepperJob().releaseDocument(documentController);
 				}
 			}
 		}
@@ -445,7 +445,7 @@ public class DocumentBus
 						(documentController.isAsleep())){
 					if (getPepperJob()!= null){
 						logger.debug("waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ", documentController.getGlobalId(), outputControllerId, getId());
-						getPepperJob().getPermissionForProcessDoument();
+						getPepperJob().getPermissionForProcessDoument(documentController);
 					}
 					documentController.awake();
 				}

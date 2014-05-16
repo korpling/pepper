@@ -116,7 +116,6 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 				}
 		    }
 		    getSDocument().getSDocumentGraph().createSTextualDS(sb.toString());
-		    System.out.println("imported text: "+ sb.toString());
 			return(DOCUMENT_STATUS.COMPLETED);
 		}
 	}
