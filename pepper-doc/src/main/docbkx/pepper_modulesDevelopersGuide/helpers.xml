@@ -2,7 +2,7 @@
 <?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    version="5.0" xml:id="ch_documentation">
+    version="5.0" xml:id="ch_helpers">
     <title>some little helpers</title>
     <para>As part of the Pepper project, we provide some tiny classes which could help to improve
         the developing speed of Pepper modules. In this chapter, we list all these helpers with a

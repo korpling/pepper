@@ -4,197 +4,130 @@
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
     version="5.0" xml:id="ch_codeIt">
     <title>Just code it</title>
-    <para> In Pepper we tried to avoid as much complexity as possible without reducing the
+    <para>With Pepper we tried to avoid as much complexity as possible without reducing the
         funtionality. We want to enable you to concentrate on the main issues, which are the mapping
-        of objects. This trade-off has been realized by first using some default assumptions, which
-        reduces complexity in a lot of cases and second by class derivation and call-back methods,
-        to still provide the full range of adoption possibilities if necessary.</para>
-    <para>In Salt and Pepper we differentiate between the corpus-structure and the
-        document-structure. The document-structure contains the primary data (data sources) and the
-        linguistic annotations. A bunch of such information is grouped to a document
-            (<classname>SDocument</classname> in Salt). The corpus-structure now is a grouping
-        mechanism to group several documents to a corpus or sub-corpus
-            (<classname>SCorpus</classname> in Salt).</para>
-    <para>In Pepper we talk about three different kinds of modules, the
-            <classname>PepperImporter</classname>, the <classname>PepperExporter</classname> and the
-            <classname>PepperManipulator</classname>. An importer is used, to map data to a Salt
-        model, an exporter is used to map a Salt model to other kind of data. A manipulator is used
-        to map one Salt model into another Salt model, for instance, for renaming data, merging data
-        etc.. A mapping process is separated into three phases: import-phase, manipulation-phase and
-        export-phase. In each phase an unbound number of Pepper modules can be used. Other than in
-        the manipulation phase, in the import and export-phase it is compulsory to involve at least
-        one module. Each phase again is separated into mapping steps. A mapping step more or less is
-        a pair of a Pepper module and a Salt object (which can be a <classname>SCorpus</classname>
-        or a <classname>SDocument</classname>). In Salt, an <classname>SDocument</classname> object
-        can be seen as a partition, allowing no links between objects contained in such a document
-        to objects outside the document. The same goes for <classname>SCorpus</classname> objects.
-        This allows, several steps to work independently from each other. Each module can be sure to
-        be the only one processing a Salt object at a time. Since a mapping process can be
-        relatively time consuming, we could decrease the needed time to map an entire corpus, if we
-        are able to process mapping tasks simultaneously. </para>
-    <para> In Pepper each module can be ran in multi-threading mode by default. But keep in mind,
-        that multi-threading can not be added to a module as a new feature. It needs an implementor
-        to take care of this during all the implementation work. If you are not familar with
-        multi-threading in Java, we want to give the hint to avoid class variables and methods. The
-        same goes for static variables and methods<footnote>
-            <para>If such a variable never is changed or such a method only returns constants, you
-                can even use them. Marking methods with the keyword synchronized and variables with
-                the keyword volatile can also help to avoid mult-threading problems.</para>
-        </footnote>. If it is still necessary, to use such constructs, we recommend, to go deeper in
-        the sometimes annoying but powerfull world of multi-threading. If you do not want to blow up
-        things and don't want to benefit from the better performance, you can also switch off
-        multi-threading by a flag (just call the method
-            <methodname>setIsMultithreaded(false)</methodname> in your modules constructor). </para>
-    <para>Enough of the theory, lets step into the code now. In the SampleModules project, you will
-        find three classes according to the three sorts of modules:
-            <classname>SampleImporter</classname> (derived from
-            <classname>PepperImporter</classname>), <classname>SampleManipulator</classname>
-        (derived from <classname>PepperManipulator</classname>)and
-            <classname>SampleExporter</classname> (derived from
-            <classname>PepperExporter</classname>). All of them are located in the package
-            <package>de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules</package>.
-        In most cases users do not want to implement all three sorts of modules. Users often want to
-        implement only an importer an exporter or a manipulator. Then just delete the classes you
-        won't implement. Otherwise, you will end up with non-functional modules in your project. In
-        case that you want to have several importers, manipulators or exporters, just duplicate and
-        rename the classes.</para>
-    <para> A Pepper module (derived from class <classname>PepperModule</classname>) represents an
-        interface to be accessed by the Pepper framework. Most of the provided methods therefore
-        have a default implementation, which can be overridden, to adopt the module, but do not have
-        to be. Other methods have to be overridden, since they do not contain any functionality. If
-        you want to go along the Pepper best practices, we recommand to give each implementation of
-            <classname>PepperImporter</classname>, <classname>PepperExporter</classname> and
-            <classname>PepperManipulator</classname> an own implementation of class
-            <classname>PepperMapper</classname> by hand (as we will show later on). Doing this has
-        two benefits, first the multi-threading part is realized with this distinction and second,
-        it will take a lot of comlexity from your shoulders.</para>
-    <para>We now want to give a brief overview of what to do to adopt the classes of SampleModules
-        project. Inside the single items, you will find links to further explanaitions. <orderedlist>
-            <listitem>
-                <para>[MANDATORY]</para>
-                <para>Change the name of the module, for instance to MyImporter, MyExporter etc. We
-                    recommend to use the format name and the ending Importer, Exporter or
-                    Manipulator (like <classname>FORMATImporter</classname>).</para>
-            </listitem>
-            <listitem>
-                <para>[MANDATORY]</para>
-                <para>Change the name of the component<footnote>
-                        <para>a component here is an OSGi service component (for more details see
-                                <link xlink:href="http://wiki.osgi.org/wiki/Declarative_Services"
-                                >http://wiki.osgi.org/wiki/Declarative_Services</link>)</para>
-                    </footnote>, for instance use the classes name and add 'Component' to it (e.g.
-                    MyImporterComponent) like in the following example.
-                    <programlisting>@Component(name="MyImporterComponent", 
-                            factory="PepperImporterComponentFactory")
-public class MyImporter extends PepperImporterImpl implements PepperImporter</programlisting>
-                </para>
-            </listitem>
-            <listitem>
-                <para>[MANDATORY]</para>
-                <para>Set the coordinates, with which your module shall be registered. The
-                    coordinates (modules name, version and supported formats) are a kind of a
-                    fingerprint, which should make your module unique. See the following example:
-                    <programlisting>public MyImporterImporter()
-{
-	super();
-	this.name= "MyImporterImporter";
-	//we recommend to synchronize this value with the maven version 
-	//in your pom.xml
-	this.setVersion("1.1.0");
-	this.addSupportedFormat("myFormat", "1.0", null);
-	//see also predefined endings beginning with 'ENDING_' 
-	this.getSDocumentEndings().add("myFormat");
-}</programlisting>
-                </para>
-            </listitem>
-            <listitem>
-                <para>[OPTIONAL]</para>
-                <para>After the module is created, the Pepper framework calls the method
-                        <methodname>isReadyToRun()</methodname>, at this stage all intializations of
-                    module have been completed, so that now the module can make some own
-                    initializations. For instance paths like a path for storing temporary data (see
-                        <methodname>getTemporaries()</methodname>) is set and a path, where to find
-                    additional resources (see <methodname>getResources()</methodname>) if it is
-                    given.
-                    <programlisting>public boolean isReadyToStart() 
-                            throws PepperModuleNotReadyException
-{
-    //make some initializations if necessary
-    return(true);
-}</programlisting></para>
-            </listitem>
-            <listitem>
-                <para>[RECOMMENDED]</para>
-                <para>Pepper provides a mechanism to automatically detect, if a format can be read
-                    by an importer, therefore you have to override the method
-                        <methodname>isImportable(URI corpusPath)</methodname>, which returns a value
-                    for determining if the resource at passed path is importable by this module. The
-                    return values are 1 if corpus is importable, 0 if corpus is not importable, 0
-                    &lt; X &lt; 1, if no definitiv answer is possible, null if the method is not
-                    overridden. For further details, see: <xref linkend="sec_analyzing"/>.</para>
-            </listitem>
-            <listitem>
-                <para>[OPTIONAL]</para>
-                <para>In case that you are creating an importer, check if the default behavior of
-                    the corpus-structure import mechanism fits your needs. For further details, see:
-                        <xref linkend="sec_importCorpusStructure"/>.</para>
-            </listitem>
-            <listitem>
-                <para>[MANDATORY]</para>
-                <para>The main interesting part of a mapping probably is the mapping of the
-                    document-structure. It means the mapping of the real linguistic data, so the
-                    reason why we are doing all of this. Since such a mapping is not trivial, we
-                    recommand to delegate it to another class which is derived of class
-                        <classname>PepperMapper</classname>.</para>
-                <para>For further details, or even if you do not want to use the default mechanism,
-                    see: <xref linkend="sec_mapDocumentStructure"/>.</para>
-            </listitem>
-            <listitem>
-                <para>[RECOMMENDED]</para>
-                <para>Monitoring the progress would give a good feedback to the user. Since the
-                    conversion may take a while, we want to prevent the user to kill the conversion
-                    job, by providing the progress status. Therefore Pepper offers possibilities for
-                    a module to notify the framework about its progress. In case of you are using
-                    the default behaviour via <classname>PepperMapper</classname>, call the method
-                        <methodname>addProgress(Double progress)</methodname> and pass the
-                    additional progress for the current <classname>SDocument</classname> or
-                        <classname>SCorpus</classname>. In case of you do not use the default
-                    behaviour please override the method <methodname>getProgress(SElementId
-                        sDocumentId)</methodname> and <methodname>getProgress()</methodname> in your
-                    module. For further details, see: <xref linkend="sec_monitoring"/>.</para>
-            </listitem>
-            <listitem>
-                <para>[OPTIONAL]</para>
-                <para>If you have to clean up things (e.g. delete temporary files etc.), override
-                    the method <methodname>end()</methodname>, see: <xref linkend="sec_cleanUp"
-                    />.</para>
-            </listitem>
-        </orderedlist> The following figure shows a sequence diagram displaying the sequence of
-        method calls between the Pepper framework and the classes to be implemented
-            <classname>Peppermodule</classname> and <classname>PepperMapper</classname>. Please
-        note, that this is just a simplified representation, some methods are not shown, and a
-        further class called <classname>PepperMapperController</classname>, which interacts between
-        the <classname>PepperModule</classname> and the <classname>PepperMapper</classname> class is
-        also not shown. <figure xml:id="fig_pepperWorkflow">
-            <title>Pepper workflow overview</title>
+        of objects. But still there are some things you need to know about the framework. Therefore
+        we here introduce some aspects of the Pepper framework and its interaction with a Pepper
+        module. Reducing the complexity is not always possible, but we tried. To manage this
+        trade-off, we followed the approach convention over configuration. That means, we made some
+        assumptions, which apply to many mapping tasks. This makes implementing very simple if the
+        default case matches, but if not, you always have the possibility to adapt the module to
+        your needs. The adaptable default behavior mostly is relaized by class derivation and
+        call-back methods, which always can be overridden.</para>
+    <para>Pepper differentaites three sorts of modules: the importer, the manipulator and the
+        exporter. An importer maps a corpus given in format X to a Salt model. A manipulator maps a
+        Salt model to another Salt model, in terms of changing it or just retrieving some
+        information. An exporter maps a Salt model to a corpus in format Y. All three modules
+            <classname>PepperImporter</classname>, <classname>PepperManipulator</classname> and
+            <classname>PepperExporter</classname> inherit the super type
+            <classname>PepperModule</classname>. So no matter of what kind of module you are going
+        to implement, it must inherit one of the three named types. Figure <xref
+            linkend="fig_pepperModule_classDiagram"/>shows this relation.<figure
+            xml:id="fig_pepperModule_classDiagram">
+            <title>class diagram showing the inheritance of Pepper module types</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata width="608" fileref="images/pepper_workflow.png"/>
+                    <imagedata width="500" fileref="images/pepperModule_classDiagram.png"/>
                 </imageobject>
             </mediaobject>
-        </figure> In the following sections, you will find more detailed explanaitions to the prior
-        given single steps. If the given information is not enough, please take a look into the
-        corresponding JavaDoc. </para>
+        </figure> Now you might ask, what are the classes <classname>ModuleController</classname>
+        and <classname>PepperMapper</classname> good for. The class
+            <classname>ModuleController</classname> the mediator between the Pepper framework and
+        the Pepper module. It starts ends and everything else the module. To explain the
+            <classname>PepperMapper</classname> class, we want to give a short motivation: Since a
+        mapping process can be relatively time consuming, we could increase the speed of mapping an
+        entire corpus, if we are able to process mapping tasks simultaneously. Therefore we added
+        mechanisms to run the process in multi-threading. Unfortunatly in Java multi-threading is
+        not that trivial and the easiest way to do it is to separate each thread in an own class.
+        This is where <classname>PepperMapper</classname> comes into game. A
+            <classname>PepperModule</classname> object is a singleton instance for one workflow and
+        devides and distributes the tasks of mapping corpora and documents to the
+            <classname>PepperModule</classname> objects. </para>
+    <para>A mapping is not just a monolithic blog, it consists of several steps and pieces. The
+        lifecycle of mapping a corpus is a set of steps describing the main tasks and the
+        interaction between the Pepper framework and the Pepper module:</para>
+    <orderedlist>
+        <listitem>
+            <para>Initialization of Pepper module</para>
+        </listitem>
+        <listitem>
+            <para>Check readiness of Pepper module</para>
+        </listitem>
+        <listitem>
+            <para>Checking importability of a corpus (whether format is supported by module or
+                not)</para>
+        </listitem>
+        <listitem>
+            <para>Im- and Export corpus-structure</para>
+        </listitem>
+        <listitem>
+            <para>Process document-structure</para>
+        </listitem>
+        <listitem>
+            <para>Cleaning up after all</para>
+        </listitem>
+    </orderedlist>
+    <para>These steps are spread over the PepperModule and the <classname>PepperMapper</classname>
+        class. To give a clue of what it means in code, the sequence diagram of figure <xref
+            linkend="fig_pepperModule_sequenceDiagram"/> illustrates the communication between the
+        framework, the <classname>PepperModule</classname> and <classname>PepperMapper</classname>
+        class. <figure xml:id="fig_pepperModule_sequenceDiagram">
+            <title>class diagram showing the inheritance of Pepper module types</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata width="500" fileref="images/pepper_workflow.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+    <sect1 xml:id="sec_analyzing">
+        <title>Analyzing the unknown</title>
+        <note>
+            <para>This section is only useful, in case that you are implementing a
+                    <classname>PepperImporter</classname>.</para>
+        </note>
+        <para>The experience has shown, that a lot of users, do not care a lot about formats and
+            don't want to. Unfortunatly, in most cases it is not possible to not annoy the users
+            with the details of a mapping. But we want to reduce the complexity for the user as much
+            as possible. Since most users are not very interested, in the source format of a corpus,
+            they just want to bring the corpus into any kind of tool to make further annotations or
+            analysis. Therefore Pepper provides a possibility to automatically detect the source
+            format of a corpus. Unfortunatly this task is very dependent of the format and the
+            module processing the format. That makes the detection a task of the modules
+            implementor. We are sorry. The mechanism of automatic detection is not a mandatory task,
+            but it is very useful, which makes it recommended.</para>
+        <para> The class <classname>PepperImporter</classname> defines the method
+                <methodname>isImportable(URI corpusPath)</methodname> which can be overridden. The
+            passed uri locates the entry point of the entire corpus as given in the Pepper workflow
+            definition (so it points to the same location as
+                <methodname>getCorpusDefinition().getCorpusPath()</methodname> does). Depending on
+            the formats you want to support with your importer the detection can be very different.
+            In the simplest case, it only is necessary, to search through the files at the given
+            location (or to recursive traverse through directories, in case of the the location
+            points to a directory), and to read their header section. For instance some formats like
+            the xml formats PAULA (see: <link
+                xlink:href="http://www.sfb632.uni-potsdam.de/en/paula.html"
+                >http://www.sfb632.uni-potsdam.de/en/paula.html</link>) or TEI (see: <link
+                xlink:href="http://www.tei-c.org/Guidelines/P5/"
+                >http://www.tei-c.org/Guidelines/P5/</link>) starts with a header section like
+            <programlisting>&lt;?xml version="1.0" standalone="no"?>
+&lt;paula version="1.0">
+&lt;!-- ... --></programlisting>
+            or
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!-- ... -->
+&lt;TEI xmlns="http://www.tei-c.org/ns/1.0">
+&lt;!-- ... --></programlisting>.
+            Formats where reading only the first lines will bring information about the format name
+            and its version make automatic detection very easy. The method
+                <methodname>isImportable(URI corpusPath)</methodname> shall return 1 if the corpus
+            is importable by your importer, 0 if the corpus is not importable or a value between 0
+            &lt; X &lt; 1, if no definitive answer is possible. The default implementation returns
+            null, what means that the method is not overridden. This results in that the Pepper
+            framework will ignore the module in automatic detection phase.</para>
+    </sect1>
+
     <sect1 xml:id="sec_importCorpusStructure">
         <title>Importing the corpus-structure</title>
-        <para> A corpus-structure consists of corpora (represented via the Salt element
-                <classname>SCorpus</classname>), documents (represented via the Salt element
-                <classname>SDocument</classname>), a linking between corpora and a linking between a
-            corpus and a document (represented via the Salt element
-                <classname>SCorpusRelation</classname> and <classname>SCorpDocRelation</classname>).
-            Each corpus can contain 0..* subcorpus and 0..* documents, but a corpus cannot contain
-            both a document and a corpus. For more information, please take a look into the Salt
-            User Guide. </para>
         <para>The general class <classname>PepperImporter</classname> provides an adoptable and
             automatical mechanism to create a corpus-structure. This mechanism is adoptable step by
             step, according to your specific purpose. In many cases, the corpus-structure is
@@ -352,18 +285,6 @@ public MyImporter()
     </sect1>
     <sect1 xml:id="sec_mapDocumentStructure">
         <title>Mapping the document-structure</title>
-        <para> The document-structure in Salt is a notion, to determine the real linguistic objects,
-            like primary data (e.g. primary texts), tokenizations, constructs like words, sentences
-            and so on and even their annotations in form of attribute-value-pairs. In Salt all this
-            data is contained in a graph object called <classname>SDocumentGraph</classname>. This
-            graph itself is contained in the <classname>SDocument</classname> object and can be
-            accessed via <methodname>SDocument.getSDocumentGraph()</methodname>. The
-                <classname>SDocumentGraph</classname> object contains a different kinds of nodes and
-            edges representing the linguistic data. For instance all primary texts in a document can
-            be accessed via the method <methodname>SDocumentGraph.getSTextualDSs()</methodname>. For
-            a more detailed description of how to access a Salt model, please read the Salt User
-            guide or take a look into the source code of the <classname>PepperMapper</classname>
-            classes in the SampleModules project.</para>
         <para>Mapping the document-structure, can mean to map one Salt model to another one, like a
             manipulator does, it can mean to import a document-structure like an importer does or,
             it can mean to export a document-structure like an exporter does. In this section, we
@@ -425,9 +346,9 @@ public MyImporter()
                     <methodname>mapSDocument()</methodname> and or
                     <methodname>mapSCorpus()</methodname> are called, but after the constructor has
                 been called, just override the method <methodname>initialize()</methodname> (see
-                figure <xref linkend="fig_pepperWorkflow"/>). This methods enables the possibility
-                to make some initilizations depending on the values set by the framework.The general
-                initialization, like setting the resource path and the
+                figure <!--<xref linkend="fig_pepperWorkflow"/>-->). This methods enables the
+                possibility to make some initilizations depending on the values set by the
+                framework.The general initialization, like setting the resource path and the
                     <classname>SDocument</classname> or <classname>SCorpus</classname> object to be
                 manipulated is done by the framework itself. Here we show an excerpt of the
                     <classname>PepperMapper</classname>
@@ -587,52 +508,22 @@ addProgress(0.2);
                 <methodname>getProgress()</methodname> shall return the aggregated progress of all
                 <classname>SDocument</classname> and <classname>SCorpus</classname> objects
             currently processed by your module. </para>
-    </sect1>
-    <sect1 xml:id="sec_analyzing">
-        <title>Analyzing the unknown</title>
-        <note>
-            <para>This section is only useful, in case that you are implementing a
-                    <classname>PepperImporter</classname>.</para>
-        </note>
-        <para>The experience has shown, that a lot of users, do not care a lot about formats and
-            don't want to. Unfortunatly, in most cases it is not possible to not annoy the users
-            with the details of a mapping. But we want to reduce the complexity for the user as much
-            as possible. Since most users are not very interested, in the source format of a corpus,
-            they just want to bring the corpus into any kind of tool to make further annotations or
-            analysis. Therefore Pepper provides a possibility to automatically detect the source
-            format of a corpus. Unfortunatly this task is very dependent of the format and the
-            module processing the format. That makes the detection a task of the modules
-            implementor. We are sorry. The mechanism of automatic detection is not a mandatory task,
-            but it is very useful, which makes it recommended.</para>
-        <para> The class <classname>PepperImporter</classname> defines the method
-                <methodname>isImportable(URI corpusPath)</methodname> which can be overridden. The
-            passed uri locates the entry point of the entire corpus as given in the Pepper workflow
-            definition (so it points to the same location as
-                <methodname>getCorpusDefinition().getCorpusPath()</methodname> does). Depending on
-            the formats you want to support with your importer the detection can be very different.
-            In the simplest case, it only is necessary, to search through the files at the given
-            location (or to recursive traverse through directories, in case of the the location
-            points to a directory), and to read their header section. For instance some formats like
-            the xml formats PAULA (see: <link
-                xlink:href="http://www.sfb632.uni-potsdam.de/en/paula.html"
-                >http://www.sfb632.uni-potsdam.de/en/paula.html</link>) or TEI (see: <link
-                xlink:href="http://www.tei-c.org/Guidelines/P5/"
-                >http://www.tei-c.org/Guidelines/P5/</link>) starts with a header section like
-            <programlisting>&lt;?xml version="1.0" standalone="no"?>
-&lt;paula version="1.0">
-&lt;!-- ... --></programlisting>
-            or
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;!-- ... -->
-&lt;TEI xmlns="http://www.tei-c.org/ns/1.0">
-&lt;!-- ... --></programlisting>.
-            Formats where reading only the first lines will bring information about the format name
-            and its version make automatic detection very easy. The method
-                <methodname>isImportable(URI corpusPath)</methodname> shall return 1 if the corpus
-            is importable by your importer, 0 if the corpus is not importable or a value between 0
-            &lt; X &lt; 1, if no definitive answer is possible. The default implementation returns
-            null, what means that the method is not overridden. This results in that the Pepper
-            framework will ignore the module in automatic detection phase.</para>
+        <sect2>
+            <title>Logging</title>
+            <para>Another form of Monitoring is the logging, which could be used for passing
+                messages to the user or passing messages to a file for debugging. The logging task
+                in Pepper is handled by the SLF4J (see: <link xlink:href="http://www.slf4j.org/"
+                    >http://www.slf4j.org/</link>). SLF4J is a logging framework, which provides an
+                abstraction for several other logging frameworks like log4j (see: <link
+                    xlink:href="http://logging.apache.org/log4j/2.x/"
+                    >http://logging.apache.org/log4j/2.x/</link>) or java.util logging. Via creating
+                a static logger object you can log several debug levels: trace, debug, info and error.
+                <programlisting>private static final Logger logger= LoggerFactory.getLogger(SampleImporter.class);
+logger.trace("messages for the implementor");
+logger.debug("message for the implementor and user");
+logger.info("messages for the user");
+logger.error("messages in case of an exception");</programlisting></para>
+        </sect2>
     </sect1>
     <sect1 xml:id="sec_customization">
         <title>Customizing behaviour of your Pepper module</title>
@@ -777,16 +668,4 @@ public boolean checkProperty(PepperModuleProperty&lt;?> prop)
             </sect3>
         </sect2>
     </sect1>
-    <sect1>
-        <title>Running the project</title>
-        <para>Now, that you now how to code your module, we want to show you how to run your module.</para>
-        <itemizedlist>
-            <listitem><para>Build your project by right-clicking on your project. Choose the entry 'Run As', and than click on 'Maven Install'. You project will be build</para></listitem>
-            <listitem><para>Open the 'Run configuration' dialog and select the 'pepper-testEnvironment' entry. The tab 'Bundles' shows you all bundles, which are resolvable by Eclipse. The Bundles having a crossed box next to their names are enabled to run in the current run configuration. To also enable your bundle to be run, Search for the name of your bundle, or find it in the list under 'Workspace'. Click the box left from its name and than click the button 'Run' to start the conversion process.</para></listitem>
-        </itemizedlist>
-            <para>
-            In case of something does not work, please do not despair and write us an e-mail instead.
-            <email>saltnpepper@lists.hu-berlin.de</email></para>
-    </sect1>
-    
 </chapter>
