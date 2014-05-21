@@ -11,10 +11,10 @@
         module. Reducing the complexity is not always possible, but we tried. To manage this
         trade-off, we followed the approach convention over configuration. That means, we made some
         assumptions, which apply to many mapping tasks. This makes implementing very simple if the
-        default case matches, but if not, you always have the possibility to adapt the module to
+        default case matches. But if not, you always have the possibility to adapt the module to
         your needs. The adaptable default behavior mostly is relaized by class derivation and
         call-back methods, which always can be overridden.</para>
-    <para>Pepper differentaites three sorts of modules: the importer, the manipulator and the
+    <para>Pepper differentiates three sorts of modules: the importer, the manipulator and the
         exporter. An importer maps a corpus given in format X to a Salt model. A manipulator maps a
         Salt model to another Salt model, in terms of changing it or just retrieving some
         information. An exporter maps a Salt model to a corpus in format Y. All three modules
@@ -32,46 +32,51 @@
             </mediaobject>
         </figure> Now you might ask, what are the classes <classname>ModuleController</classname>
         and <classname>PepperMapper</classname> good for. The class
-            <classname>ModuleController</classname> the mediator between the Pepper framework and
-        the Pepper module. It starts ends and everything else the module. To explain the
-            <classname>PepperMapper</classname> class, we want to give a short motivation: Since a
-        mapping process can be relatively time consuming, we could increase the speed of mapping an
-        entire corpus, if we are able to process mapping tasks simultaneously. Therefore we added
-        mechanisms to run the process in multi-threading. Unfortunatly in Java multi-threading is
-        not that trivial and the easiest way to do it is to separate each thread in an own class.
+            <classname>ModuleController</classname> acts as a mediator between the Pepper framework
+        and the concrete Pepper module. It initializes, starts and ends the modules processing. To
+        explain the <classname>PepperMapper</classname> class, we want to give a short motivation:
+        Since a mapping process can be relatively time consuming, we could increase the speed of
+        mapping an entire corpus, if we are able to process mapping tasks simultaneously. Therefore
+        we added mechanisms to run the process multi-threaded. Unfortunatly in Java multi-threading
+        is not that trivial and the easiest way to do it is to separate each thread in an own class.
         This is where <classname>PepperMapper</classname> comes into game. A
-            <classname>PepperModule</classname> object is a singleton instance for one workflow and
-        devides and distributes the tasks of mapping corpora and documents to the
-            <classname>PepperModule</classname> objects. </para>
-    <para>A mapping is not just a monolithic blog, it consists of several steps and pieces. The
-        lifecycle of mapping a corpus is a set of steps describing the main tasks and the
-        interaction between the Pepper framework and the Pepper module:</para>
-    <orderedlist>
-        <listitem>
-            <para>Initialization of Pepper module</para>
-        </listitem>
-        <listitem>
-            <para>Check readiness of Pepper module</para>
-        </listitem>
-        <listitem>
-            <para>Checking importability of a corpus (whether format is supported by module or
-                not)</para>
-        </listitem>
-        <listitem>
-            <para>Im- and Export corpus-structure</para>
-        </listitem>
-        <listitem>
-            <para>Process document-structure</para>
-        </listitem>
-        <listitem>
-            <para>Cleaning up after all</para>
-        </listitem>
-    </orderedlist>
-    <para>These steps are spread over the PepperModule and the <classname>PepperMapper</classname>
-        class. To give a clue of what it means in code, the sequence diagram of figure <xref
-            linkend="fig_pepperModule_sequenceDiagram"/> illustrates the communication between the
-        framework, the <classname>PepperModule</classname> and <classname>PepperMapper</classname>
-        class. <figure xml:id="fig_pepperModule_sequenceDiagram">
+            <classname>PepperModule</classname> object is a singleton instance for one step in the
+        Pepper workflow and devides and distributes the tasks of mapping corpora and documents to
+        several <classname>PepperModule</classname> objects. </para>
+    <para>One step for a mapping in the Pepper workflow is not just a monolithic blog. It consists
+        of several smaller conceptual aspects. Not each of the named aspects is essential, and some
+        are belonging on the type of module you are implementing. Some are optional, some are
+        recommanded and some are mandatory to implement. For a better XXXNachvollziehbarkeitXXXX,
+        the rest of this section is structured according these aspects instead of the order of the code.<itemizedlist>
+            <listitem>
+                <para>mapping document-structure and corpus-structure [mandatory]</para>
+            </listitem>
+            <listitem>
+                <para>analyzing an unknown corpus [recommanded, if module is an importer]</para>
+            </listitem>
+            <listitem>
+                <para>im- and export corpus-structure [mandatory, if module is an im- or
+                    exporter]</para>
+            </listitem>
+            <listitem>
+                <para>customizing the mapping [recommanded]</para>
+            </listitem>
+            <listitem>
+                <para>monitoring the progress [recommanded]</para>
+            </listitem>
+            <listitem>
+                <para>prepare and clean-up [optional]</para>
+            </listitem>
+        </itemizedlist>The main aspect surely is the mapping of the document-structure and
+        corpus-structure. This aspect deals with the creation, manipulation and export of Salt
+        models. In this sense, the others are more sideaspects and not essential for the mapping
+        itself, but important for the workflow.</para>
+    <para>Some of the aspects are spread over several classes (PepperModule and PepperMapper) and
+        methods. The single paragraphs mention which methods are involved. To get an overview of the
+        entire method stack, figure <xref linkend="fig_pepperModule_sequenceDiagram"/> illustrates
+        the communication between the framework, the <classname>PepperModule</classname> and
+            <classname>PepperMapper</classname> class. <figure
+            xml:id="fig_pepperModule_sequenceDiagram">
             <title>class diagram showing the inheritance of Pepper module types</title>
             <mediaobject>
                 <imageobject>
@@ -79,212 +84,8 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-    <sect1 xml:id="sec_analyzing">
-        <title>Analyzing the unknown</title>
-        <note>
-            <para>This section is only useful, in case that you are implementing a
-                    <classname>PepperImporter</classname>.</para>
-        </note>
-        <para>The experience has shown, that a lot of users, do not care a lot about formats and
-            don't want to. Unfortunatly, in most cases it is not possible to not annoy the users
-            with the details of a mapping. But we want to reduce the complexity for the user as much
-            as possible. Since most users are not very interested, in the source format of a corpus,
-            they just want to bring the corpus into any kind of tool to make further annotations or
-            analysis. Therefore Pepper provides a possibility to automatically detect the source
-            format of a corpus. Unfortunatly this task is very dependent of the format and the
-            module processing the format. That makes the detection a task of the modules
-            implementor. We are sorry. The mechanism of automatic detection is not a mandatory task,
-            but it is very useful, which makes it recommended.</para>
-        <para> The class <classname>PepperImporter</classname> defines the method
-                <methodname>isImportable(URI corpusPath)</methodname> which can be overridden. The
-            passed uri locates the entry point of the entire corpus as given in the Pepper workflow
-            definition (so it points to the same location as
-                <methodname>getCorpusDefinition().getCorpusPath()</methodname> does). Depending on
-            the formats you want to support with your importer the detection can be very different.
-            In the simplest case, it only is necessary, to search through the files at the given
-            location (or to recursive traverse through directories, in case of the the location
-            points to a directory), and to read their header section. For instance some formats like
-            the xml formats PAULA (see: <link
-                xlink:href="http://www.sfb632.uni-potsdam.de/en/paula.html"
-                >http://www.sfb632.uni-potsdam.de/en/paula.html</link>) or TEI (see: <link
-                xlink:href="http://www.tei-c.org/Guidelines/P5/"
-                >http://www.tei-c.org/Guidelines/P5/</link>) starts with a header section like
-            <programlisting>&lt;?xml version="1.0" standalone="no"?>
-&lt;paula version="1.0">
-&lt;!-- ... --></programlisting>
-            or
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;!-- ... -->
-&lt;TEI xmlns="http://www.tei-c.org/ns/1.0">
-&lt;!-- ... --></programlisting>.
-            Formats where reading only the first lines will bring information about the format name
-            and its version make automatic detection very easy. The method
-                <methodname>isImportable(URI corpusPath)</methodname> shall return 1 if the corpus
-            is importable by your importer, 0 if the corpus is not importable or a value between 0
-            &lt; X &lt; 1, if no definitive answer is possible. The default implementation returns
-            null, what means that the method is not overridden. This results in that the Pepper
-            framework will ignore the module in automatic detection phase.</para>
-    </sect1>
-
-    <sect1 xml:id="sec_importCorpusStructure">
-        <title>Importing the corpus-structure</title>
-        <para>The general class <classname>PepperImporter</classname> provides an adoptable and
-            automatical mechanism to create a corpus-structure. This mechanism is adoptable step by
-            step, according to your specific purpose. In many cases, the corpus-structure is
-            simultaneous to the file structure of a corpus. Since many formats do not care about the
-            corpus-structure, they only encode the document-strcuture. </para>
-        <para>Pepper's default mapping maps the root folder (the direct <classname>URI</classname>
-            location) to a root-corpus (<classname>SCorpus</classname> object). For each sub-folder
-            a sub-corpus (<classname>SCorpus</classname> object) is created and added to the
-                <classname>SCorpusGraph</classname>. For each super- and sub-corpus relation, a
-                <classname>SCorpusRelation</classname> object is created. For each interesting<footnote>
-                <para> interesting here means, a file whos ending is registered in a collection
-                    (see: <methodname>getSDocumentEndings()</methodname>) </para>
-            </footnote> file a <classname>SDocument</classname> object is created and added to the
-            current <classname>SCorpusGraph</classname> object. The <classname>SCorpus</classname>
-            and <classname>SDocument</classname> objects are connected via a
-                <classname>SCorpusDocumentRelation</classname> object. While traversing the
-            file-structure, an <classname>SElementId</classname> object is created representing the
-            corpus-hierarchy and added to the created <classname>SCorpus</classname> or
-                <classname>SDocument</classname> object. A map of these
-                <classname>SElementId</classname> objects corresponding to the
-                <classname>URI</classname> objects is returned, so that in the following methods
-            like <methodname>start(SElementId)</methodname> this map can be used to identify the
-                <classname>URI</classname> location of the <classname>SDocument</classname> objects. </para>
-        <para>To customize the default behaviour, Pepper provides three different options, which we
-            will explain in ascending order of complexity.<orderedlist>
-                <listitem>
-                    <para>Lists of interesting and uninteresting file-endings: The collections
-                            <classname>sDocumentEndings</classname>,
-                            <classname>sCorpusEndings</classname> or
-                            <classname>ignoreEndings</classname>, are accessible via the methods
-                            <methodname>getSDocumentEndings</methodname>,
-                            <methodname>getSCorpusEndings</methodname> and
-                            <methodname>getIgnoreEndings</methodname>. To
-                            <classname>sDocumentEndings</classname> you can add all endings of
-                        files, containing the document-structure (you can even add a value for leaf
-                        folders <classname>ENDING_LEAF_FOLDER</classname>). To
-                            <classname>sCorpusEndings</classname> you can add all endings of files,
-                        containing data for the corpus-structure (the value
-                            <classname>ENDING_FOLDER</classname> for folders is set by default). And
-                        to <classname>ignoreEndings</classname> you can add all endings of files, to
-                        be ignored for the import process.</para>
-                    <para>Lets give an example. Imagine the following file-structure: <figure
-                            xml:id="fig_importCorpusStructure">
-                            <title>corpus-structure represented in file-structure</title>
-                            <mediaobject>
-                                <imageobject>
-                                    <imagedata fileref="images/importCorpusStructure.png"/>
-                                </imageobject>
-                            </mediaobject>
-                        </figure> To map this structure, you just have to add the ending 'xml' to
-                        the collection <classname>sDocumentEndings</classname>, you can do this
-                        using the constant <classname>ENDING_XML</classname> (also others are
-                        predefined). The resulting corpus-structure will look as shown in figure
-                            <xref linkend="fig_corpusStructure"/>.</para>
-                    <figure xml:id="fig_corpusStructure">
-                        <title>corpus-structure</title>
-                        <mediaobject>
-                            <imageobject>
-                                <imagedata width="299px" fileref="images/corpus-structure.png"/>
-                            </imageobject>
-                        </mediaobject>
-                    </figure>
-                    <para>Since there are formats, in which the document-structure is encoded in
-                        more than one file. Therefore it does not work, to map a file to a
-                            <classname>SDocument</classname>. With respect to these formats, it is
-                        also possible, to map a sub-folder to a <classname>SDocument</classname>.
-                        The following file-structure will result in the same corpus-structure, when
-                        setting the collection <classname>sDocumentEndings</classname> to the value
-                            <classname>ENDING_LEAF_FOLDER</classname>. <figure
-                            xml:id="fig_importCorpusStructure2">
-                            <title/>
-                            <mediaobject>
-                                <imageobject>
-                                    <imagedata fileref="images/importCorpusStructure2.png"/>
-                                </imageobject>
-                            </mediaobject>
-                        </figure> In the case that the ending of a file does not matter, you can use
-                            <classname>ENDING_ALL_FILES</classname> to correspond all types of files
-                        to a <classname>SDocument</classname> object. </para>
-                    <para>You can do the collection adoptions anywhere you want to, but make sure,
-                        that they have to be done, before the method
-                            <methodname>importCorpusStructure</methodname> was called by the
-                        framework. A good location for instance is the constructor:
-                        <programlisting>
-public MyImporter()
-{
-  ...
-  this.getSDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
-  ...
-}
-                        </programlisting></para>
-                </listitem>
-                <listitem>
-                    <para>If the previous step does not fully fit to your needs, Pepper uses a
-                        callback mechanism which can be overridden. With the method
-                            <methodname>setTypeOfResource()</methodname> Pepper checks for each
-                        resource (folder and pure file) whether it represents a
-                            <classname>SDocument</classname> or a <classname>SCorpus</classname>
-                        object. The original implementation therefore uses the above mentioned
-                        collections. If adopting these collections does not fullfill your specific
-                        purpose, you can override it with a more complex behavior.</para>
-                </listitem>
-                <listitem>
-                    <para>The last opportunity to adopt the behavior is to override the method
-                            <classname>importCorpusStructure()</classname>
-                        <programlisting>public void importCorpusStructure(SCorpusGraph corpusGraph) 
-                                        throws PepperModuleException 
-{
-    //implement your specific behaviour
-}</programlisting>
-                        This method must generate a map containing the correspondence between a
-                            <classname>SElementId</classname> (representing a
-                            <classname>SDocument</classname> or a <classname>SCorpus</classname>
-                        object) and a resource. For instance, remember the sample of <xref
-                            linkend="fig_importCorpusStructure"/>, this could result in the
-                        following map: <table frame="all">
-                            <title/>
-                            <tgroup cols="2" align="left" colsep="1" rowsep="1">
-                                <tbody>
-                                    <row>
-                                        <entry>salt://corp1</entry>
-                                        <entry>/superCorpus</entry>
-                                    </row>
-                                    <row>
-                                        <entry>salt://corp1/subCorpus1</entry>
-                                        <entry>/superCorpus/subCorpus1</entry>
-                                    </row>
-                                    <row>
-                                        <entry>salt://corp1/subCorpus1#doc1</entry>
-                                        <entry>/superCorpus/subCorpus1/doc1.xml</entry>
-                                    </row>
-                                    <row>
-                                        <entry>salt://corp1/subCorpus1#doc2</entry>
-                                        <entry>/superCorpus/subCorpus1/doc2.xml</entry>
-                                    </row>
-                                    <row>
-                                        <entry>salt://corp1/subCorpus2</entry>
-                                        <entry>/superCorpus/subCorpus2</entry>
-                                    </row>
-                                    <row>
-                                        <entry>salt://corp1/subCorpus2#doc3</entry>
-                                        <entry>/superCorpus/subCorpus2/doc3.xml</entry>
-                                    </row>
-                                    <row>
-                                        <entry>salt://corp1/subCorpus2#doc4</entry>
-                                        <entry>/superCorpus/subCorpus2/doc4.xml</entry>
-                                    </row>
-                                </tbody>
-                            </tgroup>
-                        </table>
-                    </para>
-                </listitem>
-            </orderedlist> Later on, this map is used when importing the document-structure, to
-            locate the content of a <classname>SDocument</classname> object.</para>
-    </sect1>
     <sect1 xml:id="sec_mapDocumentStructure">
-        <title>Mapping the document-structure</title>
+        <title>Mapping document-structure and corpus-structure</title>
         <para>Mapping the document-structure, can mean to map one Salt model to another one, like a
             manipulator does, it can mean to import a document-structure like an importer does or,
             it can mean to export a document-structure like an exporter does. In this section, we
@@ -448,85 +249,230 @@ public void start(SElementId sElementId) throws PepperModuleException
             </para>
         </sect2>
     </sect1>
-    <sect1 xml:id="sec_cleanUp">
-        <title>Cleaning up in the end</title>
-        <para>Sometimes it might be necessary to make a clean up, after the module did the job. For
-            instance when writing an im- or an exporter it might be necessary to close file streams,
-            a db connection etc. Therefore, after all the processing is done, the Pepper framework
-            calls the method <methodname>end()</methodname>. To run your clean up, just override it
-            and your done. </para>
+
+    <sect1 xml:id="sec_analyzing">
+        <title>Analyzing an unknown corpus</title>
+        <para>The experience has shown, that a lot of users, do not care a lot about formats and
+            don't want to. Unfortunatly, in most cases it is not possible to not annoy the users
+            with the details of a mapping. But we want to reduce the complexity for the user as much
+            as possible. Since most users are not very interested, in the source format of a corpus,
+            they just want to bring the corpus into any kind of tool to make further annotations or
+            analysis. Therefore Pepper provides a possibility to automatically detect the source
+            format of a corpus. Unfortunatly this task is very dependent of the format and the
+            module processing the format. That makes the detection a task of the modules
+            implementor. We are sorry. The mechanism of automatic detection is not a mandatory task,
+            but it is very useful, which makes it recommended.</para>
+        <para> The class <classname>PepperImporter</classname> defines the method
+                <methodname>isImportable(URI corpusPath)</methodname> which can be overridden. The
+            passed uri locates the entry point of the entire corpus as given in the Pepper workflow
+            definition (so it points to the same location as
+                <methodname>getCorpusDefinition().getCorpusPath()</methodname> does). Depending on
+            the formats you want to support with your importer the detection can be very different.
+            In the simplest case, it only is necessary, to search through the files at the given
+            location (or to recursive traverse through directories, in case of the the location
+            points to a directory), and to read their header section. For instance some formats like
+            the xml formats PAULA (see: <link
+                xlink:href="http://www.sfb632.uni-potsdam.de/en/paula.html"
+                >http://www.sfb632.uni-potsdam.de/en/paula.html</link>) or TEI (see: <link
+                xlink:href="http://www.tei-c.org/Guidelines/P5/"
+                >http://www.tei-c.org/Guidelines/P5/</link>) starts with a header section like
+            <programlisting>&lt;?xml version="1.0" standalone="no"?>
+&lt;paula version="1.0">
+&lt;!-- ... --></programlisting>
+            or
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!-- ... -->
+&lt;TEI xmlns="http://www.tei-c.org/ns/1.0">
+&lt;!-- ... --></programlisting>.
+            Formats where reading only the first lines will bring information about the format name
+            and its version make automatic detection very easy. The method
+                <methodname>isImportable(URI corpusPath)</methodname> shall return 1 if the corpus
+            is importable by your importer, 0 if the corpus is not importable or a value between 0
+            &lt; X &lt; 1, if no definitive answer is possible. The default implementation returns
+            null, what means that the method is not overridden. This results in that the Pepper
+            framework will ignore the module in automatic detection phase.</para>
     </sect1>
-    <sect1 xml:id="sec_monitoring">
-        <title>Monitoring the progress</title>
-        <para> What could be more annoying than a not responding program and you do not know if it
-            is still working or not? A conversion job could take some time, which is already
-            frustrating enough for the user. Therefore we want to keep the frustration of users as
-            small as possible and give him a precise response about the progress of the conversion
-            job. </para>
-        <para> Unfortunatly, although Pepper is providing a mechanism to make the monitoring of the
-            progress as simple as possible, it remains the task of each module implementor. So you
-            ;-). But don't get afraid, monitoring the progress just means the call of a single
-            method in best case. </para>
-        <para> If you are using the default mapping mechanism by implementing the class
-                <classname>PepperMapper</classname>, this class provides the methods
-                <methodname>addProgress(Double progress)</methodname> and
-                <methodname>setProgress(Double progress)</methodname> for this purpose. Both methods
-            have a different semantic. <methodname>addProgress(Double progress)</methodname> will
-            add the passed value to the current progress, whereas <methodname>setProgress(Double
-                progress)</methodname> will override the entire progress. The passed value for
-            progress must be a value between 0 for 0% and 1 for 100%. It is up to you to call one of
-            the methods in your code and to estimate the progress. Often it is easier not to
-            estimate the time needed for the progress, than to divide the entire progress in several
-            steps and to return a progress for each step. For instance the following sample
-            separates the entire mapping process into five steps, which get the same rank of progress.<programlisting>//...
-//map all STextualDS objects
-addProgress(0.2);
-//map all SToken objects
-addProgress(0.2);
-//map all SSpan objects
-addProgress(0.2);
-//map all SStruct objects
-addProgress(0.2);
-//map all SPointingRelation objects
-addProgress(0.2);
-//...</programlisting>
-            <note>
-                <para>When using <classname>PepperMapper</classname>, you only have to take care
-                    about the progress of the current <classname>SDocument</classname> or
-                        <classname>SCorpus</classname> object you are processing. The aggregation of
-                    all currently processed objects (<classname>SDocument</classname> and
-                        <classname>SCorpus</classname>) will be done automatically.</para>
-            </note>
+    <sect1 xml:id="sec_importCorpusStructure">
+        <title>Im- and export corpus-structure</title>
+        <para>The classes <classname>PepperImporter</classname> and
+                <classname>PepperExporter</classname> provide automatic mechanism to im- or export
+            the corpus-structure. This mechanism is adoptable step by step, according to your
+            specific purpose. In many cases, the corpus-structure is simultaneous to the file
+            structure of a corpus. Since many formats do not care about the corpus-structure, they
+            only encode the document-strcuture. </para>
+        <para>Pepper's default mapping maps the root folder (the direct <classname>URI</classname>
+            location) to a root-corpus (<classname>SCorpus</classname> object). A sub-folder than
+            corresponds to a sub-corpus (<classname>SCorpus</classname> object). The relation
+            between super- and sub-corpus, is represented as a
+                <classname>SCorpusRelation</classname> object. Following the assumption, that files
+            contain the document-structure, there is one <classname>SDocument</classname>
+            corresponding to each file in a sub-folder. The <classname>SCorpus</classname> and the
+                <classname>SDocument</classname> object are linked with a
+                <classname>SCorpusDocumentRelation</classname>. To get an impression of the
+            described mapping, figure <xref linkend="fig_importCorpusStructure"/> shows a file
+            structure and figure <xref linkend="fig_corpusStructure"/> shows the corresponding
+            corpus-structure. <figure xml:id="fig_importCorpusStructure">
+                <title>corpus-structure represented in file-structure</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/importCorpusStructure.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <figure xml:id="fig_corpusStructure">
+                <title>corpus-structure</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata width="299px" fileref="images/corpus-structure.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>Other formats do not encode the document-structure in just one file, they use a
+            bunch of files instead. In that case the folder containing all the files (let's call it
+            leaf-folder) corresponds to a <classname>SDocument</classname> object. Figure <xref
+                linkend="fig_importCorpusStructure2"/> shows an example for these kind of
+            file-structure, which corresponds also corresponds to the corpus-structure of figure
+                <xref linkend="fig_corpusStructure"/>. <figure xml:id="fig_importCorpusStructure2">
+                <title/>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/importCorpusStructure2.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
         </para>
-        <para> In case that you do not want to use the default mechanism, you need to override the
-            methods <methodname>getProgress(SElementId sDocumentId)</methodname> and
-                <methodname>getProgress()</methodname> of your implementation of
-                <classname>PepperModule</classname>.The method <methodname>getProgress(SElementId
-                sDocumentId)</methodname> shall return the progress of the
-                <classname>SDocument</classname> or <classname>SCorpus</classname> objects
-            corresponding to the passed <classname>SElementId</classname>. Whereas the method
-                <methodname>getProgress()</methodname> shall return the aggregated progress of all
-                <classname>SDocument</classname> and <classname>SCorpus</classname> objects
-            currently processed by your module. </para>
+        <para> For keeping the correspondance between the corpus-structure and the file-structure,
+            both the im- and the export of the corpus-structure make use of a map storing this
+            correspondance. Corresponding to figure the corpus-structure of figure <xref
+                linkend="fig_corpusStructure"/> and the file-structure of figure <xref
+                linkend="fig_importCorpusStructure"/> table <xref linkend="selement_URI_map"/> shows
+            the stored correletion between them. <table frame="all" xml:id="selement_URI_map">
+                <title>map of <classname>SElementId</classname> and corresponding URI
+                    locations</title>
+                <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                    <tbody>
+                        <row>
+                            <entry>salt://corp1</entry>
+                            <entry>/superCorpus</entry>
+                        </row>
+                        <row>
+                            <entry>salt://corp1/subCorpus1</entry>
+                            <entry>/superCorpus/subCorpus1</entry>
+                        </row>
+                        <row>
+                            <entry>salt://corp1/subCorpus1#doc1</entry>
+                            <entry>/superCorpus/subCorpus1/doc1.xml</entry>
+                        </row>
+                        <row>
+                            <entry>salt://corp1/subCorpus1#doc2</entry>
+                            <entry>/superCorpus/subCorpus1/doc2.xml</entry>
+                        </row>
+                        <row>
+                            <entry>salt://corp1/subCorpus2</entry>
+                            <entry>/superCorpus/subCorpus2</entry>
+                        </row>
+                        <row>
+                            <entry>salt://corp1/subCorpus2#doc3</entry>
+                            <entry>/superCorpus/subCorpus2/doc3.xml</entry>
+                        </row>
+                        <row>
+                            <entry>salt://corp1/subCorpus2#doc4</entry>
+                            <entry>/superCorpus/subCorpus2/doc4.xml</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
+        <para> In the following two sections, we are going to describe the import and the export
+            mechanism separatly. </para>
         <sect2>
-            <title>Logging</title>
-            <para>Another form of Monitoring is the logging, which could be used for passing
-                messages to the user or passing messages to a file for debugging. The logging task
-                in Pepper is handled by the SLF4J (see: <link xlink:href="http://www.slf4j.org/"
-                    >http://www.slf4j.org/</link>). SLF4J is a logging framework, which provides an
-                abstraction for several other logging frameworks like log4j (see: <link
-                    xlink:href="http://logging.apache.org/log4j/2.x/"
-                    >http://logging.apache.org/log4j/2.x/</link>) or java.util logging. Via creating
-                a static logger object you can log several debug levels: trace, debug, info and error.
-                <programlisting>private static final Logger logger= LoggerFactory.getLogger(SampleImporter.class);
-logger.trace("messages for the implementor");
-logger.debug("message for the implementor and user");
-logger.info("messages for the user");
-logger.error("messages in case of an exception");</programlisting></para>
+            <title>Importing corpus-structure</title>
+            <para>The default mechanism of importing a corpus-structure is implemented in the method
+                <programlisting>importCorpusStructure(SCorpusGraph corpusGraph)</programlisting>.
+                For a totally change of the default behavior just override this method. To adapt the
+                behavior as described in the following, this has to be done before the method
+                'importCorpusStructure' was called, so for instance in the constructor or in method
+                <programlisting>isReadyToStart()</programlisting>. Back to figure <xref
+                    linkend="fig_importCorpusStructure"/>, the import mechanism traverses the
+                file-structure beginning at the super-folder via the sub-folders to the files and
+                creates a <classname>SElementId</classname> object corresponding to each folder or
+                file to fill the map of table <xref linkend="selement_URI_map"/>. This map is
+                necessary for instance to retrieve the physical location of a document-structure
+                during the mapping and can be accessed as shown in the following snippet:
+                <programlisting>public PepperMapper createPepperMapper(SElementId sElementId){
+    ...
+    mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+    ...
+}</programlisting></para>
+            <para>The import mechanism can be adapted by two parameters (or more precisly two
+                lists). An ignore list containing file endings, which are supposed to be ignored
+                during the import and a list of file ending which are supposed to be used for the import.<footnote>
+                    <para>In case you are wondering, yes this sounds a bit strange, since each file
+                        ending which is not contained in the second list won't be imported by
+                        default. But there is an option, to set this to import each file, no matter
+                        on the ending.</para>
+                </footnote> Now let's show some code for adapting. The following snippet is placed
+                into the method 'isReadyToStart()', but even could be located in inside the
+                constructor:
+                <programlisting>public boolean isReadyToStart(){
+    ...
+    //option 1
+    getSDocumentEndings().add(PepperModule.ENDING_XML);
+    getSDocumentEndings().add(PepperModule.ENDING_TAB);
+    //option 2
+    getSDocumentEndings().add(PepperModule.ENDING_ALL_FILES);
+    getIgnoreEndings().add(PepperModule.ENDING_TXT)
+    //option 3
+    getSDocumentEndings().add(PepperModule.ENDING_LEAF_FOLDER);
+    ...
+}</programlisting></para>
+            <para>In general the paramter of the method 'getSDocumentEndings()' is just a String,
+                but there are some predefined ones you can use. The two lines marked as option 1,
+                will add the endings 'xml' and 'tab' to the list of file endings to be imported.
+                That means, that all files having one of these endings will be read and mapped to a
+                document-structure. The first line of option 2, means to read each file, no matter
+                on its ending. But the following line excludes all files having the ending 'txt'.
+                Last but not least option 3 which is supposed to treat leaf-folders as
+                document-structures and to create one <classname>SDocument</classname> object for
+                each leaf-folder and not for each file, as mentioned in figure <xref
+                    linkend="fig_importCorpusStructure2"/>.</para>
+        </sect2>
+        <sect2>
+            <title>Exporting corpus-structure</title>
+            <para>Similar to the import of the corpus-structure for the export, we provide a default
+                behavior and possibilities for adaption. The export of the corpus-structure is
+                handled in the method <programlisting>exportCorpusStructure()</programlisting>and
+                invoked on top at the method 'start()' of the <classname>PepperExporter</classname>.
+                For a totally change of the default behavior just override this method. The aim of
+                this method is to fill the map between corpus-structure and file-structure (see
+                table <xref linkend="selement_URI_map"/>). <note>
+                    <para>The file-structure is automatically created, there are just URIs pointing
+                        the virtual file or folder. The creation of the file or folder has to be
+                        done by the Pepper module itself in method 'mapSCorpus()' or
+                        'mapSDocument()'.</para>
+                </note>To adapt the creation of this 'virtual' file-structure, you first have to
+                choose the mode of export. You can do this for instance in method 'readyToStart()',
+                as shown in the following snippet. But even in the constructor as
+                well.<programlisting>public boolean isReadyToStart(){
+    ...
+    //option 1
+    setExportMode(EXPORT_MODE.NO_EXPORT);
+    //option 2
+    setExportMode(EXPORT_MODE.CORPORA_ONLY);
+    //option 3
+    setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
+    setSDocumentEnding(PepperModule.ENDING_TAB);
+    ..
+}</programlisting>In
+                this snippet, option 1 means that no mapping will be created. Option 2 means that
+                only <classname>SCorpus</classname> objects are mapped to a folder and
+                    <classname>SDocument</classname> objects will be ignored. And option 3 means but
+                that <classname>SCorpus</classname> objects are mapped to a folder and
+                    <classname>SDocument</classname> objects are mapped to a file. The ending of that file can be determined by passing the ending
+                to method 'setSDocumentEnding(String)'. In the given snippet a URI having the ending 'tab' is created for each <classname>SDocument</classname>.</para>
         </sect2>
     </sect1>
     <sect1 xml:id="sec_customization">
-        <title>Customizing behaviour of your Pepper module</title>
+        <title>Customizing the mapping</title>
         <para> When creating a mapping, it is often a matter of choice to map some data this way or
             another. In such cases it might be clever not to be that strict and allow only one
             possiblity. It could be beneficially to leave this decision to the user. Customizing a
@@ -667,5 +613,88 @@ public boolean checkProperty(PepperModuleProperty&lt;?> prop)
 
             </sect3>
         </sect2>
+    </sect1>
+    <sect1 xml:id="sec_monitoring">
+        <title>Monitoring the progress</title>
+        <para> What could be more annoying than a not responding program and you do not know if it
+            is still working or not? A conversion job could take some time, which is already
+            frustrating enough for the user. Therefore we want to keep the frustration of users as
+            small as possible and give him a precise response about the progress of the conversion
+            job. </para>
+        <para> Unfortunatly, although Pepper is providing a mechanism to make the monitoring of the
+            progress as simple as possible, it remains the task of each module implementor. So you
+            ;-). But don't get afraid, monitoring the progress just means the call of a single
+            method in best case. </para>
+        <para> If you are using the default mapping mechanism by implementing the class
+                <classname>PepperMapper</classname>, this class provides the methods
+                <methodname>addProgress(Double progress)</methodname> and
+                <methodname>setProgress(Double progress)</methodname> for this purpose. Both methods
+            have a different semantic. <methodname>addProgress(Double progress)</methodname> will
+            add the passed value to the current progress, whereas <methodname>setProgress(Double
+                progress)</methodname> will override the entire progress. The passed value for
+            progress must be a value between 0 for 0% and 1 for 100%. It is up to you to call one of
+            the methods in your code and to estimate the progress. Often it is easier not to
+            estimate the time needed for the progress, than to divide the entire progress in several
+            steps and to return a progress for each step. For instance the following sample
+            separates the entire mapping process into five steps, which get the same rank of progress.<programlisting>//...
+//map all STextualDS objects
+addProgress(0.2);
+//map all SToken objects
+addProgress(0.2);
+//map all SSpan objects
+addProgress(0.2);
+//map all SStruct objects
+addProgress(0.2);
+//map all SPointingRelation objects
+addProgress(0.2);
+//...</programlisting>
+            <note>
+                <para>When using <classname>PepperMapper</classname>, you only have to take care
+                    about the progress of the current <classname>SDocument</classname> or
+                        <classname>SCorpus</classname> object you are processing. The aggregation of
+                    all currently processed objects (<classname>SDocument</classname> and
+                        <classname>SCorpus</classname>) will be done automatically.</para>
+            </note>
+        </para>
+        <para> In case that you do not want to use the default mechanism, you need to override the
+            methods <methodname>getProgress(SElementId sDocumentId)</methodname> and
+                <methodname>getProgress()</methodname> of your implementation of
+                <classname>PepperModule</classname>.The method <methodname>getProgress(SElementId
+                sDocumentId)</methodname> shall return the progress of the
+                <classname>SDocument</classname> or <classname>SCorpus</classname> objects
+            corresponding to the passed <classname>SElementId</classname>. Whereas the method
+                <methodname>getProgress()</methodname> shall return the aggregated progress of all
+                <classname>SDocument</classname> and <classname>SCorpus</classname> objects
+            currently processed by your module. </para>
+        <sect2>
+            <title>Logging</title>
+            <para>Another form of Monitoring is the logging, which could be used for passing
+                messages to the user or passing messages to a file for debugging. The logging task
+                in Pepper is handled by the SLF4J (see: <link xlink:href="http://www.slf4j.org/"
+                    >http://www.slf4j.org/</link>). SLF4J is a logging framework, which provides an
+                abstraction for several other logging frameworks like log4j (see: <link
+                    xlink:href="http://logging.apache.org/log4j/2.x/"
+                    >http://logging.apache.org/log4j/2.x/</link>) or java.util logging. Via creating
+                a static logger object you can log several debug levels: trace, debug, info and
+                error.
+                <programlisting>private static final Logger logger= LoggerFactory.getLogger(SampleImporter.class);
+logger.trace("messages for the implementor");
+logger.debug("message for the implementor and user");
+logger.info("messages for the user");
+logger.error("messages in case of an exception");</programlisting></para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="sec_cleanUp">
+        <title>Prepare and clean-up</title>
+        <itemizedlist>
+            <listitem>
+                <para>TODO: describe isReadyToRun()</para>
+            </listitem>
+        </itemizedlist>
+        <para>Sometimes it might be necessary to make a clean up, after the module did the job. For
+            instance when writing an im- or an exporter it might be necessary to close file streams,
+            a db connection etc. Therefore, after all the processing is done, the Pepper framework
+            calls the method <methodname>end()</methodname>. To run your clean up, just override it
+            and your done. </para>
     </sect1>
 </chapter>
