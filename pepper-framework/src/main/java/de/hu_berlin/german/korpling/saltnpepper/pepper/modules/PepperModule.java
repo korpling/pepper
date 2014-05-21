@@ -39,6 +39,24 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * @author Florian Zipser
  */
 public interface PepperModule{
+	/** 
+	 * A string specifying a value for a folder as ending. This is useful for {@link #setTypeOfResource(URI)}, to determine, that
+	 * even a folder can be mapped to a resource.Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 */
+	public static final String ENDING_FOLDER="FOLDER";
+	/**
+	 * A string specifying a value for a leaf folder as ending. This is useful for {@link #setTypeOfResource(URI)}, to determine, that
+	 * even a leaf folder can be mapped to a resource. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 */
+	public static final String ENDING_LEAF_FOLDER="LEAF_FOLDER";
+	/**Ending for an xml file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}*/
+	public static final String ENDING_XML="xml";
+	/**Ending for an txt file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}*/
+	public static final String ENDING_TXT="txt";
+	/**Ending for an tab file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}*/
+	public static final String ENDING_TAB="tab";
+	/** All kinds of file endings **/
+	public static final String ENDING_ALL_FILES="ALL_FILES";
 	
 	/**
 	 * Returns a {@link PepperModuleDesc} object, which is a kind of a fingerprint of this {@link PepperModule}. This fingerprint for instance contains information like
