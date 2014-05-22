@@ -115,7 +115,7 @@
                 that sample module project. Therefore it contains sample implementations, which
                 could be used as a template and a kind of an inspiration for your own project. So
                 don't hesitate to override the specific parts. The project contains three modules,
-                one of each kind: an importer, a manipulator and en exporter.The importer just
+                one of each kind: an importer, a manipulator and en exporter. The importer just
                 imports a static corpus containing one super-corpus, two sub-corpora and four
                 doucments. Here you can see how to create a corpus-structure and a document-structure<footnote>
                     <para>Salt differentiates between the corpus-structure and the
