@@ -40,43 +40,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * TODO make docu
  * @author Florian Zipser
  */ 
-public interface PepperImporter extends PepperModule {
-
-	/** 
-	 * A string specifying a value for a folder as ending. This is useful for {@link #setTypeOfResource(URI)}, to determine, that
-	 * even a folder can be mapped to a resource.Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
-	 * <strong>DEPRECATED: This field was moved to {@link PepperModule}</strong>
-	 */
-	@Deprecated
-	public static final String ENDING_FOLDER="FOLDER";
-	/**
-	 * A string specifying a value for a leaf folder as ending. This is useful for {@link #setTypeOfResource(URI)}, to determine, that
-	 * even a leaf folder can be mapped to a resource. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
-	 *<strong>DEPRECATED: This field was moved to {@link PepperModule}</strong>
-	 */
-	@Deprecated
-	public static final String ENDING_LEAF_FOLDER="LEAF_FOLDER";
-	/**Ending for an xml file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
-	 * *<strong>DEPRECATED: This field was moved to {@link PepperModule}</strong>
-	 */
-	@Deprecated
-	public static final String ENDING_XML="xml";
-	/**Ending for an txt file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
-	 * *<strong>DEPRECATED: This field was moved to {@link PepperModule}</strong>
-	 */
-	@Deprecated
-	public static final String ENDING_TXT="txt";
-	/**Ending for an tab file. Can be used by importers to be put in collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
-	 * *<strong>DEPRECATED: This field was moved to {@link PepperModule}</strong>
-	 */
-	@Deprecated
-	public static final String ENDING_TAB="tab";
-	/** All kinds of file endings 
-	 *<strong>DEPRECATED: This field was moved to {@link PepperModule}</strong>
-	 */
-	@Deprecated
-	public static final String ENDING_ALL_FILES="ALL_FILES";
-	
+public interface PepperImporter extends PepperModule {	
 	/**
 	 * A character or character sequence to mark a file extension as not to be one of the imported ones.
 	 */
