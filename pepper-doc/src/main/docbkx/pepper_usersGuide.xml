@@ -570,6 +570,13 @@ job.convert();        </programlisting>
                 documentation of the Pepper module.After creating the steps, we need to add them to
                 the job. So the last thing to do is to start the job with invoking the method
                 'convert()'.</para>
+            <para>Another way of converting a job is converting a predefined workflow file.
+                Therefore you need a workflow file as described in section <xref
+                    linkend="sec_workflowFile"/>. The following snippet shows how to do this.
+                <programlisting>String jobId= pepper.createJob();
+PepperJob pepperJob= pepper.getJob(jobId);
+pepperJob.load("URI_OF_WORKFLOW_FILE");
+pepperJob.convert();</programlisting></para>
             <para>Thats it. Now you know how to use the basic functionalities of the Pepper library.
                 We hope you will be happy with it. In case of problems occur, don't hesitate to write an e-mail to <link xlink:href="saltnpepper@lists.hu-berlin.de">saltnpepper@lists.hu-berlin.de</link></para>
 
