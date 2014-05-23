@@ -82,8 +82,8 @@ public class SampleManipulator extends PepperManipulatorImpl
 	 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link SElementId}
 	 */
 	public PepperMapper createPepperMapper(SElementId sElementId){
-		//TODO create an object of a class derived from PepperMapper and return it, if necessary, make some more initializations 
-		return(null);
+		SampleMapper mapper= new SampleMapper(); 
+		return(mapper);
 	}
 	
 	/**

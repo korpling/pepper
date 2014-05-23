@@ -116,9 +116,9 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * In Pepper each import step gets an own {@link SCorpusGraph} to work on. This graph has to be filled with {@link SCorpus} 
 	 * and {@link SDocument} objects representing the corpus-structure of the corpus to be imported. 
 	 * <br/>
-	 * In many cases, the corpus-structure can be retrived from the file-structure of the source files. Therefore Pepper provides
+	 * In many cases, the corpus-structure can be retrieved from the file-structure of the source files. Therefore Pepper provides
 	 * a default mechanism to map the file-structure to corpus-structure. This default mechanism can be configured. To
-	 * adapt the default bevavior to your needs, we recommend, to take a look into the 'Developer's Guide for Pepper modules', 
+	 * adapt the default behavior to your needs, we recommend, to take a look into the 'Developer's Guide for Pepper modules', 
 	 * you will find on <a href="https://u.hu-berlin.de/saltnpepper/">https://u.hu-berlin.de/saltnpepper/</a>.
 	 * <br/>
 	 * Just to show the creation of a corpus-structure for our sample purpose, we here create a simple corpus-structure 

@@ -64,6 +64,7 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 			super();
 			//TODO change the name of the module, for example use the format name and the ending Exporter (FORMATExporter)
 			this.setName("SampleExporter");
+			setName(ENDING_XML);
 			//TODO change the version of your module, we recommend to synchronize this value with the maven version in your pom.xml
 			this.setVersion("1.1.0");
 			//TODO change "sample" with format name and 1.0 with format version to support

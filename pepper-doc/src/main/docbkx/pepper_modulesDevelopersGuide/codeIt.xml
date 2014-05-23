@@ -27,7 +27,7 @@
             <title>class diagram showing the inheritance of Pepper module types</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata width="500" fileref="images/pepperModule_classDiagram.png"/>
+                    <imagedata width="200" fileref="images/pepperModule_classDiagram.png"/>
                 </imageobject>
             </mediaobject>
         </figure> Now you might ask, what are the classes <classname>ModuleController</classname>
@@ -62,6 +62,9 @@
                 <para>customizing the mapping [recommanded]</para>
             </listitem>
             <listitem>
+                <para>error handling [recommanded]</para>
+            </listitem>
+            <listitem>
                 <para>monitoring the progress [recommanded]</para>
             </listitem>
             <listitem>
@@ -80,7 +83,7 @@
             <title>class diagram showing the inheritance of Pepper module types</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata width="500" fileref="images/pepper_workflow.png"/>
+                    <imagedata width="400" fileref="images/pepper_workflow.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
@@ -325,7 +328,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
                 <title>corpus-structure represented in file-structure</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/importCorpusStructure.png"/>
+                        <imagedata width="60" fileref="images/importCorpusStructure.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -333,7 +336,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
                 <title>corpus-structure</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata width="299px" fileref="images/corpus-structure.png"/>
+                        <imagedata width="100" fileref="images/corpus-structure.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>Other formats do not encode the document-structure in just one file, they use a
@@ -345,7 +348,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
                 <title/>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/importCorpusStructure2.png"/>
+                        <imagedata width="80" fileref="images/importCorpusStructure2.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -690,6 +693,39 @@ logger.trace("messages for the implementor");
 logger.debug("message for the implementor and user");
 logger.info("messages for the user");
 logger.error("messages in case of an exception");</programlisting></para>
+        </sect2>
+        <sect2>
+            <title>Error handling</title>
+            <para>Another important aspect of monitorng, is the monitoring in case of an error
+                occured. Even when the module crashes and the conversion could not be ended
+                successfully, the user needs a feedback of what has happend. The main question would
+                be is it a bug in code or a bug in the data. In both cases, the user needs a
+                precisly description. Either to notify you, the module developer or to find the bug
+                in the data. And believe me, a NullPointerException is not very useful to the user
+                and very frustrating.</para>
+            <para>Pepper provides a hierarchie of Exception classes to be used for different
+                purposes, for instance to describe problems in customization properties, the data or
+                general problems in module. Figure <xref linkend="fig_exceptionClasses"/> gives an
+                overview over the Exception classes for modules. <figure
+                    xml:id="fig_exceptionClasses">
+                    <title>corpus-structure represented in file-structure</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata width="400" fileref="images/exceptionClassDiagram.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure> The main and general class <classname>PepperModuleException</classname>
+                can be used in case of the Exception does not match to one of the more specific
+                types. When initializing a <classname>PepperModuleException</classname> or one of
+                its subclsses, you can pass a <classname>PepperModule</classname> or a
+                    <classname>PepperMapper</classname> object. The exception itself will expand the
+                error message with this parameter. A more detailed description of the Exceptions
+                could be found in the JavaDoc.</para>
+            <para>When an exception was thrown for a single document, Pepper will not break up the
+                entire conversion process. Pepper will set the status of this document to failed and
+                will remove it from the rest of the workflow, so that modules comming afterwards
+                will not process the corrupted document. But, Pepper will give a feedback to the
+                user containing the error message provided by the module.</para>
         </sect2>
     </sect1>
     <sect1 xml:id="sec_cleanUp">
