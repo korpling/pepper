@@ -115,12 +115,20 @@ public class SampleManipulator extends PepperManipulatorImpl {
 	 * 
 	 */
 	public class SampleMapper extends PepperMapperImpl implements SGraphTraverseHandler {
+		/**
+		 * Creates meta annotations, if not already exists
+		 */
 		@Override
 		public DOCUMENT_STATUS mapSCorpus() {
-			getSCorpus().createSMetaAnnotation(null, "date", "1989-12-17");
+			if (getSCorpus().getSMetaAnnotation("date") == null) {
+				getSCorpus().createSMetaAnnotation(null, "date", "1989-12-17");
+			}
 			return (DOCUMENT_STATUS.COMPLETED);
 		}
 
+		/**
+		 * prints out some information about document-structure
+		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// create a StringBuilder, to be filled with informations (we need
@@ -135,22 +143,22 @@ public class SampleManipulator extends PepperManipulatorImpl {
 			out.append("+---------------------------------+\n");
 			// print out the general number of nodes
 			out.append(String.format(format, "nodes", getSDocument().getSDocumentGraph().getSNodes().size()));
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 			// print out the general number of relations
 			out.append(String.format(format, "relations", getSDocument().getSDocumentGraph().getSRelations().size()));
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 			// print out the general number of primary texts
 			out.append(String.format(format, "texts", getSDocument().getSDocumentGraph().getSTextualDSs().size()));
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 			// print out the general number of tokens
 			out.append(String.format(format, "tokens", getSDocument().getSDocumentGraph().getSTokens().size()));
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 			// print out the general number of spans
 			out.append(String.format(format, "spans", getSDocument().getSDocumentGraph().getSSpans().size()));
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 			// print out the general number of structures
 			out.append(String.format(format, "structures", getSDocument().getSDocumentGraph().getSStructures().size()));
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 
 			// create alist of all root nodes of the current document-structure
 			EList<SNode> roots = getSDocument().getSDocumentGraph().getSRoots();
@@ -165,7 +173,7 @@ public class SampleManipulator extends PepperManipulatorImpl {
 			for (String key : frequencies.keySet()) {
 				out.append(String.format(format, key, frequencies.get(key)));
 			}
-			addProgress((double) (1/7));
+			addProgress((double) (1 / 7));
 			out.append("+---------------------------------+\n");
 			System.out.println(out.toString());
 
