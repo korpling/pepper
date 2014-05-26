@@ -231,16 +231,24 @@ public abstract class PepperModuleTest
 		if (getFixture() instanceof PepperImporter){
 			((PepperJobImpl)job).addStep(exportStep);
 		}else if (getFixture() instanceof PepperManipulator){
+			if (	(importSteps.size()== 0)&&
+					(getFixture().getSaltProject().getSCorpusGraphs().size()== 0)){
+				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be manipulated. ");
+			}
 			for (Step importStep: importSteps){
 				((PepperJobImpl)job).addStep(importStep);
 			}
 			((PepperJobImpl)job).addStep(exportStep);
 		}else if (getFixture() instanceof PepperExporter){
+			if (	(importSteps.size()== 0)&&
+					(getFixture().getSaltProject()== null)){
+				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be exported. ");
+			}
 			for (Step importStep: importSteps){
 				((PepperJobImpl)job).addStep(importStep);
 			}
 		}else{
-			throw new PepperModuleTestException("Cannot run test, because given fixture '"+getFixture()+"' was neither of type '"+PepperImporter.class+"', '"+PepperManipulator.class+"' nor '"+PepperExporter.class+"'. ");
+			throw new PepperModuleTestException(getFixture(), "Cannot run test, because given fixture '"+getFixture()+"' was neither of type '"+PepperImporter.class+"', '"+PepperManipulator.class+"' nor '"+PepperExporter.class+"'. ");
 		}
 		
 		job.convert();
