@@ -94,8 +94,6 @@ public class SampleImporterTest extends PepperImporterTest{
 		
 		//checks for each document-structure, that all kinds of nodes and relations are contained
 		for (SDocument sDocument: getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments()){
-			//since in Pepper processed document-structures are stored to file, for main memory issues, we have to load them for checking
-			sDocument.loadSDocumentGraph();
 			//checks that all nodes are contained
 			assertEquals(27, sDocument.getSDocumentGraph().getSNodes().size());
 			//checks that all relations are contained

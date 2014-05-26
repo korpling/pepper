@@ -17,32 +17,35 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
-import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleManipulator;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperExporterTest;
+import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleExporter;
 import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
- * {@link SampleManipulator} class. Feel free to adapt and enhance this test class
- * for real tests to check the work of your manipulator. If you are not confirm
+ * {@link SampleExporter} class. Feel free to adapt and enhance this test class
+ * for real tests to check the work of your importer. If you are not confirm
  * with JUnit, please have a look at <a
  * href="http://www.vogella.com/tutorials/JUnit/article.html">
  * http://www.vogella.com/tutorials/JUnit/article.html</a>. <br/>
- * Please note, that the test class is derived from {@link PepperManipulatorTest}.
+ * Please note, that the test class is derived from {@link PepperExporterTest}.
  * The usage of this class should simplfy your work and allows you to test only
- * your single manipulator in the Pepper environment.
+ * your single importer in the Pepper environment.
  * 
  * @author Florian Zipser
  * 
  */
-public class SampleManipulatorTest extends PepperManipulatorTest {
+public class SampleExporterTest extends PepperExporterTest {
 	/**
 	 * This method is called by the JUnit environment each time before a test
 	 * case starts. So each time a method annotated with @Test is called. This
@@ -51,7 +54,12 @@ public class SampleManipulatorTest extends PepperManipulatorTest {
 	 */
 	@Before
 	public void setUp() {
-		setFixture(new SampleManipulator());
+		setFixture(new SampleExporter());
+
+		FormatDesc formatDef = new FormatDesc();
+		formatDef.setFormatName("dot");
+		formatDef.setFormatVersion("1.0");
+		this.supportedFormatsCheck.add(formatDef);
 	}
 
 	/**
@@ -72,19 +80,26 @@ public class SampleManipulatorTest extends PepperManipulatorTest {
 		// create a sample corpus, the class SampleGenerator provides a bunch of
 		// helpful methods to create sample documents and corpora
 		getFixture().setSaltProject(SampleGenerator.createCompleteSaltproject());
+
+		// determine location, to where the corpus should be exported
+		getFixture().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(getTempPath("sampleExporter").getAbsolutePath())));
+
 		// starts the Pepper framework and the conversion process
 		start();
 
-		// checks that each corpus contains a date annotation and that its value
-		// is 1989-12-17 just to show how tests work, for more tests, please
-		// take a look
-		// into SampleManipulator
-		for (SCorpus sCorpus : getFixture().getSaltProject().getSCorpusGraphs().get(0).getSCorpora()) {
-			assertNotNull(sCorpus.getSMetaAnnotation("date"));
-			assertEquals("1989-12-17", sCorpus.getSMetaAnnotation("date").getSValue());
-		}
+		File superCorpus = new File(getTempPath("sampleExporter").getAbsolutePath() + "/rootCorpus");
+		assertTrue(superCorpus.exists());
+		File subCorpus = new File(superCorpus.getAbsolutePath() + "/subCorpus1");
+		assertTrue(subCorpus.exists());
+		File document1 = new File(subCorpus.getAbsolutePath() + "/doc1.dot");
+		assertTrue(document1.exists());
+		File document2 = new File(subCorpus.getAbsolutePath() + "/doc2.dot");
+		assertTrue(document2.exists());
+		File document3 = new File(subCorpus.getAbsolutePath() + "/doc3.dot");
+		assertTrue(document3.exists());
+		File document4 = new File(subCorpus.getAbsolutePath() + "/doc4.dot");
+		assertTrue(document4.exists());
 	}
-
 	// TODO add further tests for any test cases you can think of and which are
 	// necessary
 }

@@ -17,92 +17,138 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules;
 
-import org.eclipse.emf.common.util.URI;
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * This is a sample {@link PepperExporter}, which can be used for creating individual Exporters for the 
- * Pepper Framework. Therefore you have to take a look to todo's and adapt the code.
+ * This class is a dummy implementation of a {@link PepperExporter} to show how
+ * an exporter works in general. This implementation can be used as a template
+ * for an own module. Therefore adapt the TODO's. <br/>
+ * This dummy implementation just exports the corpus-structure and
+ * document-structure to dot formatted files. The dot format is a mechanism to
+ * store graph based data for visualizing them. With the tool GraphViz, such a
+ * graph could be converted to a png, svg ... file. For more information about
+ * dot and GraphViz, see: http://www.graphviz.org/.
  * 
- * <ul>
- *  <li>the salt model to fill, manipulate or export can be accessed via {@link #getSaltProject()}</li>
- * 	<li>special parameters given by Pepper workflow can be accessed via {@link #getSpecialParams()}</li>
- *  <li>a place to store temprorary datas for processing can be accessed via {@link #getTemproraries()}</li>
- *  <li>a place where resources of this bundle are, can be accessed via {@link #getResources()}</li>
- *  <li>a logService can be accessed via {@link #getLogService()}</li>
- * </ul>
  * @author Florian Zipser
  * @version 1.0
- *
+ * 
  */
-//TODO /1/: change the name of the component, for example use the format name and the ending Exporter (FORMATExporterComponent)
-@Component(name="SampleExporterComponent", factory="PepperExporterComponentFactory")
-public class SampleExporter extends PepperExporterImpl implements PepperExporter
-{
-	// =================================================== mandatory ===================================================
+// TODO /1/: change the name of the component, for example use the format name
+// and the ending Exporter (FORMATExporterComponent)
+@Component(name = "SampleExporterComponent", factory = "PepperExporterComponentFactory")
+public class SampleExporter extends PepperExporterImpl implements PepperExporter {
+	// =================================================== mandatory
+	// ===================================================
+	/**
+	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
+	 * 
+	 * A constructor for your module. Set the coordinates, with which your
+	 * module shall be registered. The coordinates (modules name, version and
+	 * supported formats) are a kind of a fingerprint, which should make your
+	 * module unique.
+	 */
+	public SampleExporter() {
+		super();
+		// TODO change the name of the module, for example use the format name
+		// and the ending Exporter (FORMATExporter)
+		this.setName("SampleExporter");
+		setName(ENDING_XML);
+		// TODO change the version of your module, we recommend to synchronize
+		// this value with the maven version in your pom.xml
+		this.setVersion("1.1.0");
+		// TODO change "dot" with format name and 1.0 with format version to
+		// support
+		this.addSupportedFormat("dot", "1.0", null);
+		// TODO change file ending, here it is set to 'dot' to create dot files
+		setSDocumentEnding("dot");
+		// TODO change if necessary, this means, that the method
+		// exportCorpusStructure will create a file-structure corresponding to
+		// the given corpus-structure. One folder per SCorpus object
+		this.setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
+	}
+
+	/**
+	 * This method creates a {@link PepperMapper}. <br/>
+	 * In this dummy implementation an instance of {@link SampleMapper} is
+	 * created and its location to where the document-structure should be
+	 * exported to is set.
+	 */
+	@Override
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		PepperMapper mapper = new SampleMapper();
+		mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+		return (mapper);
+	}
+
+	public static class SampleMapper extends PepperMapperImpl {
 		/**
-		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-		 * 
-		 * A constructor for your module. Set the coordinates, with which your module shall be registered. 
-		 * The coordinates (modules name, version and supported formats) are a kind of a fingerprint, 
-		 * which should make your module unique.
-		 */
-		public SampleExporter()
-		{
-			super();
-			//TODO change the name of the module, for example use the format name and the ending Exporter (FORMATExporter)
-			this.setName("SampleExporter");
-			setName(ENDING_XML);
-			//TODO change the version of your module, we recommend to synchronize this value with the maven version in your pom.xml
-			this.setVersion("1.1.0");
-			//TODO change "sample" with format name and 1.0 with format version to support
-			this.addSupportedFormat("sample", "1.0", null); 
-		}
-		
-		/**
-		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-		 * 
-		 * This method creates a customized {@link PepperMapper} object and returns it. You can here do some additional initialisations. 
-		 * Thinks like setting the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object and the {@link URI} resource is done
-		 * by the framework (or more in detail in method {@link #start()}).  
-		 * The parameter <code>sElementId</code>, if a {@link PepperMapper} object should be created in case of the object to map is either 
-		 * an {@link SDocument} object or an {@link SCorpus} object of the mapper should be initialized differently. 
-		 * <br/>
-		 * 
-		 * @param sElementId {@link SElementId} of the {@link SCorpus} or {@link SDocument} to be processed. 
-		 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link SElementId}
-		 */
-		public PepperMapper createPepperMapper(SElementId sElementId)
-		{
-			//TODO create an object of a class derived from PepperMapper and return it, if necessary, make some more initializations 
-			return(null);
-		}
-		
-	// =================================================== optional ===================================================	
-		/**
-		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-		 * 
-		 * This method is called by the pepper framework after initializing this object and directly before start processing. 
-		 * Initializing means setting properties {@link PepperModuleProperties}, setting temporary files, resources etc. .
-		 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason.
-		 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
+		 * Stores each document-structure to location given by
+		 * {@link #getResourceURI()}.
 		 */
 		@Override
-		public boolean isReadyToStart() throws PepperModuleNotReadyException
-		{
-			//TODO make some initializations if necessary
-			return(super.isReadyToStart());
+		public DOCUMENT_STATUS mapSDocument() {
+			// workaround to deal with a bug in Salt
+			SCorpusGraph sCorpusGraph = getSDocument().getSCorpusGraph();
+
+			SaltFactory.eINSTANCE.save_DOT(getSDocument(), getResourceURI());
+
+			// workaround to deal with a bug in Salt
+			if (getSDocument().getSCorpusGraph() == null) {
+				getSDocument().setSCorpusGraph(sCorpusGraph);
+			}
+
+			addProgress(1.0);
+			return (DOCUMENT_STATUS.COMPLETED);
 		}
+
+		/**
+		 * Storing the corpus-structure once
+		 */
+		@Override
+		public DOCUMENT_STATUS mapSCorpus() {
+			List<SCorpus> roots = getSCorpus().getSCorpusGraph().getSRootCorpus();
+			if ((roots != null) && (!roots.isEmpty())) {
+				if (getSCorpus().equals(roots.get(0))) {
+					SaltFactory.eINSTANCE.save_DOT(getSCorpus().getSCorpusGraph(), getResourceURI());
+				}
+			}
+
+			return (DOCUMENT_STATUS.COMPLETED);
+		}
+	}
+
+	// =================================================== optional
+	// ===================================================
+	/**
+	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
+	 * 
+	 * This method is called by the pepper framework after initializing this
+	 * object and directly before start processing. Initializing means setting
+	 * properties {@link PepperModuleProperties}, setting temporary files,
+	 * resources etc. . returns false or throws an exception in case of
+	 * {@link PepperModule} instance is not ready for any reason.
+	 * 
+	 * @return false, {@link PepperModule} instance is not ready for any reason,
+	 *         true, else.
+	 */
+	@Override
+	public boolean isReadyToStart() throws PepperModuleNotReadyException {
+		// TODO make some initializations if necessary
+		return (super.isReadyToStart());
+	}
 }
