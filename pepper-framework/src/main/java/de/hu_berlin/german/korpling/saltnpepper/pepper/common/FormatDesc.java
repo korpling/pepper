@@ -49,9 +49,11 @@ public class FormatDesc{
 	/**
 	 * Sets the name of the linguistic format.
 	 * @param formatName name of the format to be used
+	 * @return this
 	 */
-	public void setFormatName(String formatName) {
+	public FormatDesc setFormatName(String formatName) {
 		this.formatName = formatName;
+		return(this);
 	}
 	/**
 	 * Returns the name of the linguistic format.
@@ -75,9 +77,11 @@ public class FormatDesc{
 	/**
 	 * Sets the version of the linguistic format.
 	 * @param formatVersion version of the format
+	 * @return this
 	 */
-	public void setFormatVersion(String formatVersion) {
+	public FormatDesc setFormatVersion(String formatVersion) {
 		this.formatVersion = formatVersion;
+		return(this);
 	}
 
 	/**
@@ -94,9 +98,11 @@ public class FormatDesc{
 	/**
 	 * Sets the documentation reference for the linguistic format.
 	 * @param formatReference link to documentation
+	 * @return this
 	 */
-	public void setFormatReference(URI formatReference) {
+	public FormatDesc setFormatReference(URI formatReference) {
 		this.formatReference = formatReference;
+		return(this);
 	}
 	
 	/**

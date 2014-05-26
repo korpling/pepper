@@ -58,14 +58,17 @@
             called Salt which abstracts over linguistic data. Based on this model, we also developed
             the pluggable universal converter framework Pepper to convert linguistic data between
             various formats. </para>
-        <para>Pepper is a container controlling the workflow of a conversion process, the conversion
+        <para>Pepper is a container controlling the workflow of a conversion process, the mapping
             itself is done by a set of modules called Pepper modules mapping the linguistic data
             between a given format and Salt and vice versa. Pepper is a highly pluggable framework
             which offers the possibility to plug in new modules in order to incorporate further
             formats. The architecture of Pepper is flexible and makes it possible to benefit from
             all already existing modules. This means that when adding a new or previously unknown
-            format Z to Pepper, it is automatically possible to map data between Z and all already
-            supported formats A, B, C, … . A Pepper workflow consists of three phases: <orderedlist>
+            format <emphasis role="italic">Z</emphasis> to Pepper, it is automatically possible to
+            map data between <emphasis role="italic">Z</emphasis> and all already supported formats
+                <emphasis role="italic">A</emphasis>, <emphasis role="italic">B</emphasis>,
+                <emphasis role="italic">C</emphasis>, … . A Pepper workflow consists of three
+            phases: <orderedlist>
                 <listitem>
                     <para>the import phase (mapping data from a given fromat to Salt),</para>
                 </listitem>
@@ -79,42 +82,66 @@
             </orderedlist> The three phase process makes it feasible to influence and manipulate
             data during conversion, for example by adding additional information or linguistic
             annotations, or by merging data from different sources.</para>
-        <para>Since Pepper is a pluggable framework, we used an underlying framework called OSGi
-            (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>) that provides
-            such a functionality. OSGi is a mighty framework and has a lot of impact in the way of
-            programming things in java. Because we do not want to force you to learn OSGi, when you
-            just want to create a new module for pepper, we tried to hide the OSGi layer as good as
-            possible. Therefore, and for the lifecycle management of such projects, we used another
-            framework named maven (see: <link xlink:href="http://maven.apache.org/"
-                >http://maven.apache.org/</link>). Maven is configured via an xml file called
-            pom.xml, you will find it in all SaltNPepper projects and also in the root of the
-            SampleModule project. Maven makes things easier for use especially in dealing with
-            dependencies. </para>
-        <para>The SaltNPepper framework also comes with an environment for a direct start up in
-            Eclipse. for an easier development of a Pepper module. It further contains a test bed
-            for checking simple consistency issues of Pepper modules. This test bed is based on
-            JUnit (see: <link xlink:href="junit.org">junit.org</link>) and can easily be extended
-            for a specific module test.</para>
+        <para>To make Pepper a pluggable framework, we used an underlying plug in technology called
+            OSGi (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>). OSGi is
+            a mighty framework and has a lot of impact in the way of programming things in Java.
+            Because we do not want to force you to learn OSGi, when you just want to create a new
+            module for Pepper, we tried to hide the OSGi layer as good as possible. Therefore, and
+            for the lifecycle management of such projects, we used another framework named maven
+            (see: <link xlink:href="http://maven.apache.org/">http://maven.apache.org/</link>).
+            Maven is configured via an xml file called <emphasis role="italic">pom.xml</emphasis>,
+            you will find it in all SaltNPepper projects and also in the root of the sample project
+            which can be used as a template. Maven makes things easier for use especially in dealing
+            with dependencies. </para>
         <para>In the following, <xref linkend="ch_setUpEnv"/> explains how to set up your
-            environment to start developing your Pepper module. <xref linkend="ch_sampleModule"/>
-            explains how to download and adopt a template module to your own needs. This module then
-            is the base for your own module. In <xref linkend="sec_customization"/> we explain how
-            to add properties to your module, so that the user can dynamically customize the
-            behaviour of the mapping. <xref linkend="ch_documentation"/> shows the usage of a
-            documentation template written in doocbook (see <link
+            environment to start developing your Pepper module and explains how to download and
+            adopt a template module to your own needs. This module then is the base for your own
+            module. In <xref linkend="ch_codeIt"/> we dig into the sourcce code and explain the
+            mechanism how a Pepper module works and interacts with the Pepper framework. In <xref
+                linkend="sec_customization"/> we explain how to add properties to your module, so
+            that the user can dynamically customize the behaviour of the mapping. Since testing of
+            software often is a pain in the back, the <classname>pepper-testSuite</classname>
+            already comes with some predefined tests. This test bed is based on JUnit (see: <link
+                xlink:href="junit.org">junit.org</link>) and can easily be extended for a specific
+            module test.They should save you some time. <xref linkend="ch_documentation"/> shows the
+            usage of a documentation template written in doocbook (see <link
                 xlink:href="http://www.docbook.org/">http://www.docbook.org/</link>) to make a
-            standard documentation for the user of your module. Since testing of software often is a
-            pain in the back, the <classname>pepper-testSuite</classname> already comes with some
-            predefined tests. They should save you some time. Last but not least, this documentation
-            contains a FAQ. Since a FAQ lives of questions, if you have some, just help us
-            increasing that part and send a mail to
-            <email>saltnpepper@lists.hu-berlin.de</email>.</para>
+            standard documentation for the user of your module. </para>
+
+        <sect1>
+            <title>The sample</title>
+            <para>Before we start, we want to introduce our sample implementation of a Pepper
+                module. This guide will show the power of Pepper and in parts even of Salt along
+                that sample project. Therefore it contains sample implementations, which could be
+                used as a template and a kind of an inspiration for your own project. So don't
+                hesitate to override the specific parts. The project contains three modules, one of
+                each kind: an importer, a manipulator and en exporter. The importer just imports a
+                static corpus containing one super-corpus, two sub-corpora and four doucments. Here
+                you can see how to create a corpus-structure and a document-structure<footnote>
+                    <para>Salt differentiates between the corpus-structure and the
+                        document-structure. The document-structure contains the primary data (data
+                        sources) and the linguistic annotations. A bunch of such information is
+                        grouped to a document (<classname>SDocument</classname> in Salt). The
+                        corpus-structure now is a grouping mechanism to group several documents to a
+                        corpus or sub-corpus (<classname>SCorpus</classname> in Salt).</para>
+                </footnote>, as a shortcut to the Salt framework. The manipulator, traverses over
+                the document-structure and prints out some information about it, like the
+                frequencies of annotations, the number of nodes and edges and so on. What you can
+                see here is how to access data and traverse the graph structure in the Salt
+                framework. The exporter exports the corpus into a format named DOT, which can be
+                used for visualization of the corpus. The main logic of that mapping is not
+                contained in the exporter itself, since such a component is already part of the Salt
+                framework. The exporter should just give an impression of how to deal with the
+                creation of the specific output files. Please note, that these modules are just
+                samples and do not show the entire power of Salt or Pepper. For learning more about
+                Salt, please read the Salt model guide or the Salt quick User's guide. Both are
+                available on <link xlink:href="u.hu-berlin.de/saltnpepper"
+                    >u.hu-berlin.de/saltnpepper</link>.</para>
+        </sect1>
     </chapter>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settingUpEnvironment.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sampleModule.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="quickStart.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="codeIt.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testing.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="documentation.xml"/>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="helpers.xml"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faq.xml"/>
 </book>

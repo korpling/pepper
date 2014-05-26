@@ -123,7 +123,9 @@ public class Step extends StepDesc{
 				((PepperExporter)pepperModule).setCorpusDesc(getCorpusDesc());
 			}
 			if(getProps()!= null){
-				pepperModule.getProperties().setPropertyValues(getProps());
+				if (pepperModule.getProperties()!= null){
+					pepperModule.getProperties().setPropertyValues(getProps());
+				}
 			}
 		}
 	}

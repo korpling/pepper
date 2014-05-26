@@ -25,12 +25,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-
+import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
 /**
  * This is a dummy implementation of a JUnit test for testing the {@link SampleImporter} class.
  * Feel free to adapt and enhance this test class for real tests to check the work of your importer.
@@ -42,7 +44,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  * @author Florian Zipser
  *
  */
-public class SampleImporterTest extends PepperImporterTest{
+public class SampleManipulatorTest extends PepperManipulatorTest{
 	/**
 	 * This method is called by the JUnit environment each time before a test case starts. 
 	 * So each time a method annotated with @Test is called. This enables, that each method 
@@ -51,13 +53,7 @@ public class SampleImporterTest extends PepperImporterTest{
 	 */
 	@Before
 	public void setUp(){
-		setFixture(new SampleImporter());
-		
-		//TODO set the formats to be supported by your importer, so that they can be checked
-		FormatDesc formatDef= new FormatDesc();
-		formatDef.setFormatName("sample");
-		formatDef.setFormatVersion("1.0");
-		this.supportedFormatsCheck.add(formatDef);
+		setFixture(new SampleManipulator());
 	}
 
 	/**
@@ -74,6 +70,10 @@ public class SampleImporterTest extends PepperImporterTest{
 	 */
 	@Test
 	public void test_DummyImplementation() {
+		
+//		SaltProject  SampleGenerator.createCompleteSaltproject();
+		
+		
 		//starts the Pepper framework and the conversion process
 		start();
 		

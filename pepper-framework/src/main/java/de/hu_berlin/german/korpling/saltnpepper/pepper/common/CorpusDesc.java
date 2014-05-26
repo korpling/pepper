@@ -20,24 +20,25 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * TODO more docu
+ * This class realizes a description of a corpus to be imported or exported. The description consists of a 
+ * path addressing the location of the corpus and a format description, in which the corpus currently is or 
+ * is supposed to be persist in.  
  * 
  * @author Florian Zipser
  */
 public class CorpusDesc {
 	/**
-	 * TODO more docu
+	 * Initializes a new {@link CorpusDesc} object.
 	 */
 	public CorpusDesc() {
 		super();
 	}
-	/**
-	 * TODO more docu
-	 */
+	/** format description belonging to this corpus */
 	protected FormatDesc formatDesc= null;
 	/**
-	 * TODO more docu
-	 * If no {@link FormatDesc} object is set, a new one is created.
+	 * Returns a set format description.
+	 * If no {@link FormatDesc} object was set, a new one is created.
+	 * @return a format description
 	 */
 	public FormatDesc getFormatDesc() {
 		if (formatDesc== null){
@@ -48,26 +49,32 @@ public class CorpusDesc {
 		return formatDesc;
 	}
 	/**
-	 * TODO more docu
+	 * Sets the format description for this corpus description.
+	 * @param formatDesc format description object
+	 * @return this
 	 */
-	public void setFormatDesc(FormatDesc formatDesc) {
+	public CorpusDesc setFormatDesc(FormatDesc formatDesc) {
 		this.formatDesc = formatDesc;
+		return(this);
 	}
-	/**
-	 * TODO more docu
-	 */
+	
+	/** location of corpus**/
 	protected URI corpusPath= null;
 	/**
-	 * TODO more docu
+	 * Returns the path of where to store or from where to load this corpus.
+	 * @return location of corpus
 	 */
 	public URI getCorpusPath() {
 		return corpusPath;
 	}
 	/**
-	 * TODO more docu
+	 * Sets the path of where to store or from where to load this corpus.
+	 * @param corpusPath location of corpus
+	 * @param this object
 	 */
-	public void setCorpusPath(URI corpusPath) {
+	public CorpusDesc setCorpusPath(URI corpusPath) {
 		this.corpusPath = corpusPath;
+		return(this);
 	}
 	/**
 	 * Returns a string representation of this object. 

@@ -40,6 +40,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperTestException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
@@ -243,6 +244,10 @@ public abstract class PepperModuleTest
 		}
 		
 		job.convert();
+		
+		for (DocumentController controller: ((PepperJobImpl)job).getDocumentControllers()){
+			controller.awake();
+		}
 	}
 	@Test
 	public void testSetGetCorpusGraph()
