@@ -27,13 +27,13 @@
                         </footnote></para>
                 </listitem>
                 <listitem>
-                    <para>Unzip the the Eclipse archive to a location of your choice, lets call it
+                    <para>Unzip the Eclipse archive to a location of your choice, lets call it
                         ECLIPSE_HOME</para>
                 </listitem>
                 <listitem>
                     <para>Download the latest version of Pepper (<link
-                            xlink:href="https://korpling.german.hu-berlin.de/saltnpepper/repository/XXX"
-                            >https://korpling.german.hu-berlin.de/saltnpepper/repository/XXX</link>)</para>
+                            xlink:href="https://korpling.german.hu-berlin.de/saltnpepper/repository/saltNpepper_full/"
+                            >https://korpling.german.hu-berlin.de/saltnpepper/repository/saltNpepper_full/</link>)</para>
                 </listitem>
                 <listitem>
                     <para>Unzip SaltNPepper to a location of your choice, let's call it
@@ -45,10 +45,7 @@
                 <listitem>
                     <para>When you now open Eclipse, a menu will pop up and asks for a workspace
                         location. Point the location to a folder of your choice. Let's call it
-                        WORKSPACE. </para>
-                </listitem>
-                <listitem>
-                    <para>Now you have an empty Eclipse looking like figure XXX. <footnote>
+                        WORKSPACE. Now you have an empty Eclipse. <footnote>
                             <para>When starting Eclipse for the first time, the first you will see
                                 is a welcome tab, just close this tab.</para>
                         </footnote></para>
@@ -60,8 +57,8 @@
                         to install maven in your Eclipse environment.</para>
                 </listitem>
                 <listitem>
-                    <para>Open the 'Eclipse Marketplace' via 'Help --> Eclipse Marketplace...' (see
-                            <xref linkend="fig_marketPlace_m2e"/>)</para>
+                    <para>Open the 'Eclipse Marketplace' via 'Help' --> 'Eclipse Marketplace...'
+                        (see <xref linkend="fig_marketPlace_m2e"/>)</para>
                     <figure xml:id="fig_marketPlace_m2e">
                         <title>Eclipse marketplace</title>
                         <mediaobject>
@@ -72,13 +69,13 @@
                     </figure>
                 </listitem>
                 <listitem>
-                    <para>Type in 'maven' in text box 'Find:' and press enter (see <xref
-                            linkend="fig_marketPlace_m2e"/> position A).</para>
+                    <para>Type in <emphasis role="italic">maven</emphasis> in text box 'Find:' and
+                        press enter (see <xref linkend="fig_marketPlace_m2e"/>).</para>
                 </listitem>
                 <listitem>
                     <para>The plugin 'Maven integration for Eclipse' should be displayed (you may
                         have to scroll down). Click "Install" to install that plugin (see <xref
-                            linkend="fig_marketPlace_m2e"/> position B).</para>
+                            linkend="fig_marketPlace_m2e"/>).</para>
                 </listitem>
                 <listitem>
                     <para>During the installation Eclipse asks you to agree to the license of this
@@ -96,11 +93,12 @@
                                 command-line clients are available, but even the very nice graphical
                                 client TortoiseSVN (<link xlink:href="http://tortoisesvn.net/"
                                     >http://tortoisesvn.net/</link>) is available.</para>
-                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/VERSION/pepper-sampleModules/</programlisting>
+                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/
+                       pepper/tags/VERSION/pepper-sampleModules/</programlisting>
                         <!-- later in github svn export https://github.com/aivarsk/scruffy/trunk/samples from Pepper project either in korpling svn or in github-->
-                        where VERSION stands for a released version of the Pepper framework.
-                        Download the project to a location of your choice, let's call it
-                        SAMPLE_HOME.</para>
+                        where <emphasis role="italic">VERSION</emphasis> stands for a released
+                        version of the Pepper framework. Download the project to a location of your
+                        choice, let's call it SAMPLE_HOME.</para>
                 </listitem>
                 <listitem>
                     <para>Back in Eclipse, click on the menu item 'File' --> 'Import...'. When the
@@ -109,7 +107,7 @@
                 </listitem>
                 <listitem>
                     <para>Click the entry 'Existing Maven Projects' as shown in figure <xref
-                            linkend="fig_eclipseImportDialogue"/> XXX. </para>
+                            linkend="fig_eclipseImportDialogue"/>. </para>
                     <figure xml:id="fig_eclipseImportDialogue">
                         <title>Eclipse Import dialogue</title>
                         <mediaobject>
@@ -125,7 +123,7 @@
                         project and click finish.</para>
                 </listitem>
                 <listitem>
-                    <para>Now Eclipse should import your first Pepper module project. After all your
+                    <para>Now Eclipse should import your first Pepper module project. After all, your
                         Eclipse should look very similar to figure <xref linkend="fig_eclipse"/>).
                             <figure xml:id="fig_eclipse">
                             <title>Eclipse</title>
@@ -144,7 +142,7 @@
     </sect1>
     <sect1 xml:id="sec_letsRun">
         <title>Let's have a first run</title>
-        <para>To run a project in eclipse, you need a configuration of what should be run and how it
+        <para>To run a project in Eclipse, you need a configuration of what should be run and how it
             should be run. This is called a run configuration.</para>
         <orderedlist>
             <listitem>
@@ -172,7 +170,7 @@
             </listitem>
             <listitem>
                 <para>Double-click on the entry 'OSGi Framework', a subentry named
-                    'pepper-testEnvironment' will be opened <footnote>
+                    'pepper-testEnvironment' will be opened (similar to figure <xref linkend="fig_runConfig01"/>)<footnote>
                         <para>If this entry does not appear, open the file
                             'SAMPLE_HOME/src/test/resources/run_sampleProject.launch' by double
                             clicking</para>
@@ -181,8 +179,8 @@
             <listitem>
                 <para>Now switch to the tab 'Environment'. You will find the definition of an
                     environment variable named 'PEPPER_TEST_WORKFLOW_FILE'. The value of this
-                    variable determines, where to find the description file of a Pepper workflow.
-                    The sample module comes with a predfined workflow descrition file at
+                    variable determines, where to find the description file of a Pepper workflow (see figure <xref linkend="fig_runConfig01"/>).
+                    The sample module comes with a predfined workflow file at
                     'SAMPLE_HOME/src/test/resources/sample.pepperparams'. In this workflow all three
                     modules of the sample module project are in use: an importer for importing a
                     static corpus, a manipulator, to print out some information about the corpus
@@ -198,7 +196,7 @@
                 <para>Replace the entry with an absolute path to that file.</para>
             </listitem>
             <listitem>
-                <para>For logging Pepper uses the slf4j framework (see: <link
+                <para>For logging, Pepper uses the slf4j framework (see: <link
                         xlink:href="http://www.slf4j.org/">http://www.slf4j.org/</link>). Switch to
                     tab 'Arguments' and type in in text box vm arguments the flag
                     '-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml'.
@@ -208,30 +206,28 @@
                 <para>Now press the button 'Run'.</para>
             </listitem>
             <listitem>
-                <para>In optimal case everything is fine and Pepper should give an output similar to
-                    this: XXX make a screenshot of expected output XXX</para>
-                <para>So what has happend? <orderedlist>
+                <para>In optimal case everything is fine and Pepper should welcome you and start the
+                    conversion producing some outputs to standard out. So what has happend? <orderedlist>
                         <listitem>
-                            <para>The frameworks starts and notifies about the registered modules,
+                            <para>The framework starts and notifies about the registered modules,
                                 which are some more, than just our sample modules. This is because
-                                Pepper already comes with a small set of integrated modules. </para>
+                                you copied all modules to the Eclipse dropin path.</para>
                         </listitem>
                         <listitem>
-                            <para>Pepper lists the workflow as defined in the workflow description
-                                file.</para>
+                            <para>Pepper lists the workflow as defined in the workflow file.</para>
                         </listitem>
                         <listitem>
-                            <para>The SampleImporter imported a predefined corpus and logs some
+                            <para>The SampleImporter imports a predefined corpus and logs some
                                 status messages to its progress.</para>
                         </listitem>
                         <listitem>
-                            <para>The SampleManipulator outputed some statistcal information about
+                            <para>The SampleManipulator outputs some statistcal information about
                                 that imported corpus like, how many nodes and relations are
                                 contained. Which annotations are used and in which frequency they
                                 occur.</para>
                         </listitem>
                         <listitem>
-                            <para>The SampleExporter exported that corpus in dot format to the path
+                            <para>The SampleExporter exports that corpus in dot format to the path
                                 'SAMPLE_HOME/target/sampleModuleOutput'.</para>
                         </listitem>
                     </orderedlist></para>

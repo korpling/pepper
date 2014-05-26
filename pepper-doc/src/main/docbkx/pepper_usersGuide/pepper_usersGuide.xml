@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="5.0">
+    <info>
+        <title>Pepper</title>
+        <subtitle>User's Guide</subtitle>
+        <authorgroup>
+            <author>
+                <personname>
+                    <firstname>Florian</firstname>
+                    <surname>Zipser</surname>
+                </personname>
+                <email>saltnpepper@lists.hu-berlin.de</email>
+            </author>
+            <author>
+                <orgname xml:id="org1">INRIA</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org2">SFB 632 Information Structure / D1 Linguistic
+                    Database</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org3">Humboldt-Universität zu Berlin</orgname>
+            </author>
+            <author>
+                <orgname xml:id="org4">Universität Potsdam</orgname>
+            </author>
+        </authorgroup>
+        <copyright>
+            <year>2012</year>
+            <holder><xref linkend="org1"/>, <xref linkend="org2"/>, <xref linkend="org3"/>, <xref
+                    linkend="org1"/>,<xref linkend="org4"/>, All rights reserved.</holder>
+        </copyright>
+        <releaseinfo>Version ${project.version}</releaseinfo>
+    </info>
+    <sect1>
+        <title>Introduction</title>
+        <para>Pepper is a pluggable, Java-based, open source<footnote>
+                <para>Apache License, Version 2.0, see: <link
+                        xlink:href="http://www.apache.org/licenses/LICENSE-2.0.html"
+                        >http://www.apache.org/licenses/LICENSE-2.0.html</link></para>
+            </footnote> converter framework for linguistic data. It was developed to convert data
+            coming from a linguistic data format <emphasis role="italic">X</emphasis> to another
+            linguistic data format <emphasis role="italic">Y</emphasis>. To decrease the number of
+            conceptual mappings, Pepper follows the intermediate model approach, which means that a
+            conversion consists of two mappings. First, the data coming from format <emphasis
+                role="italic">X</emphasis> will be mapped to the intermediate model Salt (see: <link
+                xlink:href="http://u.hu-berlin.de/saltnpepper"
+                >http://u.hu-berlin.de/saltnpepper</link>) and second, the data will be mapped from
+            Salt to format <emphasis role="italic">Y</emphasis>. If you imagine a set of n source
+            and target formats, then this approach will decrease the number of mappings from
+                <emphasis role="italic">n2-n</emphasis> mappings in case of the direct mapping
+            approach to <emphasis role="italic">2n</emphasis> mappings.</para>
+        <para> Pepper is a container controlling the workflow of a conversion process. The mapping
+            itself is done by a set of Pepper modules. Pepper is a highly pluggable framework which
+            offers the possibility to plug in new modules in order to incorporate further formats.
+            The architecture of Pepper is flexible and makes it possible to combine all existing
+            modules. Even further modules can be developed and easily be plugged in.</para>
+        <para> The Pepper workflow is separated into three different phases: <orderedlist>
+                <listitem>
+                    <para>the import phase (mapping data from a given fromat to Salt),</para>
+                </listitem>
+                <listitem>
+                    <para>the optional manipulation phase (manipulating or enhancing data in Salt)
+                        and the</para>
+                </listitem>
+                <listitem>
+                    <para>export phase (mapping data from Salt to a given format).</para>
+                </listitem>
+            </orderedlist> The three phase process makes it feasible to influence and manipulate
+            data during conversion, for example by adding additional information or linguistic
+            annotations, or by merging data from different sources.</para>
+        <para>The import phase handles the mapping from a format <emphasis role="italic"
+                >X</emphasis> to the Salt model, the export phase handles the mapping from a Salt
+            model to a format <emphasis role="italic">Y</emphasis>. During the manipulation phase
+            the data in a Salt model can be enhanced, reduced or manipulated. A phase is divided
+            into several steps: the im- and export phase can contain between <emphasis role="italic"
+                >1</emphasis> to <emphasis role="italic">n</emphasis> steps each. Whereas the
+            manipulation phase can contain between <emphasis role="italic">0</emphasis> to <emphasis
+                role="italic">n</emphasis> steps. Each Pepper module realizes such a step and
+            therefore is associated with exactly one phase. The orchestration of Pepper modules is
+            determined by the Pepper workflow description file (.pepperparams). A Pepper module can
+            be identified by specifying its coordinates (its name, the formats name and version of
+            the corpus to be converted). More information concerning the workflow file can be found
+            in <xref linkend="sec_workflowFile"/>.</para>
+    </sect1>
+    <sect1>
+        <title>Pepper commandline interface (CLI)</title>
+        <sect2>
+            <title>Installing Pepper</title>
+            <para>Pepper is system independent and comes as a ready to run zip archive, so you do
+                not need any installation. <orderedlist>
+                    <listitem>
+                        <para>Download the latest version of Pepper SaltNPepper_XXX.zip from <link
+                                xlink:href=" http://u.hu-berlin/saltnpepper/">
+                                http://u.hu-berlin.de/saltnpepper/</link></para>
+                    </listitem>
+                    <listitem>
+                        <para>Unzip the folder to location of your choice (let's call it
+                            PEPPER_HOME).</para>
+                    </listitem>
+                </orderedlist> Your download already includes a set of Pepper modules. In some cases
+                it is necessary to plug in further modules that are not already included or you need
+                to update an included Pepper module. A guide about how to plug in modules can be
+                found in section <xref linkend="sec_plugin"/>.<note>
+                    <para>Since Pepper is Java based, you need to have Java installed on your
+                        system. On most systems, Java is installed by default, but in case it is not
+                        please download it from <link
+                            xlink:href="www.oracle.com/technetwork/java/javase/"
+                            >www.oracle.com/technetwork/java/javase/</link>. To check if Java (or
+                        more precisly a Java Runtime Environment) is running, open a command line
+                        and run: <programlisting>java -version</programlisting>You need at least
+                        version 1.6. </para>
+                </note>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Running Pepper</title>
+            <para>Pepper is a command line program and can be invoked via a simple command line
+                call. You can run Pepper in two modes, a non-interactive mode and an interactive
+                mode.</para>
+            <sect3>
+                <title>Non-Interactive mode</title>
+                <para>In the non-interactive mode, Pepper runs using the passed paramteres and
+                    terminates after the process is done. This mode normally is used, in case of
+                    Pepper is called by a script etc. or the workflow description is already
+                    created. To run Pepper, just
+                    call:<programlisting>pepperStart.bat OPTIONS            (when using Windows)</programlisting>or<programlisting>bash pepperStart.sh OPTIONS        (when using linux, unix or Mac OS)</programlisting>
+                    where OPTIONS is one of the following: <itemizedlist>
+                        <listitem>
+                            <para>workflow-file</para>
+                            <para>Loads the passed 'workflow-file' and starts the conversion.</para>
+                        </listitem>
+                        <listitem>
+                            <para>list</para>
+                            <para>Displays a table with information about all available Pepper
+                                modules.</para>
+                        </listitem>
+                        <listitem>
+                            <para>list module-name</para>
+                            <para>Displays a table with information about the passed Pepper module,
+                                having the name <emphasis>module-name</emphasis>.</para>
+                        </listitem>
+                        <listitem>
+                            <para>self-test</para>
+                            <para>Checks whether the Pepper framework is ready to run or if any
+                                problems are detected, either in Pepper itself or in any registered
+                                Pepper module.</para>
+                        </listitem>
+                    </itemizedlist> For creating a workflow description file, please see section
+                        <xref linkend="sec_workflowFile"/>. </para>
+
+            </sect3>
+            <sect3>
+                <title>Interactive mode</title>
+                <para>The interactive mode opens a Pepper console and currently provides just the
+                    same operations as the non-interactive mode. But we are working on a wizzard
+                    which guides you through the conversion process. Just call
+                    <programlisting>pepperStart.bat             (when using Windows)</programlisting>or<programlisting>bash pepperStart.sh         (when using linux, unix or Mac OS)</programlisting>
+                    Pepper welcomes you with prompt 'pepper>'. Now you can enter one of the
+                    following commands:</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>list</para>
+                        <para>Displays a table with information about all available Pepper
+                            modules.</para>
+                    </listitem>
+                    <listitem>
+                        <para>list module-name</para>
+                        <para>Displays a table with information about the passed Pepper module,
+                            having the name <emphasis>module-name</emphasis>.</para>
+                    </listitem>
+                    <listitem>
+                        <para>self-test</para>
+                        <para>Checks whether the Pepper framework is ready to run or if any problems
+                            are detected, either in Pepper itself or in any registered Pepper
+                            module.</para>
+                    </listitem>
+                </itemizedlist>
+                <!-- 
+                    <para>
+                        <itemizedlist>
+
+                            <listitem>
+                                <para>Type in 'convert WORKFLOW_DESCRIPTION' to start a conversion
+                                    job already defined in a workflow description file located at
+                                    WORKFLOW_DESCRIPTION.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Or type in 'convert' to create a new conversion job</para>
+                            </listitem>
+                            <listitem>
+                                <para>When creating a new job, Pepper will start with the import
+                                    phase and therfore expects you to enter the source path of your
+                                    corpus to be converted</para>
+                            </listitem>
+                            <listitem>
+                                <para>Pepper shows a table of possible importers, you can choose one
+                                    by typing in the number of a converter or its name</para>
+                            </listitem>
+                            <listitem>
+                                <para>Now you are requested to add customization properties for
+                                    customizing the import process, therefore Pepper presents a list
+                                    of possible customization properties, if the modules provides
+                                    such a list.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For adding a property, just type in its name followed by '='
+                                    and a possible value for instance
+                                    <programlisting>pepper/importer/property>myPropery=myValue</programlisting>
+                                    In case you are afraid of typos, or the names of the properties
+                                    are very long, you can also use the number which is given vor
+                                    the name of the job. <programlisting>pepper/importer/property>1:myValue</programlisting>
+                                    <note>
+                                        <para>When using the number shortcut, the delimiter is a ':'
+                                            instead of '='.</para>
+                                    </note>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>When you are done or do not have any properties to customize
+                                    the process just press 'enter'</para>
+                            </listitem>
+                            <listitem>
+                                <para>Pepper will ask you for further import steps, if you are done,
+                                    just press 'enter'. Otherwise type in the source path of another
+                                    corpus.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Now you are done with the import step lets go to the
+                                    manipulation step.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Pepper will show a list of possible manipulators, if you want
+                                    to include one in your workflow, jsut type in its name or the
+                                    named number</para>
+                            </listitem>
+                            <listitem>
+                                <para>Like importers, manipulaors can also provide a customization
+                                    via properties, the mechanism is the same as for importers, so
+                                    take a look at step XXXimportpropertiesXXXX.</para>
+                            </listitem>
+                            <listitem>
+                                <para>You can add as many manipulator steps as you like. When you
+                                    are done, just press 'enter'.</para>
+                            </listitem>
+                            <listitem>
+                                <para>The last phase in a Pepper is the export phase. In this phase
+                                    you can choose one or more module to produce the output
+                                    format.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Enter the path of the location, where to output the corpus or
+                                    corpora.</para>
+                            </listitem>
+                            <listitem>
+                                <para>In the same manner as for the import and manipulation phase,
+                                    Pepper shows you all available exporters under which you can
+                                    choose. Just type in its name or number.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Even exporters can provide a customization via properties, the
+                                    mechanism is the same as for importers, so take a look at step
+                                    XXXimportpropertiesXXXX.</para>
+                            </listitem>
+                            <listitem>
+                                <para>If you want to add further export steps, just enter a further
+                                    output path. Otherwise just press 'enter'.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Congratulation, now you are done with defining the Pepper
+                                    workflow.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Pepper asks you where to store the workflow as an xml file.
+                                    Just enter a location where to store it. If you don't want to
+                                    store the file, just press 'enter'.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Finally Pepper is ready to convert your corpus, if you want
+                                    Pepper to start conversion, just press 'enter'. Anything else
+                                    otherwise and the job will be cancelled.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                     -->
+            </sect3>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="sec_workflowFile">
+        <title>Corpus organisation and workflow file</title>
+        <para> A Pepper workflow can be modeled and persisted in an xml file following a specific
+            notation and having the ending '.pepperparams'. A conversion process consists of three
+            phases, and the notation of a workflow file follows this structure. To identify a Pepper
+            module realizing a step, you have to describe that module by its name the formats name
+            and version, the corpus is in.<note>
+                <para>For each Pepper workflow, the specification of at least one importer and one
+                    exporter is necessary, whereas the use of a manipulator is optional.</para>
+            </note> We now want to introduce a folder-structure, which makes it easy to have a good
+            overview over all formats of one corpus and to bundle all data together. Our experiences
+            in corpora have shown that when working over years with a corpus it is necessary, to
+            have a clear structure. Otherwise things could mess up. Imagine we have a corpus named
+                <emphasis role="italic">corpus1</emphasis>, which is available in the formats
+                <emphasis role="italic">format1</emphasis>, <emphasis role="italic"
+                >format2</emphasis> and <emphasis role="italic">format3</emphasis>. Now we want to
+            convert the corpus a) from <emphasis>format1</emphasis> to <emphasis>format2</emphasis>
+            and b) from <emphasis>format1</emphasis> to <emphasis>format3</emphasis>. Therefore we
+            create two workflow files, <emphasis role="italic">1_to_2.pepperparams</emphasis> and
+                <emphasis role="italic">1_to_3.pepperparams</emphasis>. Since a module can also take
+            some customization properties we also have such a property file
+                (<emphasis>specialParams.properties</emphasis>) , containing attribute-value pairs
+            (ATTRIBUTE_NAME=VALUE). We further have a short description, which describes the corpus
+            and its specifics in <emphasis role="italic">readme.txt</emphasis>. Such a bundle of
+            data belonging together can be stored in a file-structure shown in <xref
+                linkend="fig_folderStructure"/>)</para>
+        <figure xml:id="fig_folderStructure">
+            <title>File-structure showing best practices in how to organize a corpus</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata width="100px" fileref="./images/corpusFolderStructure.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>We now use the <emphasis>1_to_2.pepperparams</emphasis> as a sample, to explain the
+            structure of workflow files in Pepper in the following snippet. In this sample, the
+            importer <emphasis>Format1Importer</emphasis> needs some customizations passed with
+                <emphasis>specialParams.properties</emphasis>. Further the workflow contains a
+            manipulator named <emphasis>Manipulator1</emphasis> to do something with the data
+            between im- and
+            export.<programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;pepperParams:PepperParams  xmlns:xmi="http://www.omg.org/XMI" 
+                            xmlns:pepperParams="de.hu_berlin.german.
+                            korpling.saltnpepper.pepper.pepperParams" 
+                            xmi:version="2.0">
+    &lt;pepperJobParams id="1">
+        &lt;importerParams moduleName="Format1Importer" 
+                        sourcePath="./format1/corpus1" 
+                        specialParams="./specialParams.properties"/>
+        &lt;moduleParams moduleName="Manipulator1"/>
+        &lt;exporterParams moduleName="Format2Exporter" 
+                        destinationPath="./format2/corpus1"/>
+    &lt;/pepperJobParams>
+&lt;/pepperParams:PepperParams>
+                    </programlisting>
+        </para>
+        <para>When you use relative paths in your workflow description, you are able to share the
+            corpus with others without having to adapt anything. You can define the workflow once
+            and run it anywhere. This benefit can be interesting when working in a team, or in case
+            a problem occurs and you want to send us the corpus to help fix the problem.</para>
+        <para> Im- and Exporters can also be addressed by specifying the format name and the format
+            version of the corpus you want to im- or export. The Pepper framework will search for an
+            import or export module handling this format. The following snippet shows the addressing
+            that kind of
+            addressing.<programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;pepperParams:PepperParams  xmlns:xmi="http://www.omg.org/XMI" 
+                            xmlns:pepperParams="de.hu_berlin.german.
+                            korpling.saltnpepper.pepper.pepperParams" 
+                            xmi:version="2.0">
+    &lt;pepperJobParams id="1">
+        &lt;importerParams 	formatName="FORMAT_NAME" 			
+                            formatVersion="FORMAT_VERSION"
+                            sourcePath="./format1/corpus1"/>
+        
+            &lt;!-- ... -->
+        &lt;exporterParams 	formatName="FORMAT_NAME" 			
+                            formatVersion="FORMAT_VERSION"
+                            destinationPath="./format2/corpus1"/>
+    &lt;/pepperJobParams>
+&lt;/pepperParams:PepperParams></programlisting>
+        </para>
+
+        <para>The xml attributes 'sourcePath', 'destinationPath' and 'specialParams' has to follow
+            the URI notation, which is defined as follows:
+            <programlisting>[scheme:][//authority][path][?query][#fragment]</programlisting> An
+            overview of the java reference implementation can be found here for the interested
+            reader: http://download.oracle.com/javase/6/docs/api/java/net/URI.html . </para>
+        <sect2>
+            <title>Relative paths</title>
+            <para>To address a relative file path, use the [path] part of the uri expression. For
+                instance to address the corpus <emphasis>corpus1</emphasis> in a Pepper workflow
+                description, with the given file structure
+                <programlisting>|- .pepperParams
+		|-format1
+			|-corpus1</programlisting>the corpus
+                    <emphasis>corpus1</emphasis> can be addressed as shown
+                here:<programlisting>./format1/corpus1/</programlisting>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Absolute Paths</title>
+            <para> For addressing absolute paths, one has to use a uri scheme. In the current
+                version of Pepper, only the scheme <emphasis>file</emphasis> is supported. The path
+                of an absolute uri has to start with a leading '/' followed by the absolute path. It
+                is also allowed to define an empty authority, which results in three leading
+                slashes. For instance for Windows the use of an absolute uri can look like this:
+                <programlisting>
+    file:/C:/format1/corpus1/		(without authority)
+    
+    file:///C:/format1/corpus1/	(with empty authority)
+</programlisting>
+                Or for linux and mac:
+                <programlisting>
+    file:/format1/corpus1/		(without authority)
+
+    file:///format1/corpus1/		(with empty authority)
+</programlisting>
+            </para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="sec_plugin">
+        <title>Plug in Pepper modules</title>
+        <para>In most cases when you want to plug in a Pepper module you will get a zip file
+            containing the module as a .jar file, and a folder having the same name as the jar file.
+            This folder contains the license files, documentations and other resources the Pepper
+            module needs. The need to plug in a Pepper module can be caused by two reasons: <itemizedlist>
+                <listitem>
+                    <para>you want to update an already existing module or</para>
+                </listitem>
+                <listitem>
+                    <para>you want to install a new Pepper module, which is not already
+                        included</para>
+                </listitem>
+            </itemizedlist> In case 1) move to the plugin folder of Pepper (PEPEPR_HOME/plugins) and
+            remove the plugin you want to update, by deleting the corresponding .jar file and the
+            folder having the same name. This is necessary in order not to have the same Pepper
+            module twice, because otherwise you cannot determine which one will be used in
+            processing. After that or in case 2), it is very easy to get your new module running,
+            just unzip the archive into the plugin folder of Pepper (PEPEPR_HOME/plugins).</para>
+    </sect1>
+    <sect1 xml:id="PepperLibrary">
+        <title>Pepper as a library</title>
+        <para>With the Pepper library, we provide a programmatic access to the Pepper framework
+            including, the configuration of a conversion workflow, the start of a conversion and
+            getting information about the registered Pepper modules. Since Pepper bases on a plugin
+            structure named OSGi (see: <link xlink:href="http://www.osgi.org/"
+                >http://www.osgi.org/</link>), each Pepper module is plugged into the framework
+            separatly. This goes for running Pepper as CLI and for running Pepper as a library as
+            well. So the Pepper framework consists of two necesary components, first a jar file,
+            which could be included in your software project via maven and second a plugin folder
+            containing all Pepper modules. The following excerpt shows the necessary maven
+            coordinates.
+            <programlisting>&lt;dependency>
+    &lt;artifactId>pepper-lib&lt;/artifactId>
+    &lt;groupId>de.hu_berlin.german.korpling.saltnpepper&lt;/groupId>
+    &lt;version>VERSION&lt;/version>
+&lt;/dependency></programlisting>Please
+            replace the placeholder <emphasis>VERSION</emphasis> with the version you want to use.
+            Unfortunatly, Pepper is not included in the maven central repository, therefore you need
+            to include our maven repository into your projects
+            pom:<programlisting>&lt;repositories>
+    &lt;!-- ... -->
+    &lt;repository>
+        &lt;id>korpling&lt;/id>
+        &lt;name>korpling maven repo&lt;/name>
+        &lt;url>http://korpling.german.hu-berlin.de/maven2&lt;/url>
+    &lt;/repository>
+&lt;/repositories></programlisting></para>
+        <para>When Pepper is included in your project, you need to get all necessary plugins and
+            modules, therefore: <orderedlist>
+                <listitem>
+                    <para>Download a Pepper release of your choice from <link
+                            xlink:href="http://u-hu-berlin.de/saltnpepper/"
+                            >http://u-hu-berlin.de/saltnpepper/</link>.</para>
+                </listitem>
+                <listitem>
+                    <para>Unzip the downloaded zip file.</para>
+                </listitem>
+                <listitem>
+                    <para>Copy the contained folder <emphasis>plugins</emphasis> to a folder of your
+                        choice lets call it PLUGINS_HOME.</para>
+                </listitem>
+            </orderedlist>Now you can start coding, we here give you a template how to initialize a
+            Pepper
+            object.<programlisting>PepperStarterConfiguration pepperConf= new 
+    PepperStarterConfiguration();
+pepperConf.setProperty(PepperStarterConfiguration.
+    PROP_PLUGIN_PATH, "PLUGIN_HOME");
+PepperConnector pepper= new PepperOSGiConnector();
+pepper.setProperties(pepperConf);</programlisting>
+            Too much? Ok lets give some explanaitions to the code: <itemizedlist>
+                <listitem>
+                    <para>In line 1, we initialize a configuration object to configure the Pepper
+                        framework before starting it. Line 2 for instance sets the plugin folder.
+                        Please replace the placeholder <emphasis>PLUGIN_HOME</emphasis> with the
+                        real location. The configuration provides some more adaption possibilities,
+                        just take a look into the JavaDoc or the class itself.</para>
+                </listitem>
+                <listitem>
+                    <para>In line 3, we initialize the proper Pepper object symbolising the Pepper
+                        framework. In future there might be several connectors to access the
+                        framework. For instance to access a Pepper instance running on a remote
+                        server. But currently there is just an OSGi connector, which starts a
+                        separate OSGi environment (the used OSGi environment is equinox, see
+                        http://www.eclipse.org/equinox/). </para>
+                </listitem>
+                <listitem>
+                    <para>The last line of code passes the configuration to the Pepper
+                        object.</para>
+                </listitem>
+            </itemizedlist> Pepper is configured now and we are ready to use it. Before we start a
+            conversion workflow, we show how to query the registered modules. The following snippets
+            prints all information of a module to standard
+            out.<programlisting>for (PepperModuleDesc moduleDesc: pepper.getRegisteredModules()){
+    System.out.println(moduleDesc.getName());
+    System.out.println(moduleDesc.getVersion());
+    System.out.println(moduleDesc.getDesc());
+    System.out.println(moduleDesc.getModuleType());
+    System.out.println(moduleDesc.getSupplierContact());
+    System.out.println(moduleDesc.getSupportedFormats());
+}</programlisting>Next
+            we show how to create a single workflow in Pepper and how to run it. In Pepper a
+            workflow is called a job and is represented by the class
+                <classname>PepperJob</classname>. A job consists of several steps. A step could
+            handle an importer, a manipulator or an exporter. A job can contain
+                <emphasis>1</emphasis> to <emphasis>n</emphasis> importers, <emphasis>0</emphasis>
+            to <emphasis>n</emphasis> manipulators and <emphasis>1</emphasis> to
+                <emphasis>n</emphasis> exporters. When using an importer or an exporter, we need to
+            describe the corpus to be im- and exported. The following snippet shows the creation of
+            a corpus description, containing the location of the corpus and a description of the
+            format of the corpus.
+            <programlisting>CorpusDesc corpusExport= new CorpusDesc();
+corpusExport.setCorpusPath(URI.createFileURI("CORPUS_PATH"));
+corpusExport.getFormatDesc().setFormatName("NAME_OF_FORMAT");
+corpusExport.setFormatVersion("VERSION_OF_FORMAT");
+
+StepDesc stepImport= new StepDesc();
+stepImport.setProps(new Properties());
+stepImport.setCorpusDesc(corpusExport);
+		
+CorpusDesc corpusImport= new CorpusDesc();
+corpusImport.setCorpusPath(URI.createFileURI("CORPUS_PATH"));
+corpusImport.getFormatDesc().setFormatName("NAME_OF_FORMAT")
+corpusImport.setFormatVersion("VERSION_OF_FORMAT");
+				
+StepDesc stepExport= new StepDesc();
+stepExport.setProps(new Properties());
+stepExport.setCorpusDesc(corpusImport);
+		
+String jobId= pepper.createJob();
+PepperJob job= pepper.getJob(jobId);
+job.addStepDesc(stepImport);
+job.addStepDesc(stepExport);		
+
+job.convert();        </programlisting>
+            We here create two corpora (line 1-4 and line 10-13) and two steps (line 6-8 and 15-17),
+            one for the import and one for the export. When creating a step, you can also pass some
+            properties for customization. For detailed description of which properties are available
+            corresponding to a specific module, please take a look into the documentation of the
+            Pepper module. After creating the steps, we need to add them to the job (line 21-22). So
+            the last thing to do is to start the job with invoking the method 'convert()' (line
+            24).</para>
+        <para>Another way of converting a job is converting a predefined workflow file. Therefore
+            you need a workflow file as described in section <xref linkend="sec_workflowFile"/>. The
+            following snippet shows how to do this.
+            <programlisting>String jobId= pepper.createJob();
+PepperJob pepperJob= pepper.getJob(jobId);
+pepperJob.load("URI_OF_WORKFLOW_FILE");
+pepperJob.convert();</programlisting></para>
+        <para>Thats it. Now you know how to use the basic functionalities of the Pepper library. We
+            hope you will be happy with it.</para>
+
+        <!-- 
+            <para> - Pepper is a service infrastructure, therefore more parallel jobs are possible,
+                so one conversion is a job, job is identified by unique id - a job consists of steps
+                (identifying module, carrying customization of step and im-or export path if
+                neccessary) - first show a sample - Pepper pepper= Pepper.createPepperX(); - String
+                id= pepper.createJob() - Job job= pepper.getJob(id) - job.createStep() - ... -
+                job.convert() - than explain what does each step mean and which alternatives are
+                there - create an object of type Pepper (several ways) - via static creation with
+                properties like Pepper.createPepperRESTClient(PepperConfiguration),
+                Pepper.createPepperInOSGi(PepperConfiguration),
+                Pepper.createPepperWithEnvironment(PepperConfiguration) - ecplain
+                PepperConfiguration for different ways - you need a job, to determine what pepper
+                should for instance, if pepper should convert a corpus from paula to annis, or if
+                pepper should merge a corpus from exmaralda, tiger and mmax into paula etc. - a job
+                is identified via a string id - String id= Pepper.createJob(); - a step is one task
+                for instance the import of one format like PAULA, or one manipulation, like merging
+                data is a step, or the export into one format is a step - automatically resolving
+                format and module to a given corpus, gives you a list of possible modules - creating
+                a StepDesc - by module name and module version - or by format name and format
+                version - adding step description to job: three phases, import, manipulation and
+                export, during manipulation order matters! but not in import or export - starting
+                job and result - also possible, to postprocess a SaltProject from your application
+                or to import data to a SaltProject for your application, than use convertTo() or
+                convertFrom(), - in first case, you have to set SaltProject via
+                job.setSaltProject(SaltProject), import step is automatically set to
+                DoNothingImporter() - in second case, you have to define importers, exporter is
+                automatically set to DoNothing, in the end you can use SaltProject with
+                job.getSaltProject() - some (very simple) modules are part of pepper distribution
+                like SaltXML importer and DoNothing to make sure, something is there - others need
+                to be registered - if you don't want to make pathes absolute, you can use the
+                variable $PEPPER_HOME, which will be replaced by the detected pepper home location.
+                Now you can make pathes relative to the pepper home loctation, by adding a relative
+                path after the string '$PEPPER_HOME' for instance imagine the pepper home location
+                is located in /home/pepper/, and your plugins are located in /home/pepper/plugins,
+                you can adopt the plugin property, by the following change in the config file:
+                .plugins= $PEPPER_HOME/plugins This property will be automatically resolved to
+                /home/pepper/plugins. </para>
+                 -->
+    </sect1>
+    <!-- 
+        <chapter>
+            <title>Customization properties</title>
+            <sect1>
+                <title>Main memory and processing speed</title>
+                <para> - there are options, to adopt main memory usage of pepepr while conversion -
+                    to this via number of SDOcument or SDocumentgraph objects, which are processed
+                    at one time - depending on the size of the primary text, the number of tokens,
+                    the number of annotations and the deepness of annotation structure, a document
+                    can vary in used size of main memory - can cause in some big documents need more
+                    memory, than os can give to pepper - solution is to reduce number of sdocuments
+                    processed at a time - flag max number of processed dcouments (default value is
+                    10) - main memory and speed often are orthogonal, there - less documents in main
+                    memory at the same time will decrease processing speed, so when you have a big
+                    number of documents which are very small itself, might be useful, to increase
+                    the number of Sdocuments processed at a time - another flag is the intermediate
+                    storage policy of pepper - here we provide the flag 'memory policy' and the
+                    values thrifty, moderate and greedy - what does this mean? often Pepper modules
+                    need different processing time for a document, depending on the task they have
+                    to do - therefore, between 2 modules, there is a queue between modules - so if
+                    first module is faster then second, a lot of modules will wait in the queue,
+                    depending on value in property max number of processed documents - since this
+                    can speed down processing time, pepper can store the waiting documents to disk,
+                    so that they will not be active any more. - thrifty means each document is
+                    stored when completed by one modules - moderate means a document is stored, when
+                    no afterwards comming module is waiting for a document - greedy will never store
+                    a document </para>
+            </sect1>
+        </chapter>
+         -->
+    <sect1>
+        <title>Troubleshooting</title>
+        <para>Salt and Pepper are open source projects developed in a low budget environment,
+            although we are doing our best to create stable systems, it can occur that you run into
+            problems when using Pepper. In such cases, please read the error message displayed on
+            the command line first. In many cases, a problem occurs because the data violates a
+            constraint given by one of the Pepper modules. If this doesn't help, don't hesitate to
+            write an e-mail to <email>saltnpepper@lists.hu-berlin.de</email>. Please don't forget to
+            describe your problem as detailed as possible and send us the log files. You will find
+            them under the '/logs' folder in your Pepper directory. </para>
+    </sect1>
+</article>
