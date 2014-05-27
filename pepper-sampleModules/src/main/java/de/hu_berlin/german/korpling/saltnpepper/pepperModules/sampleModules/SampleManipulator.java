@@ -17,6 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules;
 
+import java.util.Hashtable;
+import java.util.Map;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
@@ -28,138 +32,227 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.german.korpling.saltnpepper.salt.graph.GRAPH_TRAVERSE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STextualDS;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SAnnotation;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SGraphTraverseHandler;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 
 /**
- * This is a sample {@link PepperManipulator}, which can be used for creating individual manipulators for the 
- * Pepper Framework. Therefore you have to take a look to todo's and adapt the code.
+ * This is a dummy implementation to show how a {@link PepperManipulator} works.
+ * Therefore it just prints out some information about a corpus like the number
+ * of nodes, edges and for instance annotation frequencies. <br/>
+ * This class can be used as a template for an own implementation of a
+ * {@link PepperManipulator} Take a look at the TODO's and adapt the code.
  * 
- * <ul>
- *  <li>the salt model to fill, manipulate or export can be accessed via {@link #getSaltProject()}</li>
- * 	<li>special parameters given by Pepper workflow can be accessed via {@link #getSpecialParams()}s()</li>
- *  <li>a place to store temporary datas for processing can be accessed via {@link #getTemproraries()}</li>
- *  <li>a place where resources of this bundle are, can be accessed via {@link #getResources()}</li>
- *  <li>a logService can be accessed via {@link #getLogService()}</li>
- * </ul>
  * @author Florian Zipser
  * @version 1.0
- *
+ * 
  */
-//TODO /1/: change the name of the component, for example use the format name and the ending manipulator (FORMATManipulatorComponent)
-@Component(name="SampleManipulatorComponent", factory="PepperManipulatorComponentFactory")
-public class SampleManipulator extends PepperManipulatorImpl 
-{
-	// =================================================== mandatory ===================================================
+// TODO /1/: change the name of the component, for example use the format name
+// and the ending manipulator (FORMATManipulatorComponent)
+@Component(name = "SampleManipulatorComponent", factory = "PepperManipulatorComponentFactory")
+public class SampleManipulator extends PepperManipulatorImpl {
+	// =================================================== mandatory
+	// ===================================================
 	/**
-	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-	 * <br/>
-	 * A constructor for your module. Set the coordinates, with which your module shall be registered. 
-	 * The coordinates (modules name, version and supported formats) are a kind of a fingerprint, 
-	 * which should make your module unique.
+	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
+	 * A constructor for your module. Set the coordinates, with which your
+	 * module shall be registered. The coordinates (modules name, version and
+	 * supported formats) are a kind of a fingerprint, which should make your
+	 * module unique.
 	 */
 	public SampleManipulator() {
 		super();
-		//TODO change the name of the module, for example use the format name and the ending Manipulator
+		// TODO change the name of the module, for example use the format name
+		// and the ending Manipulator
 		this.setName("SampleManipulator");
-		//TODO change the version of your module, we recommend to synchronize this value with the maven version in your pom.xml
+		// TODO change the version of your module, we recommend to synchronize
+		// this value with the maven version in your pom.xml
 		this.setVersion("1.1.0");
 	}
-	
+
 	/**
-	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-	 * <br/>
-	 * This method creates a customized {@link PepperMapper} object and returns it. You can here do some additional initialisations. 
-	 * Thinks like setting the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object and the {@link URI} resource is done
-	 * by the framework (or more in detail in method {@link #start()}).  
-	 * The parameter <code>sElementId</code>, if a {@link PepperMapper} object should be created in case of the object to map is either 
-	 * an {@link SDocument} object or an {@link SCorpus} object of the mapper should be initialized differently. 
-	 * <br/>
+	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
+	 * This method creates a customized {@link PepperMapper} object and returns
+	 * it. You can here do some additional initialisations. Thinks like setting
+	 * the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object
+	 * and the {@link URI} resource is done by the framework (or more in detail
+	 * in method {@link #start()}). The parameter <code>sElementId</code>, if a
+	 * {@link PepperMapper} object should be created in case of the object to
+	 * map is either an {@link SDocument} object or an {@link SCorpus} object of
+	 * the mapper should be initialized differently. <br/>
 	 * 
-	 * @param sElementId {@link SElementId} of the {@link SCorpus} or {@link SDocument} to be processed. 
-	 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link SElementId}
+	 * @param sElementId
+	 *            {@link SElementId} of the {@link SCorpus} or {@link SDocument}
+	 *            to be processed.
+	 * @return {@link PepperMapper} object to do the mapping task for object
+	 *         connected to given {@link SElementId}
 	 */
-	public PepperMapper createPepperMapper(SElementId sElementId){
-		SampleMapper mapper= new SampleMapper(); 
-		return(mapper);
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		SampleMapper mapper = new SampleMapper();
+		return (mapper);
 	}
-	
+
 	/**
-	 * This class is a dummy implementation for a mapper, to show how it works. Pepper or more specific this dummy
-	 * implementation of a Pepper module creates one mapper object per {@link SDocument} object and {@link SCorpus}
-	 * object each. This ensures, that each of those objects is run independently from another and runs parallelized.
-	 * <br/>
-	 * The method {@link #mapSCorpus()} is supposed to handle all {@link SCorpus} object and the method {@link #mapSDocument()}
-	 * is supposed to handle all {@link SDocument} objects. 
-	 * <br/>
-	 * In our dummy implementation, we just print out some information about a corpus to system.out. This is not very 
-	 * useful, but might be a good starting point to explain how access the several objects in Salt model. 
+	 * This class is a dummy implementation for a mapper, to show how it works.
+	 * Pepper or more specific this dummy implementation of a Pepper module
+	 * creates one mapper object per {@link SDocument} object and
+	 * {@link SCorpus} object each. This ensures, that each of those objects is
+	 * run independently from another and runs parallelized. <br/>
+	 * The method {@link #mapSCorpus()} is supposed to handle all
+	 * {@link SCorpus} object and the method {@link #mapSDocument()} is supposed
+	 * to handle all {@link SDocument} objects. <br/>
+	 * In our dummy implementation, we just print out some information about a
+	 * corpus to system.out. This is not very useful, but might be a good
+	 * starting point to explain how access the several objects in Salt model.
 	 * 
 	 * @author Florian Zipser
-	 *
+	 * 
 	 */
-	public class SampleMapper extends PepperMapperImpl{
+	public class SampleMapper extends PepperMapperImpl implements SGraphTraverseHandler {
+		/**
+		 * Creates meta annotations, if not already exists
+		 */
 		@Override
 		public DOCUMENT_STATUS mapSCorpus() {
-			// TODO Auto-generated method stub
-			return super.mapSCorpus();
+			if (getSCorpus().getSMetaAnnotation("date") == null) {
+				getSCorpus().createSMetaAnnotation(null, "date", "1989-12-17");
+			}
+			return (DOCUMENT_STATUS.COMPLETED);
 		}
-		
+
+		/**
+		 * prints out some information about document-structure
+		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			//create a StringBuilder, to be filled with informations (we need to intermediately store the results, because of parallelism of modules)
-			StringBuilder out= new StringBuilder();
+			// create a StringBuilder, to be filled with informations (we need
+			// to intermediately store the results, because of parallelism of
+			// modules)
+			String format = "|%-15s: %15s |%n";
+			StringBuilder out = new StringBuilder();
 			out.append("\n");
-			out.append("document ");
-			//print out the id of the document
+			// print out the id of the document
 			out.append(getSDocument().getSId());
 			out.append("\n");
-			out.append("-------------------------------\n");
-			out.append("nodes: ");
-			//print out the general number of nodes
-			out.append(getSDocument().getSDocumentGraph().getSNodes().size());
-			out.append("\n");
-			//print out the general number of relations
-			out.append("relations: ");
-			out.append(getSDocument().getSDocumentGraph().getSRelations().size());
-			out.append("\n");
-			//print out the general number of primary texts
-			out.append("texts: ");
-			out.append(getSDocument().getSDocumentGraph().getSTextualDSs().size());
-			out.append("\n");
-			//print out the general number of tokens
-			out.append("tokens: ");
-			out.append(getSDocument().getSDocumentGraph().getSTokens().size());
-			out.append("\n");
-			//print out the general number of spans
-			out.append("spans: ");
-			out.append(getSDocument().getSDocumentGraph().getSSpans().size());
-			out.append("\n");
-			//print out the general number of structures
-			out.append("structures: ");
-			out.append(getSDocument().getSDocumentGraph().getSStructures().size());
-			out.append("\n");
-			
-			//TODO show the traversion mechanism to print out the number of each annotation name, and the max path length per relation type (dominance and pointing)
-			
+			out.append("+---------------------------------+\n");
+			// print out the general number of nodes
+			out.append(String.format(format, "nodes", getSDocument().getSDocumentGraph().getSNodes().size()));
+			addProgress((double) (1 / 7));
+			// print out the general number of relations
+			out.append(String.format(format, "relations", getSDocument().getSDocumentGraph().getSRelations().size()));
+			addProgress((double) (1 / 7));
+			// print out the general number of primary texts
+			out.append(String.format(format, "texts", getSDocument().getSDocumentGraph().getSTextualDSs().size()));
+			addProgress((double) (1 / 7));
+			// print out the general number of tokens
+			out.append(String.format(format, "tokens", getSDocument().getSDocumentGraph().getSTokens().size()));
+			addProgress((double) (1 / 7));
+			// print out the general number of spans
+			out.append(String.format(format, "spans", getSDocument().getSDocumentGraph().getSSpans().size()));
+			addProgress((double) (1 / 7));
+			// print out the general number of structures
+			out.append(String.format(format, "structures", getSDocument().getSDocumentGraph().getSStructures().size()));
+			addProgress((double) (1 / 7));
+
+			// create alist of all root nodes of the current document-structure
+			EList<SNode> roots = getSDocument().getSDocumentGraph().getSRoots();
+			// traverse the document-structure beginning at the roots in
+			// depth-first order top down. The id 'sampleTraversal' is used for
+			// uniqueness, in case of one class uses multiple traversals. This
+			// object then takes the call-backs implemented with methods
+			// checkConstraint, nodeReached and nodeLeft
+			getSDocument().getSDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "sampleTraversal", this);
+
+			// print out computed frequencies
+			for (String key : frequencies.keySet()) {
+				out.append(String.format(format, key, frequencies.get(key)));
+			}
+			addProgress((double) (1 / 7));
+			out.append("+---------------------------------+\n");
 			System.out.println(out.toString());
-			return super.mapSDocument();
+
+			return (DOCUMENT_STATUS.COMPLETED);
+		}
+
+		/** A map storing frequencies of annotations of processed documents. */
+		private Map<String, Integer> frequencies = new Hashtable<String, Integer>();
+
+		/**
+		 * This method is called for each node in document-structure, as long as
+		 * {@link #checkConstraint(GRAPH_TRAVERSE_TYPE, String, SRelation, SNode, long)}
+		 * returns true for this node. <br/>
+		 * In our dummy implementation it just collects frequencies of
+		 * annotations.
+		 */
+		@Override
+		public void nodeReached(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation sRelation, SNode fromNode, long order) {
+			if (currNode.getSAnnotations().size() != 0) {
+				// step through all annotations to collect them in frequencies
+				// table
+				for (SAnnotation annotation : currNode.getSAnnotations()) {
+					Integer frequence = frequencies.get(annotation.getSName());
+					// if annotation hasn't been seen yet, create entry in
+					// frequencies set frequency to 0
+					if (frequence == null) {
+						frequence = 0;
+					}
+					frequence++;
+					frequencies.put(annotation.getSName(), frequence);
+				}
+			}
+		}
+
+		/**
+		 * This method is called on the way back, in depth first mode it is
+		 * called for a node after all the nodes belonging to its subtree have
+		 * been visited. <br/>
+		 * In our dummy implementation, this method is not used.
+		 */
+		@Override
+		public void nodeLeft(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation edge, SNode fromNode, long order) {
+		}
+
+		/**
+		 * With this method you can decide if a node is supposed to be visited
+		 * by methods
+		 * {@link #nodeReached(GRAPH_TRAVERSE_TYPE, String, SNode, SRelation, SNode, long)}
+		 * and
+		 * {@link #nodeLeft(GRAPH_TRAVERSE_TYPE, String, SNode, SRelation, SNode, long)}
+		 * . In our dummy implementation for instance we do not need to visit
+		 * the nodes {@link STextualDS}.
+		 */
+		@Override
+		public boolean checkConstraint(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SRelation edge, SNode currNode, long order) {
+			if (currNode instanceof STextualDS) {
+				return (false);
+			} else {
+				return (true);
+			}
 		}
 	}
-	
-// =================================================== optional ===================================================	
+
+	// =================================================== optional
+	// ===================================================
 	/**
-	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
-	 * <br/>
-	 * This method is called by the pepper framework after initializing this object and directly before start processing. 
-	 * Initializing means setting properties {@link PepperModuleProperties}, setting temporary files, resources etc. .
-	 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason.
-	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
+	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
+	 * This method is called by the pepper framework after initializing this
+	 * object and directly before start processing. Initializing means setting
+	 * properties {@link PepperModuleProperties}, setting temporary files,
+	 * resources etc. . returns false or throws an exception in case of
+	 * {@link PepperModule} instance is not ready for any reason.
+	 * 
+	 * @return false, {@link PepperModule} instance is not ready for any reason,
+	 *         true, else.
 	 */
 	@Override
-	public boolean isReadyToStart() throws PepperModuleNotReadyException{
-		//TODO make some initializations if necessary
-		return(super.isReadyToStart());
+	public boolean isReadyToStart() throws PepperModuleNotReadyException {
+		// TODO make some initializations if necessary
+		return (super.isReadyToStart());
 	}
 }

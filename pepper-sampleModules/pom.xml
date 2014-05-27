@@ -38,6 +38,7 @@
     <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
     <artifactId>pepper-parentModule</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../pepper-parentModule/pom.xml</relativePath>
   </parent>
   <description>This project provides three sample modules for Pepper. It provides an importer, an exporter and a manipulator. The project can be used as a container for creating new PepperModules. One just have to override the areas marked with TODO.</description>
   <!-- TODO /4/ change the project homepage to the url of your project. -->
