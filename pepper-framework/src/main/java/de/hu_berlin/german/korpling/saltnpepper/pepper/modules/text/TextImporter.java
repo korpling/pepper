@@ -96,7 +96,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 		        boolean isFirstLine= true;
 		        while (line != null) {
 		            if (!isFirstLine){
-		            	sb.append(System.lineSeparator());
+		            	sb.append(System.getProperty("line.separator").toString());
 		            }
 		            sb.append(line);
 		            isFirstLine= false;
