@@ -17,28 +17,40 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
-
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 /**
- * This Exception class can be used for Tests (i.e. JUnit tests) of {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule} classes.
- *  
+ * This Exception class can be used for Tests (i.e. JUnit tests) of
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule}
+ * classes.
+ * 
  * @author Florian Zipser
- *
+ * 
  */
-public class PepperModuleTestException extends PepperModuleException
-{
-	
+public class PepperModuleTestException extends PepperModuleException {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5431375961043975520L;
 
-	public PepperModuleTestException()
-	{ super(); }
+	public PepperModuleTestException() {
+		super();
+	}
+
+	public PepperModuleTestException(String s) {
+		super(s);
+	}
+
+	public PepperModuleTestException(String s, Throwable ex) {
+		super(s, ex);
+	}
 	
-    public PepperModuleTestException(String s)
-    { super(s); }
-    
-	public PepperModuleTestException(String s, Throwable ex)
-	{super(s, ex); }
+	public PepperModuleTestException(PepperModule pepperModule, String s) {
+		super("Error in Test of Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s);
+	}
+
+	public PepperModuleTestException(PepperModule pepperModule, String s, Throwable ex) {
+		super("Error in Test of Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s, ex);
+	}
 }

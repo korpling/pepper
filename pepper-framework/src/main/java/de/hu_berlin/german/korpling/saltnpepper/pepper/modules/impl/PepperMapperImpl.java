@@ -214,7 +214,7 @@ public class PepperMapperImpl implements PepperMapper {
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSDocument() {
-		throw new UnsupportedOperationException("OVERRIDE THIS METHOD 'public DOCUMENT_STATUS mapSDocument()' FOR CUSTOMIZED MAPPING.");
+		throw new UnsupportedOperationException("OVERRIDE THE METHOD 'public DOCUMENT_STATUS mapSDocument()' IN '"+getClass().getName()+"' FOR CUSTOMIZED MAPPING.");
 	}
 	/**
 	 * {@inheritDoc PepperMapper#setSCorpus(SCorpus)}
