@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common.tests;
 
 import static org.junit.Assert.*;
 
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,4 +84,9 @@ public class FormatDescTest {
 		assertFalse(getFixture().equals(template));
 	}
 
+	@Test
+	public void testtoSTring(){
+		getFixture().setFormatName("myFormat").setFormatVersion("1.0").setFormatReference(URI.createURI("somewhere"));
+		assertNotNull(getFixture().toString());
+	}
 }

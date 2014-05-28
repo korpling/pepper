@@ -84,13 +84,11 @@ public class CorpusDesc {
 	public String toString(){
 		StringBuilder str= new StringBuilder();
 		str.append(getCorpusPath());
-		if (getFormatDesc()!= null){
-			str.append("(");
-			str.append(getFormatDesc().getFormatName());
-			str.append(", ");
-			str.append(getFormatDesc().getFormatVersion());
-			str.append(")");
-		}
+		str.append("(");
+		str.append(getFormatDesc().getFormatName());
+		str.append(", ");
+		str.append(getFormatDesc().getFormatVersion());
+		str.append(")");
 		return(str.toString());
 	}
 }
