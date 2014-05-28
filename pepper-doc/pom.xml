@@ -55,7 +55,7 @@
               <sourceDirectory>${project.build.directory}/docbkx</sourceDirectory>
               <targetDirectory>${project.build.directory}/manual</targetDirectory>
               <targetFileExtension>${project.version}.pdf</targetFileExtension>
-              <includes>pepper_usersGuide.xml, pepper_modulesDevelopersGuide/pepper_modulesDevelopersGuide.xml, pepper_developersGuide.xml</includes>
+              <includes>pepper_usersGuide/pepper_usersGuide.xml, pepper_modulesDevelopersGuide/pepper_modulesDevelopersGuide.xml, pepper_developersGuide.xml</includes>
               <foCustomization>${basedir}/src/main/docbkx/custom.xsl</foCustomization>
               <highlightSource>true</highlightSource>
               <admonGraphics>true</admonGraphics>

@@ -123,9 +123,9 @@
                         project and click finish.</para>
                 </listitem>
                 <listitem>
-                    <para>Now Eclipse should import your first Pepper module project. After all, your
-                        Eclipse should look very similar to figure <xref linkend="fig_eclipse"/>).
-                            <figure xml:id="fig_eclipse">
+                    <para>Now Eclipse should import your first Pepper module project. After all,
+                        your Eclipse should look very similar to figure <xref linkend="fig_eclipse"
+                        />). <figure xml:id="fig_eclipse">
                             <title>Eclipse</title>
                             <mediaobject>
                                 <imageobject>
@@ -170,7 +170,8 @@
             </listitem>
             <listitem>
                 <para>Double-click on the entry 'OSGi Framework', a subentry named
-                    'pepper-testEnvironment' will be opened (similar to figure <xref linkend="fig_runConfig01"/>)<footnote>
+                    'pepper-testEnvironment' will be opened (similar to figure <xref
+                        linkend="fig_runConfig01"/>)<footnote>
                         <para>If this entry does not appear, open the file
                             'SAMPLE_HOME/src/test/resources/run_sampleProject.launch' by double
                             clicking</para>
@@ -179,12 +180,13 @@
             <listitem>
                 <para>Now switch to the tab 'Environment'. You will find the definition of an
                     environment variable named 'PEPPER_TEST_WORKFLOW_FILE'. The value of this
-                    variable determines, where to find the description file of a Pepper workflow (see figure <xref linkend="fig_runConfig01"/>).
-                    The sample module comes with a predfined workflow file at
-                    'SAMPLE_HOME/src/test/resources/sample.pepperparams'. In this workflow all three
-                    modules of the sample module project are in use: an importer for importing a
-                    static corpus, a manipulator, to print out some information about the corpus
-                    like annotation frequencies and an exporter to export the corpus into dot format.<footnote>
+                    variable determines, where to find the description file of a Pepper workflow
+                    (see figure <xref linkend="fig_runConfig01"/>). The sample module comes with a
+                    predfined workflow file at 'SAMPLE_HOME/src/test/resources/sample.pepperparams'.
+                    In this workflow all three modules of the sample module project are in use: an
+                    importer for importing a static corpus, a manipulator, to print out some
+                    information about the corpus like annotation frequencies and an exporter to
+                    export the corpus into dot format.<footnote>
                         <para>The dot format (see: <link
                                 xlink:href="http://www.graphviz.org/content/dot-language"
                                 >http://www.graphviz.org/content/dot-language</link>) is a format
@@ -241,29 +243,80 @@
             your organization and so on.</para>
         <orderedlist>
             <listitem>
-                <para>Rename the sample project to a name of your choice like
-                    'pepperModules-MyModules' (when working with Eclipse, right click on the project
-                    name and choose the menu entry "Refactor" --> "Rename...")</para>
+                <para><emphasis role="bold">project structure</emphasis></para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Rename the sample project to a name of your choice like
+                            'pepperModules-MyModules' (when working with Eclipse, right click on the
+                            project name and choose the menu entry "Refactor" -->
+                            "Rename...")</para>
+                    </listitem>
+                    <listitem>
+                        <para>Rename the packages (when working with Eclipse, right click on the
+                            package name and choose the menu entry "Refactor" -->
+                            "Rename...")</para>
+                    </listitem>
+                </itemizedlist>
             </listitem>
             <listitem>
-                <para>Rename the packages (when working with Eclipse, right click on the package
-                    name and choose the menu entry "Refactor" --> "Rename...")</para>
+                <para><emphasis role="bold">pom.xml</emphasis></para>
+                <para>Open the pom.xml in the sampel project by double clicking on it. A specific
+                    editor the 'POM editor' will open. On the bottom, a set of tabs is visible,
+                    choose the tab 'pom.xml'. An xml editor will open. The following steps
+                    correspond to one TODO entry in the file.</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Change the "groupId" to the name of your working group
+                            (conventionally, the groupId is the same as the package name). You will
+                            find the entry under '/project/groupId'.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Change the "artifactId" (to the module name). You will find the entry
+                            under '/project/artifactId'.</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">java code</emphasis></para>
+
+                <para>We recommend to delete the modules you do not want to implement for this time
+                    and just to keep the one(s) you are currently needing<footnote>
+                        <para>Otherwise you project will mess up with non-functional modules.</para>
+                    </footnote>.</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Change the name of the module, for instance to MyImporter, MyExporter
+                            etc. We recommend to use the format name and the ending Importer,
+                            Exporter or Manipulator (like <classname>FORMATImporter</classname>).<footnote>
+                                <para>Renaming the modules is important, when you want to use your
+                                    modules together with others in Pepper. A user will not find
+                                    your module, when every module has the name
+                                    SampleImporter.</para>
+                            </footnote></para>
+                    </listitem>
+                    <listitem>
+                        <para>Change the components name<footnote>
+                                <para>a component here is an OSGi service component (for more
+                                    details see <link
+                                        xlink:href="http://wiki.osgi.org/wiki/Declarative_Services"
+                                        >http://wiki.osgi.org/wiki/Declarative_Services</link>)</para>
+                            </footnote>, for instance use the classes name and add 'Component' to it
+                            (e.g. MyImporterComponent) like in the following example.
+                            <programlisting>@Component(name="MyImporterComponent", 
+                            factory="PepperImporterComponentFactory")
+public class MyImporter extends PepperImporterImpl implements PepperImporter</programlisting>
+                        </para>
+                    </listitem>
+                </itemizedlist>
             </listitem>
         </orderedlist>
-        <para>Open the pom.xml in the sampel project by double clicking on it. A specific editor the
-            'POM editor' will open. On the bottom, a set of tabs is visible, choose the tab
-            'pom.xml'. An xml editor will open. The following steps correspond to one TODO entry in
-            the file.</para>
-        <orderedlist>
-            <listitem>
-                <para>Change the "groupId" to the name of your working group (conventionally, the
-                    groupId is the same as the package name). You will find the entry under
-                    '/project/groupId'.</para>
-            </listitem>
-            <listitem>
-                <para>Change the "artifactId" (to the module name). You will find the entry under
-                    '/project/artifactId'.</para>
-            </listitem>
+        <para>That have been all required changes to be made. But as you might have seen, a pom.xml
+            contains a lot more entries to describe your projects. Some of these entries are very
+            useful, depending on the maven modules you want to use. Here we shortly describe how to
+            adapt the optional entries, we have used in the sample project. You can also do the
+            following adaptions later and skip them for now.</para>
+
+        <itemizedlist>
             <listitem>
                 <para>Modify the description: Write what the module is supposed to do. You will find
                     the entry under '/project/description'.</para>
@@ -345,53 +398,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                     "/project/build/plugins/plugin[artifactId/text()=
                     'maven-bundle-plugin']/configuration/instructions/Include-Resource"</para>
             </listitem>
-        </orderedlist>
-        <para>Now we come to some configurational changes in the Java source code. </para>
-        <orderedlist>
-            <listitem>
-                <para>In most cases users do not want to implement all three sorts of modules. Users
-                    often want to implement only an importer an exporter or a manipulator. Then just
-                    delete the classes you won't implement. Otherwise, you will end up with
-                    non-functional modules in your project. In case that you want to have several
-                    importers, manipulators or exporters, just duplicate and rename the classes.
-                </para>
-            </listitem>
-            <listitem>
-                <para>Change the name of the module, for instance to MyImporter, MyExporter etc. We
-                    recommend to use the format name and the ending Importer, Exporter or
-                    Manipulator (like <classname>FORMATImporter</classname>).</para>
-            </listitem>
-            <listitem>
-                <para>Change the name of the component<footnote>
-                        <para>a component here is an OSGi service component (for more details see
-                                <link xlink:href="http://wiki.osgi.org/wiki/Declarative_Services"
-                                >http://wiki.osgi.org/wiki/Declarative_Services</link>)</para>
-                    </footnote>, for instance use the classes name and add 'Component' to it (e.g.
-                    MyImporterComponent) like in the following example.
-                    <programlisting>@Component(name="MyImporterComponent", 
-                            factory="PepperImporterComponentFactory")
-public class MyImporter extends PepperImporterImpl implements PepperImporter</programlisting>
-                </para>
-            </listitem>
-            <listitem>
-                <para>Set the coordinates, with which your module shall be registered. The
-                    coordinates (modules name, version and supported formats) are a kind of a
-                    fingerprint, which should make your module unique. See the following example:
-                    <programlisting>public MyImporterImporter()
-{
-	super();
-	this.setName("MyImporterImporter");
-	//we recommend to synchronize this value with the maven version 
-	//in your pom.xml
-	this.setVersion("1.1.0");
-	this.addSupportedFormat("myFormat", "1.0", null);
-	...
-}</programlisting>
-                </para>
-            </listitem>
-        </orderedlist>
-
-
+        </itemizedlist>
     </sect1>
     <sect1>
         <title>Let's have a second run</title>
