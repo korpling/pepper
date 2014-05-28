@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5">
+  <help_text>title: Pepper workflow
+</help_text>
+  <zoom_level>5</zoom_level>
+  <element>
+    <type>com.umlet.element.SequenceDiagram</type>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>1355</w>
+      <h>805</h>
+    </coordinates>
+    <panel_attributes>title: pepper workflow
+_PepperConverter:pc~pc1_|_PepperModuleResolver:pmr~pmr1_|_PepperJob:pj~pj1_|_PepperModuleController:pmc1~pmc1_|_PepperModuleController:pmc2~pmc2_|_PepperModule:pm~pm1_|_PepperFinishableMonitor:pfm1~pfm1_|_PepperFinishableMonitor:pfm2~pfm2_|_PepperDocumentController:pdc~pdc1_|_PepperQueuedMonitor:pqm1~pqm1_
+pc1-&gt;&gt;pj1:pc1,pj1:create
+pc1-&gt;&gt;pj1:pc1,pj1:setLogService(LogService)
+pc1-&gt;&gt;pj1:pc1,pj1:setProperties(Properties)
+pc1-&gt;&gt;pj1:pc1,pj1:setId(Integer)
+pc1-&gt;&gt;pmr1:pc1,pmr1:get PepperModules corresponding to current job
+pmr1-&gt;&gt;pm1:pmr1,pm1:create
+pm1-&gt;&gt;pm1:pm1,pm1:super()
+pm1-&gt;&gt;pm1:pm1,pm1:setSymbolicName()
+pm1-&gt;&gt;pm1:pm1,pm1:setVersion()
+pm1-&gt;&gt;pm1:pm1,pm1:setName()
+pm1-&gt;&gt;pm1:pm1,pm1:addSupportedFormat(String, String, URI)
+
+pmr1-&gt;&gt;pm1:pmr1,pm1:setTemporaries()
+pmr1-&gt;&gt;pm1:pmr1,pm1:setResources()
+pmr1-&gt;&gt;pm1:pmr1,pm1:setLogger(LogService)
+
+iframe{:optional [PepperModule==PepperImporter or PepperExporter]
+pc1-&gt;&gt;pm1:pc1,pm1:setCorpusDefinition(CorpusDefinition)
+iframe}
+
+pc1-&gt;&gt;pj1:pc1,pj1:add PepperModule objects to PepperJob
+pc1-&gt;&gt;pj1:pc1,pj1:setSaltProject(SaltProject)
+pc1-&gt;&gt;pj1:pc1,pj1:start()
+pj1-&gt;&gt;pm1:pj1,pm1:setSaltProject(SaltProject)
+
+iframe{:optional [PepperModule==PepperImporter]
+pj1-&gt;&gt;pmc2:pj1,pmc2:create
+pj1-&gt;&gt;pmc2:pj1,pmc2:setPepperJobLogger(PepperJobLogger)
+pj1-&gt;&gt;pmc2:pj1,pmc2:setPepperModule(PepperModule)
+pmc2-&gt;&gt;pm1:pmc2,pm1:
+pj1-&gt;&gt;pfm1:pj1,pfm1:create
+pj1-&gt;&gt;pmc2:pj1,pmc2:setPepperM2JMonitor(PepperFinishableMonitor)
+pmc2-&gt;&gt;pfm1:pmc2,pfm1:
+pj1-&gt;&gt;pmc2:pj1,pmc2:importCorpusStructure(SCorpusGraph)
+pmc2-&gt;&gt;pm1:pmc2,pm1:importCorpusStructure(SCorpusGraph)
+pm1.&gt;&gt;pmc2:pm1,pmc2:
+pmc2-&gt;&gt;pfm1:pmc2,pfm1:finish()
+pfm1-&gt;&gt;pj1:pfm1,pj1:
+iframe}
+
+pj1-&gt;&gt;pmc1:pj1,pmc1:create
+pj1-&gt;&gt;pmc1:pj1,pmc1:setPepperJobLogger(PepperJobLogger)
+pj1-&gt;&gt;pmc1:pj1,pmc1:setPepperModule(PepperModule)
+pmc1-&gt;&gt;pm1:pmc1,pm1:
+pj1-&gt;&gt;pfm2:pj1,pfm2:create
+pj1-&gt;&gt;pmc1:pj1,pmc1:setPepperM2JMonitor(PepperFinishableMonitor)
+pmc1-&gt;&gt;pfm2:pmc1,pfm2:
+pj1-&gt;&gt;pdc1:pj1,pdc1:wire DocumentController and PepperModuleController
+pdc1-&gt;&gt;pmc1:pdc1,pmc1:
+
+pj1-&gt;&gt;pqm1:pj1,pqm1:create
+pj1-&gt;&gt;pqm1:pj1,pqm1:wire monitor with PepperModuleController giving input data and controller to where data goes
+pqm1.&gt;&gt;pj1:pqm1,pj1:
+pj1-&gt;&gt;pdc1:pj1,pdc1:observeSDocument(SElementId)
+pj1-&gt;&gt;pmc1:pj1,pmc1:start()
+pfm1-&gt;pj1:pfm1,pj1:finish()</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

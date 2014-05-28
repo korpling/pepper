@@ -1,0 +1,249 @@
+<?xml version='1.0'?>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+      version="5.0">
+	<info>
+		<title>SampleModules</title>
+		<subtitle>User&apos;s Guide</subtitle>
+		<authorgroup>
+			<author><personname><firstname>YOUR</firstname> <surname>
+			NAME</surname></personname></author>
+		</authorgroup>
+		<copyright><year>THE DATE OF NOW</year> <holder>YOUR NAME, All rights 
+		reserved.</holder></copyright>
+		<releaseinfo>Version ${project.version}</releaseinfo>
+	</info>
+	<preface>
+		<title>Foreword</title>
+		<para>The intention of this document is first to give a guide to the 
+		user of how to use the here mentioned Pepper modules and how to 
+		utilize a mapping performed by them. Second this document shall give 
+		a closer view in the details of such a mapping in a declarative way, 
+		to give the user a chance to understand how specific data will be 
+		mapped by the presented Pepper modules.</para>
+	</preface>
+	<chapter>
+		<title>Overview</title>
+		<para>This project contains the Pepper modules listed in 
+		<xref linkend="table_overview"/>. A single module can be identified 
+		via its coordinates (module-name, format-name, format-version) also 
+		given in <xref linkend="table_overview"/>. You can use these 
+		coordinates in a Pepper workflow description file to identify the 
+		modules in a Pepper conversion process. A description of how to model 
+		a workfloe description file can be found under 
+		https://korpling.german.hu-berlin.de/saltnpepper/.</para>
+		<table frame="all" xml:id="table_overview">
+			<title>Pepper modules contained in this project</title>
+			<tgroup align="left" cols="3" colsep="1" rowsep="1">
+				<thead>
+					<row>
+						<entry>Name of Pepper module</entry>
+						<entry>Type of Pepper module</entry>
+						<entry>Format (if module is im- or exporter)</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+						<xref endterm="sample_importer_name" linkend="sample_importer"/>
+						</entry>
+						<entry>importer</entry>
+						<entry>version</entry>
+					</row>
+					<row>
+						<entry>
+						<xref endterm="sample_manipulator_name" linkend="sample_manipulator"/>
+						</entry>
+						<entry>manipulator</entry>
+						<entry>--</entry>
+					</row>
+					<row>
+						<entry>
+						<xref endterm="sample_exporter_name" linkend="sample_exporter"/>
+						</entry>
+						<entry>exporter</entry>
+						<entry>version</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</chapter>
+	<chapter xml:id="changes">
+		<title>Changes</title>
+		<para>This chapter contains the changes in version ${project.version} 
+		compared to the previous version.</para>
+		<section>
+			<title><xref linkend="sample_importer_name"/></title>
+			<itemizedlist spacing="compact">
+				<listitem>
+					<para>Change 1</para>
+					<para>Change 2</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+		<section>
+			<title><xref linkend="sample_manipulator_name"/></title>
+			<itemizedlist spacing="compact">
+				<listitem>
+					<para>Change 1</para>
+					<para>Change 2</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+		<section>
+			<title><xref linkend="sample_exporter_name"/></title>
+			<itemizedlist spacing="compact">
+				<listitem>
+					<para>Change 1</para>
+					<para>Change 2</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+	</chapter>
+	<chapter xml:id="sample_importer">
+		<title xml:id="sample_importer_name">SampleImporter</title>
+		<para>General information about this importer.</para>
+		<sect1>
+			<title>Mapping to Salt</title>
+			<para>This section shall describe the mapping from the original 
+			format to a Salt model.</para>
+		</sect1>
+		<sect1>
+			<title>Properties</title>
+			<para>The table <xref linkend="importer_prop_overview"/> contains an 
+			overview of all usable properties to customize the behaviour of this 
+			Pepper module. The following section contains a close description to 
+			each single property and describes the resulting differences in the 
+			mapping to the Salt model.</para>
+			<table frame="all" xml:id="importer_prop_overview">
+				<title>properties to customize importer behaviour</title>
+				<tgroup align="left" cols="4" colsep="1" rowsep="1">
+					<thead>
+						<row>
+							<entry>Name of property</entry>
+							<entry>Type of property</entry>
+							<entry>optional/ mandatory</entry>
+							<entry>default value</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+							<xref endterm="importer_prop1_title" linkend="prop_prop1"/>
+							</entry>
+							<entry>data type (e.g. Boolean) or a list of possible values 
+							(e.g. value1|value2)</entry>
+							<entry>optional|mandatory</entry>
+							<entry>default value</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			<sect2 xml:id="prop_prop1">
+				<title xml:id="importer_prop1_title">
+				sampleImporter.property1</title>
+				<para><code>sampleImporter.property1=SYNOPSIS (e.g. &apos;value1, 
+				value2&apos; for lsits)</code></para>
+				<para>A detailed description of the property and resulting 
+				differences in the mapping to the Salt model.</para>
+			</sect2>
+		</sect1>
+	</chapter>
+	<chapter xml:id="sample_manipulator">
+		<title xml:id="sample_manipulator_name">SampleManipulator</title>
+		<para>General information about this manipulator.</para>
+		<sect1>
+			<title>Mapping to Salt</title>
+			<para>This section shall describe the mapping from the source Salt 
+			model and the target Salt model.</para>
+		</sect1>
+		<sect1>
+			<title>Properties</title>
+			<para>The table <xref linkend="manipulator_prop_overview"/> contains 
+			an overview of all usable properties to customize the behaviour of 
+			this Pepper module. The following section contains a close 
+			description to each single property and describes the resulting 
+			differences in the mapping to the Salt model.</para>
+			<table frame="all" xml:id="manipulator_prop_overview">
+				<title>properties to customize manipulator behaviour</title>
+				<tgroup align="left" cols="4" colsep="1" rowsep="1">
+					<thead>
+						<row>
+							<entry>Name of property</entry>
+							<entry>Type of property</entry>
+							<entry>optional/ mandatory</entry>
+							<entry>default value</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+							<xref endterm="manipulator_prop1_title" linkend="manipulator_prop_prop1"/>
+							</entry>
+							<entry>data type (e.g. Boolean) or a list of possible values 
+							(e.g. value1|value2)</entry>
+							<entry>optional|mandatory</entry>
+							<entry>default value</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			<sect2 xml:id="manipulator_prop_prop1">
+				<title xml:id="manipulator_prop1_title">
+				sampleManipulator.property1</title>
+				<para><code>sampleManipulator.property1=SYNOPSIS (e.g. 
+				&apos;value1, value2&apos; for lsits)</code></para>
+				<para>A detailed description of the property and resulting 
+				differences in the mapping to the Salt model.</para>
+			</sect2>
+		</sect1>
+	</chapter>
+	<chapter xml:id="sample_exporter">
+		<title xml:id="sample_exporter_name">SampleExporter</title>
+		<para>General information about this exporter.</para>
+		<sect1>
+			<title>Mapping to Salt</title>
+			<para>This section shall describe the mapping from the Salt model to 
+			the target format.</para>
+		</sect1>
+		<sect1>
+			<title>Properties</title>
+			<para>The table <xref linkend="exporter_prop_overview"/> contains an 
+			overview of all usable properties to customize the behaviour of this 
+			Pepper module. The following section contains a close description to 
+			each single property and describes the resulting differences in the 
+			mapping to the Salt model.</para>
+			<table frame="all" xml:id="exporter_prop_overview">
+				<title>properties to customize exporter behaviour</title>
+				<tgroup align="left" cols="4" colsep="1" rowsep="1">
+					<thead>
+						<row>
+							<entry>Name of property</entry>
+							<entry>Type of property</entry>
+							<entry>optional/ mandatory</entry>
+							<entry>default value</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+							<xref endterm="exporter_prop_prop1_title" linkend="exporter_prop_prop1"/>
+							</entry>
+							<entry>data type (e.g. Boolean) or a list of possible values 
+							(e.g. value1|value2)</entry>
+							<entry>optional|mandatory</entry>
+							<entry>default value</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			<sect2 xml:id="exporter_prop_prop1">
+				<title xml:id="exporter_prop_prop1_title">
+				sampleExporter.property1</title>
+				<para><code>sampleexporter.property1=SYNOPSIS (e.g. &apos;value1, 
+				value2&apos; for lsits)</code></para>
+				<para>A detailed description of the property and resulting 
+				differences in the mapping to the Salt model.</para>
+			</sect2>
+		</sect1>
+	</chapter>
+</book>

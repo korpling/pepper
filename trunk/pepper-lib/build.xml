@@ -1,0 +1,45 @@
+<!--
+
+    Copyright 2009 Humboldt University of Berlin, INRIA.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
+
+-->
+<project name="EquinoxLauncher" basedir="." default="all">
+	<path id="lib">
+		<fileset dir="${basedir}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<path id="launcher">
+		<fileset dir="${basedir}/launcher">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<property name="destDir" value="bin" />
+	
+	<!--
+		================================= target: all
+		=================================
+	-->
+	<target name="all" description="--> description">
+		<delete dir="${destDir}"/>
+		<mkdir dir="${destDir}"/>
+		<javac srcdir="${basedir}/src" destdir="${destDir}" debug="on">
+			<classpath refid="launcher" />
+			<classpath refid="lib" />
+		</javac>
+	</target>
+</project>

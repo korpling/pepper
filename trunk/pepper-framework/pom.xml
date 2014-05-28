@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>pepper-framework</artifactId>
+    <packaging>bundle</packaging>
+    <parent>
+        <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+        <artifactId>pepper</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <scm>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-framework/</developerConnection>
+        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-framework/</url>
+    </scm>
+    <description>This project contains the core of pepper.</description>
+    <dependencies>
+        
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- start: copying of OSGI-INF -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${serviceComponents}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${serviceComponentsTarget}</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- end: copying of OSGI-INF -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${maven-bundle-plugin.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <manifestLocation>${META-INF}</manifestLocation>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <instructions>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
+                        <Import-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.common,de.hu_berlin.german.korpling.saltnpepper.pepper.core,de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions,de.hu_berlin.german.korpling.saltnpepper.pepper.modules,de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl,de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework,*</Import-Package>
+                        <Export-Package>de.hu_berlin.german.korpling.saltnpepper.pepper.*</Export-Package>
+                        <Service-Component>${allServiceComponents}</Service-Component>
+                        <Bundle-ClassPath>.,{maven-dependencies},lib/commons-lang3-3.0.jar</Bundle-ClassPath>
+                        <Include-Resource>{maven-resources}, LICENSE, NOTICE, lib/commons-lang3-3.0.jar=lib/commons-lang3-3.0.jar</Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.felix</groupId>
+                                        <artifactId>
+                                            maven-scr-plugin
+                                        </artifactId>
+                                        <versionRange> [1.4.4,) </versionRange>
+                                        <goals>
+                                            <goal>scr</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
