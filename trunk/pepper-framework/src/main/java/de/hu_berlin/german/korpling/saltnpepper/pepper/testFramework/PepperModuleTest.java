@@ -129,6 +129,22 @@ public abstract class PepperModuleTest {
 	 *         stored temporarily
 	 */
 	public File getTempPath(String testDirectory) {
+		return(PepperModuleTest.getTempPath_static(testDirectory));
+	}
+	
+	/**
+	 * Returns a {@link File} object pointing to a temporary path, where the
+	 * caller can store temporary files. The temporary path is located in the
+	 * temporary directory provided by the underlying os. The resulting
+	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/
+	 * <code>testDirectory</code>.
+	 * 
+	 * @param testDirectory
+	 *            last part of the temporary path
+	 * @return a file object locating to a temporary folder, where files can be
+	 *         stored temporarily
+	 */
+	public static File getTempPath_static(String testDirectory) {
 		if ((testDirectory == null) || (testDirectory.isEmpty())) {
 			throw new PepperModuleTestException("Cannot return a temporary directory, since the given last part is empty.");
 		}
