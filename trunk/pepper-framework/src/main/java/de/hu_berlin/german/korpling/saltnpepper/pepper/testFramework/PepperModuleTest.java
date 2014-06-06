@@ -371,6 +371,21 @@ public abstract class PepperModuleTest {
 	 * Compares the content of two files. Iff they are exactly the same, than
 	 * true will be returned. False otherwise.
 	 * 
+	 * @param fileName1
+	 *            first file to compare
+	 * @param fileName2
+	 *            second file to compare
+	 * @return true, iff files are exactly the same
+	 * @throws IOException
+	 * @throws IOException
+	 */
+	public static boolean compareFiles_static(String fileName1, String fileName2) throws IOException {
+		return compareFiles_static(new File(fileName1), new File(fileName2));
+	}
+	/**
+	 * Compares the content of two files. Iff they are exactly the same, than
+	 * true will be returned. False otherwise.
+	 * 
 	 * @param file1
 	 *            first file to compare
 	 * @param file2

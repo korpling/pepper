@@ -186,20 +186,13 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}
 
 		if ((currURI.lastSegment() != null) && (!this.getIgnoreEndings().contains(currURI.lastSegment()))) {// if
-																											// file
-																											// is
-																											// not
-																											// part
-																											// of
-																											// ignore
-																											// list
 			STYPE_NAME type = this.setTypeOfResource(currURI);
 			if (type != null) {// do not ignore resource
 								// create new id
 				File currFile = new File(currURI.toFileString());
 
-				if (STYPE_NAME.SCORPUS.equals(type)) {// resource is a SCorpus
-														// create corpus
+				if (STYPE_NAME.SCORPUS.equals(type)) {
+					// resource is a SCorpus create corpus
 					SCorpus sCorpus = getSCorpusGraph().createSCorpus(parent, currURI.lastSegment());
 					this.getSElementId2ResourceTable().put(sCorpus.getSElementId(), currURI);
 					if (currFile.isDirectory()) {
@@ -212,14 +205,18 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						}
 					}
 				}// resource is a SCorpus
-				else if (STYPE_NAME.SDOCUMENT.equals(type)) {// resource is a
-																// SDocument
-					if (parent == null) {// if there is no corpus given, create
-											// one with name of document
+				else if (STYPE_NAME.SDOCUMENT.equals(type)) {
+					// resource is a SDocument
+					if (parent == null) {
+						// if there is no corpus given, create one with name of
+						// document
 						parent = getSCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 						this.getSElementId2ResourceTable().put(parent.getSElementId(), currURI);
 					}
-					SDocument sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+					SDocument sDocument = null;
+					if (currFile.isDirectory()){
+						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment());
+					}else sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 					this.getSElementId2ResourceTable().put(sDocument.getSElementId(), currURI);
 				}// resource is a SDocument
 					// link documentId with resource

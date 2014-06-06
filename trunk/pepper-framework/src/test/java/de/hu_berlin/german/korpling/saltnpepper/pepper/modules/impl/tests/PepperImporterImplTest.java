@@ -17,6 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +28,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
@@ -62,7 +64,7 @@ public class PepperImporterImplTest {
 	private SCorpusGraph sCorpusGraph = null;
 
 	private File getTempFolder() {
-		return (new File(System.getProperty("java.io.tmpdir") + "/pepper_test/pepperImporterTests"));
+		return (new File(System.getProperty("java.io.tmpdir") + "/pepper-test/pepperImporterTests"));
 	}
 
 	/**
@@ -297,6 +299,56 @@ public class PepperImporterImplTest {
 		assertEquals(2, sCorpusGraph.getSCorpusDocumentRelations().size());
 		assertEquals(2, sCorpusGraph.getSCorpora().size());
 		assertEquals(2, sCorpusGraph.getSDocuments().size());
+		
+		assertEquals("corp1", sCorpusGraph.getSCorpora().get(0).getSName());
+		assertEquals("corp2.1", sCorpusGraph.getSCorpora().get(1).getSName());
+	}
+	
+	/**
+	 * Checks, that the structure is imported correctly (one document folder contains a
+	 * '.'):
+	 * 
+	 * <pre>
+	 * |-corp1
+	 *   |-corp2.1
+	 *     |-doc.1/
+	 *     |-doc.2/
+	 * </pre>
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testImportCorpusStructure_STRUCTURE5() throws IOException {
+		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE5");
+		tmpFolder.mkdirs();
+		File corpFolder = new File(tmpFolder.getCanonicalPath() + "/corp1");
+		corpFolder.mkdirs();
+
+		CorpusDesc corpDef = new CorpusDesc();
+		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
+		this.getFixture().setCorpusDesc(corpDef);
+
+		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2.1");
+		corp2.mkdirs();
+		File doc1 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2.1/doc.1");
+		doc1.mkdirs();
+		File doc2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2.1/doc.2");
+		doc2.mkdirs();
+		
+		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
+
+		this.getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals(4, sCorpusGraph.getSNodes().size());
+		assertEquals(3, sCorpusGraph.getSRelations().size());
+		assertEquals(1, sCorpusGraph.getSCorpusRelations().size());
+		assertEquals(2, sCorpusGraph.getSCorpusDocumentRelations().size());
+		assertEquals(2, sCorpusGraph.getSCorpora().size());
+		assertEquals(2, sCorpusGraph.getSDocuments().size());
+		
+		assertEquals("corp1", sCorpusGraph.getSCorpora().get(0).getSName());
+		assertEquals("corp2.1", sCorpusGraph.getSCorpora().get(1).getSName());
+		assertEquals("doc.1", sCorpusGraph.getSDocuments().get(1).getSName());
+		assertEquals("doc.2", sCorpusGraph.getSDocuments().get(0).getSName());
 	}
 
 	/**
@@ -312,8 +364,8 @@ public class PepperImporterImplTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void testImportCorpusStructure_STRUCTURE5() throws IOException {
-		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE5");
+	public void testImportCorpusStructure_STRUCTURE6() throws IOException {
+		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE6");
 		tmpFolder.mkdirs();
 		File docFolder = new File(tmpFolder.getCanonicalPath() + "/doc1");
 		docFolder.mkdirs();
