@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleImporter;
@@ -54,10 +55,7 @@ public class SampleImporterTest extends PepperImporterTest{
 		setFixture(new SampleImporter());
 		
 		//TODO set the formats to be supported by your importer, so that they can be checked
-		FormatDesc formatDef= new FormatDesc();
-		formatDef.setFormatName("sample");
-		formatDef.setFormatVersion("1.0");
-		this.supportedFormatsCheck.add(formatDef);
+		this.supportedFormatsCheck.add(new FormatDesc().setFormatName("sample").setFormatVersion("1.0"));
 	}
 
 	/**
