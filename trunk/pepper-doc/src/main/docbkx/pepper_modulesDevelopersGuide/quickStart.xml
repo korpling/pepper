@@ -198,7 +198,7 @@
                 <para>Replace the entry with an absolute path to that file.</para>
             </listitem>
             <listitem>
-                <para>For logging, Pepper uses the slf4j framework (see: <link
+                <para>For logging, Pepper uses the SLF4J framework (see: <link
                         xlink:href="http://www.slf4j.org/">http://www.slf4j.org/</link>). Switch to
                     tab 'Arguments' and type in in text box vm arguments the flag
                     '-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml'.
@@ -285,9 +285,10 @@
                     </footnote>.</para>
                 <itemizedlist>
                     <listitem>
-                        <para>Change the name of the module, for instance to MyImporter, MyExporter
-                            etc. We recommend to use the format name and the ending Importer,
-                            Exporter or Manipulator (like <classname>FORMATImporter</classname>).<footnote>
+                        <para>Change the name of the module, for instance to <emphasis role="italic"
+                                >MyImporter</emphasis>, <emphasis role="italic"
+                                >MyExporter</emphasis> etc. We recommend to use the formats name and
+                            the ending Importer, Exporter or Manipulator.<footnote>
                                 <para>Renaming the modules is important, when you want to use your
                                     modules together with others in Pepper. A user will not find
                                     your module, when every module has the name
@@ -301,10 +302,12 @@
                                         xlink:href="http://wiki.osgi.org/wiki/Declarative_Services"
                                         >http://wiki.osgi.org/wiki/Declarative_Services</link>)</para>
                             </footnote>, for instance use the classes name and add 'Component' to it
-                            (e.g. MyImporterComponent) like in the following example.
+                            (e.g. <emphasis role="italic">MyImporterComponent</emphasis>) like in
+                            the following example.
                             <programlisting>@Component(name="MyImporterComponent", 
-                            factory="PepperImporterComponentFactory")
-public class MyImporter extends PepperImporterImpl implements PepperImporter</programlisting>
+           factory="PepperImporterComponentFactory")
+public class MyImporter extends PepperImporterImpl 
+                            implements PepperImporter</programlisting>
                         </para>
                     </listitem>
                 </itemizedlist>
@@ -411,9 +414,10 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                         name).</para>
                 </listitem>
                 <listitem>
-                    <para>In the tab 'Arguments' you need to adapt the reference to the slf4j
+                    <para>In the tab 'Arguments' you need to adapt the reference to the SLF4J
                         configuration file, by replacing the folder SAMPLE_HOME with the new
-                        projects name.</para>
+                        projects name
+                        (-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml).</para>
                 </listitem>
                 <listitem>
                     <para>And the same goes for 'Environment', where you have to adapt the location
@@ -421,8 +425,8 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                 </listitem>
             </orderedlist>
         </para>
-        <para>Also needs to knwo about the name change of the module, therefore you need to adapt
-            the workflow file under 'SAMPLE_HOME/src/test/resources/sample.pepperparams'. <orderedlist>
+        <para>Pepper also needs to know about the name change of the modules, therefore you need to
+            adapt the workflow file under 'SAMPLE_HOME/src/test/resources/sample.pepperparams'. <orderedlist>
                 <listitem>
                     <para>Change the name of the modules and/or the format descriptions.</para>
                 </listitem>
@@ -433,18 +437,18 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
             </orderedlist>
         </para>
         <para> Now your own Pepper module hopefully is able to run inside the Eclipse framework. If
-            not please take a look into section XXXTroubleshootingXXX, if you do not find a solution
-            there, please check the SaltNPepper homepage under <link
+            not please check the SaltNPepper homepage under <link
                 xlink:href="u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</link> or write
-            an e-mail to <link xlink:href="mailto:saltnpepper@lists.hu-berlin.de"
-                >saltnpepper@lists.hu-berlin.de</link>. </para>
+            an e-mail to <email>saltnpepper@lists.hu-berlin.de</email>. </para>
         <para>For creating a deliverable assembly of your project, to be plugged into the Pepper
-            framework, open a command line and run: </para>
-        <synopsis>
-            mvn install assembly:single
-        </synopsis>
+            framework. Open a command line and run:
+            <synopsis>
+            mvn clean install assembly:single
+        </synopsis> Or use
+            Eclipse by right clicking the project and then click 'Run as' --> 'Maven build...'. In
+            form field 'Goals' type in 'clean install assembly:single'.</para>
         <para> This will create a zip file in the target folder of your project
-            'YOUR_PROJECT/target/distribution', which can simply be plugged into Pepper via
+            'SAMPLE_PROJECT/target/distribution', which can simply be plugged into Pepper via
             extracting its content to the plugin folder of Pepper 'PEPPER_HOME/plugins'. <note>
                 <para>If the command mvn was not found, make sure you have installed maven even in
                     your system not only in Eclipse. For more information see the maven site <link
