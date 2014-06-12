@@ -1,0 +1,58 @@
+***********************************************************************************
+***								CHANGELOG for Pepper							***
+***********************************************************************************
+*	groupId:		de.hu_berlin.german.korpling.saltnpepper					  *
+*	artifactId:		pepper												          *
+*													                              *
+*	sub-projects:												                  *
+*	-------------                                                                 *
+*	artifactId:		pepper-exceptions                                             *
+*	artifactId:		pepper-framework                                              *
+*	artifactId:		pepper-logReader                                              *
+*	artifactId:		pepper-modules                                                *
+*	artifactId:		pepper-parentModule                                           *
+*	artifactId:		pepper-starter                                                *
+*	artifactId:		pepper-testSuite                                              *
+*	artifactId:		pepper-workflow                                               *
+***********************************************************************************
+Version 1.1.7
+=============
+	* reorganized detection of Pepper module resources, now PEPPER_TEST environment variable is necessary any more, resources now can be directly loaded from same path, where the bundle is located 
+Version 1.1.6
+=============
+	* added a multi threadable handling for all Pepper modules
+	* a new mechanism for importing the corpus-structure for importers, with which most importers can automatically import the corpus-structure
+	* updated to Salt 1.1.7 
+	
+Version 1.1.5
+=============
+	* adopted entire project to eclipse juno
+	* set notice plugin-in to a global accessable license-mappings.xml on http://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml
+	* removed bundle as packaging of dependencies in pom 
+
+Version 1.1.4
+=============
+	pepper-modules
+  ---------------
+  	*+ added method addSupportedFormat() for simpler creation of a supported format
+  	*+ added automatically method to create the symbolic name of a PepperModule
+  	
+  	
+Version 1.1.3
+=============
+
+  pepper-framework
+  ---------------
+	*=	repaired dealing with uris in pepper workflow description, a relative path now can be used with './a/b/c' and an absolute path can be used with 
+	    'file:/c:/a/b/c' or 'file:///c:/a/b/c' (for windows) and 'file:/a/b/c' or 'file:///a/b/c' (for linux and mac)
+	*+	status message of progress each 20 seconds, with total progress and progress of each document in each pepper module
+	
+  pepper-moduleTests
+  ---------------
+    *+ added a better dealing with pepper-module tests when calling testStart(), now the method importCorpusStructure() in case of the fixture
+       is an importer will be called
+    *+ class PepperModuleTestException was added to mark, that an exception occured in the user defined tests
+    
+  pepepr-modules
+  ---------------
+  	*+ added method isFileToImport(URI) to PepperImporter, this method is a callback, to check if a file shall be imported, in case of the file extension is not enough
