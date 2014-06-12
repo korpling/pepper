@@ -84,7 +84,7 @@
             <title>sequence diagram of Pepper workflow</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata width="400" fileref="images/pepper_workflow.png"/>
+                    <imagedata depth="600" fileref="images/pepper_workflow.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>

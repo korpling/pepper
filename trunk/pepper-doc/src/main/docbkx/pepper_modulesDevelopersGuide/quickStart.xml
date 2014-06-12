@@ -93,12 +93,11 @@
                                 command-line clients are available, but even the very nice graphical
                                 client TortoiseSVN (<link xlink:href="http://tortoisesvn.net/"
                                     >http://tortoisesvn.net/</link>) is available.</para>
-                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/
-                       pepper/tags/VERSION/pepper-sampleModules/</programlisting>
+                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/pep
+per/tags/${project.version}/pepper-sampleModules/</programlisting>
                         <!-- later in github svn export https://github.com/aivarsk/scruffy/trunk/samples from Pepper project either in korpling svn or in github-->
-                        where <emphasis role="italic">VERSION</emphasis> stands for a released
-                        version of the Pepper framework. Download the project to a location of your
-                        choice, let's call it SAMPLE_HOME.</para>
+                        Download the project to a location of your choice, let's call it
+                        SAMPLE_HOME.</para>
                 </listitem>
                 <listitem>
                     <para>Back in Eclipse, click on the menu item 'File' --> 'Import...'. When the
@@ -170,7 +169,7 @@
             </listitem>
             <listitem>
                 <para>Double-click on the entry 'OSGi Framework', a subentry named
-                    'pepper-testEnvironment' will be opened (similar to figure <xref
+                    'run_sampleProject' will be opened (similar to figure <xref
                         linkend="fig_runConfig01"/>)<footnote>
                         <para>If this entry does not appear, open the file
                             'SAMPLE_HOME/src/test/resources/run_sampleProject.launch' by double
