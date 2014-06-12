@@ -107,6 +107,7 @@ public class SampleImporterTest extends PepperImporterTest{
 			//checks that all pointing relations (subclass of relations) are contained
 			assertEquals(1, sDocument.getSDocumentGraph().getSPointingRelations().size());
 		}
+		SaltFactory.eINSTANCE.save_DOT(getFixture().getSaltProject(), URI.createFileURI("/home/florian/Test/SampleImportTest/"));
 	}
 
 	//TODO add further tests for any test cases you can think of and which are necessary
