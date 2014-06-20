@@ -84,7 +84,11 @@ public class PepperStarter
 		HELP("help", "h", null, "Prints this help."),
 		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
 		EXIT("exit", "e", null, "exits Pepper"),
-		CONVERT("convert", "c", "workflow-file", "Loads the passed 'workflow-file' and starts the conversion.");
+		CONVERT("convert", "c", "workflow-file", "Loads the passed 'workflow-file' and starts the conversion."),
+		OSGI("osgi", "o", null, "opens a console to access the underlying OSGi environment, if OSGi is used."),
+		LAUNCH("launch", "la", "module-path", "installs the Pepper module located at 'module path' and starts it."),
+		UPDATE("update", "up", "module-path", "updates a Pepper module with the module located at 'module path' and starts it."),
+		REMOVE("remove", "re", "module-path", "removes the Pepper module, which was installed from 'module path'.");
 		
 		private String name= null;
 		private String abbreviation= null;
@@ -209,11 +213,23 @@ public class PepperStarter
     	return(retVal.toString());
     }
     /**
+     * Opens the OSGi console via an {@link OSGiConsole} object and delegates to it.
+     */
+    public String osgi(){
+    	if (getPepper() instanceof PepperOSGiConnector){
+    		OSGiConsole console= new OSGiConsole((PepperOSGiConnector)getPepper(), PROMPT);
+    		console.start(input, output);
+    		return("exit OSGi");
+    	}else{
+    		return("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+    	}
+    }
+    
+    /**
      * Loads the passed workflow description file and starts the conversion.
      * @param workFlowFile
      */
     public void convert(String workFlowFile){
-    	
     	URI workFlowUri= URI.createFileURI(workFlowFile);	
     	String jobId= pepper.createJob();
 			
@@ -228,6 +244,42 @@ public class PepperStarter
 		}
 		
 		pepper.removeJob(jobId);	
+    }
+    /**
+     * Installs and starts a new Pepper module(s).  
+     */
+    public String launch(List<String> params){
+    	if (getPepper() instanceof PepperOSGiConnector){
+    		OSGiConsole console= new OSGiConsole((PepperOSGiConnector)getPepper(), PROMPT);
+    		console.launch(params, output);
+    		return("launched Pepper module");
+    	}else{
+    		return("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+    	}
+    }
+    /**
+     * Updates a Pepper module(s).  
+     */
+    public String update(List<String> params){
+    	if (getPepper() instanceof PepperOSGiConnector){
+    		OSGiConsole console= new OSGiConsole((PepperOSGiConnector)getPepper(), PROMPT);
+    		console.launch(params, output);
+    		return("updated Pepper module");
+    	}else{
+    		return("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+    	}
+    }
+    /**
+     * Removes a new Pepper module(s).  
+     */
+    public String remove(List<String> params){
+    	if (getPepper() instanceof PepperOSGiConnector){
+    		OSGiConsole console= new OSGiConsole((PepperOSGiConnector)getPepper(), PROMPT);
+    		console.uninstall(params, output);
+    		return("removed Pepper module");
+    	}else{
+    		return("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+    	}
     }
     
     /**
@@ -250,19 +302,19 @@ public class PepperStarter
     	return(retVal.toString());
     }
 
+    public static final String PROMPT= "pepper";
+    private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    private PrintStream output= System.out;
     /**
      * Starts the interactive console of Pepper.
      */
     public void runInteractive(){
-		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-		PrintStream output= System.out;
-		
 		boolean exit= false;
 		String userInput= null;
 		output.println("Welcome to Pepper, type 'help' for help.");
 		while (!exit){
 			try {
-				output.print("pepper>");
+				output.print(PROMPT+">");
 				userInput = input.readLine();
 			} catch (IOException ioe) {				
 		         output.println("Cannot read command, type in 'help' for help.");
@@ -316,6 +368,18 @@ public class PepperStarter
 				}else{
 					output.println("Please pass exactly one workflow file.");
 				}
+			}else if(	(COMMAND.OSGI.getName().equalsIgnoreCase(command))||
+						(COMMAND.OSGI.getAbbreviations().equalsIgnoreCase(command))){
+				output.println(osgi());
+			}else if(	(COMMAND.LAUNCH.getName().equalsIgnoreCase(command))||
+						(COMMAND.LAUNCH.getAbbreviations().equalsIgnoreCase(command))){
+				output.println(launch(params));
+			}else if(	(COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+						(COMMAND.UPDATE.getAbbreviations().equalsIgnoreCase(command))){
+				output.println(update(params));
+			}else if(	(COMMAND.REMOVE.getName().equalsIgnoreCase(command))||
+						(COMMAND.REMOVE.getAbbreviations().equalsIgnoreCase(command))){
+				output.println(remove(params));
 			}else{
 				output.println("Type 'help' for help.");
 			}

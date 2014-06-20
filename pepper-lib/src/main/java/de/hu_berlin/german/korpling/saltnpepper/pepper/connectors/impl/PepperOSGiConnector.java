@@ -18,13 +18,24 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -43,45 +54,47 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnecto
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+
 /**
- * This class is an implementation of {@link Pepper}. It acts as a bridge between the pure java environment and the
- * Pepper universe inside the OSGi environment. This class should help not dealing with OSGi issues when using Pepper and
- * therefore enables it to use Pepper as an embedded library.
+ * This class is an implementation of {@link Pepper}. It acts as a bridge
+ * between the pure java environment and the Pepper universe inside the OSGi
+ * environment. This class should help not dealing with OSGi issues when using
+ * Pepper and therefore enables it to use Pepper as an embedded library.
  * 
  * @author Florian Zipser
- *
+ * 
  */
-public class PepperOSGiConnector implements Pepper, PepperConnector{
+public class PepperOSGiConnector implements Pepper, PepperConnector {
 
-	private static final Logger logger= LoggerFactory.getLogger(PepperOSGiConnector.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
+
 	/**
-	 * Starts Equinox by calling {@link #startEquinox()}, installs all pepper bundles and starts them.
-	 * <br/>
+	 * Starts Equinox by calling {@link #startEquinox()}, installs all pepper
+	 * bundles and starts them. <br/>
 	 * Sets property {@link PepperOSGiRunner#PROP_TEST_DISABLED} to true.
 	 */
 	@Override
-	public void init(){
-		if (getProperties().getPlugInPath()== null){
+	public void init() {
+		if (getProperties().getPlugInPath() == null) {
 			throw new PepperPropertyException("Cannot start pepper, because no plugin path is given for Pepper modules.");
 		}
 		try {
-			//disable PepperOSGiRunner
+			// disable PepperOSGiRunner
 			System.setProperty(PepperOSGiRunner.PROP_TEST_DISABLED, Boolean.TRUE.toString());
-			
-			if (bundleContext== null)
-				bundleContext= this.startEquinox();
-			
-			logger.debug("plugin path:\t\t"+getProperties().getPlugInPath());			
-			
+
+			if (getBundleContext() == null)
+				setBundleContext(this.startEquinox());
+
+			logger.debug("plugin path:\t\t" + getProperties().getPlugInPath());
+
 			logger.debug("installing OSGI-bundles...");
 			logger.debug("-------------------- installing bundles --------------------");
-			Collection<Bundle> bundles= null;
-			
-			//installing module-bundles
+			Collection<Bundle> bundles = null;
+
+			// installing module-bundles
 			logger.debug("\tinstalling OSGI-bundles:");
-			bundles= this.installBundles(new File(getProperties().getPlugInPath()).toURI());
-			
+			bundles = this.installBundles(new File(getProperties().getPlugInPath()).toURI());
+
 			logger.debug("----------------------------------------------------------");
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
@@ -93,254 +106,448 @@ public class PepperOSGiConnector implements Pepper, PepperConnector{
 			throw new PepperException("An exception occured setting up the OSGi environment. ", e);
 		}
 	}
+
 	/** {@link PepperStarterConfiguration} of this object. **/
-	private PepperStarterConfiguration properties= null;
-	/* (non-Javadoc)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperConnector#setProperties(de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperProperties)
+	private PepperStarterConfiguration properties = null;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperConnector
+	 * #
+	 * setProperties(de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter
+	 * .PepperProperties)
 	 */
 	@Override
 	public void setProperties(PepperStarterConfiguration props) {
-		if (properties== null){
+		if (properties == null) {
 			this.properties = props;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperConnector#getProperties()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperConnector
+	 * #getProperties()
 	 */
 	@Override
 	public PepperStarterConfiguration getProperties() {
 		return properties;
 	}
-	
-// ========================================== start: initializing OSGi
-	/** a singleton instance of {@link Pepper}**/
-	private Pepper pepper= null;
+
+	// ========================================== start: initializing OSGi
+	/** a singleton instance of {@link Pepper} **/
+	private Pepper pepper = null;
+
 	/**
-	 * Returns an instance of {@link Pepper}, which is running inside OSGi. This class will be resolved via
-	 * the {@link BundleContext}. If it was resolved once, a singleton instance of this object is returned.
+	 * Returns an instance of {@link Pepper}, which is running inside OSGi. This
+	 * class will be resolved via the {@link BundleContext}. If it was resolved
+	 * once, a singleton instance of this object is returned.
+	 * 
 	 * @return {@link Pepper} from inside the OSGi environment.
 	 */
-	protected Pepper getPepper()
-	{
-		if (pepper == null){
-			ServiceReference serviceReference = bundleContext.getServiceReference(Pepper.class.getName());
-			Pepper pepperOSGi=null;
+	protected Pepper getPepper() {
+		if (pepper == null) {
+			ServiceReference serviceReference = getBundleContext().getServiceReference(Pepper.class.getName());
+			Pepper pepperOSGi = null;
 			if (serviceReference != null) {
-				try{
-					pepperOSGi = (Pepper) bundleContext.getService(serviceReference);
-				}catch(ClassCastException e){
-					pepperOSGi = (Pepper) bundleContext.getService(serviceReference);
+				try {
+					pepperOSGi = (Pepper) getBundleContext().getService(serviceReference);
+				} catch (ClassCastException e) {
+					pepperOSGi = (Pepper) getBundleContext().getService(serviceReference);
 				}
-			}else{
-				throw new PepperException("The pepper-framework was not found in OSGi environment for '"+Pepper.class.getName()+"'.");
+			} else {
+				throw new PepperException("The pepper-framework was not found in OSGi environment for '" + Pepper.class.getName() + "'.");
 			}
-			pepper= pepperOSGi;
+			pepper = pepperOSGi;
 		}
-		return(pepper);
+		return (pepper);
 	}
-	
+
+	/** The context of all pepper bundles. */
+	private BundleContext bundleContext = null;
+
 	/**
-	 * The context of all pepper bundles.
+	 * Returns the {@link BundleContext} object used for this
+	 * {@link PepperConnector}
+	 * 
+	 * @return
 	 */
-	private BundleContext bundleContext= null;	
+	public BundleContext getBundleContext() {
+		return bundleContext;
+	}
+
 	/**
-	 * Returns a String, containing a formatted list of packages to be shared between current classloader
-	 * and OSGi classloaders. The list is formatted as it could be taken of the property {@link Constants#FRAMEWORK_SYSTEMPACKAGES_EXTRA}. 
+	 * Sets the {@link BundleContext} object used for this connector
+	 * 
+	 * @param bundleContext
+	 *            the object to be set
 	 */
-	protected String getSharedPackages(){
-		StringBuilder retVal= new StringBuilder();
-		
-		String sharedPackages= getProperties().getSharedPackages();
-		if (	(sharedPackages!= null)&&
-				(!sharedPackages.isEmpty())){
+	public void setBundleContext(BundleContext bundleContext) {
+		this.bundleContext = bundleContext;
+	}
+
+	/**
+	 * Returns a String, containing a formatted list of packages to be shared
+	 * between current classloader and OSGi classloaders. The list is formatted
+	 * as it could be taken of the property
+	 * {@link Constants#FRAMEWORK_SYSTEMPACKAGES_EXTRA}.
+	 */
+	protected String getSharedPackages() {
+		StringBuilder retVal = new StringBuilder();
+
+		String sharedPackages = getProperties().getSharedPackages();
+		if ((sharedPackages != null) && (!sharedPackages.isEmpty())) {
 			retVal.append(sharedPackages);
-		}else{
-			
-			//TODO is it possible, to retrieve this information automatically?
-			String pepperVersion= "2.0.0";
-			
-			// pepper.common package 
+		} else {
+
+			// TODO is it possible, to retrieve this information automatically?
+			String pepperVersion = "2.0.0";
+
+			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
-			retVal.append(";version=\""+pepperVersion+"\"");
-			
+			retVal.append(";version=\"" + pepperVersion + "\"");
+
 			retVal.append(", ");
-			
-			//pepper.exceptions package
+
+			// pepper.exceptions package
 			retVal.append(PepperException.class.getPackage().getName());
-			retVal.append(";version=\""+pepperVersion+"\"");
-			
+			retVal.append(";version=\"" + pepperVersion + "\"");
+
 			retVal.append(", ");
-			
-			//emf-util
+
+			// emf-util
 			retVal.append(org.eclipse.emf.common.util.URI.class.getPackage().getName());
 		}
-		return(retVal.toString());
+		return (retVal.toString());
 	}
-	
+
 	/**
 	 * Starts the OSGi Equinox environment.
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	protected BundleContext startEquinox() throws Exception
-	{
+	protected BundleContext startEquinox() throws Exception {
 		BundleContext bc = null;
-		
-		Properties frameworkProperties= new Properties();
-				 
+
+		Properties frameworkProperties = new Properties();
+
 		frameworkProperties.setProperty(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
-		
+
 		frameworkProperties.setProperty(EclipseStarter.PROP_CLEAN, "true");
 		frameworkProperties.setProperty(EclipseStarter.PROP_CONSOLE, "true");
 		frameworkProperties.setProperty(EclipseStarter.PROP_NOSHUTDOWN, "true");
 		frameworkProperties.setProperty(EclipseStarter.PROP_INSTALL_AREA, "./_TMP/");
-		
+
 		EclipseStarter.setInitialProperties(frameworkProperties);
-		 
-		//it seems, that program will not terminate because of flag 
-//		bc = EclipseStarter.startup(new String[] { "-console", "-dev", "bin", "-noExit", "osgi.noShutdown"}, null);
-//		bc = EclipseStarter.startup(new String[] { "-dev", "bin", "-noExit", "osgi.noShutdown"}, null);
-		bc = EclipseStarter.startup(new String[]{}, null);
-		 
+		// it seems, that program will not terminate because of flag
+		// bc = EclipseStarter.startup(new String[] { "-console", "-dev", "bin",
+		// "-noExit", "osgi.noShutdown"}, null);
+		// bc = EclipseStarter.startup(new String[] { "-dev", "bin", "-noExit",
+		// "osgi.noShutdown"}, null);
+		bc = EclipseStarter.startup(new String[] {}, null);
+
 		return bc;
 	}
-	/** name of system property to determine the locations of OSGi bundles**/
-	public static final String PROP_OSGI_BUNDLES= "osgi.bundles";
-	
+
+	/** name of system property to determine the locations of OSGi bundles **/
+	public static final String PROP_OSGI_BUNDLES = "osgi.bundles";
+
 	/**
-	 * Tries to install all jar-files, of the given pluginPath.
-	 * <br/>
-	 * Each installed jar will be added to system property {@value #PROP_OSGI_BUNDLES} as reference:file:JAR_FILE.
-	 * @param pluginPath path ere the bundles are
-	 * @param bundleAction a flag, which shows if bundle has to be started or just installed
+	 * Tries to install all jar-files, of the given pluginPath. <br/>
+	 * Each installed jar will be added to system property
+	 * {@value #PROP_OSGI_BUNDLES} as reference:file:JAR_FILE.
+	 * 
+	 * @param pluginPath
+	 *            path ere the bundles are
+	 * @param bundleAction
+	 *            a flag, which shows if bundle has to be started or just
+	 *            installed
 	 * @throws BundleException
 	 * @throws URISyntaxException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	protected Collection<Bundle> installBundles(URI pluginPath) throws BundleException, URISyntaxException, IOException
-	{
-		Collection<Bundle> bundles= new Vector<Bundle>();
-		StringBuilder osgiBundlesProp= null;
-		for (File bundleJar: new File(pluginPath.getPath()).listFiles())
-		{
-			//check if file is file-object
-			if (bundleJar.isFile())
-			{	
-				//check if file is file jar
-				if (bundleJar.getName().endsWith(".jar"))
-				{
-					URI bundleURI= bundleJar.toURI();
-					Bundle persistenceBundle = this.bundleContext.installBundle(bundleURI.toString());
-					bundles.add(persistenceBundle);
-					logger.debug("\t\tinstalling bundle: "+persistenceBundle.getSymbolicName()+"-"+ persistenceBundle.getVersion());
-					
-					//set system property for bundle pathes
-					if (osgiBundlesProp== null){
-						osgiBundlesProp= new StringBuilder();
+	protected Collection<Bundle> installBundles(URI pluginPath) throws BundleException, URISyntaxException, IOException {
+		Collection<Bundle> bundles = new Vector<Bundle>();
+		StringBuilder osgiBundlesProp = null;
+		for (File bundleJar : new File(pluginPath.getPath()).listFiles()) {
+			// check if file is file-object
+			if (bundleJar.isFile()) {
+				// check if file is file jar
+				if (bundleJar.getName().endsWith(".jar")) {
+					URI bundleURI = bundleJar.toURI();
+					Bundle bundle = install(bundleURI);
+					bundles.add(bundle);
+					logger.debug("\t\tinstalling bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
+
+					// set system property for bundle pathes
+					if (osgiBundlesProp == null) {
+						osgiBundlesProp = new StringBuilder();
 					}
 					osgiBundlesProp.append("reference:");
 					osgiBundlesProp.append(bundleURI);
 					osgiBundlesProp.append(",");
-				}	
-			}	
+				}
+			}
 		}
-		if (	(System.getProperty(PROP_OSGI_BUNDLES)== null)||
-				(System.getProperty(PROP_OSGI_BUNDLES).isEmpty())){
+		if ((System.getProperty(PROP_OSGI_BUNDLES) == null) || (System.getProperty(PROP_OSGI_BUNDLES).isEmpty())) {
 			System.setProperty(PROP_OSGI_BUNDLES, osgiBundlesProp.toString());
 		}
-		return(bundles);
+		return (bundles);
 	}
-	
+
+	/** Stores all bundle ids and the corresponding bundles. */
+	private Map<Long, Bundle> bundleIdMap = new Hashtable<Long, Bundle>();
+	/** Stores all locations of bundles and the corresponding bundle ids **/
+	private Map<URI, Long> locationBundleIdMap = new Hashtable<URI, Long>();
+
+	/**
+	 * Returns the bundle id to an already installed bundle from the passed
+	 * location.
+	 **/
+	public Long getBundleId(URI location) {
+		if (location != null) {
+			return (locationBundleIdMap.get(location));
+		}
+		return (null);
+	}
+
+	/**
+	 * Installs the given bundle and copies it to the plugin path, but does not
+	 * start it.
+	 * 
+	 * @param bundleURI
+	 * @return
+	 * @throws BundleException
+	 * @throws IOException
+	 */
+	public Bundle installAndCopy(URI bundleURI) throws BundleException, IOException {
+		Bundle retVal = null;
+		if (bundleURI != null) {
+			String pluginPath = getProperties().getPlugInPath();
+			if (pluginPath != null) {
+				// download file, if file is a web resource
+				if (("http".equalsIgnoreCase(bundleURI.getScheme())) || ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
+					String tmpPath = System.getProperty("java.io.tmpdir");
+					URL bundleUrl = bundleURI.toURL();
+					if (!tmpPath.endsWith("/")) {
+						tmpPath = tmpPath + "/";
+					}
+					String baseName = FilenameUtils.getBaseName(bundleUrl.toString());
+					String extension = FilenameUtils.getExtension(bundleUrl.toString());
+					File bundleFile = new File(tmpPath + baseName + "." + extension);
+
+					System.out.println("copy " + bundleURI + " to " + bundleFile);
+					org.apache.commons.io.FileUtils.copyURLToFile(bundleURI.toURL(), bundleFile);
+					bundleURI = URI.create(bundleFile.getAbsolutePath());
+				}
+				if (bundleURI.getPath().endsWith("zip")) {
+					ZipFile zipFile = null;
+					try {
+						zipFile = new ZipFile(bundleURI.getPath());
+						Enumeration<? extends ZipEntry> entries = zipFile.entries();
+						while (entries.hasMoreElements()) {
+							ZipEntry entry = entries.nextElement();
+							File entryDestination = new File(pluginPath, entry.getName());
+							entryDestination.getParentFile().mkdirs();
+							if (entry.isDirectory()) {
+								entryDestination.mkdirs();
+								System.out.println("create dir: " + entryDestination);
+							} else {
+								InputStream in = zipFile.getInputStream(entry);
+								OutputStream out = new FileOutputStream(entryDestination);
+								IOUtils.copy(in, out);
+								System.out.println("copy " + entry.getName() + " to " + pluginPath);
+								IOUtils.closeQuietly(in);
+								IOUtils.closeQuietly(out);
+							}
+						}
+						// } catch (ZipException e) {
+						// e.printStackTrace();
+					} finally {
+						zipFile.close();
+					}
+				}
+
+				// if ("file".equalsIgnoreCase(bundleURI.getScheme())){
+				// File sourceFile= new File(bundleURI.getPath());
+				// if (!pluginPath.endsWith("/")){
+				// pluginPath= pluginPath+ "/";
+				// }
+				// File targetFile= new File(pluginPath+ sourceFile.getName());
+				// FileUtils.copyFile(sourceFile, targetFile);
+				// }else if ( ("http".equalsIgnoreCase(bundleURI.getScheme()))||
+				// ("https".equalsIgnoreCase(bundleURI.getScheme()))){
+				//
+				// }
+				// if (newUri!= null){
+				// retVal = install(newUri);
+				// }
+			}
+		}
+
+		return (retVal);
+	}
+
+	/**
+	 * Installs the given bundle, but does not start it.
+	 * 
+	 * @param bundleURI
+	 * @return
+	 * @throws BundleException
+	 */
+	public Bundle install(URI bundleURI) throws BundleException {
+		Bundle bundle = getBundleContext().installBundle(bundleURI.toString());
+		bundleIdMap.put(bundle.getBundleId(), bundle);
+
+		String osgiBundleProp = System.getProperty(PROP_OSGI_BUNDLES);
+
+		if (osgiBundleProp == null) {
+			osgiBundleProp = "";
+		} else {
+			osgiBundleProp = osgiBundleProp + ",";
+		}
+
+		osgiBundleProp = osgiBundleProp + "reference:" + bundleURI;
+
+		System.setProperty(PROP_OSGI_BUNDLES, osgiBundleProp);
+		locationBundleIdMap.put(bundleURI, bundle.getBundleId());
+		return (bundle);
+	}
+
+	/**
+	 * Uninstalls a bundle from OSGi context.
+	 * 
+	 * @throws BundleException
+	 */
+	public void uninstall(Long bundleId) throws BundleException {
+		Bundle bundle = getBundleContext().getBundle(bundleId);
+		bundle.uninstall();
+	}
+
+	/**
+	 * Uninstalls a bundle from OSGi context.
+	 * 
+	 * @throws BundleException
+	 */
+	public void uninstall(URI location) throws BundleException {
+		if (location != null) {
+			Long bundleId = locationBundleIdMap.get(location);
+			if (bundleId != null) {
+				Bundle bundle = getBundleContext().getBundle(bundleId);
+				bundle.uninstall();
+			}
+		}
+	}
+
+	/**
+	 * Starts the passed bundle
+	 * 
+	 * @param bundle
+	 */
+	public void start(Long bundleId) {
+		Bundle bundle = bundleIdMap.get(bundleId);
+		logger.debug("\t\tstarting bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
+		if (bundle.getState() != Bundle.ACTIVE) {
+			try {
+				bundle.start();
+			} catch (BundleException e) {
+				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. This could cause other problems. ");
+				logger.debug("The reason was: ", e);
+			}
+		}
+		if (bundle.getState() != Bundle.ACTIVE) {
+			logger.error("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly.");
+		}
+	}
+
 	/**
 	 * Starts all bundle being contained in the given list of bundles.
-	 * @param bundles a list of bundles to start
-	 * @throws BundleException 
+	 * 
+	 * @param bundles
+	 *            a list of bundles to start
+	 * @throws BundleException
 	 */
-	protected void startBundles(Collection<Bundle> bundles) throws BundleException
-	{
-		if (bundles!= null)
-		{
-			Bundle pepperBundle= null;
-			for (Bundle bundle: bundles){
-				//TODO this is a workaround, to fix that module resolver is loaded as last bundle, otherwise, some modules will be ignored
-				if ("de.hu_berlin.german.korpling.saltnpepper.pepper-framework".equalsIgnoreCase(bundle.getSymbolicName())){
-					pepperBundle= bundle;
-				}else{
-					logger.debug("\t\tstarting bundle: "+bundle.getSymbolicName()+ "-"+ bundle.getVersion());
-					if (bundle.getState()!= Bundle.ACTIVE){
-						try{
-							bundle.start();
-						}catch (BundleException e){
-							logger.warn("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly. This could cause other problems. ");
-							logger.debug("The reason was: ",e);
-						}
-					}
-					if (bundle.getState()!= Bundle.ACTIVE){
-						logger.error("The bundle '"+bundle.getSymbolicName()+"-" +bundle.getVersion()+"' wasn't started correctly.");
-					}
+	protected void startBundles(Collection<Bundle> bundles) throws BundleException {
+		if (bundles != null) {
+			Bundle pepperBundle = null;
+			for (Bundle bundle : bundles) {
+				// TODO this is a workaround, to fix that module resolver is
+				// loaded as last bundle, otherwise, some modules will be
+				// ignored
+				if ("de.hu_berlin.german.korpling.saltnpepper.pepper-framework".equalsIgnoreCase(bundle.getSymbolicName())) {
+					pepperBundle = bundle;
+				} else {
+					start(bundle.getBundleId());
 				}
 			}
 			pepperBundle.start();
 		}
 	}
 
-// ========================================== end: initializing OSGi	
-	
+	// ========================================== end: initializing OSGi
+
 	/**
 	 * {@inheritDoc Pepper#createJob()}
 	 */
 	@Override
 	public String createJob() {
-		if (getPepper()== null)
+		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		
-		return(getPepper().createJob());
+
+		return (getPepper().createJob());
 	}
+
 	/**
 	 * {@inheritDoc Pepper#getJob(String)}
 	 */
 	@Override
 	public PepperJob getJob(String id) throws JobNotFoundException {
-		if (getPepper()== null)
+		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		
-		return(getPepper().getJob(id));
+
+		return (getPepper().getJob(id));
 	}
+
 	/**
 	 * {@inheritDoc Pepper#removeJob(String)}
 	 */
 	@Override
 	public boolean removeJob(String id) throws JobNotFoundException {
-		if (getPepper()== null)
+		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		
-		return(getPepper().removeJob(id));
+
+		return (getPepper().removeJob(id));
 	}
+
 	/**
 	 * {@inheritDoc Pepper#getRegisteredModules()}
 	 */
 	@Override
 	public Collection<PepperModuleDesc> getRegisteredModules() {
-		if (getPepper()== null)
+		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		
-		return(getPepper().getRegisteredModules());
+
+		return (getPepper().getRegisteredModules());
 	}
 
 	@Override
 	public String getRegisteredModulesAsString() {
-		if (getPepper()== null)
+		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		
-		return(getPepper().getRegisteredModulesAsString());
+
+		return (getPepper().getRegisteredModulesAsString());
 	}
 
 	@Override
 	public Collection<String> selfTest() {
-		if (getPepper()== null)
+		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		
-		return(getPepper().selfTest());
+
+		return (getPepper().selfTest());
 	}
 }

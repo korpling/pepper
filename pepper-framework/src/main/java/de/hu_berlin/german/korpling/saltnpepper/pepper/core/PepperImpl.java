@@ -39,6 +39,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguratio
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
@@ -217,7 +218,9 @@ public class PepperImpl implements Pepper {
 	@Override
 	public Collection<PepperModuleDesc> getRegisteredModules() {
 		Vector<PepperModuleDesc> retVal= new Vector<PepperModuleDesc>();
-		
+		if (getModuleResolver()== null){
+			throw new PepperFWException("Cannot return registered modules, because the module resolver is missing.");
+		}
 		if (getModuleResolver().getPepperImporters()!= null){
 			for (PepperModule pepperModule: getModuleResolver().getPepperImporters()){
 				if (pepperModule!= null){
