@@ -42,21 +42,48 @@
                         >http://www.apache.org/licenses/LICENSE-2.0.html</link></para>
             </footnote> converter framework for linguistic data. It was developed to convert data
             coming from a linguistic data format <emphasis role="italic">X</emphasis> to another
-            linguistic data format <emphasis role="italic">Y</emphasis>. To decrease the number of
-            conceptual mappings, Pepper follows the intermediate model approach, which means that a
-            conversion consists of two mappings. First, the data coming from format <emphasis
-                role="italic">X</emphasis> will be mapped to the intermediate model Salt (see: <link
-                xlink:href="http://u.hu-berlin.de/saltnpepper"
+            linguistic data format <emphasis role="italic">Y</emphasis>. With Pepper you can convert
+            data for instance from EXMARaLDA<footnote>
+                <para>see <link xlink:href="http://www.exmaralda.org/"
+                        >http://www.exmaralda.org/</link></para>
+            </footnote> format to Tiger XML<footnote>
+                <para>see <link
+                        xlink:href="http://www.ims.uni-stuttgart.de/forschung/ressourcen/werkzeuge/TIGERSearch/doc/html/TigerXML.html"
+                        >http://www.ims.uni-stuttgart.de/forschung/ressourcen/werkzeuge/TIGERSearch/doc/html/TigerXML.html</link></para>
+            </footnote>, or MMAX<footnote>
+                <para>see <link xlink:href="http://mmax2.sourceforge.net/"
+                        >http://mmax2.sourceforge.net/</link></para>
+            </footnote> to the ANNIS format<footnote>
+                <para>see <link xlink:href="http://www.sfb632.uni-potsdam.de/annis/"
+                        >http://www.sfb632.uni-potsdam.de/annis/</link></para>
+            </footnote> or Treetagger<footnote>
+                <para>see <link
+                        xlink:href="http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/"
+                        >http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/</link></para>
+            </footnote> output and RST<footnote>
+                <para>see <link xlink:href="http://www.wagsoft.com/RSTTool/"
+                        >http://www.wagsoft.com/RSTTool/</link></para>
+            </footnote> to PAULA<footnote>
+                <para>see <link xlink:href="https://www.sfb632.uni-potsdam.de/en/paula.html"
+                        >https://www.sfb632.uni-potsdam.de/en/paula.html</link></para>
+            </footnote> and many many more.</para>
+        <para>To decrease the number of conceptual mappings, Pepper follows the intermediate model
+            approach, which means that a conversion consists of two mappings. First, the data coming
+            from format <emphasis role="italic">X</emphasis> will be mapped to the intermediate
+            model Salt (see: <link xlink:href="http://u.hu-berlin.de/saltnpepper"
                 >http://u.hu-berlin.de/saltnpepper</link>) and second, the data will be mapped from
             Salt to format <emphasis role="italic">Y</emphasis>. If you imagine a set of n source
             and target formats, then this approach will decrease the number of mappings from
                 <emphasis role="italic">n2-n</emphasis> mappings in case of the direct mapping
             approach to <emphasis role="italic">2n</emphasis> mappings.</para>
-        <para> Pepper is a container controlling the workflow of a conversion process. The mapping
-            itself is done by a set of Pepper modules. Pepper is a highly pluggable framework which
-            offers the possibility to plug in new modules in order to incorporate further formats.
-            The architecture of Pepper is flexible and makes it possible to combine all existing
-            modules. Even further modules can be developed and easily be plugged in.</para>
+
+
+        <para> The Pepper framework is just a container controlling the workflow of a conversion
+            process. The mapping itself is done by a set of Pepper modules. Pepper is a highly
+            pluggable framework which offers the possibility to plug in new modules in order to
+            incorporate further formats. The architecture of Pepper is flexible and makes it
+            possible to combine all existing modules. Even further modules can be developed and
+            easily be plugged in.</para>
         <para> The Pepper workflow is separated into three different phases: <orderedlist>
                 <listitem>
                     <para>the import phase (mapping data from a given fromat to Salt),</para>
@@ -78,12 +105,14 @@
             into several steps: the im- and export phase can contain between <emphasis role="italic"
                 >1</emphasis> to <emphasis role="italic">n</emphasis> steps each. Whereas the
             manipulation phase can contain between <emphasis role="italic">0</emphasis> to <emphasis
-                role="italic">n</emphasis> steps. Each Pepper module realizes such a step and
-            therefore is associated with exactly one phase. The orchestration of Pepper modules is
-            determined by the Pepper workflow description file (.pepperparams). A Pepper module can
-            be identified by specifying its coordinates (its name, the formats name and version of
-            the corpus to be converted). More information concerning the workflow file can be found
-            in <xref linkend="sec_workflowFile"/>.</para>
+                role="italic">n</emphasis> steps. Each Pepper module realizes exactly one step <footnote>
+                <para>For instance the import of data in the EXMARaLDA format is done by one module,
+                    the EXMARaLDAImporter.</para>
+            </footnote>. The orchestration of Pepper modules is determined by the Pepper workflow
+            description file (.pepperparams). A Pepper module can be identified by specifying its
+            coordinates (its name, the formats name and version of the corpus to be converted). More
+            information concerning the workflow file can be found in <xref
+                linkend="sec_workflowFile"/>.</para>
     </sect1>
     <sect1>
         <title>Pepper commandline interface (CLI)</title>
@@ -129,7 +158,7 @@
                     call:<programlisting>pepperStart.bat OPTIONS            (when using Windows)</programlisting>or<programlisting>bash pepperStart.sh OPTIONS        (when using linux, unix or Mac OS)</programlisting>
                     where OPTIONS is one of the following: <itemizedlist>
                         <listitem>
-                            <para>workflow-file</para>
+                            <para><programlisting>workflow-file</programlisting></para>
                             <para>Loads the passed 'workflow-file' and starts the conversion.</para>
                         </listitem>
                         <listitem>

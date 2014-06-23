@@ -93,12 +93,11 @@
                                 command-line clients are available, but even the very nice graphical
                                 client TortoiseSVN (<link xlink:href="http://tortoisesvn.net/"
                                     >http://tortoisesvn.net/</link>) is available.</para>
-                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/
-                       pepper/tags/VERSION/pepper-sampleModules/</programlisting>
+                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/pep
+per/tags/${project.version}/pepper-sampleModules/</programlisting>
                         <!-- later in github svn export https://github.com/aivarsk/scruffy/trunk/samples from Pepper project either in korpling svn or in github-->
-                        where <emphasis role="italic">VERSION</emphasis> stands for a released
-                        version of the Pepper framework. Download the project to a location of your
-                        choice, let's call it SAMPLE_HOME.</para>
+                        Download the project to a location of your choice, let's call it
+                        SAMPLE_HOME.</para>
                 </listitem>
                 <listitem>
                     <para>Back in Eclipse, click on the menu item 'File' --> 'Import...'. When the
@@ -123,9 +122,9 @@
                         project and click finish.</para>
                 </listitem>
                 <listitem>
-                    <para>Now Eclipse should import your first Pepper module project. After all, your
-                        Eclipse should look very similar to figure <xref linkend="fig_eclipse"/>).
-                            <figure xml:id="fig_eclipse">
+                    <para>Now Eclipse should import your first Pepper module project. After all,
+                        your Eclipse should look very similar to figure <xref linkend="fig_eclipse"
+                        />). <figure xml:id="fig_eclipse">
                             <title>Eclipse</title>
                             <mediaobject>
                                 <imageobject>
@@ -170,7 +169,8 @@
             </listitem>
             <listitem>
                 <para>Double-click on the entry 'OSGi Framework', a subentry named
-                    'pepper-testEnvironment' will be opened (similar to figure <xref linkend="fig_runConfig01"/>)<footnote>
+                    'run_sampleProject' will be opened (similar to figure <xref
+                        linkend="fig_runConfig01"/>)<footnote>
                         <para>If this entry does not appear, open the file
                             'SAMPLE_HOME/src/test/resources/run_sampleProject.launch' by double
                             clicking</para>
@@ -179,12 +179,13 @@
             <listitem>
                 <para>Now switch to the tab 'Environment'. You will find the definition of an
                     environment variable named 'PEPPER_TEST_WORKFLOW_FILE'. The value of this
-                    variable determines, where to find the description file of a Pepper workflow (see figure <xref linkend="fig_runConfig01"/>).
-                    The sample module comes with a predfined workflow file at
-                    'SAMPLE_HOME/src/test/resources/sample.pepperparams'. In this workflow all three
-                    modules of the sample module project are in use: an importer for importing a
-                    static corpus, a manipulator, to print out some information about the corpus
-                    like annotation frequencies and an exporter to export the corpus into dot format.<footnote>
+                    variable determines, where to find the description file of a Pepper workflow
+                    (see figure <xref linkend="fig_runConfig01"/>). The sample module comes with a
+                    predfined workflow file at 'SAMPLE_HOME/src/test/resources/sample.pepperparams'.
+                    In this workflow all three modules of the sample module project are in use: an
+                    importer for importing a static corpus, a manipulator, to print out some
+                    information about the corpus like annotation frequencies and an exporter to
+                    export the corpus into dot format.<footnote>
                         <para>The dot format (see: <link
                                 xlink:href="http://www.graphviz.org/content/dot-language"
                                 >http://www.graphviz.org/content/dot-language</link>) is a format
@@ -196,7 +197,7 @@
                 <para>Replace the entry with an absolute path to that file.</para>
             </listitem>
             <listitem>
-                <para>For logging, Pepper uses the slf4j framework (see: <link
+                <para>For logging, Pepper uses the SLF4J framework (see: <link
                         xlink:href="http://www.slf4j.org/">http://www.slf4j.org/</link>). Switch to
                     tab 'Arguments' and type in in text box vm arguments the flag
                     '-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml'.
@@ -241,29 +242,83 @@
             your organization and so on.</para>
         <orderedlist>
             <listitem>
-                <para>Rename the sample project to a name of your choice like
-                    'pepperModules-MyModules' (when working with Eclipse, right click on the project
-                    name and choose the menu entry "Refactor" --> "Rename...")</para>
+                <para><emphasis role="bold">project structure</emphasis></para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Rename the sample project to a name of your choice like
+                            'pepperModules-MyModules' (when working with Eclipse, right click on the
+                            project name and choose the menu entry "Refactor" -->
+                            "Rename...")</para>
+                    </listitem>
+                    <listitem>
+                        <para>Rename the packages (when working with Eclipse, right click on the
+                            package name and choose the menu entry "Refactor" -->
+                            "Rename...")</para>
+                    </listitem>
+                </itemizedlist>
             </listitem>
             <listitem>
-                <para>Rename the packages (when working with Eclipse, right click on the package
-                    name and choose the menu entry "Refactor" --> "Rename...")</para>
+                <para><emphasis role="bold">pom.xml</emphasis></para>
+                <para>Open the pom.xml in the sampel project by double clicking on it. A specific
+                    editor the 'POM editor' will open. On the bottom, a set of tabs is visible,
+                    choose the tab 'pom.xml'. An xml editor will open. The following steps
+                    correspond to one TODO entry in the file.</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Change the "groupId" to the name of your working group
+                            (conventionally, the groupId is the same as the package name). You will
+                            find the entry under '/project/groupId'.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Change the "artifactId" (to the module name). You will find the entry
+                            under '/project/artifactId'.</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">java code</emphasis></para>
+
+                <para>We recommend to delete the modules you do not want to implement for this time
+                    and just to keep the one(s) you are currently needing<footnote>
+                        <para>Otherwise you project will mess up with non-functional modules.</para>
+                    </footnote>.</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Change the name of the module, for instance to <emphasis role="italic"
+                                >MyImporter</emphasis>, <emphasis role="italic"
+                                >MyExporter</emphasis> etc. We recommend to use the formats name and
+                            the ending Importer, Exporter or Manipulator.<footnote>
+                                <para>Renaming the modules is important, when you want to use your
+                                    modules together with others in Pepper. A user will not find
+                                    your module, when every module has the name
+                                    SampleImporter.</para>
+                            </footnote></para>
+                    </listitem>
+                    <listitem>
+                        <para>Change the components name<footnote>
+                                <para>a component here is an OSGi service component (for more
+                                    details see <link
+                                        xlink:href="http://wiki.osgi.org/wiki/Declarative_Services"
+                                        >http://wiki.osgi.org/wiki/Declarative_Services</link>)</para>
+                            </footnote>, for instance use the classes name and add 'Component' to it
+                            (e.g. <emphasis role="italic">MyImporterComponent</emphasis>) like in
+                            the following example.
+                            <programlisting>@Component(name="MyImporterComponent", 
+           factory="PepperImporterComponentFactory")
+public class MyImporter extends PepperImporterImpl 
+                            implements PepperImporter</programlisting>
+                        </para>
+                    </listitem>
+                </itemizedlist>
             </listitem>
         </orderedlist>
-        <para>Open the pom.xml in the sampel project by double clicking on it. A specific editor the
-            'POM editor' will open. On the bottom, a set of tabs is visible, choose the tab
-            'pom.xml'. An xml editor will open. The following steps correspond to one TODO entry in
-            the file.</para>
-        <orderedlist>
-            <listitem>
-                <para>Change the "groupId" to the name of your working group (conventionally, the
-                    groupId is the same as the package name). You will find the entry under
-                    '/project/groupId'.</para>
-            </listitem>
-            <listitem>
-                <para>Change the "artifactId" (to the module name). You will find the entry under
-                    '/project/artifactId'.</para>
-            </listitem>
+        <para>That have been all required changes to be made. But as you might have seen, a pom.xml
+            contains a lot more entries to describe your projects. Some of these entries are very
+            useful, depending on the maven modules you want to use. Here we shortly describe how to
+            adapt the optional entries, we have used in the sample project. You can also do the
+            following adaptions later and skip them for now.</para>
+
+        <itemizedlist>
             <listitem>
                 <para>Modify the description: Write what the module is supposed to do. You will find
                     the entry under '/project/description'.</para>
@@ -345,53 +400,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                     "/project/build/plugins/plugin[artifactId/text()=
                     'maven-bundle-plugin']/configuration/instructions/Include-Resource"</para>
             </listitem>
-        </orderedlist>
-        <para>Now we come to some configurational changes in the Java source code. </para>
-        <orderedlist>
-            <listitem>
-                <para>In most cases users do not want to implement all three sorts of modules. Users
-                    often want to implement only an importer an exporter or a manipulator. Then just
-                    delete the classes you won't implement. Otherwise, you will end up with
-                    non-functional modules in your project. In case that you want to have several
-                    importers, manipulators or exporters, just duplicate and rename the classes.
-                </para>
-            </listitem>
-            <listitem>
-                <para>Change the name of the module, for instance to MyImporter, MyExporter etc. We
-                    recommend to use the format name and the ending Importer, Exporter or
-                    Manipulator (like <classname>FORMATImporter</classname>).</para>
-            </listitem>
-            <listitem>
-                <para>Change the name of the component<footnote>
-                        <para>a component here is an OSGi service component (for more details see
-                                <link xlink:href="http://wiki.osgi.org/wiki/Declarative_Services"
-                                >http://wiki.osgi.org/wiki/Declarative_Services</link>)</para>
-                    </footnote>, for instance use the classes name and add 'Component' to it (e.g.
-                    MyImporterComponent) like in the following example.
-                    <programlisting>@Component(name="MyImporterComponent", 
-                            factory="PepperImporterComponentFactory")
-public class MyImporter extends PepperImporterImpl implements PepperImporter</programlisting>
-                </para>
-            </listitem>
-            <listitem>
-                <para>Set the coordinates, with which your module shall be registered. The
-                    coordinates (modules name, version and supported formats) are a kind of a
-                    fingerprint, which should make your module unique. See the following example:
-                    <programlisting>public MyImporterImporter()
-{
-	super();
-	this.setName("MyImporterImporter");
-	//we recommend to synchronize this value with the maven version 
-	//in your pom.xml
-	this.setVersion("1.1.0");
-	this.addSupportedFormat("myFormat", "1.0", null);
-	...
-}</programlisting>
-                </para>
-            </listitem>
-        </orderedlist>
-
-
+        </itemizedlist>
     </sect1>
     <sect1>
         <title>Let's have a second run</title>
@@ -404,9 +413,10 @@ public class MyImporter extends PepperImporterImpl implements PepperImporter</pr
                         name).</para>
                 </listitem>
                 <listitem>
-                    <para>In the tab 'Arguments' you need to adapt the reference to the slf4j
+                    <para>In the tab 'Arguments' you need to adapt the reference to the SLF4J
                         configuration file, by replacing the folder SAMPLE_HOME with the new
-                        projects name.</para>
+                        projects name
+                        (-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml).</para>
                 </listitem>
                 <listitem>
                     <para>And the same goes for 'Environment', where you have to adapt the location
@@ -414,8 +424,8 @@ public class MyImporter extends PepperImporterImpl implements PepperImporter</pr
                 </listitem>
             </orderedlist>
         </para>
-        <para>Also needs to knwo about the name change of the module, therefore you need to adapt
-            the workflow file under 'SAMPLE_HOME/src/test/resources/sample.pepperparams'. <orderedlist>
+        <para>Pepper also needs to know about the name change of the modules, therefore you need to
+            adapt the workflow file under 'SAMPLE_HOME/src/test/resources/sample.pepperparams'. <orderedlist>
                 <listitem>
                     <para>Change the name of the modules and/or the format descriptions.</para>
                 </listitem>
@@ -426,18 +436,18 @@ public class MyImporter extends PepperImporterImpl implements PepperImporter</pr
             </orderedlist>
         </para>
         <para> Now your own Pepper module hopefully is able to run inside the Eclipse framework. If
-            not please take a look into section XXXTroubleshootingXXX, if you do not find a solution
-            there, please check the SaltNPepper homepage under <link
+            not please check the SaltNPepper homepage under <link
                 xlink:href="u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</link> or write
-            an e-mail to <link xlink:href="mailto:saltnpepper@lists.hu-berlin.de"
-                >saltnpepper@lists.hu-berlin.de</link>. </para>
+            an e-mail to <email>saltnpepper@lists.hu-berlin.de</email>. </para>
         <para>For creating a deliverable assembly of your project, to be plugged into the Pepper
-            framework, open a command line and run: </para>
-        <synopsis>
-            mvn install assembly:single
-        </synopsis>
+            framework. Open a command line and run:
+            <synopsis>
+            mvn clean install assembly:single
+        </synopsis> Or use
+            Eclipse by right clicking the project and then click 'Run as' --> 'Maven build...'. In
+            form field 'Goals' type in 'clean install assembly:single'.</para>
         <para> This will create a zip file in the target folder of your project
-            'YOUR_PROJECT/target/distribution', which can simply be plugged into Pepper via
+            'SAMPLE_PROJECT/target/distribution', which can simply be plugged into Pepper via
             extracting its content to the plugin folder of Pepper 'PEPPER_HOME/plugins'. <note>
                 <para>If the command mvn was not found, make sure you have installed maven even in
                     your system not only in Eclipse. For more information see the maven site <link
