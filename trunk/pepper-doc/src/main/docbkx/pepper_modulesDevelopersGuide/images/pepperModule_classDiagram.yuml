@@ -1,6 +1,0 @@
-//make it a picture on: http://yuml.me/
-[ModuleController{bg:darkgray}]<>1-1>[PepperModule]
-[PepperModule]<>1-0..*>[PepperMapper]
-[PepperModule]^-[PepperImporter]
-[PepperModule]^-[PepperManipulator]
-[PepperModule]^-[PepperExporter]
