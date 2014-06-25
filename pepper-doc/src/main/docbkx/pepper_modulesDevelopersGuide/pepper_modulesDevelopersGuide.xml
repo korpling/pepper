@@ -61,7 +61,7 @@
         <para>Pepper is a container controlling the workflow of a conversion process, the mapping
             itself is done by a set of modules called Pepper modules mapping the linguistic data
             between a given format and Salt and vice versa. Pepper is a highly pluggable framework
-            which offers the possibility to plug in new modules in order to incorporate further
+            which offers the possibility to plug-in new modules in order to incorporate further
             formats. The architecture of Pepper is flexible and makes it possible to benefit from
             all already existing modules. This means that when adding a new or previously unknown
             format <emphasis role="italic">Z</emphasis> to Pepper, it is automatically possible to
@@ -82,21 +82,21 @@
             </orderedlist> The three phase process makes it feasible to influence and manipulate
             data during conversion, for example by adding additional information or linguistic
             annotations, or by merging data from different sources.</para>
-        <para>To make Pepper a pluggable framework, we used an underlying plug in technology called
+        <para>To make Pepper a pluggable framework, we used an underlying plug-in technology called
             OSGi (see: <link xlink:href="http://www.osgi.org/">http://www.osgi.org/</link>). OSGi is
-            a mighty framework and has a lot of impact in the way of programming things in Java.
-            Because we do not want to force you to learn OSGi, when you just want to create a new
-            module for Pepper, we tried to hide the OSGi layer as good as possible. Therefore, and
-            for the lifecycle management of such projects, we used another framework named maven
-            (see: <link xlink:href="http://maven.apache.org/">http://maven.apache.org/</link>).
-            Maven is configured via an xml file called <emphasis role="italic">pom.xml</emphasis>,
-            you will find it in all SaltNPepper projects and also in the root of the sample project
-            which can be used as a template. Maven makes things easier for use especially in dealing
-            with dependencies. </para>
+            a mighty framework and has a lot of impact on programming things in Java. Because we do
+            not want to force you to learn OSGi, when you just want to create a new module for
+            Pepper, we tried to hide the OSGi layer as good as possible. Therefore, and for the
+            lifecycle management of such projects, we used another framework named Maven (see: <link
+                xlink:href="http://maven.apache.org/">http://maven.apache.org/</link>). Maven is
+            configured via an xml file called <emphasis role="italic">pom.xml</emphasis>, you will
+            find it in all SaltNPepper projects and also in the root of the sample project which can
+            be used as a template. Maven makes things easier for use especially in dealing with
+            dependencies. </para>
         <para>In the following, <xref linkend="ch_setUpEnv"/> explains how to set up your
             environment to start developing your Pepper module and explains how to download and
             adopt a template module to your own needs. This module then is the base for your own
-            module. In <xref linkend="ch_codeIt"/> we dig into the sourcce code and explain the
+            module. In <xref linkend="ch_codeIt"/> we dig into the source code and explain the
             mechanism how a Pepper module works and interacts with the Pepper framework. In <xref
                 linkend="sec_customization"/> we explain how to add properties to your module, so
             that the user can dynamically customize the behavior of the mapping. Since testing of

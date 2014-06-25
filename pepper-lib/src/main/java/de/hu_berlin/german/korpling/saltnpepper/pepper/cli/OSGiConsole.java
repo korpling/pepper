@@ -45,7 +45,7 @@ public class OSGiConsole {
 	private String prompt = null;
 
 	public enum COMMAND {
-		SS("ss", "ss", null, "display installed bundles (short status)"), LS("list", "ls", null, "lists all components"), INSTALL("install", "i", "bundle path", "install and optionally start bundle from the given URL"), UNINSTALL("uninstall", "un", "bundle id", "uninstall the specified bundle"), START("start", "s", "bundle id", "start the specified bundle"), STOP("stop", "stop", "bundle id", "stop the specified bundle"), LAUNCH("launch", "la", "bundle path", "installs the bundle located at 'bundle path' and starts it"), UPDATE("remove", "re", "module-path", "removes the Pepper module, which was installed from 'module path'."), HELP("help", "h", null, "Prints this help."), EXIT("exit", "e", null, "exits Pepper");
+		SS("ss", "ss", null, "display installed bundles (short status)"), LS("list", "ls", null, "lists all components"), INSTALL("install", "i", "bundle path", "install and optionally start bundle from the given URL"), UNINSTALL("uninstall", "un", "bundle id", "uninstall the specified bundle"), START("start", "s", "bundle id", "start the specified bundle"), STOP("stop", "stop", "bundle id", "stop the specified bundle"), INSTALL_START("install_start", "is", "bundle path", "installs the bundle located at 'bundle path' and starts it"), UPDATE("update", "up", "module-path", "updates the Pepper module, which was installed from 'module path'."), REMOVE("remove", "re", "bundle name", "removes the bundle 'bundle name' from the OSGi context and from plugin folder."), HELP("help", "h", null, "Prints this help."), EXIT("exit", "e", null, "exits Pepper");
 
 		private String name = null;
 		private String abbreviation = null;
@@ -111,15 +111,15 @@ public class OSGiConsole {
 	 */
 	public String help() {
 		StringBuilder retVal = new StringBuilder();
-		String format = "| %1$-20s | %2$-15s | %3$-70s |\n";
-		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
-		retVal.append(String.format(format, "command", "parameters", "description"));
-		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
-		format = "| %1$-20s | %2$-15s | %3$-70s |\n";
+		String format = "| %1$-20s | %2$-5s | %3$-15s | %4$-70s |\n";
+		String line="+----------------------+-------+-----------------+------------------------------------------------------------------------+\n";
+		retVal.append(line);
+		retVal.append(String.format(format, "command", "short", "parameters", "description"));
+		retVal.append(line);
 		for (COMMAND command : COMMAND.values()) {
-			retVal.append(String.format(format, command.getName(), (command.getParameters() == null) ? " -- " : command.getParameters(), command.getDescription()));
+			retVal.append(String.format(format, command.getName(), command.getAbbreviation(), (command.getParameters() == null) ? " -- " : command.getParameters(), command.getDescription()));
 		}
-		retVal.append("+----------------------+-----------------+------------------------------------------------------------------------+\n");
+		retVal.append(line);
 		return (retVal.toString());
 	}
 
@@ -161,10 +161,12 @@ public class OSGiConsole {
 				start(params, out);
 			} else if ((COMMAND.UNINSTALL.getName().equalsIgnoreCase(command)) || (COMMAND.UNINSTALL.getAbbreviation().equalsIgnoreCase(command))) {
 				uninstall(params, out);
-			} else if ((COMMAND.LAUNCH.getName().equalsIgnoreCase(command)) || (COMMAND.LAUNCH.getAbbreviation().equalsIgnoreCase(command))) {
-				launch(params, out);
+			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
+				installAndStart(params, out);
 			} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
 				update(params, out);
+			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
+				remove(params, out);
 			}else {
 				out.println(help());
 			}
@@ -282,7 +284,7 @@ public class OSGiConsole {
 	 * @param params
 	 * @param out
 	 */
-	public void launch(List<String> params, PrintStream out) {
+	public void installAndStart(List<String> params, PrintStream out) {
 		Long bundleId = install(params, out);
 		List<String> params2 = new ArrayList<String>();
 		if (bundleId!= null){
@@ -310,7 +312,7 @@ public class OSGiConsole {
 //			}
 //			Long bundleId = getConnector().getBundleId(bundleURI);
 			uninstall(params, out);
-			launch(params, out);
+			installAndStart(params, out);
 		}
 	}
 
@@ -376,6 +378,29 @@ public class OSGiConsole {
 				} catch (BundleException e) {
 					out.println("Cannot uninstall bundle from location '" + bundleURI + "' because of a nested exception. " + e.getMessage());
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Executes command 'remove'.
+	 * @param params
+	 * @param out
+	 */
+	public void remove(List<String> params, PrintStream out) {
+		if (	(params== null)||
+				(params.size()> 1)){
+			out.println("To remove a bundle, you need to pass its name.");
+		}else{
+			
+			try {
+				if (getConnector().remove(params.get(0))){
+					out.println("Removed bundle '"+params.get(0)+"'.");
+				}else out.println("Cannot remove bundle '"+params.get(0)+"'.");
+			} catch (BundleException e) {
+				out.println("Cannot remove bundle '"+params.get(0)+"', because of nested exception (BundleException): "+ e.getMessage());
+			} catch (IOException e) {
+				out.println("Cannot remove bundle '"+params.get(0)+"', because of nested exception (IOException): "+ e.getMessage());
 			}
 		}
 	}

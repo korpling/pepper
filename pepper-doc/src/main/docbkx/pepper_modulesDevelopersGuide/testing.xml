@@ -15,8 +15,8 @@
             JUnit test framework (see: <link xlink:href="junit.org">junit.org</link>) and implement
             some very basic tests for checking the consistency of a Pepper module. Just benefit from
             these classes by creating an own test class derived from one of the provided ones and
-            your tests will be ran during the maven build cycle. For getting an immediate feedback,
-            you can also run them directly in your developement environment by running a JUnit task.
+            your tests will be ran during the Maven build cycle. For getting an immediate feedback,
+            you can also run them directly in your development environment by running a JUnit task.
             On the one hand the test classes provide tests which can be adopted to your need and
             check if your module can be plugged into the Pepper framework (by checking if necessary
             values are set like the supported format for an im- or exporter). And on the other hand,
@@ -27,8 +27,7 @@
                     having a correctly running module.</para>
             </note> To set upthe tests for the JUnit framework override the method
                 <methodname>setUp()</methodname> as shown in the following snippet:
-            <programlisting>
-@Before
+            <programlisting>@Before
 protected void setUp() throws Exception {
     //1: setting and initializing of class to test
     this.setFixture(new SampleImporterTest);
@@ -36,8 +35,7 @@ protected void setUp() throws Exception {
     this.supportedFormatsCheck.add(new FormatDesc()
 		.setFormatName("sample")
 		.setFormatVersion("1.0"));
-}
-                </programlisting>
+}                </programlisting>
             Since the JUnit framework can not know about the classes to test, you need to set and
             initialize it as shown on position 1. In case of you are implementing an im- or
             exporter, you need to set the supported formats and versions in your test case. Pepper

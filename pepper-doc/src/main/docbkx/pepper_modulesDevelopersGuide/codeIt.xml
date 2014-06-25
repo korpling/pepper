@@ -50,23 +50,23 @@
     <para>A mapping task in the Pepper workflow is not a monolithic blog. It consists of several
         smaller conceptual aspects. Not each of the named aspects is essential, and some are
         belonging on the type of module you are implementing. Some are optional, some are
-        recommanded and some are mandatory to implement. For a better understanding, the rest of
+        recommended and some are mandatory to implement. For a better understanding, the rest of
         this section is structured according these aspects instead of the order in the code.<itemizedlist>
             <listitem>
                 <para>mapping document-structure and corpus-structure [mandatory]</para>
             </listitem>
             <listitem>
-                <para>analyzing an unknown corpus [recommanded, if module is an importer]</para>
+                <para>analyzing an unknown corpus [recommended, if module is an importer]</para>
             </listitem>
             <listitem>
                 <para>im- and export corpus-structure [mandatory, if module is an im- or
                     exporter]</para>
             </listitem>
             <listitem>
-                <para>customizing the mapping [recommanded]</para>
+                <para>customizing the mapping [recommended]</para>
             </listitem>
             <listitem>
-                <para>monitoring the progress, logging and error handling [recommanded]</para>
+                <para>monitoring the progress, logging and error handling [recommended]</para>
             </listitem>
             <listitem>
                 <para>prepare and clean-up [optional]</para>
@@ -108,13 +108,13 @@
             create a Salt model.</para>
         <para> There are two aspects having a big impact on the inner architecture of a Pepper
             module. First we have the convention over configuration aspect and second we have the
-            aspect of parallelizing a mapping job. This results in a relativly long stack of
+            aspect of parallelizing a mapping job. This results in a relatively long stack of
             function calls to give you an intervention option on several points. We come to this
-            later. But if you are happy, with the default mechanism, it is rather simple to
-            implement your module. Again, the <classname>PepperModule</classname> is a singleton
-            instance for each Pepper step, whereas there is one instance of
-                <classname>PepperMapper</classname> per <classname>SDocument</classname> and
-                <classname>SCorpus</classname> object in th eworkflow.</para>
+            later. But if you are happy, with the defaults, it is rather simple to implement your
+            module. Again, the <classname>PepperModule</classname> is a singleton instance for each
+            Pepper step, whereas there is one instance of <classname>PepperMapper</classname> per
+                <classname>SDocument</classname> and <classname>SCorpus</classname> object in th
+            eworkflow.</para>
         <para>Enough of words, let's dig into the code. Have a look at the following snippet, which
             is part of each
             <classname>PepperModule</classname>:<programlisting>public PepperMapper createPepperMapper(SElementId sElementId){
@@ -135,7 +135,7 @@
 }</programlisting>This
             method is supposed to provide a new instance of a specialized
                 <classname>PepperMapper</classname>. Although the main initilaizations, necessary
-            for the workflow (e.g. passing the custamizaion properties, see <xref
+            for the workflow (e.g. passing the customization properties, see <xref
                 linkend="sec_customization"/>) are done by Pepper in the back, this is the place to
             make some specific configurations depending on your implementation. If your module is an
             im- or exporter, it might be necessary to pass the physical location of that file or
@@ -185,8 +185,7 @@
        //8: returns that the process was successful
        return(DOCUMENT_STATUS.COMPLETED);
     }
-}
-</programlisting>Not
+}</programlisting>Not
             very surprising, the method 'initialize()' is invoked by the constructor and should do
             some initialization stuff if necessary. The methods 'mapSCorpus()' and 'mapSDocument()'
             are the more interesting ones. Here is the place to implement the mapping of the
@@ -533,51 +532,17 @@ public PepperMapper createPepperMapper(SElementId sElementId){
             <para> One customization property in Pepper is represented with an object of type
                     <classname>PepperModuleProperty</classname>. Such an object consists of the
                 propertys name, its datatype, a short description and a flag specifying whether this
-                property is optional or mandatory as shown in the following snippet: <constructorsynopsis>
-                    <methodname>PepperModuleProperty</methodname>
-                    <methodparam>
-                        <type>String</type>
-                        <parameter>name</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>Class&lt;T&gt;</type>
-                        <parameter>clazz</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>String</type>
-                        <parameter>description</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>Boolean</type>
-                        <parameter>required</parameter>
-                    </methodparam>
-                </constructorsynopsis> Even a default value could be passed: <constructorsynopsis>
-                    <methodname>PepperModuleProperty</methodname>
-                    <methodparam>
-                        <type>String</type>
-                        <parameter>name</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>Class&lt;T&gt;</type>
-                        <parameter>clazz</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>String</type>
-                        <parameter>description</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>T</type>
-                        <parameter>defaultValue,</parameter>
-                    </methodparam>
-                    <methodparam>
-                        <type>Boolean</type>
-                        <parameter>required</parameter>
-                    </methodparam>
-                </constructorsynopsis> To register a customization property, you need to add the
-                created object to registry object, which is managed and accessed by the Pepper
-                framework. The registry is realized via a specified
-                    <classname>PepperModuleProperties</classname> object. To create such an object,
-                first implement a registry class as shown in the following snippet:
+                property is optional or mandatory as shown in the following snippet:
+                <programlisting>PepperModuleProperty(String name, Class&lt;T&gt; clazz, String description, 
+                     Boolean required)</programlisting>
+                Even a default value could be passed:
+                <programlisting>PepperModuleProperty(String name, Class&lt;T&gt; clazz, String description,
+                     T defaultValue, Boolean required)                </programlisting>
+                To register a customization property, you need to add the created object to registry
+                object, which is managed and accessed by the Pepper framework. The registry is
+                realized via a specified <classname>PepperModuleProperties</classname> object. To
+                create such an object, first implement a registry class as shown in the following
+                snippet:
                 <programlisting>
 //...
 import de.hu_berlin.german.korpling.saltnpepper.pepper

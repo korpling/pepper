@@ -33,7 +33,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.DebugGraphics;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -414,11 +413,6 @@ public class PepperJobImpl extends PepperJob {
 
 		initialDocumentBuses = new Vector<DocumentBus>();
 		for (Step importStep : getImportSteps()) {
-			// DocumentBus initialDocumentBus= new DocumentBus(ID_INTITIAL,
-			// importStep.getModuleController().getId());
-			// DocumentBus initialDocumentBus= new
-			// InitialDocumentBus(ID_INTITIAL,
-			// importStep.getModuleController().getId());
 			DocumentBus initialDocumentBus = new InitialDocumentBus(importStep.getModuleController().getId());
 			initialDocumentBus.setPepperJob(this);
 			initialDocumentBus.setMemPolicy(getMemPolicy());
@@ -607,7 +601,7 @@ public class PepperJobImpl extends PepperJob {
 						throw new PepperFWException("Cannot store '" + sDoc.getSName() + "' temporary.");
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
-					// TODO uncomment this line in production mode
+					// to remove temporary document files uncomment this line
 					// docFile.deleteOnExit();
 
 					initialDocumentBuses.get(i).put(documentController);
@@ -680,7 +674,7 @@ public class PepperJobImpl extends PepperJob {
 		} else {
 			retVal = listOfOrders.get(0);
 			logger.warn("Sorry the feature of unifying more than one list of proposed import orders is not yet implemented. ");
-			// TODO make some fancy stuff for list unification
+			// TODO do some fancy stuff for list unification
 		}
 		return (retVal);
 	}
@@ -747,7 +741,7 @@ public class PepperJobImpl extends PepperJob {
 		int numOfDocuments = 0;
 
 		if (getDocumentControllers().size() == 0) {
-			retVal.append("no documents found");
+			retVal.append("- no documents found to display progress -\n");
 		} else {
 
 			String sleep = " (sleep)";
@@ -777,14 +771,15 @@ public class PepperJobImpl extends PepperJob {
 				detailedStr.append(String.format("%-" + distance + "s%8s", docInfo.toString(), progressStr));
 				detailedStr.append("\n");
 			}
+			retVal.append("total progress:\t\t");
+			if (numOfDocuments != 0) {
+				retVal.append(new DecimalFormat("###.##").format(progressOverAll / numOfDocuments * 100) + "%");
+			}
+			retVal.append("\n");
+			retVal.append(detailedStr.toString());
 		}
 
-		retVal.append("total progress:\t\t");
-		if (numOfDocuments != 0) {
-			retVal.append(new DecimalFormat("###.##").format(progressOverAll / numOfDocuments * 100) + "%");
-		}
-		retVal.append("\n");
-		retVal.append(detailedStr.toString());
+		
 		retVal.append("-------------------------------------------------------------------------");
 		retVal.append("\n");
 		return (retVal.toString());
@@ -856,10 +851,22 @@ public class PepperJobImpl extends PepperJob {
 				try {
 					future.getRight().get();
 				} catch (ExecutionException e) {
+					if (	(e.getCause()!= null)&&
+							(e.getCause() instanceof PepperException)){
+							throw (PepperException)e.getCause();
+					}
 					throw new PepperModuleException("Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ", e.getCause());
 				} catch (InterruptedException e) {
+					if (	(e.getCause()!= null)&&
+							(e.getCause() instanceof PepperException)){
+							throw (PepperException)e.getCause();
+					}
 					throw new PepperFWException("Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ", e.getCause());
 				} catch (CancellationException e) {
+					if (	(e.getCause()!= null)&&
+							(e.getCause() instanceof PepperException)){
+							throw (PepperException)e.getCause();
+					}
 					throw new PepperFWException("Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ", e.getCause());
 				}
 			}
@@ -981,7 +988,7 @@ public class PepperJobImpl extends PepperJob {
 	 * {@link SDocumentGraph} could be woken up or imported. This is the case,
 	 * as long as: <br/>
 	 * {@link #getCurrNumberOfDocuments()} < {@link #getMaxNumberOfDocuments()}. <br/>
-	 * Must be synchronized, 
+	 * Must be synchronized,
 	 * 
 	 * @return true, when #getCurrNumberOfDocuments()} <
 	 *         {@link #getMaxNumberOfDocuments(), false otherwise

@@ -30,12 +30,14 @@ public class WorkflowException extends PepperException {
 	 */
 	private static final long serialVersionUID = -1134919182794615488L;
 	
+	public static final String MSG_PREFIX="An error occured in Pepper workflow. ";
+	
 	public WorkflowException()
-	{ super(); }
+	{ this(""); }
 	
     public WorkflowException(String s)
-    { super("Something was wrong in the Pepper workflow description: "+s); }
+    { super(MSG_PREFIX+s); }
     
 	public WorkflowException(String s, Throwable ex)
-	{super("Something was wrong in the Pepper workflow description: "+s, ex); }
+	{super(MSG_PREFIX+s, ex); }
 }

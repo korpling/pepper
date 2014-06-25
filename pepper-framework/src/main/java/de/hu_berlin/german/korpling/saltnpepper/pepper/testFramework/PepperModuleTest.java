@@ -114,6 +114,16 @@ public abstract class PepperModuleTest
 	 * @param testDirectory last part of the temporary path
 	 * @return a file object locating to a temporary folder, where files can be stored temporarily
 	 */
+	public URI getTempURI(String testDirectory){
+		return(URI.createFileURI(getTempPath_static(testDirectory).getAbsolutePath()));
+	}
+	/**
+	 * Returns a {@link File} object pointing to a temporary path, where the caller can store temporary files.
+	 * The temporary path is located in the temporary directory provided by the underlying os. The resulting
+	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/<code>testDirectory</code>.
+	 * @param testDirectory last part of the temporary path
+	 * @return a file object locating to a temporary folder, where files can be stored temporarily
+	 */
 	public File getTempPath(String testDirectory){
 		return(getTempPath_static(testDirectory));
 	}
@@ -171,7 +181,7 @@ public abstract class PepperModuleTest
 		if (this.getFixture().getSaltProject()== null)
 			this.getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
 		
-		File tmpFolder= new File(System.getProperty("java.io.tmpdir")+"/pepperModuleTest/");
+		File tmpFolder= getTempPath("pepperModuleTest");
 		
 		PepperImpl pepper= new PepperImpl();
 		PepperConfiguration conf= new PepperConfiguration();

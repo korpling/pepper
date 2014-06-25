@@ -17,13 +17,21 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 
 public abstract class PepperUtil {
 
+	/**
+	 * The width of the output console of Pepper.
+	 */
+	public final static int CONSOLE_WIDTH=120;
+	
 	/**
 	 * Returns a formatted String, a kind of a welcome screen of Pepper.
 	 * @return welcome screen
@@ -39,23 +47,143 @@ public abstract class PepperUtil {
 	public static String getHello(String eMail, String hp)
 	{
 		StringBuilder retVal= new StringBuilder();
-		retVal.append("*************************************************************************\n");
-		retVal.append("*                  ____                                                 *\n");                            
-		retVal.append("*                 |  _ \\ ___ _ __  _ __   ___ _ __                      *\n"); 
-		retVal.append("*                 | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                     *\n");
-		retVal.append("*                 |  __/  __/ |_) | |_) |  __/ |                        *\n");
-		retVal.append("*                 |_|   \\___| .__/| .__/ \\___|_|                        *\n");
-		retVal.append("*                           |_|   |_|                                   *\n");
-		retVal.append("*                                                                       *\n");                            
-		retVal.append("*************************************************************************\n");
-		retVal.append("* Pepper is a Salt model based converter for a variety of               *\n");
-		retVal.append("* linguistic   formats.                                                 *\n");
-		retVal.append("* For further information, visit: "+hp+"     *\n");
-		retVal.append("* For contact write an eMail to:  "+eMail+"        *\n");
-		retVal.append("*************************************************************************\n");
+		retVal.append("************************************************************************************************************************\n");
+		retVal.append("*                                         ____                                                                         *\n");                            
+		retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n"); 
+		retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
+		retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
+		retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
+		retVal.append("*                                                  |_|   |_|                                                           *\n");
+		retVal.append("*                                                                                                                      *\n");                            
+		retVal.append("************************************************************************************************************************\n");
+		retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
+		retVal.append("* For further information, visit: "+hp+"                                                    *\n");
+		retVal.append("* For contact write an eMail to:  "+eMail+"                                                       *\n");
+		retVal.append("************************************************************************************************************************\n");
 		retVal.append("\n");
 		return(retVal.toString());
 	}
+	/**
+	 * Breaks the String <code>theString</code> at position {@link #CONSOLE_WIDTH}
+	 * and adds a linebreak. The manipulated String is returned.
+	 * @param theString String to be break
+	 * @return the breaked String
+	 */
+	public static String breakString(String theString){
+		return(breakString("", theString, CONSOLE_WIDTH));
+	}
+	/**
+	 * Breaks the String <code>theString</code> at position <code>length</code>
+	 * and adds a linebreak. The manipulated String is returned.
+	 * @param theString String to be break
+	 * @param length position where to break String
+	 * @return the breaked String
+	 */
+	public static String breakString(String theString, int length){
+		return(breakString("", theString, length));
+	}
+	/**
+	 * Breaks the String <code>theString</code> at position {@link #CONSOLE_WIDTH}
+	 * and adds a linebreak. The next line than is prefixed by<code>linePrefix</code>.
+	 * The manipulated String is returned.
+	 * @param theString String to be break
+	 * @param length position where to break String
+	 * @param linePrefix a prefix for all lines
+	 * @return the breaked String
+	 */	
+	public static String breakString(String linePrefix, String theString){
+		return(breakString(linePrefix, theString, CONSOLE_WIDTH));
+	}
+	/**
+	 * Breaks the String <code>theString</code> at position <code>length</code>
+	 * and adds a linebreak. The next line than is prefixed by<code>linePrefix</code>.
+	 * The manipulated String is returned.
+	 * @param theString String to be break
+	 * @param length position where to break String
+	 * @param linePrefix a prefix for all lines
+	 * @return the breaked String
+	 */	
+	public static String breakString(String linePrefix, String theString, int length){
+		if (length > theString.length()+ linePrefix.length()){
+			return(theString);
+		}
+		StringBuilder str= new StringBuilder();
+		int pos= 0;
+		int offset= length - linePrefix.length();
+		boolean goOn= true;
+		while(goOn){
+			str.append(linePrefix);
+			if (pos+offset < theString.length()){
+				str.append(theString.substring(pos, pos+offset));
+				str.append("\n");
+			}else{
+				str.append(theString.substring(pos));
+				goOn= false;
+			}
+			pos= pos+ offset;
+		}
+		return(str.toString());
+	}
+	/**
+	 * Returns a report as String containing the configuration for Pepper.
+	 * @return
+	 */
+	public static String reportConfiguration(PepperConfiguration conf){
+		String line= "+----------------------------------------------------------------------------------------------------------------------+\n";
+		StringBuilder str= new StringBuilder();
+		String format1= "| %-"+(CONSOLE_WIDTH-4)+"s |\n";
+		String format2= "| %-40s: %-"+(CONSOLE_WIDTH-40-6)+"s |\n";
+		str.append(line);
+		str.append(String.format(format1, " configuration for Pepper"));
+		str.append(line);
+		if ((conf != null) && (conf.size() != 0)) {
+			for (Object key : conf.keySet()) {
+				str.append(String.format(format2, key, conf.get(key)));
+			}
+		} else {
+			str.append(String.format(format1, "- no configurations set -"));
+		}
+		str.append(line);
+		return(str.toString());
+	}
+	
+	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs){
+		StringBuilder retVal= new StringBuilder();
+		if (	(moduleDescs== null)||
+				(moduleDescs.size()== 0)){
+			retVal.append("- no modules registered -\n");
+		}else{
+			String format = "| %1$-4s | %2$-20s | %3$-15s | %4$-11s | %5$-31s | %6$-20s |\n";
+			String line= "+------+----------------------+-----------------+-------------+---------------------------------+----------------------+\n";
+			retVal.append(line);
+			retVal.append(String.format(format, "no.", "module-name", "module-version", "module-type", "formats", "supplier-contact"));
+			retVal.append(line);
+			int no=1;
+			for (PepperModuleDesc desc: moduleDescs){
+				String formatString= "";
+						
+				if (	(desc.getSupportedFormats()!= null)&&
+						(desc.getSupportedFormats().size()> 0)){
+					int i= 0;
+					for (FormatDesc formatDesc: desc.getSupportedFormats()){
+						if (i!= 0){
+							formatString= formatString +"; ";
+						}
+						formatString= formatString+ formatDesc.getFormatName() + ", "+ formatDesc.getFormatVersion();
+						i++;
+					}
+				}
+				
+				if (desc!= null){
+					retVal.append(String.format(format, no, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
+				}
+				no++;
+			}
+			retVal.append(line);
+		}
+		return(retVal.toString());
+	}
+	
 	
 	/**
 	 * Prints the status of the passed {@link PepperJob} object, until {@link #setStop(Boolean#TRUE)} was called.
@@ -114,7 +242,6 @@ public abstract class PepperUtil {
 		public void setStop(boolean stop) {
 			this.stop = stop;
 		}
-		
 		
 		@Override
 		public void run() {

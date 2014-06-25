@@ -3,9 +3,9 @@
 <?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
     version="5.0" xml:id="ch_setUpEnv">
-    <title>X minutes to run your first Pepper module</title>
+    <title>Run your first Pepper module</title>
     <para>If you do not belong to the hardcore 'vi' developer community, you may want to use a
-        developement environment and an IDE for implementing your Pepper module. For that case we
+        development environment and an IDE for implementing your Pepper module. For that case we
         here describe how to set up your environment for the Eclipse IDE (see: <link
             xlink:href="http://download.eclipse.org">http://download.eclipse.org</link>). You also
         can stick to another IDE like NetBeans (see: <link xlink:href="www.netbeans.org/"
@@ -51,10 +51,10 @@
                         </footnote></para>
                 </listitem>
                 <listitem>
-                    <para>Since SaltNPepper uses maven (see: <link
+                    <para>Since SaltNPepper uses Maven (see: <link
                             xlink:href="http://maven.apache.org/">http://maven.apache.org/</link>)
                         for dependency and lifecycle management, it would make things much easier,
-                        to install maven in your Eclipse environment.</para>
+                        to install Maven in your Eclipse environment.</para>
                 </listitem>
                 <listitem>
                     <para>Open the 'Eclipse Marketplace' via 'Help' --> 'Eclipse Marketplace...'
@@ -101,8 +101,8 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                 </listitem>
                 <listitem>
                     <para>Back in Eclipse, click on the menu item 'File' --> 'Import...'. When the
-                        maven integration for Eclipse was set up correctly, you will find an entry
-                        named maven in the popped up dialog.</para>
+                        Maven integration for Eclipse was set up correctly, you will find an entry
+                        named Maven in the popped up dialog.</para>
                 </listitem>
                 <listitem>
                     <para>Click the entry 'Existing Maven Projects' as shown in figure <xref
@@ -118,8 +118,11 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                     </figure>
                 </listitem>
                 <listitem>
-                    <para>In the opening wizzard choose SAMPLE_HOME as location of your maven
-                        project and click finish.</para>
+                    <para>In the opening wizzard choose SAMPLE_HOME as location of your Maven
+                        project and first click 'Next' than 'Finish'. Eclipse may asks you to
+                        install 'Tycho'<footnote><para>Tycho is an Eclipse plug-in to connect the Maven integration with OSGi projects (see: <link
+                                    xlink:href="http://www.eclipse.org/tycho/"
+                                    >http://www.eclipse.org/tycho/</link>). </para></footnote>. Installing tycho and the necessary connectors could take some time.</para>
                 </listitem>
                 <listitem>
                     <para>Now Eclipse should import your first Pepper module project. After all,
@@ -146,7 +149,7 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
         <orderedlist>
             <listitem>
                 <para>Before you can run the sample module, you need to compile its sources. Since
-                    Pepper is using maven, right click on the project and select 'Run as...' -->
+                    Pepper is using Maven, right click on the project and select 'Run as...' -->
                     'Maven Install'.<footnote>
                         <para>The project now should be compiled. If you cannot see the compilation
                             progress, you need to open the 'Console' view by clicking on
@@ -199,9 +202,10 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
             <listitem>
                 <para>For logging, Pepper uses the SLF4J framework (see: <link
                         xlink:href="http://www.slf4j.org/">http://www.slf4j.org/</link>). Switch to
-                    tab 'Arguments' and type in in text box vm arguments the flag
-                    '-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml'.
-                    Make sure to replace SAMPLE_HOME with an absolute path.</para>
+                    tab 'Arguments' and in text box 'vm arguments' add the flag
+                    '-Dlogback.configurationFile=SAMPLE_HOME/src/test/resources/logback_test.xml'
+                    (if it is not already there). Make sure to replace SAMPLE_HOME with an absolute
+                    path.</para>
             </listitem>
             <listitem>
                 <para>Now press the button 'Run'.</para>
@@ -259,10 +263,13 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
             </listitem>
             <listitem>
                 <para><emphasis role="bold">pom.xml</emphasis></para>
-                <para>Open the pom.xml in the sampel project by double clicking on it. A specific
+                <para>Open the pom.xml in the sample project by double clicking on it. A specific
                     editor the 'POM editor' will open. On the bottom, a set of tabs is visible,
-                    choose the tab 'pom.xml'. An xml editor will open. The following steps
-                    correspond to one TODO entry in the file.</para>
+                    choose the tab 'pom.xml'. An xml editor will open the pom.xml file. Here you
+                    will find a lot of outcommented 'TODO' lines. These comments are explanations to
+                    the following lines and guide you what could/ should be changed. In the
+                    following, this document also gives a description of what to be changed and
+                    adresses the xml element with the use of the XPath syntax.</para>
                 <itemizedlist>
                     <listitem>
                         <para>Change the "groupId" to the name of your working group
@@ -280,7 +287,8 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
 
                 <para>We recommend to delete the modules you do not want to implement for this time
                     and just to keep the one(s) you are currently needing<footnote>
-                        <para>Otherwise you project will mess up with non-functional modules.</para>
+                        <para>Otherwise your project will mess up with non-functional
+                            modules.</para>
                     </footnote>.</para>
                 <itemizedlist>
                     <listitem>
@@ -314,7 +322,7 @@ public class MyImporter extends PepperImporterImpl
         </orderedlist>
         <para>That have been all required changes to be made. But as you might have seen, a pom.xml
             contains a lot more entries to describe your projects. Some of these entries are very
-            useful, depending on the maven modules you want to use. Here we shortly describe how to
+            useful, depending on the Maven modules you want to use. Here we shortly describe how to
             adapt the optional entries, we have used in the sample project. You can also do the
             following adaptions later and skip them for now.</para>
 
@@ -357,18 +365,18 @@ public class MyImporter extends PepperImporterImpl
                     '/project/build/plugins/plugin/configuration/tagBase'.</para>
             </listitem>
             <listitem>
-                <para>If your module needs some 3rd party maven dependencies add them to the
+                <para>If your module needs some 3rd party Maven dependencies add them to the
                     dependencies section. (adding 3rd party dependencies is necessary to resolve
-                    them via maven). You will find the entry under '/project/dependencies'.</para>
+                    them via Maven). You will find the entry under '/project/dependencies'.</para>
             </listitem>
             <listitem>
                 <para>Sometimes it is necessary to include libraries, which are not accessible via a
-                    maven repository and therefore can not be resolved by maven. In that case we
+                    Maven repository and therefore can not be resolved by Maven. In that case we
                     recommend, to create a 'lib' folder in the project directory and to copy all the
                     libraries you need into it. Unfortunatly, you have register them twice, first
-                    for maven and second for OSGi.</para>
-                <para>To register such a library to maven, you need to install them to your local
-                    maven repository. You can do that with:
+                    for Maven and second for OSGi.</para>
+                <para>To register such a library to Maven, you need to install them to your local
+                    Maven repository. You can do that with:
                     <programlisting>
 mvn install:install-file -Dfile=JAR_FILE -DgroupId=GROUP_ID \
 -DartifactId=ARTIFACT_ID -Dversion=VERSION -Dpackaging=PACKAGING
@@ -395,7 +403,7 @@ mvn install:install-file -Dfile=JAR_FILE -DgroupId=GROUP_ID \
 &lt;Include-Resource>{maven-resources}, LICENSE, NOTICE, 
 lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                     </programlisting>
-                    You include libraries not handled by maven, i.e. jar files, by setting the
+                    You include libraries not handled by Maven, i.e. jar files, by setting the
                     bundle-path and extending the include-resources tag.
                     "/project/build/plugins/plugin[artifactId/text()=
                     'maven-bundle-plugin']/configuration/instructions/Include-Resource"</para>
@@ -449,9 +457,9 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
         <para> This will create a zip file in the target folder of your project
             'SAMPLE_PROJECT/target/distribution', which can simply be plugged into Pepper via
             extracting its content to the plugin folder of Pepper 'PEPPER_HOME/plugins'. <note>
-                <para>If the command mvn was not found, make sure you have installed maven even in
-                    your system not only in Eclipse. For more information see the maven site <link
-                        xlink:href="http://maven.apache.org/"
+                <para>If the command 'mvn' was not found, make sure Maven is also installed for
+                    system-wide use and not only in Eclipse. For more information see the Maven site
+                        <link xlink:href="http://maven.apache.org/"
                     >http://maven.apache.org/</link>.</para>
             </note>
         </para>
@@ -459,7 +467,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
     <sect1>
         <title>Congratulations</title>
         <para>Now you are done, a new Pepper module is running under your name and you can provide
-            it for download. So the work is done, or isn't it? Unfortunatly not, now we come to the
+            it for download. So the work is done, is it? Unfortunately not, now we come to the
             hardest part ;-), the coding of your tasks. But don't be afraid, the next chapter is
             supposed to guide you through the jungle and to not losing your path.</para>
     </sect1>

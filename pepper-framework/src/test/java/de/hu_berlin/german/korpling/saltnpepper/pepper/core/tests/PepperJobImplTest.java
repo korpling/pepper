@@ -552,6 +552,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		}
 		
 		Step importStep= new Step("im1");
+		importStep.setCorpusDesc(new CorpusDesc());
+		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter= new MyImporter("myImporter");
 		myImporter.setResources(dummyResourceURI);
 		myImporter.expectedSDocuments= expectedSDocuments;
@@ -594,6 +596,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		}
 		
 		Step importStep1= new Step("im1");
+		importStep1.setCorpusDesc(new CorpusDesc());
+		importStep1.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter1= new MyImporter("myImporter1");
 		myImporter1.setResources(dummyResourceURI);
 		myImporter1.expectedSDocuments= expectedSDocuments1;
@@ -601,6 +605,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		getFixture().addStep(importStep1);
 		
 		Step importStep2= new Step("im2");
+		importStep2.setCorpusDesc(new CorpusDesc());
+		importStep2.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter2= new MyImporter("myImporter2");
 		myImporter2.setResources(dummyResourceURI);
 		myImporter2.expectedSDocuments= expectedSDocuments2;
@@ -654,6 +660,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		}
 		
 		Step importStep1= new Step("im1");
+		importStep1.setCorpusDesc(new CorpusDesc());
+		importStep1.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter1= new MyImporter("myImporter1");
 		myImporter1.setResources(dummyResourceURI);
 		myImporter1.expectedSDocuments= expectedSDocuments1;
@@ -661,6 +669,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		getFixture().addStep(importStep1);
 		
 		Step importStep2= new Step("im2");
+		importStep2.setCorpusDesc(new CorpusDesc());
+		importStep2.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter2= new MyImporter("myImporter2");
 		myImporter2.setResources(dummyResourceURI);
 		myImporter2.expectedSDocuments= expectedSDocuments2;
@@ -730,6 +740,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		expectedSDocuments.addAll(expectedSDocuments2);
 		
 		Step importStep1= new Step("im1");
+		importStep1.setCorpusDesc(new CorpusDesc());
+		importStep1.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter1= new MyImporter("myImporter1");
 		myImporter1.setResources(dummyResourceURI);
 		myImporter1.expectedSDocuments= expectedSDocuments1;
@@ -737,6 +749,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		getFixture().addStep(importStep1);
 		
 		Step importStep2= new Step("im2");
+		importStep2.setCorpusDesc(new CorpusDesc());
+		importStep2.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter2= new MyImporter("myImporter2");
 		myImporter2.expectedSDocuments= expectedSDocuments2;
 		myImporter2.setResources(dummyResourceURI);
@@ -756,7 +770,6 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		getFixture().addStep(exportStep1);
 				
 		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
-		
 		getFixture().convert();
 		
 		//import phase
@@ -805,6 +818,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		expectedSDocuments.addAll(expectedSDocuments2);
 		
 		Step importStep1= new Step("im1");
+		importStep1.setCorpusDesc(new CorpusDesc());
+		importStep1.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter1= new MyImporter("myImporter1");
 		myImporter1.setResources(dummyResourceURI);
 		myImporter1.expectedSDocuments= expectedSDocuments1;
@@ -812,6 +827,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		getFixture().addStep(importStep1);
 		
 		Step importStep2= new Step("im2");
+		importStep2.setCorpusDesc(new CorpusDesc());
+		importStep2.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
 		MyImporter myImporter2= new MyImporter("myImporter2");
 		myImporter2.setResources(dummyResourceURI);
 		myImporter2.expectedSDocuments= expectedSDocuments2;
@@ -884,9 +901,9 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		myImporter.idleTime= 20;
 		myImporter.expectedSDocuments= expectedDocuments;
 		importStep1.setPepperModule(myImporter);
-		CorpusDesc corpusDesc= new CorpusDesc();
-		corpusDesc.setCorpusPath(URI.createFileURI("/alibiURI"));
-		importStep1.setCorpusDesc(corpusDesc);
+		importStep1.setCorpusDesc(new CorpusDesc());
+		importStep1.getCorpusDesc().setCorpusPath(URI.createFileURI(System.getProperty("java.io.tmpdir")));			
+		
 		
 		getFixture().addStep(importStep1);
 		

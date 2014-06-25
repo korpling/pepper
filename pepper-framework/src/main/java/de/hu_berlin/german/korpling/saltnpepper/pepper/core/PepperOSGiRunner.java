@@ -146,7 +146,9 @@ public class PepperOSGiRunner implements Runnable {
 			return (false);
 	}
 
-	public void start() throws PepperException {
+	@Override
+	public void run() throws PepperException {
+		Long millis = System.currentTimeMillis();
 		try {
 			logger.info(PepperUtil.getHello());
 
@@ -155,21 +157,12 @@ public class PepperOSGiRunner implements Runnable {
 
 			if (pepper.getModuleResolver() == null)
 				throw new PepperException("No '" + ModuleResolverImpl.class + "' is given for passed '" + Pepper.class + "' object.");
-
-			logger.info("+--------------------------------------------------------------------------------+");
-			logger.info(String.format("|%-80s|", " configuration for Pepper"));
-			logger.info("+--------------------------------------------------------------------------------+");
 			if ((pepper.getConfiguration() != null) && (pepper.getConfiguration().size() != 0)) {
-				for (Object key : pepper.getConfiguration().keySet()) {
-					logger.info(String.format("| %-28s: %-48s |", key, pepper.getConfiguration().get(key)));
-				}
-			} else {
-				logger.info(String.format("|%-80s|", "- no configurations set -"));
+				logger.info(PepperUtil.reportConfiguration(pepper.getConfiguration()));
 			}
-			logger.info("+--------------------------------------------------------------------------------+");
 
 			// print registered pepper modules
-			logger.info(pepper.getModuleResolver().getStatus());
+			logger.info(PepperUtil.reportModuleList(getPepper().getRegisteredModules()));
 
 			if (isSelfTest()) {
 				logger.info("Pepper is running in self test mode...");
@@ -206,36 +199,31 @@ public class PepperOSGiRunner implements Runnable {
 							stepsOut.append("\n");
 						}
 					}
-					stepsOut.append("-----------------------------------------------------------------\n");
-					logger.info(stepsOut.toString());
+					
+					logger.info(PepperUtil.breakString(stepsOut.toString()));
 					observer.start();
 
 					try {
 						job.convert();
-					} catch (PepperException e) {
-						System.err.println(e);
-						throw e;
-					} catch (Exception e) {
-						System.err.println(e);
-						throw e;
 					} finally {
 						observer.setStop(true);
 					}
 				}// pepper can be started
 			}
+			millis = System.currentTimeMillis() - millis;
+			logger.info("Conversion ended, and needed: "+ millis+" ms");
 		} catch (Exception e) {
-			logger.info("Launching of pepper-osgi-runner ended with errors.");
-			logger.info("================================== Good bye ==================================");
-			throw new PepperOSGiRunnerException("An error occured while running pepper-osgi-runner, because of nested exception.", e);
+			logger.info(PepperUtil.breakString("Launching of pepper-osgi-runner ended with errors (the stack trace is printed out to 'System.err'):"));
+			logger.info(PepperUtil.breakString("   ",e.getMessage()+" ("+e.getClass().getSimpleName()+")"));
+			if (e instanceof PepperException){
+				throw (PepperException)e;
+			}else{
+				throw new PepperOSGiRunnerException("An error occured while running pepper-osgi-runner, because of nested exception.", e);
+			}
 		}
-
-	}
-
-	private void printBye(long millis) {
-		logger.info("time to compute all comparisons: ");
-
-		logger.info("Conversion ended, and needed (milli seconds): " + millis);
-		logger.info("************************************************************************");
+		finally{
+			logger.info("************************************************************************************************************************");
+		}
 	}
 
 	private Boolean isDisabled = false;
@@ -279,19 +267,21 @@ public class PepperOSGiRunner implements Runnable {
 	protected void deactivate(ComponentContext componentContext) {
 	}
 
-	@Override
-	public void run() {
-		Long millis = null;
-		try {
-			millis = System.currentTimeMillis();
-			this.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Any exception occurs while running pepper-osgi-runner.", e);
-			throw new PepperOSGiRunnerException("Any exception occurs while running pepper-osgi-runner.", e);
-		} finally {
-			millis = System.currentTimeMillis() - millis;
-			printBye(millis);
-		}
-	}
+//	@Override
+//	public void run() {
+//		Long millis = null;
+//		try {
+//			millis = System.currentTimeMillis();
+//			this.start();
+//		} catch (Exception e) {
+//			if (e instanceof PepperException){
+//				throw (PepperException)e;
+//			}else{
+//				throw new PepperOSGiRunnerException("Any exception occurs while running pepper-osgi-runner.", e);
+//			}
+//		} finally {
+//			millis = System.currentTimeMillis() - millis;
+//			logger.info("************************************************************************************************************************");
+//		}
+//	}
 }

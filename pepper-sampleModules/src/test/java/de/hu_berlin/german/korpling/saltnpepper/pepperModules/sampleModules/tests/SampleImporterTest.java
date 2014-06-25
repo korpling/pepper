@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleImporter;
@@ -74,6 +75,8 @@ public class SampleImporterTest extends PepperImporterTest{
 	 */
 	@Test
 	public void test_DummyImplementation() {
+		//set the path, from where to import the corpus, in our dummy implementation, the location is also just a dummy
+		getFixture().getCorpusDesc().setCorpusPath(getTempURI("sampleImporter"));
 		//starts the Pepper framework and the conversion process
 		start();
 		
