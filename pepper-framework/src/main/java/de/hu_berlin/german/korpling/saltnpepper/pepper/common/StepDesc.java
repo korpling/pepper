@@ -213,8 +213,14 @@ public class StepDesc {
 			str.append(getModuleType().toString());
 		}else str.append("UNKNOWN_STEP");
 		str.append("(");
-		str.append((getName()!=null)?getName():"");
-		str.append((getVersion()!=null)?", "+getVersion():"");
+		if (getName()!= null){
+			str.append((getName()!=null)?getName():"");
+			str.append((getVersion()!=null)?", "+getVersion():"");
+		}else if (getCorpusDesc().getFormatDesc()!= null){
+			str.append((getCorpusDesc().getFormatDesc().getFormatName()!=null)?getCorpusDesc().getFormatDesc().getFormatName():"");
+			str.append(",");
+			str.append((getCorpusDesc().getFormatDesc().getFormatVersion()!=null)?getCorpusDesc().getFormatDesc().getFormatVersion():"");
+		}
 		str.append(")");
 		return(str.toString());
 	}
