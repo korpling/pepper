@@ -10,15 +10,15 @@
         case.</para>
     <sect1>
         <title>XML helpers</title>
-        <para>To read xml files Pepper provides a simple method, which shortcuts the instatiation of
-            a SAX parser. This method can be used in a derivation of
+        <para>To read xml files Pepper provides a simple method, which shortcuts the instantiation
+            of a SAX parser. This method can be used in a derivation of
                 <classname>PepperImporter</classname> as shown in the following
             snippet:<programlisting>readXMLResource(contentHandler, documentLocation);</programlisting></para>
         <sect2>
             <title>XML extractor</title>
             <para>The <classname>XMLTagExtractor</classname> generates a dictionary of the xml
                 vocabulary. The dictionary consists of xml tag names, xml namespaces and attribute
-                names from a source file and generates a java interface and a java class as well.
+                names from a source file and generates a Java interface and a java class as well.
                 The interface contains the xml namespace declarations, the xml element and attribute
                 names as fields (public static final Strings). The generated java class implements
                 that interface and further extends the <classname>DefaultHandler2</classname> class,

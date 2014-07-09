@@ -17,7 +17,7 @@
             <orderedlist>
                 <listitem>
                     <para>Download Eclipse <footnote>
-                            <para>Eclipse is available in several flavours e.g. for web developers,
+                            <para>Eclipse is available in several flavors e.g. for web developers,
                                 mobile developers, C++ developers etc.. We recommend the Eclipse
                                 Modeling Tools, since you might want to create or use a model for
                                 the format you want to support. In this documentation, we used
@@ -118,11 +118,13 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                     </figure>
                 </listitem>
                 <listitem>
-                    <para>In the opening wizzard choose SAMPLE_HOME as location of your Maven
-                        project and first click 'Next' than 'Finish'. Eclipse may asks you to
-                        install 'Tycho'<footnote><para>Tycho is an Eclipse plug-in to connect the Maven integration with OSGi projects (see: <link
-                                    xlink:href="http://www.eclipse.org/tycho/"
-                                    >http://www.eclipse.org/tycho/</link>). </para></footnote>. Installing tycho and the necessary connectors could take some time.</para>
+                    <para>In the opening wizard choose SAMPLE_HOME as location of your Maven project
+                        and first click 'Next' than 'Finish'. Eclipse may asks you to install 'Tycho'<footnote>
+                            <para>Tycho is an Eclipse plug-in to connect the Maven integration with
+                                OSGi projects (see: <link xlink:href="http://www.eclipse.org/tycho/"
+                                    >http://www.eclipse.org/tycho/</link>). </para>
+                        </footnote>. Installing tycho and the necessary connectors could take some
+                        time.</para>
                 </listitem>
                 <listitem>
                     <para>Now Eclipse should import your first Pepper module project. After all,
@@ -184,11 +186,11 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                     environment variable named 'PEPPER_TEST_WORKFLOW_FILE'. The value of this
                     variable determines, where to find the description file of a Pepper workflow
                     (see figure <xref linkend="fig_runConfig01"/>). The sample module comes with a
-                    predfined workflow file at 'SAMPLE_HOME/src/test/resources/sample.pepperparams'.
-                    In this workflow all three modules of the sample module project are in use: an
-                    importer for importing a static corpus, a manipulator, to print out some
-                    information about the corpus like annotation frequencies and an exporter to
-                    export the corpus into dot format.<footnote>
+                    predefined workflow file at
+                    'SAMPLE_HOME/src/test/resources/sample.pepperparams'. In this workflow all three
+                    modules of the sample module project are in use: an importer for importing a
+                    static corpus, a manipulator, to print out some information about the corpus
+                    like annotation frequencies and an exporter to export the corpus into dot format.<footnote>
                         <para>The dot format (see: <link
                                 xlink:href="http://www.graphviz.org/content/dot-language"
                                 >http://www.graphviz.org/content/dot-language</link>) is a format
@@ -212,7 +214,7 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
             </listitem>
             <listitem>
                 <para>In optimal case everything is fine and Pepper should welcome you and start the
-                    conversion producing some outputs to standard out. So what has happend? <orderedlist>
+                    conversion producing some outputs to standard out. So what has happened? <orderedlist>
                         <listitem>
                             <para>The framework starts and notifies about the registered modules,
                                 which are some more, than just our sample modules. This is because
@@ -226,7 +228,7 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                                 status messages to its progress.</para>
                         </listitem>
                         <listitem>
-                            <para>The SampleManipulator outputs some statistcal information about
+                            <para>The SampleManipulator outputs some statistical information about
                                 that imported corpus like, how many nodes and relations are
                                 contained. Which annotations are used and in which frequency they
                                 occur.</para>
@@ -269,7 +271,7 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                     will find a lot of outcommented 'TODO' lines. These comments are explanations to
                     the following lines and guide you what could/ should be changed. In the
                     following, this document also gives a description of what to be changed and
-                    adresses the xml element with the use of the XPath syntax.</para>
+                    addresses the xml element with the use of the XPath syntax.</para>
                 <itemizedlist>
                     <listitem>
                         <para>Change the "groupId" to the name of your working group
@@ -283,7 +285,7 @@ per/tags/${project.version}/pepper-sampleModules/</programlisting>
                 </itemizedlist>
             </listitem>
             <listitem>
-                <para><emphasis role="bold">java code</emphasis></para>
+                <para><emphasis role="bold">Java code</emphasis></para>
 
                 <para>We recommend to delete the modules you do not want to implement for this time
                     and just to keep the one(s) you are currently needing<footnote>
@@ -373,7 +375,7 @@ public class MyImporter extends PepperImporterImpl
                 <para>Sometimes it is necessary to include libraries, which are not accessible via a
                     Maven repository and therefore can not be resolved by Maven. In that case we
                     recommend, to create a 'lib' folder in the project directory and to copy all the
-                    libraries you need into it. Unfortunatly, you have register them twice, first
+                    libraries you need into it. Unfortunately, you have register them twice, first
                     for Maven and second for OSGi.</para>
                 <para>To register such a library to Maven, you need to install them to your local
                     Maven repository. You can do that with:
@@ -415,7 +417,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
         <para>Since your project's configuration is now adapted to your needs, you need to
             re-compile the sources. Right click on the project and select 'Run as...' --> 'Maven
             Install'. After renaming the project in Eclipse and the pom.xml, you need to adapt the
-            'Run configuartions'. <orderedlist>
+            'Run configurations'. <orderedlist>
                 <listitem>
                     <para>In tab 'Bundles' you need to select the bundle again (having the new
                         name).</para>
@@ -438,7 +440,7 @@ lib/myLib.jar=lib/myLib.jar&lt;/Include-Resource>
                     <para>Change the name of the modules and/or the format descriptions.</para>
                 </listitem>
                 <listitem>
-                    <para>In case you have removed some modules, delete them from the wokflow
+                    <para>In case you have removed some modules, delete them from the workflow
                         file.</para>
                 </listitem>
             </orderedlist>

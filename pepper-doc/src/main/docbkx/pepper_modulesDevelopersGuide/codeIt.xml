@@ -5,14 +5,14 @@
     version="5.0" xml:id="ch_codeIt">
     <title>Just code it</title>
     <para>With Pepper we tried to avoid as much complexity as possible without reducing the
-        funtionality. We want to enable you to concentrate on the main issues, which are the mapping
-        of objects. But still there are some things you need to know about the framework. Therefore
-        we here introduce some aspects of the Pepper framework and its interaction with a Pepper
-        module. Reducing the complexity is not always possible, but we tried. To manage this
+        functionality. We want to enable you to concentrate on the main issues, which are the
+        mapping of objects. But still there are some things you need to know about the framework.
+        Therefore we here introduce some aspects of the Pepper framework and its interaction with a
+        Pepper module. Reducing the complexity is not always possible, but we tried. To manage this
         trade-off, we followed the approach convention over configuration. That means, we made some
         assumptions, which apply to many mapping tasks. This makes implementing very simple if the
         default case matches. But if not, you always have the possibility to adapt the module to
-        your needs. The adaptable default behavior mostly is relaized by class derivation and
+        your needs. The adaptable default behavior mostly is realized by class derivation and
         call-back methods, which always can be overridden.</para>
     <para>Pepper differentiates three sorts of modules: the importer, the manipulator and the
         exporter. An importer maps a corpus given in format <emphasis role="italic">X</emphasis> to
@@ -41,11 +41,11 @@
         we added mechanisms to run the process multi-threaded<footnote>
             <para>This mechanism enables to map several document-structures and corpus-structures at
                 once.</para>
-        </footnote>. Unfortunatly in Java multi-threading is not that trivial and the easiest way to
-        do it is to separate each thread in an own class. This is where
+        </footnote>. Unfortunately in Java multi-threading is not that trivial and the easiest way
+        to do it is to separate each thread in an own class. This is where
             <classname>PepperMapper</classname> comes into game. A
             <classname>PepperModule</classname> object is a singleton instance for one step in the
-        Pepper workflow and devides and distributes the tasks of mapping corpora and documents to
+        Pepper workflow and divides and distributes the tasks of mapping corpora and documents to
         several <classname>PepperModule</classname> objects. </para>
     <para>A mapping task in the Pepper workflow is not a monolithic blog. It consists of several
         smaller conceptual aspects. Not each of the named aspects is essential, and some are
@@ -98,9 +98,9 @@
                 (<classname>SCorpus</classname> in Salt). Therefore, mapping the document-structure
             and corpus-structure is the main task of a Pepper module. Normally the conceptual
             mapping of elements between a model or format <emphasis role="italic">X</emphasis> and
-            Salt is the most tricky part. Not neccessarily in a technical sense, but in a
-            semantical. For getting a clue how the mapping can technically be realized, we strongly
-            recommend, to read the Salt model guide and the quick user guide on <link
+            Salt is the most tricky part. Not necessarily in a technical sense, but in a semantical.
+            For getting a clue how the mapping can technically be realized, we strongly recommend,
+            to read the Salt model guide and the quick user guide on <link
                 xlink:href="u.hu-berlin.de/saltnpepper/">u.hu-berlin.de/saltnpepper/</link>. We here
             more focus on the technical part of the Pepper workflow and especially on the Pepper
             modules. But in our Sample module, a lot of templates exist of how to deal with a Salt
@@ -134,7 +134,7 @@
     return(mapper);
 }</programlisting>This
             method is supposed to provide a new instance of a specialized
-                <classname>PepperMapper</classname>. Although the main initilaizations, necessary
+                <classname>PepperMapper</classname>. Although the main initializations, necessary
             for the workflow (e.g. passing the customization properties, see <xref
                 linkend="sec_customization"/>) are done by Pepper in the back, this is the place to
             make some specific configurations depending on your implementation. If your module is an
@@ -151,7 +151,7 @@
 
     @Override
     protected void initialize(){
-        //do some initilizations
+        //do some initializations
     }
     
     @Override
@@ -202,7 +202,7 @@
             meta-annotation is about an author having the name 'Bart Simpson', the null-value means,
             that no namespace is used). In method 'mapSDocument()', at position 5, you can access
             the current object (here it is of type <classname>SDocument</classname>) with
-            'getSDocument()'. If your module is an importer, you need to crete a container for the
+            'getSDocument()'. If your module is an importer, you need to create a container for the
             document-structure, a <classname>SDocumentGraph</classname> object. The snippet further
             shows the creation of a primary text at position 6. In Salt each object can be annotated
             or meta-annotated, so do the <classname>SDocument</classname> objects, as shown at
@@ -257,7 +257,7 @@ public void start(SElementId sElementId){
     ...
 }
 
-/** Creates and initilizes a PepperMapper instance **/
+/** Creates and initializes a PepperMapper instance **/
 @Override
 public PepperMapper createPepperMapper(SElementId sElementId){
     ...
@@ -277,12 +277,12 @@ public PepperMapper createPepperMapper(SElementId sElementId){
     <sect1 xml:id="sec_analyzing">
         <title>Analyzing an unknown corpus</title>
         <para>The experience has shown, that a lot of users, do not care a lot about formats and
-            don't want to. Unfortunatly, in most cases it is not possible to not annoy the users
+            don't want to. Unfortunately, in most cases it is not possible to not annoy the users
             with the details of a mapping. But we want to reduce the complexity for the user as much
             as possible. Since most users are not very interested, in the source format of a corpus,
             they just want to bring the corpus into any kind of tool to make further annotations or
             analysis. Therefore Pepper provides a possibility to automatically detect the source
-            format of a corpus. Unfortunatly this task very depends on the format and the module
+            format of a corpus. Unfortunately this task very depends on the format and the module
             processing the format. That makes the detection a task of the modules implementor. We
             are sorry. The mechanism of automatic detection is not a mandatory task, but it is very
             useful, what makes it recommended.</para>
@@ -531,8 +531,8 @@ public PepperMapper createPepperMapper(SElementId sElementId){
             </note>
             <para> One customization property in Pepper is represented with an object of type
                     <classname>PepperModuleProperty</classname>. Such an object consists of the
-                propertys name, its datatype, a short description and a flag specifying whether this
-                property is optional or mandatory as shown in the following snippet:
+                property's name, its datatype, a short description and a flag specifying whether
+                this property is optional or mandatory as shown in the following snippet:
                 <programlisting>PepperModuleProperty(String name, Class&lt;T&gt; clazz, String description, 
                      Boolean required)</programlisting>
                 Even a default value could be passed:
@@ -587,9 +587,9 @@ public class MyModuleProperties extends PepperModuleProperties {
                 casting values in your mapping code. Position 3 shows the method 'checkProperty()',
                 which can be used to check the passed properties value. Since customization
                 properties or more specific their values are entered manually by the user, it might
-                be necessary to check the passed values. The Pepper framework calles this method,
+                be necessary to check the passed values. The Pepper framework calls this method,
                 before the mapping process is started. If a constraint fails the user will be
-                informed immediatly. </para>
+                informed immediately. </para>
             <para> Last but not least, you need to initialize your property object. The best place
                 for doing this is the constructor of your module. Such an early initialization
                 ensures, that the Pepper framework will use the correct object and will not create a
@@ -676,14 +676,14 @@ logger.error("messages in case of an exception");</programlisting></para>
         </sect2>
         <sect2>
             <title>Error handling</title>
-            <para>Another important aspect of monitorng, is the monitoring when an error occured.
+            <para>Another important aspect of monitoring, is the monitoring when an error occurred.
                 Even when the module crashes and the conversion could not be ended successfully, the
-                user needs a feedback of what has happend. The main question would be is it a bug in
-                code or a bug in the data. In both cases, the user needs a precise description.
+                user needs a feedback of what has happened. The main question would be is it a bug
+                in code or a bug in the data. In both cases, the user needs a precise description.
                 Either to notify you, the module developer or to find the bug in the data on her or
-                his own. And unfortunatly just a <classname>NullPointerException</classname> is not
+                his own. And unfortunately just a <classname>NullPointerException</classname> is not
                 very useful to the user and is very frustrating.</para>
-            <para>Pepper provides a hierarchie of Exception classes to be used for different
+            <para>Pepper provides a hierarchy of Exception classes to be used for different
                 purposes, for instance to describe problems in customization properties, the data or
                 general problems in module. Figure <xref linkend="fig_exceptionClasses"/> gives an
                 overview over the Exception classes for modules. <figure
@@ -697,14 +697,14 @@ logger.error("messages in case of an exception");</programlisting></para>
                 </figure> The main and general class <classname>PepperModuleException</classname>
                 can be used in case of the Exception does not match to one of the more specific
                 types. When initializing a <classname>PepperModuleException</classname> or one of
-                its subclsses, you can pass a <classname>PepperModule</classname> or a
+                its subclasses, you can pass a <classname>PepperModule</classname> or a
                     <classname>PepperMapper</classname> object. The exception itself will expand the
                 error message with the modules name etc. . A more detailed description of the
                 exception classes could be found in the JavaDoc.</para>
             <para>When an exception was thrown for a single document, Pepper will not break up the
                 entire conversion process. Pepper will set the status of this document to failed and
-                will remove it from the rest of the workflow, so that modules comming afterwards
-                will not process the corrupted document. Pepper will give a feedback to the user
+                will remove it from the rest of the workflow, so that modules coming afterwards will
+                not process the corrupted document. Pepper will give a feedback to the user
                 containing the error message provided by the module.</para>
         </sect2>
     </sect1>
@@ -714,16 +714,16 @@ logger.error("messages in case of an exception");</programlisting></para>
             constructor of a module and second the method
             '<methodname>isReadyToStart()</methodname>'. Both methods have been touched already in
             the other sections, but here we want to give a bundled overview about things concerning
-            the initialization. Let us start with an explanaition why there are two methods.
+            the initialization. Let us start with an explanation why there are two methods.
             Sometimes, it might be necessary, to read some configuration files for the
             initialization, but their location is passed by the Pepper framework. Such locations can
-            be accessed with the method '<methodname>getResources()</methodname>'. Unfortunatly,
+            be accessed with the method '<methodname>getResources()</methodname>'. Unfortunately,
             this information can only be set after a Pepper module was created, so after the
             constructor was called. Therefore we need a possibility for initialization at a later
-            point. The method '<methodname>isReadyToStart()</methodname>' fullfills two tasks, first
+            point. The method '<methodname>isReadyToStart()</methodname>' fulfills two tasks, first
             the initialization task and second, it returns a boolean value to determine, if the
             module can be started or if things went wrong. If you now wonder, where should be the
-            best location, to do your initialization, we recommend an eaarly-as-possible approach.
+            best location, to do your initialization, we recommend an early-as-possible approach.
             The following snippet shows a sample initialization:
             <programlisting>public SampleImporter(){
     super();
@@ -746,7 +746,7 @@ public boolean isReadyToStart(){
             this sample, the file ending is set in 'isReadyToRun()' method, since it depends on some
             files in the resource folder<footnote>
                 <para>All files in the folder 'SAMPLE_HOME/src/main/resources' will be copied to the
-                    resource loaction in a modules distribution.</para>
+                    resource location in a modules distribution.</para>
             </footnote>. Other reasons could be dependencies on the passed customizations, which are
             also set after the constructor was called.</para>
         <para>Sometimes it might be necessary to clean up after the module did the job. For instance

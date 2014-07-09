@@ -70,7 +70,7 @@
                 <emphasis role="italic">C</emphasis>, … . A Pepper workflow consists of three
             phases: <orderedlist>
                 <listitem>
-                    <para>the import phase (mapping data from a given fromat to Salt),</para>
+                    <para>the import phase (mapping data from a given format to Salt),</para>
                 </listitem>
                 <listitem>
                     <para>the optional manipulation phase (manipulating or enhancing data in Salt)
@@ -104,7 +104,7 @@
             already comes with some predefined tests. This test bed is based on JUnit (see: <link
                 xlink:href="junit.org">junit.org</link>) and can easily be extended for a specific
             module test. They should save you some time. <xref linkend="ch_documentation"/> shows
-            the usage of a documentation template written in doocbook (see <link
+            the usage of a documentation template written in DocBook (see <link
                 xlink:href="http://www.docbook.org/">http://www.docbook.org/</link>) to make a
             standard documentation for the user of your module. </para>
 
@@ -116,7 +116,7 @@
                 used as a template and a kind of an inspiration for your own project. So don't
                 hesitate to override the specific parts. The project contains three modules, one of
                 each kind: an importer, a manipulator and en exporter. The importer just imports a
-                static corpus containing one super-corpus, two sub-corpora and four doucments. Here
+                static corpus containing one super-corpus, two sub-corpora and four documents. Here
                 you can see how to create a corpus-structure and a document-structure<footnote>
                     <para>Salt differentiates between the corpus-structure and the
                         document-structure. The document-structure contains the primary data (data
