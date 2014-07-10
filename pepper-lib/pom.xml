@@ -6,12 +6,12 @@
     <parent>
         <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
         <artifactId>pepper</artifactId>
-        <version>2.0.1</version>
+        <version>2.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <scm>
-        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-2.0.1/pepper-starter</developerConnection>
-        <url>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags/pepper-2.0.1/pepper-starter</url>
+        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-starter/</developerConnection>
+        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-starter/</url>
     </scm>
     <dependencies>
         <dependency>
