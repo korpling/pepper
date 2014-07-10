@@ -7,7 +7,7 @@
 ***********************************************************************************
 Version 2.0.0
 =============
-	* removed EMF from Pepper (only used to acccess Salt)
+	* removed EMF from Pepper (only used to access Salt)
 	* simplified project structure, main projects are
 	** pepper-framework (core of Pepper)
 	** pepper-lib (containing CLI and access to bridge OSGi)
