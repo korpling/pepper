@@ -649,7 +649,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 		// copy all corpora into finite list
 		corporaToEnd = new Vector<SCorpus>();
-		for (SCorpusGraph sCorpusGraph : this.getSaltProject().getSCorpusGraphs()) {
+		List<SCorpusGraph> corpGraphs= Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
+		for (SCorpusGraph sCorpusGraph : corpGraphs) {
 			if (sCorpusGraph != null) {
 				for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
 					corporaToEnd.add(sCorpus);
