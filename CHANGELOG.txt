@@ -15,6 +15,20 @@
 *	artifactId:		pepper-testSuite                                              *
 *	artifactId:		pepper-workflow                                               *
 ***********************************************************************************
+Version 2.0.0
+=============
+	* removed EMF from Pepper (only used to acccess Salt)
+	* simplified project structure, main projects are
+	** pepper-framework (core of Pepper)
+	** pepper-lib (containing CLI and access to bridge OSGi)
+	** pepper-doc (documentation, reorganized documentation, fulfilled parts and adapted documentation to new structure)
+	** pepper-parentModule (a collection of pom plugins for Pepper modules)
+	** pepper-sampleModule (containing sample importer, manipulator and exporter, could be used as template for own modules)
+	* replaced OSGi logging with slf4j
+	* documents are sent to sleep when not needed, this decreases memory amount, since a single document does not to be held in main memory, when it is in waiting mode for a module, documents are stored in systems temporary folder (could be parameterized)
+	* improved test environment for modules, see: PepperImporterTest, PepperExporterTest, PepperManipulatorTest
+	* new interactive console to access Pepper and even the underlying OSGi (in parts) 
+	* updated JUnit to versiuon 4
 Version 1.1.7
 =============
 	* reorganized detection of Pepper module resources, now PEPPER_TEST environment variable is necessary any more, resources now can be directly loaded from same path, where the bundle is located 
