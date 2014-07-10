@@ -512,6 +512,9 @@ public class PepperJobImpl extends PepperJob {
 	protected File getTmpDir() {
 		File tmpFile = new File(System.getProperty("java.io.tmpdir") + "/pepper/" + getId() + "/");
 		tmpFile.mkdirs();
+		if (tmpFile.exists()){
+			throw new PepperException("Sorry, was not able to create folder for temporary storing files '"+tmpFile.getAbsolutePath()+"'. This might concern to missing write permissions. ");
+		}
 		return (tmpFile);
 	}
 
@@ -598,7 +601,7 @@ public class PepperJobImpl extends PepperJob {
 						}
 						docFile = File.createTempFile(prefix, "." + SaltFactory.FILE_ENDING_SALT, getTmpDir());
 					} catch (IOException e) {
-						throw new PepperFWException("Cannot store '" + sDoc.getSName() + "' temporary to file '"+((docFile== null)?"not available":docFile.getAbsolutePath())+"'. "+e.getMessage(), e);
+						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' temporary to file '"+((docFile== null)?"not available":docFile.getAbsolutePath())+"'. "+e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
 					// to remove temporary document files uncomment this line
