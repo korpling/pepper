@@ -18,7 +18,7 @@ Version 2.0.0
 	* documents are sent to sleep when not needed, this decreases memory amount, since a single document does not to be held in main memory, when it is in waiting mode for a module, documents are stored in systems temporary folder (could be parameterized)
 	* improved test environment for modules, see: PepperImporterTest, PepperExporterTest, PepperManipulatorTest
 	* new interactive console to access Pepper and even the underlying OSGi (in parts) 
-	* updated JUnit to versiuon 4
+	* updated JUnit to version 4
 Version 1.1.7
 =============
 	* reorganized detection of Pepper module resources, now PEPPER_TEST environment variable is necessary any more, resources now can be directly loaded from same path, where the bundle is located 
