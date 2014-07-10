@@ -63,7 +63,7 @@
         <allServiceComponents>${serviceComponents}/*.xml</allServiceComponents>
         <serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
         <!-- versions of dependencies -->
-        <salt.version>1.1.8-SNAPSHOT</salt.version>
+        <salt.version>1.1.8</salt.version>
         <commons-lang3.version>3.0</commons-lang3.version>
         <slf4j.version>1.7.5</slf4j.version>
         <junit.version>4.11</junit.version>
