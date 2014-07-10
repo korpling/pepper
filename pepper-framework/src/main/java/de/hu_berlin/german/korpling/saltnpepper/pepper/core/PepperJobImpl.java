@@ -512,7 +512,7 @@ public class PepperJobImpl extends PepperJob {
 	protected File getTmpDir() {
 		File tmpFile = new File(System.getProperty("java.io.tmpdir") + "/pepper/" + getId() + "/");
 		tmpFile.mkdirs();
-		if (tmpFile.exists()){
+		if (!tmpFile.exists()){
 			throw new PepperException("Sorry, was not able to create folder for temporary storing files '"+tmpFile.getAbsolutePath()+"'. This might concern to missing write permissions. ");
 		}
 		return (tmpFile);
