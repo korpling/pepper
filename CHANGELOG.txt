@@ -4,16 +4,6 @@
 *	groupId:		de.hu_berlin.german.korpling.saltnpepper					  *
 *	artifactId:		pepper												          *
 *													                              *
-*	sub-projects:												                  *
-*	-------------                                                                 *
-*	artifactId:		pepper-exceptions                                             *
-*	artifactId:		pepper-framework                                              *
-*	artifactId:		pepper-logReader                                              *
-*	artifactId:		pepper-modules                                                *
-*	artifactId:		pepper-parentModule                                           *
-*	artifactId:		pepper-starter                                                *
-*	artifactId:		pepper-testSuite                                              *
-*	artifactId:		pepper-workflow                                               *
 ***********************************************************************************
 Version 2.0.0
 =============
