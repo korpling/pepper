@@ -594,14 +594,15 @@ public class PepperJobImpl extends PepperJob {
 					getDocumentControllers().add(documentController);
 
 					File docFile = null;
+					String prefix = sDoc.getSName();
+					File tmpPath= getTmpDir();
 					try {
-						String prefix = sDoc.getSName();
 						if (prefix.length() < 3) {
 							prefix = prefix + "artificial";
 						}
-						docFile = File.createTempFile(prefix, "." + SaltFactory.FILE_ENDING_SALT, getTmpDir());
+						docFile = File.createTempFile(prefix, "." + SaltFactory.FILE_ENDING_SALT, tmpPath);
 					} catch (IOException e) {
-						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' temporary to file '"+((docFile== null)?"not available":docFile.getAbsolutePath())+"'. "+e.getMessage(), e);
+						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' to file '"+((docFile== null)?docFile:docFile.getAbsolutePath())+"' in folder for temporary files '"+tmpPath+"'. "+e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
 					// to remove temporary document files uncomment this line
