@@ -169,8 +169,8 @@
     <build>
         <plugins>
             <!-- start: Plugin for automatic releasing -->
-            <plugin>
-            <plugin>
+        
+        <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <version>${maven-release-plugin.version}</version>
         <executions>
