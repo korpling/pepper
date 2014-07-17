@@ -15,9 +15,9 @@
         into the framework via creating a PepperModule.</description>
     <url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
     <issueManagement>
-        <system>Redmine</system>
-        <url>https://korpling.german.hu-berlin.de/p/projects/pepper/issues</url>
-    </issueManagement>
+   <system>GitHub</system>
+   <url>https://github.com/korpling/pepper/issues</url>
+  </issueManagement>
     <ciManagement>
         <system>Jenkins</system>
         <url>https://korpling.german.hu-berlin.de/jenkins/</url>
@@ -30,9 +30,10 @@
         </license>
     </licenses>
     <scm>
-        <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk</developerConnection>
-        <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/</url>
-    </scm>
+   <connection>scm:git:git://github.com/korpling/pepper.git</connection>
+    <developerConnection>scm:git:git@github.com:korpling/pepper.git</developerConnection>
+    <url>https://github.com/korpling/pepper</url>
+  </scm>
     <repositories>
         <repository>
             <id>korpling</id>
@@ -169,14 +170,25 @@
         <plugins>
             <!-- start: Plugin for automatic releasing -->
             <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
-                <configuration>
-                    <tagBase> https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/tags </tagBase>
-                    <releaseProfiles>release</releaseProfiles>
-                    <goals>package assembly:single deploy</goals>
-                </configuration>
-            </plugin>
+            <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
+        <executions>
+         <execution>
+         <id>default</id>
+         <goals>
+         <goal>perform</goal>
+         </goals>
+         <configuration>
+         <pomFileName>pepper/pom.xml</pomFileName>
+         </configuration>
+         </execution>
+        </executions>
+        <configuration>
+          <releaseProfiles>release</releaseProfiles>
+          <goals>package assembly:single deploy</goals>
+        </configuration>
+      </plugin>
             <!-- generate a jar for sources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
