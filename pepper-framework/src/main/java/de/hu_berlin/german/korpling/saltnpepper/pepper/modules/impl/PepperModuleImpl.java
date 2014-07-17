@@ -532,7 +532,10 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					// modules implemented with < pepper 1.1.6
 					this.done(sElementId, DOCUMENT_STATUS.DELETED);
 				}
-				throw new PepperModuleException(this, "", e);
+				if (e instanceof PepperModuleException) {
+					throw (PepperModuleException) e;
+				} else
+					throw new PepperModuleException(this, "", e);
 			}
 			if (this.isStartOverridden) {
 				// if start was overridden, for downwards compatibility to
@@ -649,7 +652,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 		// copy all corpora into finite list
 		corporaToEnd = new Vector<SCorpus>();
-		List<SCorpusGraph> corpGraphs= Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
+		List<SCorpusGraph> corpGraphs = Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
 		for (SCorpusGraph sCorpusGraph : corpGraphs) {
 			if (sCorpusGraph != null) {
 				for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
