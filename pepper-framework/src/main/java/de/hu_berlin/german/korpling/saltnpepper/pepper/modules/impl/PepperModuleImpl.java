@@ -737,7 +737,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
-		logger.error("An exception was thrown by one of the mapper threads, but the thread having thrown that exception is not of type PepperMapperController. ", e);
+		logger.error("An exception was thrown by the mapper threads '"+t+"'. ", e);
 		if (logger instanceof NOPLogger) {
 			e.printStackTrace();
 		}
