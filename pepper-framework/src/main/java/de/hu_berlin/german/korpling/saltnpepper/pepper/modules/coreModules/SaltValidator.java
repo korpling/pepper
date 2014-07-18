@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.dot.DOTManipulatorProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.graph.Edge;
@@ -48,10 +47,11 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 public class SaltValidator extends PepperManipulatorImpl {
 	private static final Logger logger = LoggerFactory.getLogger(SaltValidator.class);
 
+	private static final String MSG_PREFIX="[validator]: ";
 	public SaltValidator() {
 		super();
 		setName("SaltValidator");
-		this.setProperties(new DOTManipulatorProperties());
+		this.setProperties(new SaltValidatorProperties());
 	}
 
 	@Override
@@ -80,12 +80,12 @@ public class SaltValidator extends PepperManipulatorImpl {
 				for (Edge edge : getSCorpus().getSCorpusGraph().getOutEdges(getSCorpus().getSId())) {
 					if (edge.getTarget() instanceof SDocument) {
 						if ((isLeafCorpus != null) && (!isLeafCorpus)) {
-							logger.info("Salt model not valid, the corpus '" + edge.getSource().getId() + "' contains corpora and documents as well.");
+							logger.info(MSG_PREFIX+"Salt model not valid, the corpus '" + edge.getSource().getId() + "' contains corpora and documents as well.");
 						}
 						isLeafCorpus = true;
 					} else if (edge.getTarget() instanceof SCorpus) {
 						if ((isLeafCorpus != null) && (isLeafCorpus)) {
-							logger.info("Salt model not valid, the corpus '" + edge.getSource().getId() + "' contains corpora and documents as well.");
+							logger.info(MSG_PREFIX+"Salt model not valid, the corpus '" + edge.getSource().getId() + "' contains corpora and documents as well.");
 						}
 						isLeafCorpus = true;
 					}
@@ -110,10 +110,20 @@ public class SaltValidator extends PepperManipulatorImpl {
 			if (getSDocument().getSDocumentGraph() != null) {
 				for (SRelation rel : getSDocument().getSDocumentGraph().getSRelations()) {
 					if (rel.getSSource() == null) {
-						invalidities.add("The relation '" + rel.getSId() + "' has no source node.");
+						String msg= "The relation '" + rel.getSId() + "' has no source node. ";
+						if (((SaltValidatorProperties)getProperties()).isClean()){
+							getSDocument().getSDocumentGraph().removeEdge(rel);
+							msg= msg+"[DELETED] ";
+						}
+						invalidities.add(msg);
 					}
 					if (rel.getSTarget() == null) {
-						invalidities.add("The relation '" + rel.getSId() + "' has no target node.");
+						String msg= "The relation '" + rel.getSId() + "' has no target node.";
+						if (((SaltValidatorProperties)getProperties()).isClean()){
+							getSDocument().getSDocumentGraph().removeEdge(rel);
+							msg= msg+"[DELETED] ";
+						}
+						invalidities.add(msg);
 					}
 					if (rel instanceof STextualRelation) {
 						STextualRelation textRel = (STextualRelation) rel;
@@ -136,9 +146,9 @@ public class SaltValidator extends PepperManipulatorImpl {
 				}
 			}
 			if (invalidities.size() != 0) {
-				logger.info("The Salt model is not valid. The following invalidities have been found in document-structure '" + getSDocument().getSId() + "':");
+				logger.info(MSG_PREFIX+"The Salt model is not valid. The following invalidities have been found in document-structure '" + getSDocument().getSId() + "':");
 				for (String invalidity : invalidities) {
-					logger.info(invalidity);
+					logger.info("\t"+invalidity);
 				}
 			}
 			return (DOCUMENT_STATUS.COMPLETED);
