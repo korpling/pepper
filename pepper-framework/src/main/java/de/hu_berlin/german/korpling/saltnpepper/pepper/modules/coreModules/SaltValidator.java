@@ -48,6 +48,7 @@ public class SaltValidator extends PepperManipulatorImpl {
 	private static final Logger logger = LoggerFactory.getLogger(SaltValidator.class);
 
 	private static final String MSG_PREFIX="[validator]: ";
+	private static final String MSG_HELP="You can switch on property '"+SaltValidatorProperties.PROP_CLEAN+"' to try to clean the model, but take care, this could also mean to remove model objects.";
 	public SaltValidator() {
 		super();
 		setName("SaltValidator");
@@ -146,7 +147,12 @@ public class SaltValidator extends PepperManipulatorImpl {
 				}
 			}
 			if (invalidities.size() != 0) {
-				logger.info(MSG_PREFIX+"The Salt model is not valid. The following invalidities have been found in document-structure '" + getSDocument().getSId() + "':");
+				String msg= MSG_PREFIX+"The Salt model is not valid.";
+				if (!((SaltValidatorProperties)getProperties()).isClean()){
+					msg= msg+ MSG_HELP;
+				}
+				msg= msg+ "The following invalidities have been found in document-structure '" + getSDocument().getSId() + "':";
+				logger.info(msg);
 				for (String invalidity : invalidities) {
 					logger.info("\t"+invalidity);
 				}
