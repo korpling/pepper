@@ -60,6 +60,9 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 
 /**
  * TODO make docu
@@ -67,13 +70,16 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * @author Florian Zipser
  */
 public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler {
-	Logger logger = LoggerFactory.getLogger(PepperModuleImpl.class);
+	public static final Logger logger = LoggerFactory.getLogger(PepperModuleImpl.class);
 
 	/**
 	 * TODO make docu
 	 */
 	protected PepperModuleImpl() {
 		getFingerprint();
+		if (getProperties()== null){
+			setProperties(new PepperModuleProperties());
+		}
 	}
 
 	/** a kind of a fingerprint of this object **/
@@ -633,7 +639,69 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			}
 		}
 	}
-
+	/** {@inheritDoc PepperModule#before(SElementId)} */
+	@Override
+	public void before(SElementId sElementId) throws PepperModuleException {
+		if (getProperties()!= null){
+			if (	(sElementId!= null)&&
+					(sElementId.getSIdentifiableElement() != null)){
+				if (sElementId.getSIdentifiableElement() instanceof SDocument){
+					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
+					
+					//add layers
+					String layers= (String)getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
+					addSLayers(sDoc, layers);
+				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
+					
+				}
+			}
+		}
+	}
+	
+	/** {@inheritDoc PepperModule#after(SElementId)} */
+	@Override
+	public void after(SElementId sElementId) throws PepperModuleException {
+		if (getProperties()!= null){
+			if (	(sElementId!= null)&&
+					(sElementId.getSIdentifiableElement() != null)){
+				if (sElementId.getSIdentifiableElement() instanceof SDocument){
+					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
+					
+					//add layers
+					String layers= (String)getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
+					addSLayers(sDoc, layers);
+					
+				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
+					
+				}
+			}
+		}
+	}
+	
+	private void addSLayers(SDocument sDoc, String layers){
+		if (	(layers!= null)&&
+				(!layers.isEmpty())){
+			String[] layerArray= layers.split(";");
+			if (layerArray.length> 0){
+				for (String layer: layerArray){
+					layer= layer.trim();
+					//create SLayer and add to document-structure
+					SLayer sLayer= SaltFactory.eINSTANCE.createSLayer();
+					sLayer.setSName(layer);
+					sDoc.getSDocumentGraph().getSLayers().add(sLayer);
+					//add all nodes to new layer
+					for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
+						sLayer.getSNodes().add(sNode);
+					}
+					//add all relations to new layer
+					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
+						sLayer.getSRelations().add(sRel);
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * This method is called by method {@link #start()}, if the method was not
 	 * overridden by the current class. If this is not the case, this method
