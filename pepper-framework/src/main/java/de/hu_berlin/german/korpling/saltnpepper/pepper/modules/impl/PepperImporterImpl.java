@@ -148,17 +148,18 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
 		this.setSCorpusGraph(corpusGraph);
-		if (this.getSCorpusGraph() == null)
+		if (this.getSCorpusGraph() == null){
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because salt project isn't set.");
-
-		if (this.getCorpusDesc() == null)
+		}
+		if (this.getCorpusDesc() == null){
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because no corpus definition to import is given.");
-		if (this.getCorpusDesc().getCorpusPath() == null)
+		}
+		if (this.getCorpusDesc().getCorpusPath() == null){
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because the path of given corpus definition is null.");
-
-		if (!this.getCorpusDesc().getCorpusPath().isFile())
+		}
+		if (!this.getCorpusDesc().getCorpusPath().isFile()){
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because the given corpus path does not locate a file.");
-
+		}
 		// clean uri in corpus path (if it is a folder and ends with/, / has to
 		// be removed)
 		if ((this.getCorpusDesc().getCorpusPath().toFileString().endsWith("/")) || (this.getCorpusDesc().getCorpusPath().toFileString().endsWith("\\"))) {
@@ -191,12 +192,12 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 
 		if ((currURI.lastSegment() != null) && (!this.getIgnoreEndings().contains(currURI.lastSegment()))) {// if
 			STYPE_NAME type = this.setTypeOfResource(currURI);
-			if (type != null) {// do not ignore resource
-								// create new id
+			if (type != null) {
+				// do not ignore resource create new id
 				File currFile = new File(currURI.toFileString());
 
-				if (STYPE_NAME.SCORPUS.equals(type)) {// resource is a SCorpus
-														// create corpus
+				if (STYPE_NAME.SCORPUS.equals(type)) {
+					// resource is a SCorpus create corpus
 					SCorpus sCorpus = getSCorpusGraph().createSCorpus(parent, currURI.lastSegment());
 					this.getSElementId2ResourceTable().put(sCorpus.getSElementId(), currURI);
 					if (currFile.isDirectory()) {
@@ -214,9 +215,17 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					if (parent == null) {
 						// if there is no corpus given, create one with name of document
 						parent = getSCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						
 						this.getSElementId2ResourceTable().put(parent.getSElementId(), currURI);
 					}
-					SDocument sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+					File docFile= new File(currURI.toFileString());
+					SDocument sDocument= null;
+					if (docFile.isDirectory()){
+						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment());
+					}else{
+						//if uri is a file, cut off file ending
+						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+					}
 					this.getSElementId2ResourceTable().put(sDocument.getSElementId(), currURI);
 				}// resource is a SDocument
 					// link documentId with resource
