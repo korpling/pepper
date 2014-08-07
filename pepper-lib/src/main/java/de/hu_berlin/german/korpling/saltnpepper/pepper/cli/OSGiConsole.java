@@ -392,7 +392,6 @@ public class OSGiConsole {
 				(params.size()> 1)){
 			out.println("To remove a bundle, you need to pass its name.");
 		}else{
-			
 			try {
 				if (getConnector().remove(params.get(0))){
 					out.println("Removed bundle '"+params.get(0)+"'.");

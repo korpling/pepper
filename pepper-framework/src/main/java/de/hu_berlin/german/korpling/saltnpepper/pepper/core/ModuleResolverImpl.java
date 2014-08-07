@@ -602,10 +602,15 @@ public class ModuleResolverImpl implements ModuleResolver {
 			// run through all pepperImporterComponentFactories and search for
 			// mapping PepperImporter
 			for (ComponentFactory componentFactory : this.getPepperImporterComponentFactories()) {
-				Object instance = null;
 				try{
-					instance = componentFactory.newInstance(null).getInstance();
-					if (instance instanceof PepperImporter) {
+					Object instance= null;
+					try{
+						instance = componentFactory.newInstance(null).getInstance();
+					}catch(ComponentException e){
+						//bundle containing Pepper module was probably removed 
+					}
+					if (	(instance!= null)&&
+							(instance instanceof PepperImporter)) {
 						if (pepperImporters == null)
 							pepperImporters = new Vector<PepperImporter>();
 						PepperImporter importer = (PepperImporter) instance;
@@ -637,8 +642,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 			// run through all pepperManipulatorComponentFactories and search
 			// for mapping PepperManipulator
 			for (ComponentFactory componentFactory : this.getPepperManipulatorComponentFactories()) {
-				Object instance = componentFactory.newInstance(null).getInstance();
-				if (instance instanceof PepperManipulator) {
+				Object instance= null;
+				try{
+					instance = componentFactory.newInstance(null).getInstance();
+				}catch(ComponentException e){
+					//bundle containing Pepper module was probably removed 
+				}
+				if (	(instance!= null)&&
+						(instance instanceof PepperManipulator)) {
 					if (pepperManipulators == null)
 						pepperManipulators = new Vector<PepperManipulator>();
 					PepperManipulator manipulator = (PepperManipulator) instance;
@@ -664,8 +675,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 			// run through all pepperExporterComponentFactories and search for
 			// mapping PepperExporter
 			for (ComponentFactory componentFactory : this.getPepperExporterComponentFactories()) {
-				Object instance = componentFactory.newInstance(null).getInstance();
-				if (instance instanceof PepperExporter) {
+				Object instance= null;
+				try{
+					instance = componentFactory.newInstance(null).getInstance();
+				}catch(ComponentException e){
+					//bundle containing Pepper module was probably removed 
+				}
+				if (	(instance!= null)&&
+						(instance instanceof PepperExporter)) {
 					if (pepperExporters == null)
 						pepperExporters = new Vector<PepperExporter>();
 					PepperExporter exporter = (PepperExporter) instance;

@@ -25,15 +25,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import asg.cliche.Command;
-//import asg.cliche.CommandTable;
-//import asg.cliche.Shell;
-//import asg.cliche.ShellFactory;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
@@ -42,6 +38,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJ
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+
 
 public class PepperStarter {
 	/**
@@ -76,10 +73,10 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
-		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."), LIST("list", "l", "module name", "A table with information about the passed Pepper module."), HELP("help", "h", null, "Prints this help."), SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."), EXIT("exit", "e", null, "exits Pepper"), CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."), OSGI("osgi", "o", null, "opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "installs the Pepper module located at 'module path' and starts it."),
+		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."), LIST("list", "l", "module name", "A table with information about the passed Pepper module."), HELP("help", "h", null, "Prints this help."), SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."), EXIT("exit", "e", null, "Exits Pepper."), CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."), OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
 		// "updates a Pepper module with the module located at 'module path' and starts it."),
-		REMOVE("remove", "re", "module name", "removes the Pepper module, which was installed from 'module path'."), START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)"), STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)");
+		REMOVE("remove", "re", "bundle name", "Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "), START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."), STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."), DEBUG("debug", "d", null, "Switches on/off the debug output.");
 
 		private String name = null;
 		private String abbreviation = null;
@@ -143,7 +140,10 @@ public class PepperStarter {
 		try {
 			moduleDescs = getPepper().getRegisteredModules();
 		} catch (Exception e) {
-			retVal.append("Cannot not display any Pepper module.");
+			if (isDebug){
+				e.printStackTrace();
+			}
+			retVal.append("Cannot not display any Pepper module. Calling "+COMMAND.START_OSGI.getName()+" might solve the problem. ");
 			return (retVal.toString());
 		}
 		retVal.append(PepperUtil.reportModuleList(moduleDescs));
@@ -164,6 +164,9 @@ public class PepperStarter {
 		try {
 			moduleDescs = getPepper().getRegisteredModules();
 		} catch (Exception e) {
+			if (isDebug){
+				e.printStackTrace();
+			}
 			retVal.append("Cannot not display any Pepper module.");
 			return (retVal.toString());
 		}
@@ -200,6 +203,9 @@ public class PepperStarter {
 			try {
 				getPepper().init();
 			} catch (Exception e) {
+				if (isDebug){
+					e.printStackTrace();
+				}
 				return ("Cannot start OSGi, because of a nested exception: " + e.getMessage());
 			}
 			return ("started OSGi");
@@ -216,11 +222,47 @@ public class PepperStarter {
 			try {
 				((PepperOSGiConnector) getPepper()).stopOSGi();
 			} catch (Exception e) {
+				if (isDebug){
+					e.printStackTrace();
+				}
 				return ("Cannot stop OSGi, because of a nested exception: " + e.getMessage());
 			}
 			return ("stoped OSGi");
 		} else {
 			return ("Cannot stop OSGi, since Pepper is not running in OSGi mode. ");
+		}
+	}
+	/**
+	 * Cleans the current Pepper instance and especially removes the OSGi workspace, to set up a new one. 
+	 * @return
+	 */
+	public String clean(){
+		stop_osgi();
+		String retVal= "";
+		try{
+			FileUtils.deleteDirectory(getPepper().getProperties().getTempPath());
+			retVal="Cleaned up Pepper instance, please call "+COMMAND.START_OSGI.getName()+" to make Pepper ready to run again.";
+		}catch (IOException e) {
+			retVal="Cannot clean Pepper instance, because of "+ e.getMessage();
+			if (isDebug){
+				e.printStackTrace();
+			}
+		}
+		
+		return(retVal);
+	}
+	/** Determines if debug mode is on or off**/
+	private Boolean isDebug=false;
+	/**
+	 * Switches on/off the debug mode.
+	 * @return
+	 */
+	public String debug(){
+		isDebug= !isDebug;
+		if (isDebug){
+			return("Debug mode is on.");
+		}else{
+			return("Debug mode is off.");
 		}
 	}
 
@@ -280,7 +322,7 @@ public class PepperStarter {
 		if (getPepper() instanceof PepperOSGiConnector) {
 			OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(), PROMPT);
 			console.installAndStart(params, output);
-			return ("updated Pepper module");
+			return ("Updated Pepper module.");
 		} else {
 			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
 		}
@@ -293,7 +335,7 @@ public class PepperStarter {
 		if (getPepper() instanceof PepperOSGiConnector) {
 			OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(), PROMPT);
 			console.remove(params, output);
-			return ("removed Pepper module");
+			return ("");
 		} else {
 			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
 		}
@@ -406,6 +448,12 @@ public class PepperStarter {
 			}else if(	(COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command))||
 						(COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))){
 				output.println(stop_osgi());
+			}else if(	(COMMAND.CLEAN.getName().equalsIgnoreCase(command))||
+						(COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))){
+				output.println(clean());
+			}else if(	(COMMAND.DEBUG.getName().equalsIgnoreCase(command))||
+						(COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))){
+				output.println(debug());
 			}else{
 				output.println("Type 'help' for help.");
 			}

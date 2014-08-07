@@ -467,7 +467,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * @throws IOException
 	 */
 	public boolean remove(String bundleName) throws BundleException, IOException {
-		boolean retVal = true;
+		boolean retVal = false;
 		if ((bundleName != null) && (!bundleName.isEmpty())) {
 			for (Bundle bundle : getBundleContext().getBundles()) {
 				if (bundle.getSymbolicName().equalsIgnoreCase(bundleName)) {
