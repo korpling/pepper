@@ -35,6 +35,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
@@ -141,8 +142,7 @@ public abstract class PepperModuleTest
 			throw new PepperModuleTestException("Cannot return a temporary directory, since the given last part is empty.");
 		}
 		File retVal= null;
-		retVal= new File(System.getProperty("java.io.tmpdir")+"/"+TMP_TEST_DIR+"/"+testDirectory+"/");
-		retVal.mkdirs();
+		retVal= PepperUtil.getTempTestFile(TMP_TEST_DIR+"/"+testDirectory);
 		return(retVal);
 	}
 	

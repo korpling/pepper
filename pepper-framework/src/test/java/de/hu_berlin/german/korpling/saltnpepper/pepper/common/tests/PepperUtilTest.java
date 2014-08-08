@@ -17,7 +17,11 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,5 +40,39 @@ public class PepperUtilTest {
 		assertEquals("do no\nthing", PepperUtil.breakString("do nothing", 5));
 		assertEquals(">do n\n>othi\n>ng", PepperUtil.breakString(">","do nothing", 5));
 	}
+	
+	@Test
+	public void testGetTempFile(){
+		File file= PepperUtil.getTempFile();
+		assertNotNull(file);
+		assertTrue(file.toString().contains("pepper"));
+		assertTrue(file.exists());
+	}
+	
+	@Test
+	public void testGetTempFile_String1(){
+		File file= PepperUtil.getTempFile("test");
+		assertNotNull(file);
+		assertTrue(file.toString().contains("pepper"));
+		assertTrue(file.toString().contains("test"));
+		assertTrue(file.exists());
+	}
+	
+	@Test
+	public void testGetTempFile_String2(){
+		File file= PepperUtil.getTempFile("test/sub/");
+		assertNotNull(file);
+		assertTrue(file.toString().contains("pepper"));
+		assertTrue(file.toString().contains("test/sub"));
+		assertTrue(file.exists());
+	}
 
+	@Test
+	public void testGetTempTestFile(){
+		File file= PepperUtil.getTempTestFile("test/sub/");
+		assertNotNull(file);
+		assertTrue(file.toString().contains("pepper-test"));
+		assertTrue(file.toString().contains("test/sub"));
+		assertTrue(file.exists());
+	}
 }

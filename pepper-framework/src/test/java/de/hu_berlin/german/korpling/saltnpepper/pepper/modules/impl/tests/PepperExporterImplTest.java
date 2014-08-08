@@ -17,22 +17,19 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
-import java.awt.image.SampleModel;
+import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests.PepperImporterImplTest.FixtureImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.tests.PepperTestUtil;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
 
 public class PepperExporterImplTest extends PepperExporterImpl{
@@ -64,7 +61,7 @@ public class PepperExporterImplTest extends PepperExporterImpl{
 		getFixture().setSDocumentEnding(".txt");
 		getFixture().setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
 		CorpusDesc corpusDesc= new CorpusDesc();
-		corpusDesc.setCorpusPath(PepperTestUtil.getTmpURI());
+		corpusDesc.setCorpusPath(URI.createFileURI(PepperUtil.getTempTestFile().getAbsolutePath()));
 		getFixture().setCorpusDesc(corpusDesc);
 		
 		getFixture().exportCorpusStructure();

@@ -48,6 +48,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.JOB_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
@@ -969,7 +970,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	
 	@Test
 	public void testLoad_PepperParams() throws XMLStreamException, IOException{
-		File tmpFolder= new File(System.getProperty("java.io.tmpdir")+"/pepperJobTest/");
+		File tmpFolder= PepperUtil.getTempTestFile("pepperJobTest");
 		tmpFolder.mkdirs();
 		File propFile= new File(tmpFolder.getAbsolutePath()+"/test.properties"); 
 		OutputStream propStream = new FileOutputStream(propFile);

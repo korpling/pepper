@@ -17,7 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 
@@ -25,8 +27,8 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperParamsReader;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.tests.PepperTestUtil;
 
 public class PepperParamsReaderTest {
 
@@ -48,7 +50,7 @@ public class PepperParamsReaderTest {
 	}
 	
 	public String getTmPath(){
-		return(PepperTestUtil.getTmpStr()+"pepperParamsTest/");
+		return(PepperUtil.getTempTestFile("pepperParamsTest").getAbsolutePath());
 	}
 	
 	@Test
@@ -60,19 +62,19 @@ public class PepperParamsReaderTest {
 		
 		retFile= getFixture().resolveFile("file:"+getTmPath()+"/some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"some.file", retFile.getAbsolutePath());
+		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
 		
-		retFile= getFixture().resolveFile("file:"+getTmPath()+"some.file");
+		retFile= getFixture().resolveFile("file:"+getTmPath()+"/some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"some.file", retFile.getAbsolutePath());
+		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
 		
 		retFile= getFixture().resolveFile(getTmPath()+"/some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"some.file", retFile.getAbsolutePath());
+		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
 		
 		getFixture().setLocation(URI.createFileURI(getTmPath()));
 		retFile= getFixture().resolveFile("./some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"some.file", retFile.getAbsolutePath());
+		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
 	}
 }

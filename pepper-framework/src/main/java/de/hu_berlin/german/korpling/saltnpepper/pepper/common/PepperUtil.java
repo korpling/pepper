@@ -18,8 +18,9 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -146,6 +147,98 @@ public abstract class PepperUtil {
 		return (str.toString());
 	}
 
+	/**
+	 * Returns a temporary folder, where all tests can store temporary files. 
+	 * The returned temporary folder is a combination
+	 * of the systems standard temp folder, the prefix 'pepper', and the users name or 
+	 * a randomized unique sequence of characters, if the user name is not available 
+	 * and suffixed by the passed segments. 
+	 * @return path, where to store temporary files
+	 * @param segments segments or subfolders to be attached to the created temp folder, subfolders are separated by '/'
+	 */
+	public static synchronized File getTempTestFile(String segments) {
+		return(getTempFile(segments, "pepper-test"));
+	}
+	/**
+	 * Returns a temporary folder, where all tests can store temporary files. 
+	 * The returned temporary folder is a combination
+	 * of the systems standard temp folder, the prefix 'pepper', and the users name or 
+	 * a randomized unique sequence of characters, if the user name is not available 
+	 * and suffixed by the passed segments. 
+	 * @return path, where to store temporary files
+	 */
+	public static synchronized File getTempTestFile() {
+		return(getTempFile(null, "pepper-test"));
+	}
+	
+	/**
+	 * Returns a temporary folder, where Pepper and all modules can
+	 * store temp files. The returned temporary folder is a combination
+	 * of the systems standard temp folder, the prefix 'pepper' and the 
+	 * users name or a randomized unique sequence of characters, if the user 
+	 * name is not available.
+	 * @return path, where to store temporary files
+	 */
+	public static synchronized File getTempFile() {
+		return(getTempFile(null));
+	}
+	/**
+	 * Returns a temporary folder, where Pepper and all modules can
+	 * store temp files. The returned temporary folder is a combination
+	 * of the systems standard temp folder, the prefix 'pepper', and the users name or 
+	 * a randomized unique sequence of characters, if the user name is not available 
+	 * and suffixed by the passed segments. 
+	 * @return path, where to store temporary files
+	 * @param segments segments or subfolders to be attached to the created temp folder, subfolders are separated by '/'
+	 * @return
+	 */
+	public static synchronized File getTempFile(String segments) {
+		return(getTempFile(segments, "pepper"));
+	}
+	/**
+	 * Returns a temporary folder, where Pepper and all modules can
+	 * store temp files. The returned temporary folder is a combination
+	 * of the systems standard temp folder, the prefix 'pepper', and the users name or 
+	 * a randomized unique sequence of characters, if the user name is not available 
+	 * and suffixed by the passed segments. 
+	 * @return path, where to store temporary files
+	 * @param segments segments or subfolders to be attached to the created temp folder, subfolders are separated by '/'
+	 * @param prefix the prefix to be used like 'pepper' or pepper-test etc.
+	 * @return
+	 */
+	public static synchronized File getTempFile(String segments, String prefix) {
+		String usr= System.getProperty("user.name");
+		String path= null;
+		if (	(usr!= null)&&
+				(!usr.isEmpty())){
+			path= System.getProperty("java.io.tmpdir");
+			if (!path.endsWith("/")){
+				path= path+"/";
+			}
+			path= path +prefix+"_"+usr+"/";
+		}else{
+			try {
+				path= Files.createTempDirectory(prefix+"_", new FileAttribute<?>[0]).toFile().getAbsolutePath();
+				if (!path.endsWith("/")){
+					path= path+"/";
+				}
+			} catch (IOException e) {
+				throw new PepperException("Cannot create temporary folder at "+System.getProperty("java.io.tmpdir")+". ");
+			}
+		}
+		
+		File file= null;
+		if (segments== null){
+			file= new File(path);
+		}else{
+			file= new File(path+segments);
+		}
+		if (!file.exists()){
+			file.mkdirs();
+		}
+		return(file);
+	}
+	
 	/**
 	 * Returns a report as String containing the configuration for Pepper.
 	 * 

@@ -49,8 +49,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 public class PepperImpl implements Pepper {
 	private static final Logger logger= LoggerFactory.getLogger(PepperImpl.class);
 	
-	public static final String DEFAULT_WORKSPACE="/pepper/workspace";
-	/** **/
+	/** Configuration object for Pepper **/
 	private PepperConfiguration configuration= null;
 	/**
 	 * Returns set configuration for {@link Pepper}.
@@ -99,22 +98,6 @@ public class PepperImpl implements Pepper {
 	}
 	
 	/**
-	 * Returns the workspace, of where to store {@link PepperJobImpl} objects. Wither a given workspace by {@link PepperConfiguration}
-	 * or the default workspace, which is: temporary folder of OS + {@value #DEFAULT_WORKSPACE}
-	 * @return
-	 */
-	private File getWorkspace(){
-		File workspace= null;
-		if (getConfiguration()!= null)
-			workspace= getConfiguration().getWorkspace();
-		if (workspace== null){
-			workspace= new File(System.getProperty("java.io.tmpdir")+DEFAULT_WORKSPACE);
-			workspace.mkdirs();
-		}
-		return(workspace);
-	}
-	
-	/**
 	 * {@inheritDoc Pepper#createJob()}
 	 */
 	@Override
@@ -132,7 +115,7 @@ public class PepperImpl implements Pepper {
 			job.setModuleResolver(getModuleResolver());
 			job.setConfiguration(getConfiguration());
 		//initialize job
-		File jobFolder= new File(getWorkspace().getAbsolutePath()+"/"+newId);
+		File jobFolder= new File(getConfiguration().getWorkspace().getAbsolutePath()+"/"+newId);
 		jobFolder.mkdirs();
 		getMapOfJobs().put(newId, new JobEntry(job, jobFolder));
 		return(job.getId());

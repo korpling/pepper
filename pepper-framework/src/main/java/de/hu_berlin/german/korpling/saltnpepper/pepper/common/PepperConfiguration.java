@@ -59,6 +59,8 @@ public class PepperConfiguration extends Properties {
 	 * 
 	 */
 	private static final long serialVersionUID = -7702415220939613420L;
+	/** A sub folder in Pepper directory to be used as workspace (to store jobs etc.)**/
+	public static final String DEFAULT_WORKSPACE="workspace";
 	/**
 	 * flag if Pepper shall measure and display the performance of the used
 	 * PepperModules
@@ -247,20 +249,22 @@ public class PepperConfiguration extends Properties {
 	 */
 	public File getTempPath() {
 		String tmpFolderStr = getProperty(PROP_TEMP_FOLDER);
-		if (tmpFolderStr == null) {
-			tmpFolderStr = System.getProperty("java.io.tmpdir");
-		}
-		tmpFolderStr = tmpFolderStr + "/pepper/";
-		File tmpFolder = new File(tmpFolderStr);
-		if (!tmpFolder.exists()) {
-			tmpFolder.mkdirs();
+		File tmpFolder= null;
+		if (tmpFolderStr != null) {
+			tmpFolderStr = tmpFolderStr + "/pepper/";
+			tmpFolder = new File(tmpFolderStr);
+			if (!tmpFolder.exists()) {
+				tmpFolder.mkdirs();
+			}
+		}else{
+			tmpFolder= PepperUtil.getTempFile();
 		}
 		return (tmpFolder);
 	}
 
 	/**
 	 * Returns the default workspace for {@link PepperJobImpl} objects, if one
-	 * is given in configuration.
+	 * is given in configuration. If no one is given, the temporary folder is returned.
 	 * 
 	 * @return workspace to be used to store {@link PepperJobImpl}
 	 */
@@ -269,6 +273,9 @@ public class PepperConfiguration extends Properties {
 		String workspaceStr = getProperty(PROP_WORKSPACE);
 		if ((workspaceStr != null) && (!workspaceStr.isEmpty())) {
 			workspace = new File(workspaceStr);
+		}
+		if (workspace== null){
+			workspace= new File(getTempPath().getAbsolutePath()+"/"+ DEFAULT_WORKSPACE);
 		}
 		return (workspace);
 	}

@@ -52,6 +52,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
@@ -510,7 +511,7 @@ public class PepperJobImpl extends PepperJob {
 	 * @return
 	 */
 	protected File getTmpDir() {
-		File tmpFile = new File(System.getProperty("java.io.tmpdir") + "/pepper/" + getId() + "/");
+		File tmpFile = PepperUtil.getTempFile(getId());
 		tmpFile.mkdirs();
 		if (!tmpFile.exists()){
 			throw new PepperException("Sorry, was not able to create folder for temporary storing files '"+tmpFile.getAbsolutePath()+"'. This might concern to missing write permissions. ");
