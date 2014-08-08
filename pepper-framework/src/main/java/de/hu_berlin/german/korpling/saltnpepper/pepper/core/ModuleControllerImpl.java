@@ -311,7 +311,7 @@ public class ModuleControllerImpl implements ModuleController{
 		DocumentController documentController= getInputDocumentBus().pop(getId(), ignorePermissionForDocument);
 		if (documentController!= null)
 		{
-			logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' started processing of document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
+			logger.debug("[{}] started processing of document '{}'. ", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
 			//notify documentController, that SDocument now is in progress
 			documentController.updateStatus(getId(), DOCUMENT_STATUS.IN_PROGRESS);
 			//puts the current element in list of not pipelined orders
@@ -328,7 +328,7 @@ public class ModuleControllerImpl implements ModuleController{
 	@Override
 	public DocumentController next() 
 	{
-		logger.debug("module '{}' is waiting for further documents in pipeline.", (getPepperModule()!= null)?getPepperModule().getName():"NO_NAME");
+		logger.debug("[{}] is waiting for further documents in pipeline.", (getPepperModule()!= null)?getPepperModule().getName():"NO_NAME");
 		return(next(false));
 	}
 	
@@ -351,7 +351,7 @@ public class ModuleControllerImpl implements ModuleController{
 		getOutputDocumentBus().put(documentController);
 		//removes document controller of list of to be processed document controllers
 		getControllList().remove(documentController);
-		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' completed document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
+		logger.debug("[{}] completed document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
 	}
 	
 	/* (non-Javadoc)
@@ -368,7 +368,7 @@ public class ModuleControllerImpl implements ModuleController{
 //			throw new PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
 
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.DELETED);
-		logger.debug("module '"+((getPepperModule()!= null)?getPepperModule().getName():" EMPTY ")+"' deleted document '"+((documentController!= null)? documentController.getGlobalId(): "UNKNOWN")+"'");
+		logger.debug("[{}] deleted document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
 		//if document is not processed any further, release slot
 		if (getJob()!= null){
 			getJob().releaseDocument(documentController);

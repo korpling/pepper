@@ -167,7 +167,7 @@ public class DocumentControllerImpl implements DocumentController
 			aSleep= true;
 			if (getSDocument().getSDocumentGraph()!= null){
 				getSDocument().saveSDocumentGraph(getLocation());
-				logger.debug("Sent document '{}' to sleep. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
+				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
 				
 				Runtime runtime= Runtime.getRuntime();
 				long usedMem= runtime.totalMemory() - runtime.freeMemory();
@@ -209,7 +209,7 @@ public class DocumentControllerImpl implements DocumentController
 		try{
 			getSDocument().loadSDocumentGraph(getLocation());
 			aSleep= false;
-			logger.debug("woke up document '{}'. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
+			logger.debug("[Pepper] woke up document '{}'. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
 		}catch (Exception e) {
 			throw new PepperFWException("Cannot awake the document '"+getsDocumentId().getSId()+"', because an exception occured, loading it from location '"+getLocation()+"'. ", e);
 		}finally{
