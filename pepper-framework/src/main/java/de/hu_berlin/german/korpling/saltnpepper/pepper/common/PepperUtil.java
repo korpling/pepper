@@ -17,12 +17,14 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 
 public abstract class PepperUtil {
@@ -30,109 +32,130 @@ public abstract class PepperUtil {
 	/**
 	 * The width of the output console of Pepper.
 	 */
-	public final static int CONSOLE_WIDTH=120;
-	
+	public final static int CONSOLE_WIDTH = 120;
+
 	/**
 	 * Returns a formatted String, a kind of a welcome screen of Pepper.
+	 * 
 	 * @return welcome screen
 	 */
-	public static String getHello()
-	{
-		return(getHello("saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
+	public static String getHello() {
+		return (getHello("saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
 	}
+
 	/**
 	 * Returns a formatted String, a kind of a welcome screen of Pepper.
+	 * 
 	 * @return welcome screen
 	 */
-	public static String getHello(String eMail, String hp)
-	{
-		StringBuilder retVal= new StringBuilder();
+	public static String getHello(String eMail, String hp) {
+		StringBuilder retVal = new StringBuilder();
 		retVal.append("************************************************************************************************************************\n");
-		retVal.append("*                                         ____                                                                         *\n");                            
-		retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n"); 
+		retVal.append("*                                         ____                                                                         *\n");
+		retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
 		retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
 		retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
 		retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
 		retVal.append("*                                                  |_|   |_|                                                           *\n");
-		retVal.append("*                                                                                                                      *\n");                            
+		retVal.append("*                                                                                                                      *\n");
 		retVal.append("************************************************************************************************************************\n");
 		retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
-		retVal.append("* For further information, visit: "+hp+"                                                    *\n");
-		retVal.append("* For contact write an eMail to:  "+eMail+"                                                       *\n");
+		retVal.append("* For further information, visit: " + hp + "                                                    *\n");
+		retVal.append("* For contact write an eMail to:  " + eMail + "                                                       *\n");
 		retVal.append("************************************************************************************************************************\n");
 		retVal.append("\n");
-		return(retVal.toString());
+		return (retVal.toString());
 	}
+
 	/**
-	 * Breaks the String <code>theString</code> at position {@link #CONSOLE_WIDTH}
-	 * and adds a linebreak. The manipulated String is returned.
-	 * @param theString String to be break
+	 * Breaks the String <code>theString</code> at position
+	 * {@link #CONSOLE_WIDTH} and adds a linebreak. The manipulated String is
+	 * returned.
+	 * 
+	 * @param theString
+	 *            String to be break
 	 * @return the breaked String
 	 */
-	public static String breakString(String theString){
-		return(breakString("", theString, CONSOLE_WIDTH));
+	public static String breakString(String theString) {
+		return (breakString("", theString, CONSOLE_WIDTH));
 	}
+
 	/**
 	 * Breaks the String <code>theString</code> at position <code>length</code>
 	 * and adds a linebreak. The manipulated String is returned.
-	 * @param theString String to be break
-	 * @param length position where to break String
+	 * 
+	 * @param theString
+	 *            String to be break
+	 * @param length
+	 *            position where to break String
 	 * @return the breaked String
 	 */
-	public static String breakString(String theString, int length){
-		return(breakString("", theString, length));
+	public static String breakString(String theString, int length) {
+		return (breakString("", theString, length));
 	}
+
 	/**
-	 * Breaks the String <code>theString</code> at position {@link #CONSOLE_WIDTH}
-	 * and adds a linebreak. The next line than is prefixed by<code>linePrefix</code>.
-	 * The manipulated String is returned.
-	 * @param theString String to be break
-	 * @param length position where to break String
-	 * @param linePrefix a prefix for all lines
+	 * Breaks the String <code>theString</code> at position
+	 * {@link #CONSOLE_WIDTH} and adds a linebreak. The next line than is
+	 * prefixed by<code>linePrefix</code>. The manipulated String is returned.
+	 * 
+	 * @param theString
+	 *            String to be break
+	 * @param length
+	 *            position where to break String
+	 * @param linePrefix
+	 *            a prefix for all lines
 	 * @return the breaked String
-	 */	
-	public static String breakString(String linePrefix, String theString){
-		return(breakString(linePrefix, theString, CONSOLE_WIDTH));
+	 */
+	public static String breakString(String linePrefix, String theString) {
+		return (breakString(linePrefix, theString, CONSOLE_WIDTH));
 	}
+
 	/**
 	 * Breaks the String <code>theString</code> at position <code>length</code>
-	 * and adds a linebreak. The next line than is prefixed by<code>linePrefix</code>.
-	 * The manipulated String is returned.
-	 * @param theString String to be break
-	 * @param length position where to break String
-	 * @param linePrefix a prefix for all lines
+	 * and adds a linebreak. The next line than is prefixed by
+	 * <code>linePrefix</code>. The manipulated String is returned.
+	 * 
+	 * @param theString
+	 *            String to be break
+	 * @param length
+	 *            position where to break String
+	 * @param linePrefix
+	 *            a prefix for all lines
 	 * @return the breaked String
-	 */	
-	public static String breakString(String linePrefix, String theString, int length){
-		if (length > theString.length()+ linePrefix.length()){
-			return(theString);
+	 */
+	public static String breakString(String linePrefix, String theString, int length) {
+		if (length > theString.length() + linePrefix.length()) {
+			return (theString);
 		}
-		StringBuilder str= new StringBuilder();
-		int pos= 0;
-		int offset= length - linePrefix.length();
-		boolean goOn= true;
-		while(goOn){
+		StringBuilder str = new StringBuilder();
+		int pos = 0;
+		int offset = length - linePrefix.length();
+		boolean goOn = true;
+		while (goOn) {
 			str.append(linePrefix);
-			if (pos+offset < theString.length()){
-				str.append(theString.substring(pos, pos+offset));
+			if (pos + offset < theString.length()) {
+				str.append(theString.substring(pos, pos + offset));
 				str.append("\n");
-			}else{
+			} else {
 				str.append(theString.substring(pos));
-				goOn= false;
+				goOn = false;
 			}
-			pos= pos+ offset;
+			pos = pos + offset;
 		}
-		return(str.toString());
+		return (str.toString());
 	}
+
 	/**
 	 * Returns a report as String containing the configuration for Pepper.
+	 * 
 	 * @return
 	 */
-	public static String reportConfiguration(PepperConfiguration conf){
-		String line= "+----------------------------------------------------------------------------------------------------------------------+\n";
-		StringBuilder str= new StringBuilder();
-		String format1= "| %-"+(CONSOLE_WIDTH-4)+"s |\n";
-		String format2= "| %-40s: %-"+(CONSOLE_WIDTH-40-6)+"s |\n";
+	public static String reportConfiguration(PepperConfiguration conf) {
+		String line = "+----------------------------------------------------------------------------------------------------------------------+\n";
+		StringBuilder str = new StringBuilder();
+		String format1 = "| %-" + (CONSOLE_WIDTH - 4) + "s |\n";
+		String format2 = "| %-40s: %-" + (CONSOLE_WIDTH - 40 - 6) + "s |\n";
 		str.append(line);
 		str.append(String.format(format1, " configuration for Pepper"));
 		str.append(line);
@@ -144,124 +167,138 @@ public abstract class PepperUtil {
 			str.append(String.format(format1, "- no configurations set -"));
 		}
 		str.append(line);
-		return(str.toString());
+		return (str.toString());
 	}
-	
-	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs){
-		StringBuilder retVal= new StringBuilder();
-		if (	(moduleDescs== null)||
-				(moduleDescs.size()== 0)){
+
+	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs) {
+		StringBuilder retVal = new StringBuilder();
+		if ((moduleDescs == null) || (moduleDescs.size() == 0)) {
 			retVal.append("- no modules registered -\n");
-		}else{
+		} else {
 			String format = "| %1$-4s | %2$-20s | %3$-15s | %4$-11s | %5$-31s | %6$-20s |\n";
-			String line= "+------+----------------------+-----------------+-------------+---------------------------------+----------------------+\n";
+			String line = "+------+----------------------+-----------------+-------------+---------------------------------+----------------------+\n";
 			retVal.append(line);
 			retVal.append(String.format(format, "no.", "module-name", "module-version", "module-type", "formats", "supplier-contact"));
 			retVal.append(line);
-			int no=1;
-			for (PepperModuleDesc desc: moduleDescs){
-				String formatString= "";
-						
-				if (	(desc.getSupportedFormats()!= null)&&
-						(desc.getSupportedFormats().size()> 0)){
-					int i= 0;
-					for (FormatDesc formatDesc: desc.getSupportedFormats()){
-						if (i!= 0){
-							formatString= formatString +"; ";
+			int no = 1;
+			for (PepperModuleDesc desc : moduleDescs) {
+				String formatString = "";
+
+				if ((desc.getSupportedFormats() != null) && (desc.getSupportedFormats().size() > 0)) {
+					int i = 0;
+					for (FormatDesc formatDesc : desc.getSupportedFormats()) {
+						if (i != 0) {
+							formatString = formatString + "; ";
 						}
-						formatString= formatString+ formatDesc.getFormatName() + ", "+ formatDesc.getFormatVersion();
+						formatString = formatString + formatDesc.getFormatName() + ", " + formatDesc.getFormatVersion();
 						i++;
 					}
 				}
-				
-				if (desc!= null){
+
+				if (desc != null) {
 					retVal.append(String.format(format, no, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
 				}
 				no++;
 			}
 			retVal.append(line);
 		}
-		return(retVal.toString());
+		return (retVal.toString());
 	}
-	
-	
+
 	/**
-	 * Prints the status of the passed {@link PepperJob} object, until {@link #setStop(Boolean#TRUE)} was called.
+	 * Prints the status of the passed {@link PepperJob} object, until {@link
+	 * #setStop(Boolean#TRUE)} was called.
+	 * 
 	 * @author florian
-	 *
+	 * 
 	 */
-	public static class PepperJobReporter extends Thread{
-		private static final Logger logger= LoggerFactory.getLogger(PepperJobReporter.class); 
+	public static class PepperJobReporter extends Thread {
+		private static final Logger logger = LoggerFactory.getLogger(PepperJobReporter.class);
+
 		/**
 		 * Sets the {@link PepperJob} object, which is observed
-		 * @param pepperJob the job to observe
-		 * @param interval the interval in which the status is printed 
+		 * 
+		 * @param pepperJob
+		 *            the job to observe
+		 * @param interval
+		 *            the interval in which the status is printed
 		 */
 		public PepperJobReporter(PepperJob pepperJob, int interval) {
-			if (pepperJob== null)
+			if (pepperJob == null)
 				throw new PepperException("Cannot observe Pepper job, because it was null.");
 			this.pepperJob = pepperJob;
 		}
+
 		/**
 		 * Sets the {@link PepperJob} object, which is observed
-		 * @param pepperJob the job to observe
+		 * 
+		 * @param pepperJob
+		 *            the job to observe
 		 */
 		public PepperJobReporter(PepperJob pepperJob) {
 			this(pepperJob, 10000);
 		}
-		
+
 		/** the interval in which the status is printed **/
-		private int interval= 10000;
+		private int interval = 10000;
+
 		/**
 		 * Returns the interval in which the status is printed
+		 * 
 		 * @return
 		 */
-		public int getInterval(){
-			return(interval);
+		public int getInterval() {
+			return (interval);
 		}
+
 		/** {@link PepperJob} object, which is observed. **/
-		private PepperJob pepperJob= null;
+		private PepperJob pepperJob = null;
+
 		/**
-		 * Returns the {@link PepperJob} object, which is observed 
+		 * Returns the {@link PepperJob} object, which is observed
+		 * 
 		 * @return
 		 */
 		public PepperJob getPepperJob() {
 			return pepperJob;
 		}
-		
-		/** flag, determining, that observing has finished**/
-		private boolean stop= false;
-		/** Returns, if {@link PepperJob} still has to be observed**/
+
+		/** flag, determining, that observing has finished **/
+		private boolean stop = false;
+
+		/** Returns, if {@link PepperJob} still has to be observed **/
 		public boolean isStop() {
 			return stop;
 		}
+
 		/**
-		 * Sets if {@link PepperJob}  still has to be observed
+		 * Sets if {@link PepperJob} still has to be observed
+		 * 
 		 * @param stop
 		 */
 		public void setStop(boolean stop) {
 			this.stop = stop;
 		}
-		
+
 		@Override
 		public void run() {
-			while (!isStop()){
-				String report= null;
-				try{
-					report= getPepperJob().getStatusReport();
+			while (!isStop()) {
+				String report = null;
+				try {
+					report = getPepperJob().getStatusReport();
 				} catch (Exception e) {
-					report= "- no status report is available -";
-				}finally{
-					if (report!= null){
+					report = "- no status report is available -";
+				} finally {
+					if (report != null) {
 						logger.info(report);
 					}
 				}
-				try{
+				try {
 					Thread.sleep(getInterval());
 				} catch (InterruptedException e) {
 				}
 			}
 		}
-		
+
 	}
 }

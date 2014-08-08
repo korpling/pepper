@@ -15,7 +15,6 @@
 	<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
   	<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
   	<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
-  	<java.version>1.6</java.version>
   </properties>
   <distributionManagement>
     <repository>
