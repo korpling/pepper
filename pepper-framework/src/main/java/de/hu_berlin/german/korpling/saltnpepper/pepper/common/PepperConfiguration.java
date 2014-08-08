@@ -99,6 +99,11 @@ public class PepperConfiguration extends Properties {
 	 */
 	public static final String PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING = PROP_PREFIX + ".removeSDocumentAfterProcessing";
 	/**
+	 * name of the flag to determine whether the temporary created document-graph files should be
+	 * preserved or deleted after Pepper terminates.
+	 */
+	public static final String PROP_KEEP_TEMP_DOCS = PROP_PREFIX + ".keepTempDocs";
+	/**
 	 * name of the flag to determine a workspace for pepper, where all jobs are
 	 * stored by default.
 	 */
@@ -304,5 +309,15 @@ public class PepperConfiguration extends Properties {
 	public Boolean getGcAfterDocumentSleep() {
 		String callGC = getProperty(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE.toString());
 		return (Boolean.valueOf(callGC));
+	}
+	
+	/**
+	 * name of the flag to determine whether the temporary created document-graph files should be
+	 * preserved or deleted after Pepper terminates.
+	 * Default value is false.
+	 */
+	public Boolean getKeepDocuments() {
+		String isToKeep = getProperty(PROP_KEEP_TEMP_DOCS, Boolean.FALSE.toString());
+		return (Boolean.valueOf(isToKeep));
 	}
 }

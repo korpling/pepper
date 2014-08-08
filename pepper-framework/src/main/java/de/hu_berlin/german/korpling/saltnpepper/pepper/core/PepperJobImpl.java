@@ -145,6 +145,9 @@ public class PepperJobImpl extends PepperJob {
 	 * @return given customization properties
 	 */
 	public PepperConfiguration getConfiguration() {
+		if (props== null){
+			props= new PepperConfiguration();
+		}
 		return props;
 	}
 
@@ -504,21 +507,6 @@ public class PepperJobImpl extends PepperJob {
 		isWired = true;
 	}
 
-	/**
-	 * Returns a temporary directory for this job, where all temporary files can
-	 * be stored.
-	 * 
-	 * @return
-	 */
-	protected File getTmpDir() {
-		File tmpFile = PepperUtil.getTempFile(getId());
-		tmpFile.mkdirs();
-		if (!tmpFile.exists()){
-			throw new PepperException("Sorry, was not able to create folder for temporary storing files '"+tmpFile.getAbsolutePath()+"'. This might concern to missing write permissions. ");
-		}
-		return (tmpFile);
-	}
-
 	/** flag to determine, if corpus structure has already been imported **/
 	protected volatile boolean isImportedCorpusStructure = false;
 
@@ -596,7 +584,10 @@ public class PepperJobImpl extends PepperJob {
 
 					File docFile = null;
 					String prefix = sDoc.getSName();
-					File tmpPath= getTmpDir();
+					File tmpPath= new File(getConfiguration().getWorkspace().getAbsolutePath()+"/"+getId());
+					if (!tmpPath.exists()){
+						tmpPath.mkdirs();
+					}
 					try {
 						if (prefix.length() < 3) {
 							prefix = prefix + "artificial";
@@ -606,8 +597,9 @@ public class PepperJobImpl extends PepperJob {
 						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' to file '"+((docFile== null)?docFile:docFile.getAbsolutePath())+"' in folder for temporary files '"+tmpPath+"'. "+e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
-					// to remove temporary document files uncomment this line
-					// docFile.deleteOnExit();
+					if (!getConfiguration().getKeepDocuments()){
+						docFile.deleteOnExit();
+					}
 
 					initialDocumentBuses.get(i).put(documentController);
 

@@ -129,7 +129,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	 */
 	@Test
 	public void testGetSetConfiguration() {
-		assertNull(getFixture().getConfiguration());
+		assertNotNull(getFixture().getConfiguration());
 		PepperConfiguration conf= new PepperConfiguration();
 		getFixture().setConfiguration(conf);
 		assertEquals(conf, getFixture().getConfiguration());
