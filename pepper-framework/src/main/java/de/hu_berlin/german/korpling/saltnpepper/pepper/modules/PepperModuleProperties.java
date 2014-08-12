@@ -66,7 +66,7 @@ public class PepperModuleProperties implements Serializable {
 	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
 	 * is called.
 	 **/
-	public static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + "before.";
+	public static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + ".before.";
 	/**
 	 * Prefixes all post processing customization properties directly provided
 	 * by Pepper ({@link PepperModule}). A post processing property is handled
@@ -76,7 +76,7 @@ public class PepperModuleProperties implements Serializable {
 	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
 	 * is called.
 	 **/
-	public static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + "after.";
+	public static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + ".after.";
 	/**
 	 * Consumes a semicolon separated list of names for {@link SLayer} objects.
 	 * For each list element, one {@link SLayer} is created and added to all

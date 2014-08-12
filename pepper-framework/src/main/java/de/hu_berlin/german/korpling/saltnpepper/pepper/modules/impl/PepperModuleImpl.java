@@ -531,7 +531,12 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			getDocumentId2DC().put(SaltFactory.eINSTANCE.getGlobalId(sElementId), documentController);
 			// call for using push-method
 			try {
-				this.start(sElementId);
+				//preprocessing
+				before(sElementId);
+				//start mapping
+				start(sElementId);
+				//postprocessing
+				after(sElementId);
 			} catch (Exception e) {
 				if (this.isStartOverridden) {
 					// if start was overridden, for downwards compatibility to
@@ -697,6 +702,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
 						sLayer.getSRelations().add(sRel);
 					}
+					System.out.println(">>>>>>>>>>>>>>>>>>>>  added layer: "+sLayer.getSName());
 				}
 			}
 		}
