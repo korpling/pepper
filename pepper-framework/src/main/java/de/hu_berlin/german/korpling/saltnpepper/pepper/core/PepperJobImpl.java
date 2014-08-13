@@ -52,7 +52,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
