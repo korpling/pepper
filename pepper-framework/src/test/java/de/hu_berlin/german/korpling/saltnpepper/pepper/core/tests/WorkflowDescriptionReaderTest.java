@@ -1,5 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.core.tests;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -18,17 +20,19 @@ import javax.xml.stream.XMLStreamWriter;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperParamsReader;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.WorkflowDescriptionReader;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 
 public class WorkflowDescriptionReaderTest {
 
@@ -51,11 +55,20 @@ public class WorkflowDescriptionReaderTest {
 	
 	@Before
 	public void setUp() throws XMLStreamException, IOException, ParserConfigurationException, SAXException {
-        File file = new File(PepperUtil.getTempTestFile("workflowDescriptionTest").getAbsolutePath()+"test.xml");
+        setFixture(new WorkflowDescriptionReader());
+		PepperJobImpl job= new PepperJobImpl("job1");
+		ModuleResolver resolver= new ModuleResolverImpl(){
+			public PepperModule getPepperModule(StepDesc stepDesc){
+				PepperModule manipulator= new PepperManipulatorImpl() {};
+				return(manipulator);
+			}
+		};
+		job.setModuleResolver(resolver);
+		getFixture().setPepperJob(job);
+		
+		File file = new File(PepperUtil.getTempTestFile("workflowDescriptionTest").getAbsolutePath()+"test.xml");
         XMLOutputFactory xof = XMLOutputFactory.newInstance();
         xml = xof.createXMLStreamWriter(new FileWriter(file.getAbsolutePath()));
-		setFixture(new WorkflowDescriptionReader());
-		getFixture().setPepperJob(new PepperJobImpl("job1"));
 		getFixture().setLocation(URI.createFileURI(file.getAbsolutePath()));
 			
 		SAXParser parser = factory.newSAXParser();
@@ -68,16 +81,36 @@ public class WorkflowDescriptionReaderTest {
 		is.setEncoding("UTF-8");
 	}
 
-	
+	/**
+	 * Containing just one importer (resolved by module name), one manipulator and one exporter (resolved by format description) 
+	 * without customizations.
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 * @throws SAXException
+	 */
 	@Test
-	public void test() throws XMLStreamException, IOException, SAXException {
+	public void test_simpleJob() throws XMLStreamException, IOException, SAXException {
 		xml.writeStartDocument();
-		xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
-			xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
-			xml.writeStartElement(WorkflowDescriptionReader.TAG_IMPORTER);
-				xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, "myImporter");
+			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+				xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
+				//importer
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_IMPORTER);
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, "myImporter");
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_PATH, "/somewhere/");
+				xml.writeEndElement();
+				//manipulator
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_MANIPULATOR);
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, "myManipulator");
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "3.0");
+				xml.writeEndElement();
+				//exporter
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_EXPORTER);
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_FORMAT_NAME, "anyFormat");
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_FORMAT_VERSION, "1.0");
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_PATH, "/somewhere/");
+				xml.writeEndElement();
 			xml.writeEndElement();
-		xml.writeEndElement();
 		xml.writeEndDocument();
 		xml.flush();
 		
@@ -85,5 +118,111 @@ public class WorkflowDescriptionReaderTest {
 		
 		assertNotNull(getFixture().getPepperJob());
 		assertNotNull(getFixture().getPepperJob().getStepDescs());
+		assertEquals(3, getFixture().getPepperJob().getStepDescs().size());
+		
+		//check importer
+		StepDesc stepDesc= getFixture().getPepperJob().getStepDescs().get(0);
+		assertNotNull(getFixture().getPepperJob().getStepDescs().get(0));
+		assertEquals(MODULE_TYPE.IMPORTER, stepDesc.getModuleType());
+		assertEquals(stepDesc.toString(), "myImporter", stepDesc.getName());
+		assertEquals(stepDesc.toString(), "1.0", stepDesc.getVersion());
+		assertNotNull(stepDesc.getCorpusDesc());
+		assertEquals(URI.createFileURI("/somewhere/"), stepDesc.getCorpusDesc().getCorpusPath());
+		
+		//check manipulator
+		stepDesc= getFixture().getPepperJob().getStepDescs().get(1);
+		assertNotNull(getFixture().getPepperJob().getStepDescs().get(0));
+		assertEquals(MODULE_TYPE.MANIPULATOR, stepDesc.getModuleType());
+		assertEquals(stepDesc.toString(), "myManipulator", stepDesc.getName());
+		assertEquals(stepDesc.toString(), "3.0", stepDesc.getVersion());
+		
+		//check exporter
+		stepDesc= getFixture().getPepperJob().getStepDescs().get(2);
+		assertNotNull(getFixture().getPepperJob().getStepDescs().get(0));
+		assertEquals(MODULE_TYPE.EXPORTER, stepDesc.getModuleType());
+		assertNotNull(stepDesc.getCorpusDesc());
+		assertNotNull(stepDesc.getCorpusDesc().getFormatDesc());
+		assertEquals("anyFormat", stepDesc.getCorpusDesc().getFormatDesc().getFormatName());
+		assertEquals("1.0", stepDesc.getCorpusDesc().getFormatDesc().getFormatVersion());
+		assertEquals(URI.createFileURI("/somewhere/"), stepDesc.getCorpusDesc().getCorpusPath());
+	}
+	
+	/**
+	 * Containing just manipulator and some customization properties
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	@Test
+	public void test_customization() throws XMLStreamException, IOException, SAXException {
+		xml.writeStartDocument();
+			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+				xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
+				//manipulator
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_MANIPULATOR);
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, "myManipulator");
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "3.0");
+					xml.writeStartElement(WorkflowDescriptionReader.TAG_CUSTOMIZATION);
+						xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
+							xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, "prop1");
+							xml.writeCharacters("val1");
+						xml.writeEndElement();
+							xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
+							xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, "prop2");
+						xml.writeEndElement();
+						xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
+							xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, "prop3");
+							xml.writeCharacters("5");
+						xml.writeEndElement();
+					xml.writeEndElement();
+				xml.writeEndElement();
+			xml.writeEndElement();
+		xml.writeEndDocument();
+		xml.flush();
+		
+		xmlReader.parse(is);
+		
+		assertNotNull(getFixture().getPepperJob());
+		assertNotNull(getFixture().getPepperJob().getStepDescs());
+		assertEquals(1, getFixture().getPepperJob().getStepDescs().size());
+			
+		//check importer
+		StepDesc stepDesc= getFixture().getPepperJob().getStepDescs().get(0);
+		assertNotNull(getFixture().getPepperJob().getStepDescs().get(0));
+		assertEquals(MODULE_TYPE.MANIPULATOR, stepDesc.getModuleType());
+		assertEquals(stepDesc.toString(), "myManipulator", stepDesc.getName());
+		assertEquals(stepDesc.toString(), "3.0", stepDesc.getVersion());
+		assertNotNull(stepDesc.getProps());
+		assertEquals(stepDesc.getProps().toString(), 3, stepDesc.getProps().size());
+		
+		assertTrue(stepDesc.getProps().toString(), stepDesc.getProps().containsKey("prop1"));
+		assertEquals("val1", stepDesc.getProps().getProperty("prop1"));
+		
+		assertTrue(stepDesc.getProps().toString(), stepDesc.getProps().containsKey("prop2"));
+		assertEquals("", stepDesc.getProps().getProperty("prop2"));
+		
+		assertTrue(stepDesc.getProps().toString(), stepDesc.getProps().containsKey("prop3"));
+		assertEquals("5", stepDesc.getProps().getProperty("prop3"));
+	}
+	
+	@Test
+	public void testResolveURI(){
+		URI uri= null;
+		
+		uri= WorkflowDescriptionReader.resolveURI("./bla");
+		assertNotNull(uri);
+		
+		uri= WorkflowDescriptionReader.resolveURI("file:/bla");
+		assertEquals("file", uri.scheme());
+		assertNotNull(uri);
+		
+		uri= WorkflowDescriptionReader.resolveURI("/bla/");
+		assertNotNull(uri);
+		
+		uri= WorkflowDescriptionReader.resolveURI("c:\bla");
+		assertNotNull(uri);
+		
+		uri= WorkflowDescriptionReader.resolveURI("c:/bla");
+		assertNotNull(uri);
 	}
 }
