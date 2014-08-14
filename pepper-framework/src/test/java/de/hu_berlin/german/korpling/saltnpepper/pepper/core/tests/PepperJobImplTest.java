@@ -25,22 +25,30 @@ import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Vector;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -68,6 +76,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExport
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperModuleTest;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
@@ -1072,6 +1081,81 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	public void addStep(Step step){
 		if (!isLoadTest){
 			super.addStep(step);
+		}
+	}
+	/**
+	 * Checks if storing a job to xml file works correctly.
+	 * Stores a job containing an importer, manipulator and exporter. Each having some customization properties.
+	 * @throws IOException 
+	 * @throws SAXException 
+	 */
+	@Test
+	public void save_test() throws SAXException, IOException{
+		ModuleResolver resolver= new ModuleResolverImpl(){
+			public PepperModule getPepperModule(StepDesc stepDesc){
+				PepperModule manipulator= new PepperManipulatorImpl() {};
+				return(manipulator);
+			}
+		};
+		getFixture().setModuleResolver(resolver);
+		
+		//importer declared by formatName and formatVersion
+		StepDesc step1= new StepDesc();
+		step1.setModuleType(MODULE_TYPE.IMPORTER);
+		step1.getCorpusDesc().setCorpusPath(URI.createFileURI("/somewhere/"));
+		step1.getCorpusDesc().getFormatDesc().setFormatName("anyFormat");
+		step1.getCorpusDesc().getFormatDesc().setFormatVersion("1.0");
+		step1.setProps(new Properties());
+		step1.getProps().put("prop1", "val1");
+		step1.getProps().put("prop2", "5");
+		getFixture().addStepDesc(step1);
+		
+		//manipulator declared by name
+		StepDesc step2= new StepDesc();
+		step2.setModuleType(MODULE_TYPE.MANIPULATOR);
+		step2.setName("anyManipulator");
+		step2.setProps(new Properties());
+		step2.getProps().put("prop1", "val1");
+		step2.getProps().put("prop2", "5");
+		getFixture().addStepDesc(step2);
+		
+		//exporter declared by name
+		StepDesc step3= new StepDesc();
+		step3.setModuleType(MODULE_TYPE.EXPORTER);
+		step3.getCorpusDesc().setCorpusPath(URI.createFileURI("/somewhere/"));
+		step3.setName("anyExporter");
+		step3.setProps(new Properties());
+		step3.getProps().put("prop1", "val1");
+		step3.getProps().put("prop2", "5");
+		getFixture().addStepDesc(step3);
+		
+		File file = new File(PepperUtil.getTempTestFile("pepperJobImplTest").getAbsolutePath()+"/test_save."+PepperUtil.FILE_ENDING_PEPPER);
+		
+		getFixture().save(URI.createFileURI(file.getAbsolutePath()));
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setValidating(false);
+		dbf.setValidating(false);
+		try {
+			dbf.setFeature("http://xml.org/sax/features/namespaces", false);
+			dbf.setFeature("http://xml.org/sax/features/validation", false);
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		
+		XMLUnit.setTestDocumentBuilderFactory(dbf);
+		XMLUnit.setControlDocumentBuilderFactory(dbf);
+
+		File goldFile= new File(PepperModuleTest.getTestResources()+"/workflowDescription/save_test.pepper");
+		Reader goldReader = new InputStreamReader(new FileInputStream(goldFile.getAbsolutePath()), "UTF-8");
+		Reader fixtureReader = new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "UTF-8");
+		Diff diff = XMLUnit.compareXML(goldReader, fixtureReader);
+		if (!diff.identical()) {
+			System.out.println(goldFile.getAbsolutePath() + " <> " + file.getAbsolutePath());
+			System.out.println(diff);
+			fail();
 		}
 	}
 }

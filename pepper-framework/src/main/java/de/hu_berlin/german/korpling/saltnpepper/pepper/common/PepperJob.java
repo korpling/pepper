@@ -106,9 +106,9 @@ public abstract class PepperJob {
 	
 	/**
 	 * Loads a serialization of a {@link PepperJob} and fills this object with these entries. 
+	 * The current implementation allows xml files following the workflow description scheme version 1.0 and
+	 * xmi files following the (old) PepperParams schema.
 	 * <strong>
-	 * The current implementation only allows xml files following the schema of PepperParams.
-	 * <br/>
 	 * Only local files are supported. 
 	 * </strong>
 	 * @param uri path of file to load.
@@ -116,11 +116,11 @@ public abstract class PepperJob {
 	public abstract void load(URI uri);
 	
 	/**
-	 * Loads a job from the passed {@link Uri}. The job has to follow ???schema???.
+	 * Stores this job to the file at passed URI. If the URI points to a directory, a file having the
+	 * name {@link #getId()}.pepper is created in the passed directory.
+	 * @param uri The location where to store this job. 
 	 */
-	public void save(){
-		
-	}
+	public abstract void  save(URI uri);
 	
 	/**
 	 * Returns a textual representation of this Pepper job.

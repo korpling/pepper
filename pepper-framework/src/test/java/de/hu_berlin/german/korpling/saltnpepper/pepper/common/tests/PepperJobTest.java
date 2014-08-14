@@ -75,4 +75,10 @@ public class PepperJobTest extends PepperJob{
 	public String getStatusReport() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void save(URI uri) {
+		// TODO Auto-generated method stub
+		
+	}
 }

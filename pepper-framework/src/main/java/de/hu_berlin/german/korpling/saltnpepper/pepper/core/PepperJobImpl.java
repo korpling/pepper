@@ -19,11 +19,13 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.core;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CancellationException;
@@ -36,6 +38,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -52,6 +57,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.NotInitializedException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
@@ -890,6 +896,7 @@ public class PepperJobImpl extends PepperJob {
 		inProgress.lock();
 		try {
 			// TODO implement this
+			throw new UnsupportedOperationException("Sorry, this feature is not implemented yet.");
 		} finally {
 			inProgress.unlock();
 		}
@@ -907,6 +914,7 @@ public class PepperJobImpl extends PepperJob {
 		inProgress.lock();
 		try {
 			// TODO implement this
+			throw new UnsupportedOperationException("Sorry, this feature is not implemented yet.");
 		} finally {
 			inProgress.unlock();
 		}
@@ -1026,6 +1034,116 @@ public class PepperJobImpl extends PepperJob {
 	// ======================================= end: managing number of active
 	// documents
 
+	/**
+	 * {@inheritDoc PepperJob#save(URI)}
+	 */
+	@Override
+	public void save(URI uri) {
+		if (uri== null){
+			throw new PepperException("Cannot save Pepper job '"+getId()+"', because the passed uri is empty. ");
+		}
+		File file=null;
+		if (PepperUtil.FILE_ENDING_PEPPER.equals(uri.fileExtension())){
+			// passed uri already points to a Pepper file
+			file= new File(uri.toFileString());
+		}else{
+			//uri points to a directory
+			String directory= uri.toFileString();
+			if (!directory.endsWith("/")){
+				directory= directory+"/";
+			}
+			file= new File(directory+getId()+"."+PepperUtil.FILE_ENDING_PEPPER);
+		}
+		//create parent directory of file
+		if (!file.getParentFile().exists()){
+			file.getParentFile().mkdirs();
+		}
+		
+		XMLOutputFactory xof = XMLOutputFactory.newInstance();     
+		XMLStreamWriter xml;
+		
+		try {
+			xml = xof.createXMLStreamWriter(new FileWriter(file.getAbsolutePath()));
+			xml.writeStartDocument();
+				//<pepper>
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+					if (getId()!= null){
+						xml.writeAttribute(WorkflowDescriptionReader.ATT_ID, getId());
+					}
+					xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
+					//<customization> ???
+					List<StepDesc> importers= new ArrayList<>();
+					List<StepDesc> manipulators= new ArrayList<>();
+					List<StepDesc> exporters= new ArrayList<>();
+					for (StepDesc step: getStepDescs()){
+						if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())){
+							importers.add(step);
+						}else if (MODULE_TYPE.MANIPULATOR.equals(step.getModuleType())){
+							manipulators.add(step);
+						}else if (MODULE_TYPE.EXPORTER.equals(step.getModuleType())){
+							exporters.add(step);
+						}
+					}
+					
+					//<importer>
+					for (StepDesc step: importers){
+						xml.writeStartElement(WorkflowDescriptionReader.TAG_IMPORTER);
+						save_module(xml, step);
+						xml.writeEndElement();
+					}
+					//<manipulator>
+					for (StepDesc step: manipulators){
+						xml.writeStartElement(WorkflowDescriptionReader.TAG_MANIPULATOR);
+						save_module(xml, step);
+						xml.writeEndElement();
+					}
+					//<exporter>
+					for (StepDesc step: exporters){
+						xml.writeStartElement(WorkflowDescriptionReader.TAG_EXPORTER);
+						save_module(xml, step);
+						xml.writeEndElement();
+					}
+				xml.writeEndElement();
+	        xml.writeEndDocument();
+	        xml.flush();
+		} catch (XMLStreamException | IOException e) {
+			throw new PepperException("Cannot store Pepper job '"+getId()+"' because of a nested exception. ", e);
+		}
+	}
+	/** This method is just a helper method for method {@link #save(URI)} to avoid boilerplate code
+	 * @throws XMLStreamException **/
+	private void save_module(XMLStreamWriter xml, StepDesc step) throws XMLStreamException{
+		if (step.getName()!= null){
+			xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, step.getName());
+		}
+		if (step.getCorpusDesc().getFormatDesc().getFormatName()!= null){
+			xml.writeAttribute(WorkflowDescriptionReader.ATT_FORMAT_NAME, step.getCorpusDesc().getFormatDesc().getFormatName());
+		}
+		if (step.getCorpusDesc().getFormatDesc().getFormatVersion()!= null){
+			xml.writeAttribute(WorkflowDescriptionReader.ATT_FORMAT_VERSION, step.getCorpusDesc().getFormatDesc().getFormatVersion());
+		}
+		if (step.getVersion()!= null){
+			xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, step.getName());
+		}
+		if (	(step.getCorpusDesc()!= null)&&
+				(step.getCorpusDesc().getCorpusPath()!= null)){
+			xml.writeAttribute(WorkflowDescriptionReader.ATT_PATH, step.getCorpusDesc().getCorpusPath().toFileString());
+		}
+		if (	(step.getProps()!= null) &&
+				(step.getProps().size() > 0)){
+			xml.writeStartElement(WorkflowDescriptionReader.TAG_CUSTOMIZATION);
+				for (Object key: step.getProps().keySet()){
+					xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
+						xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, key.toString());
+						if (step.getProps().get(key)!= null){
+							xml.writeCharacters(step.getProps().get(key).toString());
+						}
+					xml.writeEndElement();
+				}
+			xml.writeEndElement();
+		}
+	}
+	
 	/**
 	 * {@inheritDoc PepperJob#load(URI)}
 	 */
