@@ -63,14 +63,21 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 	/** the value for the property **/
 	private String propValue=null;
 	
+	/** flag determines, whether the read file is directly mapped or if is delegated to the {@link PepperParamsReader}**/
+	private PepperParamsReader delegatee= null;
+	
 	@Override
 	public void startElement(	String uri,
             					String localName,
             					String qName,
-            					Attributes attributes)throws SAXException
-    {
-		
-		if (TAG_IMPORTER.equals(qName)){
+            					Attributes attributes)throws SAXException{
+		if (	(PepperParamsReader.ELEMENT_PEPPERPARAMS.equals(qName))||
+				((PepperParamsReader.PREFIX_PEPPERPARAMS+":"+PepperParamsReader.ELEMENT_PEPPERPARAMS).equals(qName))){
+			delegatee= new PepperParamsReader();
+			delegatee.setJob(getPepperJob());
+			delegatee.setLocation(getLocation());
+		}
+		else if (TAG_IMPORTER.equals(qName)){
 			//create step desc for importer
 			stepDesc= new StepDesc();
 			stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
@@ -100,6 +107,10 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 		}else if (TAG_PROP.equals(qName)){
 			propName= attributes.getValue(ATT_KEY);
 			propName= propName.trim();
+		}
+		
+		if (delegatee!= null){
+			delegatee.startElement(uri, localName, qName, attributes);
 		}
     }
 	

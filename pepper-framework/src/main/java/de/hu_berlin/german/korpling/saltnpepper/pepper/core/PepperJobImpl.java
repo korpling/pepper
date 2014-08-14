@@ -1037,8 +1037,9 @@ public class PepperJobImpl extends PepperJob {
 			SAXParser parser;
 			XMLReader xmlReader;
 			SAXParserFactory factory = SAXParserFactory.newInstance();
-			PepperParamsReader contentHandler = new PepperParamsReader();
-			contentHandler.setJob(this);
+			
+			WorkflowDescriptionReader contentHandler = new WorkflowDescriptionReader();
+			contentHandler.setPepperJob(this);
 			contentHandler.setLocation(uri);
 			try {
 				parser = factory.newSAXParser();
