@@ -654,7 +654,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
 					
 					//add layers
-					String layers= (String)getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
+					String layers= (String)getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
 					addSLayers(sDoc, layers);
 				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
 					
@@ -691,9 +691,17 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				for (String layer: layerArray){
 					layer= layer.trim();
 					//create SLayer and add to document-structure
-					SLayer sLayer= SaltFactory.eINSTANCE.createSLayer();
-					sLayer.setSName(layer);
-					sDoc.getSDocumentGraph().getSLayers().add(sLayer);
+					List<SLayer> sLayers= sDoc.getSDocumentGraph().getSLayerByName(layer);
+					SLayer sLayer= null;
+					if (	(sLayers!= null)&&
+							(sLayers.size() > 0)){
+						sLayer= sLayers.get(0);	
+					}
+					if (sLayer== null){
+						sLayer= SaltFactory.eINSTANCE.createSLayer();
+						sLayer.setSName(layer);
+						sDoc.getSDocumentGraph().addSLayer(sLayer);
+					}
 					//add all nodes to new layer
 					for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
 						sLayer.getSNodes().add(sNode);
@@ -702,7 +710,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
 						sLayer.getSRelations().add(sRel);
 					}
-					System.out.println(">>>>>>>>>>>>>>>>>>>>  added layer: "+sLayer.getSName());
 				}
 			}
 		}

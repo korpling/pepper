@@ -72,7 +72,7 @@ public class PepperModuleProperties implements Serializable {
 	 * by Pepper ({@link PepperModule}). A post processing property is handled
 	 * by method
 	 * {@link PepperModule#after(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
-	 * before
+	 * after
 	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
 	 * is called.
 	 **/
@@ -84,6 +84,13 @@ public class PepperModuleProperties implements Serializable {
 	 * object.
 	 */
 	public static final String PROP_AFTER_ADD_SLAYER = PREFIX_PEPPER_AFTER + "addSLayer";
+	/**
+	 * Consumes a semicolon separated list of names for {@link SLayer} objects.
+	 * For each list element, one {@link SLayer} is created and added to all
+	 * {@link SNode} and {@link SRelation} objects of a {@link SDocumentGraph}
+	 * object.
+	 */
+	public static final String PROP_BEFORE_ADD_SLAYER = PREFIX_PEPPER_BEFORE + "addSLayer";
 
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
@@ -93,7 +100,8 @@ public class PepperModuleProperties implements Serializable {
 	 * </ul>
 	 */
 	public PepperModuleProperties() {
-		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure"));
+		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed."));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
 	}
 
 	/**
