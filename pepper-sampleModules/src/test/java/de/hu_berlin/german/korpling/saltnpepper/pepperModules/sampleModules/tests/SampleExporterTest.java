@@ -79,7 +79,7 @@ public class SampleExporterTest extends PepperExporterTest {
 	public void test_DummyImplementation() {
 		// create a sample corpus, the class SampleGenerator provides a bunch of
 		// helpful methods to create sample documents and corpora
-		getFixture().setSaltProject(SampleGenerator.createCompleteSaltproject());
+		getFixture().setSaltProject(SampleGenerator.createSaltProject());
 
 		// determine location, to where the corpus should be exported
 		getFixture().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(getTempPath("sampleExporter").getAbsolutePath())));
@@ -89,15 +89,17 @@ public class SampleExporterTest extends PepperExporterTest {
 
 		File superCorpus = new File(getTempPath("sampleExporter").getAbsolutePath() + "/rootCorpus");
 		assertTrue(superCorpus.exists());
-		File subCorpus = new File(superCorpus.getAbsolutePath() + "/subCorpus1");
-		assertTrue(subCorpus.exists());
-		File document1 = new File(subCorpus.getAbsolutePath() + "/doc1.dot");
+		File subCorpus1 = new File(superCorpus.getAbsolutePath() + "/subCorpus1");
+		assertTrue(subCorpus1.exists());
+		File document1 = new File(subCorpus1.getAbsolutePath() + "/doc1.dot");
 		assertTrue(document1.exists());
-		File document2 = new File(subCorpus.getAbsolutePath() + "/doc2.dot");
+		File document2 = new File(subCorpus1.getAbsolutePath() + "/doc2.dot");
 		assertTrue(document2.exists());
-		File document3 = new File(subCorpus.getAbsolutePath() + "/doc3.dot");
+		File subCorpus2 = new File(superCorpus.getAbsolutePath() + "/subCorpus2");
+		assertTrue(subCorpus1.exists());
+		File document3 = new File(subCorpus2.getAbsolutePath() + "/doc3.dot");
 		assertTrue(document3.exists());
-		File document4 = new File(subCorpus.getAbsolutePath() + "/doc4.dot");
+		File document4 = new File(subCorpus2.getAbsolutePath() + "/doc4.dot");
 		assertTrue(document4.exists());
 	}
 	// TODO add further tests for any test cases you can think of and which are
