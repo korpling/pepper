@@ -30,6 +30,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperExceptio
 
 public abstract class PepperUtil {
 
+	/** This is the default ending of a Pepper workflow description file.  **/
+	public static final String FILE_ENDING_PEPPER="pepper";
 	/**
 	 * The width of the output console of Pepper.
 	 */

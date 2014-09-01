@@ -91,6 +91,7 @@
         <maven-notice-plugin.version>1.0.4</maven-notice-plugin.version>
         <docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
         <docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
+        <xmlunit.version>1.5</xmlunit.version>
     </properties>
     <dependencies>
         <dependency>
@@ -116,7 +117,13 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-        <dependency>
+	    <dependency>
+	      <groupId>xmlunit</groupId>
+	      <artifactId>xmlunit</artifactId>
+	      <version>${xmlunit.version}</version>
+	      <scope>test</scope>
+	    </dependency>
+	    <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>org.eclipse.emf.common</artifactId>
             <version>${org.eclipse.emf.common.version}</version>
