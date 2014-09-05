@@ -57,11 +57,12 @@ public class PepperMapperControllerImplTest {
 	public void test_PropAddSLayer() {
 		SDocument sDoc= SaltFactory.eINSTANCE.createSDocument();
 		SampleGenerator.createSDocumentStructure(sDoc);
+		int layersBefore = sDoc.getSDocumentGraph().getSLayers().size();
 		getFixture().getPepperMapper().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
 		sDoc.setSElementId(SaltFactory.eINSTANCE.createSElementId());
 		getFixture().after(sDoc.getSElementId());
 		
-		assertEquals(2, sDoc.getSDocumentGraph().getSLayers().size());
+		assertEquals(layersBefore+2, sDoc.getSDocumentGraph().getSLayers().size());
 		SLayer layer1= sDoc.getSDocumentGraph().getSLayers().get(0);
 		SLayer layer2= sDoc.getSDocumentGraph().getSLayers().get(1);
 		for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
