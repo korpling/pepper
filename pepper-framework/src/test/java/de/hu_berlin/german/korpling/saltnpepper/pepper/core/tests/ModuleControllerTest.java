@@ -154,7 +154,7 @@ public class ModuleControllerTest{
 		 DocumentBus output= new DocumentBus(getFixture().getId(), "lastModule");
 		 getFixture().setInputDocumentBus(input);
 		 getFixture().setOutputDocumentBus(output);
-		 SaltProject saltProject= SampleGenerator.createCompleteSaltproject();
+		 SaltProject saltProject= SampleGenerator.createSaltProject();
 		 List<DocumentController> expectedDocumentControllers= new Vector<DocumentController>();
 		 for (SDocument sDocument: saltProject.getSCorpusGraphs().get(0).getSDocuments()){
 			 DocumentController controller= new DocumentControllerImpl();
@@ -192,7 +192,7 @@ public class ModuleControllerTest{
 			 fail();
 		 }catch (PepperFWException e){}
 		 	 
-		 SaltProject saltProject= SampleGenerator.createCompleteSaltproject();
+		 SaltProject saltProject= SampleGenerator.createSaltProject();
 		 List<DocumentController> expectedDocumentControllers= new Vector<DocumentController>();
 		 for (SDocument sDocument: saltProject.getSCorpusGraphs().get(0).getSDocuments()){
 			 DocumentController controller= new DocumentControllerImpl();
@@ -234,7 +234,7 @@ public class ModuleControllerTest{
 			 fail();
 		 }catch (PepperFWException e){}
 		 	 
-		 SaltProject saltProject= SampleGenerator.createCompleteSaltproject();
+		 SaltProject saltProject= SampleGenerator.createSaltProject();
 		 List<DocumentController> expectedDocumentControllers= new Vector<DocumentController>();
 		 for (SDocument sDocument: saltProject.getSCorpusGraphs().get(0).getSDocuments()){
 			 DocumentController controller= new DocumentControllerImpl();
@@ -267,7 +267,7 @@ public class ModuleControllerTest{
 			 fail();
 		 }catch (PepperFWException e){}
 		 
-		 SaltProject saltProject= SampleGenerator.createCompleteSaltproject();
+		 SaltProject saltProject= SampleGenerator.createSaltProject();
 		 List<DocumentController> expectedDocumentControllers= new Vector<DocumentController>();
 		 for (SDocument sDocument: saltProject.getSCorpusGraphs().get(0).getSDocuments()){
 			 DocumentController controller= new DocumentControllerImpl();

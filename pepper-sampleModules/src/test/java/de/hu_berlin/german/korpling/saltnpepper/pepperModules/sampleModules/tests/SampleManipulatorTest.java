@@ -71,7 +71,7 @@ public class SampleManipulatorTest extends PepperManipulatorTest {
 	public void test_DummyImplementation() {
 		// create a sample corpus, the class SampleGenerator provides a bunch of
 		// helpful methods to create sample documents and corpora
-		getFixture().setSaltProject(SampleGenerator.createCompleteSaltproject());
+		getFixture().setSaltProject(SampleGenerator.createSaltProject());
 		// starts the Pepper framework and the conversion process
 		start();
 
