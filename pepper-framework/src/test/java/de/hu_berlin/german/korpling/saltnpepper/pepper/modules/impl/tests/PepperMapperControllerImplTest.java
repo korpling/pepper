@@ -63,8 +63,8 @@ public class PepperMapperControllerImplTest {
 		getFixture().after(sDoc.getSElementId());
 		
 		assertEquals(layersBefore+2, sDoc.getSDocumentGraph().getSLayers().size());
-		SLayer layer1= sDoc.getSDocumentGraph().getSLayers().get(0);
-		SLayer layer2= sDoc.getSDocumentGraph().getSLayers().get(1);
+		SLayer layer1= sDoc.getSDocumentGraph().getSLayers().get(layersBefore);
+		SLayer layer2= sDoc.getSDocumentGraph().getSLayers().get(layersBefore+1);
 		for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
 			assertTrue(sNode.getSLayers().contains(layer1));
 			assertTrue(sNode.getSLayers().contains(layer2));
