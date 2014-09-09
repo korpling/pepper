@@ -73,10 +73,30 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
-		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."), LIST("list", "l", "module name", "A table with information about the passed Pepper module."), HELP("help", "h", null, "Prints this help."), SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."), EXIT("exit", "e", null, "Exits Pepper."), CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."), OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
+		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."), 
+		//
+		LIST("list", "l", "module name", "A table with information about the passed Pepper module."), 
+		//
+		CONF("conf", "co", null, "Shows the configuration for current Pepper instance."),
+		//
+		HELP("help", "h", null, "Prints this help."), 
+		//
+		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."), 
+		//
+		EXIT("exit", "e", null, "Exits Pepper."), 
+		//
+		CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."), 
+		//
+		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
 		// "updates a Pepper module with the module located at 'module path' and starts it."),
-		REMOVE("remove", "re", "bundle name", "Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "), START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."), STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."), DEBUG("debug", "d", null, "Switches on/off the debug output.");
+		REMOVE("remove", "re", "bundle name", "Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "), 
+		//
+		START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."), 
+		//
+		STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."), 
+		//
+		DEBUG("debug", "d", null, "Switches on/off the debug output.");
 
 		private String name = null;
 		private String abbreviation = null;
@@ -240,7 +260,7 @@ public class PepperStarter {
 		stop_osgi();
 		String retVal= "";
 		try{
-			FileUtils.deleteDirectory(getPepper().getProperties().getTempPath());
+			FileUtils.deleteDirectory(getPepper().getConfiguration().getTempPath());
 			retVal="Cleaned up Pepper instance, please call "+COMMAND.START_OSGI.getName()+" to make Pepper ready to run again.";
 		}catch (IOException e) {
 			retVal="Cannot clean Pepper instance, because of "+ e.getMessage();
@@ -361,6 +381,23 @@ public class PepperStarter {
 		return (retVal.toString());
 	}
 
+	/**
+	 * @return a String containing all Pepper configurations formatted as table
+	 */
+	public String conf(){
+		StringBuilder retVal = new StringBuilder();
+		String format = "| %1$-40s | %2$-50s |\n";
+		String line = "+------------------------------------------+----------------------------------------------------+\n";
+		retVal.append(line);
+		retVal.append(String.format(format, "name", "value"));
+		retVal.append(line);
+		for (Object propName: getPepper().getConfiguration().keySet()){
+			retVal.append(String.format(format,propName, getPepper().getConfiguration().getProperty(propName.toString())));
+		}
+		retVal.append(line);
+		return (retVal.toString());
+	}
+	
 	public static final String PROMPT = "pepper";
 	private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 	private PrintStream output = System.out;
@@ -371,6 +408,7 @@ public class PepperStarter {
 	public void runInteractive(){
 		boolean exit= false;
 		String userInput= null;
+		
 		output.println("Welcome to Pepper, type 'help' for help.");
 		while (!exit){
 			try {
@@ -405,6 +443,9 @@ public class PepperStarter {
 				}else{
 					output.println("Please pass exactly one module name.");
 				}
+			}else if (	(COMMAND.CONF.getName().equalsIgnoreCase(command))||
+						(COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))){
+				output.println(conf());
 			}else if (	(COMMAND.SELFTEST.getName().equalsIgnoreCase(command))||
 						(COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))){
 				output.println(selfTest());
@@ -474,7 +515,7 @@ public class PepperStarter {
 		boolean endedWithErrors = false;
 
 		PepperConnector pepper = new PepperOSGiConnector();
-		pepper.setProperties(pepperProps);
+		pepper.setConfiguration(pepperProps);
 		PepperStarter starter = new PepperStarter(pepper);
 
 		if (args.length == 0) {

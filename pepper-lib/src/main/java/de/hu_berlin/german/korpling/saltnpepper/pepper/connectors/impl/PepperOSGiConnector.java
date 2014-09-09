@@ -50,11 +50,14 @@ import org.slf4j.LoggerFactory;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 
 /**
@@ -77,7 +80,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public void init() {
-		if (getProperties().getPlugInPath() == null) {
+		if (getPepperStarterConfiguration().getPlugInPath() == null) {
 			throw new PepperPropertyException("Cannot start Pepper, because no plugin path is given for Pepper modules.");
 		}
 		try {
@@ -86,7 +89,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 			setBundleContext(this.startEquinox());
 
-			logger.debug("plugin path:\t\t" + getProperties().getPlugInPath());
+			logger.debug("plugin path:\t\t" + getPepperStarterConfiguration().getPlugInPath());
 
 			logger.debug("installing OSGI-bundles...");
 			logger.debug("-------------------- installing bundles --------------------");
@@ -94,7 +97,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 			// installing module-bundles
 			logger.debug("\tinstalling OSGI-bundles:");
-			bundles = this.installBundles(new File(getProperties().getPlugInPath()).toURI());
+			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI());
 			logger.debug("----------------------------------------------------------");
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
@@ -149,36 +152,29 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public void stopOSGi() throws Exception {
 		EclipseStarter.shutdown();
 	}
-
+	
 	/** {@link PepperStarterConfiguration} of this object. **/
 	private PepperStarterConfiguration properties = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperConnector
-	 * #
-	 * setProperties(de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter
-	 * .PepperProperties)
-	 */
+	/** {@inheritDoc Pepper#getConfiguration()} **/
 	@Override
-	public void setProperties(PepperStarterConfiguration props) {
-		if (properties == null) {
-			this.properties = props;
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperConnector
-	 * #getProperties()
-	 */
-	@Override
-	public PepperStarterConfiguration getProperties() {
+	public PepperConfiguration getConfiguration() {
 		return properties;
+	}
+	/** 
+	 * @return configuration as {@link PepperStarterConfiguration} 
+	**/
+	public PepperStarterConfiguration getPepperStarterConfiguration() {
+		return properties;
+	}
+	
+	@Override
+	public void setConfiguration(PepperConfiguration configuration) {
+		if (configuration instanceof PepperStarterConfiguration){
+			this.properties = (PepperStarterConfiguration)configuration;
+		}else{
+			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '"+PepperStarterConfiguration.class.getSimpleName()+"'.");
+		}
 	}
 
 	// ========================================== start: initializing OSGi
@@ -207,6 +203,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					throw new PepperException("The pepper-framework was not found in OSGi environment for '" + Pepper.class.getName() + "'.");
 				}
 				pepper = pepperOSGi;
+				pepper.setConfiguration(getConfiguration());
 			} catch (IllegalStateException e) {
 
 			}
@@ -246,7 +243,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected String getSharedPackages() {
 		StringBuilder retVal = new StringBuilder();
 
-		String sharedPackages = getProperties().getSharedPackages();
+		String sharedPackages = getPepperStarterConfiguration().getSharedPackages();
 		if ((sharedPackages != null) && (!sharedPackages.isEmpty())) {
 			retVal.append(sharedPackages);
 		} else {
@@ -350,7 +347,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public Bundle installAndCopy(URI bundleURI) throws BundleException, IOException {
 		Bundle retVal = null;
 		if (bundleURI != null) {
-			String pluginPath = getProperties().getPlugInPath();
+			String pluginPath = getPepperStarterConfiguration().getPlugInPath();
 			if (pluginPath != null) {
 				// download file, if file is a web resource
 				if (("http".equalsIgnoreCase(bundleURI.getScheme())) || ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
@@ -481,7 +478,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 							File fileToRemove = new File(entry.getKey().getPath());
 							retVal = fileToRemove.delete();
 							// check for folders to be removed
-							for (File file : new File(getProperties().getPlugInPath()).listFiles()) {
+							for (File file : new File(getPepperStarterConfiguration().getPlugInPath()).listFiles()) {
 								if (file.getName().startsWith(fileToRemove.getName().replace(".jar", ""))) {
 									if (file.isDirectory()) {
 										FileUtils.deleteDirectory(file);

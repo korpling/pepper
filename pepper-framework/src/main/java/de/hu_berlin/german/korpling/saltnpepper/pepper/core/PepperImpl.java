@@ -51,10 +51,7 @@ public class PepperImpl implements Pepper {
 	
 	/** Configuration object for Pepper **/
 	private PepperConfiguration configuration= null;
-	/**
-	 * Returns set configuration for {@link Pepper}.
-	 * @return
-	 */
+	/** {@inheritDoc Pepper#getConfiguration()} **/
 	public PepperConfiguration getConfiguration() {
 		if (configuration== null){
 			synchronized (this) {
@@ -64,10 +61,7 @@ public class PepperImpl implements Pepper {
 		}
 		return configuration;
 	}
-	/** 
-	 * Sets the configuration for {@link Pepper}.
-	 * @param configuration
-	 */
+	/** {@inheritDoc Pepper#setConfiguration(PepperConfiguration)} **/
 	public void setConfiguration(PepperConfiguration configuration) {
 		this.configuration = configuration;
 	}

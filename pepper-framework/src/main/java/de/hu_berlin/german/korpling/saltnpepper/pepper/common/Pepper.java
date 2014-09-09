@@ -28,6 +28,16 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundExc
  */
 public interface Pepper {	
 	/**
+	 * Returns set configuration for {@link Pepper}.
+	 * @return
+	 */
+	public PepperConfiguration getConfiguration();
+	/** 
+	 * Sets the configuration for {@link Pepper}.
+	 * @param configuration
+	 */
+	public void setConfiguration(PepperConfiguration configuration);
+	/**
 	 * Creates a new {@link PepperJob} object for a new conversion process.
 	 * @return identifier of the new created {@link PepperJob}
 	 */
