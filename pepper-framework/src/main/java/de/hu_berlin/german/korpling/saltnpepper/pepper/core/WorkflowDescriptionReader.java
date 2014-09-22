@@ -99,19 +99,16 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 			stepDesc= new StepDesc();
 			stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
 			mapStepDesc(stepDesc, attributes);
-			getPepperJob().addStepDesc(stepDesc);
 		}else if (TAG_MANIPULATOR.equals(qName)){
 			//create step desc for manipulator
 			stepDesc= new StepDesc();
 			stepDesc.setModuleType(MODULE_TYPE.MANIPULATOR);
 			mapStepDesc(stepDesc, attributes);
-			getPepperJob().addStepDesc(stepDesc);
 		}else if (TAG_EXPORTER.equals(qName)){
 			//create step desc for exporter
 			stepDesc= new StepDesc();
 			stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
 			mapStepDesc(stepDesc, attributes);
-			getPepperJob().addStepDesc(stepDesc);
 		}else if (TAG_CUSTOMIZATION.equals(qName)){
 			if (stepDesc== null){
 				//customization property is for entire pepper job
@@ -145,7 +142,7 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 		}
 	}
 	/**
-	 * If a property has no value, it must be creted here.
+	 * If a property has no value, it must be created here.
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -157,6 +154,10 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 				propValue=null;
 				propName=null;
 			}
+		}else if (	(TAG_IMPORTER.equals(qName))||
+					(TAG_MANIPULATOR.equals(qName))||
+					(TAG_EXPORTER.equals(qName))){
+			getPepperJob().addStepDesc(stepDesc);
 		}
 	}
 	

@@ -1189,8 +1189,9 @@ public class PepperJobImpl extends PepperJob {
 				else
 					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception. ", e);
 			}
-		} else
+		} else{
 			throw new UnsupportedOperationException("Currently Pepper can only load workflow description from local files.");
+		}
 	}
 
 	/**

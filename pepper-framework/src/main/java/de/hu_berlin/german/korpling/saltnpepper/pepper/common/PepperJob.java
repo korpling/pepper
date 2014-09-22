@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.dmt.Uri;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
