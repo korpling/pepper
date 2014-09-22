@@ -226,20 +226,20 @@ public class WorkflowDescriptionReaderTest {
 	public void testResolveURI(){
 		URI uri= null;
 		
-		uri= WorkflowDescriptionReader.resolveURI("./bla");
+		uri= getFixture().resolveURI("./bla");
 		assertNotNull(uri);
 		
-		uri= WorkflowDescriptionReader.resolveURI("file:/bla");
+		uri= getFixture().resolveURI("file:/bla");
 		assertEquals("file", uri.scheme());
 		assertNotNull(uri);
 		
-		uri= WorkflowDescriptionReader.resolveURI("/bla/");
+		uri= getFixture().resolveURI("/bla/");
 		assertNotNull(uri);
 		
-		uri= WorkflowDescriptionReader.resolveURI("c:\bla");
+		uri= getFixture().resolveURI("c:\bla");
 		assertNotNull(uri);
 		
-		uri= WorkflowDescriptionReader.resolveURI("c:/bla");
+		uri= getFixture().resolveURI("c:/bla");
 		assertNotNull(uri);
 	}
 }

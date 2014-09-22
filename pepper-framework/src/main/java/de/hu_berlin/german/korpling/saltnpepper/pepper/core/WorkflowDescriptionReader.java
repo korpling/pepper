@@ -201,19 +201,23 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 	 * @param path
 	 * @return
 	 */
-	public static URI resolveURI(String path){
+	public URI resolveURI(String path){
 		URI uri= null;
 		if (	(path!= null)&&
 				(!path.isEmpty())){
 			char[] seq= path.toCharArray();
-			if (	(path.startsWith("."))||
-					(path.startsWith("/"))||
-					(	(seq.length>= 2)&&
-						(seq[1]==':')&&
-						(seq[2]=='\\'))){
-				//if path uses file scheme or is relative create a file uri
+			
+			if (	(path.startsWith("."))&&
+					(getLocation()!= null)){
+				//if path is relative resolve against location of this document
+				uri= URI.createFileURI(path).resolve(getLocation());
+			}else if (	(path.startsWith("/"))||
+						(	(seq.length>= 2)&&
+								(seq[1]==':')&&
+								(seq[2]=='\\'))){
 				uri= URI.createFileURI(path);
 			}else if(path.startsWith("file:")){
+				//if path uses file scheme create a file uri
 				path= path.replace("file:///", "");
 				path= path.replace("file://", "");
 				path= path.replace("file:", "");
@@ -221,7 +225,7 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 			}else{
 				//create generic uri
 				uri= URI.createURI(path);
-			}
+			}			
 		}
 		return(uri);
 	}
