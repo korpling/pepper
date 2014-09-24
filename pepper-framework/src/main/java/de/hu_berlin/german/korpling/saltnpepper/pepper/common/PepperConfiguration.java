@@ -264,7 +264,6 @@ public class PepperConfiguration extends Properties {
 		}else{
 			tmpFolder= PepperUtil.getTempFile();
 		}
-		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 		return (tmpFolder);
 	}
 
