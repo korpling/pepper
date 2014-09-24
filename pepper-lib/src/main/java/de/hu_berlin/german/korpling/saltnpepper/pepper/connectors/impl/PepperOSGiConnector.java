@@ -54,7 +54,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguratio
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
@@ -136,7 +135,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		frameworkProperties.setProperty(EclipseStarter.PROP_CLEAN, "true");
 		frameworkProperties.setProperty(EclipseStarter.PROP_CONSOLE, "true");
 		frameworkProperties.setProperty(EclipseStarter.PROP_NOSHUTDOWN, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_INSTALL_AREA, "./_TMP/");
+		frameworkProperties.setProperty(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		bc = EclipseStarter.startup(new String[] {}, null);
@@ -351,14 +350,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			if (pluginPath != null) {
 				// download file, if file is a web resource
 				if (("http".equalsIgnoreCase(bundleURI.getScheme())) || ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
-					String tmpPath = System.getProperty("java.io.tmpdir");
+					String tempPath= getPepperStarterConfiguration().getTempPath().getCanonicalPath();
 					URL bundleUrl = bundleURI.toURL();
-					if (!tmpPath.endsWith("/")) {
-						tmpPath = tmpPath + "/";
+					if (!tempPath.endsWith("/")) {
+						tempPath = tempPath + "/";
 					}
 					String baseName = FilenameUtils.getBaseName(bundleUrl.toString());
 					String extension = FilenameUtils.getExtension(bundleUrl.toString());
-					File bundleFile = new File(tmpPath + baseName + "." + extension);
+					File bundleFile = new File(tempPath + baseName + "." + extension);
 
 					org.apache.commons.io.FileUtils.copyURLToFile(bundleURI.toURL(), bundleFile);
 					bundleURI = URI.create(bundleFile.getAbsolutePath());

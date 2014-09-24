@@ -73,8 +73,8 @@ public class PepperConfiguration extends Properties {
 	 */
 	public static final String PROP_COMPUTE_PERFORMANCE = PROP_PREFIX + ".computePerformance";
 	/**
-	 * Name of the property, which determines a temprorary folder, where the
-	 * framework and all modules can store temprorary data.
+	 * Name of the property, which determines a temporary folder, where the
+	 * framework and all modules can store temporary data.
 	 */
 	public static final String PROP_TEMP_FOLDER = PROP_PREFIX + ".temporaries";
 	/**
@@ -264,6 +264,7 @@ public class PepperConfiguration extends Properties {
 		}else{
 			tmpFolder= PepperUtil.getTempFile();
 		}
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 		return (tmpFolder);
 	}
 

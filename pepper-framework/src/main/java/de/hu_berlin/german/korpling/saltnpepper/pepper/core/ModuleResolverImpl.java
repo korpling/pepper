@@ -68,7 +68,6 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 * TODO make docu
 	 */
 	public ModuleResolverImpl() {
-		super();
 		init();
 	}
 
@@ -551,7 +550,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 			throw new PepperFWException("Cannot start converting, because the system property '" + PepperConfiguration.PROP_TEMP_FOLDER + "' isn't set. This might be an internal failure.");
 
 		File tmpPath = new File(genTmpPath.getAbsolutePath() + "/" + module.getSymbolicName() + "/" + number);
-
+		
 		try {
 			tmpPath.mkdirs();
 		} catch (Exception e) {

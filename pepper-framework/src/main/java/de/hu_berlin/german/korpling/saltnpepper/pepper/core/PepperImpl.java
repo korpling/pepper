@@ -64,6 +64,9 @@ public class PepperImpl implements Pepper {
 	/** {@inheritDoc Pepper#setConfiguration(PepperConfiguration)} **/
 	public void setConfiguration(PepperConfiguration configuration) {
 		this.configuration = configuration;
+		if (getModuleResolver()!= null){
+			getModuleResolver().setConfiguration(getConfiguration());
+		}
 	}
 	
 	class JobEntry{
