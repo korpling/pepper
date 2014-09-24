@@ -76,7 +76,7 @@ public class PepperConfiguration extends Properties {
 	 * Name of the property, which determines a temprorary folder, where the
 	 * framework and all modules can store temprorary data.
 	 */
-	public static final String PROP_TEMP_FOLDER = PROP_PREFIX + ".temproraries";
+	public static final String PROP_TEMP_FOLDER = PROP_PREFIX + ".temporaries";
 	/**
 	 * the maximal number of currently processed SDocument-objects
 	 */
