@@ -19,7 +19,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.core;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -597,31 +599,28 @@ public class ModuleResolverImpl implements ModuleResolver {
 	@Override
 	public List<PepperImporter> getPepperImporters() {
 		List<PepperImporter> pepperImporters = null;
-		if (this.pepperImporterComponentFactories != null) {
+		if (getPepperImporterComponentFactories() != null) {
 			// run through all pepperImporterComponentFactories and search for
 			// mapping PepperImporter
-			for (ComponentFactory componentFactory : this.getPepperImporterComponentFactories()) {
+			Iterator<ComponentFactory> it= getPepperImporterComponentFactories().iterator();
+			while(it.hasNext()){
+				Object instance= null;
 				try{
-					Object instance= null;
-					try{
-						instance = componentFactory.newInstance(null).getInstance();
-					}catch(ComponentException e){
-						//bundle containing Pepper module was probably removed 
-					}
-					if (	(instance!= null)&&
-							(instance instanceof PepperImporter)) {
-						if (pepperImporters == null)
-							pepperImporters = new Vector<PepperImporter>();
-						PepperImporter importer = (PepperImporter) instance;
-						if ((importer.getSymbolicName() == null) || (importer.getSymbolicName().isEmpty()))
-							throw new PepperModuleException("Cannot register PepperModule, because the symbolic name of module '" + importer.getName() + "' is empty.");
+					instance = it.next().newInstance(null).getInstance();
+				}catch(ComponentException e){
+					//bundle containing Pepper module was probably removed 
+				}
+				if (	(instance!= null)&&
+						(instance instanceof PepperImporter)) {
+					if (pepperImporters == null)
+						pepperImporters = new Vector<PepperImporter>();
+					PepperImporter importer = (PepperImporter) instance;
+					if ((importer.getSymbolicName() == null) || (importer.getSymbolicName().isEmpty()))
+						throw new PepperModuleException("Cannot register PepperModule, because the symbolic name of module '" + importer.getName() + "' is empty.");
 
-						this.setTemporaries(importer, increaseNumberOfModules(importer));
-						this.setResources(importer);
-						pepperImporters.add(importer);
-					}
-
-				}catch (ComponentException e){
+					this.setTemporaries(importer, increaseNumberOfModules(importer));
+					this.setResources(importer);
+					pepperImporters.add(importer);
 				}
 			}
 		}
@@ -637,25 +636,29 @@ public class ModuleResolverImpl implements ModuleResolver {
 	@Override
 	public List<PepperManipulator> getPepperManipulators() {
 		List<PepperManipulator> pepperManipulators = null;
-		if (this.pepperManipulatorComponentFactories != null) {
+		if (getPepperManipulatorComponentFactories() != null) {
 			// run through all pepperManipulatorComponentFactories and search
 			// for mapping PepperManipulator
-			for (ComponentFactory componentFactory : this.getPepperManipulatorComponentFactories()) {
-				Object instance= null;
-				try{
-					instance = componentFactory.newInstance(null).getInstance();
-				}catch(ComponentException e){
-					//bundle containing Pepper module was probably removed 
+			try{
+				for (ComponentFactory componentFactory : getPepperManipulatorComponentFactories()) {
+					Object instance= null;
+					try{
+						instance = componentFactory.newInstance(null).getInstance();
+					}catch(ComponentException e){
+						//bundle containing Pepper module was probably removed 
+					}
+					if (	(instance!= null)&&
+							(instance instanceof PepperManipulator)) {
+						if (pepperManipulators == null)
+							pepperManipulators = new Vector<PepperManipulator>();
+						PepperManipulator manipulator = (PepperManipulator) instance;
+						this.setTemporaries(manipulator, increaseNumberOfModules(manipulator));
+						this.setResources(manipulator);
+						pepperManipulators.add(manipulator);
+					}
 				}
-				if (	(instance!= null)&&
-						(instance instanceof PepperManipulator)) {
-					if (pepperManipulators == null)
-						pepperManipulators = new Vector<PepperManipulator>();
-					PepperManipulator manipulator = (PepperManipulator) instance;
-					this.setTemporaries(manipulator, increaseNumberOfModules(manipulator));
-					this.setResources(manipulator);
-					pepperManipulators.add(manipulator);
-				}
+			}catch (ConcurrentModificationException e){
+				
 			}
 		}
 		return (pepperManipulators);
@@ -670,10 +673,10 @@ public class ModuleResolverImpl implements ModuleResolver {
 	@Override
 	public List<PepperExporter> getPepperExporters() {
 		List<PepperExporter> pepperExporters = null;
-		if (this.pepperExporterComponentFactories != null) {
+		if (getPepperExporterComponentFactories() != null) {
 			// run through all pepperExporterComponentFactories and search for
 			// mapping PepperExporter
-			for (ComponentFactory componentFactory : this.getPepperExporterComponentFactories()) {
+			for (ComponentFactory componentFactory : getPepperExporterComponentFactories()) {
 				Object instance= null;
 				try{
 					instance = componentFactory.newInstance(null).getInstance();
