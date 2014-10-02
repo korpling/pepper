@@ -164,7 +164,7 @@
             <groupId>com.carrotgarden.osgi</groupId>
             <artifactId>carrot-osgi-anno-scr-make</artifactId>
             <version>${carrot-osgi-anno-scr-make.version}</version>
-        </dependency>
+        </dependency>        
         <!--  end: OSGi declaractive services -->
     </dependencies>
 

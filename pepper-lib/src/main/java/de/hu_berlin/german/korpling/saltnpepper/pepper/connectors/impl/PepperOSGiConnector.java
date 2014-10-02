@@ -29,15 +29,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.examples.util.Booter;
+import org.eclipse.aether.resolution.VersionRangeRequest;
+import org.eclipse.aether.resolution.VersionRangeResult;
+import org.eclipse.aether.version.Version;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -46,6 +58,9 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
@@ -599,7 +614,105 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public Collection<String> selfTest() {
 		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		updatePepperModules();
 		return (getPepper().selfTest());
+	}
+	
+	/** This String contains the path to the modules.xml file, which provides Information about
+	 * the pepperModules to be updated / installed. */
+	private static final String MODULES_XML_PATH = "/home/klotzmaz/Documents/SNP/modules.xml";
+	
+	/** This is the groupId for saltnpepper in the korpling maven repository */
+	private static final String GROUP_ID = "de.hu_berlin.german.korpling.saltnpepper";
+	
+	/**
+	 * This method checks the pepperModules in the modules.xml for updates
+	 * and triggers the installation process if a newer version is available
+	 */
+	public void updatePepperModules(){
+		List<String> listedModules = new ArrayList<String>();
+		
+		try{
+			SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+			saxParser.parse(MODULES_XML_PATH, new updateConfigurationReader(listedModules));			
+		}catch(Exception e){
+			
+		}
+		
+		RepositorySystem system = Booter.newRepositorySystem();
+        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
+        
+        BundleContext bundleContext = getBundleContext();
+        
+        for(String module : listedModules){
+        	Artifact artifact = new DefaultArtifact( GROUP_ID+"."+module+":[0,)" );//fix
+
+            VersionRangeRequest rangeRequest = new VersionRangeRequest();
+            rangeRequest.setArtifact( artifact );
+            rangeRequest.setRepositories( Booter.newRepositories( system, session ) );
+
+            try{
+            	VersionRangeResult rangeResult = system.resolveVersionRange( session, rangeRequest );            
+            	Version newestVersion = rangeResult.getHighestVersion();
+
+            	/*
+            	 * get installed version and compare it to newestVersion
+            	 */
+            	System.out.println(getRegisteredModules());            	
+            }catch(Exception e){
+            	
+            }	
+        }        
+	}
+	
+	/**
+	 * This class is the call back handler for reading the modules.xml file,
+	 * which provides Information about the pepperModules to be updated / installed.
+	 * @author klotzmaz
+	 *
+	 */
+	private class updateConfigurationReader extends DefaultHandler2{
+		private List<String> listedModules;
+		private static final String TAG_ENTRY = "pepperModules";
+		private StringBuilder chars;
+		private boolean openEyes;
+		
+		public updateConfigurationReader(List<String> targetList){
+			listedModules = targetList;
+			chars = new StringBuilder();
+			openEyes = false;
+		}
+		
+		@Override
+		public void startElement(	String uri,
+				String localName,
+				String qName,
+				Attributes attributes)throws SAXException
+		{
+			localName = qName.substring(qName.lastIndexOf(":")+1);
+			openEyes = TAG_ENTRY.equals(localName);
+		}
+		
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException{							
+			if (openEyes){
+				for(int i=start; i<start+length; i++){
+					chars.append(ch[i]);
+				}
+				openEyes = false;
+			}			
+		}
+		
+		@Override
+		public void endElement(java.lang.String uri,
+                String localName,
+                String qName) throws SAXException
+        {		
+			localName = qName.substring(qName.lastIndexOf(":")+1);
+			if(TAG_ENTRY.equals(localName)){
+				listedModules.add(chars.toString());
+				chars.delete(0, chars.length());
+			}
+		}
 	}
 }
