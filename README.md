@@ -1,8 +1,10 @@
+![](http://korpling.github.io/pepper/images/SaltNPepper_logo2010.png)
+
 #Pepper
 Pepper is a pluggable, Java-based, open source converter framework for linguistic data. It was developed to convert data from a linguistic data format _X_ to another linguistic data format _Y_. With Pepper, you can convert data from and into all supported formats. For instance from <a href="http://www.exmaralda.org/">EXMARaLDA</a> format to <a href="http://www.ims.uni-stuttgart.de/forschung/ressourcen/werkzeuge/TIGERSearch/doc/html/TigerXML.html">Tiger XML</a>, or <a href="http://mmax2.sourceforge.net/">MMAX</a>
 to <a href="http://www.sfb632.uni-potsdam.de/annis/">ANNIS</a> format or <a href="http://www.wagsoft.com/RSTTool/">Treetagger</a> output and <a href="">RST</a> to <a href="https://www.sfb632.uni-potsdam.de/en/paula.html">PAULA</a> and many many more.
 
-To decrease the number of conceptual mappings, Pepper follows the intermediate model approach, which means that a conversion consists of two mappings. First, the data coming from format _X_ will be mapped to the intermediate model <a href="http://u.hu-berlin.de/saltnpepper">Salt</a> and second, the data will be mapped from Salt to format <emphasis role="italic">Y</emphasis>. If you imagine a set of n source and target formats, then this approach will decrease the number of mappings from _n²-n_ mappings in case of the direct mapping approach to _2n_ mappings.
+To decrease the number of conceptual mappings, Pepper follows the intermediate model approach, which means that a conversion consists of two mappings. First, the data coming from format _X_ will be mapped to the intermediate model <a href="http://u.hu-berlin.de/saltnpepper">Salt</a> and second, the data will be mapped from Salt to format _Y_. If you imagine a set of n source and target formats, then this approach will decrease the number of mappings from _n²-n_ mappings in case of the direct mapping approach to _2n_ mappings.
 
 The Pepper framework itself is just a container controlling the workflow of a conversion process. The mapping itself is done by a set of Pepper modules. Pepper is a highly pluggable framework which offers the possibility to plug-in new modules in order to incorporate further formats. The flexibel architecture of Pepper allows to combine all existing modules and to easily plug-in new ones. The Pepper workflow is separated into three different phases:
 <ul>
@@ -15,7 +17,7 @@ The three phase process makes it feasible to influence and manipulate data durin
 The import phase handles the mapping from a format _X_ to Salt, the export phase handles the mapping from Salt to a format _Y_. During the manipulation phase, the data in Salt can be enhanced, reduced or manipulated. A phase is divided into several steps: the import and export phase must contain at least one step each. Whereas the manipulation phase can contain any number of steps. Each Pepper module realizes exactly one step. For instance the import of data in the EXMARaLDA format is done by one module, the EXMARaLDAImporter. The orchestration of Pepper modules is determined by the Pepper workflow description file (.pepperparams). A Pepper module can be identified by specifying it name or the format's name and version of the corpus to be converted.
 
 ##Documentation
-* <a href="">User's Guide</a>
+* <a href="http://korpling.github.io/pepper/docs/pepper_usersGuide.pdf">User's Guide</a>
 
 ##Maven
 
