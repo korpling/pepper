@@ -16,6 +16,21 @@ The three phase process makes it feasible to influence and manipulate data durin
 
 The import phase handles the mapping from a format _X_ to Salt, the export phase handles the mapping from Salt to a format _Y_. During the manipulation phase, the data in Salt can be enhanced, reduced or manipulated. A phase is divided into several steps: the import and export phase must contain at least one step each. Whereas the manipulation phase can contain any number of steps. Each Pepper module realizes exactly one step. For instance the import of data in the EXMARaLDA format is done by one module, the EXMARaLDAImporter. The orchestration of Pepper modules is determined by the Pepper workflow description file (.pepperparams). A Pepper module can be identified by specifying it name or the format's name and version of the corpus to be converted.
 
+##Download and Install
+
+Pepper is system independent and comes as a ready to run zip archive, so you do not need any
+installation. But since Pepper is Java based, you need to have Java installed on your system. On most
+systems, Java is installed by default, but in case it is not please download it from
+www.oracle.com/technetwork/java/javase/ or http://openjdk.java.net/. To check if Java (or more precisly a Java
+Runtime Environment) is running, open a command line and run:
+```bash
+java -version
+```
+You need at least version 1.6.
+
+<a href="https://korpling.german.hu-berlin.de/saltnpepper/repository/saltNpepper_full/">Here</a> you will find the current stable release, snapshots and even older versions of Pepper including a set of Pepper modules.
+
+
 ##Documentation
 * <a href="http://korpling.github.io/pepper/docs/pepper_usersGuide.pdf">User's Guide</a>
 
