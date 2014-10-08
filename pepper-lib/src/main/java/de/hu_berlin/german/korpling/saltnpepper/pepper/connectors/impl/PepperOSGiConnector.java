@@ -47,6 +47,9 @@ import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.examples.util.Booter;
+import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.resolution.ArtifactDescriptorRequest;
+import org.eclipse.aether.resolution.ArtifactDescriptorResult;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.version.Version;
@@ -642,14 +645,18 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		RepositorySystem system = Booter.newRepositorySystem();
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
         
-        BundleContext bundleContext = getBundleContext();
-        
+        PepperModuleDesc[] registeredModules = (PepperModuleDesc[])this.getRegisteredModules().toArray();
+        String[] registeredVersion = null;
+        String[] availableVersion = null;
+        int i=0;
         for(String module : listedModules){
         	Artifact artifact = new DefaultArtifact( GROUP_ID+"."+module+":[0,)" );//fix
 
             VersionRangeRequest rangeRequest = new VersionRangeRequest();
             rangeRequest.setArtifact( artifact );
             rangeRequest.setRepositories( Booter.newRepositories( system, session ) );
+            ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
+            ArtifactDescriptorResult descriptorResult = null;
 
             try{
             	VersionRangeResult rangeResult = system.resolveVersionRange( session, rangeRequest );            
@@ -658,8 +665,37 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
             	/*
             	 * get installed version and compare it to newestVersion
             	 */
-            	System.out.println(getRegisteredModules());            	
-            }catch(Exception e){
+            	while (i<registeredModules.length && !registeredModules[i].getName().equals(module)){
+            		i++;
+            	}
+            	boolean update = true;
+            	if(i<registeredModules.length){//module found
+            		registeredVersion = registeredModules[i].getVersion().split("\\.");
+            		availableVersion = newestVersion.toString().split("\\.");
+            		
+            		update = registeredVersion.length!=availableVersion.length;//when version style changes, an update is triggered
+            		for (int j=0; j<registeredVersion.length && !update; j++){
+            			update|= Integer.parseInt(registeredVersion[j])<Integer.parseInt(availableVersion[j]);
+            		}            		
+            	}
+            	if (update){
+        			/*
+        			 * get dependencies, install module and dependencies
+        			 */
+        			//get dependencies
+            		descriptorRequest.setArtifact(artifact);
+                    descriptorRequest.setRepositories(Booter.newRepositories(system, session));
+                    descriptorResult = system.readArtifactDescriptor(session, descriptorRequest);
+                    for (Dependency dependency : descriptorResult.getDependencies()){                    	
+                    	if (!dependency.isOptional()/* && notAlreadyInstalled */){
+                    		//install dependency
+                    		//check for dependencies again?
+                    	}
+                    }
+                    //install newest version of module
+        		}
+            	            	
+            }catch (Exception e){
             	
             }	
         }        
@@ -672,9 +708,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 *
 	 */
 	private class updateConfigurationReader extends DefaultHandler2{
+		/** all read module names are stored here */
 		private List<String> listedModules;
+		/** the name of the tag in the modules.xml file, between which the module name is written */
 		private static final String TAG_ENTRY = "pepperModules";
+		/** is used to read the module name character by character */
 		private StringBuilder chars;
+		/** this boolean sais, whether characters should be read or ignored */
 		private boolean openEyes;
 		
 		public updateConfigurationReader(List<String> targetList){
