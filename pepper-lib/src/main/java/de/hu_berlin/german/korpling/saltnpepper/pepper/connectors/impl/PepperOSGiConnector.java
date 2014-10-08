@@ -295,7 +295,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * {@value #PROP_OSGI_BUNDLES} as reference:file:JAR_FILE.
 	 * 
 	 * @param pluginPath
-	 *            path ere the bundles are
+	 *            path where the bundles are
 	 * @param bundleAction
 	 *            a flag, which shows if bundle has to be started or just
 	 *            installed
@@ -649,18 +649,26 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
         String[] registeredVersion = null;
         String[] availableVersion = null;
         int i=0;
+        boolean alreadyInstalled = true;
+        boolean update = true;
+        
+        Artifact artifact = null;
+        ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
+        ArtifactDescriptorResult descriptorResult = null;
+        VersionRangeRequest rangeRequest = new VersionRangeRequest();
+        VersionRangeResult rangeResult = null;
+        Version newestVersion = null;
+        
         for(String module : listedModules){
-        	Artifact artifact = new DefaultArtifact( GROUP_ID+"."+module+":[0,)" );//fix
-
-            VersionRangeRequest rangeRequest = new VersionRangeRequest();
+        	artifact = new DefaultArtifact( GROUP_ID+"."+module+":[0,)" );//fix
             rangeRequest.setArtifact( artifact );
             rangeRequest.setRepositories( Booter.newRepositories( system, session ) );
-            ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
-            ArtifactDescriptorResult descriptorResult = null;
+            
+            alreadyInstalled = true;            
 
             try{
-            	VersionRangeResult rangeResult = system.resolveVersionRange( session, rangeRequest );            
-            	Version newestVersion = rangeResult.getHighestVersion();
+            	rangeResult = system.resolveVersionRange( session, rangeRequest );            
+            	newestVersion = rangeResult.getHighestVersion();
 
             	/*
             	 * get installed version and compare it to newestVersion
@@ -668,7 +676,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
             	while (i<registeredModules.length && !registeredModules[i].getName().equals(module)){
             		i++;
             	}
-            	boolean update = true;
+            	update = true;
             	if(i<registeredModules.length){//module found
             		registeredVersion = registeredModules[i].getVersion().split("\\.");
             		availableVersion = newestVersion.toString().split("\\.");
@@ -682,17 +690,20 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
         			/*
         			 * get dependencies, install module and dependencies
         			 */
-        			//get dependencies
+        			//get dependencies            		
             		descriptorRequest.setArtifact(artifact);
                     descriptorRequest.setRepositories(Booter.newRepositories(system, session));
-                    descriptorResult = system.readArtifactDescriptor(session, descriptorRequest);
+                    descriptorResult = system.readArtifactDescriptor(session, descriptorRequest);                    
                     for (Dependency dependency : descriptorResult.getDependencies()){                    	
-                    	if (!dependency.isOptional()/* && notAlreadyInstalled */){
+                    	alreadyInstalled = true;//TODO
+                    	if (!dependency.isOptional() && !alreadyInstalled){                    		
                     		//install dependency
+//                    		this.install(URI.create(dependency.getArtifact().getFile().getAbsolutePath()));
                     		//check for dependencies again?
                     	}
                     }
                     //install newest version of module
+                    this.install(URI.create(artifact.getFile().getAbsolutePath()));
         		}
             	            	
             }catch (Exception e){
