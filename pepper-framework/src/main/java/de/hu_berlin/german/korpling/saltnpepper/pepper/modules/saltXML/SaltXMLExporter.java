@@ -153,11 +153,7 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// creating uri for exporting document
-			URI sDocumentURI= getCorpusDesc().getCorpusPath();
-			
-			for (String segment: getSDocument().getSElementId().getSElementPath().segments()){
-				sDocumentURI= sDocumentURI.appendSegment(segment);
-			}
+			URI sDocumentURI= getCorpusDesc().getCorpusPath().appendSegments(getSDocument().getSElementId().getSElementPath().segments());
 			sDocumentURI= sDocumentURI.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
 			
 			XMLResource sDocumentResource = (XMLResource) getResourceSet().createResource(sDocumentURI);
