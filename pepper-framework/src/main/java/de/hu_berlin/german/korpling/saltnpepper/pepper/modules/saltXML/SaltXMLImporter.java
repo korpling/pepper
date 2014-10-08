@@ -87,7 +87,6 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 			location = location.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
 			mapper.setResourceURI(location);
 		}
-
 		return (mapper);
 	}
 
