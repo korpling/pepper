@@ -681,8 +681,10 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			mapper.setProperties(this.getProperties());
 
 			if (this instanceof PepperImporter) {
-				URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
-				mapper.setResourceURI(resource);
+				if (mapper.getResourceURI()== null){
+					URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
+					mapper.setResourceURI(resource);
+				}
 			}
 
 			if ((sElementId.getSIdentifiableElement() instanceof SDocument) && (mapper.getSDocument() == null)) {
