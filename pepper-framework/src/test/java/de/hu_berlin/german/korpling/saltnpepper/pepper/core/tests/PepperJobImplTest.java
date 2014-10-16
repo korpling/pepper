@@ -941,7 +941,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 			@Override
 			public void run() {
 				while(!JOB_STATUS.ENDED.equals(getFixture().getStatus())){
-					assertTrue("Current number of documents is not correct. Expected: less than '2', but was '"+getFixture().getCurrNumberOfDocuments()+"'. ", getFixture().getCurrNumberOfDocuments()<= 2);
+					assertTrue("Current number of documents is not correct. Expected: less than '2', but was '"+getFixture().getNumOfActiveDocuments()+"'. ", getFixture().getNumOfActiveDocuments()<= 2);
 					try {
 						Thread.sleep(10l);
 					} catch (InterruptedException e) {

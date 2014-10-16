@@ -26,7 +26,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -719,7 +721,7 @@ public class PepperJobImpl extends PepperJob {
 		retVal.append("\n");
 
 		retVal.append("active documents:\t");
-		retVal.append(getCurrNumberOfDocuments());
+		retVal.append(getNumOfActiveDocuments());
 		retVal.append(" of ");
 		retVal.append(getMaxNumberOfDocuments());
 		retVal.append("\n");
@@ -962,21 +964,15 @@ public class PepperJobImpl extends PepperJob {
 	public int getMaxNumberOfDocuments() {
 		return (maxNumOfDocuments);
 	}
-
-	/**
-	 * Determines the current number of {@link SDocument} objects which could be
-	 * processed at the same time
-	 **/
-	private volatile int currNumOfDocuments = 0;
-
+	
 	/**
 	 * Returns the current number of {@link SDocument} objects which could be
 	 * processed at the same time
 	 * 
 	 * @return number of documents
 	 */
-	public int getCurrNumberOfDocuments() {
-		return (currNumOfDocuments);
+	public int getNumOfActiveDocuments() {
+		return(getActiveDocuments().size());
 	}
 
 	/** lock for correct change of {@link #currNumOfDocuments} **/
@@ -986,12 +982,21 @@ public class PepperJobImpl extends PepperJob {
 	 * document was released via {@link #releaseDocument()}
 	 **/
 	private volatile Condition numOfDocsCondition = numOfDocsLock.newCondition();
-
+	/** A set of all currently active documents. **/
+	private Set<DocumentController> activeDocuments= null;
+	/** Returns a set of all currently active documents.**/
+	public Set<DocumentController> getActiveDocuments(){
+		if (activeDocuments== null){
+			activeDocuments= new HashSet<>();
+		}
+		return(activeDocuments);
+	}
+	
 	/**
 	 * Returns true, if a {@link SDocument} or more precisely spoken a
 	 * {@link SDocumentGraph} could be woken up or imported. This is the case,
 	 * as long as: <br/>
-	 * {@link #getCurrNumberOfDocuments()} < {@link #getMaxNumberOfDocuments()}. <br/>
+	 * {@link #getNumOfActiveDocuments()} < {@link #getMaxNumberOfDocuments()}. <br/>
 	 * Must be synchronized,
 	 * 
 	 * @return true, when #getCurrNumberOfDocuments()} <
@@ -1001,10 +1006,10 @@ public class PepperJobImpl extends PepperJob {
 		numOfDocsLock.lock();
 		if (!MEMORY_POLICY.GREEDY.equals(getMemPolicy())) {
 			try {
-				while (getCurrNumberOfDocuments() >= getMaxNumberOfDocuments()) {
+				while (getNumOfActiveDocuments() >= getMaxNumberOfDocuments()) {
 					numOfDocsCondition.await();
 				}
-				currNumOfDocuments++;
+				getActiveDocuments().add(controller);
 			} catch (InterruptedException e) {
 				throw new PepperFWException("Something went wrong, when waiting for lock 'numOfDocsCondition'.", e);
 			} finally {
@@ -1016,12 +1021,12 @@ public class PepperJobImpl extends PepperJob {
 
 	/**
 	 * Releases a document and reduces the internal counter for the number of
-	 * currently processed documents ({@link #getCurrNumberOfDocuments()}).
+	 * currently processed documents ({@link #getNumOfActiveDocuments()}).
 	 */
 	public void releaseDocument(DocumentController controller) {
 		numOfDocsLock.lock();
 		try {
-			currNumOfDocuments--;
+			getActiveDocuments().remove(controller);
 			// TODO not sure, if signal() is correct, or if signalAll() should
 			// be used, but I would think, that only one waiter has to be
 			// notified
