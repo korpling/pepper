@@ -18,17 +18,28 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
@@ -73,6 +84,8 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
+		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
+		//
 		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."), 
 		//
 		LIST("list", "l", "module name", "A table with information about the passed Pepper module."), 
@@ -331,22 +344,22 @@ public class PepperStarter {
 			console.installAndStart(params, output);
 			return ("launched Pepper module");
 		} else {
-			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+			return ("No OSGi console available, since Pepper is not running in OSGi mode. ");
 		}
 	}
 
 	/**
 	 * Updates a Pepper module(s).
 	 */
-	public String update(List<String> params) {
-		if (getPepper() instanceof PepperOSGiConnector) {
-			OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(), PROMPT);
-			console.installAndStart(params, output);
-			return ("Updated Pepper module.");
-		} else {
-			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
-		}
-	}
+//	public String update(List<String> params) {
+//		if (getPepper() instanceof PepperOSGiConnector) {
+//			OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(), PROMPT);
+//			console.installAndStart(params, output);
+//			return ("Updated Pepper module.");
+//		} else {
+//			return ("No OSGi console available, since Pepper is not running in OSGi mode. ");
+//		}
+//	}
 
 	/**
 	 * Removes an existing Pepper module(s).
@@ -396,6 +409,142 @@ public class PepperStarter {
 		}
 		retVal.append(line);
 		return (retVal.toString());
+	}
+	
+	/**
+	 * this method is called by command "update" which triggers the update
+	 * process of pepper modules in PepperOSGiConnector depending on the command's
+	 * parameters
+	 * @param command
+	 * @return
+	 */
+	private String update(List<String> params){
+		System.out.println("method called with params: "+params.toString());
+		StringBuilder retVal = new StringBuilder();		
+		boolean isSnapshot = params.size()>0 && params.get(0).equalsIgnoreCase("snapshot");
+		HashMap<String, String> moduleTable;
+		PepperOSGiConnector pepperConnector = (PepperOSGiConnector)getPepper();
+		try {
+			moduleTable = getModuleTable();
+			System.out.println("read module table:\n"+moduleTable.toString());
+		
+			if (	params.get(0).equalsIgnoreCase("all") ||
+					( isSnapshot && params.get(1).equals("all") )	){
+				for (String s : moduleTable.keySet()){
+					if (pepperConnector.update(s, moduleTable.get(s), isSnapshot)){
+						retVal.append(s+" successfully updated.");
+					}
+					else{
+						retVal.append(s+" not updated.");
+					}
+				}
+			}
+			else{
+				String s = null;
+				for (int i= isSnapshot ? 1 : 0; i<params.size(); i++){
+					s = params.get(i);
+					System.out.println("current module: "+s);
+					if (moduleTable.keySet().contains(s)){
+						System.out.println("module contained in moduleTable");
+						if (pepperConnector.update(s, moduleTable.get(s), isSnapshot)){
+							retVal.append("Successfully updated "+s+" from "+moduleTable.get(s)+".\n");
+						}
+					}
+					else if (s.matches("file://.*")||s.matches("https?://.*")){
+//						pepperConnector.installAndCopy(java.net.URI.create(s)).start();
+						return "File installed. No dependency resolution in this mode.";
+					}else{
+						System.out.println("snapshot argument passed");
+						isSnapshot|=s.equalsIgnoreCase("snapshot");
+					}
+				}
+			}
+			
+		} catch (ParserConfigurationException | SAXException | IOException /*| BundleException*/ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retVal.toString();
+	}
+	
+	/** This String contains the path to the modules.xml file, which provides Information about
+	 * the pepperModules to be updated / installed. */
+	private static final String MODULES_XML_PATH = "/home/klotzmaz/Documents/SNP/moduleUpdater/modules.xml";
+	
+	private HashMap<String, String> getModuleTable() throws ParserConfigurationException, SAXException, IOException{
+		HashMap<String, String> table = new HashMap<String, String>();
+		SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+		saxParser.parse(MODULES_XML_PATH, new ModuleTableReader(table));
+		return table;
+	}
+	
+	/**
+	 * This class is the call back handler for reading the modules.xml file,
+	 * which provides Information about the pepperModules to be updated / installed.
+	 * @author klotzmaz
+	 *
+	 */
+	private class ModuleTableReader extends DefaultHandler2{
+		/** all read module names are stored here */
+		private Map<String, String> listedModules;
+		/** this string contains the last occured key / modules' name */
+		private String lastKey;
+		/** the name of the tag in the modules.xml file, between which the modules are listed */
+		private static final String TAG_LIST = "pepperModulesList";
+		/** the name of the tag in the modules.xml file, between which the modules' name is written */
+		private static final String TAG_ENTRY = "name";
+		/** the name of the tag in the modules.xml file, between which the modules' source is written */
+		private static final String TAG_SRC = "src";
+		/** contains the default src for modules where no src is defined*/
+		private String DEFAULT_SRC;
+		/** is used to read the module name character by character */
+		private StringBuilder chars;
+		/** this boolean says, whether characters should be read or ignored */
+		private boolean openEyes;		
+		
+		public ModuleTableReader(Map<String, String> targetMap){
+			listedModules = targetMap;
+			chars = new StringBuilder();
+			openEyes = false;
+		}
+		
+		@Override
+		public void startElement(	String uri,
+				String localName,
+				String qName,
+				Attributes attributes)throws SAXException
+		{
+			localName = qName.substring(qName.lastIndexOf(":")+1);
+			openEyes = TAG_ENTRY.equals(localName)||TAG_SRC.equals(localName);
+			if (TAG_LIST.equals(localName) && attributes.getValue(0)!=null){
+				DEFAULT_SRC = attributes.getValue(0);
+			}
+		}
+		
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException{							
+			for(int i=start; i<start+length && openEyes; i++){
+				chars.append(ch[i]);
+			}
+			openEyes = false;						
+		}
+		
+		@Override
+		public void endElement(java.lang.String uri,
+                String localName,
+                String qName) throws SAXException
+        {		
+			localName = qName.substring(qName.lastIndexOf(":")+1);
+			if (TAG_ENTRY.equals(localName)){
+				lastKey = chars.toString();
+				listedModules.put(lastKey, DEFAULT_SRC);
+				chars.delete(0, chars.length());
+			}
+			if (TAG_SRC.equals(localName)){
+				listedModules.put(lastKey, chars.toString()+lastKey);
+				chars.delete(0, chars.length());
+			}
+		}
 	}
 	
 	public static final String PROMPT = "pepper";
@@ -495,6 +644,9 @@ public class PepperStarter {
 			}else if(	(COMMAND.DEBUG.getName().equalsIgnoreCase(command))||
 						(COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))){
 				output.println(debug());
+			}else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+						(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command)) ){				
+				output.println(update(params));
 			}else{
 				output.println("Type 'help' for help.");
 			}

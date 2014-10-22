@@ -30,6 +30,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 
 /**
@@ -300,19 +302,11 @@ public class OSGiConsole {
 	 * @param out
 	 */
 	public void update(List<String> params, PrintStream out) {
-		if (	(params== null)||
-				(params.size()> 1)){
-			out.println("To update a bundle, you need to pass a bundle location.");
-		}else{
-//			URI bundleURI= null;
-//			try {
-//				bundleURI = URI.create(params.get(0));
-//			} catch (IllegalArgumentException e1) {
-//				out.println("The passed bundle location '" + params.get(0) + "'is not a valid bundle location. Please use the URI syntax for bundle locations");
-//			}
-//			Long bundleId = getConnector().getBundleId(bundleURI);
-			uninstall(params, out);
-			installAndStart(params, out);
+		if (params==null){
+			out.println("stupid help text");
+		}
+		else if(params.size()==1 && params.get(0).equals("all")){
+			
 		}
 	}
 

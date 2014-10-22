@@ -28,16 +28,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -46,11 +45,15 @@ import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.collection.CollectResult;
+import org.eclipse.aether.collection.DependencyCollectionException;
 import org.eclipse.aether.examples.util.Booter;
+import org.eclipse.aether.examples.util.ConsoleDependencyGraphDumper;
 import org.eclipse.aether.graph.Dependency;
-import org.eclipse.aether.resolution.ArtifactDescriptorRequest;
-import org.eclipse.aether.resolution.ArtifactDescriptorResult;
+import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.VersionRangeRequest;
+import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.version.Version;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
@@ -59,11 +62,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.condpermadmin.BundleLocationCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.ext.DefaultHandler2;
+
+import com.sun.jmx.mbeanserver.Repository;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
@@ -617,13 +620,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public Collection<String> selfTest() {
 		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-		updatePepperModules();
 		return (getPepper().selfTest());
 	}
 	
-	/** This String contains the path to the modules.xml file, which provides Information about
-	 * the pepperModules to be updated / installed. */
-	private static final String MODULES_XML_PATH = "/home/klotzmaz/Documents/SNP/modules.xml";
+	
 	
 	/** This is the groupId for saltnpepper in the korpling maven repository */
 	private static final String GROUP_ID = "de.hu_berlin.german.korpling.saltnpepper";
@@ -632,138 +632,109 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * This method checks the pepperModules in the modules.xml for updates
 	 * and triggers the installation process if a newer version is available
 	 */
-	public void updatePepperModules(){
-		List<String> listedModules = new ArrayList<String>();
+	public boolean update(String name, String src, boolean isSnapshot){		
 		
-		try{
-			SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-			saxParser.parse(MODULES_XML_PATH, new updateConfigurationReader(listedModules));			
-		}catch(Exception e){
-			
-		}
+		System.out.println("update process called for "+name+" @"+src+" ["+Boolean.toString(isSnapshot)+"]");
 		
 		RepositorySystem system = Booter.newRepositorySystem();
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
         
-        PepperModuleDesc[] registeredModules = (PepperModuleDesc[])this.getRegisteredModules().toArray();
-        String[] registeredVersion = null;
-        String[] availableVersion = null;
-        int i=0;
         boolean alreadyInstalled = true;
         boolean update = true;
+        try {
+	        Artifact artifact = new DefaultArtifact(GROUP_ID, name, "zip","[0,)");//fix;
+	        System.out.println("artifact: "+artifact);
+	        VersionRangeRequest rangeRequest = new VersionRangeRequest();
+	        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", "http://korpling.german.hu-berlin.de/maven2");
+	        RemoteRepository repo = repoBuilder.build();
+	        rangeRequest.addRepository(repo);
+	        rangeRequest.setArtifact(artifact);
+	        System.out.println("TEST1\t"+rangeRequest.getRepositories());
+	        VersionRangeResult rangeResult = system.resolveVersionRange(session, rangeRequest);
+	        System.out.println("TEST2"); 
+	        Version newestVersion = rangeResult.getHighestVersion();
+	        System.out.println("TEST3"); 
+	        rangeRequest.setArtifact( artifact );
+	        System.out.println("TEST4"); 
+	        rangeRequest.setRepositories(Booter.newRepositories(system, session));        
+	        
+	    	/*
+	    	 * get installed version and compare it to newestVersion
+	    	 */        	
+	        PepperModuleDesc moduleDesc = getModuleFromRegisteredModules(name);
+	    	if(moduleDesc!=null){
+	    		try{
+	    			System.out.println("moduleDesc.getVersion="+moduleDesc.getVersion());
+	    		String[] registeredVersion = moduleDesc.getVersion().split("\\.");
+	    		String[] availableVersion = newestVersion.toString().split("\\.");
+	    		
+	    		System.out.println("installed version: "+moduleDesc.getVersion());
+	    		System.out.println("available version: "+newestVersion);
+	    		
+	    		update = registeredVersion.length!=availableVersion.length;//when version style changes, an update is triggered
+	    		for (int j=0; j<registeredVersion.length && !update; j++){
+	    			update|= Integer.parseInt(registeredVersion[j]) < Integer.parseInt(availableVersion[j]);
+	    		}   }catch(Exception e){e.printStackTrace(); }          		
+	    	}
+	    	if (update){
+	    		System.out.println("update required");
+    			//install newest version of module
+            	//which file do we get? we want ZIP
+    		
+//            	this.installAndCopy(URI.create(artifact.getFile().getAbsolutePath())).start();//TODO is the module automatically added to list of getRegisteredModules?
+	    		System.out.println("Here I would install, copy and start the requested bundle/module");
+				/*
+				 * get dependencies, install dependencies
+				 */
+				//get dependency tree     
+	    		
+	    		Artifact jarTifact = new DefaultArtifact(GROUP_ID, name, "jar","[0,)");//fix;
+	    		CollectRequest collectRequest = new CollectRequest();
+	            collectRequest.setRoot( new Dependency( jarTifact, "" ) );
+//	            collectRequest.setRepositories( Booter.newRepositories( system, session ) );
+	            collectRequest.addRepository(repo);
+	            collectRequest.setRootArtifact(jarTifact);
+	            System.out.println("collectRequest.getRootArtifact()="+collectRequest.getRootArtifact());
+	            system.collectDependencies( session, collectRequest );
+				
+	            Bundle bundle = null;
+	            
+	            for (Dependency dependency : collectRequest.getDependencies()){
+	            	System.out.println("dependency found: "+dependency.getArtifact().getArtifactId());
+	            	alreadyInstalled = bundleIdMap.values().contains(dependency);//TODO
+	            	if (!dependency.isOptional() && !alreadyInstalled){                    		
+	            		/*bundle = installAndCopy(dependency.getArtifact().getFile().toURI());
+	            		bundleIdMap.put(bundle.getBundleId(), bundle);
+	            		locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
+	            		bundle.start();*/
+	            		System.out.println("I would now install dependency "+dependency.getArtifact().getArtifactId());
+	            	}
+	            }                                
+			}
+    	} catch (DependencyCollectionException/* | BundleException | IOException */| VersionRangeResolutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			update = false;
+			
+		}
         
-        Artifact artifact = null;
-        ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
-        ArtifactDescriptorResult descriptorResult = null;
-        VersionRangeRequest rangeRequest = new VersionRangeRequest();
-        VersionRangeResult rangeResult = null;
-        Version newestVersion = null;
-        
-        for(String module : listedModules){
-        	artifact = new DefaultArtifact( GROUP_ID+"."+module+":[0,)" );//fix
-            rangeRequest.setArtifact( artifact );
-            rangeRequest.setRepositories( Booter.newRepositories( system, session ) );
-            
-            alreadyInstalled = true;            
-
-            try{
-            	rangeResult = system.resolveVersionRange( session, rangeRequest );            
-            	newestVersion = rangeResult.getHighestVersion();
-
-            	/*
-            	 * get installed version and compare it to newestVersion
-            	 */
-            	while (i<registeredModules.length && !registeredModules[i].getName().equals(module)){
-            		i++;
-            	}
-            	update = true;
-            	if(i<registeredModules.length){//module found
-            		registeredVersion = registeredModules[i].getVersion().split("\\.");
-            		availableVersion = newestVersion.toString().split("\\.");
-            		
-            		update = registeredVersion.length!=availableVersion.length;//when version style changes, an update is triggered
-            		for (int j=0; j<registeredVersion.length && !update; j++){
-            			update|= Integer.parseInt(registeredVersion[j])<Integer.parseInt(availableVersion[j]);
-            		}            		
-            	}
-            	if (update){
-        			/*
-        			 * get dependencies, install module and dependencies
-        			 */
-        			//get dependencies            		
-            		descriptorRequest.setArtifact(artifact);
-                    descriptorRequest.setRepositories(Booter.newRepositories(system, session));
-                    descriptorResult = system.readArtifactDescriptor(session, descriptorRequest);                    
-                    for (Dependency dependency : descriptorResult.getDependencies()){                    	
-                    	alreadyInstalled = true;//TODO
-                    	if (!dependency.isOptional() && !alreadyInstalled){                    		
-                    		//install dependency
-//                    		this.install(URI.create(dependency.getArtifact().getFile().getAbsolutePath()));
-                    		//check for dependencies again?
-                    	}
-                    }
-                    //install newest version of module
-                    this.install(URI.create(artifact.getFile().getAbsolutePath()));
-        		}
-            	            	
-            }catch (Exception e){
-            	
-            }	
-        }        
+        return update;
 	}
-	
 	/**
-	 * This class is the call back handler for reading the modules.xml file,
-	 * which provides Information about the pepperModules to be updated / installed.
-	 * @author klotzmaz
-	 *
+	 * TODO method can only deal with default names - we need to find another way to identify it
+	 * @param name
+	 * @return
 	 */
-	private class updateConfigurationReader extends DefaultHandler2{
-		/** all read module names are stored here */
-		private List<String> listedModules;
-		/** the name of the tag in the modules.xml file, between which the module name is written */
-		private static final String TAG_ENTRY = "pepperModules";
-		/** is used to read the module name character by character */
-		private StringBuilder chars;
-		/** this boolean sais, whether characters should be read or ignored */
-		private boolean openEyes;
-		
-		public updateConfigurationReader(List<String> targetList){
-			listedModules = targetList;
-			chars = new StringBuilder();
-			openEyes = false;
-		}
-		
-		@Override
-		public void startElement(	String uri,
-				String localName,
-				String qName,
-				Attributes attributes)throws SAXException
-		{
-			localName = qName.substring(qName.lastIndexOf(":")+1);
-			openEyes = TAG_ENTRY.equals(localName);
-		}
-		
-		@Override
-		public void characters(char[] ch, int start, int length) throws SAXException{							
-			if (openEyes){
-				for(int i=start; i<start+length; i++){
-					chars.append(ch[i]);
-				}
-				openEyes = false;
-			}			
-		}
-		
-		@Override
-		public void endElement(java.lang.String uri,
-                String localName,
-                String qName) throws SAXException
-        {		
-			localName = qName.substring(qName.lastIndexOf(":")+1);
-			if(TAG_ENTRY.equals(localName)){
-				listedModules.add(chars.toString());
-				chars.delete(0, chars.length());
+	private PepperModuleDesc getModuleFromRegisteredModules(String name){
+		Iterator<PepperModuleDesc> registeredModules = this.getRegisteredModules().iterator();
+		PepperModuleDesc next = null;
+		String critical = name.replace("pepperModules-", "").replace("Modules", "");
+		while (registeredModules.hasNext()){
+			next = registeredModules.next();
+			if (	next.getName().equalsIgnoreCase(critical+next.getModuleType().toString())	){
+				return next;
 			}
 		}
+		return null;
 	}
 }
