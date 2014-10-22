@@ -138,8 +138,6 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 
 		// create export URI
 		URI saltProjectURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + "/" + SaltFactory.FILE_SALT_PROJECT);
-		System.out.println("saltProjectURI: "+ saltProjectURI);
-		
 		saltProjectResource = (XMLResource) getResourceSet().createResource(saltProjectURI);
 		saltProjectResource.getContents().add(this.getSaltProject());
 		saltProjectResource.setEncoding("UTF-8");
@@ -155,8 +153,9 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// creating uri for exporting document
-			URI sDocumentURI = URI.createFileURI(getCorpusDesc().getCorpusPath().toFileString() + "/" + getSDocument().getSElementId().getSElementPath() + "." + SaltFactory.FILE_ENDING_SALT);
-
+			URI sDocumentURI= getCorpusDesc().getCorpusPath().appendSegments(getSDocument().getSElementId().getSElementPath().segments());
+			sDocumentURI= sDocumentURI.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
+			
 			XMLResource sDocumentResource = (XMLResource) getResourceSet().createResource(sDocumentURI);
 			sDocumentResource.getContents().add(getSDocument().getSDocumentGraph());
 			sDocumentResource.setEncoding("UTF-8");

@@ -120,6 +120,24 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			getFingerprint().setName(name);
 		}
 	}
+	
+		/**
+	 * {@inheritDoc PepperModule#getVersion()}
+	 */
+	@Override
+	public String getVersion() {
+		return getFingerprint().getVersion();
+	}
+
+	/**
+	 * {@inheritDoc PepperModule#setVersion(String)}
+	 */
+	@Override
+	public void setVersion(String newVersion) {
+		if ((newVersion != null) && (getVersion() == null)) {
+			getFingerprint().setVersion(newVersion);
+		}
+	}
 
 	/**
 	 * {@inheritDoc PepperModule#getModuleType()}
@@ -248,27 +266,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Override
 	public void setSymbolicName(String newSymbolicName) {
 		symbolicName = newSymbolicName;
-	}
-
-	/**
-	 * TODO make docu
-	 */
-	protected String version = null;
-
-	/**
-	 * {@inheritDoc PepperModule#getVersion()}
-	 */
-	@Override
-	public String getVersion() {
-		return version;
-	}
-
-	/**
-	 * {@inheritDoc PepperModule#setVersion(String)}
-	 */
-	@Override
-	public void setVersion(String newVersion) {
-		version = newVersion;
 	}
 
 	/**
@@ -681,8 +678,10 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			mapper.setProperties(this.getProperties());
 
 			if (this instanceof PepperImporter) {
-				URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
-				mapper.setResourceURI(resource);
+				if (mapper.getResourceURI()== null){
+					URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
+					mapper.setResourceURI(resource);
+				}
 			}
 
 			if ((sElementId.getSIdentifiableElement() instanceof SDocument) && (mapper.getSDocument() == null)) {

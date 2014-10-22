@@ -31,60 +31,66 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapper
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * This is a {@link PepperImporter} which imports the SaltXML format into a salt model.
- * This module assumes, that each document is stored in a separate file. Such a file must contain the document structure.
- * The corpus structure is stored in a single file called saltProject + {@value SaltFactory#FILE_ENDING_SALT}. The value
- * {@value SaltFactory#FILE_ENDING_SALT} can be gettet by method getSaltFileEnding().
- * <br/>
- *    
+ * This is a {@link PepperImporter} which imports the SaltXML format into a salt
+ * model. This module assumes, that each document is stored in a separate file.
+ * Such a file must contain the document structure. The corpus structure is
+ * stored in a single file called saltProject +
+ * {@value SaltFactory#FILE_ENDING_SALT}. The value
+ * {@value SaltFactory#FILE_ENDING_SALT} can be gettet by method
+ * getSaltFileEnding(). <br/>
+ * 
  * @author Florian Zipser
  * @version 1.0
- *
+ * 
  */
-@Component(name="SaltXMLImporterComponent", factory="PepperImporterComponentFactory")
-public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter
-{
-	public SaltXMLImporter()
-	{
+@Component(name = "SaltXMLImporterComponent", factory = "PepperImporterComponentFactory")
+public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter {
+	public SaltXMLImporter() {
 		super();
-		//setting name of module
+		// setting name of module
 		setName("SaltXMLImporter");
-		//set list of formats supported by this module
+		// set list of formats supported by this module
 		this.addSupportedFormat("SaltXML", "1.0", null);
 	}
-		
+
 	@Activate
-	public void activate(ComponentContext componentContext)
-	{
+	public void activate(ComponentContext componentContext) {
 		super.activate(componentContext);
 	}
-	
+
 	/**
-	 * Imports the corpus-structure by a call of {@link SaltProject#loadSCorpusStructure(URI)}
+	 * Imports the corpus-structure by a call of
+	 * {@link SaltProject#loadSCorpusStructure(URI)}
 	 */
 	@Override
-	public void importCorpusStructure(SCorpusGraph corpusGraph)
-							throws PepperModuleException 
-	{
+	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
 		setSCorpusGraph(corpusGraph);
-		//compute position of SCorpusGraph in Saltproject
+		// compute position of SCorpusGraph in Saltproject
 		corpusGraph.load(this.getCorpusDesc().getCorpusPath());
 	}
-	
+
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
-	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
+	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
+	 * PepperModule#createPepperMapper(SElementId)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId){
-		SaltXMLMapper mapper= new SaltXMLMapper();
-		return(mapper);
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		SaltXMLMapper mapper = new SaltXMLMapper();
+		if (sElementId.getSIdentifiableElement() instanceof SDocument) {
+			SDocument sDocument = (SDocument) sElementId.getSIdentifiableElement();
+			URI location = getCorpusDesc().getCorpusPath();
+			location = location.appendSegments(sDocument.getSElementPath().segments());
+			location = location.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
+			mapper.setResourceURI(location);
+		}
+		return (mapper);
 	}
-	
-	private class SaltXMLMapper extends PepperMapperImpl{
+
+	private class SaltXMLMapper extends PepperMapperImpl {
 		/**
 		 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
 		 * 
@@ -92,8 +98,8 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			getSDocument().loadSDocumentGraph();
-			return(DOCUMENT_STATUS.COMPLETED);
+			getSDocument().loadSDocumentGraph(getResourceURI());
+			return (DOCUMENT_STATUS.COMPLETED);
 		}
 	}
 }
