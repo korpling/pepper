@@ -18,11 +18,11 @@ carefully, which should be located in the corresponding jar-files
 inside the folders plugins or lib.
 
 This project includes:
+  Apache Commons Lang under The Apache Software License, Version 2.0
   Apache Felix Framework under The Apache Software License, Version 2.0
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
   Commons IO under The Apache Software License, Version 2.0
-  Commons Lang under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepper under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepper-parentModule under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepperModules-SampleModules under The Apache Software License, Version 2.0
@@ -32,9 +32,9 @@ This project includes:
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
-  org.eclipse.emf.common under Eclipse Public License - v 1.0
-  org.eclipse.emf.ecore under Eclipse Public License - v 1.0
-  org.eclipse.emf.ecore.xmi under Eclipse Public License - v 1.0
+  org.eclipse.emf under The Eclipse Public License Version 1.0
+  org.eclipse.emf.ecore under The Eclipse Public License Version 1.0
+  org.eclipse.emf.ecore.xmi under The Eclipse Public License Version 1.0
   org.eclipse.osgi under Eclipse Public License - v 1.0
   osgi.cmpn under Apache License, Version 2.0
   osgi.core under Apache License, Version 2.0

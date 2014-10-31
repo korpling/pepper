@@ -64,14 +64,11 @@
         <serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
         <!-- versions of dependencies -->
         <salt.version>1.1.9-SNAPSHOT</salt.version>
-        <commons-lang3.version>3.0</commons-lang3.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
         <slf4j.version>1.7.5</slf4j.version>
         <junit.version>4.11</junit.version>
         <org.osgi.core.version>4.3.1</org.osgi.core.version>
         <org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
-        <org.eclipse.emf.common.version>2.6.0.v20100614-1136</org.eclipse.emf.common.version>
-        <org.eclipse.emf.ecore.version>2.6.0.v20100614-1136</org.eclipse.emf.ecore.version>
-        <org.eclipse.emf.ecore.xmi.version>2.5.0.v20100521-1846</org.eclipse.emf.ecore.xmi.version>
         <org.eclipse.osgi.version>3.6.0.v20100517</org.eclipse.osgi.version>
         <carrot-osgi-anno-scr-core.version>2.0.1</carrot-osgi-anno-scr-core.version>
         <carrot-osgi-anno-scr-make.version>2.0.1</carrot-osgi-anno-scr-make.version>
@@ -123,26 +120,7 @@
 	      <version>${xmlunit.version}</version>
 	      <scope>test</scope>
 	    </dependency>
-	    <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>org.eclipse.emf.common</artifactId>
-            <version>${org.eclipse.emf.common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>org.eclipse.emf.ecore</artifactId>
-            <version>${org.eclipse.emf.ecore.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-            <version>${org.eclipse.emf.ecore.xmi.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <!-- OSGI service-component -->
+	    <!-- OSGI service-component -->
         <!-- OSGI Annotations. Use standard first, override with custom. -->
         <dependency>
             <groupId>org.osgi</groupId>
