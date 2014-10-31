@@ -541,7 +541,7 @@ public class PepperStarter {
 				chars.delete(0, chars.length());
 			}
 			if (TAG_SRC.equals(localName)){
-				listedModules.put(lastKey, chars.toString()+lastKey);
+				listedModules.put(lastKey, chars.toString());
 				chars.delete(0, chars.length());
 			}
 		}

@@ -125,6 +125,11 @@
     		<artifactId>wagon-provider-api</artifactId>
     		<version>1.0</version>
     	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-spi</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
     </dependencies>
     <build>
         <plugins>

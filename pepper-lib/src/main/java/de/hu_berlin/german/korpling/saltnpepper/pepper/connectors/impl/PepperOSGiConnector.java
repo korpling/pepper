@@ -26,7 +26,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -41,6 +44,7 @@ import java.util.zip.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
@@ -48,14 +52,28 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.collection.DependencyCollectionException;
+import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
 import org.eclipse.aether.examples.util.Booter;
 import org.eclipse.aether.examples.util.ConsoleDependencyGraphDumper;
 import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.impl.ArtifactResolver;
+import org.eclipse.aether.internal.impl.DefaultArtifactResolver;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
+import org.eclipse.aether.spi.connector.ArtifactDownload;
+import org.eclipse.aether.spi.connector.RepositoryConnector;
+import org.eclipse.aether.transfer.NoRepositoryConnectorException;
+import org.eclipse.aether.transfer.TransferListener;
+import org.eclipse.aether.util.version.GenericVersionScheme;
+import org.eclipse.aether.version.InvalidVersionSpecificationException;
 import org.eclipse.aether.version.Version;
+import org.eclipse.aether.version.VersionScheme;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -65,6 +83,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.condpermadmin.BundleLocationCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import sun.security.action.GetLongAction;
 
 import com.sun.jmx.mbeanserver.Repository;
 
@@ -634,88 +654,126 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	public boolean update(String name, String src, boolean isSnapshot){		
 		
-		System.out.println("update process called for "+name+" @"+src+" ["+Boolean.toString(isSnapshot)+"]");
+		Logger logger = LoggerFactory.getLogger(this.getClass());
+		
+		/*DEBUG*/System.out.println("update process called for "+name+" @"+src+" ["+Boolean.toString(isSnapshot)+"]");
 		
 		RepositorySystem system = Booter.newRepositorySystem();
-        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
+        RepositorySystemSession session = Booter.newRepositorySystemSession( system );        
+                
+        boolean depAlreadyInstalled;
+        boolean update = true; //MUST be born true
         
-        boolean alreadyInstalled = true;
-        boolean update = true;
+        /*build repository*/
+        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korplingo", "default", src);
+        RemoteRepository repo = repoBuilder.build();
+        
+        /*build artifact*/
+        Artifact artifact = new DefaultArtifact(GROUP_ID, name, "zip","[0,)");//right now still hard coded;
+        /*DEBUG*/System.out.println("artifact: "+artifact);
+        
+        
         try {
-	        Artifact artifact = new DefaultArtifact(GROUP_ID, name, "zip","[0,)");//fix;
-	        System.out.println("artifact: "+artifact);
-	        VersionRangeRequest rangeRequest = new VersionRangeRequest();
-	        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", "http://korpling.german.hu-berlin.de/maven2");
-	        RemoteRepository repo = repoBuilder.build();
+	        /*version range request*/
+	        VersionRangeRequest rangeRequest = new VersionRangeRequest();	        
 	        rangeRequest.addRepository(repo);
 	        rangeRequest.setArtifact(artifact);
-	        System.out.println("TEST1\t"+rangeRequest.getRepositories());
 	        VersionRangeResult rangeResult = system.resolveVersionRange(session, rangeRequest);
-	        System.out.println("TEST2"); 
-	        Version newestVersion = rangeResult.getHighestVersion();
-	        System.out.println("TEST3"); 
 	        rangeRequest.setArtifact( artifact );
-	        System.out.println("TEST4"); 
 	        rangeRequest.setRepositories(Booter.newRepositories(system, session));        
+	                
+	        /* utils needed for request */
+            
+            ArtifactRequest artifactRequest = new ArtifactRequest();
+            artifactRequest.addRepository(repo);
+            ArtifactResult artifactResult = null;
 	        
-	    	/*
-	    	 * get installed version and compare it to newestVersion
-	    	 */        	
 	        PepperModuleDesc moduleDesc = getModuleFromRegisteredModules(name);
-	    	if(moduleDesc!=null){
-	    		try{
-	    			System.out.println("moduleDesc.getVersion="+moduleDesc.getVersion());
-	    		String[] registeredVersion = moduleDesc.getVersion().split("\\.");
-	    		String[] availableVersion = newestVersion.toString().split("\\.");
+	    	if (moduleDesc!=null){  		
+	    		List<Version> versions = rangeResult.getVersions();
+		        Collections.reverse(versions);
+		        Iterator<Version> itVersions = versions.iterator();
 	    		
-	    		System.out.println("installed version: "+moduleDesc.getVersion());
-	    		System.out.println("available version: "+newestVersion);
+	    		VersionScheme vScheme = new GenericVersionScheme();
+	    		boolean srcExists = false;
+	    		Version installedVersion = null;
+	    		Version newestVersion = null;
 	    		
-	    		update = registeredVersion.length!=availableVersion.length;//when version style changes, an update is triggered
-	    		for (int j=0; j<registeredVersion.length && !update; j++){
-	    			update|= Integer.parseInt(registeredVersion[j]) < Integer.parseInt(availableVersion[j]);
-	    		}   }catch(Exception e){e.printStackTrace(); }          		
+	    		File file = null;	    		
+	    		
+	    		while(!srcExists && itVersions.hasNext() && update){
+	    			
+		    			installedVersion = vScheme.parseVersion(moduleDesc.getVersion().toString()); 		/*DEBUG*/System.out.println("installedVersion="+installedVersion);
+		    			newestVersion = itVersions.next();													/*DEBUG*/System.out.println("newest available version="+newestVersion.toString());	    			
+		    			artifact = new DefaultArtifact(GROUP_ID, name, "zip", newestVersion.toString());	/*DEBUG*/System.out.println("artifact="+artifact);
+		    			if (!(	artifact.isSnapshot() && !isSnapshot 	)){
+			    			update = newestVersion.compareTo(installedVersion) > 0;							/*DEBUG*/System.out.println("Newer? "+update);			    			
+			    			artifactRequest.setArtifact(artifact);
+			    			try{			    				
+			    					artifactResult = system.resolveArtifact(session, artifactRequest);		    			
+			    					artifact = artifactResult.getArtifact();		    					
+			    					srcExists = update && artifact.getFile().exists();//TODO think about this line again
+			    					file = artifact.getFile();
+			    				
+			    			}catch (ArtifactResolutionException e){}
+		    			}
+	    		}	    		
+	    		
 	    	}
+	    	
+	    	/*DEBUG*/System.out.println("\n# # # # # # # # # # # # # # # # # # # # # # # #\tUPDATE? "+ (update? "YES":"NO") +"\n");
+	    	/*DEBUG*/update = true;
+	    	
 	    	if (update){
-	    		System.out.println("update required");
-    			//install newest version of module
-            	//which file do we get? we want ZIP
-    		
-//            	this.installAndCopy(URI.create(artifact.getFile().getAbsolutePath())).start();//TODO is the module automatically added to list of getRegisteredModules?
-	    		System.out.println("Here I would install, copy and start the requested bundle/module");
-				/*
-				 * get dependencies, install dependencies
-				 */
-				//get dependency tree     
+    			//the requested module will be treated as a dependency (root dependency) and so be installed as well     
 	    		
-	    		Artifact jarTifact = new DefaultArtifact(GROUP_ID, name, "jar","[0,)");//fix;
+	    		/*utils for dependency collection*/
 	    		CollectRequest collectRequest = new CollectRequest();
-	            collectRequest.setRoot( new Dependency( jarTifact, "" ) );
-//	            collectRequest.setRepositories( Booter.newRepositories( system, session ) );
+	            collectRequest.setRoot( new Dependency( artifact, "" ) );
+	            collectRequest.setRepositories( Booter.newRepositories( system, session ) );
 	            collectRequest.addRepository(repo);
-	            collectRequest.setRootArtifact(jarTifact);
-	            System.out.println("collectRequest.getRootArtifact()="+collectRequest.getRootArtifact());
-	            system.collectDependencies( session, collectRequest );
+	            collectRequest.setRootArtifact(artifact);
+	            /*DEBUG*/System.out.println("collectRequest.getRootArtifact()="+collectRequest.getRootArtifact());
+	            CollectResult collectResult = system.collectDependencies( session, collectRequest );
 				
-	            Bundle bundle = null;
+	            Bundle bundle = null;	            
+	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot());
+	            Iterator<Bundle> bundleIterator = null;
 	            
-	            for (Dependency dependency : collectRequest.getDependencies()){
-	            	System.out.println("dependency found: "+dependency.getArtifact().getArtifactId());
-	            	alreadyInstalled = bundleIdMap.values().contains(dependency);//TODO
-	            	if (!dependency.isOptional() && !alreadyInstalled){                    		
-	            		/*bundle = installAndCopy(dependency.getArtifact().getFile().toURI());
-	            		bundleIdMap.put(bundle.getBundleId(), bundle);
-	            		locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
-	            		bundle.start();*/
-	            		System.out.println("I would now install dependency "+dependency.getArtifact().getArtifactId());
+	            for (Dependency dependency : allDependencies){
+	            	depAlreadyInstalled = false;
+	            	bundleIterator = this.bundleIdMap.values().iterator();	            	
+	            	while (bundleIterator.hasNext() && !depAlreadyInstalled){
+	            		bundle = bundleIterator.next();
+	            		depAlreadyInstalled = bundleEqualsDependency(bundle, dependency);
 	            	}
-	            }                                
+	            	
+	            	//DEBUG
+	            	if (depAlreadyInstalled) {
+	            		System.out.println("|> DEPENDENCY "+dependency.getArtifact().getArtifactId()+" already installed as bundle "+bundle.getSymbolicName()+"; will now check version");
+	            	}//END OF DEBUG
+	            	
+	            	depAlreadyInstalled&= compareVersions(bundle, dependency)<=0;
+	            	if (!dependency.isOptional() && !depAlreadyInstalled){
+	            		artifactRequest.setRepositories(Booter.newRepositories(system, session));
+	            		artifactRequest.setArtifact(dependency.getArtifact());
+	            		try{
+//	            			artifactResult = system.resolveArtifact(session, artifactRequest);
+	            			
+		            		/*bundle = installAndCopy(artifactResult().getArtifact().getFile()._getURI_);
+		            		bundleIdMap.put(bundle.getBundleId(), bundle);
+		            		locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
+		            		bundle.start();*/
+	            			/*DEBUG*/System.out.println("I would now install dependency "+artifactResult.getArtifact().getFile());
+	            		}catch (/*ArtifactResolutionException*/ Exception e){
+	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");
+	            		}
+	            	}
+	            }   System.exit(0);                             
 			}
-    	} catch (DependencyCollectionException/* | BundleException | IOException */| VersionRangeResolutionException e) {
-			// TODO Auto-generated catch block
+    	} catch (DependencyCollectionException/* | BundleException | IOException */| VersionRangeResolutionException | InvalidVersionSpecificationException /*| NoRepositoryConnectorException*/ e) {
 			e.printStackTrace();
-			update = false;
-			
+			update = false;			
 		}
         
         return update;
@@ -736,5 +794,52 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * This method returns all dependencies as list.
+	 */
+	private List<Dependency> getAllDependencies(DependencyNode startNode){
+		List<Dependency> retVal = new ArrayList<Dependency>();
+		retVal.add(startNode.getDependency());
+		for (DependencyNode node : startNode.getChildren()){
+			retVal.addAll(getAllDependencies(node));
+		}
+		return retVal;
+	}
+
+	/**
+	 * TODO h i g h l y insufficient / unsatisfying 
+	 * @param bundle
+	 * @param dependency
+	 * @return
+	 */
+	private boolean bundleEqualsDependency(Bundle bundle, Dependency dependency){
+		
+		return 
+					(	bundle.getSymbolicName().equalsIgnoreCase(dependency.getArtifact().getArtifactId()) ||
+						bundle.getSymbolicName().equalsIgnoreCase(dependency.getArtifact().getGroupId()) ||
+						bundle.getSymbolicName().equalsIgnoreCase(dependency.getArtifact().getGroupId()+"."+dependency.getArtifact().getArtifactId()));
+		
+	
+	}
+	
+	/**
+	 * this method compares the versions of the Bundle and the Dependency.  
+	 * @param bundle
+	 * @param dependency
+	 * @return
+	 */
+	private int compareVersions(Bundle bundle, Dependency dependency){
+		VersionScheme vScheme = new GenericVersionScheme();
+		try {
+			Version bundleVersion = vScheme.parseVersion(bundle.getVersion().toString());
+			Version dependencyVersion = vScheme.parseVersion(dependency.getArtifact().getVersion());
+			
+			return bundleVersion.compareTo(dependencyVersion);
+		} catch (InvalidVersionSpecificationException e) {
+			return 0;
+			//throw exception?
+		}
 	}
 }
