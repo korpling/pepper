@@ -32,7 +32,8 @@ You need at least version 1.6.
 
 
 ##Documentation
-* <a href="http://korpling.github.io/pepper/docs/pepper_usersGuide.pdf">User's Guide</a>
+* <a href="http://korpling.github.io/pepper/docs/pepper_usersGuide.pdf">User's Guide</a> - a documentation for Pepper users
+* <a href="http://korpling.github.io/pepper/docs/pepper_modulesDevelopersGuide.pdf">Module Developer's Guide</a> - a documentation of how to implement an own Pepper module
 
 ##Maven
 
