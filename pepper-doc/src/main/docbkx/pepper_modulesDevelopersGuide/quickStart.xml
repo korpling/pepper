@@ -93,8 +93,7 @@
                                 command-line clients are available, but even the very nice graphical
                                 client TortoiseSVN (<link xlink:href="http://tortoisesvn.net/"
                                     >http://tortoisesvn.net/</link>) is available.</para>
-                        </footnote> with the command: <programlisting>svn export https://korpling.german.hu-berlin.de/svn/saltnpepper/pep
-per/tags/${project.version}/pepper-sampleModules/</programlisting>
+                        </footnote> with the command: <programlisting>svn export http://github.com/korpling/pepper/tags/${project.version}/pepper-sampleModules</programlisting>
                         <!-- later in github svn export https://github.com/aivarsk/scruffy/trunk/samples from Pepper project either in korpling svn or in github-->
                         Download the project to a location of your choice, let's call it
                         SAMPLE_HOME.</para>
