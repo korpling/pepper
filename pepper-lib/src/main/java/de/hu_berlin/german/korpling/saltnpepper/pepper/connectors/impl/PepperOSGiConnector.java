@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -68,6 +69,7 @@ import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.spi.connector.ArtifactDownload;
 import org.eclipse.aether.spi.connector.RepositoryConnector;
+import org.eclipse.aether.transfer.ArtifactNotFoundException;
 import org.eclipse.aether.transfer.NoRepositoryConnectorException;
 import org.eclipse.aether.transfer.TransferListener;
 import org.eclipse.aether.util.version.GenericVersionScheme;
@@ -80,6 +82,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.ComponentFactory;
+import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.condpermadmin.BundleLocationCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +99,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguratio
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
@@ -644,19 +650,15 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 	
 	
-	
-	/** This is the groupId for saltnpepper in the korpling maven repository */
-	private static final String GROUP_ID = "de.hu_berlin.german.korpling.saltnpepper";
-	
 	/**
 	 * This method checks the pepperModules in the modules.xml for updates
 	 * and triggers the installation process if a newer version is available
 	 */
-	public boolean update(String name, String src, boolean isSnapshot){		
+	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot){		
+		
+		System.out.println("UPDATE: "+groupId+" "+artifactId+" "+repositoryUrl+" "+isSnapshot);
 		
 		Logger logger = LoggerFactory.getLogger(this.getClass());
-		
-		/*DEBUG*/System.out.println("update process called for "+name+" @"+src+" ["+Boolean.toString(isSnapshot)+"]");
 		
 		RepositorySystem system = Booter.newRepositorySystem();
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );        
@@ -665,13 +667,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
         boolean update = true; //MUST be born true
         
         /*build repository*/
-        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korplingo", "default", src);
+        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", repositoryUrl);
         RemoteRepository repo = repoBuilder.build();
         
         /*build artifact*/
-        Artifact artifact = new DefaultArtifact(GROUP_ID, name, "zip","[0,)");//right now still hard coded;
-        /*DEBUG*/System.out.println("artifact: "+artifact);
-        
+        Artifact artifact = new DefaultArtifact(groupId, artifactId, "zip","[0,)");        
         
         try {
 	        /*version range request*/
@@ -688,59 +688,66 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
             artifactRequest.addRepository(repo);
             ArtifactResult artifactResult = null;
 	        
-	        PepperModuleDesc moduleDesc = getModuleFromRegisteredModules(name);
-	    	if (moduleDesc!=null){  		
-	    		List<Version> versions = rangeResult.getVersions();
-		        Collections.reverse(versions);
-		        Iterator<Version> itVersions = versions.iterator();
-	    		
-	    		VersionScheme vScheme = new GenericVersionScheme();
-	    		boolean srcExists = false;
-	    		Version installedVersion = null;
-	    		Version newestVersion = null;
-	    		
-	    		File file = null;	    		
-	    		
-	    		while(!srcExists && itVersions.hasNext() && update){
-	    			
-		    			installedVersion = vScheme.parseVersion(moduleDesc.getVersion().toString()); 		/*DEBUG*/System.out.println("installedVersion="+installedVersion);
-		    			newestVersion = itVersions.next();													/*DEBUG*/System.out.println("newest available version="+newestVersion.toString());	    			
-		    			artifact = new DefaultArtifact(GROUP_ID, name, "zip", newestVersion.toString());	/*DEBUG*/System.out.println("artifact="+artifact);
-		    			if (!(	artifact.isSnapshot() && !isSnapshot 	)){
-			    			update = newestVersion.compareTo(installedVersion) > 0;							/*DEBUG*/System.out.println("Newer? "+update);			    			
-			    			artifactRequest.setArtifact(artifact);
-			    			try{			    				
-			    					artifactResult = system.resolveArtifact(session, artifactRequest);		    			
-			    					artifact = artifactResult.getArtifact();		    					
-			    					srcExists = update && artifact.getFile().exists();//TODO think about this line again
-			    					file = artifact.getFile();
-			    				
-			    			}catch (ArtifactResolutionException e){}
+	        PepperModuleDesc moduleDesc = getModuleFromRegisteredModules(artifactId);
+    		if (moduleDesc==null){
+    			moduleDesc = new PepperModuleDesc();
+    			moduleDesc.setVersion("0.0.0");
+    		}
+    		List<Version> versions = rangeResult.getVersions();
+	        Collections.reverse(versions);
+	        Iterator<Version> itVersions = versions.iterator();
+    		
+    		VersionScheme vScheme = new GenericVersionScheme();
+    		boolean srcExists = false;
+    		Version installedVersion = null;
+    		Version newestVersion = null;
+    		
+    		File file = null;	    		
+    		
+    		while(!srcExists && itVersions.hasNext() && update){
+    				System.out.println("moduleDesc="+moduleDesc);
+	    			installedVersion = vScheme.parseVersion(moduleDesc.getVersion().toString()); 		/*DEBUG*/System.out.println("installedVersion="+installedVersion);
+	    			newestVersion = itVersions.next();													/*DEBUG*/System.out.println("newest available version="+newestVersion.toString());	    			
+	    			artifact = new DefaultArtifact(groupId, artifactId, "zip", newestVersion.toString());	/*DEBUG*/System.out.println("artifact="+artifact);
+	    			if (!(	artifact.isSnapshot() && !isSnapshot 	)){
+		    			update = newestVersion.compareTo(installedVersion) > 0;							/*DEBUG*/System.out.println("Newer? "+update);			    			
+		    			artifactRequest.setArtifact(artifact);
+		    			try{			    				
+		    					artifactResult = system.resolveArtifact(session, artifactRequest);		    			
+		    					artifact = artifactResult.getArtifact();
+		    					System.out.println("_____________________________FILE="+artifactResult.isResolved()+" "+artifactResult.getArtifact().getFile());
+		    					srcExists = update && artifact.getFile().exists();//TODO think about this line again
+		    					file = artifact.getFile();
+		    				
+		    			}catch (ArtifactResolutionException e){
+		    					logger.info("Highest version in repository could not be found. Checking the next lower version ...");
+		    					/*DEBUG*/System.out.println("Highest version in repository could not be found. Checking the next lower version ...");			    				
 		    			}
-	    		}	    		
-	    		
-	    	}
+	    			}
+    		}    	
 	    	
-	    	/*DEBUG*/System.out.println("\n# # # # # # # # # # # # # # # # # # # # # # # #\tUPDATE? "+ (update? "YES":"NO") +"\n");
-	    	/*DEBUG*/update = true;
-	    	
+	    	/*DEBUG*/System.out.println("\n# # # # # # # # # # # # # # # # # # # # # # # #\tUPDATE? "+ (update? "YES":"NO") +"\n");	    	
 	    	if (update){
-    			//the requested module will be treated as a dependency (root dependency) and so be installed as well     
-	    		
+    			List<URI> fileURIs = new ArrayList<URI>(); 		
+	    		fileURIs.add(artifact.getFile().toURI());	
+	    		System.out.println("_______________________________artifact.getFile()="+artifact.getFile().toURI());
+	    		System.out.println(LoggerFactory.getLogger(system.getClass()));
+//	    		try{newModuleBundle = installAndCopy(artifact.getFile().toURI());} catch (Exception e){e.printStackTrace();}
+	    		//TODO register new module
 	    		/*utils for dependency collection*/
 	    		CollectRequest collectRequest = new CollectRequest();
 	            collectRequest.setRoot( new Dependency( artifact, "" ) );
-	            collectRequest.setRepositories( Booter.newRepositories( system, session ) );
-	            collectRequest.addRepository(repo);
+	            collectRequest.addRepository(repo);	            
 	            collectRequest.setRootArtifact(artifact);
-	            /*DEBUG*/System.out.println("collectRequest.getRootArtifact()="+collectRequest.getRootArtifact());
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );
 				
-	            Bundle bundle = null;	            
+	            Bundle bundle = null;
 	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot());
 	            Iterator<Bundle> bundleIterator = null;
-	            
-	            for (Dependency dependency : allDependencies){
+	            Dependency dependency = null;	            
+	            //in the following we ignore the first dependency, because it is the module itself         	            
+	            for (int i=1; i<allDependencies.size(); i++){
+	            	dependency = allDependencies.get(i);
 	            	depAlreadyInstalled = false;
 	            	bundleIterator = this.bundleIdMap.values().iterator();	            	
 	            	while (bundleIterator.hasNext() && !depAlreadyInstalled){
@@ -748,38 +755,63 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            		depAlreadyInstalled = bundleEqualsDependency(bundle, dependency);
 	            	}
 	            	
-	            	//DEBUG
-	            	if (depAlreadyInstalled) {
-	            		System.out.println("|> DEPENDENCY "+dependency.getArtifact().getArtifactId()+" already installed as bundle "+bundle.getSymbolicName()+"; will now check version");
-	            	}//END OF DEBUG
-	            	
 	            	depAlreadyInstalled&= compareVersions(bundle, dependency)<=0;
 	            	if (!dependency.isOptional() && !depAlreadyInstalled){
 	            		artifactRequest.setRepositories(Booter.newRepositories(system, session));
+	            		artifactRequest.addRepository(repo);
+	            		//TODO might crash if there is a dependency neither in the central nor in the korpling repository
+	            		//TODO we also do not know if the assembly lies in the repository (do we really need it?!)
 	            		artifactRequest.setArtifact(dependency.getArtifact());
 	            		try{
-//	            			artifactResult = system.resolveArtifact(session, artifactRequest);
-	            			
-		            		/*bundle = installAndCopy(artifactResult().getArtifact().getFile()._getURI_);
-		            		bundleIdMap.put(bundle.getBundleId(), bundle);
-		            		locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
-		            		bundle.start();*/
-	            			/*DEBUG*/System.out.println("I would now install dependency "+artifactResult.getArtifact().getFile());
+	            			artifactResult = system.resolveArtifact(session, artifactRequest);
+	            			/*
+	            			 * if (!artifact.getVersion()>getPepper().getVersion() --> abort/return false, WARNING: you need a newer version of pepper
+	            			 * TODO it's a pitty, we can't check this earlier, maybe we should then check the next lower version	            			 * 
+	            			 */
+	            			String frameworkVersion = getPepperFrameworkVersion();System.exit(0);
+		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());		            		
 	            		}catch (/*ArtifactResolutionException*/ Exception e){
 	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");
 	            		}
 	            	}
-	            }   System.exit(0);                             
-			}
-    	} catch (DependencyCollectionException/* | BundleException | IOException */| VersionRangeResolutionException | InvalidVersionSpecificationException /*| NoRepositoryConnectorException*/ e) {
+	            }
+	            
+	            for (int i=fileURIs.size()-1; i>=0; i--){/*DEBUG*/System.out.println("HIER! ! ! <---> ---> <----");
+	            	try {
+	            		bundle = this.installAndCopy(fileURIs.get(i));
+	            		if (bundle!=null){//when does a bundle get null? failed installation?
+	            			bundleIdMap.put(bundle.getBundleId(), bundle);
+	            			locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
+	            			bundle.start();
+	            		}
+	            	} catch (IOException | BundleException e){e.printStackTrace();}           	
+		    	}
+			}    	
+	    	
+	    	
+    	} catch (/*VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException*/Exception e) {
 			e.printStackTrace();
 			update = false;			
-		}
+		}       
         
         return update;
 	}
+	
 	/**
-	 * TODO method can only deal with default names - we need to find another way to identify it
+	 * 
+	 * @return The version String of pepper-framework.
+	 */
+	private String getPepperFrameworkVersion(){
+		for (Bundle bundle : bundleIdMap.values()){System.out.println("bundleSymName="+bundle.getSymbolicName());
+			if ("de.hu_berlin.german.korpling.saltnpepper.pepper-framework".equals(bundle.getSymbolicName())){
+				return bundle.getVersion().toString();
+			}
+		}
+		return null; //not supposed to happen
+	}
+	
+	/**
+	 * TODO method can only deal with default names - we need to find another strategy to identify it
 	 * @param name
 	 * @return
 	 */
@@ -788,7 +820,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		PepperModuleDesc next = null;
 		String critical = name.replace("pepperModules-", "").replace("Modules", "");
 		while (registeredModules.hasNext()){
-			next = registeredModules.next();
+			next = registeredModules.next(); /*DEBUG TODO*/System.out.println(">>>\t>>>\t>>>\t>>>\t"+next.getName()+" vs "+name);
 			if (	next.getName().equalsIgnoreCase(critical+next.getModuleType().toString())	){
 				return next;
 			}
@@ -817,9 +849,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	private boolean bundleEqualsDependency(Bundle bundle, Dependency dependency){
 		
 		return 
-					(	bundle.getSymbolicName().equalsIgnoreCase(dependency.getArtifact().getArtifactId()) ||
-						bundle.getSymbolicName().equalsIgnoreCase(dependency.getArtifact().getGroupId()) ||
-						bundle.getSymbolicName().equalsIgnoreCase(dependency.getArtifact().getGroupId()+"."+dependency.getArtifact().getArtifactId()));
+					(	dependency.getArtifact().getArtifactId().equalsIgnoreCase(bundle.getSymbolicName()) ||
+						dependency.getArtifact().getGroupId().equalsIgnoreCase(bundle.getSymbolicName()) ||
+						(dependency.getArtifact().getGroupId()+"."+dependency.getArtifact().getArtifactId()).equalsIgnoreCase(bundle.getSymbolicName()));
 		
 	
 	}
