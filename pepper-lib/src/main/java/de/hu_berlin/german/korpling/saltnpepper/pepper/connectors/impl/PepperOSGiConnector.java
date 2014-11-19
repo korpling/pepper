@@ -48,6 +48,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
@@ -72,6 +74,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
 
+	/** Determines if this object has been initialized**/
+	private boolean isInit= false;
+	
+	public boolean isInitialized(){
+		return(isInit);
+	}
+	
 	/**
 	 * Starts the OSGi environment and installs and starts all bundles located
 	 * in the plugin directory. <br/>
@@ -87,7 +96,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			System.setProperty(PepperOSGiRunner.PROP_TEST_DISABLED, Boolean.TRUE.toString());
 
 			setBundleContext(this.startEquinox());
-
+		} catch (Exception e) {
+			throw new PepperOSGiException("The OSGi environment could not have been started. ", e);
+		}
+		try {
 			logger.debug("plugin path:\t\t" + getPepperStarterConfiguration().getPlugInPath());
 
 			logger.debug("installing OSGI-bundles...");
@@ -101,22 +113,24 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
 			logger.debug("-------------------- starting bundles --------------------");
-			if (	(bundles== null)||
-					(bundles.isEmpty())){
-				bundles= new ArrayList<Bundle>();
-				bundleIdMap= new Hashtable<Long, Bundle>();
-				for (Bundle bundle: getBundleContext().getBundles()){
+			if ((bundles == null) || (bundles.isEmpty())) {
+				bundles = new ArrayList<Bundle>();
+				bundleIdMap = new Hashtable<Long, Bundle>();
+				for (Bundle bundle : getBundleContext().getBundles()) {
 					bundles.add(bundle);
 					bundleIdMap.put(bundle.getBundleId(), bundle);
 				}
 			}
-			
+
 			this.startBundles(bundles);
 			logger.debug("----------------------------------------------------------");
 			logger.debug("starting OSGI-bundles...FINISHED");
-		} catch (Exception e) {
-			throw new PepperException("An exception occured setting up the OSGi environment. ", e);
+		} catch (PepperException e) {
+			throw e;
+		}catch (Exception e) {
+			throw new PepperOSGiException("An exception occured installing bundles for OSGi environment. ", e);
 		}
+		isInit= true;
 	}
 
 	/**
@@ -151,7 +165,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public void stopOSGi() throws Exception {
 		EclipseStarter.shutdown();
 	}
-	
+
 	/** {@link PepperStarterConfiguration} of this object. **/
 	private PepperStarterConfiguration properties = null;
 
@@ -160,19 +174,20 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public PepperConfiguration getConfiguration() {
 		return properties;
 	}
-	/** 
-	 * @return configuration as {@link PepperStarterConfiguration} 
-	**/
+
+	/**
+	 * @return configuration as {@link PepperStarterConfiguration}
+	 **/
 	public PepperStarterConfiguration getPepperStarterConfiguration() {
 		return properties;
 	}
-	
+
 	@Override
 	public void setConfiguration(PepperConfiguration configuration) {
-		if (configuration instanceof PepperStarterConfiguration){
-			this.properties = (PepperStarterConfiguration)configuration;
-		}else{
-			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '"+PepperStarterConfiguration.class.getSimpleName()+"'.");
+		if (configuration instanceof PepperStarterConfiguration) {
+			this.properties = (PepperStarterConfiguration) configuration;
+		} else {
+			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '" + PepperStarterConfiguration.class.getSimpleName() + "'.");
 		}
 	}
 
@@ -350,7 +365,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			if (pluginPath != null) {
 				// download file, if file is a web resource
 				if (("http".equalsIgnoreCase(bundleURI.getScheme())) || ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
-					String tempPath= getPepperStarterConfiguration().getTempPath().getCanonicalPath();
+					String tempPath = getPepperStarterConfiguration().getTempPath().getCanonicalPath();
 					URL bundleUrl = bundleURI.toURL();
 					if (!tempPath.endsWith("/")) {
 						tempPath = tempPath + "/";
@@ -535,8 +550,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					start(bundle.getBundleId());
 				}
 			}
-			if (pepperBundle!= null){
-				pepperBundle.start();
+			try {
+				if (pepperBundle != null) {
+					pepperBundle.start();
+				}
+			} catch (BundleException e) {
+				throw new PepperOSGiFrameworkPluginException("The Pepper framework bundle could not have been started. Unfortunatly Pepper cannot be started without that OSGi bundle. ",e);
 			}
 		}
 	}

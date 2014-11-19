@@ -24,4 +24,9 @@ public interface PepperConnector extends Pepper{
 	 * Starts the OSGi framework and initializes {@link Pepper} inside the framework.
 	 */
 	public abstract void init();
+	/**
+	 * Returns whether this object has been initialized.
+	 * @return true, if object has been initialized, false otherwise
+	 */
+	public abstract boolean isInitialized();
 }
