@@ -21,8 +21,10 @@ This project includes:
   Apache Commons Lang under The Apache Software License, Version 2.0
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
+  Commons Compiler under New BSD License
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   Hamcrest Core under New BSD License
+  Janino under New BSD License
   JUnit under Common Public License Version 1.0
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
   org.eclipse.emf under The Eclipse Public License Version 1.0
