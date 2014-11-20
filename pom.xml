@@ -64,7 +64,7 @@
 		<allServiceComponents>${serviceComponents}/*.xml</allServiceComponents>
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
 		<!-- versions of dependencies -->
-		<salt.version>1.1.9-SNAPSHOT</salt.version>
+		<salt.version>2.0.0-SNAPSHOT</salt.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.11</junit.version>
@@ -97,10 +97,6 @@
 			<artifactId>janino</artifactId>
 			<version>2.7.6</version>
 		</dependency>
-
-
-
-
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 			<artifactId>salt-saltCommon</artifactId>
@@ -158,7 +154,7 @@
 
 
 	<organization>
-		<name>Humboldt Univerity of Berlin, INRIA</name>
+		<name>Humboldt-Universität zu Berlin, INRIA</name>
 	</organization>
 	<build>
 		<plugins>

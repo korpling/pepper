@@ -63,7 +63,6 @@ public class PepperStarter {
 	 */
 	public PepperStarter(PepperConnector pepperConnector) {
 		setPepper(pepperConnector);
-		pepper.init();
 	}
 
 	/**
@@ -71,10 +70,16 @@ public class PepperStarter {
 	 */
 	private PepperConnector pepper = null;
 
+	/**
+	 * @return a reference to Pepper via a {@link PepperConnector}
+	 */
 	public PepperConnector getPepper() {
 		return pepper;
 	}
 
+	/**
+	 * Sets a reference to Pepper via a {@link PepperConnector}
+	 */
 	public void setPepper(PepperConnector pepper) {
 		this.pepper = pepper;
 		if (!getPepper().isInitialized()){
@@ -539,13 +544,18 @@ public class PepperStarter {
 			}
 
 			logger.info(PepperUtil.getHello(eMail, hp));
-
+			
 			pepper = new PepperOSGiConnector();
 			pepper.setConfiguration(pepperProps);
-
-			starter = new PepperStarter(pepper);
-
-			if (args.length == 0) {
+			boolean runInteractive= false;
+			try{
+				starter = new PepperStarter(pepper);
+			}catch (Exception e){
+				logger.info("An error occured, while starting Pepper. To get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. You now can exit Pepper or try to find out more about that exception using the Pepper console.");
+				runInteractive= true;
+			}
+			if (	(args.length == 0)||
+					(runInteractive)){
 				// run interactive console
 				try {
 					starter.runInteractive();
@@ -598,7 +608,6 @@ public class PepperStarter {
 				}
 			}
 		} catch (Exception e) {
-			
 			logger.info("An error occured, to get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. ");
 			logger.error(" ", e);
 		} finally {
