@@ -63,6 +63,7 @@
 		<serviceComponents>${OSGI-INF}/service-component</serviceComponents>
 		<allServiceComponents>${serviceComponents}/*.xml</allServiceComponents>
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
+		
 		<!-- versions of dependencies -->
 		<salt.version>2.0.0-SNAPSHOT</salt.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
@@ -70,16 +71,16 @@
 		<junit.version>4.11</junit.version>
 		<org.osgi.core.version>4.3.1</org.osgi.core.version>
 		<org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
-		<org.eclipse.osgi.version>3.6.0.v20100517</org.eclipse.osgi.version>
-		<carrot-osgi-anno-scr-core.version>2.0.1</carrot-osgi-anno-scr-core.version>
-		<carrot-osgi-anno-scr-make.version>2.0.1</carrot-osgi-anno-scr-make.version>
+		<org.eclipse.osgi.version>3.7.1</org.eclipse.osgi.version>
+		<carrot-osgi-anno-scr-core.version>2.0.2</carrot-osgi-anno-scr-core.version>
+		<carrot-osgi-anno-scr-make.version>2.0.2</carrot-osgi-anno-scr-make.version>
+		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
 
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
 		<!-- <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version> -->
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-assembly-plugin.version>2.2</maven-assembly-plugin.version>
-		<maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<maven-license-plugin.version>1.4.0</maven-license-plugin.version>
 		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
@@ -90,12 +91,13 @@
 		<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
 		<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
 		<xmlunit.version>1.5</xmlunit.version>
+		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
-			<version>2.7.6</version>
+			<version>${org.codehaus.janino.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
@@ -158,8 +160,23 @@
 	</organization>
 	<build>
 		<plugins>
-			<!-- start: Plugin for automatic releasing -->
+			<!-- a plugin to clean the project when calling mvn clean (removes META-INF 
+				and OSGI-INF) -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven-clean-plugin.version}</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>META-INF</directory>
+							<directory>OSGI-INF</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
 
+			<!-- start: Plugin for automatic releasing -->
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>${maven-release-plugin.version}</version>
@@ -193,20 +210,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>${maven-clean-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
-				<!-- <configuration> <filesets> <fileset> <directory>${META-INF}</directory> 
-					<directory>${OSGI-INF}</directory> <followSymlinks>false</followSymlinks> 
-					</fileset> </filesets> </configuration> -->
 			</plugin>
 			<!-- creation of OSGi Service components -->
 			<plugin>

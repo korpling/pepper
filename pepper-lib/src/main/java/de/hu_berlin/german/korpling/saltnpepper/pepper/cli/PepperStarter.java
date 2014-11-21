@@ -318,7 +318,7 @@ public class PepperStarter {
 			console.start(input, output);
 			return ("exit OSGi");
 		} else {
-			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+			return ("No OSGi console available, since Pepper is not running in OSGi mode. ");
 		}
 	}
 
@@ -549,9 +549,9 @@ public class PepperStarter {
 			pepper.setConfiguration(pepperProps);
 			boolean runInteractive= false;
 			try{
-				starter = new PepperStarter(pepper);
+				starter.setPepper(pepper);
 			}catch (Exception e){
-				logger.info("An error occured, while starting Pepper. To get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. You now can exit Pepper or try to find out more about that exception using the Pepper console.");
+				logger.info("An error occured, while starting Pepper. To get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. You now can exit Pepper or try to find out more about that exception using the Pepper console. ", e);	
 				runInteractive= true;
 			}
 			if (	(args.length == 0)||
