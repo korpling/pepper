@@ -439,13 +439,11 @@ public class PepperStarter {
 	 * @return
 	 */
 	private String update(List<String> params){
-		/*DEBUG*/System.out.println("method called with params: "+params.toString());
 		StringBuilder retVal = new StringBuilder();		
 		boolean isSnapshot = params.size()>0 && params.get(0).equalsIgnoreCase("snapshot");		
 		PepperOSGiConnector pepperConnector = (PepperOSGiConnector)getPepper();
 		try {
 			moduleTable = getModuleTable();
-			/*DEBUG*/System.out.println("read module table:\n"+moduleTable.toString());
 		
 			if (	params.get(0).equalsIgnoreCase("all") ||
 					( isSnapshot && params.get(1).equals("all") )	){
@@ -467,6 +465,14 @@ public class PepperStarter {
 							retVal.append("Successfully updated "+s+" from "+moduleTable.get(s)+".\n");
 						}
 					}
+					else if ("config".equals(s)){
+						retVal.append("\n").append("update configuration for pepper modules:").append("\n").append("\n");						
+						
+						for(String module : moduleTable.keySet()){
+							retVal.append(module).append("\t").append(moduleTable.get(module)).append("\n");
+						}
+						retVal.append("\n");
+					}
 					else if (s.contains("::")){
 						String[] args = s.split("::");
 						if (pepperConnector.update(args[0], args[1], args[2], isSnapshot)){
@@ -479,7 +485,11 @@ public class PepperStarter {
 					else if (s.matches("file://.*")||s.matches("https?://.*")){
 //						pepperConnector.installAndCopy(java.net.URI.create(s)).start();
 						return "File installed. No dependency resolution in this mode.";
-					}else if(!isSnapshot){
+					}
+					else if ("blacklist".equals(s) || "bl".equals(s)){
+						return pepperConnector.getBlacklist();
+					}
+					else if (!isSnapshot){
 						isSnapshot|=s.equalsIgnoreCase("snapshot");
 					}
 				}
