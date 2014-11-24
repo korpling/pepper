@@ -37,7 +37,6 @@ This project includes:
   salt-graph under The Apache Software License, Version 2.0
   salt-saltCommon under The Apache Software License, Version 2.0
   salt-saltCore under The Apache Software License, Version 2.0
-  salt-saltSample under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   textcat under LGPL
   XMLUnit for Java under BSD License
