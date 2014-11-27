@@ -126,7 +126,9 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+      					<!-- 
       					<Import-Package>de.hu_berlin.german.korpling.saltnpepper.salt, de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon, de.hu_berlin.german.korpling.saltnpepper.salt.samples, de.hu_berlin.german.korpling.saltnpepper.pepper.common,de.hu_berlin.german.korpling.saltnpepper.pepper.core,de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions,de.hu_berlin.german.korpling.saltnpepper.pepper.modules,de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl,de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework,*</Import-Package>
+      					 -->
                         <Service-Component>${allServiceComponents}</Service-Component>
                         <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
                     </instructions>

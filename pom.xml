@@ -77,8 +77,7 @@
 		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
 
 		<!-- versions of plugins -->
-		<maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
-		<!-- <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version> -->
+		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-assembly-plugin.version>2.2</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -94,11 +93,14 @@
 		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
 	</properties>
 	<dependencies>
+	<!--
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
 			<version>${org.codehaus.janino.version}</version>
+			<optional>true</optional>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 			<artifactId>salt-saltCommon</artifactId>
