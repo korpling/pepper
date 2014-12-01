@@ -63,7 +63,7 @@
 		<serviceComponents>${OSGI-INF}/service-component</serviceComponents>
 		<allServiceComponents>${serviceComponents}/*.xml</allServiceComponents>
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
-		
+
 		<!-- versions of dependencies -->
 		<salt.version>2.0.0-SNAPSHOT</salt.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
@@ -93,14 +93,9 @@
 		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
 	</properties>
 	<dependencies>
-	<!--
-		<dependency>
-			<groupId>org.codehaus.janino</groupId>
-			<artifactId>janino</artifactId>
-			<version>${org.codehaus.janino.version}</version>
-			<optional>true</optional>
-		</dependency>
-		-->
+		<!-- <dependency> <groupId>org.codehaus.janino</groupId> <artifactId>janino</artifactId> 
+			<version>${org.codehaus.janino.version}</version> <optional>true</optional> 
+			</dependency> -->
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 			<artifactId>salt-saltCommon</artifactId>
@@ -162,12 +157,12 @@
 	</organization>
 	<build>
 		<plugins>
-			<!-- a plugin to clean the project when calling mvn clean (removes META-INF 
-				and OSGI-INF) -->
 			<plugin>
+				<!-- a plugin to clean the project when calling mvn clean -->
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>${maven-clean-plugin.version}</version>
 				<configuration>
+					<!-- removes META-INF and OSGI-INF -->
 					<filesets>
 						<fileset>
 							<directory>META-INF</directory>
@@ -176,6 +171,37 @@
 						</fileset>
 					</filesets>
 				</configuration>
+				<executions>
+					<execution>
+						<!-- This is necessary, because of a problem in the carrot-maven-scr-plugin. 
+							The plugin produces empty files (null.xml) in the service-components folder, 
+							this file is removed by the current clean-plugin and its configuration. -->
+						<id>cleanup-null.xml</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+							<filesets>
+								<fileset>
+									<directory>OSGI-INF/service-component</directory>
+									<includes>
+										<include>null.xml</include>
+									</includes>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+								<fileset>
+									<directory>target/classes/OSGI-INF/service-component</directory>
+									<includes>
+										<include>null.xml</include>
+									</includes>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- start: Plugin for automatic releasing -->
