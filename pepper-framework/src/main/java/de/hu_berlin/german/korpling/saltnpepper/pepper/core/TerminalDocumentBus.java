@@ -96,7 +96,6 @@ public class TerminalDocumentBus extends DocumentBus
   public boolean isSendToSleepEnabled()
   {
     boolean keepTerminalDocs = getPepperJob().getConfiguration().getKeepTerminalDocuments();
-    LoggerFactory.getLogger(TerminalDocumentBus.class).warn("terminal sleep enabled?: {}", keepTerminalDocs);
     return keepTerminalDocs;
   }
   
