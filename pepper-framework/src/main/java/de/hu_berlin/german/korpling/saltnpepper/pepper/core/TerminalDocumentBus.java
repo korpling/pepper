@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -90,5 +91,15 @@ public class TerminalDocumentBus extends DocumentBus
 		}
 		return(documentController);
 	}
+
+  @Override
+  public boolean isSendToSleepEnabled()
+  {
+    boolean keepTerminalDocs = getPepperJob().getConfiguration().getKeepTerminalDocuments();
+    return keepTerminalDocs;
+  }
+  
+  
+  
 }
  

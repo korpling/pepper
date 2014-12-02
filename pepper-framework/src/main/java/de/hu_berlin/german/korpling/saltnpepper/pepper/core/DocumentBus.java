@@ -315,6 +315,11 @@ public class DocumentBus {
 	public void setMemPolicy(MEMORY_POLICY memPolicy) {
 		this.memPolicy = memPolicy;
 	}
+  
+  public boolean isSendToSleepEnabled()
+  {
+    return true;
+  }
 
 	/**
 	 * This lock is used for creating the condition
@@ -388,7 +393,10 @@ public class DocumentBus {
 			if (getPepperJob() != null) {
 				// next line is inside of block, for not causing failing test
 				// cases
-				documentController.sendToSleep();
+        if(isSendToSleepEnabled())
+        {
+          documentController.sendToSleep();
+        }
 				getPepperJob().releaseDocument(documentController);
 			}
 		} else if (MEMORY_POLICY.MODERATE.equals(getMemPolicy())) {
@@ -398,7 +406,10 @@ public class DocumentBus {
 				if (getPepperJob() != null) {
 					// next line is inside of block, for not causing failing
 					// test cases
-					documentController.sendToSleep();
+          if(isSendToSleepEnabled())
+          {
+            documentController.sendToSleep();
+          }
 					getPepperJob().releaseDocument(documentController);
 				}
 			}
