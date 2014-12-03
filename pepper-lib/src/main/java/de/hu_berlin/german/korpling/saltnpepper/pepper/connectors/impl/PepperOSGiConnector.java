@@ -107,7 +107,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	
 	private Set<String> forbiddenFruits = null;
 	private static final String blacklistPath = "./conf/dep/blacklist.cfg";
-
+	/** this String contains the artifactId of pepper-framework */
+	private static final String ARTIFACT_ID_PEPPER_FRAMEWORK = "pepper-framework";
+	/** contains the version of pepper framework */
+	private String frameworkVersion;
+	
 	/**
 	 * Starts the OSGi environment and installs and starts all bundles located
 	 * in the plugin directory. <br/>
@@ -167,11 +171,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				}
 				reader.close();
 				fR.close();
-			} catch (IOException e) { /*TODO*/	}
+			} catch (IOException e) {}
 		}
+		frameworkVersion = getFrameworkVersion();
 		if (forbiddenFruits.isEmpty()){
-			/* maven access utils*/
-			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", "pepper-framework", "jar", "2.0.1-SNAPSHOT");//FIXME version has to be a variable/functionCall
+			/* maven access utils*/			
+			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
 			RepositorySystem system = Booter.newRepositorySystem();
 	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
 	        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", "http://korpling.german.hu-berlin.de/maven2");
@@ -187,7 +192,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				CollectResult collectResult = system.collectDependencies( session, collectRequest );
 				write2Blacklist(getAllDependencies(collectResult.getRoot(), Collections.<String>emptySet()));
 				
-			} catch (DependencyCollectionException e) {/*TODO*/}            
+			} catch (DependencyCollectionException e) {}            
 	        
 		}
 	}
@@ -321,6 +326,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		} else {
 
 			// TODO is it possible, to retrieve this information automatically?
+			// EDIT: MARTIN KLOTZ: inserted version retrieval on object construction, would that help?
 			String pepperVersion = "2.0.0";
 
 			// pepper.common package
@@ -680,7 +686,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * This method checks the pepperModules in the modules.xml for updates
 	 * and triggers the installation process if a newer version is available
 	 */
-	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot){
+	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
 				
 		RepositorySystem system = Booter.newRepositorySystem();
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
@@ -714,7 +720,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
             	if ((groupId+"."+artifactId).equals(bundles.get(i).getSymbolicName())){
             		installedBundle = bundles.get(i);
             	}
-            }
+            }            
             
             /* get all pepperModules versions listed in the maven repository */
     		List<Version> versions = rangeResult.getVersions();
@@ -724,7 +730,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	        Iterator<Version> itVersions = versions.iterator();
     		VersionScheme vScheme = new GenericVersionScheme();
     		boolean srcExists = false;
-    		Version installedVersion = installedBundle==null? vScheme.parseVersion("0.0.0") : vScheme.parseVersion(installedBundle.getVersion().toString());
+    		Version installedVersion = installedBundle==null? vScheme.parseVersion("0.0.0") : vScheme.parseVersion(installedBundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT"));
     		Version newestVersion = null;
     		
     		/* compare, if the listed version really exists in the maven repository */
@@ -752,7 +758,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	    		
 	    		/* utils for file-collection */
     			List<URI> fileURIs = new ArrayList<URI>(); 		
-	    		fileURIs.add(artifact.getFile().toURI());	    		
+	    		fileURIs.add(artifact.getFile().toURI());  		
 	    		
 	    		/* utils for dependency collection */
 	    		CollectRequest collectRequest = new CollectRequest();
@@ -763,16 +769,20 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				
 	            Bundle bundle = null;
 	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), forbiddenFruits);
-	            if (!frameworkCompatible(allDependencies)) {return false;}
-	            System.out.println("\t\t\tframework compatible");
 	            Dependency dependency = null;	            
 	            //in the following we ignore the first dependency, because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
-	            	dependency = allDependencies.get(i);	            	
-	            	if (!dependency.isOptional()){
+	            	dependency = allDependencies.get(i);
+	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){
+	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("–SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){
+	            			logger.info((new StringBuilder()).append("No update was performed because of a version incompatability according to pepper-framework: ").append(artifactId).append(" needs ")
+	            					.append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!").toString());
+	          
+	            		}	            		
+	            	}
+	            	else if(!dependency.getArtifact().getArtifactId().contains("salt-")){	            		
 	            		artifactRequest.setRepositories(Booter.newRepositories(system, session));
 	            		artifactRequest.addRepository(repo);
-	            		//TODO we also do not know if the assembly lies in the repository (do we really need it?!)
 	            		artifactRequest.setArtifact(dependency.getArtifact());
 	            		try{
 	            			artifactResult = system.resolveArtifact(session, artifactRequest);          			
@@ -787,19 +797,24 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            	try {
 	            		logger.info("\tinstalling: "+fileURIs.get(i));
 	            		bundle = this.installAndCopy(fileURIs.get(i));
-	            		if (bundle!=null){//TODO when does a bundle get null? failed installation?
+	            		if (bundle!=null){
 	            			bundleIdMap.put(bundle.getBundleId(), bundle);
 	            			locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
 	            			bundle.start();
 	            		}
-	            		write2Blacklist(allDependencies);
-	            	} catch (IOException | BundleException e) { return false; }
-	            	
+	            	} catch (IOException | BundleException e) { logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass());}	            	
 		    	}
+	            /*
+	    		 * root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
+	    		 * If a pepper module would be put onto the blacklist and the bundle would be removed, we always had to make sure, it
+	    		 * its entry on the blacklist would be removed. Assuming the entry would remain on the blacklist, the module could be
+	    		 * reinstalled, BUT(!) the dependencies would all be dropped and never being installed again, since the modules node
+	    		 * dominates all other nodes in the dependency tree.
+	    		 */
+	    		allDependencies.remove(0);
+        		write2Blacklist(allDependencies);
 	            logger.info("\n");
-			}    	
-	    	
-	    	
+			}	    	
     	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {
 			update = false;			
 		}       
@@ -808,23 +823,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 	
 	/**
-	 * This method checks, if the required version of pepper-framework in the 
-	 * dependency list is equal to the installed bundle's version
-	 * @return 
-	 */
-	private boolean frameworkCompatible(List<Dependency> dependencies){
-		return true;//FIXME
-	}
-	
-	/**
 	 * This method returns all dependencies as list.
 	 * Elementary dependencies and their daughters are skipped. 
 	 */
-	private List<Dependency> getAllDependencies(DependencyNode startNode, Set<String> installedDeps){
+	private List<Dependency> getAllDependencies(DependencyNode startNode, Set<String> installedDeps){		
 		List<Dependency> retVal = new ArrayList<Dependency>();
 		retVal.add(startNode.getDependency());
-		for (DependencyNode node : startNode.getChildren()){
+		for (DependencyNode node : startNode.getChildren()){			
 			if (!dependencyAlreadyInstalled(node.getArtifact().toString())) {retVal.addAll(getAllDependencies(node, installedDeps));}
+			if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(node.getArtifact().getArtifactId())){
+				retVal.add(node.getDependency());
+			}
 		}
 		return retVal;
 	}
@@ -850,10 +859,25 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 	
 	/**
+	 * returns the version of pepper-framework
+	 * @return
+	 */
+	private String getFrameworkVersion(){
+		List<Bundle> bList = new ArrayList<Bundle>();
+		bList.addAll(bundleIdMap.values());
+		for (int i=0; i<bList.size(); i++){
+			if (bList.get(i).getSymbolicName()!=null && bList.get(i).getSymbolicName().contains(ARTIFACT_ID_PEPPER_FRAMEWORK)){
+				return bList.get(i).getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+			}
+		}
+		return null;//TODO
+	}
+	
+	/**
 	 * writes the freshly installed dependencies to the blacklist file.
 	 */
 	private void write2Blacklist(List<Dependency> dependencies){
-		File blacklistFile = new File(blacklistPath);
+		File blacklistFile = new File(blacklistPath);		
 		for (Dependency dependency : dependencies){
 			forbiddenFruits.add(dependency.getArtifact().toString());					
 		}				
@@ -869,7 +893,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			}
 			bW.close();
 			fW.close();
-		} catch (IOException e) {/*TODO*/e.printStackTrace();}
+		} catch (IOException e) {}
 		
 	}
 	

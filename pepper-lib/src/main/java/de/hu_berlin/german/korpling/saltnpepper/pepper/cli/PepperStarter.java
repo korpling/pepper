@@ -47,6 +47,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -439,8 +440,11 @@ public class PepperStarter {
 	 * @return
 	 */
 	private String update(List<String> params){
-		StringBuilder retVal = new StringBuilder();		
-		boolean isSnapshot = params.size()>0 && params.get(0).equalsIgnoreCase("snapshot");		
+		StringBuilder retVal = new StringBuilder();
+		String newLine = System.getProperty("line.separator");
+		String indent = "\t";
+		boolean isSnapshot = params.size()>0 && params.get(0).equalsIgnoreCase("snapshot");
+		boolean ignoreVersion = false;
 		PepperOSGiConnector pepperConnector = (PepperOSGiConnector)getPepper();
 		try {
 			moduleTable = getModuleTable();
@@ -448,7 +452,7 @@ public class PepperStarter {
 			if (	params.get(0).equalsIgnoreCase("all") ||
 					( isSnapshot && params.get(1).equals("all") )	){
 				for (String s : moduleTable.keySet()){
-					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot)){
+					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
 						retVal.append(s+" successfully updated.");
 					}
 					else{
@@ -461,33 +465,45 @@ public class PepperStarter {
 				for (int i= isSnapshot ? 1 : 0; i<params.size(); i++){
 					s = params.get(i);
 					if (moduleTable.keySet().contains(s)){
-						if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot)){
-							retVal.append("Successfully updated "+s+" from "+moduleTable.get(s)+".\n");
+						if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
+							retVal.append("Successfully updated ").append(s).append(" from "+moduleTable.get(s)).append(newLine);
 						}
 					}
 					else if ("config".equals(s)){
-						retVal.append("\n").append("update configuration for pepper modules:").append("\n").append("\n");						
+						retVal.append(newLine).append(indent).append("update configuration for pepper modules:").append(newLine).append(newLine);						
 						
 						for(String module : moduleTable.keySet()){
-							retVal.append(module).append("\t").append(moduleTable.get(module)).append("\n");
+							retVal.append(indent).append(module).append(moduleTable.get(module)).append(newLine);
 						}
-						retVal.append("\n");
+						retVal.append(newLine);						
+						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):").append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
+						retVal.append(newLine).append(indent).append("GROUP_ID: the groupId of the pepper module");
+						retVal.append(newLine).append(indent).append("ARTIFACT_ID: the artifactId of the pepper module, usually \"pepperModules-XXXModules\"");
+						retVal.append(newLine).append(indent).append("REPOSITORY_URL: the url of the maven repository that contains the module").append(newLine);
 					}
 					else if (s.contains("::")){
 						String[] args = s.split("::");
-						if (pepperConnector.update(args[0], args[1], args[2], isSnapshot)){
-							retVal.append("Successfully updated "+args[0]+"."+args[1]+" from maven repository "+args[2]+".\n");
+						if (pepperConnector.update(args[0], args[1], args[2], isSnapshot, ignoreVersion)){
+							retVal.append("Successfully updated ").append(args[0]).append(".").append(args[1]).append(" from maven repository ").append(args[2]).append(".").append(newLine);
 							retVal.append(	write2ConfigFile(args[0], args[1], args[2]) ?
 											"Configuration written back to modules.xml. Module is now available for direct update calls (e.g. \"update "+args[1]+"\")." :
 											"WARNING: An Error occured while writing groupId, artifactId and repository path to modules.xml.");
 						}						
 					}
 					else if (s.matches("file://.*")||s.matches("https?://.*")){
-//						pepperConnector.installAndCopy(java.net.URI.create(s)).start();
+						try {
+							pepperConnector.installAndCopy(java.net.URI.create(s)).start();
+						} catch (BundleException e) {
+							logger.debug(s+" caused: "+e.getMessage());
+							return "File not installed due to a BundleException";
+						}
 						return "File installed. No dependency resolution in this mode.";
 					}
 					else if ("blacklist".equals(s) || "bl".equals(s)){
-						return pepperConnector.getBlacklist();
+						retVal.append(pepperConnector.getBlacklist());
+					}
+					else if ("iv".equalsIgnoreCase(s)){
+						
 					}
 					else if (!isSnapshot){
 						isSnapshot|=s.equalsIgnoreCase("snapshot");
@@ -495,16 +511,15 @@ public class PepperStarter {
 				}
 			}
 			
-		} catch (ParserConfigurationException | SAXException | IOException /*| BundleException*/ e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			logger.debug(e.getMessage());
 		}
 		return retVal.toString();
 	}
 	
 	/** This String contains the path to the modules.xml file, which provides Information about
 	 * the pepperModules to be updated / installed. */
-	private static final String MODULES_XML_PATH = "/home/klotzmaz/Documents/SNP/moduleUpdater/modules.xml";//TODO
+	private static final String MODULES_XML_PATH = "./conf/modules.xml";
 	
 	private Map<String, Pair<String, String>> getModuleTable() throws ParserConfigurationException, SAXException, IOException{
 		if (this.moduleTable!=null) { return moduleTable; }
@@ -527,13 +542,24 @@ public class PepperStarter {
 			Node item = configuredModules.item(0); 
 			int j=0;			
 			while (j+1<configuredModules.getLength() && !artifactId.equals(item.getTextContent())){
-				item = configuredModules.item(++j);/*DEBUG*/System.out.println("TextContent="+item.getTextContent());
+				item = configuredModules.item(++j);
 			}
-			if (artifactId.equals(item.getTextContent())){
-				//maybe check other data (groupId and repository?)				
-				return false;
-			}
-			else{//not contained yet -> insert
+			if (artifactId.equals(item.getTextContent())){//already contained -> edit				
+				Node itemGroupId = null;
+				Node itemRepo = null;
+				Node node = null;
+				for (int i=0; i<item.getParentNode().getChildNodes().getLength() && (itemGroupId==null || itemRepo==null); i++){
+					node = item.getParentNode().getChildNodes().item(i);
+					if (ModuleTableReader.TAG_GROUPID.equals(node.getLocalName())){
+						itemGroupId = node;
+					}
+					if (ModuleTableReader.TAG_REPO.equals(node.getLocalName())){
+						itemRepo = node;
+					}
+				}
+				itemGroupId.setTextContent(groupId);
+				itemRepo.setTextContent(repository);
+			}else{//not contained yet -> insert
 				Node listNode = doc.getElementsByTagName(ModuleTableReader.TAG_LIST).item(0);
 				Node newModule = doc.createElement(ModuleTableReader.TAG_ITEM);				
 				Node groupIdNode = doc.createElement(ModuleTableReader.TAG_GROUPID);
@@ -549,7 +575,7 @@ public class PepperStarter {
 				
 				//write back to file	
 				TransformerFactory trFactory = TransformerFactory.newInstance();
-//				trFactory.setAttribute("indent-number", 2);
+	//			trFactory.setAttribute("indent-number", 2);
 				Transformer transformer = trFactory.newTransformer();
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -558,10 +584,10 @@ public class PepperStarter {
 				transformer.transform(src, result);
 			}
 		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
-			LoggerFactory.getLogger(this.getClass()).warn(e.getMessage());//TODO okay?
+			logger.warn(e.getMessage());//TODO okay?
 			return false;
 		}		
-		
+		//TODO kill dom obj
 		return true;
 	}
 	
