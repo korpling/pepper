@@ -108,20 +108,12 @@ public class PepperConfiguration extends Properties {
 	 * stored by default.
 	 */
 	public static final String PROP_WORKSPACE = PROP_PREFIX + ".workspace";
-  
-  /**
-	 * name of the flag to determine whether to create document-graph files for
-   * the terminal job.
-	 */
-	public static final String PROP_KEEP_TERMINAL_DOCS = PROP_PREFIX + ".keepTerminalDocs";
 
 	/**
 	 * This array contains all properties, which with the Pepper framework can
 	 * be configured.
 	 */
-	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, 
-    PROP_MAX_AMOUNT_OF_SDOCUMENTS, PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING,
-    PROP_KEEP_TERMINAL_DOCS};
+	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS, PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING };
 	public static final String ENV_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 	public static final String PROP_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 
@@ -320,23 +312,12 @@ public class PepperConfiguration extends Properties {
 	}
 	
 	/**
-	 * flag to determine whether the temporary created document-graph files should be
+	 * name of the flag to determine whether the temporary created document-graph files should be
 	 * preserved or deleted after Pepper terminates.
 	 * Default value is false.
 	 */
 	public Boolean getKeepDocuments() {
 		String isToKeep = getProperty(PROP_KEEP_TEMP_DOCS, Boolean.FALSE.toString());
-		return (Boolean.valueOf(isToKeep));
-	}
-  
-  /**
-	 * flag to determine whether the temporary created document-graph files should be
-	 * preserved or deleted after Pepper terminates.
-	 * Default value is false.
-   * @return 
-	 */
-	public Boolean getKeepTerminalDocuments() {
-		String isToKeep = getProperty(PROP_KEEP_TERMINAL_DOCS, Boolean.FALSE.toString());
 		return (Boolean.valueOf(isToKeep));
 	}
 }
