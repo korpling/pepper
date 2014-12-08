@@ -73,7 +73,15 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperExceptio
 public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
-
+	/**
+	 * FIXME
+	 * This is just a workaround to set the current version of Pepper, this is necessary, 
+	 * mark the Pepper package, to be load by the classloader in and outside of OSGi. This
+	 * could be removed, when there is a better way to detect the current Pepper version
+	 * automatically.
+	 */
+	public static final String PEPPER_VERSION="2.0.1-SNAPSHOT";
+	
 	/** Determines if this object has been initialized**/
 	private boolean isInit= false;
 	
@@ -263,7 +271,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		} else {
 
 			// TODO is it possible, to retrieve this information automatically?
-			String pepperVersion = "2.0.0";
+			String pepperVersion = PEPPER_VERSION;
 
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
