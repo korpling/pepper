@@ -178,11 +178,10 @@ public class DocumentControllerImpl implements DocumentController
 		}finally{
 			sleepLock.unlock();
 		}
-    
-    if (callGC)
-    {
-      System.gc();
-    }
+		
+		if (callGC) {
+			System.gc();
+		}
 	}
 	/* (non-Javadoc)
 	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController#sendToSleep()
