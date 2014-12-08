@@ -172,14 +172,15 @@ public class DocumentControllerImpl implements DocumentController
 				Runtime runtime= Runtime.getRuntime();
 				long usedMem= runtime.totalMemory() - runtime.freeMemory();
 				long time= System.currentTimeMillis();
-				if (callGC){
-					System.gc();
-				}
 				time= System.currentTimeMillis() -time;
 				usedMem= usedMem -(runtime.totalMemory() - runtime.freeMemory());
 			}
 		}finally{
 			sleepLock.unlock();
+		}
+		
+		if (callGC) {
+			System.gc();
 		}
 	}
 	/* (non-Javadoc)
