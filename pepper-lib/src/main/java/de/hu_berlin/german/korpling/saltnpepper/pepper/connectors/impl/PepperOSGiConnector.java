@@ -28,9 +28,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -60,7 +60,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundExc
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import java.io.FilenameFilter;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -77,14 +76,21 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
+	/**
+	 * FIXME This is just a workaround to set the current version of Pepper,
+	 * this is necessary, mark the Pepper package, to be load by the classloader
+	 * in and outside of OSGi. This could be removed, when there is a better way
+	 * to detect the current Pepper version automatically.
+	 */
+	public static final String PEPPER_VERSION = "2.0.1";
 
-	/** Determines if this object has been initialized**/
-	private boolean isInit= false;
-	
-	public boolean isInitialized(){
-		return(isInit);
+	/** Determines if this object has been initialized **/
+	private boolean isInit = false;
+
+	public boolean isInitialized() {
+		return (isInit);
 	}
-	
+
 	/**
 	 * Starts the OSGi environment and installs and starts all bundles located
 	 * in the plugin directory. <br/>
@@ -141,10 +147,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			logger.debug("starting OSGI-bundles...FINISHED");
 		} catch (PepperException e) {
 			throw e;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new PepperOSGiException("An exception occured installing bundles for OSGi environment. ", e);
 		}
-		isInit= true;
+		isInit = true;
 	}
 
 	/**
@@ -156,14 +162,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected BundleContext startEquinox() throws Exception {
 		BundleContext bc = null;
 
-		Properties frameworkProperties = new Properties();
-
-		frameworkProperties.setProperty(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
-
-		frameworkProperties.setProperty(EclipseStarter.PROP_CLEAN, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_CONSOLE, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_NOSHUTDOWN, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
+		Map<String, String> frameworkProperties = new HashMap<String, String>();
+		frameworkProperties.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
+		frameworkProperties.put(EclipseStarter.PROP_CLEAN, "true");
+		frameworkProperties.put(EclipseStarter.PROP_CONSOLE, "true");
+		frameworkProperties.put(EclipseStarter.PROP_NOSHUTDOWN, "true");
+		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		bc = EclipseStarter.startup(new String[] {}, null);
@@ -277,7 +281,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		} else {
 
 			// TODO is it possible, to retrieve this information automatically?
-			String pepperVersion = "2.0.0";
+			String pepperVersion = PEPPER_VERSION;
 
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
@@ -584,7 +588,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					pepperBundle.start();
 				}
 			} catch (BundleException e) {
-				throw new PepperOSGiFrameworkPluginException("The Pepper framework bundle could not have been started. Unfortunatly Pepper cannot be started without that OSGi bundle. ",e);
+				throw new PepperOSGiFrameworkPluginException("The Pepper framework bundle could not have been started. Unfortunatly Pepper cannot be started without that OSGi bundle. ", e);
 			}
 		}
 	}
