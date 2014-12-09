@@ -31,7 +31,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -60,6 +59,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import java.io.FilenameFilter;
+import java.util.LinkedList;
+import java.util.List;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
  * This class is an implementation of {@link Pepper}. It acts as a bridge
@@ -114,15 +117,25 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			Collection<Bundle> bundles = null;
 
 			// installing module-bundles
+			List<URI> dropInURIs = null;
+			List<String> dropInRawStrings = getPepperStarterConfiguration().getDropInPaths();
+			if (dropInRawStrings != null) {
+				dropInURIs = new ArrayList<>(dropInRawStrings.size());
+				for (String path : dropInRawStrings) {
+					dropInURIs.add(new File(path).toURI());
+				}
+			}
 			logger.debug("\tinstalling OSGI-bundles:");
-			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI());
+      
+			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI(),
+				dropInURIs);
 			logger.debug("----------------------------------------------------------");
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
 			logger.debug("-------------------- starting bundles --------------------");
 			if ((bundles == null) || (bundles.isEmpty())) {
-				bundles = new ArrayList<Bundle>();
-				bundleIdMap = new Hashtable<Long, Bundle>();
+				bundles = new ArrayList<>();
+				bundleIdMap = new Hashtable<>();
 				for (Bundle bundle : getBundleContext().getBundles()) {
 					bundles.add(bundle);
 					bundleIdMap.put(bundle.getBundleId(), bundle);
@@ -301,23 +314,39 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * @param bundleAction
 	 *            a flag, which shows if bundle has to be started or just
 	 *            installed
+   * @param dropinPaths A list of additionally paths to load bundles from
+   * 
 	 * @throws BundleException
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	protected Collection<Bundle> installBundles(URI pluginPath) throws BundleException, URISyntaxException, IOException {
-		Collection<Bundle> bundles = new Vector<Bundle>();
+	protected Collection<Bundle> installBundles(URI pluginPath, List<URI> dropinPaths) throws BundleException, URISyntaxException, IOException {
+    
+		ArrayList<Bundle> bundles = new ArrayList<>();
+		
+		List<URI> loadLocations = new LinkedList<>();
+		if(dropinPaths != null)
+		{
+			loadLocations.addAll(dropinPaths);
+		}
+		loadLocations.add(pluginPath);
+		
 		StringBuilder osgiBundlesProp = null;
-		for (File bundleJar : new File(pluginPath.getPath()).listFiles()) {
-			// check if file is file-object
-			if (bundleJar.isFile()) {
-				// check if file is file jar
-				if (bundleJar.getName().endsWith(".jar")) {
+	
+		for (URI dropinLocation : loadLocations) {
+			File[] fileLocations =
+				new File(dropinLocation.getPath())
+					.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
+			for (File bundleJar : fileLocations) {
+				// check if file is file-object
+				if (bundleJar.isFile() && bundleJar.canRead()) {
+					// check if file is file jar
 					URI bundleURI = bundleJar.toURI();
 					Bundle bundle = install(bundleURI);
 					if (bundle != null) {
 						bundles.add(bundle);
-						logger.debug("\t\tinstalling bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
+						logger.debug("\t\tinstalling bundle: " + bundle.
+							getSymbolicName() + "-" + bundle.getVersion());
 
 						// set system property for bundle pathes
 						if (osgiBundlesProp == null) {

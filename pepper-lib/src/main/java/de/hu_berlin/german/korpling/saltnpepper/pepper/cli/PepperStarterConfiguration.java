@@ -17,6 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
+import com.google.common.base.Splitter;
+import static de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration.ENV_PEPPER_HOME;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +30,9 @@ import org.osgi.framework.Constants;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class represents all properties to customize Pepper. This class is
@@ -87,6 +92,8 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	public static final String FILE_PEPPER_CONF = "conf";
 	/** name of the property of where to find the plugin path */
 	public static final String PROP_PLUGIN_PATH = PROP_PREFIX + "plugin.path";
+	/** name of the property of where to find the dropin paths (comma seperated) */
+	public static final String PROP_DROPIN_PATHS = PROP_PREFIX + "dropin.paths";
 	/** name of the property of the location of the osgi profile */
 	public static final String PROP_OSGI_PROFILE = PROP_PREFIX + "osgi.profile";
 	/** name of the property of the location of the osgi profile */
@@ -196,6 +203,25 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	 */
 	public String getPlugInPath() {
 		return (this.getProperty(PepperStarterConfiguration.PROP_PLUGIN_PATH));
+	}
+
+	/**
+	 * Returns the dropin paths, where to find the OSGi bundles.
+	 *
+	 * @return plugIn path
+	 */
+	public List<String> getDropInPaths() {
+		String rawList = this.getProperty(PepperStarterConfiguration.PROP_DROPIN_PATHS);
+		if (rawList != null) {
+			Iterator<String> it
+				= Splitter.on(',').trimResults().omitEmptyStrings().split(rawList).iterator();
+			List<String> result = new ArrayList<>();
+			while (it.hasNext()) {
+				result.add(it.next());
+			}
+			return result;
+		}
+		return null;
 	}
 
 	/**
