@@ -1,5 +1,4 @@
 <configuration>
-<<<<<<< HEAD:pepper-lib/conf/logback-test.xml
       <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
       <!-- encoders are assigned the type
            ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -28,37 +27,3 @@
 	<logger name="org.sonatype.tests" level="OFF"/>
 	<logger name="de.hu_berlin.german.korpling.saltnpepper" level="INFO" />
 </configuration>
-=======
-
-	<!-- This evaluator suppresses all Exceptions to be printed (used in console 
-		logger) -->
-	<evaluator name="DISPLAY_EX_EVAL">
-		<expression>throwable != null &amp;&amp; throwable instanceof
-			java.lang.Exception
-		</expression>
-	</evaluator>
-
-	<!-- This appender is supposed to write all messages to the standard output, 
-		which usually is the console. All messages written to here are visible for 
-		the user. -->
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%msg%n%ex{full, DISPLAY_EX_EVAL}</pattern>
-		</encoder>
-	</appender>
-
-	<!-- This appender is supposed to write all messages to the debug file, 
-		which is configured in here. -->
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>pepper_out.txt</file>
-		<encoder>
-			<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
-			</pattern>
-		</encoder>
-	</appender>
-	<root level="info">
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
-	</root>
-</configuration>
->>>>>>> develop:pepper-lib/conf/logback.xml

@@ -58,6 +58,61 @@
 		    <artifactId>janino</artifactId>
 		    <version>2.5.15.wso2v1</version>
 		</dependency>
+		<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-api</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-util</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-impl</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-connector-basic</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-transport-file</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-transport-http</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-transport-wagon</artifactId>
+    		<version>1.1.0-SNAPSHOT</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.maven</groupId>
+    		<artifactId>maven-aether-provider</artifactId>
+    		<version>3.1.0</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.maven.wagon</groupId>
+    		<artifactId>wagon-provider-api</artifactId>
+    		<version>1.0</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-spi</artifactId>
+    		<version>1.0.0.v20140518</version>
+    	</dependency>
+    	    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-demo-snippets</artifactId>
+    		<version>1.0.0-SNAPSHOT</version>
+    	</dependency>
 	</dependencies>
 	<build>
 		<plugins>

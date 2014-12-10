@@ -528,7 +528,7 @@ public class PepperStarter {
 						retVal.append(pepperConnector.getBlacklist());
 					}
 					else if ("iv".equalsIgnoreCase(s)){
-						
+						ignoreVersion = true;
 					}
 					else if (!isSnapshot){
 						isSnapshot|=s.equalsIgnoreCase("snapshot");
