@@ -530,6 +530,27 @@ public class PepperStarter {
 					else if ("iv".equalsIgnoreCase(s)){
 						ignoreVersion = true;
 					}
+					else if ("--help".equalsIgnoreCase(s)){
+						retVal
+						.append(newLine).append(indent).append("update [snapshot] [iv] MODULES_NAME")
+						.append(newLine).append(indent).append("updates the specified pepper modules")
+						.append(newLine).append(indent).append("snapshot:\tIf the newest version is a snapshot, pepper chooses to install it.")
+						.append(newLine).append(indent).append("iv:\t\tIf the pepper modules are depending on another version of pepper, they would usually not be installed.")
+						.append(newLine).append(indent).append(indent).append(indent).append("By setting this flag you can override this behaviour.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update [snapshot] [iv] all")
+						.append(newLine).append(indent).append("All pepper modules configured in modules.xml will be updated/installed.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update config")
+						.append(newLine).append(indent).append("displays the configuration given in modules.xml.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL")
+						.append(newLine).append(indent).append("adds/modifies a configuration in modules.xml AND starts the update process.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update URL")
+						.append(newLine).append(indent).append("installs a file by its URL. Dependencies will not be resolved.")
+						.append(newLine);
+					}
 					else if (!isSnapshot){
 						isSnapshot|=s.equalsIgnoreCase("snapshot");
 					}
