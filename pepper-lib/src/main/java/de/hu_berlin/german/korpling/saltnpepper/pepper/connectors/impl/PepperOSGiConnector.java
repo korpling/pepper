@@ -22,7 +22,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,22 +34,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
-import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
@@ -61,6 +60,9 @@ import org.eclipse.aether.examples.util.Booter;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactDescriptorException;
+import org.eclipse.aether.resolution.ArtifactDescriptorRequest;
+import org.eclipse.aether.resolution.ArtifactDescriptorResult;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
@@ -80,7 +82,6 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.core.OutputStreamAppender;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
@@ -94,10 +95,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
-import java.io.FilenameFilter;
-import java.util.LinkedList;
-import java.util.List;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
  * This class is an implementation of {@link Pepper}. It acts as a bridge
@@ -811,26 +808,36 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	    		
 	    		/* utils for file-collection */
     			List<URI> fileURIs = new ArrayList<URI>(); 		
-	    		fileURIs.add(artifact.getFile().toURI());  		
+	    		fileURIs.add(file.toURI());  		
+	    		
+//	    		/*TEST*/
+//	    		ArtifactDescriptorRequest aDReq = new ArtifactDescriptorRequest();
+//	    		aDReq.setArtifact(artifact);	    		
+//	    		ArtifactDescriptorResult aDR = system.readArtifactDescriptor(session, aDReq);
+//	    		for(Dependency dep : aDR.getDependencies()){
+//	    			System.out.println(dep);
+//	    		}
 	    		
 	    		/* utils for dependency collection */
 	    		CollectRequest collectRequest = new CollectRequest();
 	            collectRequest.setRoot( new Dependency( artifact, "" ) );
+	            collectRequest.setRepositories(Booter.newRepositories(system, session));
 	            collectRequest.addRepository(repo);	            
 	            collectRequest.setRootArtifact(artifact);
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );
-				
+	            
 	            Bundle bundle = null;
 	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), forbiddenFruits);
 	            Dependency dependency = null;	            
 	            //in the following we ignore the first dependency, because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
-	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){
-	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("–SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){
-	            			logger.info((new StringBuilder()).append("No update was performed because of a version incompatability according to pepper-framework: ").append(artifactId).append(" needs ")
+	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){	            		
+	            		boolean debugBoolB = !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""));	            		
+	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){
+	            			logger.info((new StringBuilder()).append("No update was performed because of a version incompatibility according to pepper-framework: ").append(artifactId).append(" needs ")
 	            					.append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!").toString());
-	          
+	            			return false;
 	            		}	            		
 	            	}
 	            	else if(!dependency.getArtifact().getArtifactId().contains("salt-")){	            		
@@ -855,7 +862,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            			locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
 	            			bundle.start();
 	            		}
-	            	} catch (IOException | BundleException e) { logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass());}	            	
+	            	} catch (IOException | BundleException e) { logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass().getSimpleName());}	            	
 		    	}
 	            /*
 	    		 * root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
@@ -869,7 +876,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            logger.info("\n");
 			}	    	
     	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {
-			update = false;			
+			logger.info("Update failed due to "+e.getClass().getSimpleName()+": "+e.getMessage());
+    		update = false;			
 		}       
         
         return update;
@@ -902,9 +910,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		String[] testCoords = null;
 		for (String dependencyString : forbiddenFruits){
 			testCoords = dependencyString.split(":");
-			if (coords[1].equals(testCoords[1]) &&
-				coords[0].equals(testCoords[0]) &&
-				coords[3].equals(testCoords[3])){
+			if (coords[1].equals(testCoords[1]) && /*artifactId*/
+				coords[0].equals(testCoords[0]) /*&&*/ /*groupId*/
+				/*coords[3].equals(testCoords[3])*/){  /*version*/ //FIXME? Version is ignored - to many issues with that
 				return true;
 			}
 		}

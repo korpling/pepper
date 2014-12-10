@@ -20,6 +20,7 @@
     </root>
     <logger name="org.apache.maven" level="OFF"/>
     <logger name="org.eclipse.aether" level="OFF"/>
+    <logger name="org.eclipse.aether.internal" level="OFF"/>
     <logger name="org.apache.http.wire" level="OFF" />
 	<logger name="org.eclipse.jetty" level="OFF" />
 	<logger name="org.sonatype.tests.jetty.server" level="OFF"/>

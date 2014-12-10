@@ -2,15 +2,36 @@
 <pepperModulesList defaultGroupId="de.hu_berlin.german.korpling.saltnpepper" defaultRepository="http://korpling.german.hu-berlin.de/maven2/">
 	<pepperModules>
 		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-		<artifactId>pepperModules-TCFModules</artifactId>
+		<artifactId>pepperModules-CoNLLModules</artifactId>
 		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
 	</pepperModules>
-	<pepperModules>
-		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-		<artifactId>pepperModules-TEIModules</artifactId>
+	<pepperModules>		
+		<artifactId>pepperModules-CoraXMLModules</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-ElanModules</artifactId>
+		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-EXMARaLDAModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-FALKOModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-GenericXMLModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-MergingModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-MMAX2Modules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-nlpModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-PAULAModules</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<groupId>edu.tufts.perseus</groupId>
@@ -23,18 +44,30 @@
 		<artifactId>pepperModules-RelANNISModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-RidgesModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-RSTModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-SaltInfoModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-TCFModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-TEIModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-TigerModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-TreetaggerModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-TueBaDZModules</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-UAMModules</artifactId>
-	</pepperModules>
-	<pepperModules>
-		<artifactId>pepperModules-PAULAModules</artifactId>
-	</pepperModules>
-	<pepperModules>
-		<artifactId>pepperModules-TreeTaggerModules</artifactId>
-	</pepperModules>
-	<pepperModules>
-		<artifactId>pepperModules-nlpModules</artifactId>
-	</pepperModules>
-	<pepperModules>
-		<artifactId>pepperModules-FALKOModules</artifactId>
 	</pepperModules>
 </pepperModulesList>

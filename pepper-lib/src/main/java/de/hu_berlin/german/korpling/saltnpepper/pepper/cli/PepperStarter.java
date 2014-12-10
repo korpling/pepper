@@ -628,6 +628,9 @@ public class PepperStarter {
 						changes = true;
 					}					
 				}
+				itemGroupId = null;
+				itemRepo = null;
+				node = null;
 			}else{//not contained yet -> insert
 				changes = true;
 				Node listNode = doc.getElementsByTagName(ModuleTableReader.TAG_LIST).item(0);
@@ -641,7 +644,13 @@ public class PepperStarter {
 				newModule.appendChild(groupIdNode);
 				newModule.appendChild(artifactIdNode);
 				newModule.appendChild(repositoryNode);
-				listNode.appendChild(newModule);				
+				listNode.appendChild(newModule);	
+				
+				listNode = null;
+				newModule = null;
+				groupIdNode = null;
+				artifactIdNode = null;
+				repository = null;
 			}
 			
 			if (changes){
@@ -654,12 +663,22 @@ public class PepperStarter {
 				DOMSource src = new DOMSource(doc);
 				StreamResult result = new StreamResult(configFile);				
 				transformer.transform(src, result);
-			}			
+				
+				trFactory = null;
+				transformer = null;
+				src = null;
+				result = null;
+			}
+			
+			docBuilder = null;
+			doc = null;
+			configuredModules = null;
+			item = null;
+			
 		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
 			logger.warn(e.getMessage());//TODO okay?
 			return false;
-		}		
-		//TODO kill dom obj
+		}
 		return true;
 	}
 	
