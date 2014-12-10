@@ -444,19 +444,23 @@ public class PepperStarter {
 		String newLine = System.getProperty("line.separator");
 		String indent = "\t";
 		boolean isSnapshot = params.size()>0 && params.get(0).equalsIgnoreCase("snapshot");
-		boolean ignoreVersion = false;
+		boolean ignoreVersion = params.size()>0 && (
+				isSnapshot? params.size()>1 && "iv".equalsIgnoreCase(params.get(1)) : params.size()>0 && "iv".equalsIgnoreCase(params.get(0))
+				);
 		PepperOSGiConnector pepperConnector = (PepperOSGiConnector)getPepper();
 		try {
 			moduleTable = getModuleTable();
 		
 			if (	params.get(0).equalsIgnoreCase("all") ||
-					( isSnapshot && params.get(1).equals("all") )	){
+					(isSnapshot&&!ignoreVersion || ignoreVersion&&!isSnapshot) && "all".equalsIgnoreCase(params.get(1)) ||
+					isSnapshot&&ignoreVersion&&params.size()>2&&"all".equalsIgnoreCase(params.get(2))
+					){
 				for (String s : moduleTable.keySet()){
 					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
-						retVal.append(s+" successfully updated.");
+						retVal.append(s).append(" successfully updated.").append(newLine);
 					}
 					else{
-						retVal.append(s+" not updated.");
+						retVal.append(s).append(" NOT updated.").append(newLine);
 					}
 				}
 			}
@@ -533,6 +537,7 @@ public class PepperStarter {
 	private boolean write2ConfigFile(String groupId, String artifactId, String repository){
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
+			boolean changes = false;
 			File configFile = new File(MODULES_XML_PATH);
 			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(configFile);
@@ -557,9 +562,32 @@ public class PepperStarter {
 						itemRepo = node;
 					}
 				}
-				itemGroupId.setTextContent(groupId);
-				itemRepo.setTextContent(repository);
+				if(itemGroupId!=null){
+					itemGroupId.setTextContent(groupId);
+					changes = true;
+				}
+				else{
+					if (!groupId.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTGROUPID).item(0).getTextContent())){
+						itemGroupId = doc.createElement(ModuleTableReader.TAG_GROUPID);
+						itemGroupId.setTextContent(groupId);
+						item.getParentNode().appendChild(itemGroupId);
+						changes = true;
+					}					
+				}
+				if(itemRepo!=null){
+					itemRepo.setTextContent(repository);
+					changes = true;
+				}
+				else{
+					if (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent())){
+						itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
+						itemRepo.setTextContent(repository);
+						item.getParentNode().appendChild(itemRepo);
+						changes = true;
+					}					
+				}
 			}else{//not contained yet -> insert
+				changes = true;
 				Node listNode = doc.getElementsByTagName(ModuleTableReader.TAG_LIST).item(0);
 				Node newModule = doc.createElement(ModuleTableReader.TAG_ITEM);				
 				Node groupIdNode = doc.createElement(ModuleTableReader.TAG_GROUPID);
@@ -571,18 +599,20 @@ public class PepperStarter {
 				newModule.appendChild(groupIdNode);
 				newModule.appendChild(artifactIdNode);
 				newModule.appendChild(repositoryNode);
-				listNode.appendChild(newModule);
-				
+				listNode.appendChild(newModule);				
+			}
+			
+			if (changes){
 				//write back to file	
 				TransformerFactory trFactory = TransformerFactory.newInstance();
-	//			trFactory.setAttribute("indent-number", 2);
+//				trFactory.setAttribute("indent-number", 2);
 				Transformer transformer = trFactory.newTransformer();
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 				DOMSource src = new DOMSource(doc);
 				StreamResult result = new StreamResult(configFile);				
 				transformer.transform(src, result);
-			}
+			}			
 		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
 			logger.warn(e.getMessage());//TODO okay?
 			return false;
