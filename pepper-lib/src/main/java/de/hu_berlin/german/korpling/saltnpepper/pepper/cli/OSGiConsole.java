@@ -182,14 +182,14 @@ public class OSGiConsole {
 	 * @param out
 	 */
 	public void ss(List<String> params, PrintStream out) {
-		String format = "| %1$-10s | %2$-15s | %3$-80s |\n";
+		String format = "| %1$-10s | %2$-15s | %3$-60s | %4$-20s |\n";
 		out.append("+------------+-----------------+----------------------------------------------------------------------------------+\n");
-		out.print(String.format(format, "id", "state", "bundle name"));
+		out.print(String.format(format, "id", "state", "bundle name", "version"));
 		out.append("+------------+-----------------+----------------------------------------------------------------------------------+\n");
 
 		if (getConnector().getBundleContext().getBundles() != null) {
 			for (Bundle bundle : getConnector().getBundleContext().getBundles()) {
-				out.print(String.format(format, bundle.getBundleId(), transformState(bundle.getState()), bundle.getSymbolicName()));
+				out.print(String.format(format, bundle.getBundleId(), transformState(bundle.getState()), bundle.getSymbolicName(), bundle.getVersion()));
 			}
 		}
 		out.append("+------------+-----------------+----------------------------------------------------------------------------------+\n");

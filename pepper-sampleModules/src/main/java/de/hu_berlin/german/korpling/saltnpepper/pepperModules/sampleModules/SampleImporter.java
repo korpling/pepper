@@ -254,7 +254,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			//the method getSDocument() returns the current document for creating the document-structure
 			getSDocument().setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
 			//to get the exact resource, which be processed now, call getResources(), make sure, it was set in createMapper()  
-			URI resource= getResources();
+			URI resource= getResourceURI();
 			
 			//we record, which file currently is imported to the debug stream, in this dummy implementation the resource is null 
 			logger.debug("Importing the file {}.", resource);

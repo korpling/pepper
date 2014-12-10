@@ -19,6 +19,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="lib/asg.cliche-110413.jar"/>
 	<classpathentry kind="src" path="/aether-demo-snippets"/>
 	<classpathentry kind="lib" path="/home/klotzmaz/.m2/repository/org/eclipse/aether/aether-api/1.0.0.v20140518/aether-api-1.0.0.v20140518.jar">
@@ -30,5 +31,7 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+=======
+>>>>>>> develop
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

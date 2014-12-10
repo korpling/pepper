@@ -1,5 +1,5 @@
 ====
-    Copyright 2009 Humboldt University of Berlin, INRIA.
+    Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ data. It is based upon the common metamodel Salt.
 To know more about the SaltNPepper project or the components of
 the project, please take a look at:
 
-https://korpling.german.hu-berlin.de/trac/saltnpepper
+https://u.hu-berlin.de/saltnpepper
 
 For help write an eMail at:
 
-	f.zipser@gmx.de 
+	saltnpepper@lists.hu-berlin.de 
 					

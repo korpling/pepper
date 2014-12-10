@@ -48,12 +48,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-            <artifactId>salt-saltSample</artifactId>
-            <version>${salt.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
@@ -86,26 +80,6 @@
                 </configuration>
             </plugin>
             <!-- end: assembly plugin -->
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${META-INF}</directory>
-                            <directory>${OSGI-INF}</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -152,7 +126,9 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+      					<!-- 
       					<Import-Package>de.hu_berlin.german.korpling.saltnpepper.salt, de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon, de.hu_berlin.german.korpling.saltnpepper.salt.samples, de.hu_berlin.german.korpling.saltnpepper.pepper.common,de.hu_berlin.german.korpling.saltnpepper.pepper.core,de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions,de.hu_berlin.german.korpling.saltnpepper.pepper.modules,de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl,de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework,*</Import-Package>
+      					 -->
                         <Service-Component>${allServiceComponents}</Service-Component>
                         <Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
                     </instructions>

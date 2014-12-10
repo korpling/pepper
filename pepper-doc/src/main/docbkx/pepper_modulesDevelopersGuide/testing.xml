@@ -5,7 +5,7 @@
     version="5.0" xml:id="ch_testing">
     <title>Testing your Pepper module</title>
     <sect1>
-        <title>Running Unit Test</title>
+        <title>Running Unit Tests</title>
         <para> In every good book about computer programming it is written that testing the software
             you are developing is a very important issue. Since testing increases the quality of
             software enormously, we agree to that. Spending time on developing tests may seem
@@ -22,10 +22,10 @@
             values are set like the supported format for an im- or exporter). And on the other hand,
             they provide some helper classes and functions, which can be used when adding further
             test methods for checking the functionality of your module. <note>
-                <para>We strongly recommend, to add some module specific test methods, to increase
+                <para>We strongly recommend to add some module specific test methods, to increase
                     the quality of your code and even to make it easier changing things and still
                     having a correctly running module.</para>
-            </note> To set upthe tests for the JUnit framework override the method
+            </note> To set up the tests for the JUnit framework override the method
                 <methodname>setUp()</methodname> as shown in the following snippet:
             <programlisting>@Before
 protected void setUp() throws Exception {
@@ -37,11 +37,11 @@ protected void setUp() throws Exception {
 		.setFormatVersion("1.0"));
 }                </programlisting>
             Since the JUnit framework can not know about the classes to test, you need to set and
-            initialize it as shown on position 1. In case of you are implementing an im- or
-            exporter, you need to set the supported formats and versions in your test case. Pepper
-            will check them automatically, but the test environment need to know the correct pairs
-            of format name and version. Replace FORMAT_NAME and FORMAT_VERSION, with your specific
-            ones. You can even add more than one <classname>FormatDefinition</classname> object. </para>
+            initialize it as shown on position 1. In case you are implementing an im- or exporter,
+            you need to set the supported formats and versions in your test case. Pepper will check
+            them automatically, but the test environment needs to know the correct pairs of format
+            name and version. Replace FORMAT_NAME and FORMAT_VERSION with your specific ones. You
+            can even add more than one <classname>FormatDefinition</classname> object. </para>
         <para> The provided test classes emulate the Pepper environment, so that you can run your
             entire module and just check the in- or output. </para>
         <para> In case that you write an importer, you can create an input file containing a corpus
@@ -82,10 +82,11 @@ protected void setUp() throws Exception {
                 <classname>SampleImporterTest</classname>,
                 <classname>SampleManipulatorTest</classname> and
                 <classname>SampleExporterTest</classname>. </para>
-        <para>For testing an exporter, you may want to use Salts sample generator. Here you will
+        <para>For testing an exporter, you may want to use Salt's sample generator
+            (de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator). Here you will
             find a lot of methods creating a sample Salt model with the possibility to just create
-            the layers, you want to use. For more information, take a look into the Salt quick users
-            guide (see <link xlink:href="u.hu-berlin.de/saltnpepper"
-            />).u.hu-berlin.de/saltnpepper</para>
+            the layers, you want to use. For more information, take a look into the Salt quick
+            user's guide (see <link xlink:href="u.hu-berlin.de/saltnpepper"
+            />).</para>
     </sect1>
 </chapter>

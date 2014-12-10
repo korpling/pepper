@@ -67,12 +67,19 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnecto
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
-
 public class PepperStarter {
 	/**
 	 * A logger for logging messages.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(PepperStarter.class);
+
+	/**
+	 * Initializes an instance of PepperStarter without a
+	 * {@link PepperConnector}. Make sure to call method
+	 * {@link #setPepper(PepperConnector)} right after calling the constructor.
+	 */
+	public PepperStarter() {
+	}
 
 	/**
 	 * Initializes an instance of PepperStarter.
@@ -84,7 +91,6 @@ public class PepperStarter {
 	 */
 	public PepperStarter(PepperConnector pepperConnector) {
 		setPepper(pepperConnector);
-		pepper.init();
 	}
 
 	/**
@@ -92,12 +98,21 @@ public class PepperStarter {
 	 */
 	private PepperConnector pepper = null;
 
+	/**
+	 * @return a reference to Pepper via a {@link PepperConnector}
+	 */
 	public PepperConnector getPepper() {
 		return pepper;
 	}
 
+	/**
+	 * Sets a reference to Pepper via a {@link PepperConnector}
+	 */
 	public void setPepper(PepperConnector pepper) {
 		this.pepper = pepper;
+		if (!getPepper().isInitialized()){
+			getPepper().init();
+		}
 	}
 
 	public enum COMMAND {
@@ -105,26 +120,26 @@ public class PepperStarter {
 		//
 		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."), 
 		//
-		LIST("list", "l", "module name", "A table with information about the passed Pepper module."), 
+		LIST("list", "l", "module name", "A table with information about the passed Pepper module."),
 		//
 		CONF("conf", "co", null, "Shows the configuration for current Pepper instance."),
 		//
-		HELP("help", "h", null, "Prints this help."), 
+		HELP("help", "h", null, "Prints this help."),
 		//
-		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."), 
+		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
 		//
-		EXIT("exit", "e", null, "Exits Pepper."), 
+		EXIT("exit", "e", null, "Exits Pepper."),
 		//
-		CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."), 
+		CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."),
 		//
 		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
 		// "updates a Pepper module with the module located at 'module path' and starts it."),
-		REMOVE("remove", "re", "bundle name", "Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "), 
+		REMOVE("remove", "re", "bundle name", "Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "),
 		//
-		START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."), 
+		START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."),
 		//
-		STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."), 
+		STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."),
 		//
 		DEBUG("debug", "d", null, "Switches on/off the debug output.");
 
@@ -190,10 +205,10 @@ public class PepperStarter {
 		try {
 			moduleDescs = getPepper().getRegisteredModules();
 		} catch (Exception e) {
-			if (isDebug){
+			if (isDebug) {
 				e.printStackTrace();
 			}
-			retVal.append("Cannot not display any Pepper module. Calling "+COMMAND.START_OSGI.getName()+" might solve the problem. ");
+			retVal.append("Cannot not display any Pepper module. Calling " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
 		retVal.append(PepperUtil.reportModuleList(moduleDescs));
@@ -214,7 +229,7 @@ public class PepperStarter {
 		try {
 			moduleDescs = getPepper().getRegisteredModules();
 		} catch (Exception e) {
-			if (isDebug){
+			if (isDebug) {
 				e.printStackTrace();
 			}
 			retVal.append("Cannot not display any Pepper module.");
@@ -253,7 +268,7 @@ public class PepperStarter {
 			try {
 				getPepper().init();
 			} catch (Exception e) {
-				if (isDebug){
+				if (isDebug) {
 					e.printStackTrace();
 				}
 				return ("Cannot start OSGi, because of a nested exception: " + e.getMessage());
@@ -272,7 +287,7 @@ public class PepperStarter {
 			try {
 				((PepperOSGiConnector) getPepper()).stopOSGi();
 			} catch (Exception e) {
-				if (isDebug){
+				if (isDebug) {
 					e.printStackTrace();
 				}
 				return ("Cannot stop OSGi, because of a nested exception: " + e.getMessage());
@@ -282,37 +297,44 @@ public class PepperStarter {
 			return ("Cannot stop OSGi, since Pepper is not running in OSGi mode. ");
 		}
 	}
+
 	/**
-	 * Cleans the current Pepper instance and especially removes the OSGi workspace, to set up a new one. 
+	 * Cleans the current Pepper instance and especially removes the OSGi
+	 * workspace, to set up a new one.
+	 * 
 	 * @return
 	 */
-	public String clean(){
+	public String clean() {
 		stop_osgi();
-		String retVal= "";
-		try{
+		String retVal = "";
+		try {
 			FileUtils.deleteDirectory(getPepper().getConfiguration().getTempPath());
-			retVal="Cleaned up Pepper instance, please call "+COMMAND.START_OSGI.getName()+" to make Pepper ready to run again.";
-		}catch (IOException e) {
-			retVal="Cannot clean Pepper instance, because of "+ e.getMessage();
-			if (isDebug){
+			retVal = "Cleaned up Pepper instance, please call " + COMMAND.START_OSGI.getName() + " to make Pepper ready to run again.";
+		} catch (IOException e) {
+			retVal = "Cannot clean Pepper instance, because of " + e.getMessage();
+			if (isDebug) {
 				e.printStackTrace();
 			}
 		}
-		
-		return(retVal);
+
+		return (retVal);
 	}
-	/** Determines if debug mode is on or off**/
-	private Boolean isDebug=false;
+
+	/** Determines if debug mode is on or off **/
+	private Boolean isDebug = false;
+
 	/**
 	 * Switches on/off the debug mode.
+	 * 
 	 * @return
 	 */
-	public String debug(){
-		isDebug= !isDebug;
-		if (isDebug){
-			return("Debug mode is on.");
-		}else{
-			return("Debug mode is off.");
+	public String debug() {
+		isDebug = !isDebug;
+		if (isDebug) {
+			// enableDebug();
+			return ("Debug mode is on.");
+		} else {
+			return ("Debug mode is off.");
 		}
 	}
 
@@ -326,7 +348,7 @@ public class PepperStarter {
 			console.start(input, output);
 			return ("exit OSGi");
 		} else {
-			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+			return ("No OSGi console available, since Pepper is not running in OSGi mode. ");
 		}
 	}
 
@@ -414,20 +436,19 @@ public class PepperStarter {
 	/**
 	 * @return a String containing all Pepper configurations formatted as table
 	 */
-	public String conf(){
+	public String conf() {
 		StringBuilder retVal = new StringBuilder();
 		String format = "| %1$-40s | %2$-50s |\n";
 		String line = "+------------------------------------------+----------------------------------------------------+\n";
 		retVal.append(line);
 		retVal.append(String.format(format, "name", "value"));
 		retVal.append(line);
-		for (Object propName: getPepper().getConfiguration().keySet()){
-			retVal.append(String.format(format,propName, getPepper().getConfiguration().getProperty(propName.toString())));
+		for (Object propName : getPepper().getConfiguration().keySet()) {
+			retVal.append(String.format(format, propName, getPepper().getConfiguration().getProperty(propName.toString())));
 		}
 		retVal.append(line);
 		return (retVal.toString());
 	}
-	
 	/** this map contains all registered modules with groupId, artifactId and maven repository. It is filled
 	 * in the first call of update(List..params) */
 	Map<String, Pair<String, String>> moduleTable;
@@ -725,95 +746,79 @@ public class PepperStarter {
 	/**
 	 * Starts the interactive console of Pepper.
 	 */
-	public void runInteractive(){
-		boolean exit= false;
-		String userInput= null;
-		
+	public void runInteractive() {
+		boolean exit = false;
+		String userInput = null;
+
 		output.println("Welcome to Pepper, type 'help' for help.");
-		while (!exit){
+		while (!exit) {
 			try {
-				output.print(PROMPT+">");
+				output.print(PROMPT + ">");
 				userInput = input.readLine();
-			} catch (IOException ioe) {				
-		         output.println("Cannot read command, type in 'help' for help.");
-		    }
-			userInput= userInput.trim();
-			String[] parts=userInput.split(" ");
-			String command= parts[0];
-			List<String> params= new Vector<String>();
-			int i= 0;
-			for (String part: parts){
-				if (i> 0){
+			} catch (IOException ioe) {
+				output.println("Cannot read command, type in 'help' for help.");
+			}
+			userInput = userInput.trim();
+			String[] parts = userInput.split(" ");
+			String command = parts[0];
+			List<String> params = new Vector<String>();
+			int i = 0;
+			for (String part : parts) {
+				if (i > 0) {
 					params.add(part);
 				}
 				i++;
 			}
-			if (	(COMMAND.HELP.getName().equalsIgnoreCase(command))||
-					(COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))){
+			if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(help());
-			}else if (	(params.size()== 0)&&
-						(	(COMMAND.LIST.getName().equalsIgnoreCase(command))||
-								(COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))){
+			} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
 				output.println(list());
-			}else if (	((params.size()> 0))&&
-						(	(COMMAND.LIST.getName().equalsIgnoreCase(command))||
-							(COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))){
-				if (params.size()== 1){
+			} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+				if (params.size() == 1) {
 					output.println(list(params.get(0)));
-				}else{
+				} else {
 					output.println("Please pass exactly one module name.");
 				}
-			}else if (	(COMMAND.CONF.getName().equalsIgnoreCase(command))||
-						(COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(conf());
-			}else if (	(COMMAND.SELFTEST.getName().equalsIgnoreCase(command))||
-						(COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(selfTest());
-			}else if (	(COMMAND.EXIT.getName().equalsIgnoreCase(command))||
-						(COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
 				break;
-			}else if (	((params.size()> 0))&&
-						(	(COMMAND.CONVERT.getName().equalsIgnoreCase(command))||
-							(COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command)))){
-				if (params.size()== 1){
-					Long timestamp= System.currentTimeMillis();
-					try{
+			} else if (((params.size() > 0)) && ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command)))) {
+				if (params.size() == 1) {
+					Long timestamp = System.currentTimeMillis();
+					try {
 						convert(params.get(0));
-						timestamp= System.currentTimeMillis() - timestamp;
-						output.println("conversion ended successfully, required time: "+(timestamp/1000) +" s");
-					}catch (Exception e) {
-						timestamp= System.currentTimeMillis() - timestamp;
-						output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: "+ (timestamp/1000) +" s");
-						output.println(PepperUtil.breakString("   ",e.getMessage()+" ("+e.getClass().getSimpleName()+")"));
+						timestamp = System.currentTimeMillis() - timestamp;
+						output.println("conversion ended successfully, required time: " + (timestamp / 1000) + " s");
+					} catch (Exception e) {
+						timestamp = System.currentTimeMillis() - timestamp;
+						output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + (timestamp / 1000) + " s");
+						output.println(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
 						output.println("full stack trace:");
 						e.printStackTrace(output);
 					}
-				}else{
+				} else {
 					output.println("Please pass exactly one workflow file.");
 				}
-			}else if(	(COMMAND.OSGI.getName().equalsIgnoreCase(command))||
-						(COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(osgi());
-			}else if(	(COMMAND.INSTALL_START.getName().equalsIgnoreCase(command))||
-						(COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(installAndStart(params));
-//			}else if(	(COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
-//						(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
-//				output.println(update(params));
-			}else if(	(COMMAND.REMOVE.getName().equalsIgnoreCase(command))||
-						(COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))){
+				// }else if(
+				// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+				// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
+				// output.println(update(params));
+			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(remove(params));
-			}else if(	(COMMAND.START_OSGI.getName().equalsIgnoreCase(command))||
-						(COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(start_osgi());
-			}else if(	(COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command))||
-						(COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(stop_osgi());
-			}else if(	(COMMAND.CLEAN.getName().equalsIgnoreCase(command))||
-						(COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(clean());
-			}else if(	(COMMAND.DEBUG.getName().equalsIgnoreCase(command))||
-						(COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))){
+			} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(debug());
 			}else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
 						(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command)) ){				
@@ -822,57 +827,88 @@ public class PepperStarter {
 				output.println("Type 'help' for help.");
 			}
 		}
-    }
+	}
+
+	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
+	// CONTRA SLF4J IDEA.
+	// /**
+	// * Changes the logger level to debug in case of logback is used and root
+	// logger is
+	// * of type {@link ch.qos.logback.classic.Logger}.
+	// */
+	// public static void enableDebug(){
+	// Logger rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+	// if (rootLogger instanceof ch.qos.logback.classic.Logger){
+	// ((ch.qos.logback.classic.Logger)rootLogger).setLevel(Level.DEBUG);
+	// }
+	// }
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
-		pepperProps.load();
-		
-		String eMail = pepperProps.getPepperEMail();
-		String hp = pepperProps.getPepperHomepage();
-
-		logger.info(PepperUtil.getHello(eMail, hp));
+		Long timestamp = null;
+		PepperStarter starter = null;
+		PepperConnector pepper = null;
 		boolean endedWithErrors = false;
 
-		PepperConnector pepper = new PepperOSGiConnector();
-		pepper.setConfiguration(pepperProps);
-		PepperStarter starter = new PepperStarter(pepper);
+		try {
+			PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
+			pepperProps.load();
 
-		if (args.length == 0) {
-			// run interactive console
-			try {
-				starter.runInteractive();
-			} catch (Exception e) {
-			}
-		} else if ((COMMAND.HELP.getName().equalsIgnoreCase(args[0]) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(args[0])))) {
-			// print help
-			logger.info(starter.help());
+			String eMail = pepperProps.getPepperEMail();
+			String hp = pepperProps.getPepperHomepage();
 
-		} else if ((COMMAND.LIST.getName().equalsIgnoreCase(args[0]) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(args[0])))) {
-			if (args.length == 1) {
-				logger.info(starter.list());
-			} else {
-				logger.info(starter.list(args[1]));
+			starter = new PepperStarter();
+
+			if ((args.length > 0) && (args[0].equalsIgnoreCase(COMMAND.DEBUG.toString()))) {
+				starter.debug();
 			}
-		} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(args[0]) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(args[0])))) {
-			logger.info(starter.selfTest());
-		} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
-			String workFlowFile = null;
-			if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
-				if (args[1] == null) {
-					logger.error("Cannot start conversion, since no workflow description file is given.");
-					endedWithErrors = true;
-				} else {
-					workFlowFile = args[1];
+
+			logger.info(PepperUtil.getHello(eMail, hp));
+			
+			pepper = new PepperOSGiConnector();
+			pepper.setConfiguration(pepperProps);
+			boolean runInteractive= false;
+			try{
+				starter.setPepper(pepper);
+			}catch (Exception e){
+				logger.info("An error occured, while starting Pepper. To get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. You now can exit Pepper or try to find out more about that exception using the Pepper console. ", e);	
+				runInteractive= true;
+			}
+			if (	(args.length == 0)||
+					(runInteractive)){
+				// run interactive console
+				try {
+					starter.runInteractive();
+				} catch (Exception e) {
 				}
-			} else {
-				workFlowFile = args[0];
-			}
-			Long timestamp = System.currentTimeMillis();
-			try {
+			} else if ((COMMAND.HELP.getName().equalsIgnoreCase(args[0]) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(args[0])))) {
+				// print help
+				logger.info(starter.help());
+
+			} else if ((COMMAND.LIST.getName().equalsIgnoreCase(args[0]) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(args[0])))) {
+				if (args.length == 1) {
+					logger.info(starter.list());
+				} else {
+					logger.info(starter.list(args[1]));
+				}
+			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(args[0]) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(args[0])))) {
+				logger.info(starter.selfTest());
+			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
+				String workFlowFile = null;
+				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
+					if (args[1] == null) {
+						logger.error("Cannot start conversion, since no workflow description file is given.");
+						endedWithErrors = true;
+					} else {
+						workFlowFile = args[1];
+					}
+				} else {
+					workFlowFile = args[0];
+				}
+				try{
+				timestamp = System.currentTimeMillis();
 				if (logger.isDebugEnabled()) {
 					for (Object key : pepperProps.keySet()) {
 						logger.debug(String.format("%-40s%-16s", key + ":", pepperProps.get(key)));
@@ -884,17 +920,20 @@ public class PepperStarter {
 				starter.convert(workFlowFile);
 
 				timestamp = System.currentTimeMillis() - timestamp;
-				logger.info("conversion ended successfully, required time: " + timestamp + " ms");
-			} catch (Exception e) {
-				timestamp= System.currentTimeMillis() - timestamp;
-				endedWithErrors = true;
-				logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + timestamp + " ms");
-				logger.info(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
-				logger.info("full stack trace:");
-				logger.error("", e);
-			} finally {
-				logger.info("************************************************************************************************************************\n");
+				logger.info("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: " + timestamp + " ms");
+				}catch (Exception e){
+					timestamp = System.currentTimeMillis() - timestamp;
+					endedWithErrors = true;
+					logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME:  " + timestamp + " ms");
+					logger.info(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
+					throw e;
+				}
 			}
+		} catch (Exception e) {
+			logger.info("An error occured, to get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. ");
+			logger.error(" ", e);
+		} finally {
+			logger.info("************************************************************************************************************************\n");
 		}
 		if (endedWithErrors) {
 			System.exit(-1);

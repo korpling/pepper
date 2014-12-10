@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -81,6 +82,8 @@ import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.core.OutputStreamAppender;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
@@ -91,6 +94,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import java.io.FilenameFilter;
+import java.util.LinkedList;
+import java.util.List;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
  * This class is an implementation of {@link Pepper}. It acts as a bridge
@@ -104,7 +111,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperExceptio
 public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
-	
+
 	private Set<String> forbiddenFruits = null;
 	private static final String blacklistPath = "./conf/dep/blacklist.cfg";
 	/** this String contains the artifactId of pepper-framework */
@@ -112,6 +119,20 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	/** contains the version of pepper framework */
 	private String frameworkVersion;
 	
+	/**
+	 * FIXME This is just a workaround to set the current version of Pepper,
+	 * this is necessary, mark the Pepper package, to be load by the classloader
+	 * in and outside of OSGi. This could be removed, when there is a better way
+	 * to detect the current Pepper version automatically.
+	 */
+	public static final String PEPPER_VERSION = "2.0.1";
+
+	/** Determines if this object has been initialized **/
+	private boolean isInit = false;
+
+	public boolean isInitialized() {
+		return (isInit);
+	}
 	/**
 	 * Starts the OSGi environment and installs and starts all bundles located
 	 * in the plugin directory. <br/>
@@ -127,7 +148,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			System.setProperty(PepperOSGiRunner.PROP_TEST_DISABLED, Boolean.TRUE.toString());
 
 			setBundleContext(this.startEquinox());
-
+		} catch (Exception e) {
+			throw new PepperOSGiException("The OSGi environment could not have been started. ", e);
+		}
+		try {
 			logger.debug("plugin path:\t\t" + getPepperStarterConfiguration().getPlugInPath());
 
 			logger.debug("installing OSGI-bundles...");
@@ -135,27 +159,38 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			Collection<Bundle> bundles = null;
 
 			// installing module-bundles
+			List<URI> dropInURIs = null;
+			List<String> dropInRawStrings = getPepperStarterConfiguration().getDropInPaths();
+			if (dropInRawStrings != null) {
+				dropInURIs = new ArrayList<>(dropInRawStrings.size());
+				for (String path : dropInRawStrings) {
+					dropInURIs.add(new File(path).toURI());
+				}
+			}
 			logger.debug("\tinstalling OSGI-bundles:");
-			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI());
+      
+			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI(),
+				dropInURIs);
 			logger.debug("----------------------------------------------------------");
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
 			logger.debug("-------------------- starting bundles --------------------");
-			if (	(bundles== null)||
-					(bundles.isEmpty())){
-				bundles= new ArrayList<Bundle>();
-				bundleIdMap= new Hashtable<Long, Bundle>();
-				for (Bundle bundle: getBundleContext().getBundles()){
+			if ((bundles == null) || (bundles.isEmpty())) {
+				bundles = new ArrayList<>();
+				bundleIdMap = new Hashtable<>();
+				for (Bundle bundle : getBundleContext().getBundles()) {
 					bundles.add(bundle);
 					bundleIdMap.put(bundle.getBundleId(), bundle);
 				}
 			}
-			
+
 			this.startBundles(bundles);
 			logger.debug("----------------------------------------------------------");
 			logger.debug("starting OSGI-bundles...FINISHED");
+		} catch (PepperException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new PepperException("An exception occured setting up the OSGi environment. ", e);
+			throw new PepperOSGiException("An exception occured installing bundles for OSGi environment. ", e);
 		}
 		/* read/write dependency blacklist */
 		File blacklistFile = new File(blacklistPath);
@@ -195,6 +230,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			} catch (DependencyCollectionException e) {}            
 	        
 		}
+		isInit = true;
 	}
 
 	/**
@@ -206,14 +242,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected BundleContext startEquinox() throws Exception {
 		BundleContext bc = null;
 
-		Properties frameworkProperties = new Properties();
-
-		frameworkProperties.setProperty(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
-
-		frameworkProperties.setProperty(EclipseStarter.PROP_CLEAN, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_CONSOLE, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_NOSHUTDOWN, "true");
-		frameworkProperties.setProperty(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
+		Map<String, String> frameworkProperties = new HashMap<String, String>();
+		frameworkProperties.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
+		frameworkProperties.put(EclipseStarter.PROP_CLEAN, "true");
+		frameworkProperties.put(EclipseStarter.PROP_CONSOLE, "true");
+		frameworkProperties.put(EclipseStarter.PROP_NOSHUTDOWN, "true");
+		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		bc = EclipseStarter.startup(new String[] {}, null);
@@ -229,7 +263,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public void stopOSGi() throws Exception {
 		EclipseStarter.shutdown();
 	}
-	
+
 	/** {@link PepperStarterConfiguration} of this object. **/
 	private PepperStarterConfiguration properties = null;
 
@@ -238,19 +272,20 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public PepperConfiguration getConfiguration() {
 		return properties;
 	}
-	/** 
-	 * @return configuration as {@link PepperStarterConfiguration} 
-	**/
+
+	/**
+	 * @return configuration as {@link PepperStarterConfiguration}
+	 **/
 	public PepperStarterConfiguration getPepperStarterConfiguration() {
 		return properties;
 	}
-	
+
 	@Override
 	public void setConfiguration(PepperConfiguration configuration) {
-		if (configuration instanceof PepperStarterConfiguration){
-			this.properties = (PepperStarterConfiguration)configuration;
-		}else{
-			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '"+PepperStarterConfiguration.class.getSimpleName()+"'.");
+		if (configuration instanceof PepperStarterConfiguration) {
+			this.properties = (PepperStarterConfiguration) configuration;
+		} else {
+			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '" + PepperStarterConfiguration.class.getSimpleName() + "'.");
 		}
 	}
 
@@ -326,8 +361,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		} else {
 
 			// TODO is it possible, to retrieve this information automatically?
-			// EDIT: MARTIN KLOTZ: inserted version retrieval on object construction, would that help?
-			String pepperVersion = "2.0.0";
+			String pepperVersion = PEPPER_VERSION;
 
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
@@ -360,23 +394,39 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * @param bundleAction
 	 *            a flag, which shows if bundle has to be started or just
 	 *            installed
+   * @param dropinPaths A list of additionally paths to load bundles from
+   * 
 	 * @throws BundleException
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	protected Collection<Bundle> installBundles(URI pluginPath) throws BundleException, URISyntaxException, IOException {
-		Collection<Bundle> bundles = new Vector<Bundle>();
+	protected Collection<Bundle> installBundles(URI pluginPath, List<URI> dropinPaths) throws BundleException, URISyntaxException, IOException {
+    
+		ArrayList<Bundle> bundles = new ArrayList<>();
+		
+		List<URI> loadLocations = new LinkedList<>();
+		if(dropinPaths != null)
+		{
+			loadLocations.addAll(dropinPaths);
+		}
+		loadLocations.add(pluginPath);
+		
 		StringBuilder osgiBundlesProp = null;
-		for (File bundleJar : new File(pluginPath.getPath()).listFiles()) {
-			// check if file is file-object
-			if (bundleJar.isFile()) {
-				// check if file is file jar
-				if (bundleJar.getName().endsWith(".jar")) {
+	
+		for (URI dropinLocation : loadLocations) {
+			File[] fileLocations =
+				new File(dropinLocation.getPath())
+					.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
+			for (File bundleJar : fileLocations) {
+				// check if file is file-object
+				if (bundleJar.isFile() && bundleJar.canRead()) {
+					// check if file is file jar
 					URI bundleURI = bundleJar.toURI();
 					Bundle bundle = install(bundleURI);
 					if (bundle != null) {
 						bundles.add(bundle);
-						logger.debug("\t\tinstalling bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
+						logger.debug("\t\tinstalling bundle: " + bundle.
+							getSymbolicName() + "-" + bundle.getVersion());
 
 						// set system property for bundle pathes
 						if (osgiBundlesProp == null) {
@@ -429,7 +479,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			if (pluginPath != null) {
 				// download file, if file is a web resource
 				if (("http".equalsIgnoreCase(bundleURI.getScheme())) || ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
-					String tempPath= getPepperStarterConfiguration().getTempPath().getCanonicalPath();
+					String tempPath = getPepperStarterConfiguration().getTempPath().getCanonicalPath();
 					URL bundleUrl = bundleURI.toURL();
 					if (!tempPath.endsWith("/")) {
 						tempPath = tempPath + "/";
@@ -585,8 +635,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			try {
 				bundle.start();
 			} catch (BundleException e) {
-				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. This could cause other problems. For more details turn on log mode to debug and see log. ");
-				logger.debug("The reason was: ", e);
+				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. This could cause other problems. For more details turn on log mode to debug and see log file. ", e);
 			}
 		}
 		if (bundle.getState() != Bundle.ACTIVE) {
@@ -614,8 +663,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					start(bundle.getBundleId());
 				}
 			}
-			if (pepperBundle!= null){
-				pepperBundle.start();
+			try {
+				if (pepperBundle != null) {
+					pepperBundle.start();
+				}
+			} catch (BundleException e) {
+				throw new PepperOSGiFrameworkPluginException("The Pepper framework bundle could not have been started. Unfortunatly Pepper cannot be started without that OSGi bundle. ", e);
 			}
 		}
 	}
