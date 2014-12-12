@@ -238,7 +238,7 @@ public class PepperOSGiRunner implements Runnable {
 	 */
 	@Activate
 	protected void activate(ComponentContext componentContext) {
-		Enumeration<Object> keys = componentContext.getProperties().keys();
+		Enumeration<String> keys = componentContext.getProperties().keys();
 
 		while (keys.hasMoreElements()) {
 			Object key = keys.nextElement();
