@@ -20,12 +20,14 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,9 +62,6 @@ import org.eclipse.aether.examples.util.Booter;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
-import org.eclipse.aether.resolution.ArtifactDescriptorException;
-import org.eclipse.aether.resolution.ArtifactDescriptorRequest;
-import org.eclipse.aether.resolution.ArtifactDescriptorResult;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
@@ -737,10 +736,21 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * and triggers the installation process if a newer version is available
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
-				
+		
+		PrintStream out = System.out;
+		PrintStream noOut = null;
+		
+        try {
+			noOut = new PrintStream("/media/workspace/tmp/maven-out");
+		} catch (FileNotFoundException e1) {			
+		}
+        System.setOut(noOut==null? out : noOut);
+		
+		String newLine = System.getProperty("line.separator");
+		
 		RepositorySystem system = Booter.newRepositorySystem();
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
-        boolean update = true; //MUST be born true
+        boolean update = true; //MUST be born true        
         
         /*build repository*/
         RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", repositoryUrl);
@@ -798,7 +808,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		    					file = artifact.getFile();
 		    				
 		    			}catch (ArtifactResolutionException e){
-		    					logger.info("Highest version in repository could not be found. Checking the next lower version ...");			    				
+		    					System.setOut(out);
+		    					logger.info("Highest version in repository could not be found. Checking the next lower version ...");
+		    					System.setOut(noOut==null? out : noOut);
 		    			}
 	    			}
     		}    	
@@ -809,14 +821,6 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	    		/* utils for file-collection */
     			List<URI> fileURIs = new ArrayList<URI>(); 		
 	    		fileURIs.add(file.toURI());  		
-	    		
-//	    		/*TEST*/
-//	    		ArtifactDescriptorRequest aDReq = new ArtifactDescriptorRequest();
-//	    		aDReq.setArtifact(artifact);	    		
-//	    		ArtifactDescriptorResult aDR = system.readArtifactDescriptor(session, aDReq);
-//	    		for(Dependency dep : aDR.getDependencies()){
-//	    			System.out.println(dep);
-//	    		}
 	    		
 	    		/* utils for dependency collection */
 	    		CollectRequest collectRequest = new CollectRequest();
@@ -832,11 +836,15 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            //in the following we ignore the first dependency, because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
-	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){	            		
-	            		boolean debugBoolB = !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""));	            		
+	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){            			            		
 	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){
-	            			logger.info((new StringBuilder()).append("No update was performed because of a version incompatibility according to pepper-framework: ").append(artifactId).append(" needs ")
-	            					.append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!").toString());
+	            			System.setOut(out);
+	            			logger.info(
+	            					(new StringBuilder())
+	            					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
+	            					.append(newLine).append(artifactId).append(" needs ").append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!")
+	            					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
+	            					.append(artifactId).append("\"").toString());	            			
 	            			return false;
 	            		}	            		
 	            	}
@@ -848,21 +856,27 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            			artifactResult = system.resolveArtifact(session, artifactRequest);          			
 		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());		            		
 	            		}catch (ArtifactResolutionException e){
+	            			System.setOut(out);
 	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");
+	            			System.setOut(noOut==null? out : noOut);
 	            		}
 	            	}
 	            }
-	            logger.info("\n");
+	            System.setOut(out);
+	            logger.info("\n");	            
 	            for (int i=fileURIs.size()-1; i>=0; i--){	            	
 	            	try {
+	            		System.setOut(out);
 	            		logger.info("\tinstalling: "+fileURIs.get(i));
+	            		System.setOut(noOut==null? out : noOut);
 	            		bundle = this.installAndCopy(fileURIs.get(i));
 	            		if (bundle!=null){
 	            			bundleIdMap.put(bundle.getBundleId(), bundle);
 	            			locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
 	            			bundle.start();
 	            		}
-	            	} catch (IOException | BundleException e) { logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass().getSimpleName());}	            	
+	            	} catch (IOException | BundleException e) {	            		
+	            		logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass().getSimpleName());}	            		
 		    	}
 	            /*
 	    		 * root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
@@ -876,10 +890,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            logger.info("\n");
 			}	    	
     	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {
-			logger.info("Update failed due to "+e.getClass().getSimpleName()+": "+e.getMessage());
+    		System.setOut(out);
+    		logger.info("Update failed due to "+e.getClass().getSimpleName()+": "+e.getMessage());
     		update = false;			
 		}       
-        
+        System.setOut(out);
+        if (noOut!=null){
+			noOut.close();
+		}
         return update;
 	}
 	

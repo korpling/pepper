@@ -17,8 +17,11 @@
     <root level="info">
                 <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
-    </root>
-    <logger name="org.apache.maven" level="OFF"/>
+    </root>   
+    <logger name="org.apache" level="OFF"/>
+    <logger name="org.apache.maven.repository.internal.DefaultVersionRangeResolver" level="OFF"/>
+    <logger name="org.eclipse.aether.internal.impl.DefaultRepositoryEventDispatcher" level="OFF"/>
+    <logger name="org.codehaus.plexus" level="OFF"/>
     <logger name="org.eclipse.aether" level="OFF"/>
     <logger name="org.eclipse.aether.internal" level="OFF"/>
     <logger name="org.apache.http.wire" level="OFF" />

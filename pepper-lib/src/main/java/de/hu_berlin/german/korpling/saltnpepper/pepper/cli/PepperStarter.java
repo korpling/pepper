@@ -473,8 +473,8 @@ public class PepperStarter {
 			moduleTable = getModuleTable();
 		
 			if (	params.get(0).equalsIgnoreCase("all") ||
-					(isSnapshot&&!ignoreVersion || ignoreVersion&&!isSnapshot) && "all".equalsIgnoreCase(params.get(1)) ||
-					isSnapshot&&ignoreVersion&&params.size()>2&&"all".equalsIgnoreCase(params.get(2))
+					(isSnapshot&&!ignoreVersion || ignoreVersion&&!isSnapshot) && params.size()>1 && "all".equalsIgnoreCase(params.get(1)) ||
+					isSnapshot&&ignoreVersion && params.size()>2 && "all".equalsIgnoreCase(params.get(2))
 					){
 				for (String s : moduleTable.keySet()){
 					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
@@ -501,9 +501,10 @@ public class PepperStarter {
 							retVal.append(indent).append(module).append(moduleTable.get(module)).append(newLine);
 						}
 						retVal.append(newLine);						
-						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):").append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
+						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):")
+						.append(newLine).append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
 						retVal.append(newLine).append(indent).append("GROUP_ID: the groupId of the pepper module");
-						retVal.append(newLine).append(indent).append("ARTIFACT_ID: the artifactId of the pepper module, usually \"pepperModules-XXXModules\"");
+						retVal.append(newLine).append(indent).append("ARTIFACT_ID: the artifactId of the pepper module, usually \"pepperModules-___Modules\"");
 						retVal.append(newLine).append(indent).append("REPOSITORY_URL: the url of the maven repository that contains the module").append(newLine);
 					}
 					else if (s.contains("::")){
@@ -551,8 +552,12 @@ public class PepperStarter {
 						.append(newLine).append(indent).append("installs a file by its URL. Dependencies will not be resolved.")
 						.append(newLine);
 					}
-					else if (!isSnapshot){
-						isSnapshot|=s.equalsIgnoreCase("snapshot");
+					else if ("snapshot".equalsIgnoreCase(s)){
+						isSnapshot = true;
+					}
+					else{
+						retVal.append(indent).append(s).append(" is not a known module.")
+						.append(newLine).append(indent).append("For more information type \"u config\"").append(newLine);
 					}
 				}
 			}
