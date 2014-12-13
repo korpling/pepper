@@ -738,12 +738,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
 		
 		PrintStream out = System.out;
-		PrintStream noOut = null;
-		
-        try {
-			noOut = new PrintStream("/media/workspace/tmp/maven-out");
-		} catch (FileNotFoundException e1) {			
-		}
+		PrintStream noOut = new PrintStream(new OutputStream(){
+			@Override
+			public void write(int b){					
+			}
+		});
         System.setOut(noOut==null? out : noOut);
 		
 		String newLine = System.getProperty("line.separator");
@@ -895,9 +894,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
     		update = false;			
 		}       
         System.setOut(out);
-        if (noOut!=null){
-			noOut.close();
-		}
+		noOut.close();		
         return update;
 	}
 	
