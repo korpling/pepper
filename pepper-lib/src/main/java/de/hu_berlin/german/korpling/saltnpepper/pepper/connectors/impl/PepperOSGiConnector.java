@@ -109,7 +109,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
 
 	private Set<String> forbiddenFruits = null;
-	private static final String blacklistPath = "./conf/dep/blacklist.cfg";
+	private static final String BLACKLIST_PATH = "./conf/dep/blacklist.cfg";
 	/** this String contains the artifactId of pepper-framework */
 	private static final String ARTIFACT_ID_PEPPER_FRAMEWORK = "pepper-framework";
 	/** contains the version of pepper framework */
@@ -189,7 +189,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw new PepperOSGiException("An exception occured installing bundles for OSGi environment. ", e);
 		}
 		/* read/write dependency blacklist */
-		File blacklistFile = new File(blacklistPath);
+		File blacklistFile = new File(BLACKLIST_PATH);
 		forbiddenFruits = new HashSet<String>();
 		if (blacklistFile.exists()){
 			try {
@@ -206,7 +206,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		}
 		frameworkVersion = getFrameworkVersion();
 		if (forbiddenFruits.isEmpty()){
-			/* maven access utils*/			
+			/* maven access utils*/
+			PrintStream out = System.out;
+			PrintStream noOut = new PrintStream(new OutputStream(){
+				@Override
+				public void write(int b){					
+				}
+			});
+	        System.setOut(noOut==null? out : noOut);
 			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
 			RepositorySystem system = Booter.newRepositorySystem();
 	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
@@ -224,7 +231,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				write2Blacklist(getAllDependencies(collectResult.getRoot(), Collections.<String>emptySet()));
 				
 			} catch (DependencyCollectionException e) {}            
-	        
+	        System.setOut(out);
+	        noOut.close();
 		}
 		isInit = true;
 	}
@@ -843,7 +851,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
 	            					.append(newLine).append(artifactId).append(" needs ").append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!")
 	            					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
-	            					.append(artifactId).append("\"").toString());	            			
+	            					.append(artifactId).append("\"").toString());
+	            			noOut.close();
 	            			return false;
 	            		}	            		
 	            	}
@@ -953,7 +962,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * writes the freshly installed dependencies to the blacklist file.
 	 */
 	private void write2Blacklist(List<Dependency> dependencies){
-		File blacklistFile = new File(blacklistPath);		
+		File blacklistFile = new File(BLACKLIST_PATH);		
 		for (Dependency dependency : dependencies){
 			forbiddenFruits.add(dependency.getArtifact().toString());					
 		}				

@@ -514,6 +514,7 @@ public class PepperStarter {
 							retVal.append(	write2ConfigFile(args[0], args[1], args[2]) ?
 											"Configuration written back to modules.xml. Module is now available for direct update calls (e.g. \"update "+args[1]+"\")." :
 											"WARNING: An Error occured while writing groupId, artifactId and repository path to modules.xml.");
+							moduleTable.put(args[1], Pair.of(args[0], args[2]));
 						}						
 					}
 					else if (s.matches("file://.*")||s.matches("https?://.*")){

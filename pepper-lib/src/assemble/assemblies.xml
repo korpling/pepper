@@ -92,6 +92,9 @@
   		<includes>
   			<include>${basedir}/conf/**</include>
   		</includes>
+  		<excludes>
+  			<exclude>${basedir}/conf/dep/blacklist.cfg</exclude>
+  		</excludes>
   	</fileSet>
  	<!-- end: copies property files -->
   
