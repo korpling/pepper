@@ -17,17 +17,6 @@
     <root level="info">
                 <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
-    </root>   
-    <logger name="org.apache" level="OFF"/>
-    <logger name="org.apache.maven.repository.internal.DefaultVersionRangeResolver" level="OFF"/>
-    <logger name="org.eclipse.aether.internal.impl.DefaultRepositoryEventDispatcher" level="OFF"/>
-    <logger name="org.codehaus.plexus" level="OFF"/>
-    <logger name="org.eclipse.aether" level="OFF"/>
-    <logger name="org.eclipse.aether.internal" level="OFF"/>
-    <logger name="org.apache.http.wire" level="OFF" />
-	<logger name="org.eclipse.jetty" level="OFF" />
-	<logger name="org.sonatype.tests.jetty.server" level="OFF"/>
-	<logger name="org.sonatype.tests.jetty.server.behaviour" level="OFF"/>
-	<logger name="org.sonatype.tests" level="OFF"/>
-	<logger name="de.hu_berlin.german.korpling.saltnpepper" level="INFO" />
+    </root>
+	<!--logger name="de.hu_berlin.german.korpling.saltnpepper" level="INFO" /-->
 </configuration>

@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +36,6 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
@@ -57,7 +55,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 
-import sun.security.action.GetLongAction;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
@@ -464,15 +461,15 @@ public class PepperStarter {
 		StringBuilder retVal = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		String indent = "\t";
-		boolean isSnapshot = params.size()>0 && params.get(0).equalsIgnoreCase("snapshot");
-		boolean ignoreVersion = params.size()>0 && (
-				isSnapshot? params.size()>1 && "iv".equalsIgnoreCase(params.get(1)) : params.size()>0 && "iv".equalsIgnoreCase(params.get(0))
-				);
+		boolean isSnapshot	= params.size()>0 && "snapshot".equalsIgnoreCase(params.get(0)) ||
+							  params.size()>1 && "snapshot".equalsIgnoreCase(params.get(1));
+		boolean ignoreVersion = params.size()>0 && "iv".equalsIgnoreCase(params.get(0)) ||
+				  				 params.size()>1 && "iv".equalsIgnoreCase(params.get(1));
 		PepperOSGiConnector pepperConnector = (PepperOSGiConnector)getPepper();
 		try {
 			moduleTable = getModuleTable();
 		
-			if (	params.get(0).equalsIgnoreCase("all") ||
+			if (	"all".equalsIgnoreCase(params.get(0)) ||
 					(isSnapshot&&!ignoreVersion || ignoreVersion&&!isSnapshot) && params.size()>1 && "all".equalsIgnoreCase(params.get(1)) ||
 					isSnapshot&&ignoreVersion && params.size()>2 && "all".equalsIgnoreCase(params.get(2))
 					){
@@ -487,7 +484,7 @@ public class PepperStarter {
 			}
 			else{
 				String s = null;
-				for (int i= isSnapshot ? 1 : 0; i<params.size(); i++){
+				for (int i= isSnapshot ? (ignoreVersion? 2 : 1) : (ignoreVersion? 1 : 0); i<params.size(); i++){
 					s = params.get(i);
 					if (moduleTable.keySet().contains(s)){
 						if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
@@ -532,6 +529,9 @@ public class PepperStarter {
 					else if ("iv".equalsIgnoreCase(s)){
 						ignoreVersion = true;
 					}
+					else if ("snapshot".equalsIgnoreCase(s)){
+						isSnapshot = true;
+					}
 					else if ("--help".equalsIgnoreCase(s)){
 						retVal
 						.append(newLine).append(indent).append("update [snapshot] [iv] MODULES_NAME")
@@ -552,9 +552,6 @@ public class PepperStarter {
 						.append(newLine).append(indent).append("update URL")
 						.append(newLine).append(indent).append("installs a file by its URL. Dependencies will not be resolved.")
 						.append(newLine);
-					}
-					else if ("snapshot".equalsIgnoreCase(s)){
-						isSnapshot = true;
 					}
 					else{
 						retVal.append(indent).append(s).append(" is not a known module.")

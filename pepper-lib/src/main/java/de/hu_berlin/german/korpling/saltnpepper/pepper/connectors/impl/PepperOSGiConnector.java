@@ -102,18 +102,20 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperExceptio
  * Pepper and therefore enables it to use Pepper as an embedded library.
  * 
  * @author Florian Zipser
+ * @author Martin Klotz
  * 
  */
 public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
-
+	/** this {@link Set} stores all dependencies, that are installed. The format of the {@link String}s is GROUP_ID:ARTIFACT_ID:EXTENSION:VERSION, which is also the output format of {@link Dependency#getArtifact()#toString()}.*/
 	private Set<String> forbiddenFruits = null;
+	/** contains the path to the blacklist file. */
 	private static final String BLACKLIST_PATH = "./conf/dep/blacklist.cfg";
-	/** this String contains the artifactId of pepper-framework */
+	/** this String contains the artifactId of pepper-framework. */
 	private static final String ARTIFACT_ID_PEPPER_FRAMEWORK = "pepper-framework";
-	/** contains the version of pepper framework */
-	private String frameworkVersion;
+	/** contains the version of pepper framework. {@link #PEPPER_VERSION} is not used on purpose. This {@link String} contains the value of the pepper-framework OSGi {@link Bundle}.*/
+	private String frameworkVersion = null;
 	
 	/**
 	 * FIXME This is just a workaround to set the current version of Pepper,
@@ -206,6 +208,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		}
 		frameworkVersion = getFrameworkVersion();
 		if (forbiddenFruits.isEmpty()){
+			logger.info("Initializing dependency list ...");
 			/* maven access utils*/
 			PrintStream out = System.out;
 			PrintStream noOut = new PrintStream(new OutputStream(){
@@ -228,7 +231,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
             collectRequest.setRootArtifact(pepArt);
             try {
 				CollectResult collectResult = system.collectDependencies( session, collectRequest );
-				write2Blacklist(getAllDependencies(collectResult.getRoot(), Collections.<String>emptySet()));
+				for (Dependency dependency : getAllDependencies(collectResult.getRoot(), Collections.<String>emptySet())){
+					forbiddenFruits.add(dependency.getArtifact().toString());
+				}
+				write2Blacklist();
 				
 			} catch (DependencyCollectionException e) {}            
 	        System.setOut(out);
@@ -862,7 +868,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            		artifactRequest.setArtifact(dependency.getArtifact());
 	            		try{
 	            			artifactResult = system.resolveArtifact(session, artifactRequest);          			
-		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());		            		
+		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());
+		            		forbiddenFruits.add(dependency.getArtifact().toString());
 	            		}catch (ArtifactResolutionException e){
 	            			System.setOut(out);
 	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");
@@ -887,14 +894,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            		logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass().getSimpleName());}	            		
 		    	}
 	            /*
-	    		 * root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
+	    		 * btw: root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
 	    		 * If a pepper module would be put onto the blacklist and the bundle would be removed, we always had to make sure, it
 	    		 * its entry on the blacklist would be removed. Assuming the entry would remain on the blacklist, the module could be
 	    		 * reinstalled, BUT(!) the dependencies would all be dropped and never being installed again, since the modules node
 	    		 * dominates all other nodes in the dependency tree.
 	    		 */
-	    		allDependencies.remove(0);
-        		write2Blacklist(allDependencies);
+        		write2Blacklist();
 	            logger.info("\n");
 			}	    	
     	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {
@@ -959,13 +965,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 	
 	/**
-	 * writes the freshly installed dependencies to the blacklist file.
+	 * writes the old and freshly installed dependencies to the blacklist file.
 	 */
-	private void write2Blacklist(List<Dependency> dependencies){
-		File blacklistFile = new File(BLACKLIST_PATH);		
-		for (Dependency dependency : dependencies){
-			forbiddenFruits.add(dependency.getArtifact().toString());					
-		}				
+	private void write2Blacklist(){
+		File blacklistFile = new File(BLACKLIST_PATH);
 		if (!blacklistFile.exists()){
 			blacklistFile.getParentFile().mkdirs();}
 		try {
