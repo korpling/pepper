@@ -51,6 +51,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.eclipse.aether.DefaultRepositorySystemSession;
+import org.eclipse.aether.RepositoryEvent;
+import org.eclipse.aether.RepositoryListener;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
@@ -59,6 +62,7 @@ import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.collection.DependencyCollectionException;
 import org.eclipse.aether.examples.util.Booter;
+import org.eclipse.aether.examples.util.ConsoleRepositoryListener;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -210,16 +214,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if (forbiddenFruits.isEmpty()){
 			logger.info("Initializing dependency list ...");
 			/* maven access utils*/
-			PrintStream out = System.out;
-			PrintStream noOut = new PrintStream(new OutputStream(){
-				@Override
-				public void write(int b){					
-				}
-			});
-	        System.setOut(noOut==null? out : noOut);
 			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
 			RepositorySystem system = Booter.newRepositorySystem();
 	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
+	        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
 	        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", "http://korpling.german.hu-berlin.de/maven2");
 	        RemoteRepository repo = repoBuilder.build();
 			
@@ -236,9 +234,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				}
 				write2Blacklist();
 				
-			} catch (DependencyCollectionException e) {}            
-	        System.setOut(out);
-	        noOut.close();
+			} catch (DependencyCollectionException e) {}
 		}
 		isInit = true;
 	}
@@ -751,18 +747,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
 		
-		PrintStream out = System.out;
-		PrintStream noOut = new PrintStream(new OutputStream(){
-			@Override
-			public void write(int b){					
-			}
-		});
-        System.setOut(noOut==null? out : noOut);
-		
 		String newLine = System.getProperty("line.separator");
 		
 		RepositorySystem system = Booter.newRepositorySystem();
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
+        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
+        
         boolean update = true; //MUST be born true        
         
         /*build repository*/
@@ -821,9 +811,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		    					file = artifact.getFile();
 		    				
 		    			}catch (ArtifactResolutionException e){
-		    					System.setOut(out);
 		    					logger.info("Highest version in repository could not be found. Checking the next lower version ...");
-		    					System.setOut(noOut==null? out : noOut);
 		    			}
 	    			}
     		}    	
@@ -850,15 +838,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
 	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){            			            		
-	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){
-	            			System.setOut(out);
+	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){	            			
 	            			logger.info(
 	            					(new StringBuilder())
 	            					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
 	            					.append(newLine).append(artifactId).append(" needs ").append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!")
 	            					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
-	            					.append(artifactId).append("\"").toString());
-	            			noOut.close();
+	            					.append(artifactId).append("\"").toString());	            			
 	            			return false;
 	            		}	            		
 	            	}
@@ -870,20 +856,15 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	            			artifactResult = system.resolveArtifact(session, artifactRequest);          			
 		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());
 		            		forbiddenFruits.add(dependency.getArtifact().toString());
-	            		}catch (ArtifactResolutionException e){
-	            			System.setOut(out);
-	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");
-	            			System.setOut(noOut==null? out : noOut);
+	            		}catch (ArtifactResolutionException e){	            			
+	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            			
 	            		}
 	            	}
-	            }
-	            System.setOut(out);
+	            }	            
 	            logger.info("\n");	            
 	            for (int i=fileURIs.size()-1; i>=0; i--){	            	
-	            	try {
-	            		System.setOut(out);
-	            		logger.info("\tinstalling: "+fileURIs.get(i));
-	            		System.setOut(noOut==null? out : noOut);
+	            	try {	            		
+	            		logger.info("\tinstalling: "+fileURIs.get(i));	            		
 	            		bundle = this.installAndCopy(fileURIs.get(i));
 	            		if (bundle!=null){
 	            			bundleIdMap.put(bundle.getBundleId(), bundle);
@@ -903,13 +884,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
         		write2Blacklist();
 	            logger.info("\n");
 			}	    	
-    	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {
-    		System.setOut(out);
+    	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {    		
     		logger.info("Update failed due to "+e.getClass().getSimpleName()+": "+e.getMessage());
     		update = false;			
-		}       
-        System.setOut(out);
-		noOut.close();		
+		}       		
         return update;
 	}
 	
@@ -995,4 +973,94 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		}
 		return retVal.toString();
 	}
+	
+	/** This is used to write the Maven output onto our logger. The default {@link ConsoleRepositoryListener} writes it directly to System.out */
+	private final ConsoleRepositoryListener repoListener = new ConsoleRepositoryListener(){
+		@Override
+		public void artifactDeployed( RepositoryEvent event )
+	    {
+	        logger.debug( "Deployed " + event.getArtifact() + " to " + event.getRepository() );
+	    }
+		@Override
+	    public void artifactDeploying( RepositoryEvent event )
+	    {
+	    	logger.debug( "Deploying " + event.getArtifact() + " to " + event.getRepository() );
+	    }
+		@Override
+	    public void artifactDescriptorInvalid( RepositoryEvent event )
+	    {
+	    	logger.debug( "Invalid artifact descriptor for " + event.getArtifact() + ": "
+	            + event.getException().getMessage() );
+	    }
+		@Override
+	    public void artifactDescriptorMissing( RepositoryEvent event )
+	    {
+	    	logger.debug( "Missing artifact descriptor for " + event.getArtifact() );
+	    }
+		@Override
+	    public void artifactInstalled( RepositoryEvent event )
+	    {
+	    	logger.debug( "Installed " + event.getArtifact() + " to " + event.getFile() );
+	    }
+		@Override
+	    public void artifactInstalling( RepositoryEvent event )
+	    {
+	    	logger.debug( "Installing " + event.getArtifact() + " to " + event.getFile() );
+	    }
+		@Override
+	    public void artifactResolved( RepositoryEvent event )
+	    {
+	    	logger.debug( "Resolved artifact " + event.getArtifact() + " from " + event.getRepository() );
+	    }
+		@Override
+	    public void artifactDownloading( RepositoryEvent event )
+	    {
+	    	logger.debug( "Downloading artifact " + event.getArtifact() + " from " + event.getRepository() );
+	    }
+		@Override
+	    public void artifactDownloaded( RepositoryEvent event )
+	    {
+	    	logger.debug( "Downloaded artifact " + event.getArtifact() + " from " + event.getRepository() );
+	    }
+		@Override
+	    public void artifactResolving( RepositoryEvent event )
+	    {
+	    	logger.debug( "Resolving artifact " + event.getArtifact() );
+	    }
+		@Override
+	    public void metadataDeployed( RepositoryEvent event )
+	    {
+	    	logger.debug( "Deployed " + event.getMetadata() + " to " + event.getRepository() );
+	    }
+		@Override
+	    public void metadataDeploying( RepositoryEvent event )
+	    {
+	    	logger.debug( "Deploying " + event.getMetadata() + " to " + event.getRepository() );
+	    }
+		@Override
+	    public void metadataInstalled( RepositoryEvent event )
+	    {
+	    	logger.debug( "Installed " + event.getMetadata() + " to " + event.getFile() );
+	    }
+		@Override
+	    public void metadataInstalling( RepositoryEvent event )
+	    {
+	    	logger.debug( "Installing " + event.getMetadata() + " to " + event.getFile() );
+	    }
+		@Override
+	    public void metadataInvalid( RepositoryEvent event )
+	    {
+	    	logger.debug( "Invalid metadata " + event.getMetadata() );
+	    }
+		@Override
+	    public void metadataResolved( RepositoryEvent event )
+	    {
+	    	logger.debug( "Resolved metadata " + event.getMetadata() + " from " + event.getRepository() );
+	    }
+		@Override
+	    public void metadataResolving( RepositoryEvent event )
+	    {
+	    	logger.debug( "Resolving metadata " + event.getMetadata() + " from " + event.getRepository() );
+	    }		
+	};
 }
