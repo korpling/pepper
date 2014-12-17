@@ -63,6 +63,7 @@ import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.collection.DependencyCollectionException;
 import org.eclipse.aether.examples.util.Booter;
 import org.eclipse.aether.examples.util.ConsoleRepositoryListener;
+import org.eclipse.aether.examples.util.ConsoleTransferListener;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -120,6 +121,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	private static final String ARTIFACT_ID_PEPPER_FRAMEWORK = "pepper-framework";
 	/** contains the version of pepper framework. {@link #PEPPER_VERSION} is not used on purpose. This {@link String} contains the value of the pepper-framework OSGi {@link Bundle}.*/
 	private String frameworkVersion = null;
+	/** */
+	private MavenAccessor maven = null;
 	
 	/**
 	 * FIXME This is just a workaround to set the current version of Pepper,
@@ -193,49 +196,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw e;
 		} catch (Exception e) {
 			throw new PepperOSGiException("An exception occured installing bundles for OSGi environment. ", e);
+		}	
+		
+		List<Bundle> bList = new ArrayList<Bundle>();
+		bList.addAll(bundleIdMap.values());
+		for (int i=0; i<bList.size(); i++){
+			if (bList.get(i).getSymbolicName()!=null && bList.get(i).getSymbolicName().contains(ARTIFACT_ID_PEPPER_FRAMEWORK)){
+				frameworkVersion = bList.get(i).getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+			}
 		}
-		/* read/write dependency blacklist */
-		File blacklistFile = new File(BLACKLIST_PATH);
-		forbiddenFruits = new HashSet<String>();
-		if (blacklistFile.exists()){
-			try {
-				FileReader fR = new FileReader(blacklistFile);
-				BufferedReader reader = new BufferedReader(fR);
-				String line = reader.readLine();
-				while (line!=null){
-					forbiddenFruits.add(line);
-					line = reader.readLine();
-				}
-				reader.close();
-				fR.close();
-			} catch (IOException e) {}
-		}
-		frameworkVersion = getFrameworkVersion();
-		if (forbiddenFruits.isEmpty()){
-			logger.info("Initializing dependency list ...");
-			/* maven access utils*/
-			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
-			RepositorySystem system = Booter.newRepositorySystem();
-	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
-	        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
-	        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", "http://korpling.german.hu-berlin.de/maven2");
-	        RemoteRepository repo = repoBuilder.build();
-			
-			/* utils for dependency collection */
-    		CollectRequest collectRequest = new CollectRequest();
-            collectRequest.setRoot( new Dependency( pepArt, "" ) );
-            collectRequest.setRepositories(null);
-            collectRequest.addRepository(repo);	            
-            collectRequest.setRootArtifact(pepArt);
-            try {
-				CollectResult collectResult = system.collectDependencies( session, collectRequest );
-				for (Dependency dependency : getAllDependencies(collectResult.getRoot(), Collections.<String>emptySet())){
-					forbiddenFruits.add(dependency.getArtifact().toString());
-				}
-				write2Blacklist();
-				
-			} catch (DependencyCollectionException e) {}
-		}
+		maven = new MavenAccessor(this);
+		
 		isInit = true;
 	}
 
@@ -747,320 +718,31 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
 		
-		String newLine = System.getProperty("line.separator");
+		/* checking, if a correlating bundle already exist, which would mean, the module is already installed */
+        Bundle installedBundle = null;
+        List<Bundle> bundles = new ArrayList<Bundle>(bundleIdMap.values());
+        for (int i=0; i<bundles.size() && installedBundle==null; i++){
+        	if ((groupId+"."+artifactId).equals(bundles.get(i).getSymbolicName())){
+        		installedBundle = bundles.get(i);
+        	}
+        }  
 		
-		RepositorySystem system = Booter.newRepositorySystem();
-        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
-        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
-        
-        boolean update = true; //MUST be born true        
-        
-        /*build repository*/
-        RemoteRepository.Builder repoBuilder = new RemoteRepository.Builder("korpling", "default", repositoryUrl);
-        RemoteRepository repo = repoBuilder.build();
-        
-        /*build artifact*/
-        Artifact artifact = new DefaultArtifact(groupId, artifactId, "zip","[0,)");       
-        
-        try {
-	        /*version range request*/
-	        VersionRangeRequest rangeRequest = new VersionRangeRequest();	        
-	        rangeRequest.addRepository(repo);
-	        rangeRequest.setArtifact(artifact);
-	        VersionRangeResult rangeResult = system.resolveVersionRange(session, rangeRequest);
-	        rangeRequest.setArtifact( artifact );
-	        rangeRequest.setRepositories(Booter.newRepositories(system, session));        
-	                
-	        /* utils needed for request */            
-            ArtifactRequest artifactRequest = new ArtifactRequest();
-            artifactRequest.addRepository(repo);
-            ArtifactResult artifactResult = null;
-	        
-            /* checking, if a correlating bundle already exist, which would mean, the module is already installed */
-            Bundle installedBundle = null;
-            List<Bundle> bundles = new ArrayList<Bundle>(bundleIdMap.values());
-            for (int i=0; i<bundles.size() && installedBundle==null; i++){
-            	if ((groupId+"."+artifactId).equals(bundles.get(i).getSymbolicName())){
-            		installedBundle = bundles.get(i);
-            	}
-            }            
-            
-            /* get all pepperModules versions listed in the maven repository */
-    		List<Version> versions = rangeResult.getVersions();
-	        Collections.reverse(versions);	        
-    		
-	        /* utils for version comparison */
-	        Iterator<Version> itVersions = versions.iterator();
-    		VersionScheme vScheme = new GenericVersionScheme();
-    		boolean srcExists = false;
-    		Version installedVersion = installedBundle==null? vScheme.parseVersion("0.0.0") : vScheme.parseVersion(installedBundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT"));
-    		Version newestVersion = null;
-    		
-    		/* compare, if the listed version really exists in the maven repository */
-    		File file = null;	      		
-    		while(!srcExists && itVersions.hasNext() && update){
-	    			newestVersion = itVersions.next();														    			
-	    			artifact = new DefaultArtifact(groupId, artifactId, "zip", newestVersion.toString());
-	    			if (!(	artifact.isSnapshot() && !isSnapshot 	)){
-		    			update = newestVersion.compareTo(installedVersion) > 0;					    			
-		    			artifactRequest.setArtifact(artifact);
-		    			try{			    				
-		    					artifactResult = system.resolveArtifact(session, artifactRequest);		    			
-		    					artifact = artifactResult.getArtifact();
-		    					srcExists = update && artifact.getFile().exists();
-		    					file = artifact.getFile();
-		    				
-		    			}catch (ArtifactResolutionException e){
-		    					logger.info("Highest version in repository could not be found. Checking the next lower version ...");
-		    			}
-	    			}
-    		}    	
-	    	update&= file!=null;//in case of only snapshots in the maven repository vs. isSnapshot=false	    	
-	    	/* if an update is possible/necessary, perform dependency collection and installation */
-	    	if (update){
-	    		
-	    		/* utils for file-collection */
-    			List<URI> fileURIs = new ArrayList<URI>(); 		
-	    		fileURIs.add(file.toURI());  		
-	    		
-	    		/* utils for dependency collection */
-	    		CollectRequest collectRequest = new CollectRequest();
-	            collectRequest.setRoot( new Dependency( artifact, "" ) );
-	            collectRequest.setRepositories(Booter.newRepositories(system, session));
-	            collectRequest.addRepository(repo);	            
-	            collectRequest.setRootArtifact(artifact);
-	            CollectResult collectResult = system.collectDependencies( session, collectRequest );
-	            
-	            Bundle bundle = null;
-	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), forbiddenFruits);
-	            Dependency dependency = null;	            
-	            //in the following we ignore the first dependency, because it is the module itself         	            
-	            for (int i=1; i<allDependencies.size(); i++){
-	            	dependency = allDependencies.get(i);
-	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){            			            		
-	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(frameworkVersion.replace("-SNAPSHOT", ""))){	            			
-	            			logger.info(
-	            					(new StringBuilder())
-	            					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
-	            					.append(newLine).append(artifactId).append(" needs ").append(dependency.getArtifact().getVersion()).append(", but ").append(frameworkVersion).append(" is installed!")
-	            					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
-	            					.append(artifactId).append("\"").toString());	            			
-	            			return false;
-	            		}	            		
-	            	}
-	            	else if(!dependency.getArtifact().getArtifactId().contains("salt-")){	            		
-	            		artifactRequest.setRepositories(Booter.newRepositories(system, session));
-	            		artifactRequest.addRepository(repo);
-	            		artifactRequest.setArtifact(dependency.getArtifact());
-	            		try{
-	            			artifactResult = system.resolveArtifact(session, artifactRequest);          			
-		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());
-		            		forbiddenFruits.add(dependency.getArtifact().toString());
-	            		}catch (ArtifactResolutionException e){	            			
-	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            			
-	            		}
-	            	}
-	            }	            
-	            logger.info("\n");	            
-	            for (int i=fileURIs.size()-1; i>=0; i--){	            	
-	            	try {	            		
-	            		logger.info("\tinstalling: "+fileURIs.get(i));	            		
-	            		bundle = this.installAndCopy(fileURIs.get(i));
-	            		if (bundle!=null){
-	            			bundleIdMap.put(bundle.getBundleId(), bundle);
-	            			locationBundleIdMap.put(URI.create(bundle.getLocation()), bundle.getBundleId());
-	            			bundle.start();
-	            		}
-	            	} catch (IOException | BundleException e) {	            		
-	            		logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass().getSimpleName());}	            		
-		    	}
-	            /*
-	    		 * btw: root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
-	    		 * If a pepper module would be put onto the blacklist and the bundle would be removed, we always had to make sure, it
-	    		 * its entry on the blacklist would be removed. Assuming the entry would remain on the blacklist, the module could be
-	    		 * reinstalled, BUT(!) the dependencies would all be dropped and never being installed again, since the modules node
-	    		 * dominates all other nodes in the dependency tree.
-	    		 */
-        		write2Blacklist();
-	            logger.info("\n");
-			}	    	
-    	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {    		
-    		logger.info("Update failed due to "+e.getClass().getSimpleName()+": "+e.getMessage());
-    		update = false;			
-		}       		
-        return update;
+		return maven.update(groupId, artifactId, repositoryUrl, isSnapshot, ignoreFrameworkVersion, installedBundle);
 	}
 	
 	/**
-	 * This method returns all dependencies as list.
-	 * Elementary dependencies and their daughters are skipped. 
+	 * returns the version of pepper-framework read from the pepper-framework OSGi {@link Bundle}.
+	 * @returns the version {@link String}
 	 */
-	private List<Dependency> getAllDependencies(DependencyNode startNode, Set<String> installedDeps){		
-		List<Dependency> retVal = new ArrayList<Dependency>();
-		retVal.add(startNode.getDependency());
-		for (DependencyNode node : startNode.getChildren()){			
-			if (!dependencyAlreadyInstalled(node.getArtifact().toString())) {retVal.addAll(getAllDependencies(node, installedDeps));}
-			if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(node.getArtifact().getArtifactId())){
-				retVal.add(node.getDependency());
-			}
-		}
-		return retVal;
+	public String getFrameworkVersion(){
+		return frameworkVersion;
 	}
 	
 	/**
-	 * Checks, if the given coords belong to a dependency that's already
-	 * installed
-	 * @param artifactString
-	 * @return
+	 * 
+	 * @returns the Blacklist of already installed dependencies
 	 */
-	private boolean dependencyAlreadyInstalled(String artifactString){
-		String[] coords = artifactString.split(":");
-		String[] testCoords = null;
-		for (String dependencyString : forbiddenFruits){
-			testCoords = dependencyString.split(":");
-			if (coords[1].equals(testCoords[1]) && /*artifactId*/
-				coords[0].equals(testCoords[0]) /*&&*/ /*groupId*/
-				/*coords[3].equals(testCoords[3])*/){  /*version*/ //FIXME? Version is ignored - to many issues with that
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * returns the version of pepper-framework
-	 * @return
-	 */
-	private String getFrameworkVersion(){
-		List<Bundle> bList = new ArrayList<Bundle>();
-		bList.addAll(bundleIdMap.values());
-		for (int i=0; i<bList.size(); i++){
-			if (bList.get(i).getSymbolicName()!=null && bList.get(i).getSymbolicName().contains(ARTIFACT_ID_PEPPER_FRAMEWORK)){
-				return bList.get(i).getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
-			}
-		}
-		return null;//TODO
-	}
-	
-	/**
-	 * writes the old and freshly installed dependencies to the blacklist file.
-	 */
-	private void write2Blacklist(){
-		File blacklistFile = new File(BLACKLIST_PATH);
-		if (!blacklistFile.exists()){
-			blacklistFile.getParentFile().mkdirs();}
-		try {
-			blacklistFile.createNewFile();
-			PrintWriter fW = new PrintWriter(blacklistFile);	
-			BufferedWriter bW = new BufferedWriter(fW);
-			for (String s : forbiddenFruits){
-				bW.write(s);
-				bW.newLine();
-			}
-			bW.close();
-			fW.close();
-		} catch (IOException e) {}
-		
-	}
-	
 	public String getBlacklist(){
-		String lineSeparator = System.getProperty("line.separator");
-		String indent = "\t";
-		StringBuilder retVal = (new StringBuilder()).append(lineSeparator);
-		retVal.append(indent).append("installed dependencies:").append(lineSeparator).append(lineSeparator);
-		for (String s : forbiddenFruits){
-			retVal.append(indent).append(s).append(System.getProperty("line.separator"));
-		}
-		return retVal.toString();
+		return maven.getBlacklist();
 	}
-	
-	/** This is used to write the Maven output onto our logger. The default {@link ConsoleRepositoryListener} writes it directly to System.out */
-	private final ConsoleRepositoryListener repoListener = new ConsoleRepositoryListener(){
-		@Override
-		public void artifactDeployed( RepositoryEvent event )
-	    {
-	        logger.debug( "Deployed " + event.getArtifact() + " to " + event.getRepository() );
-	    }
-		@Override
-	    public void artifactDeploying( RepositoryEvent event )
-	    {
-	    	logger.debug( "Deploying " + event.getArtifact() + " to " + event.getRepository() );
-	    }
-		@Override
-	    public void artifactDescriptorInvalid( RepositoryEvent event )
-	    {
-	    	logger.debug( "Invalid artifact descriptor for " + event.getArtifact() + ": "
-	            + event.getException().getMessage() );
-	    }
-		@Override
-	    public void artifactDescriptorMissing( RepositoryEvent event )
-	    {
-	    	logger.debug( "Missing artifact descriptor for " + event.getArtifact() );
-	    }
-		@Override
-	    public void artifactInstalled( RepositoryEvent event )
-	    {
-	    	logger.debug( "Installed " + event.getArtifact() + " to " + event.getFile() );
-	    }
-		@Override
-	    public void artifactInstalling( RepositoryEvent event )
-	    {
-	    	logger.debug( "Installing " + event.getArtifact() + " to " + event.getFile() );
-	    }
-		@Override
-	    public void artifactResolved( RepositoryEvent event )
-	    {
-	    	logger.debug( "Resolved artifact " + event.getArtifact() + " from " + event.getRepository() );
-	    }
-		@Override
-	    public void artifactDownloading( RepositoryEvent event )
-	    {
-	    	logger.debug( "Downloading artifact " + event.getArtifact() + " from " + event.getRepository() );
-	    }
-		@Override
-	    public void artifactDownloaded( RepositoryEvent event )
-	    {
-	    	logger.debug( "Downloaded artifact " + event.getArtifact() + " from " + event.getRepository() );
-	    }
-		@Override
-	    public void artifactResolving( RepositoryEvent event )
-	    {
-	    	logger.debug( "Resolving artifact " + event.getArtifact() );
-	    }
-		@Override
-	    public void metadataDeployed( RepositoryEvent event )
-	    {
-	    	logger.debug( "Deployed " + event.getMetadata() + " to " + event.getRepository() );
-	    }
-		@Override
-	    public void metadataDeploying( RepositoryEvent event )
-	    {
-	    	logger.debug( "Deploying " + event.getMetadata() + " to " + event.getRepository() );
-	    }
-		@Override
-	    public void metadataInstalled( RepositoryEvent event )
-	    {
-	    	logger.debug( "Installed " + event.getMetadata() + " to " + event.getFile() );
-	    }
-		@Override
-	    public void metadataInstalling( RepositoryEvent event )
-	    {
-	    	logger.debug( "Installing " + event.getMetadata() + " to " + event.getFile() );
-	    }
-		@Override
-	    public void metadataInvalid( RepositoryEvent event )
-	    {
-	    	logger.debug( "Invalid metadata " + event.getMetadata() );
-	    }
-		@Override
-	    public void metadataResolved( RepositoryEvent event )
-	    {
-	    	logger.debug( "Resolved metadata " + event.getMetadata() + " from " + event.getRepository() );
-	    }
-		@Override
-	    public void metadataResolving( RepositoryEvent event )
-	    {
-	    	logger.debug( "Resolving metadata " + event.getMetadata() + " from " + event.getRepository() );
-	    }		
-	};
 }
