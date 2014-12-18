@@ -489,6 +489,8 @@ public class PepperStarter {
 					if (moduleTable.keySet().contains(s)){
 						if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
 							retVal.append("Successfully updated ").append(s).append(" from "+moduleTable.get(s)).append(newLine);
+						}else{
+							retVal.append("No update was performed for ").append(s).append(".");
 						}
 					}
 					else if ("config".equals(s)){

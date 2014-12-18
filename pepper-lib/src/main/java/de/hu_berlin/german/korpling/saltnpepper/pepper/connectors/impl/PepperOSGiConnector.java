@@ -572,7 +572,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		boolean retVal = false;
 		if ((bundleName != null) && (!bundleName.isEmpty())) {
 			for (Bundle bundle : getBundleContext().getBundles()) {
-				if (bundle.getSymbolicName().equalsIgnoreCase(bundleName)) {
+				if (bundle.getSymbolicName()!=null && bundle.getSymbolicName().equalsIgnoreCase(bundleName)) {
 					for (Map.Entry<URI, Long> entry : locationBundleIdMap.entrySet()) {
 						if (entry.getValue().equals(bundle.getBundleId())) {
 							// stop bundle
