@@ -239,6 +239,9 @@ public class MavenAccessor {
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle){
 		
+		logger.info("Starting update process for "+artifactId);
+		logger.debug("Starting update process for "+groupId+", "+artifactId+", "+repositoryUrl+", isSnapshot="+isSnapshot+", ignoreFrameworkVersion="+ignoreFrameworkVersion+", installedBundle="+installedBundle);
+		
 		String newLine = System.getProperty("line.separator");
 		
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
@@ -329,18 +332,17 @@ public class MavenAccessor {
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );            
 	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot());            
 	            
-	            if (ignoreFrameworkVersion){
-	            	/* in this case we have to remove the dependencies of pepperParent from the dependency list, since they are
-	            	 * not already on the blacklist
-	            	 * */
-		            String parentVersion = null;
-		            for(int i=0; i<allDependencies.size()&&parentVersion==null; i++){
-		            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(allDependencies.get(i).getArtifact().getArtifactId())){
-		            		parentVersion = allDependencies.get(i).getArtifact().getVersion();
-		            	}
-		            }
-		            allDependencies = cleanDependencies(allDependencies, session, parentVersion);	
+	            
+            	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
+            	 * not already on the blacklist
+            	 * */
+	            String parentVersion = null;
+	            for(int i=0; i<allDependencies.size()&&parentVersion==null; i++){
+	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(allDependencies.get(i).getArtifact().getArtifactId())){
+	            		parentVersion = allDependencies.get(i).getArtifact().getVersion();
+	            	}
 	            }
+	            allDependencies = cleanDependencies(allDependencies, session, parentVersion);
 	            
 	            Bundle bundle = null;
 	            Dependency dependency = null;	            
