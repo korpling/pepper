@@ -50,10 +50,10 @@ import org.slf4j.LoggerFactory;
 
 public class MavenAccessor {
 	
-	/**  */
-	PepperOSGiConnector pepperOSGiConnector = null;
-	
 	private static final Logger logger = LoggerFactory.getLogger(MavenAccessor.class);
+	
+	/** This is used to install the bundles */
+	PepperOSGiConnector pepperOSGiConnector = null;	
 	/** this {@link Set} stores all dependencies, that are installed or forbidden. The format of the {@link String}s is GROUP_ID:ARTIFACT_ID:EXTENSION:VERSION, which is also the output format of {@link Dependency#getArtifact()#toString()}.*/
 	private Set<String> forbiddenFruits = null;
 	/** contains the path to the blacklist file. */
@@ -65,17 +65,74 @@ public class MavenAccessor {
 	/** path to korpling maven repo */
 	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2";
 	
-	private HashSet<Dependency> dependencySet = null;
-	
 	/* MAVEN UTILS */
+	/** maven/aether utility */
 	RepositorySystem system = null;
 	/** this Map contains all repos already used in this pepper session, key is url, value is repo */
 	HashMap<String, RemoteRepository> repos = null;
+	/** maven/aether utility used to build Objects of class {@link RemoteRepository}. */
 	RemoteRepository.Builder repoBuilder = null;
-	
+		
 	public MavenAccessor(PepperOSGiConnector pepperOSGiConnector){
 		this.pepperOSGiConnector = pepperOSGiConnector;
+		system = Booter.newRepositorySystem();
+		repoBuilder = new RemoteRepository.Builder("", "default", "");
+		repos = new HashMap<String, RemoteRepository>();
+		forbiddenFruits = new HashSet<String>();
 		init();
+	}
+	
+	/**
+	 * This method initializes the Accessor
+	 */
+	private void init(){
+		/* init Maven utils */
+		/* read/write dependency blacklist */
+		File blacklistFile = new File(BLACKLIST_PATH);		
+		if (blacklistFile.exists()){
+			try {
+				FileReader fR = new FileReader(blacklistFile);
+				BufferedReader reader = new BufferedReader(fR);
+				String line = reader.readLine();
+				while (line!=null){
+					forbiddenFruits.add(line);
+					line = reader.readLine();
+				}
+				reader.close();
+				fR.close();
+			} catch (IOException e) {}
+		}
+		String frameworkVersion = pepperOSGiConnector.getFrameworkVersion();
+		if (forbiddenFruits.isEmpty()){
+			logger.info("Initializing dependency list ...");
+			/* maven access utils*/
+			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
+	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
+	        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
+	        ((DefaultRepositorySystemSession)session).setTransferListener(transferListener);	        
+	        RemoteRepository repo = buildRepo("korpling", KORPLING_MAVEN_REPO);
+	        repos.put(KORPLING_MAVEN_REPO, repo);
+			
+			/* utils for dependency collection */
+    		CollectRequest collectRequest = new CollectRequest();
+            collectRequest.setRoot( new Dependency( pepArt, "" ) );
+            collectRequest.setRepositories(null);
+            collectRequest.addRepository(repo);	            
+            collectRequest.setRootArtifact(pepArt);
+            try {
+				CollectResult collectResult = system.collectDependencies( session, collectRequest );
+				for (Dependency dependency : getAllDependencies(collectResult.getRoot())){
+					forbiddenFruits.add(dependency.getArtifact().toString());
+				}
+				write2Blacklist();				
+				collectResult = null;
+				
+			} catch (DependencyCollectionException e) {}
+            session = null;
+			pepArt = null;
+			collectRequest = null;			
+		}
+		write2Blacklist();
 	}
 	
 	/** This listener does not write the maven transfer output. */
@@ -174,59 +231,7 @@ public class MavenAccessor {
 	    }		
 	};
 	
-	private void init(){
-		/* init Maven utils */
-		system = Booter.newRepositorySystem();
-		repoBuilder = new RemoteRepository.Builder("", "default", "");
-		repos = new HashMap<String, RemoteRepository>();
-		/* read/write dependency blacklist */
-		File blacklistFile = new File(BLACKLIST_PATH);
-		forbiddenFruits = new HashSet<String>();
-		if (blacklistFile.exists()){
-			try {
-				FileReader fR = new FileReader(blacklistFile);
-				BufferedReader reader = new BufferedReader(fR);
-				String line = reader.readLine();
-				while (line!=null){
-					forbiddenFruits.add(line);
-					line = reader.readLine();
-				}
-				reader.close();
-				fR.close();
-			} catch (IOException e) {}
-		}
-		String frameworkVersion = pepperOSGiConnector.getFrameworkVersion();
-		if (forbiddenFruits.isEmpty()){
-			logger.info("Initializing dependency list ...");
-			/* maven access utils*/
-			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
-	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
-	        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
-	        ((DefaultRepositorySystemSession)session).setTransferListener(transferListener);	        
-	        RemoteRepository repo = buildRepo("korpling", KORPLING_MAVEN_REPO);
-	        repos.put(KORPLING_MAVEN_REPO, repo);
-			
-			/* utils for dependency collection */
-    		CollectRequest collectRequest = new CollectRequest();
-            collectRequest.setRoot( new Dependency( pepArt, "" ) );
-            collectRequest.setRepositories(null);
-            collectRequest.addRepository(repo);	            
-            collectRequest.setRootArtifact(pepArt);
-            try {
-				CollectResult collectResult = system.collectDependencies( session, collectRequest );
-				for (Dependency dependency : getAllDependencies(collectResult.getRoot())){
-					forbiddenFruits.add(dependency.getArtifact().toString());
-				}
-				write2Blacklist();				
-				collectResult = null;
-				
-			} catch (DependencyCollectionException e) {}
-            session = null;
-			pepArt = null;
-			collectRequest = null;			
-		}
-		write2Blacklist();
-	}
+	
 	
 	/**
 	 * This method checks the pepperModules in the modules.xml for updates
@@ -242,15 +247,13 @@ public class MavenAccessor {
         
         boolean update = true; //MUST be born true       
         
-        /*TEST*/dependencySet = new HashSet<Dependency>();
-        
         /*build repository*/
         
-        RemoteRepository repo = repos.get(repositoryUrl); try{
+        RemoteRepository repo = repos.get(repositoryUrl);
         if (repo==null){
         	repo = buildRepo("any", repositoryUrl);
         	repos.put(repositoryUrl, repo);
-        }   }catch(Exception e){System.out.println(e.getMessage());}     
+        }     
         
         /*build artifact*/
         Artifact artifact = new DefaultArtifact(groupId, artifactId, "zip","[0,)");       
@@ -468,6 +471,14 @@ public class MavenAccessor {
 		return retVal.toString();
 	}
 	
+	/**
+	 * This method cleans the dependencies. Dependencies inherited from pepperParent as direct dependencies
+	 * are removed.
+	 * @param dependencies
+	 * @param session
+	 * @param parentVersion
+	 * @return
+	 */
 	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion){
 		CollectRequest collectRequest = new CollectRequest();
         collectRequest.setRoot( new Dependency( new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), "" ) );
@@ -506,16 +517,16 @@ public class MavenAccessor {
 		return Collections.<Dependency>emptyList();
 	}
 	
+	/**
+	 * This method builds a RemoteRepository for diverse maven/aether purposes.
+	 * @param id
+	 * @param url
+	 * @return
+	 */
 	private RemoteRepository buildRepo(String id, String url){
 		repoBuilder.setId(id);
 		repoBuilder.setUrl(url);
 		return repoBuilder.build();
-	}
-	
-	private void printDepList(List<Dependency> deps){
-		for (Dependency dep : deps){
-			System.out.println(dep);
-		}
 	}
 	
 }
