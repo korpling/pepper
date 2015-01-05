@@ -7,7 +7,7 @@ start =
     attribute id { text },
     attribute version { "1.0" },
     #general customization, to customize the behavior of Pepper
-    customization,
+    customization?,
     element importer {
       moduleCoordinates,
       path,
