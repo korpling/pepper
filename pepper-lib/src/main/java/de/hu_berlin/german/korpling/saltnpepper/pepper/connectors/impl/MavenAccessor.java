@@ -334,8 +334,8 @@ public class MavenAccessor {
 	    		}
 	    		
 	    		/* utils for file-collection */
-    			List<URI> fileURIs = new ArrayList<URI>(); 		
-	    		fileURIs.add(file.toURI());  		
+    			List<Artifact> installArtifacts = new ArrayList<Artifact>(); 		
+	    		installArtifacts.add(artifact);  		
 	    		
 	    		/* utils for dependency collection */
 	    		CollectRequest collectRequest = new CollectRequest();
@@ -379,23 +379,25 @@ public class MavenAccessor {
 	            		artifactRequest.setArtifact(dependency.getArtifact());
 	            		try{
 	            			artifactResult = system.resolveArtifact(session, artifactRequest);    			
-		            		fileURIs.add(artifactResult.getArtifact().getFile().toURI());
-		            		forbiddenFruits.add(dependency.getArtifact().toString());
+		            		installArtifacts.add(artifactResult.getArtifact());
 	            		}catch (ArtifactResolutionException e){	            			
 	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            			
 	            		}
 	            	}
 	            }	            
 	            	            
-	            for (int i=fileURIs.size()-1; i>=0; i--){	            	
+	            for (int i=installArtifacts.size()-1; i>=0; i--){	            	
 	            	try {	            		
-	            		logger.info("installing: "+fileURIs.get(i));	            		
-	            		bundle = pepperOSGiConnector.installAndCopy(fileURIs.get(i));
+	            		logger.info("installing: "+installArtifacts.get(i));	            		
+	            		bundle = pepperOSGiConnector.installAndCopy(installArtifacts.get(i).getFile().toURI());
+	            		if (i!=0){//the module itself must not be put on the blacklist
+	            			forbiddenFruits.add(installArtifacts.get(i).toString());
+	            		}
 	            		if (bundle!=null){
 	            			bundle.start();
 	            		}
 	            	} catch (IOException | BundleException e) {	            		
-	            		logger.debug("File could not be installed: "+fileURIs.get(i)+"; "+e.getClass().getSimpleName());}	            		
+	            		logger.debug("File could not be installed: "+installArtifacts.get(i)+"; "+e.getClass().getSimpleName());}	            		
 		    	}
 	            /*
 	    		 * btw: root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
