@@ -102,6 +102,13 @@ public class MavenAccessor {
 				fR.close();
 			} catch (IOException e) {}
 		}
+		initDependencies();
+	}
+	
+	/**
+	 * this method initializes the dependency blacklist
+	 */
+	private boolean initDependencies(){
 		String frameworkVersion = pepperOSGiConnector.getFrameworkVersion();
 		if (forbiddenFruits.isEmpty()){
 			logger.info("Initializing dependency list ...");
@@ -127,12 +134,13 @@ public class MavenAccessor {
 				write2Blacklist();				
 				collectResult = null;
 				
-			} catch (DependencyCollectionException e) {}
+			} catch (DependencyCollectionException e) {logger.info("An error occured initializing the pepper dependencies. Please check your internet connection."); return false;}
             session = null;
 			pepArt = null;
 			collectRequest = null;			
 		}
 		write2Blacklist();
+		return true;
 	}
 	
 	/** This listener does not write the maven transfer output. */
@@ -238,6 +246,11 @@ public class MavenAccessor {
 	 * and triggers the installation process if a newer version is available
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle){
+		
+		if (forbiddenFruits.isEmpty() && !initDependencies()){
+			logger.info("update process could not be performed, because the pepper dependencies could not be listed.");
+			return false;
+		}
 		
 		logger.info("Starting update process for "+artifactId);
 		logger.debug("Starting update process for "+groupId+", "+artifactId+", "+repositoryUrl+", isSnapshot="+isSnapshot+", ignoreFrameworkVersion="+ignoreFrameworkVersion+", installedBundle="+installedBundle);
@@ -492,17 +505,17 @@ public class MavenAccessor {
 			List<Dependency> parentDeps = getAllDependencies(collectResult.getRoot());
 			Iterator<Dependency> itDeps =  parentDeps.iterator();
 			Dependency next = itDeps.next();
-			while(next!=null && !ARTIFACT_ID_PEPPER_FRAMEWORK.equals(next.getArtifact().getArtifactId())){
+			while (next!=null && !ARTIFACT_ID_PEPPER_FRAMEWORK.equals(next.getArtifact().getArtifactId())){
 				next = itDeps.next();
 			}
 			itDeps = null;
-			parentDeps.remove(next);
+			parentDeps.remove(next);//must be removed to stay in returned dependency list
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
 				next = dependencies.get(i);
-				while(j<parentDeps.size() &&
+				while (	j<parentDeps.size() &&
 						!(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId()) &&
 						next.getArtifact().getGroupId().equals(parentDeps.get(j).getArtifact().getGroupId()))
 						){
@@ -516,7 +529,7 @@ public class MavenAccessor {
 			}
 			return newDeps;
 		} catch (DependencyCollectionException e) {}       
-		return Collections.<Dependency>emptyList();
+		return Collections.<Dependency>emptyList(); //NOT null
 	}
 	
 	/**
