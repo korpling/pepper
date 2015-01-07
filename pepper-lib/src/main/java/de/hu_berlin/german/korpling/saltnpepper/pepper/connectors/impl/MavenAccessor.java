@@ -111,7 +111,7 @@ public class MavenAccessor {
 	private boolean initDependencies(){
 		String frameworkVersion = pepperOSGiConnector.getFrameworkVersion();
 		if (forbiddenFruits.isEmpty()){
-			logger.info("Initializing dependency list ...");
+			logger.info("Configuring update mechanism ...");
 			/* maven access utils*/
 			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
 	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
@@ -134,7 +134,7 @@ public class MavenAccessor {
 				write2Blacklist();				
 				collectResult = null;
 				
-			} catch (DependencyCollectionException e) {logger.info("An error occured initializing the pepper dependencies. Please check your internet connection."); return false;}
+			} catch (DependencyCollectionException e) {logger.info("An error occured initializing the update mechanism. Please check your internet connection."); return false;}
             session = null;
 			pepArt = null;
 			collectRequest = null;			
@@ -237,9 +237,7 @@ public class MavenAccessor {
 	    {
 	    	logger.trace( "Resolving metadata " + event.getMetadata() + " from " + event.getRepository() );
 	    }		
-	};
-	
-	
+	};	
 	
 	/**
 	 * This method checks the pepperModules in the modules.xml for updates
@@ -445,7 +443,7 @@ public class MavenAccessor {
 			testCoords = dependencyString.split(":");
 			if (coords[1].equals(testCoords[1]) && /*artifactId*/
 				coords[0].equals(testCoords[0]) /*&&*/ /*groupId*/
-				/*coords[3].equals(testCoords[3])*/){  /*version*/ //FIXME? Version is ignored - to many issues with that
+				/*coords[3].equals(testCoords[3])*/){  /*version*/ //FIXME? Version is ignored - too many issues with that
 				return true;
 			}
 		}
