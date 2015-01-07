@@ -341,8 +341,7 @@ public class MavenAccessor {
 	            collectRequest.setRepositories(Booter.newRepositories(system, session));
 	            collectRequest.addRepository(repo);
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );            
-	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot());            
-	            
+	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot());                
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
             	 * not already on the blacklist
@@ -383,19 +382,36 @@ public class MavenAccessor {
 	            		}
 	            	}
 	            }	            
-	            	            
+	            artifact = null;
+	            
+	            String nxt = null;
+	            String[] next = null;
+	            Iterator<String> itDeps = null;
+	            Artifact installArtifact = null;
 	            for (int i=installArtifacts.size()-1; i>=0; i--){	            	
 	            	try {	            		
-	            		logger.info("installing: "+installArtifacts.get(i));	            		
-	            		bundle = pepperOSGiConnector.installAndCopy(installArtifacts.get(i).getFile().toURI());
+	            		installArtifact = installArtifacts.get(i);	            		
+	            		logger.info("installing: "+installArtifact);	            		
+	            		bundle = pepperOSGiConnector.installAndCopy(installArtifact.getFile().toURI());
 	            		if (i!=0){//the module itself must not be put on the blacklist
-	            			forbiddenFruits.add(installArtifacts.get(i).toString());
+	            			itDeps = forbiddenFruits.iterator();
+	            			nxt = itDeps.next();
+	            			while (nxt!=null){	            				
+	            				next = nxt.split(":");
+	            				if (next[0].equals(installArtifact.getGroupId()) && next[1].equals(installArtifact.getArtifactId())){
+	            					forbiddenFruits.remove(nxt);
+	            					nxt = null;
+	            				} else {
+	            					nxt = itDeps.next();
+	            				}
+	            			}	 
+	            			forbiddenFruits.add(installArtifact.toString());	            			
 	            		}
 	            		if (bundle!=null){
 	            			bundle.start();
 	            		}
 	            	} catch (IOException | BundleException e) {	            		
-	            		logger.debug("File could not be installed: "+installArtifacts.get(i)+"; "+e.getClass().getSimpleName());}	            		
+	            		logger.debug("File could not be installed: "+installArtifact+"; "+e.getClass().getSimpleName());}	            		
 		    	}
 	            /*
 	    		 * btw: root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
@@ -442,8 +458,33 @@ public class MavenAccessor {
 		for (String dependencyString : forbiddenFruits){
 			testCoords = dependencyString.split(":");
 			if (coords[1].equals(testCoords[1]) && /*artifactId*/
-				coords[0].equals(testCoords[0]) /*&&*/ /*groupId*/
-				/*coords[3].equals(testCoords[3])*/){  /*version*/ //FIXME? Version is ignored - too many issues with that
+				coords[0].equals(testCoords[0]) /*groupId*/
+				){
+				/* check version */
+				VersionScheme vScheme = new GenericVersionScheme();
+				try {
+					Version version = vScheme.parseVersion(coords[3]);
+					Version testVersion = vScheme.parseVersion(testCoords[3]);
+					if (version.compareTo(testVersion)<=0){
+						return true;
+					}
+					else {
+						/* find and delete dependency */
+						String bundleName = pepperOSGiConnector.getBundleNameByDependency(coords[0], coords[1]);
+						if (bundleName!=null){
+							try {
+								pepperOSGiConnector.remove(bundleName);
+								logger.info("removed dependency "+coords[1]+". Newer version is about to be installed.");
+								return false;
+							} catch (BundleException | IOException e) {
+								logger.warn("Could not delete dependency "+coords[1]+", so its older version remains.");
+								return true;
+							}
+						}
+					}
+				} catch (InvalidVersionSpecificationException e) {
+					logger.warn("Could not compare versions of dependency "+coords[1]+", so it will be dropped.");
+				}				
 				return true;
 			}
 		}

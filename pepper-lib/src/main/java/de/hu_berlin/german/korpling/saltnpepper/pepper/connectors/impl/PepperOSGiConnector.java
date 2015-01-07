@@ -745,4 +745,16 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public String getBlacklist(){
 		return maven.getBlacklist();
 	}
+	
+	public String getBundleNameByDependency(String groupId, String artifactId){
+		String symName = null;
+		for (Bundle bundle : bundleIdMap.values()){
+			symName = bundle.getSymbolicName();
+			if (symName!=null &&
+				(symName.contains(groupId) && symName.contains(artifactId))	){
+				return symName;
+			}
+		}
+		return null;
+	}
 }
