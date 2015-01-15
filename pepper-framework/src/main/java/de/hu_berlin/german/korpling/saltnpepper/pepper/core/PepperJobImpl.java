@@ -70,6 +70,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentControlle
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
@@ -847,8 +849,31 @@ public class PepperJobImpl extends PepperJob {
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
 			for (Step step : getAllSteps()) {
 				if (step.getModuleController().getPepperModule().getSaltProject() == null)
-					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());
-				futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
+					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());{
+						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
+					}
+					//log all properties of all modules and their values
+					if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()!= null){
+						StringBuilder str= new StringBuilder();
+						str.append("[");
+						str.append(step.getModuleController().getPepperModule().getName());
+						str.append("] using properties: \n");
+						boolean hasProperties= false;
+						for (PepperModuleProperty<?> prop: step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()){
+							if (prop.getValue()!= null){
+								hasProperties= true;
+								str.append("\t");
+								str.append(prop.getName());
+								str.append(": ");
+								str.append(prop.getValue());
+								str.append("\n");
+							}
+						}
+						if (!hasProperties){
+							str.append("\t - none -");
+						}
+						logger.info(str.toString());
+					}
 			}
 			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
 				// wait until all document-structures have been imported

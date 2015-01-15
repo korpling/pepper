@@ -508,8 +508,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void start() throws PepperModuleException {
-		if (getSaltProject() == null)
+		if (getSaltProject() == null){
 			throw new PepperFWException("No salt project was set in module '" + getName() + ", " + getVersion() + "'.");
+		}
 		// creating new thread group for mapper threads
 		mapperThreadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup(), this.getName() + "_mapperGroup");
 		boolean isStart = true;
