@@ -860,11 +860,11 @@ public class PepperJobImpl extends PepperJob {
 			StringBuilder str= new StringBuilder();
 			for (Step step : getAllSteps()) {
 				stepNum++;
-				str.append("------------------------------------ step ");
+				str.append("+----------------------------------- step ");
 				str.append(stepNum);
-				str.append(" ------------------------------------\n");
+				str.append(" -----------------------------------+\n");
 				
-				String format="%-15s%s\n";
+				String format="|%-15s%-63s|\n";
 				str.append(String.format(format, step.getModuleType().toString().toLowerCase()+":", step.getName()));
 				str.append(String.format(format, "path:", step.getCorpusDesc().getCorpusPath()));
 				
@@ -873,7 +873,7 @@ public class PepperJobImpl extends PepperJob {
 				if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()!= null){
 					//log all properties of all modules and their values
 					
-					format="               %-25s%s\n";
+					format="|               %-25s%-38s|\n";
 					for (PepperModuleProperty<?> prop: step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()){
 						if (prop.getValue()!= null){
 							hasProperties= true;
@@ -881,15 +881,16 @@ public class PepperJobImpl extends PepperJob {
 						}
 					}
 				}
-				format="%-15s%s\n";
+				format="|%-15s%-63s|\n";
 				if (hasProperties){
 					str.append(String.format(format, "properties:", ""));
 					str.append(propStr.toString());
 				}else{
 					str.append(String.format(format, "properties:", "- none -"));
 				}
+				str.append("|                                                                              |\n");
 			}
-			str.append("--------------------------------------------------------------------------------\n");
+			str.append("+------------------------------------------------------------------------------+\n");
 			logger.info(str.toString());
 			
 			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
