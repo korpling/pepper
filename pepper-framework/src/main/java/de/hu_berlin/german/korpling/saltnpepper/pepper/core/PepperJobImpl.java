@@ -847,34 +847,51 @@ public class PepperJobImpl extends PepperJob {
 			if (!isImportedCorpusStructure)
 				importCorpusStructures();
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
+			// create a future for each step
 			for (Step step : getAllSteps()) {
 				if (step.getModuleController().getPepperModule().getSaltProject() == null)
 					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());{
 						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
 					}
-					//log all properties of all modules and their values
-					if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()!= null){
-						StringBuilder str= new StringBuilder();
-						str.append("[");
-						str.append(step.getModuleController().getPepperModule().getName());
-						str.append("] using properties: \n");
-						boolean hasProperties= false;
-						for (PepperModuleProperty<?> prop: step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()){
-							if (prop.getValue()!= null){
-								hasProperties= true;
-								str.append("\t");
-								str.append(prop.getName());
-								str.append(": ");
-								str.append(prop.getValue());
-								str.append("\n");
-							}
-						}
-						if (!hasProperties){
-							str.append("\t - none -");
-						}
-						logger.info(str.toString());
-					}
 			}
+			
+			// log workflow information
+			int stepNum= 0; //current number of step
+			StringBuilder str= new StringBuilder();
+			for (Step step : getAllSteps()) {
+				stepNum++;
+				str.append("------------------------------------ step ");
+				str.append(stepNum);
+				str.append(" ------------------------------------\n");
+				
+				String format="%-15s%s\n";
+				str.append(String.format(format, step.getModuleType().toString().toLowerCase()+":", step.getName()));
+				str.append(String.format(format, "path:", step.getCorpusDesc().getCorpusPath()));
+				
+				boolean hasProperties= false;
+				StringBuilder propStr= new StringBuilder();
+				if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()!= null){
+					//log all properties of all modules and their values
+					
+					format="               %-25s%s\n";
+					for (PepperModuleProperty<?> prop: step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()){
+						if (prop.getValue()!= null){
+							hasProperties= true;
+							propStr.append(String.format(format, prop.getName()+":", prop.getValue()));
+						}
+					}
+				}
+				format="%-15s%s\n";
+				if (hasProperties){
+					str.append(String.format(format, "properties:", ""));
+					str.append(propStr.toString());
+				}else{
+					str.append(String.format(format, "properties:", "- none -"));
+				}
+			}
+			str.append("--------------------------------------------------------------------------------\n");
+			logger.info(str.toString());
+			
 			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
 				// wait until all document-structures have been imported
 				try {
@@ -905,7 +922,7 @@ public class PepperJobImpl extends PepperJob {
 			if (e instanceof PepperException)
 				throw (PepperException) e;
 			else
-				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: ", e);
+				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: "+e.getMessage(), e);
 		} finally {
 			inProgress.unlock();
 		}

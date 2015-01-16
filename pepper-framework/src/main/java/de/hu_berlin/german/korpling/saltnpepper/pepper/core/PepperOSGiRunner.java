@@ -20,7 +20,6 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.core;
 import java.io.File;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
@@ -37,7 +36,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperOSGiRunnerException;
 
@@ -187,20 +185,6 @@ public class PepperOSGiRunner implements Runnable {
 					job.load(workflowDescURI);
 
 					PepperJobReporter observer = new PepperJobReporter(job);
-					List<StepDesc> stepDescs = job.getStepDescs();
-					StringBuilder stepsOut = new StringBuilder();
-					stepsOut.append("--------------------- participating modules ---------------------\n");
-					if (stepDescs != null) {
-						for (StepDesc stepDesc : stepDescs) {
-							stepsOut.append(stepDesc.getName());
-							stepsOut.append("(");
-							stepsOut.append(stepDesc.getCorpusDesc().getCorpusPath());
-							stepsOut.append(")");
-							stepsOut.append("\n");
-						}
-					}
-					
-					logger.info(PepperUtil.breakString(stepsOut.toString()));
 					observer.start();
 
 					try {
