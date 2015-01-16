@@ -664,7 +664,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 							corporaToEnd.add(sCorpus);
 						}
 					}
-					
 				}else{
 					//if module is not an importer,  process all corpora 
 				

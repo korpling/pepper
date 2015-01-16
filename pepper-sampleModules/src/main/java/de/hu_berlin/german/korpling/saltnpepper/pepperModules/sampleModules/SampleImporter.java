@@ -153,6 +153,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		 */
 		//super.importCorpusStructure(sCorpusGraph);
 		
+		this.setSCorpusGraph(sCorpusGraph);
 		// creates the super-corpus c1, in Salt you can create corpora via a URI
 		SCorpus c1= sCorpusGraph.createSCorpus(URI.createURI("salt:/c1")).get(0);
 		//creates the sub-corpora c2 and c3, in Salt you can also create corpora adding a corpus to a parent
