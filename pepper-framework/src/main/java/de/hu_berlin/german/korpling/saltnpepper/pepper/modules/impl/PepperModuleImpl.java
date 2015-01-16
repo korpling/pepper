@@ -657,8 +657,20 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		List<SCorpusGraph> corpGraphs = Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
 		for (SCorpusGraph sCorpusGraph : corpGraphs) {
 			if (sCorpusGraph != null) {
-				for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
-					corporaToEnd.add(sCorpus);
+				if (MODULE_TYPE.IMPORTER.equals(getModuleType())){
+					//in case of module is an importer, only import corpora from set corpus graph
+					if (sCorpusGraph.equals(((PepperImporter)this).getSCorpusGraph())){
+						for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
+							corporaToEnd.add(sCorpus);
+						}
+					}
+					
+				}else{
+					//if module is not an importer,  process all corpora 
+				
+					for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
+						corporaToEnd.add(sCorpus);
+					}
 				}
 			}
 		}
@@ -669,8 +681,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			PepperMapperController controller = new PepperMapperControllerImpl(mapperThreadGroup, this.getName() + "_mapper(" + sElementId.getSId() + ")");
 
 			String id = sElementId.getSId();
-			if (sElementId.getSIdentifiableElement() instanceof SDocument)
+			if (sElementId.getSIdentifiableElement() instanceof SDocument){
 				id = SaltFactory.eINSTANCE.getGlobalId(sElementId);
+			}
 			this.getMapperControllers().put(id, controller);
 			controller.setUncaughtExceptionHandler(this);
 			controller.setPepperModule(this);
