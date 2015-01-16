@@ -867,6 +867,10 @@ public class PepperJobImpl extends PepperJob {
 				String format="|%-15s%-63s|\n";
 				str.append(String.format(format, step.getModuleType().toString().toLowerCase()+":", step.getName()));
 				str.append(String.format(format, "path:", step.getCorpusDesc().getCorpusPath()));
+				if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())){
+					int idxCorpusGraph= getSaltProject().getSCorpusGraphs().indexOf(((PepperImporter)step.getModuleController().getPepperModule()).getSCorpusGraph());
+					str.append(String.format(format, "corpus index:", idxCorpusGraph));
+				}
 				
 				boolean hasProperties= false;
 				StringBuilder propStr= new StringBuilder();
