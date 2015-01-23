@@ -18,6 +18,10 @@ The import phase handles the mapping from a format _X_ to Salt, the export phase
 
 ##Download and Install
 
+Here you will find the current stable release, snapshots and even older versions of Pepper including a set of Pepper modules.
+* <a href="https://korpling.german.hu-berlin.de/saltnpepper/pepper/download/stable/">Stable Releases</a>
+* <a href="https://korpling.german.hu-berlin.de/saltnpepper/pepper/download/snapshot/">Snapshot Releases</a>
+
 Pepper is system independent and comes as a ready to run zip archive, so you do not need any
 installation. But since Pepper is Java based, you need to have Java installed on your system. On most
 systems, Java is installed by default, but in case it is not please download it from
@@ -27,8 +31,6 @@ Runtime Environment) is running, open a command line and run:
 java -version
 ```
 You need at least version 1.6.
-
-<a href="https://korpling.german.hu-berlin.de/saltnpepper/repository/saltNpepper_full/">Here</a> you will find the current stable release, snapshots and even older versions of Pepper including a set of Pepper modules.
 
 
 ##Documentation
