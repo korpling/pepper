@@ -46,6 +46,11 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  */
 public class ModuleControllerImpl implements ModuleController{
 	private static final Logger logger= LoggerFactory.getLogger(ModuleController.class);
+	/** 
+	 * a logger instance for all messages belonging to the module. This enables, to control this logger in 
+	 * conf file with the modules name. The logger is overwritten in {@link #setPepperModule(PepperModule)}.
+	 **/
+	private Logger mLogger= LoggerFactory.getLogger(ModuleController.class);;
 	/**
 	 * Creates an instance of {@link ModuleControllerImpl}. Sets the internal id to the passed one. 
 	 * <strong>Note: the id is unchangable.</strong>
@@ -89,6 +94,8 @@ public class ModuleControllerImpl implements ModuleController{
 	public void setPepperModule(PepperModule newPepperModule) {
 		setPepperModule_basic(newPepperModule);
 		newPepperModule.setPepperModuleController_basic(this);
+		//overwrites the logger, to listen to settings for the modules logger
+		mLogger= LoggerFactory.getLogger(getPepperModule().getName());
 	}
 	
 	/**
@@ -351,7 +358,7 @@ public class ModuleControllerImpl implements ModuleController{
 		getOutputDocumentBus().put(documentController);
 		//removes document controller of list of to be processed document controllers
 		getControllList().remove(documentController);
-		logger.debug("[{}] completed document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
+		mLogger.debug("[{}] completed document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
 	}
 	
 	/* (non-Javadoc)
@@ -368,7 +375,7 @@ public class ModuleControllerImpl implements ModuleController{
 //			throw new PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
 
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.DELETED);
-		logger.debug("[{}] deleted document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
+		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
 		//if document is not processed any further, release slot
 		if (getJob()!= null){
 			getJob().releaseDocument(documentController);
