@@ -19,10 +19,13 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.tests;
 
 import java.util.Properties;
 
+import junit.framework.TestCase;
+
+import org.junit.Test;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModulePropertyException;
-import junit.framework.TestCase;
 
 public class PepperModulePropertiesTest extends TestCase {
 	private PepperModuleProperties fixture = null;
@@ -184,5 +187,16 @@ public class PepperModulePropertiesTest extends TestCase {
 			fail("Check should not return true");
 		} catch (PepperModulePropertyException e) {
 		}
+	}
+	
+	@Test
+	public void test_PROP_SIMPLE_TOKENIZE_3(){
+		String sep = "' ', '\\'', ',', '\\\\'";
+		
+		assertEquals(4, getFixture().stringToCharList(sep).size());
+		assertEquals(new Character(' '), getFixture().stringToCharList(sep).get(0));
+		assertEquals(new Character('\''), getFixture().stringToCharList(sep).get(1));
+		assertEquals(new Character(','), getFixture().stringToCharList(sep).get(2));
+		assertEquals(new Character('\\'), getFixture().stringToCharList(sep).get(3));
 	}
 }
