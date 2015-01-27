@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
@@ -37,11 +38,12 @@ public class PepperModulePropertiesTest extends TestCase {
 	public PepperModuleProperties getFixture() {
 		return fixture;
 	}
-
+	@Before
 	public void setUp() {
 		this.setFixture(new PepperModuleProperties());
 	}
 
+	@Test
 	public void testAddProp() {
 		String propName = "prop1";
 		PepperModuleProperty<Integer> prop = new PepperModuleProperty<Integer>(propName, Integer.class, "some desc");
@@ -54,6 +56,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	 * Checks adding a bunch of properties via {@link Properties} object. All
 	 * properties are already described.
 	 */
+	@Test
 	public void testAdd_Properties() {
 		String propName1 = "prop1";
 		String propName2 = "prop2";
@@ -81,6 +84,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	 * Checks adding a bunch of properties via {@link Properties} object. Some
 	 * of the properties are not desribed.
 	 */
+	@Test
 	public void testAdd_Properties2() {
 		String propName1 = "prop1";
 		String propName2 = "prop2";
@@ -116,6 +120,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	 * Checks adding a bunch of properties via {@link Properties} object. Some
 	 * of the properties are not desribed.
 	 */
+	@Test
 	public void testCheckProperties() {
 		String propName1 = "prop1";
 
@@ -135,6 +140,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	/**
 	 * Checks if check works correctly. Sets all required values, than
 	 */
+	@Test
 	public void testAdd_CheckProperties() {
 		String propName1 = "prop1";
 		String propName2 = "prop2";
@@ -165,6 +171,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	/**
 	 * Checks if check works correctly. Does not set all required values, than
 	 */
+	@Test
 	public void testAdd_CheckProperties2() {
 		String propName1 = "prop1";
 		String propName2 = "prop2";

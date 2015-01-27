@@ -19,6 +19,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.tests;
 
 import java.io.File;
 
+import org.junit.Test;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import junit.framework.TestCase;
 
@@ -27,6 +29,7 @@ public class PepperModulePropertyTest extends TestCase
 	/**
 	 * Checks setting and returning an int value.
 	 */
+	@Test
 	public void testSetProperty_Int()
 	{
 		Integer value= 123;
@@ -38,6 +41,7 @@ public class PepperModulePropertyTest extends TestCase
 	/**
 	 * Checks setting and returning an int value.
 	 */
+	@Test
 	public void testSetProperty_Boolean()
 	{
 		Boolean value= true;
@@ -49,6 +53,7 @@ public class PepperModulePropertyTest extends TestCase
 	/**
 	 * Checks setting and returning an int value.
 	 */
+	@Test
 	public void testSetProperty_File()
 	{
 		File value= new File("/home/me/");
@@ -60,6 +65,7 @@ public class PepperModulePropertyTest extends TestCase
 	/**
 	 * Checks setting and returning an int value.
 	 */
+	@Test
 	public void testSetProperty_String()
 	{
 		String value= "hello world";
@@ -71,6 +77,7 @@ public class PepperModulePropertyTest extends TestCase
 	/**
 	 * Tests the use of the default value.
 	 */
+	@Test
 	public void testSetUsingDefault()
 	{
 		String defaultValue= "hello world";
