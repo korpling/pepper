@@ -232,8 +232,15 @@ public class PepperConfiguration extends Properties {
 		}
 		load(new File(configFileStr));
 	}
-
+	/** folder containing the configuration file(s) **/
 	private File confFolder = null;
+	/**
+	 * Sets the folder containing the configuration file(s).
+	 * @param confFolder
+	 */
+	protected void setConfFolder(File confFolder){
+		this.confFolder= confFolder;
+	}
 
 	/**
 	 * Returns the folder containing the configuration file(s). If no
