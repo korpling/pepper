@@ -177,6 +177,7 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 		if (!propertiesFile.exists())
 			throw new PepperPropertyException("Cannot read pepper property file, because it does not exist '" + propertiesFile.getAbsolutePath() + "'.");
 		try {
+			this.setConfFolder(propertiesFile.getParentFile());
 			this.load(new FileInputStream(propertiesFile));
 			this.cleanUp_PepperPath();
 		} catch (FileNotFoundException e) {
