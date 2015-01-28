@@ -328,20 +328,29 @@ public class PepperStarter {
 	 * @param workFlowFile
 	 */
 	public void convert(String workFlowFile) {
-		URI workFlowUri = URI.createFileURI(workFlowFile);
-		String jobId = pepper.createJob();
-
-		PepperJob pepperJob = pepper.getJob(jobId);
-		pepperJob.load(workFlowUri);
-		PepperJobReporter observer = new PepperJobReporter(pepperJob);
-		observer.start();
-		try {
-			pepperJob.convert();
-		} finally {
-			observer.setStop(true);
+		if (	(workFlowFile== null)||
+				(workFlowFile.isEmpty())){
+			//if no parameter is given open convert wizzard
+			ConvertWizzardConsole console = new ConvertWizzardConsole(PROMPT);
+			console.setPepper(getPepper());
+			console.start(input, output);
 		}
-
-		pepper.removeJob(jobId);
+		else{
+			URI workFlowUri = URI.createFileURI(workFlowFile);
+			String jobId = pepper.createJob();
+	
+			PepperJob pepperJob = pepper.getJob(jobId);
+			pepperJob.load(workFlowUri);
+			PepperJobReporter observer = new PepperJobReporter(pepperJob);
+			observer.start();
+			try {
+				pepperJob.convert();
+			} finally {
+				observer.setStop(true);
+			}
+	
+			pepper.removeJob(jobId);
+		}
 	}
 
 	/**
@@ -466,11 +475,14 @@ public class PepperStarter {
 				output.println(selfTest());
 			} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
 				break;
-			} else if (((params.size() > 0)) && ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command)))) {
-				if (params.size() == 1) {
+			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
 					Long timestamp = System.currentTimeMillis();
 					try {
-						convert(params.get(0));
+						if (params.size() == 1) {
+							convert(params.get(0));
+						}else{
+							convert(null);
+						}
 						timestamp = System.currentTimeMillis() - timestamp;
 						output.println("conversion ended successfully, required time: " + (timestamp / 1000) + " s");
 					} catch (Exception e) {
@@ -480,9 +492,6 @@ public class PepperStarter {
 						output.println("full stack trace:");
 						e.printStackTrace(output);
 					}
-				} else {
-					output.println("Please pass exactly one workflow file.");
-				}
 			} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(osgi());
 			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
