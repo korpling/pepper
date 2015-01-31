@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 
@@ -79,6 +80,31 @@ public abstract class PepperJob {
 			throw new WorkflowException("Cannot deal with an empty StepDesc object for job '"+getId()+"'.");
 		getStepDescs().add(stepDesc);
 	}
+	
+	/**
+	 * Creates a {@link StepDesc} object an returns it, without adding the created {@link StepDesc} object
+	 * to this {@link PepperJob} object. For adding that object, call {@link #addStepDesc(StepDesc)}. Or if you
+	 * want to do that at once call {@link #createStepDesc(MODULE_TYPE)
+	 * @return created {@link StepDesc} object
+	 */
+	public StepDesc createStepDesc(){
+		return(new StepDesc());
+	}
+//	/**
+//	 * Creates a {@link StepDesc} object an returns it. Further the {@link StepDesc} type {@link StepDesc}s
+//	 * module type is set to the passed one.
+//	 * @param moduleType 
+//	 * @return
+//	 */
+//	public StepDesc createStepDesc(MODULE_TYPE moduleType){
+//		if (moduleType== null){
+//			throw new PepperException("Cannot create a step desc object when passed module type is empty.");
+//		}
+//		StepDesc stepDesc= createStepDesc();
+//		stepDesc.setModuleType(moduleType);
+//		addStepDesc(stepDesc);
+//		return(stepDesc);
+//	}
 
 	/**
 	 * Starts the conversion of this job.
