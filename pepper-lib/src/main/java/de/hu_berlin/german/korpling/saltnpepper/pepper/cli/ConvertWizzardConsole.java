@@ -134,14 +134,20 @@ public class ConvertWizzardConsole {
 
 		String promptOld = prompt;
 		prompt = prompt + "/importer";
-		importPhase(pepperJob);
+		if (!importPhase(pepperJob)){
+			return;
+		}
 		
 		prompt= promptOld +"/manipulator";
 		manipulationPhase(pepperJob);
 		
 		prompt= promptOld +"/exporter";
-		exportPhase(pepperJob);
+		if (!exportPhase(pepperJob)){
+			return;
+		}
 		prompt= promptOld;
+		out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
+		//TODO if save followed by filename(and path) was given than save, if no file was given, ask for one
 	}
 
 	/**
@@ -310,16 +316,92 @@ public class ConvertWizzardConsole {
 	 * A sub wizzard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
-	 * <li>reads corpus path</li>
-	 * <li>choose importer</li>
+	 * <li>state 0: choose output path, empty input leads to exit of export phase</li>
+	 * <li>state 1: choose exporter</li>
+	 * <li>state 2: choose property, empty input leads to state 0</li>
 	 * </ol>
 	 * 
 	 * @param pepperJob
 	 *            the {@link PepperJob} object to be filled.
-	 * @return
+	 * @return if an exporter was set, false otherwise
 	 */
-	public void exportPhase(PepperJob pepperJob) {
+	public boolean exportPhase(PepperJob pepperJob) {
+		int state = 0;
+		String input = null;
+		StepDesc stepDesc = null;
+		out.println("\tPlease enter the path to which you want to export the corpus. ");
+		// a map containing each registered module and a corresponding number,
+		// to make selection easier (key= number, value= module desc)
+		Map<Integer, PepperModuleDesc> number2Module = null;
+		// a map containing each registered module and a corresponding name,
+		// to make selection easier (key= name, value= module desc)
+		Map<String, PepperModuleDesc> name2Module = null;
+		// the String containing the map to be presented to the user
+		String legend = null;
+		// the module description which was selected by the user
+		PepperModuleDesc moduleDesc = null;
+		String promptOld= prompt;
+		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
 
+			if (state == 0) {
+				if (!input.isEmpty()) {
+					// read corpus path
+
+					File corpusPath = new File(input);
+					if (!corpusPath.exists()) {
+						corpusPath.mkdirs();
+					} 
+					stepDesc = pepperJob.createStepDesc();
+					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
+					if ((number2Module == null) || (name2Module == null)) {
+						number2Module = new HashMap<Integer, PepperModuleDesc>();
+						name2Module = new HashMap<String, PepperModuleDesc>();
+						legend = createX2ModuleMap(number2Module, name2Module, MODULE_TYPE.EXPORTER);
+					}
+					out.println(legend);
+					out.println("\tPlease enter the number or the name of the exporter you wish to use. ");
+					state++;
+				} else {
+					// empty input return
+					if (stepDesc != null) {
+						// at least one importer was created
+						return (true);
+					} else {
+						return (false);
+					}
+				}
+			} else if (state == 1) {
+				// choose exporter
+
+				try {
+					Integer num = Integer.valueOf(input);
+					moduleDesc = number2Module.get(num);
+				} catch (NumberFormatException e) {
+					moduleDesc = name2Module.get(input);
+				}
+				if (moduleDesc == null) {
+					out.println(legend);
+					out.println("\tSorry could not match the input, please enter the number or the name of the importer you wish to use again. ");
+				} else {
+					out.println("\tchoosed importer: '" + moduleDesc + "'. ");
+					stepDesc.setName(moduleDesc.getName());
+					pepperJob.addStepDesc(stepDesc);
+					out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
+					state = 2;
+					prompt = promptOld + "/prop";
+				}
+			} else if (state == 2) {
+				// choose properties
+				
+				if (! readProp(input, stepDesc)){
+					state = 0;
+					prompt = promptOld;
+					out.println("\tPlease enter another path in case you want to add a further exporter, or press enter. ");
+				}
+			}
+		}// end: while
+		return (true);
 	}
 
 	/**
