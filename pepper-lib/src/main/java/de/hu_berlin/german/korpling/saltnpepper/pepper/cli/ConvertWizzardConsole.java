@@ -298,6 +298,7 @@ public class ConvertWizzardConsole {
 				if (! readProp(input, stepDesc)){
 					state = 1;
 					prompt = promptOld;
+					out.println(legend);
 					out.println("\tPlease enter the number or the name of the manipulator you wish to use. ");
 				}
 			}
@@ -342,18 +343,20 @@ public class ConvertWizzardConsole {
 				str.append(num);
 				str.append(":\t");
 				str.append(moduleDesc.getName());
-				str.append("(");
-				int i = 0;
-				for (FormatDesc format : moduleDesc.getSupportedFormats()) {
-					if (i > 0) {
-						str.append("; ");
+				if (moduleDesc.getSupportedFormats().size() > 0){
+					str.append("(");
+					int i = 0;
+					for (FormatDesc format : moduleDesc.getSupportedFormats()) {
+						if (i > 0) {
+							str.append("; ");
+						}
+						str.append(format.getFormatName());
+						str.append(", ");
+						str.append(format.getFormatVersion());
+						i++;
 					}
-					str.append(format.getFormatName());
-					str.append(", ");
-					str.append(format.getFormatVersion());
-					i++;
+					str.append(")");
 				}
-				str.append(")");
 				str.append("\n");
 				num++;
 			}
