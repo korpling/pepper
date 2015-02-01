@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
@@ -74,7 +75,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
  */
 public class ConvertWizzardConsole {
 
-	private static final String PROMPT = "wizzard>";
+	private static final String PROMPT = "wizzard";
 	private String prompt = null;
 
 	/**
@@ -131,26 +132,36 @@ public class ConvertWizzardConsole {
 		String jobId = pepper.createJob();
 		PepperJob pepperJob = pepper.getJob(jobId);
 
+		String promptOld = prompt;
+		prompt = prompt + "/importer";
 		importPhase(pepperJob);
+		
+		prompt= promptOld +"/manipulator";
+		manipulationPhase(pepperJob);
+		
+		prompt= promptOld +"/exporter";
+		exportPhase(pepperJob);
+		prompt= promptOld;
 	}
 
 	/**
 	 * A sub wizzard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
-	 * <li>reads corpus path</li>
-	 * <li>choose importer</li>
+	 * <li>state 0: reads corpus path, empty input leads to exit import phase</li>
+	 * <li>state 1: choose importer</li>
+	 * <li>state 2: choose properties, empty input leads to state 0</li>
 	 * </ol>
 	 * 
-	 * @param out
-	 * @param command
-	 * @param parts
-	 * @return
+	 * @param pepperJob
+	 *            the {@link PepperJob} object to be filled.
+	 * @return true if an importer was chosen, false if phase was aborted
 	 */
-	public void importPhase(PepperJob pepperJob) {
+	public boolean importPhase(PepperJob pepperJob) {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
+		out.println("\tPlease enter the path to the corpus you want to convert (import). ");
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -161,28 +172,36 @@ public class ConvertWizzardConsole {
 		String legend = null;
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
-		while ((input = getUserInput(in, out)) != null) {
-			System.out.println("state: "+ state);
+		String promptOld= prompt;
+		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
+
 			if (state == 0) {
 				if (!input.isEmpty()) {
 					// read corpus path
-					System.out.println("HERE 0");
+
 					File corpusPath = new File(input);
 					if (!corpusPath.exists()) {
-						out.println("The path to corpus does not exist '" + corpusPath.getAbsolutePath() + "' please type in another one. ");
+						out.println("\tThe path to corpus does not exist '" + corpusPath.getAbsolutePath() + "' please type in another one. ");
 					} else {
 						stepDesc = pepperJob.createStepDesc();
+						stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
 						stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
-						System.out.println("HERE 1");
 						if ((number2Module == null) || (name2Module == null)) {
 							number2Module = new HashMap<Integer, PepperModuleDesc>();
 							name2Module = new HashMap<String, PepperModuleDesc>();
 							legend = createX2ModuleMap(number2Module, name2Module, MODULE_TYPE.IMPORTER);
 						}
-						System.out.println("number2Module: "+ number2Module);
 						out.println(legend);
-						out.println("Please enter the number or the name of the importer you wish to use. ");
+						out.println("\tPlease enter the number or the name of the importer you wish to use. ");
 						state++;
+					}
+				} else {
+					// empty input return
+					if (stepDesc != null) {
+						// at least one importer was created
+						return (true);
+					} else {
+						return (false);
 					}
 				}
 			} else if (state == 1) {
@@ -190,39 +209,116 @@ public class ConvertWizzardConsole {
 
 				try {
 					Integer num = Integer.valueOf(input);
-					System.out.println("input: "+input+", num: "+num+ ", table: "+number2Module);
 					moduleDesc = number2Module.get(num);
 				} catch (NumberFormatException e) {
 					moduleDesc = name2Module.get(input);
 				}
 				if (moduleDesc == null) {
 					out.println(legend);
-					out.println("Sorry, could not match the input, please enter the number or the name of the importer you wish to use again. ");
+					out.println("\tSorry could not match the input, please enter the number or the name of the importer you wish to use again. ");
 				} else {
-					out.println("choosed importer: '" + moduleDesc + "'. ");
+					out.println("\tchoosed importer: '" + moduleDesc + "'. ");
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
-					out.println("To use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
-					state++;
+					out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
+					state = 2;
+					prompt = promptOld + "/prop";
 				}
 			} else if (state == 2) {
 				// choose properties
-
-				if (input.isEmpty()) {
-					return;
-				} else {
-					int firstPosition = StringUtils.indexOf(input, "=");
-					if (firstPosition > 1) {
-						String qualifier = input.substring(0, firstPosition);
-						String value = input.substring(firstPosition, input.length() - 1);
-						stepDesc.getProps().put(qualifier, value);
-					} else {
-						out.println("Sorry could not match the input. ");
-					}
+				
+				if (! readProp(input, stepDesc)){
+					state = 0;
+					prompt = promptOld;
+					out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
 				}
 			}
+		}// end: while
+		return (true);
+	}
 
-		}
+	/**
+	 * A sub wizzard to manage the manipulation phase. Asks for all manipulators
+	 * from the user.
+	 * <ol>
+	 * <li>state 1: reads name of manipulator, empty input leads to exit import phase</li>
+	 * <li>state 2: asks for properties, input leads to state 1</li>
+	 * </ol>
+	 * 
+	 * @param pepperJob
+	 *            the {@link PepperJob} object to be filled.
+	 * @return
+	 */
+	public void manipulationPhase(PepperJob pepperJob) {
+		int state = 1;
+		String input = null;
+		StepDesc stepDesc = null;
+		String promptOld= prompt;
+		
+		// a map containing each registered module and a corresponding number,
+		// to make selection easier (key= number, value= module desc)
+		Map<Integer, PepperModuleDesc> number2Module = new HashMap<Integer, PepperModuleDesc>();;
+		// a map containing each registered module and a corresponding name,
+		// to make selection easier (key= name, value= module desc)
+		Map<String, PepperModuleDesc> name2Module = new HashMap<String, PepperModuleDesc>();
+		// the String containing the map to be presented to the user
+		String legend = createX2ModuleMap(number2Module, name2Module, MODULE_TYPE.MANIPULATOR);
+		out.println(legend);
+		out.println("\tPlease enter the number or the name of the manipulator you wish to use. ");
+
+		// the module description which was selected by the user
+		PepperModuleDesc moduleDesc = null;
+		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
+			
+			if (state == 1) {
+				// choose manipulator
+				if (input.isEmpty()){
+					return;
+				}
+				stepDesc= pepperJob.createStepDesc();
+				stepDesc.setModuleType(MODULE_TYPE.MANIPULATOR);
+				try {
+					Integer num = Integer.valueOf(input);
+					moduleDesc = number2Module.get(num);
+				} catch (NumberFormatException e) {
+					moduleDesc = name2Module.get(input);
+				}
+				if (moduleDesc == null) {
+					out.println(legend);
+					out.println("\tSorry, could not match the input, please enter the number or the name of the importer you wish to use again. ");
+				} else {
+					out.println("\tchoosed manipulator: '" + moduleDesc + "'. ");
+					stepDesc.setName(moduleDesc.getName());
+					pepperJob.addStepDesc(stepDesc);
+					out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
+					state=2;
+					prompt = promptOld + "/prop";
+				}
+			} else if (state == 2) {
+				if (! readProp(input, stepDesc)){
+					state = 1;
+					prompt = promptOld;
+					out.println("\tPlease enter the number or the name of the manipulator you wish to use. ");
+				}
+			}
+		}//end while
+		prompt= promptOld;
+	}
+
+	/**
+	 * A sub wizzard to manage the import phase. Asks all importers from the
+	 * user.
+	 * <ol>
+	 * <li>reads corpus path</li>
+	 * <li>choose importer</li>
+	 * </ol>
+	 * 
+	 * @param pepperJob
+	 *            the {@link PepperJob} object to be filled.
+	 * @return
+	 */
+	public void exportPhase(PepperJob pepperJob) {
+
 	}
 
 	/**
@@ -242,6 +338,7 @@ public class ConvertWizzardConsole {
 			if (moduleType.equals(moduleDesc.getModuleType())) {
 				number2Module.put(num, moduleDesc);
 				name2Module.put(moduleDesc.getName(), moduleDesc);
+				str.append("\t");
 				str.append(num);
 				str.append(":\t");
 				str.append(moduleDesc.getName());
@@ -279,6 +376,7 @@ public class ConvertWizzardConsole {
 		if (!exit) {
 			try {
 				out.print(prompt);
+				out.print(">");
 				userInput = in.readLine();
 				userInput = userInput.trim();
 			} catch (IOException ioe) {
@@ -290,5 +388,32 @@ public class ConvertWizzardConsole {
 			}
 		}
 		return (userInput);
+	}
+	
+	/**
+	 * Reads a property from the given inpu and returns true, if the input was not empty
+	 * and false otherwise. 
+	 * @param input the user input
+	 * @param stepDesc the {@link StepDesc} object to which the property should be added
+	 * @return true if input was not empty 
+	 */
+	private boolean readProp(String input, StepDesc stepDesc) {
+		if (!input.isEmpty()) {
+			int eqPosition = StringUtils.indexOf(input, "=");
+			if (eqPosition > 0) {
+				String qualifier = input.substring(0, eqPosition);
+				String value = input.substring(eqPosition + 1, input.length());
+				if (stepDesc.getProps() == null) {
+					stepDesc.setProps(new Properties());
+				}
+				stepDesc.getProps().put(qualifier, value);
+				out.println("\tAdded property: " + qualifier + " = " + value);
+			} else {
+				out.println("\tSorry could not match the input. ");
+			}
+			return (true);
+		} else {
+			return (false);
+		}
 	}
 }
