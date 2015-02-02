@@ -181,6 +181,22 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		getFingerprint().setSupplierContact(supplierContact);
 	}
 
+		/**
+	 * {@inheritDoc PepperModule#getProperties()}
+	 */
+	@Override
+	public PepperModuleProperties getProperties() {
+		return (getFingerprint().getProperties());
+	}
+
+	/**
+	 * {@inheritDoc PepperModule#setProperties(PepperModuleProperties)}
+	 */
+	@Override
+	public void setProperties(PepperModuleProperties properties) {
+		getFingerprint().setProperties(properties);
+	}
+	
 	/**
 	 * TODO make docu
 	 */
@@ -266,28 +282,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Override
 	public void setSymbolicName(String newSymbolicName) {
 		symbolicName = newSymbolicName;
-	}
-
-	/**
-	 * A {@link PepperModuleProperties} object containing properties to
-	 * customize the behaviour of this {@link PepperModule}.
-	 */
-	private PepperModuleProperties properties = null;
-
-	/**
-	 * {@inheritDoc PepperModule#getProperties()}
-	 */
-	@Override
-	public PepperModuleProperties getProperties() {
-		return (properties);
-	}
-
-	/**
-	 * {@inheritDoc PepperModule#setProperties(PepperModuleProperties)}
-	 */
-	@Override
-	public void setProperties(PepperModuleProperties properties) {
-		this.properties = properties;
 	}
 
 	/**

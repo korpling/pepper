@@ -144,7 +144,7 @@ public abstract class PepperJob {
 	 * name {@link #getId()}.pepper is created in the passed directory.
 	 * @param uri The location where to store this job. 
 	 */
-	public abstract void  save(URI uri);
+	public abstract void save(URI uri);
 	
 	/**
 	 * Returns a textual representation of this Pepper job.
