@@ -1108,7 +1108,13 @@ public class PepperJobImpl extends PepperJob {
 		}
 		//create parent directory of file
 		if (!file.getParentFile().exists()){
-			file.getParentFile().mkdirs();
+			if (!file.getParentFile().mkdirs()){
+				if (!file.getParentFile().canWrite()){
+					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file, necause of an access permission. ");
+				}else{
+					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file. ");
+				}
+			};
 		}
 		
 		XMLOutputFactory xof = XMLOutputFactory.newInstance();     
