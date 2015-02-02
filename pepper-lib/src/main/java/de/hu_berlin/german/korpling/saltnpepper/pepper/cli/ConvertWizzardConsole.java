@@ -23,18 +23,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter.COMMAND;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 
 /**
  * This class represents a console to realize a kind of an interactive wizzard
@@ -76,6 +80,42 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 public class ConvertWizzardConsole {
 
 	private static final String PROMPT = "wizzard";
+	
+	public enum COMMAND {
+		//
+		SAVE("save", "s", "path to file", "Stores the Pepper workflow description to passed file location. "), 
+		//
+		CONVERT("convert", "c", null, "Starts the conversion process of the created Pepper workflow. ");
+
+		private String name = null;
+		private String abbreviation = null;
+		private String parameters = null;
+		private String description = null;
+		
+		private COMMAND(String name, String abbreviation, String parameters, String description) {
+			this.name = name;
+			this.abbreviation = abbreviation;
+			this.parameters = parameters;
+			this.description = description;
+		}
+
+		public String getName() {
+			return (name);
+		}
+
+		public String getAbbreviation() {
+			return (abbreviation);
+		}
+
+		public String getParameters() {
+			return (parameters);
+		}
+
+		public String getDescription() {
+			return (description);
+		}
+	}
+	
 	private String prompt = null;
 
 	/**
@@ -122,11 +162,19 @@ public class ConvertWizzardConsole {
 	/**
 	 * Starts the wizzard for a 'session'. A wizzard can only be started as
 	 * singleton. That means it needs to be quit before it can be started again.
+	 * <ol>
+	 * <li>startes wizzard for import phase {@link #importPhase(PepperJob)}</li>
+	 * <li>startes wizzard for manipulation phase
+	 * {@link #manipulationPhase(PepperJob)}</li>
+	 * <li>startes wizzard for export phase {@link #exportPhase(PepperJob)}</li>
+	 * <li>requests user input {@value COMMAND#SAVE} to store workflow description or {@value COMMAND#CONVERT}
+	 * to start conversion</li>
+	 * </ol>
 	 * 
 	 * @param in
 	 * @param out
 	 */
-	public synchronized void start(BufferedReader in, PrintStream out) {
+	public synchronized PepperJob start(BufferedReader in, PrintStream out) {
 		this.in = in;
 		this.out = out;
 		String jobId = pepper.createJob();
@@ -134,20 +182,65 @@ public class ConvertWizzardConsole {
 
 		String promptOld = prompt;
 		prompt = prompt + "/importer";
-		if (!importPhase(pepperJob)){
-			return;
+		if (!importPhase(pepperJob)) {
+			out.println("Creating of Pepper workflow aborted by user's input. ");
+			return(null);
 		}
-		
-		prompt= promptOld +"/manipulator";
+
+		prompt = promptOld + "/manipulator";
 		manipulationPhase(pepperJob);
-		
-		prompt= promptOld +"/exporter";
-		if (!exportPhase(pepperJob)){
-			return;
+
+		prompt = promptOld + "/exporter";
+		if (!exportPhase(pepperJob)) {
+			out.println("Creating of Pepper workflow aborted by user's input. ");
+			return(null);
 		}
-		prompt= promptOld;
+		prompt = promptOld;
 		out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
-		//TODO if save followed by filename(and path) was given than save, if no file was given, ask for one
+		String input = null;
+		while ((input = getUserInput(in, out)) != null) {
+			String[] parts = input.split(" ");
+			String command = parts[0];
+			List<String> params = new Vector<String>();
+			int i = 0;
+			for (String part : parts) {
+				if (i > 0) {
+					params.add(part);
+				}
+				i++;
+			}
+			if ((COMMAND.SAVE.getName().equalsIgnoreCase(command)) || (COMMAND.SAVE.getAbbreviation().equalsIgnoreCase(command))) {
+				File outputFile = null;
+				if (parts.length == 1) {
+					// path to workflow description wasn't given and needs to be
+					// requested
+
+					out.println("Please enter the file location to store Pepper workflow description. ");
+					while ((input = getUserInput(in, out)) != null) {
+						outputFile = new File(input);
+						break;
+					}
+				} else {
+					// path to store workflow description was given
+
+					outputFile = new File(params.get(params.size()-1));
+				}
+
+				
+				try{
+					pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
+					out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
+				}catch (Exception e){
+					out.println("Could not store Pepper workflow to '"+outputFile.getAbsolutePath()+"', because of: "+e.getMessage());
+				}
+				
+
+			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+				return(pepperJob);
+			}
+			out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
+		}
+		return(null);
 	}
 
 	/**
@@ -178,7 +271,7 @@ public class ConvertWizzardConsole {
 		String legend = null;
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
-		String promptOld= prompt;
+		String promptOld = prompt;
 		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
 
 			if (state == 0) {
@@ -232,8 +325,8 @@ public class ConvertWizzardConsole {
 				}
 			} else if (state == 2) {
 				// choose properties
-				
-				if (! readProp(input, stepDesc)){
+
+				if (!readProp(input, stepDesc)) {
 					state = 0;
 					prompt = promptOld;
 					out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
@@ -247,7 +340,8 @@ public class ConvertWizzardConsole {
 	 * A sub wizzard to manage the manipulation phase. Asks for all manipulators
 	 * from the user.
 	 * <ol>
-	 * <li>state 1: reads name of manipulator, empty input leads to exit import phase</li>
+	 * <li>state 1: reads name of manipulator, empty input leads to exit import
+	 * phase</li>
 	 * <li>state 2: asks for properties, input leads to state 1</li>
 	 * </ol>
 	 * 
@@ -259,11 +353,12 @@ public class ConvertWizzardConsole {
 		int state = 1;
 		String input = null;
 		StepDesc stepDesc = null;
-		String promptOld= prompt;
-		
+		String promptOld = prompt;
+
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
-		Map<Integer, PepperModuleDesc> number2Module = new HashMap<Integer, PepperModuleDesc>();;
+		Map<Integer, PepperModuleDesc> number2Module = new HashMap<Integer, PepperModuleDesc>();
+		;
 		// a map containing each registered module and a corresponding name,
 		// to make selection easier (key= name, value= module desc)
 		Map<String, PepperModuleDesc> name2Module = new HashMap<String, PepperModuleDesc>();
@@ -275,13 +370,13 @@ public class ConvertWizzardConsole {
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
 		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
-			
+
 			if (state == 1) {
 				// choose manipulator
-				if (input.isEmpty()){
+				if (input.isEmpty()) {
 					return;
 				}
-				stepDesc= pepperJob.createStepDesc();
+				stepDesc = pepperJob.createStepDesc();
 				stepDesc.setModuleType(MODULE_TYPE.MANIPULATOR);
 				try {
 					Integer num = Integer.valueOf(input);
@@ -297,26 +392,27 @@ public class ConvertWizzardConsole {
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
 					out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
-					state=2;
+					state = 2;
 					prompt = promptOld + "/prop";
 				}
 			} else if (state == 2) {
-				if (! readProp(input, stepDesc)){
+				if (!readProp(input, stepDesc)) {
 					state = 1;
 					prompt = promptOld;
 					out.println(legend);
 					out.println("\tPlease enter the number or the name of the manipulator you wish to use. ");
 				}
 			}
-		}//end while
-		prompt= promptOld;
+		}// end while
+		prompt = promptOld;
 	}
 
 	/**
 	 * A sub wizzard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
-	 * <li>state 0: choose output path, empty input leads to exit of export phase</li>
+	 * <li>state 0: choose output path, empty input leads to exit of export
+	 * phase</li>
 	 * <li>state 1: choose exporter</li>
 	 * <li>state 2: choose property, empty input leads to state 0</li>
 	 * </ol>
@@ -340,7 +436,7 @@ public class ConvertWizzardConsole {
 		String legend = null;
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
-		String promptOld= prompt;
+		String promptOld = prompt;
 		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
 
 			if (state == 0) {
@@ -350,7 +446,7 @@ public class ConvertWizzardConsole {
 					File corpusPath = new File(input);
 					if (!corpusPath.exists()) {
 						corpusPath.mkdirs();
-					} 
+					}
 					stepDesc = pepperJob.createStepDesc();
 					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
@@ -393,8 +489,8 @@ public class ConvertWizzardConsole {
 				}
 			} else if (state == 2) {
 				// choose properties
-				
-				if (! readProp(input, stepDesc)){
+
+				if (!readProp(input, stepDesc)) {
 					state = 0;
 					prompt = promptOld;
 					out.println("\tPlease enter another path in case you want to add a further exporter, or press enter. ");
@@ -425,7 +521,7 @@ public class ConvertWizzardConsole {
 				str.append(num);
 				str.append(":\t");
 				str.append(moduleDesc.getName());
-				if (moduleDesc.getSupportedFormats().size() > 0){
+				if (moduleDesc.getSupportedFormats().size() > 0) {
 					str.append("(");
 					int i = 0;
 					for (FormatDesc format : moduleDesc.getSupportedFormats()) {
@@ -463,7 +559,9 @@ public class ConvertWizzardConsole {
 				out.print(prompt);
 				out.print(">");
 				userInput = in.readLine();
-				userInput = userInput.trim();
+				if (userInput != null) {
+					userInput = userInput.trim();
+				}
 			} catch (IOException ioe) {
 				out.println("Cannot read command, type in 'help' for help.");
 			}
@@ -474,13 +572,17 @@ public class ConvertWizzardConsole {
 		}
 		return (userInput);
 	}
-	
+
 	/**
-	 * Reads a property from the given inpu and returns true, if the input was not empty
-	 * and false otherwise. 
-	 * @param input the user input
-	 * @param stepDesc the {@link StepDesc} object to which the property should be added
-	 * @return true if input was not empty 
+	 * Reads a property from the given inpu and returns true, if the input was
+	 * not empty and false otherwise.
+	 * 
+	 * @param input
+	 *            the user input
+	 * @param stepDesc
+	 *            the {@link StepDesc} object to which the property should be
+	 *            added
+	 * @return true if input was not empty
 	 */
 	private boolean readProp(String input, StepDesc stepDesc) {
 		if (!input.isEmpty()) {
