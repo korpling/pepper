@@ -31,12 +31,15 @@ import java.util.Vector;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This class represents a console to realize a kind of an interactive wizzard
@@ -318,8 +321,28 @@ public class ConvertWizzardConsole {
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
 					out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
-					state = 2;
-					prompt = promptOld + "/prop";
+					if (moduleDesc.getProperties()!= null){
+						//module takes customization properties
+						state = 2;
+						prompt = promptOld + "/prop";
+						if (moduleDesc.getProperties()!= null){
+							int i= 0;
+							for (PepperModuleProperty<?> prop: moduleDesc.getProperties().getPropertyDesctriptions()){
+								out.print(i);
+								out.print(":\t");
+								out.print(prop.getName());
+								out.print(" - ");
+								out.println(prop.getDescription());
+								i++;
+							}
+						}
+					}else{
+						//module does not take customization properties
+						
+						out.println("\tNo customization properties available.");
+						out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
+						state= 0;
+					}
 				}
 			} else if (state == 2) {
 				// choose properties
