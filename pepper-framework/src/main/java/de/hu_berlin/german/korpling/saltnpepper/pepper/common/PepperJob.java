@@ -22,7 +22,6 @@ import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 
