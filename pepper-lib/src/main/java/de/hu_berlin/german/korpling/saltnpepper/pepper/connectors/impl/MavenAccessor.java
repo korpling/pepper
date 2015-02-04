@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.collection.DependencyCollectionException;
 import org.eclipse.aether.examples.util.Booter;
-import org.eclipse.aether.examples.util.ConsoleDependencyGraphDumper;
 import org.eclipse.aether.examples.util.ConsoleRepositoryListener;
 import org.eclipse.aether.examples.util.ConsoleTransferListener;
 import org.eclipse.aether.graph.Dependency;
@@ -56,6 +54,8 @@ public class MavenAccessor {
 	PepperOSGiConnector pepperOSGiConnector = null;	
 	/** this {@link Set} stores all dependencies, that are installed or forbidden. The format of the {@link String}s is GROUP_ID:ARTIFACT_ID:EXTENSION:VERSION, which is also the output format of {@link Dependency#getArtifact()#toString()}.*/
 	private Set<String> forbiddenFruits = null;
+	/** this map contains already collected pepper parent dependencies (version-String->List<Dependency>) */
+	private HashMap<String, List<Dependency>> parentDependencies = null;
 	/** contains the path to the blacklist file. */
 	private static final String BLACKLIST_PATH = "./conf/dep/blacklist.cfg";
 	/** this String contains the artifactId of pepper-framework. */
@@ -64,6 +64,13 @@ public class MavenAccessor {
 	public static final String ARTIFACT_ID_PEPPER_PARENT = "pepper-parentModule";
 	/** path to korpling maven repo */
 	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2";
+	
+	/** flag which is add to the blacklist entry of a dependency – a FINAL dependency can not be overridden */
+	private static enum STATUS{
+		OVERRIDABLE, FINAL; 
+	}
+	/** delimiter for artifact strings */
+	private static final String DELIMITER = ":";
 	
 	/* MAVEN UTILS */
 	/** maven/aether utility */
@@ -79,11 +86,13 @@ public class MavenAccessor {
 		repoBuilder = new RemoteRepository.Builder("", "default", "");
 		repos = new HashMap<String, RemoteRepository>();
 		forbiddenFruits = new HashSet<String>();
+		parentDependencies = new HashMap<String, List<Dependency>>();
 		init();
+		initDependencies();
 	}
 	
 	/**
-	 * This method initializes the Accessor
+	 * This method tries to read the blacklist file, if it already exists
 	 */
 	private void init(){
 		/* init Maven utils */
@@ -100,9 +109,8 @@ public class MavenAccessor {
 				}
 				reader.close();
 				fR.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {logger.debug("Could not read blacklist file.");}
 		}
-		initDependencies();
 	}
 	
 	/**
@@ -113,7 +121,7 @@ public class MavenAccessor {
 		if (forbiddenFruits.isEmpty()){
 			logger.info("Configuring update mechanism ...");
 			/* maven access utils*/
-			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_FRAMEWORK, "jar", frameworkVersion);
+			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", frameworkVersion);
 	        RepositorySystemSession session = Booter.newRepositorySystemSession( system );
 	        ((DefaultRepositorySystemSession)session).setRepositoryListener(repoListener);
 	        ((DefaultRepositorySystemSession)session).setTransferListener(transferListener);	        
@@ -128,13 +136,15 @@ public class MavenAccessor {
             collectRequest.setRootArtifact(pepArt);
             try {
 				CollectResult collectResult = system.collectDependencies( session, collectRequest );
-				for (Dependency dependency : getAllDependencies(collectResult.getRoot())){
-					forbiddenFruits.add(dependency.getArtifact().toString());
+				List<Dependency> allDeps = getAllDependencies(collectResult.getRoot(), false);
+				parentDependencies.put(frameworkVersion.replace("-SNAPSHOT", ""), allDeps);
+				for (Dependency dependency : allDeps){
+					forbiddenFruits.add(dependency.getArtifact().toString()+DELIMITER+STATUS.FINAL);
 				}
 				write2Blacklist();				
 				collectResult = null;
 				
-			} catch (DependencyCollectionException e) {logger.info("An error occured initializing the update mechanism. Please check your internet connection."); return false;}
+			} catch (DependencyCollectionException e) {logger.warn("An error occured initializing the update mechanism. Please check your internet connection.", e); return false;}
             session = null;
 			pepArt = null;
 			collectRequest = null;			
@@ -225,7 +235,7 @@ public class MavenAccessor {
 		@Override
 	    public void metadataInvalid( RepositoryEvent event )
 	    {
-	    	logger.trace( "Invalid metadata " + event.getMetadata() );
+	    	logger.trace( "Invalid metadata {}", event.getMetadata() );
 	    }
 		@Override
 	    public void metadataResolved( RepositoryEvent event )
@@ -244,14 +254,20 @@ public class MavenAccessor {
 	 * and triggers the installation process if a newer version is available
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle){
-		
-		if (forbiddenFruits.isEmpty() && !initDependencies()){
-			logger.info("update process could not be performed, because the pepper dependencies could not be listed.");
-			return false;
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method update()");
 		}
 		
-		logger.info("Starting update process for "+artifactId);
-		logger.debug("Starting update process for "+groupId+", "+artifactId+", "+repositoryUrl+", isSnapshot="+isSnapshot+", ignoreFrameworkVersion="+ignoreFrameworkVersion+", installedBundle="+installedBundle);
+		if (forbiddenFruits.isEmpty() && !initDependencies()){
+			logger.warn("Update process could not be performed, because the pepper dependencies could not be listed.");
+			return false;
+		}
+				
+		if (logger.isTraceEnabled()){
+			logger.trace("Starting update process for "+groupId+", "+artifactId+", "+repositoryUrl+", isSnapshot="+isSnapshot+", ignoreFrameworkVersion="+ignoreFrameworkVersion+", installedBundle="+installedBundle);
+		} else {
+			logger.info("Starting update process for "+artifactId);
+		}	
 		
 		String newLine = System.getProperty("line.separator");
 		
@@ -312,7 +328,7 @@ public class MavenAccessor {
 		    					file = artifact.getFile();
 		    				
 		    			}catch (ArtifactResolutionException e){
-		    					logger.info("Highest version in repository could not be found. Checking the next lower version ...");
+		    					logger.warn("Highest version in repository could not be found. Checking the next lower version ...");
 		    			}
 	    			}
     		}    	
@@ -323,11 +339,11 @@ public class MavenAccessor {
 	    		if (installedBundle!=null){	    			
 	    			try {
 						if(!pepperOSGiConnector.remove(installedBundle.getSymbolicName())){
-							logger.info("Could not remove older version. Update process aborted.");
+							logger.warn("Could not remove older version. Update process aborted.");
 							return false;
 						}
 					} catch (BundleException | IOException e) {
-						logger.warn("An error occured while trying to remove OSGi bundle "+installedBundle.getSymbolicName()+". This may cause problems with performing the update. Trying to continue ...");
+						logger.warn("An error occured while trying to remove OSGi bundle "+installedBundle.getSymbolicName()+". This may cause update problems. Trying to continue ...");
 					}
 	    		}
 	    		
@@ -341,22 +357,23 @@ public class MavenAccessor {
 	            collectRequest.setRepositories(Booter.newRepositories(system, session));
 	            collectRequest.addRepository(repo);
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );            
-	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot());                
+	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);                
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
             	 * not already on the blacklist
-            	 * */
+            	 * */           
 	            String parentVersion = null;
 	            for(int i=0; i<allDependencies.size()&&parentVersion==null; i++){
 	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(allDependencies.get(i).getArtifact().getArtifactId())){
 	            		parentVersion = allDependencies.get(i).getArtifact().getVersion();
 	            	}
-	            }
-	            allDependencies = cleanDependencies(allDependencies, session, parentVersion);
+	            }            	
+        		allDependencies = cleanDependencies(allDependencies, session, parentVersion);
+            	
 	            
 	            Bundle bundle = null;
 	            Dependency dependency = null;	            
-	            //in the following we ignore the first dependency, because it is the module itself         	            
+	            //in the following we ignore the first dependency (i=0), because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
 	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){            			            		
@@ -397,21 +414,28 @@ public class MavenAccessor {
 	            			itDeps = forbiddenFruits.iterator();
 	            			nxt = itDeps.next();
 	            			while (nxt!=null){	            				
-	            				next = nxt.split(":");
+	            				next = nxt.split(DELIMITER);
 	            				if (next[0].equals(installArtifact.getGroupId()) && next[1].equals(installArtifact.getArtifactId())){
 	            					forbiddenFruits.remove(nxt);
+	            					logger.debug("Removed dependency from blacklist: "+nxt);
 	            					nxt = null;
 	            				} else {
-	            					nxt = itDeps.next();
+	            					nxt = itDeps.hasNext()? itDeps.next() : null;
 	            				}
 	            			}	 
-	            			forbiddenFruits.add(installArtifact.toString());	            			
+	            			forbiddenFruits.add(installArtifact.toString()+DELIMITER+STATUS.OVERRIDABLE);
+	            			logger.debug("Put dependency on blacklist: "+installArtifact.toString());
 	            		}
 	            		if (bundle!=null){
 	            			bundle.start();
 	            		}
-	            	} catch (IOException | BundleException e) {	            		
-	            		logger.debug("File could not be installed: "+installArtifact+"; "+e.getClass().getSimpleName());}	            		
+	            	} catch (IOException | BundleException e) {
+	            		if (logger.isTraceEnabled()){
+	            			logger.trace("File could not be installed: "+installArtifact+" ("+installArtifact.getFile()+"); "+e.getClass().getSimpleName());
+	            		} else {
+	            			logger.warn("File could not be installed: "+installArtifact.getFile());
+	            		}
+	            	}
 		    	}
 	            /*
 	    		 * btw: root is not supposed to be stored as forbidden dependency. This makes the removal of a module much less complicated.
@@ -423,7 +447,7 @@ public class MavenAccessor {
         		write2Blacklist();	            
 			}	    	
     	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {    		
-    		logger.info("Update failed due to "+e.getClass().getSimpleName()+": "+e.getMessage());
+    		logger.debug("Update failed.", e);
     		update = false;			
 		}       		
         return update;
@@ -433,14 +457,16 @@ public class MavenAccessor {
 	 * This method returns all dependencies as list.
 	 * Elementary dependencies and their daughters are skipped. 
 	 */
-	private List<Dependency> getAllDependencies(DependencyNode startNode){		
+	private List<Dependency> getAllDependencies(DependencyNode startNode, boolean skipFramework){
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method getAllDependencies() with parameters");
+		}		
+		
 		List<Dependency> retVal = new ArrayList<Dependency>();
 		retVal.add(startNode.getDependency());
 		for (DependencyNode node : startNode.getChildren()){
-			if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(node.getArtifact().getArtifactId())){
-				retVal.add( node.getDependency() );				
-			}else if (!node.getDependency().getArtifact().getArtifactId().contains("salt-") && !dependencyAlreadyInstalled(node.getArtifact().toString())) {
-				retVal.addAll( getAllDependencies(node) );
+			if ((!skipFramework || !node.getDependency().getArtifact().getArtifactId().contains("salt-")) && !dependencyAlreadyInstalled(node.getArtifact().toString())) {
+				retVal.addAll( getAllDependencies(node, skipFramework) );
 			}			
 		}
 		return retVal;
@@ -453,11 +479,16 @@ public class MavenAccessor {
 	 * @return
 	 */
 	private boolean dependencyAlreadyInstalled(String artifactString){
-		String[] coords = artifactString.split(":");
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method dependencyAlreadyInstalled() with parameters");
+		}
+		
+		String[] coords = artifactString.split(DELIMITER);
 		String[] testCoords = null;
 		for (String dependencyString : forbiddenFruits){
-			testCoords = dependencyString.split(":");
-			if (coords[1].equals(testCoords[1]) && /*artifactId*/
+			testCoords = dependencyString.split(DELIMITER);
+			if (STATUS.OVERRIDABLE.equals(testCoords[4]) &&
+				coords[1].equals(testCoords[1]) && /*artifactId*/
 				coords[0].equals(testCoords[0]) /*groupId*/
 				){
 				/* check version */
@@ -486,6 +517,8 @@ public class MavenAccessor {
 					logger.warn("Could not compare versions of dependency "+coords[1]+", so it will be dropped.");
 				}				
 				return true;
+			} else if (STATUS.FINAL.equals(testCoords[4])){
+				return true;
 			}
 		}
 		return false;
@@ -495,6 +528,10 @@ public class MavenAccessor {
 	 * writes the old, freshly installed and forbidden dependencies to the blacklist file.
 	 */
 	private void write2Blacklist(){
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method write2Blacklist() with parameters");
+		}
+		
 		File blacklistFile = new File(BLACKLIST_PATH);
 		if (!blacklistFile.exists()){
 			blacklistFile.getParentFile().mkdirs();}
@@ -508,7 +545,7 @@ public class MavenAccessor {
 			}
 			bW.close();
 			fW.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {logger.debug("Could not write blacklist file.");}
 		
 	}
 	
@@ -517,6 +554,10 @@ public class MavenAccessor {
 	 * @returns the Blacklist of already installed or forbidden dependencies
 	 */
 	public String getBlacklist(){
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method getBlacklist() with parameters");
+		}
+		
 		String lineSeparator = System.getProperty("line.separator");
 		String indent = "\t";
 		StringBuilder retVal = (new StringBuilder()).append(lineSeparator);
@@ -535,41 +576,54 @@ public class MavenAccessor {
 	 * @param parentVersion
 	 * @return
 	 */
-	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion){
-		CollectRequest collectRequest = new CollectRequest();
-        collectRequest.setRoot( new Dependency( new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), "" ) );
-        collectRequest.setRepositories(Booter.newRepositories(system, session));
-        collectRequest.addRepository(repos.get(KORPLING_MAVEN_REPO));
-        CollectResult collectResult;
+	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion){		
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method cleanDependencies() with parameters");
+		}
+		
 		try {
-			collectResult = system.collectDependencies( session, collectRequest );
-			List<Dependency> parentDeps = getAllDependencies(collectResult.getRoot());
-			Iterator<Dependency> itDeps =  parentDeps.iterator();
+			List<Dependency> parentDeps = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
+			if (parentDeps==null){
+				CollectRequest collectRequest = new CollectRequest();
+		        collectRequest.setRoot( new Dependency( new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), "" ) );
+		        collectRequest.setRepositories(Booter.newRepositories(system, session));
+		        collectRequest.addRepository(repos.get(KORPLING_MAVEN_REPO));
+		        CollectResult collectResult;
+				collectResult = system.collectDependencies( session, collectRequest );				
+				parentDeps = getAllDependencies(collectResult.getRoot(), false);
+				parentDependencies.put(parentVersion.replace("-SNAPSHOT", ""), parentDeps);
+			} 
+			Iterator<Dependency> itDeps = parentDeps.iterator();
 			Dependency next = itDeps.next();
-			while (next!=null && !ARTIFACT_ID_PEPPER_FRAMEWORK.equals(next.getArtifact().getArtifactId())){
+			while (!ARTIFACT_ID_PEPPER_FRAMEWORK.equals(next.getArtifact().getArtifactId()) && itDeps.hasNext()){
 				next = itDeps.next();
 			}
-			itDeps = null;
-			parentDeps.remove(next);//must be removed to stay in returned dependency list
+			itDeps = null;			
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
+			newDeps.add(next);//we need pepper-framework on the list (TODO is it correct to assume that next==pepper-framework?
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
 				next = dependencies.get(i);
 				while (	j<parentDeps.size() &&
-						!(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId()) &&
-						next.getArtifact().getGroupId().equals(parentDeps.get(j).getArtifact().getGroupId()))
+						!(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId()))
 						){
 					j++;
 				}					
 				if(j==parentDeps.size()){
 					newDeps.add(next);
-				}else{
-					forbiddenFruits.add(next.getArtifact().toString());
+				}else{					
+					forbiddenFruits.add(next.getArtifact().toString()+DELIMITER+STATUS.FINAL);
+					logger.debug("The following dependency was put on blacklist, because it equals a parent dependency: "+next.getArtifact().toString());
 				}
 			}
 			return newDeps;
-		} catch (DependencyCollectionException e) {}       
+		} catch (/*DependencyCollection*/Exception e) {
+//			logger.warn("Could not collect dependencies for parent. No dependencies will be installed.");
+			logger.warn("EXCEPTION:"+e);
+			e.printStackTrace();
+			System.exit(-1);
+		}       
 		return Collections.<Dependency>emptyList(); //NOT null
 	}
 	
@@ -580,6 +634,10 @@ public class MavenAccessor {
 	 * @return
 	 */
 	private RemoteRepository buildRepo(String id, String url){
+		/*DEBUG*/if (logger.isDebugEnabled()){
+			logger.debug("Starting method buildRepo() with parameters");
+		}
+		
 		repoBuilder.setId(id);
 		repoBuilder.setUrl(url);
 		return repoBuilder.build();
