@@ -59,9 +59,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
+
 import java.io.FilenameFilter;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
@@ -296,6 +299,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 			// pepper.exceptions package
 			retVal.append(PepperException.class.getPackage().getName());
+			retVal.append(";version=\"" + pepperVersion + "\"");
+
+			retVal.append(", ");
+			
+			// pepper.modules package
+			retVal.append(PepperModuleProperties.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
 
 			retVal.append(", ");
