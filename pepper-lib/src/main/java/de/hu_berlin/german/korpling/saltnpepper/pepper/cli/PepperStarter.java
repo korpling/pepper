@@ -495,21 +495,10 @@ public class PepperStarter {
 			} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
 				break;
 			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
-				Long timestamp = System.currentTimeMillis();
-				try {
-					if (params.size() == 1) {
-						convert(params.get(0));
-					} else {
-						convert(null);
-					}
-					timestamp = System.currentTimeMillis() - timestamp;
-					output.println("conversion ended successfully, required time: " + (timestamp / 1000) + " s");
-				} catch (Exception e) {
-					timestamp = System.currentTimeMillis() - timestamp;
-					output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + (timestamp / 1000) + " s");
-					output.println(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
-					output.println("full stack trace:");
-					e.printStackTrace(output);
+				if (params.size() == 1) {
+					convert(params.get(0));
+				} else {
+					convert(null);
 				}
 			} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(osgi());

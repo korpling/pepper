@@ -81,17 +81,17 @@ public class ConvertWizzardConsole {
 
 	private static final String PROMPT = "wizzard";
 
-	private static final String MSG_IM="\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS= "\tPlease enter the path to corpus you want to import or press enter to skip. ";
-	private static final String MSG_PROP= "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
-	private static final String MSG_MAN= "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
-	private static final String MSG_NO_PROPS="\tNo customization properties available.";
-	private static final String MSG_NO_VALID_MODULE= "\tSorry could not match the input, please enter the number or the name of the module again. ";
-	private static final String MSG_NO_VALID_PROP= "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
-	private static final String MSG_EX= "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS= "\tPlease enter the path to which you want to export the corpus. ";
-	private static final String MSG_ABORTED="Creating of Pepper workflow aborted by user's input. ";
-	
+	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter the path to corpus you want to import or press enter to skip. ";
+	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
+	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
+	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
+	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
+	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
+	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
+	private static final String MSG_EX_CORPUS = "\tPlease enter the path to which you want to export the corpus. ";
+	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
+
 	public enum COMMAND {
 		//
 		SAVE("save", "s", "path to file", "Stores the Pepper workflow description to passed file location. "),
@@ -191,63 +191,68 @@ public class ConvertWizzardConsole {
 		String jobId = pepper.createJob();
 		PepperJob pepperJob = pepper.getJob(jobId);
 
-		String promptOld = prompt;
-		prompt = prompt + "/importer";
-		if (!importPhase(pepperJob)) {
-			out.println(MSG_ABORTED);
-			return (null);
-		}
-
-		prompt = promptOld + "/manipulator";
-		manipulationPhase(pepperJob);
-
-		prompt = promptOld + "/exporter";
-		if (!exportPhase(pepperJob)) {
-			out.println(MSG_ABORTED);
-			return (null);
-		}
-		prompt = promptOld;
-		out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
-		String input = null;
-		while ((input = getUserInput(in, out)) != null) {
-			String[] parts = input.split(" ");
-			String command = parts[0];
-			List<String> params = new Vector<String>();
-			int i = 0;
-			for (String part : parts) {
-				if (i > 0) {
-					params.add(part);
-				}
-				i++;
+		try{
+			String promptOld = prompt;
+			prompt = prompt + "/importer";
+			if (!importPhase(pepperJob)) {
+				out.println(MSG_ABORTED);
+				return (null);
 			}
-			if ((COMMAND.SAVE.getName().equalsIgnoreCase(command)) || (COMMAND.SAVE.getAbbreviation().equalsIgnoreCase(command))) {
-				File outputFile = null;
-				if (parts.length == 1) {
-					// path to workflow description wasn't given and needs to be
-					// requested
-
-					out.println("Please enter the file location to store Pepper workflow description. ");
-					while ((input = getUserInput(in, out)) != null) {
-						outputFile = new File(input);
-						break;
-					}
-				} else {
-					// path to store workflow description was given
-
-					outputFile = new File(params.get(params.size() - 1));
-				}
-
-				try {
-					pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
-					out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
-				} catch (Exception e) {
-					out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
-				}
-
-			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
-				return (pepperJob);
+	
+			prompt = promptOld + "/manipulator";
+			manipulationPhase(pepperJob);
+	
+			prompt = promptOld + "/exporter";
+			if (!exportPhase(pepperJob)) {
+				out.println(MSG_ABORTED);
+				return (null);
 			}
+			prompt = promptOld;
 			out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
+			String input = null;
+			while ((input = getUserInput(in, out)) != null) {
+				String[] parts = input.split(" ");
+				String command = parts[0];
+				List<String> params = new Vector<String>();
+				int i = 0;
+				for (String part : parts) {
+					if (i > 0) {
+						params.add(part);
+					}
+					i++;
+				}
+				if ((COMMAND.SAVE.getName().equalsIgnoreCase(command)) || (COMMAND.SAVE.getAbbreviation().equalsIgnoreCase(command))) {
+					File outputFile = null;
+					if (parts.length == 1) {
+						// path to workflow description wasn't given and needs to be
+						// requested
+	
+						out.println("Please enter the file location to store Pepper workflow description. ");
+						while ((input = getUserInput(in, out)) != null) {
+							outputFile = new File(input);
+							break;
+						}
+					} else {
+						// path to store workflow description was given
+	
+						outputFile = new File(params.get(params.size() - 1));
+					}
+	
+					try {
+						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
+						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
+					} catch (Exception e) {
+						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
+					}
+	
+				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+					return (pepperJob);
+				}
+				out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
+			}
+		}catch (ExitWizzardException e){
+			out.println(MSG_ABORTED);
+			return(null);
 		}
 		return (null);
 	}
@@ -281,8 +286,9 @@ public class ConvertWizzardConsole {
 		// a map containing a number corresponding to a customization property
 		// for the current module
 		Map<Integer, String> number2PropName = null;
-		// stores the legend of the customization properties for the current module
-		String propLegend= null;
+		// stores the legend of the customization properties for the current
+		// module
+		String propLegend = null;
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
 		String promptOld = prompt;
@@ -335,11 +341,11 @@ public class ConvertWizzardConsole {
 					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
-						
+
 						state = 2;
 						prompt = promptOld + "/prop";
-						number2PropName= new HashMap<Integer, String>();
-						propLegend= createPropertyLegend(moduleDesc.getProperties(), number2PropName);
+						number2PropName = new HashMap<Integer, String>();
+						propLegend = createPropertyLegend(moduleDesc.getProperties(), number2PropName);
 						out.println(propLegend);
 						out.println(MSG_PROP);
 					} else {
@@ -347,13 +353,13 @@ public class ConvertWizzardConsole {
 
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
-						propLegend= null;
+						propLegend = null;
 						state = 0;
 					}
 				}
 			} else if (state == 2) {
 				// choose properties
-				
+
 				if (!readProp(number2PropName, input, stepDesc)) {
 					state = 0;
 					prompt = promptOld;
@@ -396,9 +402,10 @@ public class ConvertWizzardConsole {
 		// a map containing a number corresponding to a customization property
 		// for the current module
 		Map<Integer, String> number2PropName = null;
-		// stores the legend of the customization properties for the current module
-		String propLegend= null;
-				
+		// stores the legend of the customization properties for the current
+		// module
+		String propLegend = null;
+
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
 		while (((input = getUserInput(in, out)) != null) || (state == 2)) {
@@ -423,13 +430,13 @@ public class ConvertWizzardConsole {
 					out.println("\tchoosed manipulator: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
-					
+
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 						state = 2;
 						prompt = promptOld + "/prop";
-						number2PropName= new HashMap<Integer, String>();
-						propLegend= createPropertyLegend(moduleDesc.getProperties(), number2PropName);
+						number2PropName = new HashMap<Integer, String>();
+						propLegend = createPropertyLegend(moduleDesc.getProperties(), number2PropName);
 						out.println(propLegend);
 						out.println(MSG_PROP);
 					} else {
@@ -437,7 +444,7 @@ public class ConvertWizzardConsole {
 
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
-						propLegend= null;
+						propLegend = null;
 						state = 0;
 					}
 				}
@@ -483,9 +490,10 @@ public class ConvertWizzardConsole {
 		// a map containing a number corresponding to a customization property
 		// for the current module
 		Map<Integer, String> number2PropName = null;
-		// stores the legend of the customization properties for the current module
-		String propLegend= null;
-				
+		// stores the legend of the customization properties for the current
+		// module
+		String propLegend = null;
+
 		// the module description which was selected by the user
 		PepperModuleDesc moduleDesc = null;
 		String promptOld = prompt;
@@ -537,11 +545,11 @@ public class ConvertWizzardConsole {
 					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
-						
+
 						state = 2;
 						prompt = promptOld + "/prop";
-						number2PropName= new HashMap<Integer, String>();
-						propLegend= createPropertyLegend(moduleDesc.getProperties(), number2PropName);
+						number2PropName = new HashMap<Integer, String>();
+						propLegend = createPropertyLegend(moduleDesc.getProperties(), number2PropName);
 						out.println(propLegend);
 						out.println(MSG_PROP);
 					} else {
@@ -549,7 +557,7 @@ public class ConvertWizzardConsole {
 
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
-						propLegend= null;
+						propLegend = null;
 						state = 0;
 					}
 				}
@@ -648,27 +656,27 @@ public class ConvertWizzardConsole {
 	 * @return
 	 */
 	private String getUserInput(BufferedReader in, PrintStream out) {
-		boolean exit = false;
 		String userInput = "";
 
-		if (!exit) {
-			try {
-				out.println();
-				out.print(prompt);
-				out.print(">");
-				userInput = in.readLine();
-				if (userInput != null) {
-					userInput = userInput.trim();
-				}
-			} catch (IOException ioe) {
-				out.println("Cannot read command.");
+		try {
+			out.println();
+			out.print(prompt);
+			out.print(">");
+			userInput = in.readLine();
+			if (userInput != null) {
+				userInput = userInput.trim();
 			}
-			if (("exit".equalsIgnoreCase(userInput))) {
-				exit = true;
-				return (null);
-			}
+		} catch (IOException ioe) {
+			out.println("Cannot read command.");
+		}
+		if (("exit".equalsIgnoreCase(userInput))) {
+			throw new ExitWizzardException();
 		}
 		return (userInput);
+	}
+	
+	private class ExitWizzardException extends RuntimeException{
+		private static final long serialVersionUID = 1L;
 	}
 
 	/**
@@ -683,15 +691,15 @@ public class ConvertWizzardConsole {
 	 * @return true if input was not empty
 	 */
 	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc) {
-		if (!input.isEmpty()) {
+		if ((input != null) && (!input.isEmpty())) {
 			int eqPosition = StringUtils.indexOf(input, "=");
 			if (eqPosition > 0) {
 				String qualifier = input.substring(0, eqPosition);
-				try{
-					Integer num= Integer.valueOf(qualifier);
-					qualifier= number2propName.get(num);
-				}catch (NumberFormatException e){
-					//do nothing
+				try {
+					Integer num = Integer.valueOf(qualifier);
+					qualifier = number2propName.get(num);
+				} catch (NumberFormatException e) {
+					// do nothing
 				}
 				String value = input.substring(eqPosition + 1, input.length());
 				if (stepDesc.getProps() == null) {
