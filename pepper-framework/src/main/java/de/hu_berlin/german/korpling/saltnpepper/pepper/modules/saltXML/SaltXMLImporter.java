@@ -51,12 +51,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 @Component(name = "SaltXMLImporterComponent", factory = "PepperImporterComponentFactory")
 public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter {
 	public SaltXMLImporter() {
-		super();
 		// setting name of module
-		setName("SaltXMLImporter");
+		super("SaltXMLImporter");
 		// set list of formats supported by this module
 		this.addSupportedFormat("SaltXML", "1.0", null);
-		System.out.println("------------------_> CONSTRUCTOR of "+ getName());
 		setProperties(new PepperModuleProperties());
 	}
 

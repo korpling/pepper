@@ -41,8 +41,10 @@ import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
@@ -52,16 +54,34 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructu
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * TODO make docu
+ * This is an abstract implementation of {@link PepperImporter}. This class
+ * cannot be instantiated directly. To provide an importer, just inherit this
+ * class.
+ * 
+ * @see PepperImporter
  * 
  * @author Florian Zipser
  */
 public abstract class PepperImporterImpl extends PepperModuleImpl implements PepperImporter {
 	/**
-	 * TODO make docu
+	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#IMPORTER}. The
+	 * name is set to "MyImporter".
+	 * 
+	 * <br/>
+	 * We recommend to use the constructor
+	 * {@link PepperImporterImpl#PepperImporterImpl(String)} and pass a proper
+	 * name.
 	 */
 	protected PepperImporterImpl() {
-		super();
+		super("MyImporter");
+	}
+
+	/**
+	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#IMPORTER} and
+	 * sets is name to the passed one.
+	 */
+	protected PepperImporterImpl(String name) {
+		super(name);
 	}
 
 	/**
@@ -89,8 +109,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public CorpusDesc getCorpusDesc() {
-		if (corpusDesc== null){
-			corpusDesc= new CorpusDesc();
+		if (corpusDesc == null) {
+			corpusDesc = new CorpusDesc();
 		}
 		return corpusDesc;
 	}
@@ -148,16 +168,16 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
 		this.setSCorpusGraph(corpusGraph);
-		if (this.getSCorpusGraph() == null){
+		if (this.getSCorpusGraph() == null) {
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because salt project isn't set.");
 		}
-		if (this.getCorpusDesc() == null){
+		if (this.getCorpusDesc() == null) {
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because no corpus definition to import is given.");
 		}
-		if (this.getCorpusDesc().getCorpusPath() == null){
+		if (this.getCorpusDesc().getCorpusPath() == null) {
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because the path of given corpus definition is null.");
 		}
-		if (!this.getCorpusDesc().getCorpusPath().isFile()){
+		if (!this.getCorpusDesc().getCorpusPath().isFile()) {
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because the given corpus path does not locate a file.");
 		}
 		// clean uri in corpus path (if it is a folder and ends with/, / has to
@@ -213,17 +233,18 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 				else if (STYPE_NAME.SDOCUMENT.equals(type)) {
 					// resource is a SDocument
 					if (parent == null) {
-						// if there is no corpus given, create one with name of document
+						// if there is no corpus given, create one with name of
+						// document
 						parent = getSCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
-						
+
 						this.getSElementId2ResourceTable().put(parent.getSElementId(), currURI);
 					}
-					File docFile= new File(currURI.toFileString());
-					SDocument sDocument= null;
-					if (docFile.isDirectory()){
+					File docFile = new File(currURI.toFileString());
+					SDocument sDocument = null;
+					if (docFile.isDirectory()) {
 						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment());
-					}else{
-						//if uri is a file, cut off file ending
+					} else {
+						// if uri is a file, cut off file ending
 						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 					}
 					this.getSElementId2ResourceTable().put(sDocument.getSElementId(), currURI);
@@ -232,25 +253,25 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			}// do not ignore resource
 		}// if file is not part of ignore list
 	}
-	
+
 	/**
-	 * Overrides the method {@link PepperModuleImpl#start()} to add the following, 
-	 * before {@link PepperModuleImpl#start()} is called.
+	 * Overrides the method {@link PepperModuleImpl#start()} to add the
+	 * following, before {@link PepperModuleImpl#start()} is called.
 	 * <ol>
-	 *  <li>a check if corpus path exists</li>
+	 * <li>a check if corpus path exists</li>
 	 * </ol>
 	 */
 	@Override
 	public void start() throws PepperModuleException {
-		if (getCorpusDesc()== null){
+		if (getCorpusDesc() == null) {
 			throw new WorkflowException("Cannot import corpus-structure, because no corpus description was given. ");
 		}
-		if (getCorpusDesc().getCorpusPath()== null){
+		if (getCorpusDesc().getCorpusPath() == null) {
 			throw new WorkflowException("Cannot import corpus-structure, because no corpus path was given. ");
 		}
-		File corpusFile= new File(getCorpusDesc().getCorpusPath().toFileString());
-		if (!corpusFile.exists()){
-			throw new WorkflowException("Cannot import corpus-structure, because the given corpus path '"+corpusFile.getAbsolutePath()+"' does not exist. ");
+		File corpusFile = new File(getCorpusDesc().getCorpusPath().toFileString());
+		if (!corpusFile.exists()) {
+			throw new WorkflowException("Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
 		}
 		super.start();
 	}

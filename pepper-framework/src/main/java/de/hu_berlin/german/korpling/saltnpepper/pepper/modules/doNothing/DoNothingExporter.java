@@ -26,35 +26,31 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
-@Component(name="DoNothingExporterComponent", factory="PepperExporterComponentFactory")
-public class DoNothingExporter extends PepperExporterImpl implements PepperExporter
-{
-	public static final String MODULE_NAME="DoNothingExporter";
-	public static final String FORMAT_NAME="doNothing";
-	public static final String FORMAT_VERSION="0.0";
-	
+@Component(name = "DoNothingExporterComponent", factory = "PepperExporterComponentFactory")
+public class DoNothingExporter extends PepperExporterImpl implements PepperExporter {
+	public static final String MODULE_NAME = "DoNothingExporter";
+	public static final String FORMAT_NAME = "doNothing";
+	public static final String FORMAT_VERSION = "0.0";
+
 	@Activate
-	public void activate(ComponentContext componentContext)
-	{
+	public void activate(ComponentContext componentContext) {
 		super.activate(componentContext);
 	}
-	
-	public DoNothingExporter()
-	{
-		super();
-		//setting name of module
-		setName(MODULE_NAME);
+
+	public DoNothingExporter() {
+		// setting name of module
+		super(MODULE_NAME);
 		this.addSupportedFormat("doNothing", "0.0", null);
 	}
-	
+
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
-	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
+	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
+	 * PepperModule#createPepperMapper(SElementId)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId){
-		PepperMapper mapper= new DoNothingMapper();
-		return(mapper);
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		PepperMapper mapper = new DoNothingMapper();
+		return (mapper);
 	}
-	
+
 }

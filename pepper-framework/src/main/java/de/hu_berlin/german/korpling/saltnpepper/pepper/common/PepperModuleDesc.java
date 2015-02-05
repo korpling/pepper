@@ -169,7 +169,6 @@ public class PepperModuleDesc {
 	 * @return
 	 */
 	public PepperModuleProperties getProperties() {
-		System.out.println("---------> GET PROPERTIES OF "+ getName());
 		return (properties);
 	}
 
@@ -181,7 +180,6 @@ public class PepperModuleDesc {
 	 * @param properties 
 	 */
 	public void setProperties(PepperModuleProperties properties) {
-		System.out.println("---------> SET PROPERTIES FINGERPRINT OF "+ getName());
 		this.properties = properties;
 	}
 	

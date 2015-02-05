@@ -70,9 +70,21 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	public static final Logger logger = LoggerFactory.getLogger(PepperModuleImpl.class);
 
 	/**
-	 * TODO make docu
+	 * Creates a {@link PepperModule} object, which is either a {@link MODULE_TYPE#IMPORTER}, a {@link MODULE_TYPE#MANIPULATOR} or
+	 * a {@link MODULE_TYPE#EXPORTER}. The name of this module is set to "MyModule".
+	 * <br/>
+	 * We recommend to use the constructor {@link PepperModuleImpl#PepperModuleImpl(String)} and pass a proper name. 
 	 */
 	protected PepperModuleImpl() {
+		this("MyModule");
+	}
+	
+	/**
+	 * Creates a {@link PepperModule} object, which is either a {@link MODULE_TYPE#IMPORTER}, a {@link MODULE_TYPE#MANIPULATOR} or
+	 * a {@link MODULE_TYPE#EXPORTER}. The passed name is set as the modules name.
+	 */
+	protected PepperModuleImpl(String name) {
+		setName(name);
 		getFingerprint();
 		if (getProperties()== null){
 			setProperties(new PepperModuleProperties());
@@ -194,7 +206,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void setProperties(PepperModuleProperties properties) {
-		System.out.println("----> SET PROPERTIES in PepperModule for "+ getName());
 		getFingerprint().setProperties(properties);
 	}
 	

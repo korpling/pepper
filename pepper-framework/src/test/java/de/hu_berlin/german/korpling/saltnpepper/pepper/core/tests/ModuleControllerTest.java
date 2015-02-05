@@ -65,7 +65,7 @@ public class ModuleControllerTest{
 
 	private class PepperModuleSample extends PepperModuleImpl{
 		public PepperModuleSample(){
-			
+			super("SampleModule");
 		}
 	}
 	@Test
@@ -120,7 +120,9 @@ public class ModuleControllerTest{
 		assertEquals(bus, getFixture().getOutputDocumentBus());
 	}
 	private class SampleModule extends PepperModuleImpl{
-		
+		public SampleModule() {
+			super("SampleModule");
+		}
 	}
 	/**
 	 * Tests if the bidirectional wiring of {@link PepperModule} and {@link ModuleControllerImpl} works.
@@ -277,7 +279,7 @@ public class ModuleControllerTest{
 		 }
 		 
 		 getFixture().setPepperModule(new PepperModuleImpl() {
-				@Override
+			 	@Override
 				public Double getProgress(String globalId) 
 				{
 					return(0D);
