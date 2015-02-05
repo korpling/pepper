@@ -71,7 +71,8 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	public SaltXMLExporter() {
 		// setting name of module
 		super("SaltXMLExporter");
-
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setDesc("This exporter exports a Salt model to a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat("SaltXML", "1.0", null);
 	}

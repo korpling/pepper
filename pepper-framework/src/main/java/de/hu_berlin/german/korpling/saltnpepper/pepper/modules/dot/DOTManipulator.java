@@ -37,6 +37,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 public class DOTManipulator extends PepperManipulatorImpl {
 	public DOTManipulator() {
 		super("DOTManipulator");
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setDesc("This manipulator exports a Salt model to the dot syntax. This can be used to create a graphical representation of the Salt model. ");
 		this.setProperties(new DOTManipulatorProperties());
 	}
 

@@ -38,6 +38,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJ
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 
 /**
  * The main class to start Pepper from the Console.
@@ -220,15 +221,25 @@ public class PepperStarter {
 			}
 		}
 		if (moduleDesc != null) {
+			retVal.append("\n");
 			retVal.append(moduleDesc.getName());
 			retVal.append(", ");
 			retVal.append(moduleDesc.getVersion());
 			retVal.append("\n");
 			retVal.append("supplier:");
-			retVal.append(moduleDesc.getSupplierContact());
+			retVal.append((moduleDesc.getSupplierContact()==null)?" unknown ": moduleDesc.getSupplierContact());
 			retVal.append("\n");
-			retVal.append("-------------------------------------------------------------------------\n");
 			retVal.append((moduleDesc.getDesc() == null) ? "- no description available -" : moduleDesc.getDesc());
+			if (moduleDesc.getProperties()!= null){
+				retVal.append("\n");
+				retVal.append("customization properties: \n");
+				retVal.append("-------------------------------------------------------------------------\n");
+				for (PepperModuleProperty<?> prop: moduleDesc.getProperties().getPropertyDesctriptions()){
+					retVal.append(prop.getName());
+					retVal.append(" - \t");
+					retVal.append(prop.getDescription());
+				}
+			}
 			retVal.append("\n");
 		} else {
 			retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
