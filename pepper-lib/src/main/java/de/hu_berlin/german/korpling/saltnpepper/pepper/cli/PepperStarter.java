@@ -38,8 +38,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJ
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+
 /**
  * The main class to start Pepper from the Console.
+ * 
  * @author Florian
  *
  */
@@ -339,7 +341,9 @@ public class PepperStarter {
 			ConvertWizzardConsole console = new ConvertWizzardConsole(PROMPT);
 			console.setPepper(getPepper());
 			pepperJob = console.start(input, output);
-			jobId = pepperJob.getId();
+			if (pepperJob != null) {
+				jobId = pepperJob.getId();
+			}
 		} else {
 			URI workFlowUri = URI.createFileURI(workFlowFile);
 			jobId = pepper.createJob();
