@@ -320,9 +320,11 @@ public class ConvertWizzardConsole {
 					out.println("\tchoosed importer: '" + moduleDesc + "'. ");
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
-					out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
+					System.out.println("---------> REQUEST PROPERTIES OF "+ moduleDesc.getName());
 					if (moduleDesc.getProperties()!= null){
 						//module takes customization properties
+						
+						out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
 						state = 2;
 						prompt = promptOld + "/prop";
 						if (moduleDesc.getProperties()!= null){

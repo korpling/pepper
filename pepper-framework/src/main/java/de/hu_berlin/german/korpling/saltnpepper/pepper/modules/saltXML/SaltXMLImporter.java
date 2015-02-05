@@ -25,6 +25,7 @@ import org.osgi.service.component.annotations.Component;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
@@ -55,6 +56,8 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		setName("SaltXMLImporter");
 		// set list of formats supported by this module
 		this.addSupportedFormat("SaltXML", "1.0", null);
+		System.out.println("------------------_> CONSTRUCTOR of "+ getName());
+		setProperties(new PepperModuleProperties());
 	}
 
 	@Activate

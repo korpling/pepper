@@ -194,6 +194,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void setProperties(PepperModuleProperties properties) {
+		System.out.println("----> SET PROPERTIES in PepperModule for "+ getName());
 		getFingerprint().setProperties(properties);
 	}
 	
