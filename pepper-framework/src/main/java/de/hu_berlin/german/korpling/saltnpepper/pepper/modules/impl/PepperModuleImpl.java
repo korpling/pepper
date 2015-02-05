@@ -128,7 +128,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 *            name of this module.
 	 */
 	protected void setName(String name) {
-		if ((name != null) && (getName() == null)) {
+		if (name != null) {
 			getFingerprint().setName(name);
 		}
 	}
