@@ -31,7 +31,6 @@ import java.util.Vector;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
@@ -40,7 +39,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This class represents a console to realize a kind of an interactive wizzard
@@ -83,6 +81,17 @@ public class ConvertWizzardConsole {
 
 	private static final String PROMPT = "wizzard";
 
+	private static final String MSG_IM="\tPlease enter the number or the name of the importer you want to use. ";
+	private static final String MSG_IMPORT_CORPUS= "\tPlease enter the path to another corpus you want to convert or press enter. ";
+	private static final String MSG_PROP= "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
+	private static final String MSG_MAN= "\tIf you want to use a manipulator, please enter its number or name, or press enter to continue. ";
+	private static final String MSG_NO_PROPS="\tNo customization properties available.";
+	private static final String MSG_NO_VALID_MODULE= "\tSorry could not match the input, please enter the number or the name of the module again. ";
+	private static final String MSG_NO_VALID_PROP= "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
+	private static final String MSG_EX= "\tPlease enter the number or the name of the exporter you want to use. ";
+	private static final String MSG_EX_CORPUS= "\tPlease enter the path to which you want to export the corpus. ";
+	private static final String MSG_ABORTED="Creating of Pepper workflow aborted by user's input. ";
+	
 	public enum COMMAND {
 		//
 		SAVE("save", "s", "path to file", "Stores the Pepper workflow description to passed file location. "),
@@ -185,7 +194,7 @@ public class ConvertWizzardConsole {
 		String promptOld = prompt;
 		prompt = prompt + "/importer";
 		if (!importPhase(pepperJob)) {
-			out.println("Creating of Pepper workflow aborted by user's input. ");
+			out.println(MSG_ABORTED);
 			return (null);
 		}
 
@@ -194,7 +203,7 @@ public class ConvertWizzardConsole {
 
 		prompt = promptOld + "/exporter";
 		if (!exportPhase(pepperJob)) {
-			out.println("Creating of Pepper workflow aborted by user's input. ");
+			out.println(MSG_ABORTED);
 			return (null);
 		}
 		prompt = promptOld;
@@ -260,7 +269,7 @@ public class ConvertWizzardConsole {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
-		out.println("\tPlease enter the path to the corpus you want to convert (import). ");
+		out.println(MSG_IMPORT_CORPUS);
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -296,7 +305,7 @@ public class ConvertWizzardConsole {
 							legend = createModuleLegend(number2Module, name2Module, MODULE_TYPE.IMPORTER);
 						}
 						out.println(legend);
-						out.println("\tPlease enter the number or the name of the importer you wish to use. ");
+						out.println(MSG_IM);
 						state++;
 					}
 				} else {
@@ -319,25 +328,25 @@ public class ConvertWizzardConsole {
 				}
 				if (moduleDesc == null) {
 					out.println(legend);
-					out.println("\tSorry could not match the input, please enter the number or the name of the importer you wish to use again. ");
+					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed importer: '" + moduleDesc + "'. ");
+					out.println("\tchoosed importer: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 						
-						out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
 						state = 2;
 						prompt = promptOld + "/prop";
 						number2PropName= new HashMap<Integer, String>();
 						propLegend= createPropertyLegend(moduleDesc.getProperties(), number2PropName);
 						out.println(propLegend);
+						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
 
-						out.println("\tNo customization properties available.");
-						out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
+						out.println(MSG_NO_PROPS);
+						out.println(MSG_IMPORT_CORPUS);
 						propLegend= null;
 						state = 0;
 					}
@@ -348,7 +357,7 @@ public class ConvertWizzardConsole {
 				if (!readProp(number2PropName, input, stepDesc)) {
 					state = 0;
 					prompt = promptOld;
-					out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
+					out.println(MSG_IMPORT_CORPUS);
 				}
 			}
 		}// end: while
@@ -383,7 +392,7 @@ public class ConvertWizzardConsole {
 		// the String containing the map to be presented to the user
 		String legend = createModuleLegend(number2Module, name2Module, MODULE_TYPE.MANIPULATOR);
 		out.println(legend);
-		out.println("\tPlease enter the number or the name of the manipulator you wish to use. ");
+		out.println(MSG_MAN);
 		// a map containing a number corresponding to a customization property
 		// for the current module
 		Map<Integer, String> number2PropName = null;
@@ -409,25 +418,25 @@ public class ConvertWizzardConsole {
 				}
 				if (moduleDesc == null) {
 					out.println(legend);
-					out.println("\tSorry, could not match the input, please enter the number or the name of the importer you wish to use again. ");
+					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed manipulator: '" + moduleDesc + "'. ");
+					out.println("\tchoosed manipulator: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
 					
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
-						out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
 						state = 2;
 						prompt = promptOld + "/prop";
 						number2PropName= new HashMap<Integer, String>();
 						propLegend= createPropertyLegend(moduleDesc.getProperties(), number2PropName);
 						out.println(propLegend);
+						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
 
-						out.println("\tNo customization properties available.");
-						out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
+						out.println(MSG_NO_PROPS);
+						out.println(MSG_IMPORT_CORPUS);
 						propLegend= null;
 						state = 0;
 					}
@@ -437,7 +446,7 @@ public class ConvertWizzardConsole {
 					state = 1;
 					prompt = promptOld;
 					out.println(legend);
-					out.println("\tPlease enter the number or the name of the manipulator you wish to use. ");
+					out.println(MSG_MAN);
 				}
 			}
 		}// end while
@@ -462,7 +471,7 @@ public class ConvertWizzardConsole {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
-		out.println("\tPlease enter the path to which you want to export the corpus. ");
+		out.println(MSG_EX_CORPUS);
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -499,7 +508,7 @@ public class ConvertWizzardConsole {
 						legend = createModuleLegend(number2Module, name2Module, MODULE_TYPE.EXPORTER);
 					}
 					out.println(legend);
-					out.println("\tPlease enter the number or the name of the exporter you wish to use. ");
+					out.println(MSG_EX);
 					state++;
 				} else {
 					// empty input return
@@ -521,25 +530,25 @@ public class ConvertWizzardConsole {
 				}
 				if (moduleDesc == null) {
 					out.println(legend);
-					out.println("\tSorry could not match the input, please enter the number or the name of the importer you wish to use again. ");
+					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed importer: '" + moduleDesc + "'. ");
+					out.println("\tchoosed exporter: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
 					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 						
-						out.println("\tTo use a customization property, please enter the number or the name of the property you wish to use, the '=' and its value (name=value, or number=value). Or enter for no customization properties. ");
 						state = 2;
 						prompt = promptOld + "/prop";
 						number2PropName= new HashMap<Integer, String>();
 						propLegend= createPropertyLegend(moduleDesc.getProperties(), number2PropName);
 						out.println(propLegend);
+						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
 
-						out.println("\tNo customization properties available.");
-						out.println("\tPlease enter the path to another corpus you want to convert or press enter. ");
+						out.println(MSG_NO_PROPS);
+						out.println(MSG_IMPORT_CORPUS);
 						propLegend= null;
 						state = 0;
 					}
@@ -550,7 +559,7 @@ public class ConvertWizzardConsole {
 				if (!readProp(number2PropName, input, stepDesc)) {
 					state = 0;
 					prompt = promptOld;
-					out.println("\tPlease enter another path in case you want to add a further exporter, or press enter. ");
+					out.println(MSG_IMPORT_CORPUS);
 				}
 			}
 		}// end: while
@@ -615,10 +624,11 @@ public class ConvertWizzardConsole {
 		if (props != null) {
 			int i = 0;
 			for (PepperModuleProperty<?> prop : props.getPropertyDesctriptions()) {
+				str.append("\t");
 				str.append(i);
 				str.append(":\t");
 				str.append(prop.getName());
-				str.append(" - ");
+				str.append("\t - ");
 				str.append(prop.getDescription());
 				str.append("\n");
 				number2propName.put(i, prop.getName());
@@ -643,6 +653,7 @@ public class ConvertWizzardConsole {
 
 		if (!exit) {
 			try {
+				out.println();
 				out.print(prompt);
 				out.print(">");
 				userInput = in.readLine();
@@ -650,7 +661,7 @@ public class ConvertWizzardConsole {
 					userInput = userInput.trim();
 				}
 			} catch (IOException ioe) {
-				out.println("Cannot read command, type in 'help' for help.");
+				out.println("Cannot read command.");
 			}
 			if (("exit".equalsIgnoreCase(userInput))) {
 				exit = true;
@@ -689,7 +700,7 @@ public class ConvertWizzardConsole {
 				stepDesc.getProps().put(qualifier, value);
 				out.println("\tAdded property: " + qualifier + " = " + value);
 			} else {
-				out.println("\tSorry could not match the input. ");
+				out.println(MSG_NO_VALID_PROP);
 			}
 			return (true);
 		} else {
