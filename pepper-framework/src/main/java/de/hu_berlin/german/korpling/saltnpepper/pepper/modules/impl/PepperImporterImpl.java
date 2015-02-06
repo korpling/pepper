@@ -17,8 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -123,6 +125,35 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		this.corpusDesc = newCorpusDefinition;
 	}
 
+	/**
+	 * {@inheritDoc PepperImporter#readFirstLines(URI, int)}
+	 */
+	@Override
+	public String readFirstLines(final URI corpusPath, final int lines){
+		String retVal= null;
+		if (corpusPath!= null){
+			File importPath= new File(corpusPath.toFileString());
+			try(BufferedReader br = new BufferedReader(new FileReader(importPath))) {
+		        StringBuilder sb = new StringBuilder();
+		        String line = br.readLine();
+		        int i= 0;
+		        while (line != null) {
+		        	sb.append(line);
+		            sb.append(System.lineSeparator());
+		            line = br.readLine();
+		            i++;
+		            if (i>= lines){
+		            	break;
+		            }
+		        }
+		        retVal = sb.toString();
+		    } catch (IOException e) {
+				return(null);
+			}
+		}
+		return(retVal);
+	}
+	
 	/**
 	 * Stores {@link SElementId} objects corresponding to either a
 	 * {@link SDocument} or a {@link SCorpus} object, which has been created

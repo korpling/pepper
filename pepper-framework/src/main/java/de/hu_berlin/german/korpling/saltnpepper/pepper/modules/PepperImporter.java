@@ -151,4 +151,12 @@ public interface PepperImporter extends PepperModule {
 	 * @return 1 if corpus is importable, 0 if corpus is not importable, 0 < X < 1, if no definitiv answer is possible,  null if method is not overridden 
 	 */
 	public Double isImportable(URI corpusPath);
+
+	/**
+	 * Reads the first X lines of the passed file and returns them as a String
+	 * @param corpusPath path to file 
+	 * @param lines number of lines
+	 * @return first X lines
+	 */
+	String readFirstLines(URI corpusPath, int lines);
 }

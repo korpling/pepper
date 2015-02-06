@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -47,305 +48,334 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 @Component(name = "PepperImpl", immediate = true)
 public class PepperImpl implements Pepper {
-	private static final Logger logger= LoggerFactory.getLogger(PepperImpl.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(PepperImpl.class);
+
 	/** Configuration object for Pepper **/
-	private PepperConfiguration configuration= null;
+	private PepperConfiguration configuration = null;
+
 	/** {@inheritDoc Pepper#getConfiguration()} **/
 	public PepperConfiguration getConfiguration() {
-		if (configuration== null){
+		if (configuration == null) {
 			synchronized (this) {
-				if (configuration== null)
-					configuration= new PepperConfiguration();
+				if (configuration == null)
+					configuration = new PepperConfiguration();
 			}
 		}
 		return configuration;
 	}
+
 	/** {@inheritDoc Pepper#setConfiguration(PepperConfiguration)} **/
 	public void setConfiguration(PepperConfiguration configuration) {
 		this.configuration = configuration;
-		if (getModuleResolver()!= null){
+		if (getModuleResolver() != null) {
 			getModuleResolver().setConfiguration(getConfiguration());
 		}
 	}
+
+	/** {@inheritDoc Pepper#isImportable(URI, PepperModuleDesc)}} **/
+	public Double isImportable(URI corpusPath, PepperModuleDesc description){
+		for (PepperImporter importer: getModuleResolver().getPepperImporters()){
+			if (importer.getName().equals(description.getName())){
+				return(importer.isImportable(corpusPath));
+			}
+		}
+		return(null);
+	}
 	
-	class JobEntry{
-		public PepperJobImpl pepperJob= null;
-		public File location= null;
-		
-		public JobEntry(PepperJobImpl job, File location){
-			this.pepperJob= job;
-			this.location= location;
+	class JobEntry {
+		public PepperJobImpl pepperJob = null;
+		public File location = null;
+
+		public JobEntry(PepperJobImpl job, File location) {
+			this.pepperJob = job;
+			this.location = location;
 		}
 	}
-	private Map<String, JobEntry> mapOfJobs= null; 
+
+	private Map<String, JobEntry> mapOfJobs = null;
+
 	/**
 	 * Returns a map of {@link PepperJobImpl} objects.
+	 * 
 	 * @return
 	 */
-	private Map<String, JobEntry> getMapOfJobs(){
-		if (mapOfJobs== null){
+	private Map<String, JobEntry> getMapOfJobs() {
+		if (mapOfJobs == null) {
 			synchronized (this) {
-				if (mapOfJobs== null){
-					mapOfJobs= new Hashtable<String, PepperImpl.JobEntry>();
+				if (mapOfJobs == null) {
+					mapOfJobs = new Hashtable<String, PepperImpl.JobEntry>();
 				}
 			}
 		}
-		return(mapOfJobs);
+		return (mapOfJobs);
 	}
-	
+
 	/**
 	 * {@inheritDoc Pepper#createJob()}
 	 */
 	@Override
 	public String createJob() {
-		PepperJobImpl job= null;
-		
+		PepperJobImpl job = null;
+
 		SecureRandom random = new SecureRandom();
-		String newId= new BigInteger(130, random).toString(32).substring(0, 8);
-		
-		while(getMapOfJobs().containsKey(newId)){
-			newId= new BigInteger(130, random).toString(32).substring(0, 8);
+		String newId = new BigInteger(130, random).toString(32).substring(0, 8);
+
+		while (getMapOfJobs().containsKey(newId)) {
+			newId = new BigInteger(130, random).toString(32).substring(0, 8);
 		}
-		//initialize job
-			job= new PepperJobImpl(newId);
-			job.setModuleResolver(getModuleResolver());
-			job.setConfiguration(getConfiguration());
-		//initialize job
-		File jobFolder= new File(getConfiguration().getWorkspace().getAbsolutePath()+"/"+newId);
+		// initialize job
+		job = new PepperJobImpl(newId);
+		job.setModuleResolver(getModuleResolver());
+		job.setConfiguration(getConfiguration());
+		// initialize job
+		File jobFolder = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + newId);
 		jobFolder.mkdirs();
 		getMapOfJobs().put(newId, new JobEntry(job, jobFolder));
-		return(job.getId());
+		return (job.getId());
 	}
+
 	/**
 	 * Return identifiers of all registered {@link PepperJobImpl} objects.
+	 * 
 	 * @return a list of all job identifiers
 	 */
-	public Set<String> getJobIds(){
-		return(getMapOfJobs().keySet());
+	public Set<String> getJobIds() {
+		return (getMapOfJobs().keySet());
 	}
+
 	/**
 	 * {@inheritDoc Pepper#getJob(String)}
 	 */
 	@Override
 	public PepperJob getJob(String id) throws JobNotFoundException {
-		return(getPepperJobImpl(id));
+		return (getPepperJobImpl(id));
 	}
+
 	/**
 	 * {@inheritDoc Pepper#getJob(String)}
 	 */
 	public PepperJobImpl getPepperJobImpl(String id) throws JobNotFoundException {
-		PepperJobImpl job= null;
-		
-		JobEntry jobEntry= getMapOfJobs().get(id);
-		if (jobEntry== null)
-			throw new JobNotFoundException("The Pepper job with id '"+id+"' was not found.");
-		job= jobEntry.pepperJob;
-		return(job);
+		PepperJobImpl job = null;
+
+		JobEntry jobEntry = getMapOfJobs().get(id);
+		if (jobEntry == null)
+			throw new JobNotFoundException("The Pepper job with id '" + id + "' was not found.");
+		job = jobEntry.pepperJob;
+		return (job);
 	}
+
 	/**
 	 * {@inheritDoc Pepper#removeJob(String)}
 	 */
 	@Override
 	public boolean removeJob(String id) throws JobNotFoundException {
-		boolean retVal= false;
-		
-		JobEntry jobEntry= getMapOfJobs().get(id);
-		if (jobEntry== null)
-			throw new JobNotFoundException("The Pepper job with id '"+id+"' was not found.");
-		
-		retVal= jobEntry.location.delete();
-		
+		boolean retVal = false;
+
+		JobEntry jobEntry = getMapOfJobs().get(id);
+		if (jobEntry == null)
+			throw new JobNotFoundException("The Pepper job with id '" + id + "' was not found.");
+
+		retVal = jobEntry.location.delete();
+
 		getMapOfJobs().remove(id);
-		return(retVal);
+		return (retVal);
 	}
+
 	/**
 	 * Returns the location of a job.
+	 * 
 	 * @param id
 	 * @return
 	 * @throws JobNotFoundException
 	 */
-	public File getLocation(String id) throws JobNotFoundException{
-		JobEntry jobEntry= getMapOfJobs().get(id);
-		if (jobEntry== null)
-			throw new JobNotFoundException("The Pepper job with id '"+id+"' was not found.");
-		return(jobEntry.location);
+	public File getLocation(String id) throws JobNotFoundException {
+		JobEntry jobEntry = getMapOfJobs().get(id);
+		if (jobEntry == null)
+			throw new JobNotFoundException("The Pepper job with id '" + id + "' was not found.");
+		return (jobEntry.location);
 	}
-	
+
 	/**
 	 * Cleans up current workspace. Removes all non active jobs.
 	 */
-	public void cleanUp(){
-		for (String jobId: getMapOfJobs().keySet()){
-			
-			JobEntry jobEntry= getMapOfJobs().get(jobId); 
-			if (jobEntry== null){
+	public void cleanUp() {
+		for (String jobId : getMapOfJobs().keySet()) {
+
+			JobEntry jobEntry = getMapOfJobs().get(jobId);
+			if (jobEntry == null) {
 				getMapOfJobs().remove(jobId);
 			}
-			boolean toRemove= true;
-			if	(	(jobEntry!= null)&&
-					(jobEntry.pepperJob!= null)){
+			boolean toRemove = true;
+			if ((jobEntry != null) && (jobEntry.pepperJob != null)) {
 				if (JOB_STATUS.IN_PROGRESS.equals(jobEntry.pepperJob.getStatus()))
-					toRemove= false;
+					toRemove = false;
 			}
 			if (toRemove)
 				removeJob(jobId);
 		}
-	}    
+	}
+
 	/**
 	 * {@inheritDoc Pepper#getRegisteredModules()}
 	 */
 	@Override
 	public Collection<PepperModuleDesc> getRegisteredModules() {
-		Vector<PepperModuleDesc> retVal= new Vector<PepperModuleDesc>();
-		if (getModuleResolver()== null){
+		Vector<PepperModuleDesc> retVal = new Vector<PepperModuleDesc>();
+		if (getModuleResolver() == null) {
 			throw new PepperFWException("Cannot return registered modules, because the module resolver is missing.");
 		}
-		if (getModuleResolver().getPepperImporters()!= null){
-			for (PepperModule pepperModule: getModuleResolver().getPepperImporters()){
-				if (pepperModule!= null){
+		if (getModuleResolver().getPepperImporters() != null) {
+			for (PepperModule pepperModule : getModuleResolver().getPepperImporters()) {
+				if (pepperModule != null) {
 					retVal.add(pepperModule.getFingerprint());
 				}
 			}
 		}
-		if (getModuleResolver().getPepperManipulators()!= null){
-			for (PepperModule pepperModule: getModuleResolver().getPepperManipulators()){
-				if (pepperModule!= null){
+		if (getModuleResolver().getPepperManipulators() != null) {
+			for (PepperModule pepperModule : getModuleResolver().getPepperManipulators()) {
+				if (pepperModule != null) {
 					retVal.add(pepperModule.getFingerprint());
 				}
 			}
 		}
-		if (getModuleResolver().getPepperExporters()!= null){
-			for (PepperModule pepperModule: getModuleResolver().getPepperExporters()){
-				if (pepperModule!= null){
+		if (getModuleResolver().getPepperExporters() != null) {
+			for (PepperModule pepperModule : getModuleResolver().getPepperExporters()) {
+				if (pepperModule != null) {
 					retVal.add(pepperModule.getFingerprint());
 				}
 			}
 		}
 		return retVal;
 	}
-	
-// ===================================== start: wirering module resolver via OSGi
+
+	// ===================================== start: wirering module resolver via
+	// OSGi
 	/** The resolver to resolve {@link PepperModule} objects **/
-	private ModuleResolver moduleResolver= null;
+	private ModuleResolver moduleResolver = null;
+
 	/**
-	 * Returns the set {@link ModuleResolverImpl} object, to resolve {@link PepperModule} objects. 
+	 * Returns the set {@link ModuleResolverImpl} object, to resolve
+	 * {@link PepperModule} objects.
+	 * 
 	 * @return set set {@link ModuleResolverImpl} object
 	 */
 	public ModuleResolver getModuleResolver() {
 		return moduleResolver;
 	}
+
 	/**
-	 * Sets a {@link ModuleResolverImpl} object to resolve {@link PepperModule} objects for Pepper jobs.
-	 * @param moduleResolver {@link ModuleResolverImpl} object to be used for jobs 
+	 * Sets a {@link ModuleResolverImpl} object to resolve {@link PepperModule}
+	 * objects for Pepper jobs.
+	 * 
+	 * @param moduleResolver
+	 *            {@link ModuleResolverImpl} object to be used for jobs
 	 */
-    @Reference(unbind = "unsetModuleResolver", cardinality = ReferenceCardinality.MANDATORY, policy = ReferencePolicy.STATIC)
-    public void setModuleResolver(ModuleResolver moduleResolver) {
+	@Reference(unbind = "unsetModuleResolver", cardinality = ReferenceCardinality.MANDATORY, policy = ReferencePolicy.STATIC)
+	public void setModuleResolver(ModuleResolver moduleResolver) {
 		this.moduleResolver = moduleResolver;
 		moduleResolver.setConfiguration(getConfiguration());
 	}
-    /**
-     * Unsets the {@link ModuleResolverImpl} reference. This is necessary for OSGi declarative service.
-     */
-    public void unsetModuleResolver(ModuleResolver moduleResolver) {
-    	this.moduleResolver= null;
-    }
-// ===================================== end: wirering module resolver via OSGi    
 
-    /**
-	 * {@inheritDoc Pepper#selfTest()} 
+	/**
+	 * Unsets the {@link ModuleResolverImpl} reference. This is necessary for
+	 * OSGi declarative service.
 	 */
-    @Override
-    public Collection<String> selfTest() {
+	public void unsetModuleResolver(ModuleResolver moduleResolver) {
+		this.moduleResolver = null;
+	}
+
+	// ===================================== end: wirering module resolver via
+	// OSGi
+
+	/**
+	 * {@inheritDoc Pepper#selfTest()}
+	 */
+	@Override
+	public Collection<String> selfTest() {
 		Collection<String> retVal = new Vector<String>();
 		if (getModuleResolver() == null)
-		    retVal.add("Cannot run Pepper, because no PepperModuleResolver was set.");
+			retVal.add("Cannot run Pepper, because no PepperModuleResolver was set.");
 		Collection<PepperImporter> importers = getModuleResolver().getPepperImporters();
 		if ((importers == null) || (importers.size() == 0)) {
-		    retVal.add("Cannot run Pepper, because no importers were given");
+			retVal.add("Cannot run Pepper, because no importers were given");
 		} else {
-		    for (PepperImporter importer : importers) {
+			for (PepperImporter importer : importers) {
 				try {
-				    logger.info("Checking '"+importer.getName()+"'");
-				    if (!importer.isReadyToStart())
-					retVal.add("A Pepper module '" + importer.getName()
-						+ "' is not ready to start.");
+					logger.info("Checking '" + importer.getName() + "'");
+					if (!importer.isReadyToStart())
+						retVal.add("A Pepper module '" + importer.getName() + "' is not ready to start.");
 				} catch (Exception e) {
-				    retVal.add("A Pepper module '" + importer.getName()
-					    + "' is not ready to start.");
+					retVal.add("A Pepper module '" + importer.getName() + "' is not ready to start.");
 				}
-				if (	(retVal== null)||
-						(retVal.size()== 0)){
+				if ((retVal == null) || (retVal.size() == 0)) {
 					logger.info("ok");
-				}else{
-					logger.info("Problems occured in: "+retVal);
+				} else {
+					logger.info("Problems occured in: " + retVal);
 				}
-		    }
+			}
 		}
 		Collection<PepperManipulator> manipulators = getModuleResolver().getPepperManipulators();
 		if ((manipulators != null) && (manipulators.size() != 0)) {
-		    for (PepperManipulator manipulator : manipulators) {
-			try {
-				logger.info("Checking '"+manipulator.getName()+"'");
-			    if (!manipulator.isReadyToStart())
-				retVal.add("A Pepper module '" + manipulator.getName()
-					+ "' is not ready to start.");
-			} catch (Exception e) {
-			    retVal.add("A Pepper module '" + manipulator.getName()
-				    + "' is not ready to start.");
+			for (PepperManipulator manipulator : manipulators) {
+				try {
+					logger.info("Checking '" + manipulator.getName() + "'");
+					if (!manipulator.isReadyToStart())
+						retVal.add("A Pepper module '" + manipulator.getName() + "' is not ready to start.");
+				} catch (Exception e) {
+					retVal.add("A Pepper module '" + manipulator.getName() + "' is not ready to start.");
+				}
+				if ((retVal == null) || (retVal.size() == 0)) {
+					logger.info("ok");
+				} else {
+					logger.info("Problems occured in: " + retVal);
+				}
 			}
-			if (	(retVal== null)||
-					(retVal.size()== 0)){
-				logger.info("ok");
-			}else{
-				logger.info("Problems occured in: "+retVal);
-			}
-		    }
 		}
-	
+
 		Collection<PepperExporter> exporters = this.getModuleResolver().getPepperExporters();
 		if ((exporters == null) || (exporters.size() == 0)) {
-		    retVal.add("Cannot run Pepper, because no exporters were given");
+			retVal.add("Cannot run Pepper, because no exporters were given");
 		} else {
-		    for (PepperExporter exporter : exporters) {
+			for (PepperExporter exporter : exporters) {
 				try {
-					logger.info("Checking '"+exporter.getName()+"'");
-				    if (!exporter.isReadyToStart())
-					retVal.add("A Pepper module '" + exporter.getName() + "' is not ready to start.");
+					logger.info("Checking '" + exporter.getName() + "'");
+					if (!exporter.isReadyToStart())
+						retVal.add("A Pepper module '" + exporter.getName() + "' is not ready to start.");
 				} catch (Exception e) {
-				    retVal.add("A Pepper module '" + exporter.getName()
-					    + "' is not ready to start.");
+					retVal.add("A Pepper module '" + exporter.getName() + "' is not ready to start.");
 				}
-				if (	(retVal== null)||
-						(retVal.size()== 0)){
+				if ((retVal == null) || (retVal.size() == 0)) {
 					logger.info("ok");
-				}else{
-					logger.info("Problems occured in: "+retVal);
+				} else {
+					logger.info("Problems occured in: " + retVal);
 				}
-		    }
+			}
 		}
 		return (retVal);
-    }	
-    @Override
-	public String getRegisteredModulesAsString() {
-		String retVal= null;
-		if (getModuleResolver()!= null){
-			retVal= getModuleResolver().getStatus();
-		}
-		return(retVal);
 	}
-    /**
-     * Returns a string representation of this object. 
-	 * <strong>Note: This representation cannot be used for serialization/deserialization purposes.</strong>
-     */
-    @Override
-    public String toString(){
-    	StringBuilder str= new StringBuilder();
-    	str.append("pepper");
-    	str.append("[");
-    	str.append("registered jobs: ");
-    	getJobIds().size();
-    	str.append("]");
-    	return(str.toString());
-    }
+
+	@Override
+	public String getRegisteredModulesAsString() {
+		String retVal = null;
+		if (getModuleResolver() != null) {
+			retVal = getModuleResolver().getStatus();
+		}
+		return (retVal);
+	}
+
+	/**
+	 * Returns a string representation of this object. <strong>Note: This
+	 * representation cannot be used for serialization/deserialization
+	 * purposes.</strong>
+	 */
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append("pepper");
+		str.append("[");
+		str.append("registered jobs: ");
+		getJobIds().size();
+		str.append("]");
+		return (str.toString());
+	}
 }

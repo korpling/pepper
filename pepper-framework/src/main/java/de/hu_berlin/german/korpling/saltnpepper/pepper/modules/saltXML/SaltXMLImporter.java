@@ -17,9 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.saltXML;
 
+import java.io.File;
+
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -60,9 +60,28 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		setProperties(new PepperModuleProperties());
 	}
 
-	@Activate
-	public void activate(ComponentContext componentContext) {
-		super.activate(componentContext);
+	/**
+	 * Reads recursively first found file and returns 1.0 if file contains:
+	 * <ul>
+	 *  <li>&lt;?xml</li>
+	 *  <li>xmi:version=\"2.0\"</li>
+	 *  <li>salt</li>
+	 * </ul>
+	 */
+	@Override
+	public Double isImportable(URI corpusPath) {
+		Double retVal= null;
+		File file= new File(corpusPath.toFileString());
+		while (file.isDirectory()){
+			file= file.listFiles()[0];
+		}
+		String content= readFirstLines(URI.createFileURI(file.getAbsolutePath()), 20);
+		if (	(content.contains("<?xml"))&&
+				(content.contains("xmi:version=\"2.0\""))&&
+				(content.contains("salt"))){
+			retVal= 1.0;
+		}
+		return(retVal);
 	}
 
 	/**

@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,17 +193,17 @@ public class ConvertWizzardConsole {
 		String jobId = pepper.createJob();
 		PepperJob pepperJob = pepper.getJob(jobId);
 
-		try{
+		try {
 			String promptOld = prompt;
 			prompt = prompt + "/importer";
 			if (!importPhase(pepperJob)) {
 				out.println(MSG_ABORTED);
 				return (null);
 			}
-	
+
 			prompt = promptOld + "/manipulator";
 			manipulationPhase(pepperJob);
-	
+
 			prompt = promptOld + "/exporter";
 			if (!exportPhase(pepperJob)) {
 				out.println(MSG_ABORTED);
@@ -224,9 +226,10 @@ public class ConvertWizzardConsole {
 				if ((COMMAND.SAVE.getName().equalsIgnoreCase(command)) || (COMMAND.SAVE.getAbbreviation().equalsIgnoreCase(command))) {
 					File outputFile = null;
 					if (parts.length == 1) {
-						// path to workflow description wasn't given and needs to be
+						// path to workflow description wasn't given and needs
+						// to be
 						// requested
-	
+
 						out.println("Please enter the file location to store Pepper workflow description. ");
 						while ((input = getUserInput(in, out)) != null) {
 							outputFile = new File(input);
@@ -234,25 +237,25 @@ public class ConvertWizzardConsole {
 						}
 					} else {
 						// path to store workflow description was given
-	
+
 						outputFile = new File(params.get(params.size() - 1));
 					}
-	
+
 					try {
 						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
 						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
 					} catch (Exception e) {
 						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
 					}
-	
+
 				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
 					return (pepperJob);
 				}
 				out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
 			}
-		}catch (ExitWizzardException e){
+		} catch (ExitWizzardException e) {
 			out.println(MSG_ABORTED);
-			return(null);
+			return (null);
 		}
 		return (null);
 	}
@@ -308,7 +311,7 @@ public class ConvertWizzardConsole {
 						if ((number2Module == null) || (name2Module == null)) {
 							number2Module = new HashMap<Integer, PepperModuleDesc>();
 							name2Module = new HashMap<String, PepperModuleDesc>();
-							legend = createModuleLegend(number2Module, name2Module, MODULE_TYPE.IMPORTER);
+							legend = createModuleLegend(stepDesc.getCorpusDesc().getCorpusPath(), number2Module, name2Module, MODULE_TYPE.IMPORTER);
 						}
 						out.println(legend);
 						out.println(MSG_IM);
@@ -396,7 +399,7 @@ public class ConvertWizzardConsole {
 		// to make selection easier (key= name, value= module desc)
 		Map<String, PepperModuleDesc> name2Module = new HashMap<String, PepperModuleDesc>();
 		// the String containing the map to be presented to the user
-		String legend = createModuleLegend(number2Module, name2Module, MODULE_TYPE.MANIPULATOR);
+		String legend = createModuleLegend(null, number2Module, name2Module, MODULE_TYPE.MANIPULATOR);
 		out.println(legend);
 		out.println(MSG_MAN);
 		// a map containing a number corresponding to a customization property
@@ -513,7 +516,7 @@ public class ConvertWizzardConsole {
 					if ((number2Module == null) || (name2Module == null)) {
 						number2Module = new HashMap<Integer, PepperModuleDesc>();
 						name2Module = new HashMap<String, PepperModuleDesc>();
-						legend = createModuleLegend(number2Module, name2Module, MODULE_TYPE.EXPORTER);
+						legend = createModuleLegend(null, number2Module, name2Module, MODULE_TYPE.EXPORTER);
 					}
 					out.println(legend);
 					out.println(MSG_EX);
@@ -574,6 +577,30 @@ public class ConvertWizzardConsole {
 		return (true);
 	}
 
+	public class ImporterModuleDesc implements Comparable<ImporterModuleDesc> {
+		public Double probability = null;
+		public PepperModuleDesc moduleDesc = null;
+
+		public ImporterModuleDesc(PepperModuleDesc moduleDesc, Double probability) {
+			this.probability = probability;
+			this.moduleDesc = moduleDesc;
+		}
+
+		@Override
+		public int compareTo(ImporterModuleDesc arg0) {
+			if (this.probability == null) {
+				this.probability = 0.0;
+			}
+			if (arg0.probability == null) {
+				arg0.probability = 0.0;
+			}
+			return (Double.compare(this.probability, arg0.probability));
+		}
+		public String toString(){
+			return(probability+" "+ moduleDesc.getName());
+		}
+	}
+
 	/**
 	 * Fills a map containing each registered module and a corresponding number,
 	 * to make selection easier (key= number, value= module desc). Fills a map
@@ -584,14 +611,44 @@ public class ConvertWizzardConsole {
 	 * @param name2Module
 	 * @return legend for the map to be printed
 	 */
-	private String createModuleLegend(Map<Integer, PepperModuleDesc> number2Module, Map<String, PepperModuleDesc> name2Module, MODULE_TYPE moduleType) {
-		StringBuilder str = new StringBuilder();
+	private String createModuleLegend(URI corpusPath, Map<Integer, PepperModuleDesc> number2Module, Map<String, PepperModuleDesc> name2Module, MODULE_TYPE moduleType) {
+		PepperModuleDesc[] modules= null;
+		int numOfRecommended= 0;
+		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
+			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizzardConsole.ImporterModuleDesc>();
+			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
+				if (MODULE_TYPE.IMPORTER.equals(moduleDesc.getModuleType())) {
+					Double isImportable = getPepper().isImportable(corpusPath, moduleDesc);
+					if (	(isImportable!= null)&&
+							(isImportable>0.0)){
+						numOfRecommended++;
+					}
+					importerModuleDescs.add(new ImporterModuleDesc(moduleDesc, isImportable));
+				}
+			}
+			Collections.reverse(importerModuleDescs);
+			modules= new PepperModuleDesc[importerModuleDescs.size()];
+			int i= 0;
+			for (ImporterModuleDesc moduleDesc: importerModuleDescs){
+				modules[i]= moduleDesc.moduleDesc;
+				i++;
+			}
+		}else{
+			modules= (PepperModuleDesc[])getPepper().getRegisteredModules().toArray();
+		}
+		
 		Integer num = 0;
-		for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
+		StringBuilder str = new StringBuilder();
+		for (PepperModuleDesc moduleDesc : modules) {
 			if (moduleType.equals(moduleDesc.getModuleType())) {
 				number2Module.put(num, moduleDesc);
 				name2Module.put(moduleDesc.getName(), moduleDesc);
 				str.append("\t");
+				if (numOfRecommended > num){
+					str.append("* ");
+				}else{
+					str.append("  ");
+				}
 				str.append(num);
 				str.append(":\t");
 				str.append(moduleDesc.getName());
@@ -674,8 +731,8 @@ public class ConvertWizzardConsole {
 		}
 		return (userInput);
 	}
-	
-	private class ExitWizzardException extends RuntimeException{
+
+	private class ExitWizzardException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 	}
 

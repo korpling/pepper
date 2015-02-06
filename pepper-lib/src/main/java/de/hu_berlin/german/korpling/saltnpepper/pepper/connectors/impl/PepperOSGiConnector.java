@@ -668,4 +668,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 		return (getPepper().selfTest());
 	}
+
+	@Override
+	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
+		if (getPepper() == null){
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
+		return (getPepper().isImportable(corpusPath, description));
+	}
 }

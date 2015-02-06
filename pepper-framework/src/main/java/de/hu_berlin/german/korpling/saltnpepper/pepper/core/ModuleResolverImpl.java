@@ -734,12 +734,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 						pepperModule = module;
 						break;
 					}
-				} else if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getFormatDesc() != null)) {// emit
-																														// by
-																														// format
-																														// name
-																														// and
-																														// version
+				} else if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getFormatDesc() != null)) {
+					// emit by format name and version
 					if (module instanceof PepperImporter) {
 						if (((PepperImporter) module).getSupportedFormats().contains(stepDesc.getCorpusDesc().getFormatDesc())) {
 							pepperModule = module;
