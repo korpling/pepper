@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -52,9 +53,9 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	 * token.
 	 */
 	public TextImporter() {
-		super();
-		// setting name of module
-		setName(MODULE_NAME);
+		super(MODULE_NAME);
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setDesc("This importer imports a simple text document like .txt etc. . Even other documents can be imported as simple text. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
 		this.getSDocumentEndings().add(FORMAT_NAME);
@@ -70,53 +71,56 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 		mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
 		return (mapper);
 	}
-	
+
 	/**
-	 * Reads the content of txt files and creates a {@link STextualDS} object for each.
+	 * Reads the content of txt files and creates a {@link STextualDS} object
+	 * for each.
+	 * 
 	 * @author Florian Zipser
 	 *
 	 */
-	public static class TextMapper extends PepperMapperImpl{
+	public static class TextMapper extends PepperMapperImpl {
 		/**
-		 * Reads txt files and maps their content to a {@link STextualDS} object.
+		 * Reads txt files and maps their content to a {@link STextualDS}
+		 * object.
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			if (getResourceURI()== null){
+			if (getResourceURI() == null) {
 				throw new PepperModuleException(this, "Cannot map txt-file, because the given resurce uri is empty.");
 			}
-			if (getSDocument().getSDocumentGraph()== null){
+			if (getSDocument().getSDocumentGraph() == null) {
 				getSDocument().setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
 			}
 			StringBuilder sb = new StringBuilder();
-	        BufferedReader br = null;
-		    try {
-		    	br= new BufferedReader(new FileReader(getResourceURI().toFileString()));
-		        String line = br.readLine();
-		        boolean isFirstLine= true;
-		        while (line != null) {
-		            if (!isFirstLine){
-		            	sb.append(System.getProperty("line.separator").toString());
-		            }
-		            sb.append(line);
-		            isFirstLine= false;
-		            line = br.readLine();
-		        }
-		    } catch (FileNotFoundException e) {
-		    	throw new PepperModuleException(this,"Cannot read file '"+getResourceURI()+"', because of nested exception: ", e);
+			BufferedReader br = null;
+			try {
+				br = new BufferedReader(new FileReader(getResourceURI().toFileString()));
+				String line = br.readLine();
+				boolean isFirstLine = true;
+				while (line != null) {
+					if (!isFirstLine) {
+						sb.append(System.getProperty("line.separator").toString());
+					}
+					sb.append(line);
+					isFirstLine = false;
+					line = br.readLine();
+				}
+			} catch (FileNotFoundException e) {
+				throw new PepperModuleException(this, "Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
 			} catch (IOException e) {
-				throw new PepperModuleException(this,"Cannot read file '"+getResourceURI()+"', because of nested exception: ", e);
+				throw new PepperModuleException(this, "Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
 			} finally {
-				if (br!= null){
+				if (br != null) {
 					try {
 						br.close();
 					} catch (IOException e) {
-						throw new PepperModuleException(this,"Cannot close file '"+getResourceURI()+"', because of nested exception: ", e);
+						throw new PepperModuleException(this, "Cannot close file '" + getResourceURI() + "', because of nested exception: ", e);
 					}
 				}
-		    }
-		    getSDocument().getSDocumentGraph().createSTextualDS(sb.toString());
-			return(DOCUMENT_STATUS.COMPLETED);
+			}
+			getSDocument().getSDocumentGraph().createSTextualDS(sb.toString());
+			return (DOCUMENT_STATUS.COMPLETED);
 		}
 	}
 }
