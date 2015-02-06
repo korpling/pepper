@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,6 +148,137 @@ public abstract class PepperUtil {
 			pos = pos + offset;
 		}
 		return (str.toString());
+	}
+	
+	/**
+	 * Returns rest
+	 */
+	public static String breakString2(StringBuilder output, final String theString, final int length) {
+		if (	(theString!= null)&&
+				(!theString.isEmpty())){
+			// the rest, which has to be returned
+			StringBuilder rest= new StringBuilder();
+			
+			if (length >= theString.length()+ output.toString().length()){
+				output.append(theString);
+				return(null);
+			}
+			char[] chrs= theString.toCharArray();
+			HashSet<Character> separators= new HashSet<Character>();
+			separators.add(' ');
+			separators.add('.');
+			separators.add(',');
+			separators.add(';');
+			separators.add(':');
+			separators.add('?');
+			separators.add('!');
+			separators.add('\"');
+			separators.add('\'');
+			separators.add('-');
+			separators.add('~');
+			separators.add('*');
+			separators.add('+');
+			int currLength= output.toString().length();
+			StringBuilder stagingStr= new StringBuilder();
+			for (int i= 0; i< length- currLength; i++){
+				stagingStr.append(chrs[i]);
+				if (separators.contains(chrs[i])){
+					output.append(stagingStr.toString());
+					stagingStr= new StringBuilder();
+				}
+			}
+			
+			if (currLength== output.toString().length()){
+				//in case of nothing was written to output, write staging string to output
+				output.append(stagingStr.toString());
+			}else{
+				//adding staging part to rest, which was not printed
+				rest.append(stagingStr.toString());
+			}
+			//adding rest of theString to rest
+			if ((length- currLength)>0){
+				for (int i= length- currLength; i< theString.length(); i++){
+					rest.append(chrs[i]);
+				}
+			}
+			return (rest.toString());
+		}
+		return(null);
+	}
+	/**
+	 * Returns a table created from the passed Strings. 
+	 * 
+	 * @param length an array of lengths for the columns
+	 * @param map a map containing the Strings to be printed out sorted as [line, column]
+	 * @param hasHeader determines, if the first line of map contains a header for the table
+	 * @param hasBlanks determines if vertical lines has to be followed by a blank e.g. with blanks "| cell1 |"  or without blanks "|cell1|"
+	 * @return
+	 */
+	public static String printTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
+		StringBuilder retVal= new StringBuilder();
+		 
+		//create horizontal line
+		String hr= null;
+		StringBuilder hrb= new StringBuilder();
+		for (int a:length){
+			hrb.append("+");
+			for (int b= 0; b< a; b++){
+				hrb.append("-");
+			}
+			if (hasBlanks){
+				hrb.append("-");
+			}
+		}
+		if (hasBlanks){
+			hrb.append("-");
+		}
+		hrb.append("+");
+		hrb.append("\n");
+		hr= hrb.toString();
+		
+		retVal.append(hr);
+		for (int line= 0; line< map.length; line++){
+			
+			//initialize current line, with original texts
+			String[] currLine= new String[map[line].length];
+			for (int col= 0; col< map[line].length; col++){
+				currLine[col]= map[line][col];
+			}
+			StringBuilder out= new StringBuilder();
+			boolean goOn= true;
+			while(goOn){
+				goOn= false;
+				for (int col= 0; col< currLine.length; col++){
+					currLine[col]= breakString2(out, currLine[col], length[col]);
+					int diff= length[col]- out.toString().length();
+					if (diff> 0){
+						for (int i= 0; i< diff; i++){
+							out.append(" ");
+						}
+					}
+					if (currLine[col]!= null){
+						goOn= true;
+					}
+					retVal.append("|");
+					if (hasBlanks){
+						retVal.append(" ");
+					}
+					retVal.append(out.toString());
+					out= new StringBuilder();
+				}
+				if (hasBlanks){
+					retVal.append(" ");
+				}
+				retVal.append("|\n");
+			}
+			//print horizontal line in case of first line is header
+			if (	(hasHeader)&&
+					(line== 0)){
+				retVal.append(hr);
+			}
+		}
+		retVal.append(hr);
+		return(retVal.toString());
 	}
 
 	/**
