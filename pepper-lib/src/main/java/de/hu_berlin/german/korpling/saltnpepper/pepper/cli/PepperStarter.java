@@ -174,7 +174,6 @@ public class PepperStarter {
 	 * 
 	 * @return
 	 */
-	// @Command(description="A table with information about all available Pepper modules.")
 	public String list() {
 		StringBuilder retVal = new StringBuilder();
 
@@ -188,7 +187,11 @@ public class PepperStarter {
 			retVal.append("Cannot not display any Pepper module. Calling " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
+		try{
 		retVal.append(PepperUtil.reportModuleList(moduleDescs));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		return (retVal.toString());
 	}
 

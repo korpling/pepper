@@ -24,6 +24,7 @@ import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -397,39 +398,54 @@ public abstract class PepperUtil {
 		return (str.toString());
 	}
 
+	/**
+	 * Creates a table containing all passed Pepper modules corresponding to their description and
+	 * their fingerprint 
+	 * @param moduleDescs
+	 * @return
+	 */
 	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs) {
-		StringBuilder retVal = new StringBuilder();
-		if ((moduleDescs == null) || (moduleDescs.size() == 0)) {
-			retVal.append("- no modules registered -\n");
-		} else {
-			String format = "| %1$-4s | %2$-20s | %3$-15s | %4$-11s | %5$-31s | %6$-20s |\n";
-			String line = "+------+----------------------+-----------------+-------------+---------------------------------+----------------------+\n";
-			retVal.append(line);
-			retVal.append(String.format(format, "no.", "module-name", "module-version", "module-type", "formats", "supplier-contact"));
-			retVal.append(line);
-			int no = 1;
+		String retVal = "- no modules registered -\n";
+		if ((moduleDescs != null) && (moduleDescs.size() != 0)){
+			String[][] map= new String[moduleDescs.size()+1][6];
+			map[0][0]="no.";
+			map[0][1]= "module-name";
+			map[0][2]="module-version";
+			map[0][3]="module-type";
+			map[0][4]="formats";
+			map[0][5]="supplier-contact";
+			int i= 1;
 			for (PepperModuleDesc desc : moduleDescs) {
+				map[i][0]=new Integer(i).toString();
+				map[i][1]= desc.getName();
+				map[i][2]= desc.getVersion();
+				map[i][3]= desc.getModuleType().toString();
 				String formatString = "";
-
 				if ((desc.getSupportedFormats() != null) && (desc.getSupportedFormats().size() > 0)) {
-					int i = 0;
+					int j = 0;
 					for (FormatDesc formatDesc : desc.getSupportedFormats()) {
-						if (i != 0) {
+						if (j != 0) {
 							formatString = formatString + "; ";
 						}
 						formatString = formatString + formatDesc.getFormatName() + ", " + formatDesc.getFormatVersion();
-						i++;
+						j++;
 					}
 				}
-
-				if (desc != null) {
-					retVal.append(String.format(format, no, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
+				map[i][4]= formatString;
+				URI contact= desc.getSupplierContact();
+				if (contact!= null) {
+					map[i][5]= desc.getSupplierContact().toString();
+				}else{
+					map[i][5]= "";
 				}
-				no++;
+				
+				
+				i++;
 			}
-			retVal.append(line);
+			Integer[] length= {4,20,15,11,31,20};
+			retVal= printTable(length, map, true, true);
 		}
-		return (retVal.toString());
+		return (retVal);
 	}
 
 	/**
