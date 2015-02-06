@@ -155,23 +155,24 @@ public class PepperStarter {
 	 * @return
 	 */
 	public String help() {
-		String retVal= null;
-		Integer[] length= {20, 5, 15, 70};
-		String[][] map= new String[COMMAND.values().length+1][4];
-		map[0][0]= "command";
-		map[0][1]="short";
-		map[0][2]="parameters";
-		map[0][3]="description";
-		int i= 0;
+		String retVal = null;
+		Integer[] length = { 20, 5, 15, 70 };
+		String[][] map = new String[COMMAND.values().length + 1][4];
+		map[0][0] = "command";
+		map[0][1] = "short";
+		map[0][2] = "parameters";
+		map[0][3] = "description";
+		int i = 0;
 		for (COMMAND command : COMMAND.values()) {
 			i++;
-			map[i][0]= command.getName();
-			map[i][1]= command.getAbbreviation();
-			map[i][2]=(command.getParameters() == null) ? " -- " : command.getParameters();
-			map[i][3]=command.getDescription();
+			map[i][0] = command.getName();
+			map[i][1] = command.getAbbreviation();
+			map[i][2] = (command.getParameters() == null) ? " -- " : command.getParameters();
+			map[i][3] = command.getDescription();
 		}
-		retVal= PepperUtil.printTable(length, map, true, true);
-		return(retVal);
+
+		retVal = PepperUtil.printTable(length, map, true, true);
+		return (retVal);
 	}
 
 	/**
@@ -232,14 +233,14 @@ public class PepperStarter {
 			retVal.append(moduleDesc.getVersion());
 			retVal.append("\n");
 			retVal.append("supplier:");
-			retVal.append((moduleDesc.getSupplierContact()==null)?" unknown ": moduleDesc.getSupplierContact());
+			retVal.append((moduleDesc.getSupplierContact() == null) ? " unknown " : moduleDesc.getSupplierContact());
 			retVal.append("\n");
 			retVal.append((moduleDesc.getDesc() == null) ? "- no description available -" : moduleDesc.getDesc());
-			if (moduleDesc.getProperties()!= null){
+			if (moduleDesc.getProperties() != null) {
 				retVal.append("\n");
 				retVal.append("customization properties: \n");
 				retVal.append("-------------------------------------------------------------------------\n");
-				for (PepperModuleProperty<?> prop: moduleDesc.getProperties().getPropertyDesctriptions()){
+				for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
 					retVal.append(prop.getName());
 					retVal.append(" - \t");
 					retVal.append(prop.getDescription());
@@ -589,10 +590,7 @@ public class PepperStarter {
 			}
 			if ((args.length == 0) || (runInteractive)) {
 				// run interactive console
-				try {
-					starter.runInteractive();
-				} catch (Exception e) {
-				}
+				starter.runInteractive();
 			} else if ((COMMAND.HELP.getName().equalsIgnoreCase(args[0]) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(args[0])))) {
 				// print help
 				logger.info(starter.help());
