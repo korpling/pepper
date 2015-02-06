@@ -155,17 +155,23 @@ public class PepperStarter {
 	 * @return
 	 */
 	public String help() {
-		StringBuilder retVal = new StringBuilder();
-		String format = "| %1$-20s | %2$-5s | %3$-15s | %4$-70s |\n";
-		String line = "+----------------------+-------+-----------------+------------------------------------------------------------------------+\n";
-		retVal.append(line);
-		retVal.append(String.format(format, "command", "short", "parameters", "description"));
-		retVal.append(line);
+		String retVal= null;
+		Integer[] length= {20, 5, 15, 70};
+		String[][] map= new String[COMMAND.values().length+1][4];
+		map[0][0]= "command";
+		map[0][1]="short";
+		map[0][2]="parameters";
+		map[0][3]="description";
+		int i= 0;
 		for (COMMAND command : COMMAND.values()) {
-			retVal.append(String.format(format, command.getName(), command.getAbbreviation(), (command.getParameters() == null) ? " -- " : command.getParameters(), command.getDescription()));
+			i++;
+			map[i][0]= command.getName();
+			map[i][1]= command.getAbbreviation();
+			map[i][2]=(command.getParameters() == null) ? " -- " : command.getParameters();
+			map[i][3]=command.getDescription();
 		}
-		retVal.append(line);
-		return (retVal.toString());
+		retVal= PepperUtil.printTable(length, map, true, true);
+		return(retVal);
 	}
 
 	/**
@@ -187,11 +193,7 @@ public class PepperStarter {
 			retVal.append("Cannot not display any Pepper module. Calling " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
-		try{
 		retVal.append(PepperUtil.reportModuleList(moduleDescs));
-		}catch (Exception e){
-			e.printStackTrace();
-		}
 		return (retVal.toString());
 	}
 
