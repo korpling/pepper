@@ -254,10 +254,6 @@ public class MavenAccessor {
 	 * and triggers the installation process if a newer version is available
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle){
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method update()");
-		}
-		
 		if (forbiddenFruits.isEmpty() && !initDependencies()){
 			logger.warn("Update process could not be performed, because the pepper dependencies could not be listed.");
 			return false;
@@ -458,10 +454,6 @@ public class MavenAccessor {
 	 * Elementary dependencies and their daughters are skipped. 
 	 */
 	private List<Dependency> getAllDependencies(DependencyNode startNode, boolean skipFramework){
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method getAllDependencies() with parameters");
-		}		
-		
 		List<Dependency> retVal = new ArrayList<Dependency>();
 		retVal.add(startNode.getDependency());
 		for (DependencyNode node : startNode.getChildren()){
@@ -479,10 +471,6 @@ public class MavenAccessor {
 	 * @return
 	 */
 	private boolean dependencyAlreadyInstalled(String artifactString){
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method dependencyAlreadyInstalled() with parameters");
-		}
-		
 		String[] coords = artifactString.split(DELIMITER);
 		String[] testCoords = null;
 		for (String dependencyString : forbiddenFruits){
@@ -528,10 +516,6 @@ public class MavenAccessor {
 	 * writes the old, freshly installed and forbidden dependencies to the blacklist file.
 	 */
 	private void write2Blacklist(){
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method write2Blacklist() with parameters");
-		}
-		
 		File blacklistFile = new File(BLACKLIST_PATH);
 		if (!blacklistFile.exists()){
 			blacklistFile.getParentFile().mkdirs();}
@@ -554,10 +538,6 @@ public class MavenAccessor {
 	 * @returns the Blacklist of already installed or forbidden dependencies
 	 */
 	public String getBlacklist(){
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method getBlacklist() with parameters");
-		}
-		
 		String lineSeparator = System.getProperty("line.separator");
 		String indent = "\t";
 		StringBuilder retVal = (new StringBuilder()).append(lineSeparator);
@@ -577,10 +557,7 @@ public class MavenAccessor {
 	 * @return
 	 */
 	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion){		
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method cleanDependencies() with parameters");
-		}
-		
+		Dependency pepperFramework = null;
 		try {
 			List<Dependency> parentDeps = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
 			if (parentDeps==null){
@@ -601,7 +578,8 @@ public class MavenAccessor {
 			itDeps = null;			
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
-			newDeps.add(next);//we need pepper-framework on the list (TODO is it correct to assume that next==pepper-framework?
+			pepperFramework = next;
+			newDeps.add(pepperFramework);//we need pepper-framework on the list (TODO is it correct to assume that next==pepper-framework?
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
 				next = dependencies.get(i);
@@ -618,13 +596,12 @@ public class MavenAccessor {
 				}
 			}
 			return newDeps;
-		} catch (/*DependencyCollection*/Exception e) {
-//			logger.warn("Could not collect dependencies for parent. No dependencies will be installed.");
-			logger.warn("EXCEPTION:"+e);
-			e.printStackTrace();
-			System.exit(-1);
+		} catch (DependencyCollectionException e) {
+			logger.warn("Could not collect dependencies for parent. No dependencies will be installed.");
 		}       
-		return Collections.<Dependency>emptyList(); //NOT null
+		ArrayList<Dependency> retVal = new ArrayList<Dependency>();
+		retVal.add(pepperFramework);
+		return retVal;
 	}
 	
 	/**
@@ -634,10 +611,6 @@ public class MavenAccessor {
 	 * @return
 	 */
 	private RemoteRepository buildRepo(String id, String url){
-		/*DEBUG*/if (logger.isDebugEnabled()){
-			logger.debug("Starting method buildRepo() with parameters");
-		}
-		
 		repoBuilder.setId(id);
 		repoBuilder.setUrl(url);
 		return repoBuilder.build();
