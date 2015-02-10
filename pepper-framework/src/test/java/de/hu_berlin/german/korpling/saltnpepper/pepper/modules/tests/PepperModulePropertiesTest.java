@@ -19,14 +19,18 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.tests;
 
 import java.util.Properties;
 
+import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModulePropertyException;
-import junit.framework.TestCase;
 
-public class PepperModulePropertiesTest extends TestCase
-{
-	private PepperModuleProperties fixture= null;
+public class PepperModulePropertiesTest extends TestCase {
+	private PepperModuleProperties fixture = null;
+
 	public void setFixture(PepperModuleProperties fixture) {
 		this.fixture = fixture;
 	}
@@ -34,71 +38,74 @@ public class PepperModulePropertiesTest extends TestCase
 	public PepperModuleProperties getFixture() {
 		return fixture;
 	}
-	public void setUp()
-	{
+	@Before
+	public void setUp() {
 		this.setFixture(new PepperModuleProperties());
 	}
-	
-	public void testAddProp()
-	{
-		String propName= "prop1";
-		PepperModuleProperty<Integer> prop= new PepperModuleProperty<Integer>(propName, Integer.class, "some desc");
+
+	@Test
+	public void testAddProp() {
+		String propName = "prop1";
+		PepperModuleProperty<Integer> prop = new PepperModuleProperty<Integer>(propName, Integer.class, "some desc");
 		prop.setValue(123);
 		this.getFixture().addProperty(prop);
 		assertEquals(prop, this.getFixture().getProperty(propName));
 	}
-	
+
 	/**
-	 * Checks adding a bunch of properties via {@link Properties} object. All properties are already described.
+	 * Checks adding a bunch of properties via {@link Properties} object. All
+	 * properties are already described.
 	 */
-	public void testAdd_Properties()
-	{
-		String propName1= "prop1";
-		String propName2= "prop2";
-		String propName3= "prop3";
-		
-		PepperModuleProperty<Integer> prop1= new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc");
+	@Test
+	public void testAdd_Properties() {
+		String propName1 = "prop1";
+		String propName2 = "prop2";
+		String propName3 = "prop3";
+
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc");
 		this.getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2= new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc");
+		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc");
 		this.getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3= new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc");
+		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc");
 		this.getFixture().addProperty(prop3);
-		
-		Properties properties= new Properties();
+
+		Properties properties = new Properties();
 		properties.put(propName1, 123);
 		properties.put(propName2, 123);
 		properties.put(propName3, 123);
-		
+
 		this.getFixture().setPropertyValues(properties);
 		assertEquals(this.getFixture().getProperty(propName1), prop1);
 		assertEquals(this.getFixture().getProperty(propName2), prop2);
 		assertEquals(this.getFixture().getProperty(propName3), prop3);
 	}
+
 	/**
-	 * Checks adding a bunch of properties via {@link Properties} object. Some of the properties are not desribed.
+	 * Checks adding a bunch of properties via {@link Properties} object. Some
+	 * of the properties are not desribed.
 	 */
-	public void testAdd_Properties2()
-	{
-		String propName1= "prop1";
-		String propName2= "prop2";
-		String propName3= "prop3";
-		String propName4= "prop4";
-		String propName5= "prop5";
-		
-		PepperModuleProperty<Integer> prop1= new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc");
+	@Test
+	public void testAdd_Properties2() {
+		String propName1 = "prop1";
+		String propName2 = "prop2";
+		String propName3 = "prop3";
+		String propName4 = "prop4";
+		String propName5 = "prop5";
+
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc");
 		this.getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2= new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc");
+		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc");
 		this.getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3= new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc");
+		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc");
 		this.getFixture().addProperty(prop3);
-		
-		Properties properties= new Properties();
+
+		Properties properties = new Properties();
 		properties.put(propName1, 12);
 		properties.put(propName2, 34);
 		properties.put(propName3, 56);
 		properties.put(propName4, 78);
 		properties.put(propName5, 90);
-		
+
 		this.getFixture().setPropertyValues(properties);
 		assertEquals(this.getFixture().getProperty(propName1), prop1);
 		assertEquals(this.getFixture().getProperty(propName2), prop2);
@@ -106,85 +113,97 @@ public class PepperModulePropertiesTest extends TestCase
 		assertEquals(this.getFixture().getProperty(propName4).getValue(), "78");
 		assertFalse(this.getFixture().getProperty(propName4).getValue().equals(78));
 		assertEquals(this.getFixture().getProperty(propName5).getValue(), "90");
-		assertFalse(this.getFixture().getProperty(propName5).getValue().equals(90));		
+		assertFalse(this.getFixture().getProperty(propName5).getValue().equals(90));
 	}
-	
-	/**
-	 * Checks adding a bunch of properties via {@link Properties} object. Some of the properties are not desribed.
-	 */
-	public void testCheckProperties()
-	{
-		String propName1= "prop1";
 
-		PepperModuleProperty<Integer> prop1= new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+	/**
+	 * Checks adding a bunch of properties via {@link Properties} object. Some
+	 * of the properties are not desribed.
+	 */
+	@Test
+	public void testCheckProperties() {
+		String propName1 = "prop1";
+
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop1);
-		
-		try{
+
+		try {
 			this.getFixture().checkProperties();
 			fail("a property, whichs value is marked as required is not given");
-		}catch (PepperModulePropertyException e) {
+		} catch (PepperModulePropertyException e) {
 		}
-		
+
 		this.getFixture().setPropertyValue(propName1, 12);
 		this.getFixture().checkProperties();
 	}
 
 	/**
-	 * Checks if check works correctly. Sets all required values, than 
+	 * Checks if check works correctly. Sets all required values, than
 	 */
-	public void testAdd_CheckProperties()
-	{
-		String propName1= "prop1";
-		String propName2= "prop2";
-		String propName3= "prop3";
-		String propName4= "prop4";
-		String propName5= "prop5";
-		
-		PepperModuleProperty<Integer> prop1= new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+	@Test
+	public void testAdd_CheckProperties() {
+		String propName1 = "prop1";
+		String propName2 = "prop2";
+		String propName3 = "prop3";
+		String propName4 = "prop4";
+		String propName5 = "prop5";
+
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2= new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3= new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop3);
-		PepperModuleProperty<Integer> prop4= new PepperModuleProperty<Integer>(propName4, Integer.class, "some desc", false);
+		PepperModuleProperty<Integer> prop4 = new PepperModuleProperty<Integer>(propName4, Integer.class, "some desc", false);
 		this.getFixture().addProperty(prop4);
-		PepperModuleProperty<Integer> prop5= new PepperModuleProperty<Integer>(propName5, Integer.class, "some desc", false);
+		PepperModuleProperty<Integer> prop5 = new PepperModuleProperty<Integer>(propName5, Integer.class, "some desc", false);
 		this.getFixture().addProperty(prop5);
-		
-		Properties properties= new Properties();
+
+		Properties properties = new Properties();
 		properties.put(propName1, 12);
 		properties.put(propName2, 34);
 		properties.put(propName3, 56);
-		
+
 		this.getFixture().setPropertyValues(properties);
 		assertTrue(this.getFixture().checkProperties());
 	}
-	
+
 	/**
-	 * Checks if check works correctly. Does not set all required values, than 
+	 * Checks if check works correctly. Does not set all required values, than
 	 */
-	public void testAdd_CheckProperties2()
-	{
-		String propName1= "prop1";
-		String propName2= "prop2";
-		String propName3= "prop3";
-		
-		PepperModuleProperty<Integer> prop1= new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+	@Test
+	public void testAdd_CheckProperties2() {
+		String propName1 = "prop1";
+		String propName2 = "prop2";
+		String propName3 = "prop3";
+
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2= new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3= new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop3);
-		
-		Properties properties= new Properties();
+
+		Properties properties = new Properties();
 		properties.put(propName1, 12);
 		properties.put(propName2, 34);
-		
+
 		this.getFixture().setPropertyValues(properties);
 		try {
 			this.getFixture().checkProperties();
 			fail("Check should not return true");
 		} catch (PepperModulePropertyException e) {
 		}
+	}
+	
+	@Test
+	public void test_PROP_SIMPLE_TOKENIZE_3(){
+		String sep = "' ', '\\'', ',', '\\\\'";
+		
+		assertEquals(4, getFixture().stringToCharList(sep).size());
+		assertEquals(new Character(' '), getFixture().stringToCharList(sep).get(0));
+		assertEquals(new Character('\''), getFixture().stringToCharList(sep).get(1));
+		assertEquals(new Character(','), getFixture().stringToCharList(sep).get(2));
+		assertEquals(new Character('\\'), getFixture().stringToCharList(sep).get(3));
 	}
 }

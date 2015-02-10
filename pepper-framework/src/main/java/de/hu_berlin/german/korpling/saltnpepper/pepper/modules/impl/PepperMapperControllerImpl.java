@@ -242,7 +242,11 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		}else{
 			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		}
-		this.getPepperMapper().setMappingResult(mappingResult);
+		if (	(!DOCUMENT_STATUS.FAILED.equals(getPepperMapper().getMappingResult()))&&
+				(!DOCUMENT_STATUS.COMPLETED.equals(getPepperMapper().getMappingResult()))&&
+				(!DOCUMENT_STATUS.DELETED.equals(getPepperMapper().getMappingResult()))){
+			this.getPepperMapper().setMappingResult(mappingResult);
+		}
 	}
 
 	/** {@inheritDoc PepperModule#before(SElementId)} */

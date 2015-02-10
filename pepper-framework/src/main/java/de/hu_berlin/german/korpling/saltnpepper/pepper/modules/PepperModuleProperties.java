@@ -22,8 +22,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -291,6 +293,47 @@ public class PepperModuleProperties implements Serializable {
 	 */
 	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions() {
 		return (pepperModuleProperties.values());
+	}
+
+	/**
+	 * Expects a list of characters encoded as a String. The String is split and returned as
+	 * a list of characters. The list must be build like this:
+	 * <br/>
+	 * LIST: ITEM (,ITEM)*
+	 * <br/>
+	 * ITEM: 'CHARACTER'
+	 * <br/>
+	 * <br/>
+	 * For instance the passed String "'a', 'b', 'c'" is returned as a list containing 'a', 'b' and 'c'.
+	 * In case of the characters "'" or "\" are used as items, they must be escaped as "\'" or "\\".
+	 * 
+	 * @return the isToTokenize
+	 */
+	public List<Character> stringToCharList(String input) {
+		List<Character> simpleTokSeparators = new ArrayList<Character>();
+		boolean isOpen = false;
+		boolean isEscaped = false;
+		for (char chr : input.toCharArray()) {
+			if ((chr == '\\') && (!isEscaped)) {
+				// if current character is an escape character
+				isEscaped = true;
+			} else if ((chr == '\'') && (!isEscaped)) {
+				// if current character is an not escaped apos, flip isOpen
+				isOpen = !isOpen;
+			} else if ((isOpen)) {
+				simpleTokSeparators.add(chr);
+				if (chr == '\\') {
+					// disable isEscaped in case of character was an escaped
+					// backslash (see //)
+					isEscaped = false;
+				}
+			}
+
+			if (chr != '\\') {
+				isEscaped = false;
+			}
+		}
+		return simpleTokSeparators;
 	}
 
 	public String toString() {

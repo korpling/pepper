@@ -18,10 +18,10 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.core;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -602,11 +602,11 @@ public class ModuleResolverImpl implements ModuleResolver {
 		if (getPepperImporterComponentFactories() != null) {
 			// run through all pepperImporterComponentFactories and search for
 			// mapping PepperImporter
-			Iterator<ComponentFactory> it= getPepperImporterComponentFactories().iterator();
-			while(it.hasNext()){
+			List<ComponentFactory> factories= new ArrayList<ComponentFactory>(getPepperImporterComponentFactories());
+			for (ComponentFactory componentFactory : factories) {
 				Object instance= null;
 				try{
-					instance = it.next().newInstance(null).getInstance();
+					instance = componentFactory.newInstance(null).getInstance();
 				}catch(ComponentException e){
 					//bundle containing Pepper module was probably removed 
 				}
@@ -640,7 +640,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 			// run through all pepperManipulatorComponentFactories and search
 			// for mapping PepperManipulator
 			try{
-				for (ComponentFactory componentFactory : getPepperManipulatorComponentFactories()) {
+				List<ComponentFactory> factories= new ArrayList<ComponentFactory>(getPepperManipulatorComponentFactories());
+				for (ComponentFactory componentFactory : factories) {
 					Object instance= null;
 					try{
 						instance = componentFactory.newInstance(null).getInstance();
@@ -676,7 +677,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 		if (getPepperExporterComponentFactories() != null) {
 			// run through all pepperExporterComponentFactories and search for
 			// mapping PepperExporter
-			for (ComponentFactory componentFactory : getPepperExporterComponentFactories()) {
+			List<ComponentFactory> factories= new ArrayList<ComponentFactory>(getPepperExporterComponentFactories());
+			for (ComponentFactory componentFactory : factories) {
 				Object instance= null;
 				try{
 					instance = componentFactory.newInstance(null).getInstance();

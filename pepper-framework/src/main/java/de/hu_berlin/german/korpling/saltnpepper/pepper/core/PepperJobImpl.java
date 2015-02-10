@@ -70,6 +70,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentControlle
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
@@ -845,11 +847,56 @@ public class PepperJobImpl extends PepperJob {
 			if (!isImportedCorpusStructure)
 				importCorpusStructures();
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
+			// create a future for each step
 			for (Step step : getAllSteps()) {
 				if (step.getModuleController().getPepperModule().getSaltProject() == null)
-					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());
-				futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
+					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());{
+						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
+					}
 			}
+			
+			// log workflow information
+			int stepNum= 0; //current number of step
+			StringBuilder str= new StringBuilder();
+			for (Step step : getAllSteps()) {
+				stepNum++;
+				str.append("+----------------------------------- step ");
+				str.append(stepNum);
+				str.append(" -----------------------------------+\n");
+				
+				String format="|%-15s%-63s|\n";
+				str.append(String.format(format, step.getModuleType().toString().toLowerCase()+":", step.getName()));
+				str.append(String.format(format, "path:", step.getCorpusDesc().getCorpusPath()));
+				if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())){
+					int idxCorpusGraph= getSaltProject().getSCorpusGraphs().indexOf(((PepperImporter)step.getModuleController().getPepperModule()).getSCorpusGraph());
+					str.append(String.format(format, "corpus index:", idxCorpusGraph));
+				}
+				
+				boolean hasProperties= false;
+				StringBuilder propStr= new StringBuilder();
+				if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()!= null){
+					//log all properties of all modules and their values
+					
+					format="|               %-25s%-38s|\n";
+					for (PepperModuleProperty<?> prop: step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()){
+						if (prop.getValue()!= null){
+							hasProperties= true;
+							propStr.append(String.format(format, prop.getName()+":", prop.getValue()));
+						}
+					}
+				}
+				format="|%-15s%-63s|\n";
+				if (hasProperties){
+					str.append(String.format(format, "properties:", ""));
+					str.append(propStr.toString());
+				}else{
+					str.append(String.format(format, "properties:", "- none -"));
+				}
+				str.append("|                                                                              |\n");
+			}
+			str.append("+------------------------------------------------------------------------------+\n");
+			logger.info(str.toString());
+			
 			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
 				// wait until all document-structures have been imported
 				try {
@@ -880,7 +927,7 @@ public class PepperJobImpl extends PepperJob {
 			if (e instanceof PepperException)
 				throw (PepperException) e;
 			else
-				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: ", e);
+				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: "+e.getMessage(), e);
 		} finally {
 			inProgress.unlock();
 		}

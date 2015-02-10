@@ -29,7 +29,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  *  <li>{@value #IN_PROGRESS}</li>
  *  <li>
  *  	<ul>
- *  		<li>{@value #ENDED} means, mapping was successful</li>
+ *  		<li>{@value #COMPLETED} means, mapping was successful</li>
  * 			<li>{@value #FAILED} means, mapping was not successful and ended with an error</li>
  *   		<li>{@value #DELETED} means, mapping was successful and Mapped object {@link SDocument} or {@link SCorpus} was deleted (for instance when merging objects, and no further processing of mapped object is necessary)</li>
  *  	</ul>
