@@ -215,7 +215,7 @@ public abstract class PepperUtil {
 	 * @param hasBlanks determines if vertical lines has to be followed by a blank e.g. with blanks "| cell1 |"  or without blanks "|cell1|"
 	 * @return
 	 */
-	public static String printTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
+	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
 		StringBuilder retVal= new StringBuilder();
 		 
 		//create horizontal line
@@ -443,7 +443,7 @@ public abstract class PepperUtil {
 				i++;
 			}
 			Integer[] length= {4,20,15,11,31,20};
-			retVal= printTable(length, map, true, true);
+			retVal= createTable(length, map, true, true);
 		}
 		return (retVal);
 	}

@@ -171,7 +171,7 @@ public class PepperStarter {
 			map[i][3] = command.getDescription();
 		}
 
-		retVal = PepperUtil.printTable(length, map, true, true);
+		retVal = PepperUtil.createTable(length, map, true, true);
 		return (retVal);
 	}
 

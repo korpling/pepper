@@ -38,6 +38,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
@@ -596,8 +597,9 @@ public class ConvertWizzardConsole {
 			}
 			return (Double.compare(this.probability, arg0.probability));
 		}
-		public String toString(){
-			return(probability+" "+ moduleDesc.getName());
+
+		public String toString() {
+			return (probability + " " + moduleDesc.getName());
 		}
 	}
 
@@ -612,65 +614,95 @@ public class ConvertWizzardConsole {
 	 * @return legend for the map to be printed
 	 */
 	private String createModuleLegend(URI corpusPath, Map<Integer, PepperModuleDesc> number2Module, Map<String, PepperModuleDesc> name2Module, MODULE_TYPE moduleType) {
-		PepperModuleDesc[] modules= null;
-		int numOfRecommended= 0;
+		PepperModuleDesc[] modules = null;
+		int numOfRecommended = 0;
+		// if module is importer, call isImportable
 		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
 			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizzardConsole.ImporterModuleDesc>();
 			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
 				if (MODULE_TYPE.IMPORTER.equals(moduleDesc.getModuleType())) {
 					Double isImportable = getPepper().isImportable(corpusPath, moduleDesc);
-					if (	(isImportable!= null)&&
-							(isImportable>0.0)){
+					if ((isImportable != null) && (isImportable > 0.0)) {
 						numOfRecommended++;
 					}
 					importerModuleDescs.add(new ImporterModuleDesc(moduleDesc, isImportable));
 				}
 			}
 			Collections.reverse(importerModuleDescs);
-			modules= new PepperModuleDesc[importerModuleDescs.size()];
-			int i= 0;
-			for (ImporterModuleDesc moduleDesc: importerModuleDescs){
-				modules[i]= moduleDesc.moduleDesc;
+			modules = new PepperModuleDesc[importerModuleDescs.size()];
+			int i = 0;
+			for (ImporterModuleDesc moduleDesc : importerModuleDescs) {
+				modules[i] = moduleDesc.moduleDesc;
 				i++;
 			}
-		}else{
-			modules= (PepperModuleDesc[])getPepper().getRegisteredModules().toArray();
+		} else {
+			modules = (PepperModuleDesc[]) getPepper().getRegisteredModules().toArray();
 		}
-		
-		Integer num = 0;
-		StringBuilder str = new StringBuilder();
+
+		Integer num = 1;
+		// StringBuilder str = new StringBuilder();
+		String retStr = null;
+		String[][] map = new String[modules.length+1][3];
+		map[0][0] = "no";
+		map[0][1] = "module name";
+		map[0][2] = "format";
+		Integer[] length = { 5, 30, 40 };
 		for (PepperModuleDesc moduleDesc : modules) {
 			if (moduleType.equals(moduleDesc.getModuleType())) {
 				number2Module.put(num, moduleDesc);
 				name2Module.put(moduleDesc.getName(), moduleDesc);
-				str.append("\t");
-				if (numOfRecommended > num){
-					str.append("* ");
-				}else{
-					str.append("  ");
+				// str.append("\t");
+				String prefix = "";
+				if (numOfRecommended > num) {
+					prefix = "* ";
+				} else {
+					prefix = "  ";
 				}
-				str.append(num);
-				str.append(":\t");
-				str.append(moduleDesc.getName());
+				map[num][0] = prefix + num;
+				map[num][1] = moduleDesc.getName();
 				if (moduleDesc.getSupportedFormats().size() > 0) {
-					str.append("(");
 					int i = 0;
-					for (FormatDesc format : moduleDesc.getSupportedFormats()) {
-						if (i > 0) {
-							str.append("; ");
+					if ((MODULE_TYPE.IMPORTER.equals(moduleType)) || (MODULE_TYPE.EXPORTER.equals(moduleType))) {
+						StringBuilder str = new StringBuilder();
+						str.append("(");
+						for (FormatDesc format : moduleDesc.getSupportedFormats()) {
+							if (i > 0) {
+								str.append("; ");
+							}
+							str.append(format.getFormatName());
+							str.append(", ");
+							str.append(format.getFormatVersion());
+							i++;
 						}
-						str.append(format.getFormatName());
-						str.append(", ");
-						str.append(format.getFormatVersion());
-						i++;
+						str.append(")");
+						map[num][2] = str.toString();
 					}
-					str.append(")");
+
+					// str.append(num);
+					// str.append(":\t");
+					// str.append(moduleDesc.getName());
+					// if (moduleDesc.getSupportedFormats().size() > 0) {
+					// str.append("(");
+					// int i = 0;
+					// for (FormatDesc format :
+					// moduleDesc.getSupportedFormats()) {
+					// if (i > 0) {
+					// str.append("; ");
+					// }
+					// str.append(format.getFormatName());
+					// str.append(", ");
+					// str.append(format.getFormatVersion());
+					// i++;
+					// }
+					// str.append(")");
+					// }
+					// str.append("\n");
+					num++;
 				}
-				str.append("\n");
-				num++;
+				retStr = PepperUtil.createTable(length, map, true, true);
 			}
 		}
-		return (str.toString());
+		return (retStr);
 	}
 
 	/**
@@ -685,23 +717,25 @@ public class ConvertWizzardConsole {
 	 * @return legend for the map to be printed
 	 */
 	private String createPropertyLegend(PepperModuleProperties props, Map<Integer, String> number2propName) {
-		StringBuilder str = new StringBuilder();
+		String retStr = null;
 		if (props != null) {
-			int i = 0;
+			String[][] map = new String[props.getPropertyDesctriptions().size()+1][3];
+			map[0][0] = "no";
+			map[0][1] = "property name";
+			map[0][2] = "description";
+			Integer[] length = { 3, 30, 40 };
+			int i = 1;
 			for (PepperModuleProperty<?> prop : props.getPropertyDesctriptions()) {
-				str.append("\t");
-				str.append(i);
-				str.append(":\t");
-				str.append(prop.getName());
-				str.append("\t - ");
-				str.append(prop.getDescription());
-				str.append("\n");
+				map[i][0] = String.valueOf(i);
+				map[i][1] = prop.getName();
+				map[i][2] = prop.getDescription();
 				number2propName.put(i, prop.getName());
 				i++;
 			}
+			retStr = PepperUtil.createTable(length, map, true, true);
 		}
 
-		return (str.toString());
+		return (retStr);
 	}
 
 	/**
