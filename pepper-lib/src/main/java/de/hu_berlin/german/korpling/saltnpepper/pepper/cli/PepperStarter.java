@@ -94,6 +94,25 @@ public class PepperStarter {
 		}
 	}
 
+	/** Configuration for {@link PepperStarter} **/
+	private PepperStarterConfiguration pepperConf = null;
+
+	/**
+	 * @return configuration for {@link PepperStarter}
+	 */
+	public PepperStarterConfiguration getPepperConfiguration() {
+		return pepperConf;
+	}
+
+	/**
+	 * 
+	 * @param pepperConf
+	 *            configuration for {@link PepperStarter}
+	 */
+	public void setPepperConfiguration(PepperStarterConfiguration pepperConf) {
+		this.pepperConf = pepperConf;
+	}
+
 	public enum COMMAND {
 		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."),
 		//
@@ -156,7 +175,19 @@ public class PepperStarter {
 	 */
 	public String help() {
 		String retVal = null;
-		Integer[] length = { 20, 5, 15, 70 };
+
+		Integer[] length = new Integer[4];
+		if (getPepperConfiguration().getConsoleWidth() == PepperStarterConfiguration.CONSOLE_WIDTH_80) {
+			length[0] = 7;
+			length[1] = 5;
+			length[2] = 10;
+			length[3] = 48;
+		} else {
+			length[0] = 20;
+			length[1] = 5;
+			length[2] = 15;
+			length[3] = 70;
+		}
 		String[][] map = new String[COMMAND.values().length + 1][4];
 		map[0][0] = "command";
 		map[0][1] = "short";
@@ -572,6 +603,7 @@ public class PepperStarter {
 			String hp = pepperProps.getPepperHomepage();
 
 			starter = new PepperStarter();
+			starter.setPepperConfiguration(pepperProps);
 
 			if ((args.length > 0) && (args[0].equalsIgnoreCase(COMMAND.DEBUG.toString()))) {
 				starter.debug();

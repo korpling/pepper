@@ -216,6 +216,10 @@ public abstract class PepperUtil {
 	 * @return
 	 */
 	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
+		if (length== null){
+			throw new PepperException("Cannot create a table with empty length. ");
+		}
+		
 		StringBuilder retVal= new StringBuilder();
 		 
 		//create horizontal line
