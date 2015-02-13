@@ -563,7 +563,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				throw new PepperFWException("Cannot wait for mapper thread '" + controller + "' in " + this.getName() + " to end. ", e);
 			}
 		}
-
 		this.end();
 		// only wait for controllers which have been added by end()
 		for (PepperMapperController controller : this.getMapperControllers().values()) {
@@ -739,11 +738,13 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void end() throws PepperModuleException {
-		if (getSaltProject() == null)
+		logger.trace("[{}] start processing corpus structure (manipulating or exporting). ", getName());
+		if (getSaltProject() == null){
 			throw new PepperModuleException(this, "Error in method end() salt project was empty.");
-		if (getSaltProject().getSCorpusGraphs() == null)
+		}
+		if (getSaltProject().getSCorpusGraphs() == null){
 			throw new PepperModuleException(this, "Error in method end() corpus graphs of salt project were empty.");
-
+		}
 		if (corporaToEnd != null) {
 			for (SCorpus sCorpus : corporaToEnd) {
 				this.start(sCorpus.getSElementId());

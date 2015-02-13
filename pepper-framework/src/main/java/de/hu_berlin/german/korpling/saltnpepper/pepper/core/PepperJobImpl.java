@@ -851,7 +851,7 @@ public class PepperJobImpl extends PepperJob {
 			for (Step step : getAllSteps()) {
 				if (step.getModuleController().getPepperModule().getSaltProject() == null)
 					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());{
-						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
+						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().processDocumentStructures()));
 					}
 			}
 			
