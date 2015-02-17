@@ -51,7 +51,7 @@ public class MavenAccessor {
 	private static final Logger logger = LoggerFactory.getLogger(MavenAccessor.class);
 	
 	/** This is used to install the bundles */
-	PepperOSGiConnector pepperOSGiConnector = null;	
+	private final PepperOSGiConnector pepperOSGiConnector;	
 	/** this {@link Set} stores all dependencies, that are installed or forbidden. The format of the {@link String}s is GROUP_ID:ARTIFACT_ID:EXTENSION:VERSION, which is also the output format of {@link Dependency#getArtifact()#toString()}.*/
 	private Set<String> forbiddenFruits = null;
 	/** this map contains already collected pepper parent dependencies (version-String->List<Dependency>) */
@@ -65,7 +65,7 @@ public class MavenAccessor {
 	/** path to korpling maven repo */
 	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2";
 	
-	/** flag which is add to the blacklist entry of a dependency – a FINAL dependency can not be overridden */
+	/** flag which is added to the blacklist entry of a dependency – a FINAL dependency can not be overridden */
 	private static enum STATUS{
 		OVERRIDABLE, FINAL; 
 	}
@@ -109,7 +109,7 @@ public class MavenAccessor {
 				}
 				reader.close();
 				fR.close();
-			} catch (IOException e) {logger.debug("Could not read blacklist file.");}
+			} catch (IOException e) {logger.debug("Could not read blacklist file.", e);}
 		}
 	}
 	
@@ -255,7 +255,7 @@ public class MavenAccessor {
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle){
 		if (forbiddenFruits.isEmpty() && !initDependencies()){
-			logger.warn("Update process could not be performed, because the pepper dependencies could not be listed.");
+			logger.warn("Update could not be performed, because the pepper dependencies could not be listed.");
 			return false;
 		}
 				
@@ -559,17 +559,20 @@ public class MavenAccessor {
 	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion){		
 		Dependency pepperFramework = null;
 		try {
-			List<Dependency> parentDeps = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
-			if (parentDeps==null){
+			final List<Dependency> parentDeps;
+			List<Dependency> checkList = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
+			if (checkList==null){
 				CollectRequest collectRequest = new CollectRequest();
 		        collectRequest.setRoot( new Dependency( new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), "" ) );
 		        collectRequest.setRepositories(Booter.newRepositories(system, session));
 		        collectRequest.addRepository(repos.get(KORPLING_MAVEN_REPO));
 		        CollectResult collectResult;
 				collectResult = system.collectDependencies( session, collectRequest );				
-				parentDeps = getAllDependencies(collectResult.getRoot(), false);
+				parentDeps = getAllDependencies(collectResult.getRoot(), false);				
 				parentDependencies.put(parentVersion.replace("-SNAPSHOT", ""), parentDeps);
-			} 
+			}else{
+				parentDeps = checkList;
+			}
 			Iterator<Dependency> itDeps = parentDeps.iterator();
 			Dependency next = itDeps.next();
 			while (!ARTIFACT_ID_PEPPER_FRAMEWORK.equals(next.getArtifact().getArtifactId()) && itDeps.hasNext()){

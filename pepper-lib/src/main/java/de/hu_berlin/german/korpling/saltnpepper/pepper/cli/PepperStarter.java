@@ -940,6 +940,13 @@ public class PepperStarter {
 				}
 			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(args[0]) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(args[0])))) {
 				logger.info(starter.selfTest());
+			} else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(args[0]))||
+					(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(args[0])) ){
+				List<String> params = new Vector<String>();
+				for (int i=1; i<args.length; i++){
+					params.add(args[i]);					
+				}
+				logger.info(starter.update(params));
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
