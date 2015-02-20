@@ -32,6 +32,79 @@ java -version
 ```
 You need at least version 1.6.
 
+## Running Pepper
+
+To run Pepper open a command line and enter (for windows):
+
+```
+pepperStart.bat ARGUMENTS
+```
+
+or (for linux, unix and Mac OS):
+
+```
+bash pepperStart.sh ARGUMENTS
+```
+To get a list of all available arguments, enter 'help' as argument:
+```
+pepperStart.bat help
+```
+If no options are given, Pepper will start the interactive comman line and will prompt the following.
+```
+pepper>
+```
+To get a list of all available commands, enter 'help'. 
+To start a conversion by a given workflow description file enter the command 'convert' followed by the file.
+```
+pepper>convert mySampleWorkflow.pepper
+```
+If you do not already have a workflow description file, just enter 'convert' and Pepper will start the conversion wizzard.
+
+1. Enter the path of the corpus to import:
+```
+pepper/wizzard/importer>C:\myCorpus\
+```
+..1. Now Pepper displayes a list of all available importers and asks you to choose one of them. 
+
+```
++------+-------------------------------+------------------------------------------+
+| no   | module name                   | format                                   |
++------+-------------------------------+------------------------------------------+
+| * 1  | TextImporter                  | (txt, 0.0)                               |
+|   2  | SaltXMLImporter               | (SaltXML, 1.0)                           |
+|   3  | DoNothingImporter             | (doNothing, 0.0)                         |
+```
+
+A '*' next to the number of the importer shows, that this importer is recommanded. It means that the passed path contains files in a format, the importer is able to import. 
+To choose an importer, just enter its number or its name. 
+```
+pepper/wizzard/importer>1
+```
+..1. Some importers provide a list of properties to customize the import. If this is the case, Pepper displays a list of all available customization properties.
+
+To use a property, enter its number or name, followed by '=' and the value of the property.
+```
+pepper/wizzard/importer>1=anyValue
+```
+Pepper will keep asking you to enter customization properties until you enter an empty line.
+
+..1. Since it is possible to use more than one importers for one workflow, Pepper asks you to enter a further corpus path. To skip that just press 'enter'. 
+1. In Pepper you have the possibility to manipulate the data between the im- and the export phase. Therefore Pepper displays a list of all available manipulators and asks you to enter the  number or name of a manipulator. To skip adding a manipulator just press 'enter'. 
+..1. Also manipulators can be customized and when the choosen manipulators provides properties for customization Pepper will display them and ask you for entering such a property.
+..1. To skip the adding of further manipulators just press 'enter'.
+1. The last thing remains is to choose an exporter. Pepper shows a list of all available exporters. To choose one of them enter its number or its name.
+..1. Again you have the chance to customize the export by adding some customization properties, if provided. To do so, enter enter the number or name of a property followed by '=' and the value.
+..1. Along with importers and manipulators, you can add more than one exporters. To stop adding exporters, enter an empty line.
+1. To save the workflow enter 'save' followed by a path  where to store the file (.pepper).
+```
+pepper/wizzard>C:\myCorpus\myWorkflow.pepper
+```
+1. To start the conversion enter 'start'.
+```
+pepper/wizzard>start
+```
+1. To exit and abort the conversion enter 'exit'.
+
 ##Modules
 
 A list of available Pepper modules.
