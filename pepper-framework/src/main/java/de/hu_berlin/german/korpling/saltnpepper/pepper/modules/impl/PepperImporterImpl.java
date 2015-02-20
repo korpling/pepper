@@ -216,7 +216,28 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		if ((this.getCorpusDesc().getCorpusPath().toFileString().endsWith("/")) || (this.getCorpusDesc().getCorpusPath().toFileString().endsWith("\\"))) {
 			this.getCorpusDesc().setCorpusPath(this.getCorpusDesc().getCorpusPath().trimSegments(1));
 		}
-		importCorpusStructureRec(this.getCorpusDesc().getCorpusPath(), null);
+		Boolean containsDocuments= importCorpusStructureRec(this.getCorpusDesc().getCorpusPath(), null);
+		if (logger.isDebugEnabled()){
+			if (getSElementId2ResourceTable().size()> 0){
+				StringBuilder str= new StringBuilder();
+				str.append("[");
+				str.append(getName());
+				str.append("]");
+				str.append(" import corpora and documents: \n");
+				for (URI uri: getSElementId2ResourceTable().values()){
+					str.append("\t");
+					str.append(uri);
+					str.append("\n");
+				}	
+				logger.debug(str.toString());
+			}
+		}
+		if (getSElementId2ResourceTable().size()== 0){
+			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName() ,this.getCorpusDesc().getCorpusPath());
+		}
+		if (!containsDocuments){
+			logger.warn("[{}] No documents fount to import in '{}'. ", getName() ,this.getCorpusDesc().getCorpusPath());
+		}
 	}
 
 	/**
@@ -233,9 +254,12 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param currURI
 	 * @param parentsID
 	 * @param endings
+	 * @return retrns true, if path contains documents, flase otherwise
 	 * @throws IOException
 	 */
-	protected void importCorpusStructureRec(URI currURI, SCorpus parent) {
+	protected Boolean importCorpusStructureRec(URI currURI, SCorpus parent) {
+		Boolean retVal= false;
+		
 		// set name for corpus graph
 		if ((this.getSCorpusGraph().getSName() == null) || (this.getSCorpusGraph().getSName().isEmpty())) {
 			this.getSCorpusGraph().setSName(currURI.lastSegment());
@@ -254,7 +278,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					if (currFile.isDirectory()) {
 						for (File file : currFile.listFiles()) {
 							try {
-								this.importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
+								//if retval is true or returned value is true set retVal to true
+								Boolean containsDocuments= importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
+								retVal=(retVal || containsDocuments);
 							} catch (IOException e) {
 								throw new PepperModuleException("Cannot import corpus structure, because cannot create a URI out of file '" + file + "'. ", e);
 							}
@@ -262,6 +288,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					}
 				}// resource is a SCorpus
 				else if (STYPE_NAME.SDOCUMENT.equals(type)) {
+					retVal= true;
 					// resource is a SDocument
 					if (parent == null) {
 						// if there is no corpus given, create one with name of
@@ -278,11 +305,12 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						// if uri is a file, cut off file ending
 						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 					}
+					// link documentId with resource
 					this.getSElementId2ResourceTable().put(sDocument.getSElementId(), currURI);
 				}// resource is a SDocument
-					// link documentId with resource
 			}// do not ignore resource
 		}// if file is not part of ignore list
+		return(retVal);
 	}
 
 	/**

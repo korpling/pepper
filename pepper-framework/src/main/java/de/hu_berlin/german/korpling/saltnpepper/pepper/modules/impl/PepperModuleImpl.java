@@ -67,7 +67,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * @author Florian Zipser
  */
 public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler {
-	public static final Logger logger = LoggerFactory.getLogger(PepperModuleImpl.class);
+	protected Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/**
 	 * Creates a {@link PepperModule} object, which is either a {@link MODULE_TYPE#IMPORTER}, a {@link MODULE_TYPE#MANIPULATOR} or
@@ -85,6 +85,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	protected PepperModuleImpl(String name) {
 		setName(name);
+		logger= LoggerFactory.getLogger(name);
 		getFingerprint();
 		if (getProperties()== null){
 			setProperties(new PepperModuleProperties());

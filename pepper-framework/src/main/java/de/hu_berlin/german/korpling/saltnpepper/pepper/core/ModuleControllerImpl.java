@@ -53,7 +53,7 @@ public class ModuleControllerImpl implements ModuleController{
 	private Logger mLogger= LoggerFactory.getLogger(ModuleController.class);
 	/**
 	 * Creates an instance of {@link ModuleControllerImpl}. Sets the internal id to the passed one. 
-	 * <strong>Note: the id is unchangable.</strong>
+	 * <strong>Note: the id is unchangeable.</strong>
 	 * @param id identifier of this object. Id can neither be null nor empty.
 	 */
 	public ModuleControllerImpl(String id)
