@@ -82,6 +82,14 @@ If you do not already have a workflow description file, enter just 'convert' and
      ```
 
 1. Some importers provide a list of properties to customize the import. If this is the case, Pepper displays a list of all available customization properties.
+      ```
+     +----+-------------------------------+------------------------------------------+
+     | no | property name                 | description                              |
+     +----+-------------------------------+------------------------------------------+
+     | 1  | pepper.before.addSLayer       | Consumes a semicolon separated list of   |
+     |    |                               | names for {@link SLayer} objects. For    |
+     ...
+     ```
      To use a property, enter its number or name, followed by '=' and the value of the property.
      ```
      pepper/wizzard/importer>1=anyValue
