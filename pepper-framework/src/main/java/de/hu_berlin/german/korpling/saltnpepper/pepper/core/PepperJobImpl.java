@@ -1110,7 +1110,7 @@ public class PepperJobImpl extends PepperJob {
 		if (!file.getParentFile().exists()){
 			if (!file.getParentFile().mkdirs()){
 				if (!file.getParentFile().canWrite()){
-					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file, necause of an access permission. ");
+					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file, because of an access permission. ");
 				}else{
 					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file. ");
 				}
