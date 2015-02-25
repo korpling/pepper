@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -148,6 +150,141 @@ public abstract class PepperUtil {
 		}
 		return (str.toString());
 	}
+	
+	/**
+	 * Returns rest
+	 */
+	public static String breakString2(StringBuilder output, final String theString, final int length) {
+		if (	(theString!= null)&&
+				(!theString.isEmpty())){
+			// the rest, which has to be returned
+			StringBuilder rest= new StringBuilder();
+			
+			if (length >= theString.length()+ output.toString().length()){
+				output.append(theString);
+				return(null);
+			}
+			char[] chrs= theString.toCharArray();
+			HashSet<Character> separators= new HashSet<Character>();
+			separators.add(' ');
+			separators.add('.');
+			separators.add(',');
+			separators.add(';');
+			separators.add(':');
+			separators.add('?');
+			separators.add('!');
+			separators.add('\"');
+			separators.add('\'');
+			separators.add('-');
+			separators.add('~');
+			separators.add('*');
+			separators.add('+');
+			int currLength= output.toString().length();
+			StringBuilder stagingStr= new StringBuilder();
+			for (int i= 0; i< length- currLength; i++){
+				stagingStr.append(chrs[i]);
+				if (separators.contains(chrs[i])){
+					output.append(stagingStr.toString());
+					stagingStr= new StringBuilder();
+				}
+			}
+			
+			if (currLength== output.toString().length()){
+				//in case of nothing was written to output, write staging string to output
+				output.append(stagingStr.toString());
+			}else{
+				//adding staging part to rest, which was not printed
+				rest.append(stagingStr.toString());
+			}
+			//adding rest of theString to rest
+			if ((length- currLength)>0){
+				for (int i= length- currLength; i< theString.length(); i++){
+					rest.append(chrs[i]);
+				}
+			}
+			return (rest.toString());
+		}
+		return(null);
+	}
+	/**
+	 * Returns a table created from the passed Strings. 
+	 * 
+	 * @param length an array of lengths for the columns
+	 * @param map a map containing the Strings to be printed out sorted as [line, column]
+	 * @param hasHeader determines, if the first line of map contains a header for the table
+	 * @param hasBlanks determines if vertical lines has to be followed by a blank e.g. with blanks "| cell1 |"  or without blanks "|cell1|"
+	 * @return
+	 */
+	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
+		if (length== null){
+			throw new PepperException("Cannot create a table with empty length. ");
+		}
+		
+		StringBuilder retVal= new StringBuilder();
+		 
+		//create horizontal line
+		String hr= null;
+		StringBuilder hrb= new StringBuilder();
+		for (int a:length){
+			hrb.append("+");
+			for (int b= 0; b< a; b++){
+				hrb.append("-");
+			}
+			if (hasBlanks){
+				hrb.append("-");
+			}
+		}
+		if (hasBlanks){
+			hrb.append("-");
+		}
+		hrb.append("+");
+		hrb.append("\n");
+		hr= hrb.toString();
+		
+		retVal.append(hr);
+		for (int line= 0; line< map.length; line++){
+			
+			//initialize current line, with original texts
+			String[] currLine= new String[map[line].length];
+			for (int col= 0; col< map[line].length; col++){
+				currLine[col]= map[line][col];
+			}
+			StringBuilder out= new StringBuilder();
+			boolean goOn= true;
+			while(goOn){
+				goOn= false;
+				for (int col= 0; col< currLine.length; col++){
+					currLine[col]= breakString2(out, currLine[col], length[col]);
+					int diff= length[col]- out.toString().length();
+					if (diff> 0){
+						for (int i= 0; i< diff; i++){
+							out.append(" ");
+						}
+					}
+					if (currLine[col]!= null){
+						goOn= true;
+					}
+					retVal.append("|");
+					if (hasBlanks){
+						retVal.append(" ");
+					}
+					retVal.append(out.toString());
+					out= new StringBuilder();
+				}
+				if (hasBlanks){
+					retVal.append(" ");
+				}
+				retVal.append("|\n");
+			}
+			//print horizontal line in case of first line is header
+			if (	(hasHeader)&&
+					(line== 0)){
+				retVal.append(hr);
+			}
+		}
+		retVal.append(hr);
+		return(retVal.toString());
+	}
 
 	/**
 	 * Returns a temporary folder, where all tests can store temporary files. 
@@ -265,39 +402,54 @@ public abstract class PepperUtil {
 		return (str.toString());
 	}
 
+	/**
+	 * Creates a table containing all passed Pepper modules corresponding to their description and
+	 * their fingerprint 
+	 * @param moduleDescs
+	 * @return
+	 */
 	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs) {
-		StringBuilder retVal = new StringBuilder();
-		if ((moduleDescs == null) || (moduleDescs.size() == 0)) {
-			retVal.append("- no modules registered -\n");
-		} else {
-			String format = "| %1$-4s | %2$-20s | %3$-15s | %4$-11s | %5$-31s | %6$-20s |\n";
-			String line = "+------+----------------------+-----------------+-------------+---------------------------------+----------------------+\n";
-			retVal.append(line);
-			retVal.append(String.format(format, "no.", "module-name", "module-version", "module-type", "formats", "supplier-contact"));
-			retVal.append(line);
-			int no = 1;
+		String retVal = "- no modules registered -\n";
+		if ((moduleDescs != null) && (moduleDescs.size() != 0)){
+			String[][] map= new String[moduleDescs.size()+1][6];
+			map[0][0]="no.";
+			map[0][1]= "module-name";
+			map[0][2]="module-version";
+			map[0][3]="module-type";
+			map[0][4]="formats";
+			map[0][5]="supplier-contact";
+			int i= 1;
 			for (PepperModuleDesc desc : moduleDescs) {
+				map[i][0]=new Integer(i).toString();
+				map[i][1]= desc.getName();
+				map[i][2]= desc.getVersion();
+				map[i][3]= desc.getModuleType().toString();
 				String formatString = "";
-
 				if ((desc.getSupportedFormats() != null) && (desc.getSupportedFormats().size() > 0)) {
-					int i = 0;
+					int j = 0;
 					for (FormatDesc formatDesc : desc.getSupportedFormats()) {
-						if (i != 0) {
+						if (j != 0) {
 							formatString = formatString + "; ";
 						}
 						formatString = formatString + formatDesc.getFormatName() + ", " + formatDesc.getFormatVersion();
-						i++;
+						j++;
 					}
 				}
-
-				if (desc != null) {
-					retVal.append(String.format(format, no, desc.getName(), desc.getVersion(), desc.getModuleType(), formatString, desc.getSupplierContact()));
+				map[i][4]= formatString;
+				URI contact= desc.getSupplierContact();
+				if (contact!= null) {
+					map[i][5]= desc.getSupplierContact().toString();
+				}else{
+					map[i][5]= "";
 				}
-				no++;
+				
+				
+				i++;
 			}
-			retVal.append(line);
+			Integer[] length= {4,20,15,11,31,20};
+			retVal= createTable(length, map, true, true);
 		}
-		return (retVal.toString());
+		return (retVal);
 	}
 
 	/**

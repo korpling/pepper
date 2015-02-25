@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,9 +59,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
+
 import java.io.FilenameFilter;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
@@ -296,6 +299,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 			// pepper.exceptions package
 			retVal.append(PepperException.class.getPackage().getName());
+			retVal.append(";version=\"" + pepperVersion + "\"");
+
+			retVal.append(", ");
+			
+			// pepper.modules package
+			retVal.append(PepperModuleProperties.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
 
 			retVal.append(", ");
@@ -658,5 +667,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 
 		return (getPepper().selfTest());
+	}
+
+	@Override
+	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
+		if (getPepper() == null){
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
+		return (getPepper().isImportable(corpusPath, description));
 	}
 }

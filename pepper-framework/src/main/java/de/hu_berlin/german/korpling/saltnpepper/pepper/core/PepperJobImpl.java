@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -851,7 +851,7 @@ public class PepperJobImpl extends PepperJob {
 			for (Step step : getAllSteps()) {
 				if (step.getModuleController().getPepperModule().getSaltProject() == null)
 					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());{
-						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().importDocumentStructures()));
+						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().processDocumentStructures()));
 					}
 			}
 			
@@ -1108,7 +1108,13 @@ public class PepperJobImpl extends PepperJob {
 		}
 		//create parent directory of file
 		if (!file.getParentFile().exists()){
-			file.getParentFile().mkdirs();
+			if (!file.getParentFile().mkdirs()){
+				if (!file.getParentFile().canWrite()){
+					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file, because of an access permission. ");
+				}else{
+					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file. ");
+				}
+			};
 		}
 		
 		XMLOutputFactory xof = XMLOutputFactory.newInstance();     

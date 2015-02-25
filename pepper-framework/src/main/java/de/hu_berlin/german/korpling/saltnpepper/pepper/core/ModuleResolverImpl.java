@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -734,12 +734,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 						pepperModule = module;
 						break;
 					}
-				} else if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getFormatDesc() != null)) {// emit
-																														// by
-																														// format
-																														// name
-																														// and
-																														// version
+				} else if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getFormatDesc() != null)) {
+					// emit by format name and version
 					if (module instanceof PepperImporter) {
 						if (((PepperImporter) module).getSupportedFormats().contains(stepDesc.getCorpusDesc().getFormatDesc())) {
 							pepperModule = module;

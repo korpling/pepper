@@ -1,5 +1,5 @@
 @REM
-@REM Copyright 2009 Humboldt University of Berlin, INRIA.
+@REM Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
 @REM
 @REM Licensed under the Apache License, Version 2.0 (the "License");
 @REM you may not use this file except in compliance with the License.

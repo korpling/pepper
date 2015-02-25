@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 
@@ -145,7 +144,7 @@ public abstract class PepperJob {
 	 * name {@link #getId()}.pepper is created in the passed directory.
 	 * @param uri The location where to store this job. 
 	 */
-	public abstract void  save(URI uri);
+	public abstract void save(URI uri);
 	
 	/**
 	 * Returns a textual representation of this Pepper job.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -509,9 +509,9 @@ public class DocumentBus {
 		lock.lock();
 		logger.trace("[Pepper] blocking lock for remove document for controller {} in document bus {}. ", outputControllerId, getId());
 		ConcurrentLinkedQueue<DocumentController> queue = getDocumentBus().get(outputControllerId);
-		if (queue == null)
+		if (queue == null){
 			throw new PepperFWException("Document bus '" + getId() + "' cannot pop a document controller, because there is no entry for module controller '" + outputControllerId + "'.");
-
+		}
 		try {
 			if ((queue.size() == 0) && (!this.isFinished())) {
 				if ((queue.size() == 0) && (!this.isFinished())) {
@@ -527,7 +527,7 @@ public class DocumentBus {
 				if (documentController != null)
 					if ((documentController != null) && (documentController.isAsleep())) {
 						if (getPepperJob() != null) {
-							logger.debug("[Pepper] waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ", documentController.getGlobalId(), outputControllerId, getId());
+							logger.debug("[Pepper] waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ", (documentController.getGlobalId()!=null)?documentController.getGlobalId():"NULL", outputControllerId, getId());
 							getPepperJob().getPermissionForProcessDoument(documentController);
 						}
 						documentController.awake();
@@ -538,7 +538,7 @@ public class DocumentBus {
 		} finally {
 			lock.unlock();
 			if (logger.isTraceEnabled()) {
-				logger.trace("[Pepper] unlocked lock for remove document for controller {} in document bus '{}'and return document '{}'. ", outputControllerId, getId(), documentController.getGlobalId());
+				logger.trace("[Pepper] unlocked lock for remove document for controller {} in document bus '{}'and return document '{}'. ", outputControllerId, getId(), (documentController!=null)?documentController.getGlobalId():"NULL");
 			}
 		}
 		return (documentController);

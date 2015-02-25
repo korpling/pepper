@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
+
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 
 /**
  * This class is a kind of a fingerprint of a Pepper module and provides some information about a
@@ -154,6 +157,32 @@ public class PepperModuleDesc {
 		getSupportedFormats().add(retVal);
 		return(retVal);
 	}
+	
+	/**
+	 * A {@link PepperModuleProperties} object containing properties to
+	 * customize the behaviour of this {@link PepperModule}.
+	 */
+	private PepperModuleProperties properties = null;
+
+	/**
+	 * Returns a {@link PepperModuleProperties} object containing properties to customize the behavior of this {@link PepperModule}.
+	 * @return
+	 */
+	public PepperModuleProperties getProperties() {
+		return (properties);
+	}
+
+	/**
+	 * Sets the{@link PepperModuleProperties} object containing properties to customize the behavior of this {@link PepperModule}.
+	 * Please make sure, that this method is called in constructor of your module. If not, a general {@link PepperModuleProperties} 
+	 * object is created by the pepper framework and will be initialized. This means, when calling this method later,
+	 * all properties for customizing the module will be overridden.  
+	 * @param properties 
+	 */
+	public void setProperties(PepperModuleProperties properties) {
+		this.properties = properties;
+	}
+	
 	/**
 	 * Returns a String representation of this object.
 	 * <strong>Please note, that this representation cannot be used for serialization/deserialization purposes</strong>

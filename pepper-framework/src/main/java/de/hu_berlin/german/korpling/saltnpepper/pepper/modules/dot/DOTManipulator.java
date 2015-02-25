@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,55 +33,49 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapper
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.resources.dot.Salt2DOT;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
-@Component(name="DOTManipulatorComponent", factory="PepperManipulatorComponentFactory")
-public class DOTManipulator extends PepperManipulatorImpl
-{
-	public DOTManipulator()
-	{
-		super();
-		setName("DOTManipulator");
+@Component(name = "DOTManipulatorComponent", factory = "PepperManipulatorComponentFactory")
+public class DOTManipulator extends PepperManipulatorImpl {
+	public DOTManipulator() {
+		super("DOTManipulator");
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setDesc("This manipulator exports a Salt model to the dot syntax. This can be used to create a graphical representation of the Salt model. ");
 		this.setProperties(new DOTManipulatorProperties());
 	}
-	
+
 	@Activate
-	public void activate(ComponentContext componentContext)
-	{
+	public void activate(ComponentContext componentContext) {
 		super.activate(componentContext);
 	}
-	
+
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId)
-	{
-		PepperMapper mapper= new PepperMapperImpl()
-		{
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				Salt2DOT salt2Dot= new Salt2DOT();
+				Salt2DOT salt2Dot = new Salt2DOT();
 				salt2Dot.salt2Dot(getSDocument().getSElementId(), getResourceURI());
 				addProgress(1.0);
-				return(DOCUMENT_STATUS.COMPLETED);
+				return (DOCUMENT_STATUS.COMPLETED);
 			}
 		};
-		
-		String outputStr= ((DOTManipulatorProperties)this.getProperties()).getOutputFile().getAbsolutePath();
-		File outputFile= new File(outputStr + "/"+ sElementId.getSElementPath()+"."+((DOTManipulatorProperties)this.getProperties()).getFileEnding());
-		if (!outputFile.exists())
-		{
+
+		String outputStr = ((DOTManipulatorProperties) this.getProperties()).getOutputFile().getAbsolutePath();
+		File outputFile = new File(outputStr + "/" + sElementId.getSElementPath() + "." + ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
+		if (!outputFile.exists()) {
 			try {
 				if (!outputFile.getParentFile().exists())
 					outputFile.getParentFile().mkdirs();
 				if (!outputFile.getParentFile().exists())
-					throw new PepperModuleException("Cannot create folder for output file for dot: "+ outputFile.getParentFile());
+					throw new PepperModuleException("Cannot create folder for output file for dot: " + outputFile.getParentFile());
 				outputFile.createNewFile();
-			} catch (IOException e) 
-			{
-				throw new PepperModuleException("Cannot create output file for dot: "+ outputStr);
+			} catch (IOException e) {
+				throw new PepperModuleException("Cannot create output file for dot: " + outputStr);
 			}
 		}
-		
-		URI outputURI= URI.createFileURI(outputFile.getAbsolutePath());
+
+		URI outputURI = URI.createFileURI(outputFile.getAbsolutePath());
 		mapper.setResourceURI(outputURI);
-		
-		return(mapper);
+
+		return (mapper);
 	}
 }

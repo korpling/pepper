@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing;
 
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -26,35 +27,33 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
-@Component(name="DoNothingExporterComponent", factory="PepperExporterComponentFactory")
-public class DoNothingExporter extends PepperExporterImpl implements PepperExporter
-{
-	public static final String MODULE_NAME="DoNothingExporter";
-	public static final String FORMAT_NAME="doNothing";
-	public static final String FORMAT_VERSION="0.0";
-	
+@Component(name = "DoNothingExporterComponent", factory = "PepperExporterComponentFactory")
+public class DoNothingExporter extends PepperExporterImpl implements PepperExporter {
+	public static final String MODULE_NAME = "DoNothingExporter";
+	public static final String FORMAT_NAME = "doNothing";
+	public static final String FORMAT_VERSION = "0.0";
+
 	@Activate
-	public void activate(ComponentContext componentContext)
-	{
+	public void activate(ComponentContext componentContext) {
 		super.activate(componentContext);
 	}
-	
-	public DoNothingExporter()
-	{
-		super();
-		//setting name of module
-		setName(MODULE_NAME);
+
+	public DoNothingExporter() {
+		// setting name of module
+		super(MODULE_NAME);
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setDesc("This is a dummy exporter which exports nothing. This exporter can be used to check if a corpus is importable. ");
 		this.addSupportedFormat("doNothing", "0.0", null);
 	}
-	
+
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
-	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
+	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
+	 * PepperModule#createPepperMapper(SElementId)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId){
-		PepperMapper mapper= new DoNothingMapper();
-		return(mapper);
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		PepperMapper mapper = new DoNothingMapper();
+		return (mapper);
 	}
-	
+
 }

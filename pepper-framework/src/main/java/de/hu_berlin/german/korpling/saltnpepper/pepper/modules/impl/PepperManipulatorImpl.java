@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,35 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 /**
- * TODO make doku
+ * This is an abstract implementation of {@link PepperManipulator}. This class
+ * cannot be instantiated directly. To provide a manipulator, just inherit this class.
+ * 
+ * @see PepperManipulator
+ * 
  * @author Florian Zipser
  */
 public abstract class PepperManipulatorImpl extends PepperModuleImpl implements PepperManipulator {
 	/**
-	 * TODO docu
-	 * @return
-	 */	
-	public PepperManipulatorImpl() {
-		super();
+	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#}.
+	 * The name is set to "MyManipulator".
+	 * <br/>
+	 * We recommend to use the constructor
+	 * {@link PepperManipulatorImpl#PepperManipulatorImpl(String)} and pass a proper name.
+	 */
+	protected PepperManipulatorImpl() {
+		super("MyManipulator");
+	}
+
+	/**
+	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#MANIPULATOR}
+	 * and sets is name to the passed one.
+	 */
+	protected PepperManipulatorImpl(String name) {
+		super(name);
 	}
 }
