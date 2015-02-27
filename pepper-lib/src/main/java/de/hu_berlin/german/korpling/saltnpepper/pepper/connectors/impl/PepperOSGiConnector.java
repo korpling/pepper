@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
+import java.io.FilenameFilter;
+import java.util.LinkedList;
+import java.util.List;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
  * This class is an implementation of {@link Pepper}. It acts as a bridge
@@ -113,13 +118,18 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if (getPepperStarterConfiguration().getPlugInPath() == null) {
 			throw new PepperPropertyException("Cannot start Pepper, because no plugin path is given for Pepper modules.");
 		}
+		File pluginPath= new File(getPepperStarterConfiguration().getPlugInPath());
+		if (!pluginPath.exists()){
+			throw new PepperOSGiException("Cannot load any plugins, since the configured path for plugins '"+pluginPath.getAbsolutePath()+"' does not exist. Please check the entry '"+PepperStarterConfiguration.PROP_PLUGIN_PATH+"' in the Pepper configuration file at '"+getConfiguration().getConfFolder().getAbsolutePath()+"'. ");
+		}
+		
 		try {
 			// disable PepperOSGiRunner
 			System.setProperty(PepperOSGiRunner.PROP_TEST_DISABLED, Boolean.TRUE.toString());
 
 			setBundleContext(this.startEquinox());
 		} catch (Exception e) {
-			throw new PepperOSGiException("The OSGi environment could not have been started. ", e);
+			throw new PepperOSGiException("The OSGi environment could not have been started: "+e.getMessage(), e);
 		}
 		try {
 			logger.debug("plugin path:\t\t" + getPepperStarterConfiguration().getPlugInPath());
@@ -313,6 +323,12 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 			// pepper.exceptions package
 			retVal.append(PepperException.class.getPackage().getName());
+			retVal.append(";version=\"" + pepperVersion + "\"");
+
+			retVal.append(", ");
+			
+			// pepper.modules package
+			retVal.append(PepperModuleProperties.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
 
 			retVal.append(", ");
@@ -674,8 +690,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		return (getPepper().selfTest());
-	}
-	
+	}	
 	
 	/**
 	 * This method checks the pepperModules in the modules.xml for updates
@@ -721,5 +736,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			}
 		}
 		return null;
+
+
+	@Override
+	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
+		if (getPepper() == null){
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
+		return (getPepper().isImportable(corpusPath, description));
+
 	}
 }

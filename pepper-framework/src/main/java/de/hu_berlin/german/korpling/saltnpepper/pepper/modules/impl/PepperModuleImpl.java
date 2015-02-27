@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,12 +67,25 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * @author Florian Zipser
  */
 public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler {
-	public static final Logger logger = LoggerFactory.getLogger(PepperModuleImpl.class);
+	protected Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/**
-	 * TODO make docu
+	 * Creates a {@link PepperModule} object, which is either a {@link MODULE_TYPE#IMPORTER}, a {@link MODULE_TYPE#MANIPULATOR} or
+	 * a {@link MODULE_TYPE#EXPORTER}. The name of this module is set to "MyModule".
+	 * <br/>
+	 * We recommend to use the constructor {@link PepperModuleImpl#PepperModuleImpl(String)} and pass a proper name. 
 	 */
 	protected PepperModuleImpl() {
+		this("MyModule");
+	}
+	
+	/**
+	 * Creates a {@link PepperModule} object, which is either a {@link MODULE_TYPE#IMPORTER}, a {@link MODULE_TYPE#MANIPULATOR} or
+	 * a {@link MODULE_TYPE#EXPORTER}. The passed name is set as the modules name.
+	 */
+	protected PepperModuleImpl(String name) {
+		setName(name);
+		logger= LoggerFactory.getLogger(name);
 		getFingerprint();
 		if (getProperties()== null){
 			setProperties(new PepperModuleProperties());
@@ -116,7 +129,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 *            name of this module.
 	 */
 	protected void setName(String name) {
-		if ((name != null) && (getName() == null)) {
+		if (name != null) {
 			getFingerprint().setName(name);
 		}
 	}
@@ -181,6 +194,22 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		getFingerprint().setSupplierContact(supplierContact);
 	}
 
+		/**
+	 * {@inheritDoc PepperModule#getProperties()}
+	 */
+	@Override
+	public PepperModuleProperties getProperties() {
+		return (getFingerprint().getProperties());
+	}
+
+	/**
+	 * {@inheritDoc PepperModule#setProperties(PepperModuleProperties)}
+	 */
+	@Override
+	public void setProperties(PepperModuleProperties properties) {
+		getFingerprint().setProperties(properties);
+	}
+	
 	/**
 	 * TODO make docu
 	 */
@@ -266,28 +295,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Override
 	public void setSymbolicName(String newSymbolicName) {
 		symbolicName = newSymbolicName;
-	}
-
-	/**
-	 * A {@link PepperModuleProperties} object containing properties to
-	 * customize the behaviour of this {@link PepperModule}.
-	 */
-	private PepperModuleProperties properties = null;
-
-	/**
-	 * {@inheritDoc PepperModule#getProperties()}
-	 */
-	@Override
-	public PepperModuleProperties getProperties() {
-		return (properties);
-	}
-
-	/**
-	 * {@inheritDoc PepperModule#setProperties(PepperModuleProperties)}
-	 */
-	@Override
-	public void setProperties(PepperModuleProperties properties) {
-		this.properties = properties;
 	}
 
 	/**
@@ -557,7 +564,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				throw new PepperFWException("Cannot wait for mapper thread '" + controller + "' in " + this.getName() + " to end. ", e);
 			}
 		}
-
 		this.end();
 		// only wait for controllers which have been added by end()
 		for (PepperMapperController controller : this.getMapperControllers().values()) {
@@ -733,11 +739,13 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void end() throws PepperModuleException {
-		if (getSaltProject() == null)
+		logger.trace("[{}] start processing corpus structure (manipulating or exporting). ", getName());
+		if (getSaltProject() == null){
 			throw new PepperModuleException(this, "Error in method end() salt project was empty.");
-		if (getSaltProject().getSCorpusGraphs() == null)
+		}
+		if (getSaltProject().getSCorpusGraphs() == null){
 			throw new PepperModuleException(this, "Error in method end() corpus graphs of salt project were empty.");
-
+		}
 		if (corporaToEnd != null) {
 			for (SCorpus sCorpus : corporaToEnd) {
 				this.start(sCorpus.getSElementId());

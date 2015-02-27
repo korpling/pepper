@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,10 @@ public class ModuleControllerImpl implements ModuleController{
 	 * a logger instance for all messages belonging to the module. This enables, to control this logger in 
 	 * conf file with the modules name. The logger is overwritten in {@link #setPepperModule(PepperModule)}.
 	 **/
-	private Logger mLogger= LoggerFactory.getLogger(ModuleController.class);;
+	private Logger mLogger= LoggerFactory.getLogger(ModuleController.class);
 	/**
 	 * Creates an instance of {@link ModuleControllerImpl}. Sets the internal id to the passed one. 
-	 * <strong>Note: the id is unchangable.</strong>
+	 * <strong>Note: the id is unchangeable.</strong>
 	 * @param id identifier of this object. Id can neither be null nor empty.
 	 */
 	public ModuleControllerImpl(String id)
@@ -203,28 +203,34 @@ public class ModuleControllerImpl implements ModuleController{
 	 */
 	@Override
 	public synchronized Future<?> importCorpusStructure(SCorpusGraph sCorpusGraph){
-		if (sCorpusGraph== null)
+		if (sCorpusGraph== null){
 			throw new PepperFWException("Cannot import corpus structure, because the passed SCorpusGraph object was null.");
-		if (getPepperModule()== null)
+		}
+		if (getPepperModule()== null){
 			throw new PepperFWException("Cannot start import of corpus structure, because the contained Pepper module is null.");
-		if (!(getPepperModule() instanceof PepperImporter))
+		}
+		if (!(getPepperModule() instanceof PepperImporter)){
 			throw new PepperFWException("Cannot start import of corpus structure, because the contained Pepper module '"+getId()+"' is not of type '"+MODULE_TYPE.IMPORTER+"'.");
-		if (((PepperImporter)getPepperModule()).getCorpusDesc()== null)
+		}
+		if (((PepperImporter)getPepperModule()).getCorpusDesc()== null){
 			throw new PepperFWException("Cannot start import of corpus structure, because the corpus description of Pepper module '"+getId()+"' is not set. ");
-		
-		if (!getBusyLock().tryLock())
+		}
+		if (!getBusyLock().tryLock()){
 			throw new PepperInActionException("Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
+		}
 		else{
 			this.sCorpusGraph= sCorpusGraph;
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			Runnable task = new Runnable() {
 			  public void run() {
 				  ((PepperImporter)getPepperModule()).importCorpusStructure(getSCorpusGraph());
+				  mLogger.debug("[{}] corpus structure imported. ", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "));
 			  }
 			};
 
-			if (!getBusyLock().tryLock())
+			if (!getBusyLock().tryLock()){
 				throw new PepperInActionException("cannot import corpus structure, because module controller '"+getId()+"' currently is busy with another process.");
+			}
 			getBusyLock().lock();
 			Future<?> future= null;
 			try{
@@ -240,7 +246,7 @@ public class ModuleControllerImpl implements ModuleController{
 	 * Starts the import of document-structure. When calling this method, the {@link ModuleControllerImpl} object will 
 	 * request all {@link DocumentController} object waiting in the incoming {@link DocumentBus}.
 	 */
-	public synchronized Future<?> importDocumentStructures(){
+	public synchronized Future<?> processDocumentStructures(){
 		if (getPepperModule()== null)
 			throw new PepperFWException("Cannot start imort corpus structure, because the contained Pepper module is null.");
 		if (!getBusyLock().tryLock())
@@ -251,9 +257,11 @@ public class ModuleControllerImpl implements ModuleController{
 			Runnable task = new Runnable() {
 			  public void run() {
 				  getPepperModule().start();
-				  if (getControllList().size()!= 0)
+				  if (getControllList().size()!= 0){
 					  throw new PepperModuleException(getPepperModule(), "Some documents are still in the processing queue by module '"+getPepperModule().getName()+"' and neither set to '"+DOCUMENT_STATUS.COMPLETED+"', '"+DOCUMENT_STATUS.DELETED+"' or '"+DOCUMENT_STATUS.FAILED+"'. Remaining documents are: "+getControllList());
+				  }
 				  getOutputDocumentBus().finish(getPepperModule().getModuleController().getId());
+				  mLogger.debug("[{}] completed processing of documents and corpora. ", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "));
 			  }
 			};
 

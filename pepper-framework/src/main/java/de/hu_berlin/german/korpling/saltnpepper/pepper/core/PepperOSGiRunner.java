@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.core;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Enumeration;
 
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
@@ -33,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
@@ -155,6 +155,9 @@ public class PepperOSGiRunner implements Runnable {
 
 			if (pepper.getModuleResolver() == null)
 				throw new PepperException("No '" + ModuleResolverImpl.class + "' is given for passed '" + Pepper.class + "' object.");
+			PepperConfiguration conf= new PepperConfiguration();
+			conf.load(componentContext);
+			pepper.setConfiguration(conf);
 			if ((pepper.getConfiguration() != null) && (pepper.getConfiguration().size() != 0)) {
 				logger.info(PepperUtil.reportConfiguration(pepper.getConfiguration()));
 			}
@@ -212,6 +215,8 @@ public class PepperOSGiRunner implements Runnable {
 
 	private Boolean isDisabled = false;
 
+	/** The {@link ComponentContext} for the current instance.**/
+	private ComponentContext componentContext= null;
 	/**
 	 * Method is called by OSGi framework, when bundle is activated. <br/>
 	 * This method is the entry point, for starting pepper inside an OSGi
@@ -222,11 +227,7 @@ public class PepperOSGiRunner implements Runnable {
 	 */
 	@Activate
 	protected void activate(ComponentContext componentContext) {
-		Enumeration<String> keys = componentContext.getProperties().keys();
-
-		while (keys.hasMoreElements()) {
-			Object key = keys.nextElement();
-		}
+		this.componentContext= componentContext;
 
 		if ((System.getProperty(PROP_TEST_DISABLED) == null) || (!Boolean.valueOf(System.getProperty(PROP_TEST_DISABLED)))) {
 			this.isDisabled = false;
@@ -250,22 +251,4 @@ public class PepperOSGiRunner implements Runnable {
 	@Deactivate
 	protected void deactivate(ComponentContext componentContext) {
 	}
-
-//	@Override
-//	public void run() {
-//		Long millis = null;
-//		try {
-//			millis = System.currentTimeMillis();
-//			this.start();
-//		} catch (Exception e) {
-//			if (e instanceof PepperException){
-//				throw (PepperException)e;
-//			}else{
-//				throw new PepperOSGiRunnerException("Any exception occurs while running pepper-osgi-runner.", e);
-//			}
-//		} finally {
-//			millis = System.currentTimeMillis() - millis;
-//			logger.info("************************************************************************************************************************");
-//		}
-//	}
 }

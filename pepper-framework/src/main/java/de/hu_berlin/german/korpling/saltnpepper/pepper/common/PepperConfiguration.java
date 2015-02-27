@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,8 +59,11 @@ public class PepperConfiguration extends Properties {
 	 * 
 	 */
 	private static final long serialVersionUID = -7702415220939613420L;
-	/** A sub folder in Pepper directory to be used as workspace (to store jobs etc.)**/
-	public static final String DEFAULT_WORKSPACE="workspace";
+	/**
+	 * A sub folder in Pepper directory to be used as workspace (to store jobs
+	 * etc.)
+	 **/
+	public static final String DEFAULT_WORKSPACE = "workspace";
 	/**
 	 * flag if Pepper shall measure and display the performance of the used
 	 * PepperModules
@@ -99,8 +102,9 @@ public class PepperConfiguration extends Properties {
 	 */
 	public static final String PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING = PROP_PREFIX + ".removeSDocumentAfterProcessing";
 	/**
-	 * name of the flag to determine whether the temporary created document-graph files should be
-	 * preserved or deleted after Pepper terminates.
+	 * name of the flag to determine whether the temporary created
+	 * document-graph files should be preserved or deleted after Pepper
+	 * terminates.
 	 */
 	public static final String PROP_KEEP_TEMP_DOCS = PROP_PREFIX + ".keepTempDocs";
 	/**
@@ -124,15 +128,23 @@ public class PepperConfiguration extends Properties {
 	public static final String SOURCES_RESOURCES = "src/main/resources/";
 	/** Name of the folder containing configuration files. **/
 	public static final String FILE_CONF_FOLDER = "conf";
-	/** Name of the folder configuration file. **/
-	public static final String FILE_CONF_FILE = "userDefined.properties";
+	/** Name of the configuration file. **/
+	public static final String FILE_CONF_FILE = "pepper.properties";
+	/** Name of the configuration file for testing. **/
+	public static final String FILE_CONF_TEST_FILE = "pepper-test.properties";
 
 	/**
-	 * standard constructor
+	 * Standard constructor which initializes this object with default values:
+	 * <ul>
+	 * <li>{@value #PROP_CALL_GC_AFTER_DOCUMENT}= {@value Boolean#TRUE}</li>
+	 * <li>{@value #PROP_MEMORY_POLICY}= {@value MEMORY_POLICY#MODERATE}</li>
+	 * <li>{@value #PROP_MAX_AMOUNT_OF_SDOCUMENTS}= 10</li>
+	 * </ul>
 	 */
 	public PepperConfiguration() {
 		put(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE);
 		put(PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE);
+		put(PROP_MAX_AMOUNT_OF_SDOCUMENTS, 10);
 	}
 
 	/**
@@ -190,8 +202,9 @@ public class PepperConfiguration extends Properties {
 	 * @param componentContext
 	 */
 	public void load(ComponentContext componentContext) {
-		if (componentContext == null)
+		if (componentContext == null) {
 			throw new PepperConfigurationException("Cannot resolve configuration file for Pepper, because the given component context is null.");
+		}
 
 		String configFileStr = null;
 
@@ -202,9 +215,9 @@ public class PepperConfiguration extends Properties {
 					String currLocation = componentContext.getBundleContext().getBundle().getLocation();
 					currLocation = currLocation.replace("initial@reference:file:", "");
 					currLocation = currLocation.replace("../", "");
-					if (currLocation.endsWith("/"))
+					if (currLocation.endsWith("/")) {
 						currLocation = currLocation.substring(0, currLocation.length() - 1);
-
+					}
 					String location = null;
 					for (String bundleName : bundleNames) {
 						bundleName = bundleName.replace("reference:", "");
@@ -215,25 +228,42 @@ public class PepperConfiguration extends Properties {
 							break;
 						}
 					}
-					if (location.endsWith(".jar"))
+					if (location.endsWith(".jar")) {
 						location = location.replace(".jar", "/");
-					else {
-						if (!location.endsWith("/"))
+					} else {
+						if (!location.endsWith("/")) {
 							location = location + "/";
+						}
 						location = location + SOURCES_RESOURCES;
 
 					}
 					configFileStr = location;
-					if (configFileStr.startsWith("file:"))
+					if (configFileStr.startsWith("file:")) {
 						configFileStr = configFileStr.replace("file:", "");
-					configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
+					}
+					File confFile= new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
+					if (!confFile.exists()){
+						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
+					}else{
+						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE;
+					}
 				}
 			}
 		}
 		load(new File(configFileStr));
 	}
 
+	/** folder containing the configuration file(s) **/
 	private File confFolder = null;
+
+	/**
+	 * Sets the folder containing the configuration file(s).
+	 * 
+	 * @param confFolder
+	 */
+	protected void setConfFolder(File confFolder) {
+		this.confFolder = confFolder;
+	}
 
 	/**
 	 * Returns the folder containing the configuration file(s). If no
@@ -254,22 +284,23 @@ public class PepperConfiguration extends Properties {
 	 */
 	public File getTempPath() {
 		String tmpFolderStr = getProperty(PROP_TEMP_FOLDER);
-		File tmpFolder= null;
+		File tmpFolder = null;
 		if (tmpFolderStr != null) {
 			tmpFolderStr = tmpFolderStr + "/pepper/";
 			tmpFolder = new File(tmpFolderStr);
 			if (!tmpFolder.exists()) {
 				tmpFolder.mkdirs();
 			}
-		}else{
-			tmpFolder= PepperUtil.getTempFile();
+		} else {
+			tmpFolder = PepperUtil.getTempFile();
 		}
 		return (tmpFolder);
 	}
 
 	/**
 	 * Returns the default workspace for {@link PepperJobImpl} objects, if one
-	 * is given in configuration. If no one is given, the temporary folder is returned.
+	 * is given in configuration. If no one is given, the temporary folder is
+	 * returned.
 	 * 
 	 * @return workspace to be used to store {@link PepperJobImpl}
 	 */
@@ -279,8 +310,8 @@ public class PepperConfiguration extends Properties {
 		if ((workspaceStr != null) && (!workspaceStr.isEmpty())) {
 			workspace = new File(workspaceStr);
 		}
-		if (workspace== null){
-			workspace= new File(getTempPath().getAbsolutePath()+"/"+ DEFAULT_WORKSPACE);
+		if (workspace == null) {
+			workspace = new File(getTempPath().getAbsolutePath() + "/" + DEFAULT_WORKSPACE);
 		}
 		return (workspace);
 	}
@@ -310,11 +341,11 @@ public class PepperConfiguration extends Properties {
 		String callGC = getProperty(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE.toString());
 		return (Boolean.valueOf(callGC));
 	}
-	
+
 	/**
-	 * name of the flag to determine whether the temporary created document-graph files should be
-	 * preserved or deleted after Pepper terminates.
-	 * Default value is false.
+	 * name of the flag to determine whether the temporary created
+	 * document-graph files should be preserved or deleted after Pepper
+	 * terminates. Default value is false.
 	 */
 	public Boolean getKeepDocuments() {
 		String isToKeep = getProperty(PROP_KEEP_TEMP_DOCS, Boolean.FALSE.toString());

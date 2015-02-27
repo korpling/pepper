@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,22 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
-import com.google.common.base.Splitter;
-import static de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration.ENV_PEPPER_HOME;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import org.osgi.framework.Constants;
 
+import com.google.common.base.Splitter;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * This class represents all properties to customize Pepper. This class is
@@ -79,6 +79,8 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 
 	/** Name of the system property specifying the pepper home path. */
 	public static final String PROP_PEPPER_HOME = PROP_PREFIX + "home";
+	/** Name of property to determine the width of outout console. The width could be either 120 or 80. **/
+	public static final String PROP_CONSOLE_WIDTH = PROP_PREFIX + "console.width";
 	/**
 	 * A key for using the a variable for the pepper home path inside of
 	 * property files.
@@ -177,6 +179,7 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 		if (!propertiesFile.exists())
 			throw new PepperPropertyException("Cannot read pepper property file, because it does not exist '" + propertiesFile.getAbsolutePath() + "'.");
 		try {
+			this.setConfFolder(propertiesFile.getParentFile());
 			this.load(new FileInputStream(propertiesFile));
 			this.cleanUp_PepperPath();
 		} catch (FileNotFoundException e) {
@@ -264,5 +267,40 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	 */
 	public String getSharedPackages() {
 		return (this.getProperty(PROP_OSGI_SHAREDPACKAGES));
+	}
+	
+	/** The width of the output console of Pepper. */
+	public final static int CONSOLE_WIDTH_120 = 120;
+	
+	/** The width of the output console of Pepper, when os is windows. */
+	public final static int CONSOLE_WIDTH_80 = 80;
+	
+	/** 
+	 * Returns the width of the output console. The width could be either 120 or 80. 
+	**/
+	public int getConsoleWidth(){
+		Integer width= null;
+		String widthProp= getProperty(PROP_CONSOLE_WIDTH);
+		if (	(widthProp!= null)&&
+				(!widthProp.isEmpty())){
+			try{
+				width= Integer.valueOf(widthProp.trim());
+			}catch (NumberFormatException e){
+			}
+		}
+		if (width== null){
+			String os= System.getProperty("os.name");
+			if (os.startsWith("Windows")){
+				width= CONSOLE_WIDTH_80;
+			}else{
+				width= CONSOLE_WIDTH_120;
+			}
+		}
+		if (width< CONSOLE_WIDTH_120){
+			width= CONSOLE_WIDTH_80;
+		}else{
+			width= CONSOLE_WIDTH_120;
+		}
+		return(width);
 	}
 }

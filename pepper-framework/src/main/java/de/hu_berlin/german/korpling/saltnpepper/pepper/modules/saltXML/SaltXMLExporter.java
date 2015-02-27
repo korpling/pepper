@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Humboldt University of Berlin, INRIA.
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,11 +69,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 @Component(name = "SaltXMLExporterComponent", factory = "PepperExporterComponentFactory")
 public class SaltXMLExporter extends PepperExporterImpl implements PepperExporter {
 	public SaltXMLExporter() {
-		super();
-
 		// setting name of module
-		setName("SaltXMLExporter");
-
+		super("SaltXMLExporter");
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setDesc("This exporter exports a Salt model to a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat("SaltXML", "1.0", null);
 	}
@@ -153,9 +152,9 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// creating uri for exporting document
-			URI sDocumentURI= getCorpusDesc().getCorpusPath().appendSegments(getSDocument().getSElementId().getSElementPath().segments());
-			sDocumentURI= sDocumentURI.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
-			
+			URI sDocumentURI = getCorpusDesc().getCorpusPath().appendSegments(getSDocument().getSElementId().getSElementPath().segments());
+			sDocumentURI = sDocumentURI.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
+
 			XMLResource sDocumentResource = (XMLResource) getResourceSet().createResource(sDocumentURI);
 			sDocumentResource.getContents().add(getSDocument().getSDocumentGraph());
 			sDocumentResource.setEncoding("UTF-8");
