@@ -942,11 +942,16 @@ public class PepperStarter {
 				logger.info(starter.selfTest());
 			} else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(args[0]))||
 					(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(args[0])) ){
-				List<String> params = new Vector<String>();
-				for (int i=1; i<args.length; i++){
-					params.add(args[i]);					
+				try{
+					List<String> params = new Vector<String>();
+					for (int i=1; i<args.length; i++){
+						params.add(args[i]);					
+					}
+					logger.info(starter.update(params));
+				}catch(Exception e){
+					e.printStackTrace();
+					System.exit(-1);
 				}
-				logger.info(starter.update(params));
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
