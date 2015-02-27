@@ -736,7 +736,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			}
 		}
 		return null;
-
+	}
 
 	@Override
 	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
