@@ -63,10 +63,12 @@ If you do not already have a workflow description file, enter just 'convert' and
 ### Conversion Wizzard
 
 1. Enter the path of the corpus to import e.g. 'C:\myCorpus\':
+     
      ```
      pepper/wizzard/importer>C:\myCorpus\
      ```
 1. Now Pepper displays a list of all available importers and asks you to choose one of them. 
+     
      ```
      +------+-------------------------------+------------------------------------------+
      | no   | module name                   | format                                   |
@@ -107,6 +109,7 @@ If you do not already have a workflow description file, enter just 'convert' and
      pepper/wizzard>C:\myCorpus\myWorkflow.pepper
      ```
 1. To start the conversion enter 'start'.
+
      ```
      pepper/wizzard>start
      ```
