@@ -639,7 +639,7 @@ public class PepperStarter {
 			}
 			
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			logger.debug(e.getMessage());
+			retVal.append("An error occured during the update.");
 		}
 		return retVal.toString();
 	}
@@ -757,7 +757,8 @@ public class PepperStarter {
 			item = null;
 			
 		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
-			logger.warn(e.getMessage());//TODO okay?
+			logger.error("Could not read module table.");
+			logger.trace(" ",e);//TODO okay?
 			return false;
 		}
 		return true;
@@ -1004,16 +1005,11 @@ public class PepperStarter {
 				logger.info(starter.selfTest());
 			} else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(args[0]))||
 					(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(args[0])) ){
-				try{
-					List<String> params = new Vector<String>();
-					for (int i=1; i<args.length; i++){
-						params.add(args[i]);					
-					}
-					logger.info(starter.update(params));
-				}catch(Exception e){
-					e.printStackTrace();
-					System.exit(-1);
-				}
+				List<String> params = new Vector<String>();
+				for (int i=1; i<args.length; i++){
+					params.add(args[i]);					
+				}				
+				logger.info(starter.update(params));
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
@@ -1048,7 +1044,7 @@ public class PepperStarter {
 					throw e;
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			logger.info("An error occured, to get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. ");
 			logger.error(" ", e);
 		} finally {
