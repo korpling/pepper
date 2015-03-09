@@ -115,6 +115,62 @@ If you do not already have a workflow description file, enter just 'convert' and
      ```
 1. To exit and abort the conversion enter 'exit'.
 
+### workflow file
+
+In Pepper you have the chance to store a workflow in a workflow file (.pepper). This offers you to redo and reuse a congigured workflow. You can also add this file to a version control system, to keep the details how a corpus was processed.
+A workflow is stored in an xml file following the [Pepper scheme](https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc).
+ A workflow consists of three phases: import pahse, manipulation phase and export phase. The notation of the workflow file follows this structure. To identify a Pepper module realizing a step, you have to describe that module by its name or the formats name and version, the corpus is in. The following sample consists of three steps, one importer, one manipulator and one exporter:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc" type="application/relax-ng-compact-syntax"?>
+<pepper-job version="1.0">
+    <importer formatName="FORMAT_NAME" formatVersion="FORMAT_VERSION" path="SOURCE_PATH">
+        <customization>
+            <property key="PROPERTY_NAME">PROPERTY_VALUE</property>
+        </customization>
+    </importer>
+    <manipulator name="MANIPULATOR_NAME">
+        <customization>
+            <property key="PROPERTY_NAME_1">PROPERTY_VALUE</property>
+            <property key="PROPERTY_NAME_2">PROPERTY_VALUE</property>
+        </customization>
+    </manipulator>
+    <exporter name="EXPORTER_NAME" path="TARGET_PATH"/>
+</pepper-job>
+```
+
+The importer in contrast to the exporter is identified by the formats name (FORMAT_NAME) and the formats version (FORMAT_VERSION). The exporter and the manipulator are identified by the module names (MANIPULATOR_NAME and EXPORTER_NAME). To customize the workflow some modules provide a set of properties. A property consists of a name-value pair. A description of properties can be found on the modules site or when entering the command 'list' followed by the modules name in the pepper console, for instance:
+
+```
+pepper>list MANIPULATOR_NAME
+```
+
+An importer and an exporter need a source or a target path to address where to find the corpus or where to store it. Such a path can be addressed relative or absolute. A relative path can start with './' for current directory or '../' for the parent directory for instance:
+
+```
+./corpus
+```
+
+or
+
+```
+../corpus
+```
+
+An absolute path could start with the file scheme like:
+```
+file:/C:/format1/corpus1/
+```
+or
+```
+file:///C:/format1/corpus1/
+```
+or without any scheme:
+```
+C:/format1/corpus1/
+```
+
 ##Modules
 
 Pepper is just a container to control the conversion workflow. The real power comes from the single Pepper modules. A lot of modules for Pepper are already pluged in when downloading Pepper. A list of available Pepper modules can be found [here](./gh-site/modules.md).
