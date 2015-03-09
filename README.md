@@ -117,6 +117,8 @@ If you do not already have a workflow description file, enter just 'convert' and
 
 ##Modules
 
+[I'm a relative reference to a repository file](../gh-site/modules.md)
+
 A list of available Pepper modules.
 <table>
 <hr>
