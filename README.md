@@ -126,7 +126,7 @@ pepper>is PATH_TO_PLUGIN
 
 To update a module, open the Pepper console and use command 'update'
 ```
-update de.hu_berlin.german.korpling.saltnpepper::pepperModules-PAULAModules::https://korpling.german.hu-berlin.de/maven2/
+update GROUP_ID::ARTIFACT_ID::REPOSITORY
 ```
 
 You can also install or update a module manually, by copying it. In most cases a Pepper module is provided as a zip file containing the module as a .jar file, and a folder having the same name as the jar file. This folder contains the license files, documentations and other resources the Pepper module needs. Unzip the file and copy its content to the plugin folder of Pepper (PEPEPR_HOME/plugins). When you want to update a module, make sure to delete the existing module by removing the .jar file and the folder.
