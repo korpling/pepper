@@ -115,7 +115,7 @@ If you do not already have a workflow description file, enter just 'convert' and
      ```
 1. To exit and abort the conversion enter 'exit'.
 
-### workflow file
+### Workflow File
 
 In Pepper you have the chance to store a workflow in a workflow file (.pepper). This offers you to redo and reuse a congigured workflow. You can also add this file to a version control system, to keep the details how a corpus was processed.
 A workflow is stored in an xml file following the [Pepper scheme](https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc).
@@ -187,13 +187,97 @@ update GROUP_ID::ARTIFACT_ID::REPOSITORY
 
 You can also install or update a module manually, by copying it. In most cases a Pepper module is provided as a zip file containing the module as a .jar file, and a folder having the same name as the jar file. This folder contains the license files, documentations and other resources the Pepper module needs. Unzip the file and copy its content to the plugin folder of Pepper (PEPEPR_HOME/plugins). When you want to update a module, make sure to delete the existing module by removing the .jar file and the folder.
 
-## Create a new module
+## Create a new Module
 
 In case, the available modules does not solve your problem, you can also implement an own module to support another format or to manipulate the data during the conversion process. Please read the <a href="http://korpling.github.io/pepper/docs/pepper_modulesDevelopersGuide.pdf">Module Developer's Guide</a> to get a detailed documentation of how to implement a Pepper module. A list of needed OSGi modules, for testing Pepper can be found [here](./gh-site/osgi.md).
 
-##Documentation
-* <a href="http://korpling.github.io/pepper/docs/pepper_usersGuide.pdf">User's Guide</a> - a documentation for Pepper users
-* <a href="http://korpling.github.io/pepper/docs/pepper_modulesDevelopersGuide.pdf">Module Developer's Guide</a> - a documentation of how to implement an own Pepper module
+## Pepper as Library
+With the Pepper library, we provide a programmatic access to the Pepper framework including, the configuration of a conversion workflow, the start of a conversion and getting information about the registered Pepper modules. Since Pepper bases on a plugin structure named OSGi (see: http://www.osgi.org/), each Pepper module is plugged into the framework separatly. This goes for running Pepper as CLI and for running Pepper as a library as well. So the Pepper framework consists of two necesary components, first a jar file, which could be included in your software project via maven and second a plugin folder containing all Pepper modules. The following excerpt shows the necessary maven coordinates.
+```xml
+<dependency>
+  <artifactId>pepper-lib</artifactId>
+  <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  <version>VERSION</version>
+</dependency>
+```
+Please replace the placeholder *VERSION* with the version you want to use. Unfortunatly, Pepper is
+not included in the maven central repository, therefore you need to include our maven repository into
+your projects pom:
+```xml
+<repositories>
+  <!-- ... -->
+  <repository>
+    <id>korpling</id>
+    <name>korpling maven repo</name>
+    <url>http://korpling.german.hu-berlin.de/maven2</url>
+  </repository>
+</repositories>
+```
+When Pepper is included in your project, you need to get all necessary plugins and modules, therefore:
+1. Download a Pepper release of your choice from http://u-hu-berlin.de/saltnpepper/
+1. Unzip the downloaded zip file
+1. Copy the contained folder plugins to a folder of your choice lets call it PLUGINS_HOME.
+
+Now you can start coding, we here give you a template how to initialize a Pepper object.
+```java
+PepperStarterConfiguration pepperConf= new
+PepperStarterConfiguration();
+pepperConf.setProperty(PepperStarterConfiguration.
+PROP_PLUGIN_PATH, "PLUGIN_HOME");
+PepperConnector pepper= new PepperOSGiConnector();
+pepper.setProperties(pepperConf);
+```
+Too much? Ok lets give some explanaitions to the code:
+
+*In line 1, we initialize a configuration object to configure the Pepper framework before starting it. Line 2 for instance sets the plugin folder. Please replace the placeholder *PLUGIN_HOME* with the real location. The configuration provides some more adaption possibilities, just take a look into the JavaDoc or the class itself.
+* In line 3, we initialize the proper Pepper object symbolising the Pepper framework. In future there might be several connectors to access the framework. For instance to access a Pepper instance running on a remote server. But currently there is just an OSGi connector, which starts a separate OSGi environment (the used OSGi environment is equinox, see http://www.eclipse.org/equinox/).
+* The last line of code passes the configuration to the Pepper object. Pepper is configured now and we are ready to use it. Before we start a conversion workflow, we show how to query the registered modules. The following snippets prints all information of a module to standard out.
+
+```java
+for (PepperModuleDesc moduleDesc: pepper.getRegisteredModules()){
+System.out.println(moduleDesc.getName());
+System.out.println(moduleDesc.getVersion());
+System.out.println(moduleDesc.getDesc());
+System.out.println(moduleDesc.getModuleType());
+System.out.println(moduleDesc.getSupplierContact());
+System.out.println(moduleDesc.getSupportedFormats());
+}
+```
+Next we show how to create a single workflow in Pepper and how to run it. In Pepper a workflow is called a job and is represented by the class PepperJob. A job consists of several steps. A step could handle an importer, a manipulator or an exporter. A job can contain *1* to *n* importers, *0* to *n* manipulators and *1* to *n* exporters. When using an importer or an exporter, we need to describe the corpus to be im- and exported. The following snippet shows the creation of a corpus description, containing the location of the corpus and a description of the format of the corpus.
+```java
+CorpusDesc corpusExport= new CorpusDesc();
+corpusExport.setCorpusPath(URI.createFileURI("CORPUS_PATH"));
+corpusExport.getFormatDesc().setFormatName("NAME_OF_FORMAT");
+corpusExport.setFormatVersion("VERSION_OF_FORMAT");
+StepDesc stepImport= new StepDesc();
+stepImport.setProps(new Properties());
+stepImport.setCorpusDesc(corpusExport);
+CorpusDesc corpusImport= new CorpusDesc();
+corpusImport.setCorpusPath(URI.createFileURI("CORPUS_PATH"));
+corpusImport.getFormatDesc().setFormatName("NAME_OF_FORMAT")
+corpusImport.setFormatVersion("VERSION_OF_FORMAT");
+StepDesc stepExport= new StepDesc();
+stepExport.setProps(new Properties());
+stepExport.setCorpusDesc(corpusImport);
+String jobId= pepper.createJob();
+PepperJob job= pepper.getJob(jobId);
+job.addStepDesc(stepImport);
+job.addStepDesc(stepExport);
+job.convert(); 
+```
+
+We here create two corpora (line 1-4 and line 10-13) and two steps (line 6-8 and 15-17), one for the import and one for the export. When creating a step, you can also pass some properties for customization. For detailed description of which properties are available corresponding to a specific module, please take a look into the documentation of the Pepper module. After creating the steps, we need to add them to the job (line 21-22). So the last thing to do is to start the job with invoking the method 'convert()' (line 24).
+Another way of converting a job is converting a predefined workflow file. The following snippet shows how to do this.
+```java
+String jobId= pepper.createJob();
+PepperJob pepperJob= pepper.getJob(jobId);
+pepperJob.load("URI_OF_WORKFLOW_FILE");
+pepperJob.convert();
+```
+
+Thats it. Now you know how to use the basic functionalities of the Pepper library. We hope you will
+be happy with it.
+
 
 ##Maven
 
