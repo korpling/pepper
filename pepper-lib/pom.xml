@@ -108,11 +108,6 @@
     		<artifactId>aether-spi</artifactId>
     		<version>1.0.0.v20140518</version>
     	</dependency>
-    	    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-demo-snippets</artifactId>
-    		<version>1.0.0-SNAPSHOT</version>
-    	</dependency>
 	</dependencies>
 	<build>
 		<plugins>
