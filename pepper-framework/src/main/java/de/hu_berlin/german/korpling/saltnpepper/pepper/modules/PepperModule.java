@@ -197,7 +197,9 @@ public interface PepperModule{
 	URI getResources();
 
 	/**
-	 * TODO make docu 
+	 * Sets the resource folder used by {@link #getResources()}. This method should only be invoked by the
+	 * Pepper framework. The documentation of {@link #getResources()} for more details.
+	 * @param value path to resource folder
 	 */
 	void setResources(URI value);
 
