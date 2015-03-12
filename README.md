@@ -63,10 +63,12 @@ If you do not already have a workflow description file, enter just 'convert' and
 ### Conversion Wizzard
 
 1. Enter the path of the corpus to import e.g. 'C:\myCorpus\':
+     
      ```
      pepper/wizzard/importer>C:\myCorpus\
      ```
 1. Now Pepper displays a list of all available importers and asks you to choose one of them. 
+     
      ```
      +------+-------------------------------+------------------------------------------+
      | no   | module name                   | format                                   |
@@ -107,91 +109,175 @@ If you do not already have a workflow description file, enter just 'convert' and
      pepper/wizzard>C:\myCorpus\myWorkflow.pepper
      ```
 1. To start the conversion enter 'start'.
+
      ```
      pepper/wizzard>start
      ```
 1. To exit and abort the conversion enter 'exit'.
 
+### Workflow File
+
+In Pepper you have the chance to store a workflow in a workflow file (.pepper). This offers you to redo and reuse a congigured workflow. You can also add this file to a version control system, to keep the details how a corpus was processed.
+A workflow is stored in an xml file following the [Pepper scheme](https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc).
+ A workflow consists of three phases: import pahse, manipulation phase and export phase. The notation of the workflow file follows this structure. To identify a Pepper module realizing a step, you have to describe that module by its name or the formats name and version, the corpus is in. The following sample consists of three steps, one importer, one manipulator and one exporter:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc" type="application/relax-ng-compact-syntax"?>
+<pepper-job version="1.0">
+    <importer formatName="FORMAT_NAME" formatVersion="FORMAT_VERSION" path="SOURCE_PATH">
+        <customization>
+            <property key="PROPERTY_NAME">PROPERTY_VALUE</property>
+        </customization>
+    </importer>
+    <manipulator name="MANIPULATOR_NAME">
+        <customization>
+            <property key="PROPERTY_NAME_1">PROPERTY_VALUE</property>
+            <property key="PROPERTY_NAME_2">PROPERTY_VALUE</property>
+        </customization>
+    </manipulator>
+    <exporter name="EXPORTER_NAME" path="TARGET_PATH"/>
+</pepper-job>
+```
+
+The importer in contrast to the exporter is identified by the formats name (FORMAT_NAME) and the formats version (FORMAT_VERSION). The exporter and the manipulator are identified by the module names (MANIPULATOR_NAME and EXPORTER_NAME). To customize the workflow some modules provide a set of properties. A property consists of a name-value pair. A description of properties can be found on the modules site or when entering the command 'list' followed by the modules name in the pepper console, for instance:
+
+```
+pepper>list MANIPULATOR_NAME
+```
+
+An importer and an exporter need a source or a target path to address where to find the corpus or where to store it. Such a path can be addressed relative or absolute. A relative path can start with './' for current directory or '../' for the parent directory for instance:
+
+```
+./corpus
+```
+
+or
+
+```
+../corpus
+```
+
+An absolute path could start with the file scheme like:
+```
+file:/C:/format1/corpus1/
+```
+or
+```
+file:///C:/format1/corpus1/
+```
+or without any scheme:
+```
+C:/format1/corpus1/
+```
+
 ##Modules
 
-A list of available Pepper modules.
-<table>
-<hr>
-</hr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-TCFModules">pepperModules-TCFModules</a></td><td>Convert your TCF data to Salt.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-TEIModules">pepperModules-TEIModules</a></td><td>This project provides an importer to import data coming from the TEI P5 format for the linguistic converter framework Pepper.<td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-RidgesModules">pepperModules-RidgesModules</a></td><td>This project provides two manipulators for the Pepper framework. The manipulator Timeline2Token converts all primary text tokens to spans of an newly created artifical primary text which represents the timeline. The manipulator OrderRelationAdder adds relations of type SOrderRelation to the graph and connects SToken and SSpan objects having the same annotation name.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-PAULAModules">pepperModules-PAULAModules</a></td><td>This project provides an importer and an exporter for the linguistic converter framework Pepper to support the PAULA format.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-EXMARaLDAModules">pepperModules-EXMARaLDAModules</a></td><td>This project provides an im- and an exporter to support the EXMARaLDA format in linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-PTBModules">korpling/pepperModules-PTBModules</a></td><td>This project provides an im- and an exporter to support the Penn Treebank Format (PTB) for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-RSTModules">korpling/pepperModules-RSTModules</a></td><td>This project provides an importer to support the rs3 format (which is produces by the RSTTool) for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-RelANNISModules">pepperModules-RelANNISModules</a></td><td>This project provides an exporter to support the relANNIS format for the linguistic converter framework Pepper. relANNIS is the format used by the Search and Visualization Tool ANNIS.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-MMAX2Modules">pepperModules-MMAX2Modules</a></td><td>This project provides an importer and an exporter to support the MMAX2 format in the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-GATEModules">pepperModules-GATEModules</a></td><td>This project provides an importer to support the GATE format for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-GraphAnnoModules">pepperModules-GraphAnnoModules</a></td><td>This project provides an exporter to to support a JSON based format which can be read by the GraphAnno Tool for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-TigerModules">pepperModules-TigerModules</a></td><td>This project provides an importer to support the TigerXML format and the ISOTiger format for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-TreetaggerModules">pepperModules-TreetaggerModules</a></td><td>This project provides an im- and an exporter to support the TreeTagger format in the linguistic converter framework Pepper. The TreeTagger is a natural language processing tool, to annotate text with part-of-speech and lemma annotations. A detailed description of the importer can be found in section TreeTaggerImporter and a description for the exporter can be found TreeTaggerExporter.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/CoraXMLModules">CoraXMLModules</a></td><td>This project contains an import module for the Pepper project, to map data from the linguistic format CoraXML to Salt.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-CoNLLModules">pepperModules-CoNLLModules</a></td><td>This project provides an importer to support the CoNLL format for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-nlpModules">pepperModules-nlpModules</a></td><td>This project provides a tokenizer and a sentencer for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-PerseusModules">pepperModules-PerseusModules</a></td><td>This project provides an importer to support the data comming from the Perseus project to the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-GrAFModules">pepperModules-GrAFModules</a></td><td>This project provides an importer to support the GrAF format (see http://www.americannationalcorpus.org/graf-wiki) for the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-FALKOModules">pepperModules-FALKOModules</a></td><td>This project provides a manipulator, to rearange the FALKO corpus in the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-UAMModules">pepperModules-UAMModules</a></td><td>This project provides an importer to support the UAM format in the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-TueBaDZModules">pepperModules-TueBaDZModules</a></td><td>This project provides a module to rearange the TüBa-D/Z corpus in the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-ElanModules">pepperModules-ElanModules</a></td><td>his project provides an importer to support the ELAN format in the linguistic converter framework Pepper.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/korpling/pepperModules-GenericXMLModules">pepperModules-GenericXMLModules</a></td><td>This project provides a plugin for the linguistic converter framework Pepper to import data coming from any xml file to a Salt model in a customizable but generic way.</td>
-</tr>
-</table>
+Pepper is just a container to control the conversion workflow. The real power comes from the single Pepper modules. A lot of modules for Pepper are already pluged in when downloading Pepper. A list of available Pepper modules can be found [here](./gh-site/modules.md).
 
-##Documentation
-* <a href="http://korpling.github.io/pepper/docs/pepper_usersGuide.pdf">User's Guide</a> - a documentation for Pepper users
-* <a href="http://korpling.github.io/pepper/docs/pepper_modulesDevelopersGuide.pdf">Module Developer's Guide</a> - a documentation of how to implement an own Pepper module
+To install a further module into an existing Pepper instance open the Pepper console and use command 'is':
+```
+pepper>is PATH_TO_PLUGIN
+```
+
+To update a module, open the Pepper console and use command 'update'
+```
+update GROUP_ID::ARTIFACT_ID::REPOSITORY
+```
+
+You can also install or update a module manually, by copying it. In most cases a Pepper module is provided as a zip file containing the module as a .jar file, and a folder having the same name as the jar file. This folder contains the license files, documentations and other resources the Pepper module needs. Unzip the file and copy its content to the plugin folder of Pepper (PEPEPR_HOME/plugins). When you want to update a module, make sure to delete the existing module by removing the .jar file and the folder.
+
+## Create a new Module
+
+In case, the available modules does not solve your problem, you can also implement an own module to support another format or to manipulate the data during the conversion process. Please read the <a href="http://korpling.github.io/pepper/docs/pepper_modulesDevelopersGuide.pdf">Module Developer's Guide</a> to get a detailed documentation of how to implement a Pepper module. A list of needed OSGi modules, for testing Pepper can be found [here](./gh-site/osgi.md).
+
+## Pepper as Library
+With the Pepper library, we provide a programmatic access to the Pepper framework including, the configuration of a conversion workflow, the start of a conversion and getting information about the registered Pepper modules. Since Pepper bases on a plugin structure named OSGi (see: http://www.osgi.org/), each Pepper module is plugged into the framework separatly. This goes for running Pepper as CLI and for running Pepper as a library as well. So the Pepper framework consists of two necesary components, first a jar file, which could be included in your software project via maven and second a plugin folder containing all Pepper modules. The following excerpt shows the necessary maven coordinates.
+```xml
+<dependency>
+  <artifactId>pepper-lib</artifactId>
+  <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+  <version>VERSION</version>
+</dependency>
+```
+Please replace the placeholder *VERSION* with the version you want to use. Unfortunatly, Pepper is
+not included in the maven central repository, therefore you need to include our maven repository into
+your projects pom:
+```xml
+<repositories>
+  <!-- ... -->
+  <repository>
+    <id>korpling</id>
+    <name>korpling maven repo</name>
+    <url>http://korpling.german.hu-berlin.de/maven2</url>
+  </repository>
+</repositories>
+```
+When Pepper is included in your project, you need to get all necessary plugins and modules, therefore:
+1. Download a Pepper release of your choice from http://u-hu-berlin.de/saltnpepper/
+1. Unzip the downloaded zip file
+1. Copy the contained folder plugins to a folder of your choice lets call it PLUGINS_HOME.
+
+Now you can start coding, we here give you a template how to initialize a Pepper object.
+```java
+PepperStarterConfiguration pepperConf= new
+PepperStarterConfiguration();
+pepperConf.setProperty(PepperStarterConfiguration.
+PROP_PLUGIN_PATH, "PLUGIN_HOME");
+PepperConnector pepper= new PepperOSGiConnector();
+pepper.setProperties(pepperConf);
+```
+Too much? Ok lets give some explanaitions to the code:
+
+*In line 1, we initialize a configuration object to configure the Pepper framework before starting it. Line 2 for instance sets the plugin folder. Please replace the placeholder *PLUGIN_HOME* with the real location. The configuration provides some more adaption possibilities, just take a look into the JavaDoc or the class itself.
+* In line 3, we initialize the proper Pepper object symbolising the Pepper framework. In future there might be several connectors to access the framework. For instance to access a Pepper instance running on a remote server. But currently there is just an OSGi connector, which starts a separate OSGi environment (the used OSGi environment is equinox, see http://www.eclipse.org/equinox/).
+* The last line of code passes the configuration to the Pepper object. Pepper is configured now and we are ready to use it. Before we start a conversion workflow, we show how to query the registered modules. The following snippets prints all information of a module to standard out.
+
+```java
+for (PepperModuleDesc moduleDesc: pepper.getRegisteredModules()){
+  System.out.println(moduleDesc.getName());
+  System.out.println(moduleDesc.getVersion());
+  System.out.println(moduleDesc.getDesc());
+  System.out.println(moduleDesc.getModuleType());
+  System.out.println(moduleDesc.getSupplierContact());
+  System.out.println(moduleDesc.getSupportedFormats());
+}
+```
+Next we show how to create a single workflow in Pepper and how to run it. In Pepper a workflow is called a job and is represented by the class PepperJob. A job consists of several steps. A step could handle an importer, a manipulator or an exporter. A job can contain *1* to *n* importers, *0* to *n* manipulators and *1* to *n* exporters. When using an importer or an exporter, we need to describe the corpus to be im- and exported. The following snippet shows the creation of a corpus description, containing the location of the corpus and a description of the format of the corpus.
+```java
+CorpusDesc corpusExport= new CorpusDesc();
+corpusExport.setCorpusPath(URI.createFileURI("CORPUS_PATH"));
+corpusExport.getFormatDesc().setFormatName("NAME_OF_FORMAT");
+corpusExport.setFormatVersion("VERSION_OF_FORMAT");
+StepDesc stepImport= new StepDesc();
+stepImport.setProps(new Properties());
+stepImport.setCorpusDesc(corpusExport);
+CorpusDesc corpusImport= new CorpusDesc();
+corpusImport.setCorpusPath(URI.createFileURI("CORPUS_PATH"));
+corpusImport.getFormatDesc().setFormatName("NAME_OF_FORMAT")
+corpusImport.setFormatVersion("VERSION_OF_FORMAT");
+StepDesc stepExport= new StepDesc();
+stepExport.setProps(new Properties());
+stepExport.setCorpusDesc(corpusImport);
+String jobId= pepper.createJob();
+PepperJob job= pepper.getJob(jobId);
+job.addStepDesc(stepImport);
+job.addStepDesc(stepExport);
+job.convert(); 
+```
+
+We here create two corpora (line 1-4 and line 10-13) and two steps (line 6-8 and 15-17), one for the import and one for the export. When creating a step, you can also pass some properties for customization. For detailed description of which properties are available corresponding to a specific module, please take a look into the documentation of the Pepper module. After creating the steps, we need to add them to the job (line 21-22). So the last thing to do is to start the job with invoking the method 'convert()' (line 24).
+Another way of converting a job is converting a predefined workflow file. The following snippet shows how to do this.
+```java
+String jobId= pepper.createJob();
+PepperJob pepperJob= pepper.getJob(jobId);
+pepperJob.load("URI_OF_WORKFLOW_FILE");
+pepperJob.convert();
+```
+
+Thats it. Now you know how to use the basic functionalities of the Pepper library. We hope you will
+be happy with it.
+
 
 ##Maven
 
@@ -250,7 +336,7 @@ This project has been funded by several institutions:
 
 ##License
 
-  Copyright 2009 Humboldt University of Berlin, INRIA.
+  Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

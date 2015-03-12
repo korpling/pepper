@@ -19,6 +19,5 @@
 CLASS_PATH='-classpath lib/*:plugins/*'
 EXEC_CLASS='de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter'
 VM_PARAMS='-Xmx1024m -XX:-UseGCOverheadLimit'
-PARAMS=$1' '$2
-JAVA_PARAMS=$VM_PARAMS' '$CLASS_PATH' -Dlogback.configurationFile=./conf/logback.xml '$EXEC_CLASS' '$PARAMS
+JAVA_PARAMS=$VM_PARAMS' '$CLASS_PATH' -Dlogback.configurationFile=./conf/logback.xml '$EXEC_CLASS' '$*
 java $JAVA_PARAMS

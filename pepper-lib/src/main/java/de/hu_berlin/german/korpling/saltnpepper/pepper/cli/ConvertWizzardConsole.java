@@ -647,7 +647,7 @@ public class ConvertWizzardConsole {
 		if ((MODULE_TYPE.IMPORTER.equals(moduleType)) || (MODULE_TYPE.EXPORTER.equals(moduleType))) {
 			map[0][2] = "format";
 		}else{
-			map[0][2] = "deescription";
+			map[0][2] = "description";
 		}
 		Integer[] length = { 5, 30, 40 };
 		Integer num = 1;
