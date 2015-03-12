@@ -188,7 +188,11 @@ public interface PepperModule{
 	void setSCorpusGraph(SCorpusGraph value);
 
 	/**
-	 * TODO make docu
+	 * Returns the path of the folder which might contain resources for a Pepper module. This is the folder,
+	 * which is delivered as part of the modules zip. Usually a Pepper module is a zip file containing a jar file
+	 * and a folder having the same name as the jar file. In default configuration all files of folder 
+	 * "./src/main/resources" are copied to the resource folder.
+	 * @return path to resources
 	 */
 	URI getResources();
 
