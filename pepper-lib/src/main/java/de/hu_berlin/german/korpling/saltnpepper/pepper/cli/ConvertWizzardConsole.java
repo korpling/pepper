@@ -211,7 +211,7 @@ public class ConvertWizzardConsole {
 				return (null);
 			}
 			prompt = promptOld;
-			out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
+			out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and 'exit' to exit. ");
 			String input = null;
 			while ((input = getUserInput(in, out)) != null) {
 				String[] parts = input.split(" ");
