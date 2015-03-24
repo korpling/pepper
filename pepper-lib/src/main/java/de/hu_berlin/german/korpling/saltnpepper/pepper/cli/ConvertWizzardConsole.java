@@ -85,14 +85,14 @@ public class ConvertWizzardConsole {
 	private static final String PROMPT = "wizzard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter the path to corpus you want to import or press enter to skip. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter (a further) the path to corpus you want to import or press enter to skip. ";
 	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter the path to which you want to export the corpus. ";
+	private static final String MSG_EX_CORPUS = "\tPlease enter (a further) the path to which you want to export the corpus. ";
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
 
 	public enum COMMAND {
@@ -560,7 +560,7 @@ public class ConvertWizzardConsole {
 						// module does not take customization properties
 
 						out.println(MSG_NO_PROPS);
-						out.println(MSG_IMPORT_CORPUS);
+						out.println(MSG_EX_CORPUS);
 						propLegend = null;
 						state = 0;
 					}

@@ -112,6 +112,9 @@ public class PepperConfiguration extends Properties {
 	 * stored by default.
 	 */
 	public static final String PROP_WORKSPACE = PROP_PREFIX + ".workspace";
+	
+	/** name of property to determine the time interval of the convert status report**/
+	public static final String PROP_REPORT_INTERVAL = PROP_PREFIX + ".reportInterval";
 
 	/**
 	 * This array contains all properties, which with the Pepper framework can
@@ -350,5 +353,13 @@ public class PepperConfiguration extends Properties {
 	public Boolean getKeepDocuments() {
 		String isToKeep = getProperty(PROP_KEEP_TEMP_DOCS, Boolean.FALSE.toString());
 		return (Boolean.valueOf(isToKeep));
+	}
+	
+	/**
+	 * Flag to determine the time interval of the convert status report
+	 */
+	public Integer getReportInterval() {
+		String interval = getProperty(PROP_REPORT_INTERVAL, new Integer(1000).toString());
+		return (Integer.valueOf(interval));
 	}
 }
