@@ -534,15 +534,15 @@ public class PepperJobImpl extends PepperJob {
 	 */
 	protected synchronized void importCorpusStructures() {
 		try {
-			if (!isWired)
+			if (!isWired){
 				wire();
-
+			}
 			List<Future<?>> futures = new Vector<Future<?>>();
 			int numOfImportStep = 0;
 			for (Step importStep : getImportSteps()) {
-				if (getSaltProject() == null)
+				if (getSaltProject() == null){
 					throw new PepperFWException("Cannot import corpus structure, because no salt project is set.");
-
+				}
 				SCorpusGraph sCorpusGraph = null;
 
 				if ((getSaltProject().getSCorpusGraphs().size() > numOfImportStep) && (getSaltProject().getSCorpusGraphs().get(numOfImportStep) != null)) {
@@ -555,7 +555,6 @@ public class PepperJobImpl extends PepperJob {
 				futures.add(importStep.getModuleController().importCorpusStructure(sCorpusGraph));
 				numOfImportStep++;
 			}
-
 			for (Future<?> future : futures) {
 				// wait until all corpus structures have been imported
 				try {
@@ -568,7 +567,6 @@ public class PepperJobImpl extends PepperJob {
 					throw new PepperFWException("Failed to import corpus by module. Nested exception was: ", e.getCause());
 				}
 			}
-
 			int i = 0;
 			for (Step step : getImportSteps()) {
 				if (getSaltProject().getSCorpusGraphs().get(i) == null) {
@@ -590,7 +588,6 @@ public class PepperJobImpl extends PepperJob {
 						documentController.setCallGC(getConfiguration().getGcAfterDocumentSleep());
 					}
 					getDocumentControllers().add(documentController);
-
 					File docFile = null;
 					String prefix = sDoc.getSName();
 					File tmpPath= new File(getConfiguration().getWorkspace().getAbsolutePath()+"/"+getId());
@@ -611,7 +608,6 @@ public class PepperJobImpl extends PepperJob {
 					}
 
 					initialDocumentBuses.get(i).put(documentController);
-
 					// notify document controller about all modules in workflow
 					documentController.addModuleControllers(step.getModuleController());
 					for (Step manipulationStep : getManipulationSteps()) {
@@ -844,8 +840,9 @@ public class PepperJobImpl extends PepperJob {
 					throw new PepperException("Cannot run Pepper job '" + getId() + "', because one of the involved job is not ready to run.");
 				}
 			}
-			if (!isImportedCorpusStructure)
+			if (!isImportedCorpusStructure){
 				importCorpusStructures();
+			}
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
 			// create a future for each step
 			for (Step step : getAllSteps()) {
