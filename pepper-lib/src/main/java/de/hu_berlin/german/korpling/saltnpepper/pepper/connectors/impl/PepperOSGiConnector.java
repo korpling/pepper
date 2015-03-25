@@ -65,6 +65,8 @@ import java.io.FilenameFilter;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
@@ -307,6 +309,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			retVal.append(PepperModuleProperties.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
 
+			// pepper.util package
+			retVal.append(XMLStreamWriter.class.getPackage().getName());
+			retVal.append(";version=\"" + pepperVersion + "\"");
 			retVal.append(", ");
 
 			// emf-util

@@ -15,14 +15,14 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.util;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * This class is just a delegeator class for a {@link XMLStreamWriter} with a pretty printing possibility.
- * @author florian
+ * This class is just a delegator class for a {@link XMLStreamWriter} with a pretty printing possibility.
+ * @author Florian Zipser
  *
  */
 public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
