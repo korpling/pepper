@@ -341,7 +341,7 @@ public class PepperConfiguration extends Properties {
 	}
 
 	public Boolean getGcAfterDocumentSleep() {
-		String callGC = getProperty(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE.toString());
+		String callGC = getProperty(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.FALSE.toString());
 		return (Boolean.valueOf(callGC));
 	}
 
