@@ -42,7 +42,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -74,6 +73,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
@@ -1121,7 +1121,8 @@ public class PepperJobImpl extends PepperJob {
 		XMLStreamWriter xml;
 		
 		try {
-			xml = xof.createXMLStreamWriter(new FileWriter(file.getAbsolutePath()));
+			xml = new XMLStreamWriter(xof.createXMLStreamWriter(new FileWriter(file.getAbsolutePath())));
+			xml.setPrettyPrint(true);
 			xml.writeStartDocument();
 				//<pepper>
 				xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
