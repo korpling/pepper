@@ -243,6 +243,21 @@ public class ConvertWizzardConsole {
 					}
 
 					try {
+						//before saving, create relative URIs for Pepper job.
+						//create a base URI to deresolve relative URIs
+						URI base;
+						if (outputFile.isDirectory()){
+							base= URI.createFileURI(outputFile.getAbsolutePath());
+						}else{
+							base= URI.createFileURI(outputFile.getParentFile().getAbsolutePath());
+						}
+						for (StepDesc stepDesc: pepperJob.getStepDescs()){
+							if (	(stepDesc.getCorpusDesc()!= null)&&
+									(stepDesc.getCorpusDesc().getCorpusPath()!= null)){
+								stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
+								System.out.println("new relative uri: "+ stepDesc.getCorpusDesc().getCorpusPath());
+							}
+						}
 						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
 						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
 					} catch (Exception e) {
