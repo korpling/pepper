@@ -1,124 +1,127 @@
 <assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
   <id>pepper-starterBundle</id>
   <formats>
     <format>zip</format>
+    <format>dir</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
-  <!-- start: copies all dependencies into lib folder -->
+  <!-- start: copies all dependencies into lib and plugins folder -->
   
-  <!-- 
   <dependencySets>
     <dependencySet>
-    	<useTransitiveDependencies>true</useTransitiveDependencies>
-      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib</outputDirectory>
-      <excludes>
-        <exclude>*</exclude>
-      </excludes>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib/</outputDirectory>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <unpack>false</unpack>
+      <scope>runtime</scope>
+      <fileMode>0644</fileMode>
       <includes>
-        <include>*</include>
+        <include>org.eclipse:osgi</include>
+        <!-- <include>org.eclipse.osgi:org.eclipse.osgi</include> -->
+        <!-- remember to add each include as exclude to the "plugins" folder -->
       </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/plugins/</outputDirectory>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <unpack>false</unpack>
+      <scope>runtime</scope>
+      <fileMode>0644</fileMode>
       <excludes>
-      	<exclude>${project.groupId}:${project.artifactId}:*</exclude>
+        <exclude>de.hu_berlin.german.korpling.saltnpepper:pepper-lib</exclude>
+        <exclude>org.eclipse:osgi</exclude>
+        <exclude>org.eclipse.osgi:org.eclipse.osgi</exclude>
+        <!-- TODO: cleanup in the original dependencies -->
+        <exclude>*:hamcrest*</exclude>
+        <exclude>*:junit</exclude>
+        <exclude>*:carrot-osgi*</exclude>
+        <exclude>*:org.apache.felix.framework</exclude>
+        <exclude>*:org.osgi.compendium:jar:1.4.0</exclude>
+        <exclude>*:org.osgi.core:jar:1.4.0</exclude>
+        <exclude>*:log4j</exclude>
+        <exclude>*:textcat</exclude>
+        <exclude>*:nv-i18n</exclude>
+        <exclude>*:org.osgi.core</exclude>
+        <exclude>*:org.osgi.foundation</exclude>
+        <exclude>*:org.osgi.compendium</exclude>
+        <exclude>*:javax.servlet</exclude>
       </excludes>
     </dependencySet>
   </dependencySets>
-   -->
-  <!-- end: copies all dependencies into lib folder -->
   
-   
+  <!-- end: copies all dependencies into lib and plugins folder -->
   
-  <fileSets>
-  	
-  	<!-- start: copies the lib folder to distribution folder-->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>${basedir}/lib/**</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies the lib folder to distribution folder -->
-  	
-  <!-- start: copies the plugin folder -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>${basedir}/plugins/**</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies the plugin folder -->
- 	
- 	<!-- start: copies the example folder -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>${basedir}/examples/**</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies the example folder -->
+  <fileSets> 
+     
+    <!-- start: copies the plugin folder (contains OSGI bundles that are not packaged in maven) -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <includes>
+        <include>${basedir}/plugins/**</include>
+      </includes>
+    </fileSet>
+    <!-- end: copies the plugin folder -->
+     
+    <!-- start: copies the example folder -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <includes>
+        <include>${basedir}/examples/**</include>
+      </includes>
+    </fileSet>
+    <!-- end: copies the example folder -->
  	 	
- 	<!-- start: copies the scripts -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>${basedir}/pepperStart.*</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies the scripts -->
+    <!-- start: copies the scripts -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <includes>
+        <include>${basedir}/pepperStart.*</include>
+      </includes>
+    </fileSet>
+    <!-- end: copies the scripts -->
  	
- 	<!-- start: copies the license stuff -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>LICENSE</include>
-  			<include>NOTICE</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies the license stuff -->
+    <!-- start: copies the license stuff -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <includes>
+        <include>LICENSE</include>
+        <include>NOTICE</include>
+      </includes>
+    </fileSet>
+    <!-- end: copies the license stuff -->
  	
- 	<!-- start: copies the readme file -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>readme.txt</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies the readme file -->
+    <!-- start: copies the readme file -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <includes>
+        <include>readme.txt</include>
+      </includes>
+    </fileSet>
+    <!-- end: copies the readme file -->
  	
- 	<!-- start: copies property files -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>${basedir}/conf/**</include>
-  		</includes>
-  	</fileSet>
- 	<!-- end: copies property files -->
+    <!-- start: copies property files -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <includes>
+        <include>${basedir}/conf/**</include>
+      </includes>
+    </fileSet>
+    <!-- end: copies property files -->
   
-  	<!-- Include pepper bundle -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib/</outputDirectory>
-  		<directory>${basedir}/target</directory>
-  		<includes>
-  			<include>${bundle.file}</include>
-  		</includes>
-  	</fileSet>
+    <!-- Include pepper bundle -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib/</outputDirectory>
+      <directory>${basedir}/target</directory>
+      <includes>
+        <include>${bundle.file}</include>
+      </includes>
+    </fileSet>
   	
-  	<!-- Include license and notice file -->
-  	<!-- 
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<includes>
-  			<include>${license.file}</include>
-  			<include>${notice.file}</include>
-  		</includes>
-  	</fileSet>
-  	 -->
-  	
-  	<!-- Include resource files -->
-  	<fileSet>
-  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-  		<directory>${basedir}/src/main/resources/</directory>
-  	</fileSet>
+    <!-- Include resource files -->
+    <fileSet>
+      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+      <directory>${basedir}/src/main/resources/</directory>
+    </fileSet>
   </fileSets>
 </assembly>
