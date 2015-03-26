@@ -1153,7 +1153,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		Reader fixtureReader = new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "UTF-8");
 		Diff diff = XMLUnit.compareXML(goldReader, fixtureReader);
 		if (!diff.identical()) {
-			System.out.println(goldFile.getAbsolutePath() + " <> " + file.getAbsolutePath());
+			System.out.println(goldFile.getAbsolutePath() + " != " + file.getAbsolutePath());
 			System.out.println(diff);
 			fail();
 		}

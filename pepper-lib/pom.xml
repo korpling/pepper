@@ -108,6 +108,11 @@
     		<artifactId>aether-spi</artifactId>
     		<version>1.0.0.v20140518</version>
     	</dependency>
+		<dependency>
+		  <groupId>org.eclipse</groupId>
+		  <artifactId>osgi</artifactId>
+		  <version>3.9.1-v20130814-1242</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

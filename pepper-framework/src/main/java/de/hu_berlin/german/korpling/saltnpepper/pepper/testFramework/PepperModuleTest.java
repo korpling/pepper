@@ -49,7 +49,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleTestException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.util.FileComparator;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.util.FileComparator;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;

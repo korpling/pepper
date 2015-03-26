@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.util;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.util;
 
 import java.io.BufferedReader;
 import java.io.File;

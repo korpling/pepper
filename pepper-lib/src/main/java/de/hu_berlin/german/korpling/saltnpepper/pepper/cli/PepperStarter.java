@@ -427,7 +427,7 @@ public class PepperStarter {
 			pepperJob.load(workFlowUri);
 		}
 		if (pepperJob != null) {
-			PepperJobReporter observer = new PepperJobReporter(pepperJob);
+			PepperJobReporter observer = new PepperJobReporter(pepperJob, getPepper().getConfiguration().getReportInterval());
 			observer.start();
 			Long timestamp = System.currentTimeMillis();
 			try {

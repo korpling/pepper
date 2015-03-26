@@ -109,7 +109,7 @@ public class DocumentControllerImpl implements DocumentController
 	/**
 	 * If set to true, the garbage collector is called after a {@link SDocument} was send to sleep.
 	 */
-	private boolean callGC= true;
+	private boolean callGC= false;
 	/**
 	 * Sets whether the garbage collector should be called after sending a {@link SDocument} object to sleep.
 	 * @param callGC

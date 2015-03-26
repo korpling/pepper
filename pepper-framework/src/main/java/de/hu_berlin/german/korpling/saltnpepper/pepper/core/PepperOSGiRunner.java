@@ -186,8 +186,8 @@ public class PepperOSGiRunner implements Runnable {
 				if (workflowDescURI != null) {// pepper can be started
 					PepperJob job = pepper.getJob(pepper.createJob());
 					job.load(workflowDescURI);
-
-					PepperJobReporter observer = new PepperJobReporter(job);
+					
+					PepperJobReporter observer = new PepperJobReporter(job, conf.getReportInterval());
 					observer.start();
 
 					try {
