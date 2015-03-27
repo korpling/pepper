@@ -156,6 +156,15 @@ public abstract class PepperModuleTest
 	}
 	
 	/**
+	 * Returns a default test folder, where to find resources for tests. When using the default
+	 * maven structure, this folder is located at 'src/test/resources/'.  
+	 * @return a folder where to find test resources
+	 */
+	public static String getSrcResources(){
+		return("src/main/resources/");
+	}
+	
+	/**
 	 * This methods starts the processing of Pepper in the development environment. In case of the fixture is 
 	 * {@link PepperImporter}, first the method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called.
 	 * For all kinds of fixture, the method {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
