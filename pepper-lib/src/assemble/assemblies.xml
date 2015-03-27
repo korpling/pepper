@@ -46,6 +46,10 @@
         <exclude>*:org.osgi.foundation</exclude>
         <exclude>*:org.osgi.compendium</exclude>
         <exclude>*:javax.servlet</exclude>
+        <exclude>*:aether-transport-wagon</exclude>
+        <exclude>*:sisu-guice</exclude>
+        <exclude>*:org.eclipse.sisu.inject</exclude>
+        <exclude>*:org.eclipse.sisu.plexus</exclude>
       </excludes>
     </dependencySet>
   </dependencySets>
