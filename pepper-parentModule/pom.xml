@@ -166,6 +166,29 @@
 				</configuration>
 			</plugin>
 			<!-- end: for generating license headers in source files. Run mvn license:format -->
+			<plugin>
+				<!-- copying OSGI-INF folder -->
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${serviceComponents}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${serviceComponentsTarget}</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- start: creation of bundle jar -->
 			<plugin>
 				<groupId>org.apache.felix</groupId>
