@@ -46,7 +46,31 @@
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 			<artifactId>pepper-framework</artifactId>
 			<version>${pepper.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+			<artifactId>salt-saltCommon</artifactId>
+			<version>${salt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>${xmlunit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -54,19 +78,57 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- start: OSGI service-component -->
+		<!-- OSGI Annotations. Use standard first, override with custom. -->
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 			<version>${org.osgi.core.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 			<version>${org.osgi.compendium.version}</version>
+			<scope>provided</scope>
 		</dependency>
+		<!-- end: OSGI service-component -->
+		<!-- start: OSGi declaractive services -->
+		<dependency>
+			<groupId>com.carrotgarden.osgi</groupId>
+			<artifactId>carrot-osgi-anno-scr-core</artifactId>
+			<version>${carrot-osgi-anno-scr-core.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.carrotgarden.osgi</groupId>
+			<artifactId>carrot-osgi-anno-scr-make</artifactId>
+			<version>${carrot-osgi-anno-scr-make.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- end: OSGi declaractive services -->
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven-release-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>perform</goal>
+						</goals>
+						<configuration>
+							<pomFileName>${project.artifactId}/pom.xml</pomFileName>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>package assembly:single deploy</goals>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>${maven-assembly-plugin.version}</version>
@@ -123,12 +185,14 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 					<instructions>
+						<Embed-Dependency>*;scope=compile;optional=false</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						<_exportcontents>*</_exportcontents>
 						<Bundle-Name>${project.artifactId}</Bundle-Name>
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
 						<Service-Component>${allServiceComponents}</Service-Component>
-						<Include-Resource>{maven-resources}, LICENSE, NOTICE</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
