@@ -119,7 +119,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<manifestLocation>${basedir}/META-INF</manifestLocation>
+					<manifestLocation>${META-INF}</manifestLocation>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 					<instructions>
