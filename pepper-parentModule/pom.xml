@@ -37,6 +37,11 @@
 		<pepper.version>2.0.1-SNAPSHOT</pepper.version>
 	</properties>
 	<dependencies>
+		<!-- Lists all dependencies comming from parent and sets their scope to 
+			provided. This is necessary, because all these dependencies must be provided 
+			inside the Pepper OSGi framework. When creating a Pepper module's zip these 
+			deps need to be set to provided, to not include them again in the Pepper 
+			module zips. -->
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 			<artifactId>pepper-framework</artifactId>
