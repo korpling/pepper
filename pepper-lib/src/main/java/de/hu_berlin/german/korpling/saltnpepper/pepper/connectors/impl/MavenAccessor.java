@@ -87,6 +87,10 @@ import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/*
+ * How does this class work?
+ * On the first construction of this class 
+ */
 public class MavenAccessor {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MavenAccessor.class);
