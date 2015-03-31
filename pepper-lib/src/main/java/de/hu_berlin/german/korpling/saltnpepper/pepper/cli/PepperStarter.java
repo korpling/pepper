@@ -18,17 +18,42 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
@@ -93,7 +118,7 @@ public class PepperStarter {
 			getPepper().init();
 		}
 	}
-
+	
 	/** Configuration for {@link PepperStarter} **/
 	private PepperStarterConfiguration pepperConf = null;
 
@@ -114,6 +139,8 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
+		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
+		//
 		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."),
 		//
 		LIST("list", "l", "module name", "A table with information about the passed Pepper module."),
@@ -429,22 +456,22 @@ public class PepperStarter {
 			console.installAndStart(params, output);
 			return ("launched Pepper module");
 		} else {
-			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
+			return ("No OSGi console available, since Pepper is not running in OSGi mode. ");
 		}
 	}
 
 	/**
 	 * Updates a Pepper module(s).
 	 */
-	public String update(List<String> params) {
-		if (getPepper() instanceof PepperOSGiConnector) {
-			OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(), PROMPT);
-			console.installAndStart(params, output);
-			return ("Updated Pepper module.");
-		} else {
-			return ("No OSGi console availablem, since Pepper is not running in OSGi mode. ");
-		}
-	}
+//	public String update(List<String> params) {
+//		if (getPepper() instanceof PepperOSGiConnector) {
+//			OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(), PROMPT);
+//			console.installAndStart(params, output);
+//			return ("Updated Pepper module.");
+//		} else {
+//			return ("No OSGi console available, since Pepper is not running in OSGi mode. ");
+//		}
+//	}
 
 	/**
 	 * Removes an existing Pepper module(s).
@@ -495,7 +522,345 @@ public class PepperStarter {
 		retVal.append(line);
 		return (retVal.toString());
 	}
-
+	/** this map contains all registered modules with groupId, artifactId and maven repository. It is filled
+	 * in the first call of update(List..params) */
+	Map<String, Pair<String, String>> moduleTable;
+	
+	/**
+	 * this method is called by command "update" which triggers the update
+	 * process of pepper modules in PepperOSGiConnector depending on the command's
+	 * parameters
+	 * @param command
+	 * @return
+	 */
+	private String update(List<String> params){
+		StringBuilder retVal = new StringBuilder();
+		String newLine = System.getProperty("line.separator");
+		String indent = "\t";
+		boolean isSnapshot	= params.size()>0 && "snapshot".equalsIgnoreCase(params.get(0)) ||
+							  params.size()>1 && "snapshot".equalsIgnoreCase(params.get(1));
+		boolean ignoreVersion = params.size()>0 && "iv".equalsIgnoreCase(params.get(0)) ||
+				  				 params.size()>1 && "iv".equalsIgnoreCase(params.get(1));
+		PepperOSGiConnector pepperConnector = (PepperOSGiConnector)getPepper();
+		try {
+			moduleTable = getModuleTable();
+		
+			if (	"all".equalsIgnoreCase(params.get(0)) ||
+					(isSnapshot&&!ignoreVersion || ignoreVersion&&!isSnapshot) && params.size()>1 && "all".equalsIgnoreCase(params.get(1)) ||
+					isSnapshot&&ignoreVersion && params.size()>2 && "all".equalsIgnoreCase(params.get(2))
+					){
+				for (String s : moduleTable.keySet()){
+					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
+						retVal.append(s).append(" successfully updated.").append(newLine);
+					}
+					else{
+						retVal.append(s).append(" NOT updated.").append(newLine);
+					}
+				}
+			}
+			else{
+				String s = null;
+				for (int i= isSnapshot ? (ignoreVersion? 2 : 1) : (ignoreVersion? 1 : 0); i<params.size(); i++){
+					s = params.get(i);
+					if (moduleTable.keySet().contains(s)){
+						if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)){
+							retVal.append("Successfully updated ").append(s).append(" from "+moduleTable.get(s)).append(newLine);
+						}else{
+							retVal.append("No update was performed for ").append(s).append(".");
+						}
+					}
+					else if ("config".equals(s)){
+						retVal.append(newLine).append(indent).append("update configuration for pepper modules:").append(newLine).append(newLine);						
+						
+						for(String module : moduleTable.keySet()){
+							retVal.append(indent).append(module).append(moduleTable.get(module)).append(newLine);
+						}
+						retVal.append(newLine);						
+						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):")
+						.append(newLine).append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
+						retVal.append(newLine).append(indent).append("GROUP_ID: the groupId of the pepper module");
+						retVal.append(newLine).append(indent).append("ARTIFACT_ID: the artifactId of the pepper module, usually \"pepperModules-___Modules\"");
+						retVal.append(newLine).append(indent).append("REPOSITORY_URL: the url of the maven repository that contains the module").append(newLine);
+					}
+					else if (s.contains("::")){
+						String[] args = s.split("::");
+						if (pepperConnector.update(args[0], args[1], args[2], isSnapshot, ignoreVersion)){
+							retVal.append("Successfully updated ").append(args[0]).append(".").append(args[1]).append(" from maven repository ").append(args[2]).append(".").append(newLine);
+							retVal.append(	write2ConfigFile(args[0], args[1], args[2]) ?
+											"Configuration written back to modules.xml. Module is now available for direct update calls (e.g. \"update "+args[1]+"\")." :
+											"WARNING: An Error occured while writing groupId, artifactId and repository path to modules.xml.");
+							moduleTable.put(args[1], Pair.of(args[0], args[2]));
+						}						
+					}
+					else if (s.matches("file://.*")||s.matches("https?://.*")){
+						try {
+							pepperConnector.installAndCopy(java.net.URI.create(s)).start();
+						} catch (BundleException e) {
+							logger.debug(s+" caused: "+e.getMessage());
+							return "File not installed due to a BundleException";
+						}
+						return "File installed. No dependency resolution in this mode.";
+					}
+					else if ("blacklist".equals(s) || "bl".equals(s)){
+						retVal.append(pepperConnector.getBlacklist());
+					}
+					else if ("iv".equalsIgnoreCase(s)){
+						ignoreVersion = true;
+					}
+					else if ("snapshot".equalsIgnoreCase(s)){
+						isSnapshot = true;
+					}
+					else if ("--help".equalsIgnoreCase(s)){
+						retVal
+						.append(newLine).append(indent).append("update [snapshot] [iv] MODULES_NAME")
+						.append(newLine).append(indent).append("updates the specified pepper modules")
+						.append(newLine).append(indent).append("snapshot:\tIf the newest version is a snapshot, pepper chooses to install it.")
+						.append(newLine).append(indent).append("iv:\t\tIf the pepper modules are depending on another version of pepper, they would usually not be installed.")
+						.append(newLine).append(indent).append(indent).append(indent).append("By setting this flag you can override this behaviour.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update [snapshot] [iv] all")
+						.append(newLine).append(indent).append("All pepper modules configured in modules.xml will be updated/installed.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update config")
+						.append(newLine).append(indent).append("displays the configuration given in modules.xml.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL")
+						.append(newLine).append(indent).append("adds/modifies a configuration in modules.xml AND starts the update process.")
+						.append(newLine)
+						.append(newLine).append(indent).append("update URL")
+						.append(newLine).append(indent).append("installs a file by its URL. Dependencies will not be resolved.")
+						.append(newLine);
+					}
+					else{
+						retVal.append(indent).append(s).append(" is not a known module.")
+						.append(newLine).append(indent).append("For more information type \"u config\"").append(newLine);
+					}
+				}
+			}
+			
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			retVal.append("An error occured during the update.");
+		}
+		return retVal.toString();
+	}
+	
+	/** This String contains the path to the modules.xml file, which provides Information about
+	 * the pepperModules to be updated / installed. */
+	private static final String MODULES_XML_PATH = "./conf/modules.xml";
+	
+	private Map<String, Pair<String, String>> getModuleTable() throws ParserConfigurationException, SAXException, IOException{
+		if (this.moduleTable!=null) { return moduleTable; }
+		HashMap<String, Pair<String, String>> table = new HashMap<String, Pair<String, String>>();
+		SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+		try{saxParser.parse(MODULES_XML_PATH, new ModuleTableReader(table));} catch (Exception e){e.printStackTrace();}
+		return table;
+	}
+	
+	/**This method writes a module configuration of GroupId, ArtifactId and Maven repository back to the modules.xml file*/
+	private boolean write2ConfigFile(String groupId, String artifactId, String repository){
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		try {
+			boolean changes = false;
+			File configFile = new File(MODULES_XML_PATH);
+			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse(configFile);
+			NodeList configuredModules = doc.getElementsByTagName(ModuleTableReader.TAG_ARTIFACTID);
+			if(configuredModules.getLength()==0) {return false;}
+			/*check, if the module is already in the modules.xml file*/
+			Node item = configuredModules.item(0); 
+			int j=0;			
+			while (j+1<configuredModules.getLength() && !artifactId.equals(item.getTextContent())){
+				item = configuredModules.item(++j);
+			}
+			if (artifactId.equals(item.getTextContent())){//already contained -> edit				
+				Node itemGroupId = null;
+				Node itemRepo = null;
+				Node node = null;
+				for (int i=0; i<item.getParentNode().getChildNodes().getLength() && (itemGroupId==null || itemRepo==null); i++){
+					node = item.getParentNode().getChildNodes().item(i);
+					if (ModuleTableReader.TAG_GROUPID.equals(node.getLocalName())){
+						itemGroupId = node;
+					}
+					if (ModuleTableReader.TAG_REPO.equals(node.getLocalName())){
+						itemRepo = node;
+					}
+				}
+				if(itemGroupId!=null){
+					itemGroupId.setTextContent(groupId);
+					changes = true;
+				}
+				else{
+					if (!groupId.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTGROUPID).item(0).getTextContent())){
+						itemGroupId = doc.createElement(ModuleTableReader.TAG_GROUPID);
+						itemGroupId.setTextContent(groupId);
+						item.getParentNode().appendChild(itemGroupId);
+						changes = true;
+					}					
+				}
+				if(itemRepo!=null){
+					itemRepo.setTextContent(repository);
+					changes = true;
+				}
+				else{
+					if (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent())){
+						itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
+						itemRepo.setTextContent(repository);
+						item.getParentNode().appendChild(itemRepo);
+						changes = true;
+					}					
+				}
+				itemGroupId = null;
+				itemRepo = null;
+				node = null;
+			}else{//not contained yet -> insert
+				changes = true;
+				Node listNode = doc.getElementsByTagName(ModuleTableReader.TAG_LIST).item(0);
+				Node newModule = doc.createElement(ModuleTableReader.TAG_ITEM);				
+				Node groupIdNode = doc.createElement(ModuleTableReader.TAG_GROUPID);
+				groupIdNode.appendChild(doc.createTextNode(groupId));
+				Node artifactIdNode = doc.createElement(ModuleTableReader.TAG_ARTIFACTID);
+				artifactIdNode.appendChild(doc.createTextNode(artifactId));
+				Node repositoryNode = doc.createElement(ModuleTableReader.TAG_REPO);
+				repositoryNode.appendChild(doc.createTextNode(repository));
+				newModule.appendChild(groupIdNode);
+				newModule.appendChild(artifactIdNode);
+				newModule.appendChild(repositoryNode);
+				listNode.appendChild(newModule);	
+				
+				listNode = null;
+				newModule = null;
+				groupIdNode = null;
+				artifactIdNode = null;
+				repository = null;
+			}
+			
+			if (changes){
+				//write back to file	
+				TransformerFactory trFactory = TransformerFactory.newInstance();
+//				trFactory.setAttribute("indent-number", 2);
+				Transformer transformer = trFactory.newTransformer();
+				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+				DOMSource src = new DOMSource(doc);
+				StreamResult result = new StreamResult(configFile);				
+				transformer.transform(src, result);
+				
+				trFactory = null;
+				transformer = null;
+				src = null;
+				result = null;
+			}
+			
+			docBuilder = null;
+			doc = null;
+			configuredModules = null;
+			item = null;
+			
+		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
+			logger.error("Could not read module table.");
+			logger.trace(" ",e);//TODO okay?
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * This class is the call back handler for reading the modules.xml file,
+	 * which provides Information about the pepperModules to be updated / installed.
+	 * @author klotzmaz
+	 *
+	 */
+	private class ModuleTableReader extends DefaultHandler2{
+		/** all read module names are stored here 
+		 * Map: artifactId --> (groupId, repository)
+		 * */
+		private Map<String, Pair<String, String>> listedModules;
+		/** this string contains the last occurred artifactId */
+		private String artifactId;
+		/** this string contains the group id*/
+		private String groupId;
+		/** the name of the tag between the modules are listed */
+		private static final String TAG_LIST = "pepperModulesList";
+		/** the name of the tag in the modules.xml file, between which the modules' properties are listed */
+		private static final String TAG_ITEM = "pepperModules";
+		/** the name of the tag in the modules.xml file, between which the modules' groupId is written */
+		private static final String TAG_GROUPID = "groupId";
+		/** the name of the tag in the modules.xml file, between which the modules' name is written */
+		private static final String TAG_ARTIFACTID = "artifactId";
+		/** the name of the tag in the modules.xml file, between which the modules' source is written */
+		private static final String TAG_REPO = "repository";
+		/** the name of the attribute for the default repository */
+		private static final String ATT_DEFAULTREPO = "defaultRepository";
+		/** the name of the attribute for the default groupId */
+		private static final String ATT_DEFAULTGROUPID = "defaultGroupId";
+		/** contains the default groupId for modules where no groupId is defined*/
+		private String defaultGroupId;
+		/** contains the default repository for modules where no repository is defined*/
+		private String defaultRepository;
+		/** is used to read the module name character by character */
+		private StringBuilder chars;
+		/** this boolean says, whether characters should be read or ignored */
+		private boolean openEyes;		
+		
+		public ModuleTableReader(Map<String, Pair<String, String>> artifactIdUrlMap){
+			listedModules = artifactIdUrlMap;
+			chars = new StringBuilder();
+			groupId = null;
+			artifactId = null;
+			openEyes = false;
+		}
+		
+		@Override
+		public void startElement(	String uri,
+				String localName,
+				String qName,
+				Attributes attributes)throws SAXException
+		{
+			localName = qName.substring(qName.lastIndexOf(":")+1);
+			openEyes = TAG_GROUPID.equals(localName)||TAG_ARTIFACTID.equals(localName)||TAG_REPO.equals(localName);
+			if (TAG_LIST.equals(localName)){				
+				defaultRepository = attributes.getValue(ATT_DEFAULTREPO);
+				defaultGroupId = attributes.getValue(ATT_DEFAULTGROUPID);
+			}
+		}
+		
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException{							
+			for(int i=start; i<start+length && openEyes; i++){
+				chars.append(ch[i]);
+			}
+			openEyes = false;						
+		}
+		
+		@Override
+		public void endElement(java.lang.String uri,
+                String localName,
+                String qName) throws SAXException
+        {		
+			localName = qName.substring(qName.lastIndexOf(":")+1);
+			if (TAG_ARTIFACTID.equals(localName)){
+				artifactId = chars.toString();				
+				chars.delete(0, chars.length());				
+			}
+			else if (TAG_GROUPID.equals(localName)){
+				groupId = chars.toString();
+				chars.delete(0, chars.length());
+			}
+			else if (TAG_REPO.equals(localName)){
+				chars.delete(0, chars.length());
+			}
+			else if (TAG_ITEM.equals(localName)){
+				groupId = groupId==null? defaultGroupId : groupId;				
+				listedModules.put(	artifactId, 
+						Pair.of(	groupId, 	(chars.length()==0? defaultRepository : chars.toString())	)		
+						);
+				chars.delete(0, chars.length());
+				groupId = null;
+				artifactId = null;				
+			}
+		}
+	}
+	
 	public static final String PROMPT = "pepper";
 	private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 	private PrintStream output = System.out;
@@ -566,7 +931,10 @@ public class PepperStarter {
 				output.println(clean());
 			} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(debug());
-			} else {
+			}else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+						(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command)) ){				
+				output.println(update(params));
+			}else{
 				output.println("Type 'help' for help.");
 			}
 		}
@@ -635,6 +1003,13 @@ public class PepperStarter {
 				}
 			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(args[0]) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(args[0])))) {
 				logger.info(starter.selfTest());
+			} else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(args[0]))||
+					(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(args[0])) ){
+				List<String> params = new Vector<String>();
+				for (int i=1; i<args.length; i++){
+					params.add(args[i]);					
+				}				
+				logger.info(starter.update(params));
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
@@ -669,7 +1044,7 @@ public class PepperStarter {
 					throw e;
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			logger.info("An error occured, to get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. ");
 			logger.error(" ", e);
 		} finally {

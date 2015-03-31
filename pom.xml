@@ -71,11 +71,11 @@
 		<junit.version>4.11</junit.version>
 		<org.osgi.core.version>4.3.1</org.osgi.core.version>
 		<org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
-		<org.eclipse.osgi.version>3.7.1</org.eclipse.osgi.version>
+		<org.eclipse.osgi.version>3.9.1-v20130814-1242</org.eclipse.osgi.version>
 		<carrot-osgi-anno-scr-core.version>2.0.2</carrot-osgi-anno-scr-core.version>
 		<carrot-osgi-anno-scr-make.version>2.0.2</carrot-osgi-anno-scr-make.version>
 		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
-
+		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version>-->
@@ -151,8 +151,6 @@
 		</dependency>
 		<!-- end: OSGi declaractive services -->
 	</dependencies>
-
-
 	<organization>
 		<name>Humboldt-Universität zu Berlin, INRIA</name>
 	</organization>

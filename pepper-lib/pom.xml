@@ -29,8 +29,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.osgi</groupId>
-			<artifactId>org.eclipse.osgi</artifactId>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
 			<version>${org.eclipse.osgi.version}</version>
 		</dependency>
 		<dependency>
@@ -59,9 +59,64 @@
 		    <version>2.5.15.wso2v1</version>
 		</dependency>
 		<dependency>
-		  <groupId>org.eclipse</groupId>
-		  <artifactId>osgi</artifactId>
-		  <version>3.9.1-v20130814-1242</version>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-api</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-util</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-impl</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-connector-basic</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-transport-file</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-transport-http</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-transport-wagon</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.maven</groupId>
+    		<artifactId>maven-aether-provider</artifactId>
+    		<version>3.1.0</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.maven.wagon</groupId>
+    		<artifactId>wagon-provider-api</artifactId>
+    		<version>1.0</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.aether</groupId>
+    		<artifactId>aether-spi</artifactId>
+    		<version>${org.eclipse.aether.version}</version>
+    	</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-osgi</artifactId>
+			<version>4.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore-osgi</artifactId>
+			<version>4.2.5</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,13 +31,17 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -60,13 +65,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundExc
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
-
 import java.io.FilenameFilter;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
@@ -76,11 +78,23 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
  * Pepper and therefore enables it to use Pepper as an embedded library.
  * 
  * @author Florian Zipser
+ * @author Martin Klotz
  * 
  */
 public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
+	/** this {@link Set} stores all dependencies, that are installed. The format of the {@link String}s is GROUP_ID:ARTIFACT_ID:EXTENSION:VERSION, which is also the output format of {@link Dependency#getArtifact()#toString()}.*/
+	private Set<String> forbiddenFruits = null;
+	/** contains the path to the blacklist file. */
+	private static final String BLACKLIST_PATH = "./conf/dep/blacklist.cfg";
+	/** this String contains the artifactId of pepper-framework. */
+	private static final String ARTIFACT_ID_PEPPER_FRAMEWORK = "pepper-framework";
+	/** contains the version of pepper framework. {@link #PEPPER_VERSION} is not used on purpose. This {@link String} contains the value of the pepper-framework OSGi {@link Bundle}.*/
+	private String frameworkVersion = null;
+	/** */
+	private MavenAccessor maven = null;
+	
 	/**
 	 * FIXME This is just a workaround to set the current version of Pepper,
 	 * this is necessary, mark the Pepper package, to be load by the classloader
@@ -95,7 +109,6 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public boolean isInitialized() {
 		return (isInit);
 	}
-
 	/**
 	 * Starts the OSGi environment and installs and starts all bundles located
 	 * in the plugin directory. <br/>
@@ -159,7 +172,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw e;
 		} catch (Exception e) {
 			throw new PepperOSGiException("An exception occured installing bundles for OSGi environment. ", e);
+		}	
+		
+		List<Bundle> bList = new ArrayList<Bundle>();
+		bList.addAll(bundleIdMap.values());
+		for (int i=0; i<bList.size(); i++){
+			if (bList.get(i).getSymbolicName()!=null && bList.get(i).getSymbolicName().contains(ARTIFACT_ID_PEPPER_FRAMEWORK)){
+				frameworkVersion = bList.get(i).getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+			}
 		}
+		maven = new MavenAccessor(this);
+		
 		isInit = true;
 	}
 
@@ -329,7 +352,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * {@value #PROP_OSGI_BUNDLES} as reference:file:JAR_FILE.
 	 * 
 	 * @param pluginPath
-	 *            path ere the bundles are
+	 *            path where the bundles are
 	 * @param bundleAction
 	 *            a flag, which shows if bundle has to be started or just
 	 *            installed
@@ -534,7 +557,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		boolean retVal = false;
 		if ((bundleName != null) && (!bundleName.isEmpty())) {
 			for (Bundle bundle : getBundleContext().getBundles()) {
-				if (bundle.getSymbolicName().equalsIgnoreCase(bundleName)) {
+				if (bundle.getSymbolicName()!=null && bundle.getSymbolicName().equalsIgnoreCase(bundleName)) {
 					for (Map.Entry<URI, Long> entry : locationBundleIdMap.entrySet()) {
 						if (entry.getValue().equals(bundle.getBundleId())) {
 							// stop bundle
@@ -670,8 +693,53 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public Collection<String> selfTest() {
 		if (getPepper() == null)
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
 		return (getPepper().selfTest());
+	}	
+	
+	/**
+	 * This method checks the pepperModules in the modules.xml for updates
+	 * and triggers the installation process if a newer version is available
+	 */
+	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
+		
+		/* checking, if a correlating bundle already exist, which would mean, the module is already installed */
+        Bundle installedBundle = null;
+        List<Bundle> bundles = new ArrayList<Bundle>(bundleIdMap.values());
+        for (int i=0; i<bundles.size() && installedBundle==null; i++){
+        	if ((groupId+"."+artifactId).equals(bundles.get(i).getSymbolicName())){
+        		installedBundle = bundles.get(i);
+        	}
+        }  
+		
+		return maven.update(groupId, artifactId, repositoryUrl, isSnapshot, ignoreFrameworkVersion, installedBundle);
+	}
+	
+	/**
+	 * returns the version of pepper-framework read from the pepper-framework OSGi {@link Bundle}.
+	 * @returns the version {@link String}
+	 */
+	public String getFrameworkVersion(){
+		return frameworkVersion;
+	}
+	
+	/**
+	 * 
+	 * @returns the Blacklist of already installed dependencies
+	 */
+	public String getBlacklist(){
+		return maven.getBlacklist();
+	}
+	
+	public String getBundleNameByDependency(String groupId, String artifactId){
+		String symName = null;
+		for (Bundle bundle : bundleIdMap.values()){
+			symName = bundle.getSymbolicName();
+			if (symName!=null &&
+				(symName.contains(groupId) && symName.contains(artifactId))	){
+				return symName;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -680,5 +748,6 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}
 		return (getPepper().isImportable(corpusPath, description));
+
 	}
 }

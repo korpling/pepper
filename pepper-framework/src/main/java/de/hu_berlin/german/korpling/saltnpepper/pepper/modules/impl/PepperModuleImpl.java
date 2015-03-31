@@ -332,7 +332,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		this.componentContext = componentContext;
 		if ((componentContext != null) && (componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null)) {
 			this.setSymbolicName(componentContext.getBundleContext().getBundle().getSymbolicName());
-			this.setVersion(componentContext.getBundleContext().getBundle().getVersion().toString());
+			this.setVersion(componentContext.getBundleContext().getBundle().getVersion().toString());			
 		}
 	}
 

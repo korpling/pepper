@@ -46,6 +46,10 @@
         <exclude>*:org.osgi.foundation</exclude>
         <exclude>*:org.osgi.compendium</exclude>
         <exclude>*:javax.servlet</exclude>
+        <exclude>*:aether-transport-wagon</exclude>
+        <exclude>*:sisu-guice</exclude>
+        <exclude>*:org.eclipse.sisu.inject</exclude>
+        <exclude>*:org.eclipse.sisu.plexus</exclude>
       </excludes>
     </dependencySet>
   </dependencySets>
@@ -100,14 +104,17 @@
     </fileSet>
     <!-- end: copies the readme file -->
  	
-    <!-- start: copies property files -->
-    <fileSet>
-      <outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-      <includes>
-        <include>${basedir}/conf/**</include>
-      </includes>
-    </fileSet>
-    <!-- end: copies property files -->
+ 	<!-- start: copies property files -->
+  	<fileSet>
+  		<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<includes>
+  			<include>${basedir}/conf/**</include>
+  		</includes>
+  		<excludes>
+  			<exclude>${basedir}/conf/dep/blacklist.cfg</exclude>
+  		</excludes>
+  	</fileSet>
+ 	<!-- end: copies property files -->
   
     <!-- Include pepper bundle -->
     <fileSet>
