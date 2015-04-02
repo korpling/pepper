@@ -319,18 +319,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
-
 			retVal.append(", ");
 
 			// pepper.exceptions package
 			retVal.append(PepperException.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
-
 			retVal.append(", ");
 			
 			// pepper.modules package
 			retVal.append(PepperModuleProperties.class.getPackage().getName());
 			retVal.append(";version=\"" + pepperVersion + "\"");
+			retVal.append(", ");
 
 			// pepper.util package
 			retVal.append(XMLStreamWriter.class.getPackage().getName());
