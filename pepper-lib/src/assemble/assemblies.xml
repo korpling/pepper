@@ -111,6 +111,9 @@
   			<include>${basedir}/conf/**</include>
   		</includes>
   		<excludes>
+  			<!-- don't copy configuration files which are used for testing -->
+  			<exclude>${basedir}/conf/logback-test.xml</exclude>
+  			<exclude>${basedir}/conf/pepper-test.properties</exclude>
   			<exclude>${basedir}/conf/dep/blacklist.cfg</exclude>
   		</excludes>
   	</fileSet>
