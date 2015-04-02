@@ -8,75 +8,39 @@
 		<format>dir</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-	<dependencySets>
-		<dependencySet>
-			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/lib/</outputDirectory>
-			<useTransitiveDependencies>true</useTransitiveDependencies>
-			<unpack>false</unpack>
-			<scope>runtime</scope>
-			<fileMode>0644</fileMode>
-			<includes>
-				<include>org.eclipse:osgi</include>
-				<!-- <include>org.eclipse.osgi:org.eclipse.osgi</include> -->
-				<!-- remember to add each include as exclude to the "plugins" folder -->
-			</includes>
-		</dependencySet>
-		<dependencySet>
-			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/plugins/</outputDirectory>
-			<useTransitiveDependencies>true</useTransitiveDependencies>
-			<unpack>false</unpack>
-			<scope>runtime</scope>
-			<fileMode>0644</fileMode>
-			<excludes>
-				<exclude>de.hu_berlin.german.korpling.saltnpepper:pepper-lib</exclude>
-				<exclude>org.eclipse:osgi</exclude>
-				<!-- <exclude>org.eclipse.osgi:org.eclipse.osgi</exclude> -->
-				<!-- TODO: cleanup in the original dependencies -->
-				<exclude>*:hamcrest*</exclude>
-				<exclude>*:junit</exclude>
-				<exclude>*:carrot-osgi*</exclude>
-				<exclude>*:org.apache.felix.framework</exclude>
-				<!-- <exclude>*:org.osgi.compendium:jar:1.4.0</exclude> -->
-				<!-- <exclude>*:org.osgi.core:jar:1.4.0</exclude> -->
-				<!-- <exclude>*:log4j</exclude> -->
-				<exclude>*:textcat</exclude>
-				<exclude>*:nv-i18n</exclude>
-				<exclude>*:org.osgi.core</exclude>
-				<!-- <exclude>*:org.osgi.foundation</exclude> -->
-				<exclude>*:org.osgi.compendium</exclude>
-				<!-- <exclude>*:javax.servlet</exclude> -->
-				<exclude>*:aether-transport-wagon</exclude>
-				<exclude>*:sisu-guice</exclude>
-				<exclude>*:org.eclipse.sisu.inject</exclude>
-				<exclude>*:org.eclipse.sisu.plexus</exclude>
-			</excludes>
-		</dependencySet>
-	</dependencySets>
-
-	<!-- end: copies all dependencies into lib and plugins folder -->
 
 	<fileSets>
-		<!-- start: copies the scripts -->
 		<fileSet>
+			<!-- copies the scripts -->
+			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+			<includes>
+				<include>${basedir}/plugins/</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<!-- copies the scripts -->
+			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+			<includes>
+				<include>${basedir}/lib/</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<!-- copies the scripts -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<includes>
 				<include>${basedir}/pepperStart.*</include>
 			</includes>
 		</fileSet>
-		<!-- end: copies the scripts -->
-
-		<!-- start: copies the license stuff -->
 		<fileSet>
+			<!-- copies the license stuff -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<includes>
 				<include>LICENSE</include>
 				<include>NOTICE</include>
 			</includes>
 		</fileSet>
-		<!-- end: copies the license stuff -->
-
-		<!-- start: copies the readme file -->
 		<fileSet>
+			<!-- copies the readme file -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<includes>
 				<include>readme.txt</include>

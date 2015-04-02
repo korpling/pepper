@@ -124,11 +124,13 @@
 			<version>4.2.5</version>
 		</dependency>
 		<dependency>
+			<!-- accessible via Jabylon repo -->
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>util</artifactId>
 			<version>1.0.500</version>
 		</dependency>
 		<dependency>
+			<!-- accessible via Jabylon repo -->
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>ds</artifactId>
 			<version>1.4.101</version>
@@ -137,20 +139,50 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!-- The aim of this assambly is to create a /plugin and /lib folder 
+					containing all dependencies which are necessary to start Pepper in pepper-lib. -->
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${maven-assembly-plugin.version}</version>
-				<configuration>
-					<properties combine.self="override">
-						<descriptors>
-							<descriptor>${assemblies.name}</descriptor>
-						</descriptors>
-						<appendAssemblyId>false</appendAssemblyId>
-						<finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName>
-						<!-- <outputDirectory>target/distribution</outputDirectory> -->
-						<workDirectory>target/assembly/work</workDirectory>
-					</properties>
-				</configuration>
+				<version>2.5.3</version>
+
+				<executions>
+					<execution>
+						<!-- This execution resolves all dependencies given by pepper-lib project 
+							and copies them to the plugins or lib folder. This is a preparation step 
+							to create a distribution and to run the project in IDE like Eclipse. -->
+						<id>plugin-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assemble/assembly_plugin.xml</descriptor>
+							</descriptors>
+							<outputDirectory>${basedir}</outputDirectory>
+							<finalName>./</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<!-- This execution creates a distribution by copying all resources, 
+							libs, scripts etc. to the right place and zips the whole bunch -->
+						<id>distribution-assembly</id>
+						<configuration>
+							<descriptors>
+								<descriptor>${assemblies.name}</descriptor>
+							</descriptors>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName>
+							<outputDirectory>target/distribution</outputDirectory>
+							<workDirectory>target/assembly/work</workDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>${maven-assembly-plugin.version}</version> 
+				<configuration> <descriptors> <descriptor>${assemblies.name}</descriptor> 
+				</descriptors> <appendAssemblyId>false</appendAssemblyId> <finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName> 
+				<outputDirectory>target/distribution</outputDirectory> <workDirectory>target/assembly/work</workDirectory> 
+				</configuration> </plugin> -->
 			<!-- start: Creation of jar file -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
