@@ -159,7 +159,7 @@
 				<!-- The aim of this assambly is to create a /plugin and /lib folder 
 					containing all dependencies which are necessary to start Pepper in pepper-lib. -->
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.5.3</version>
+				<version>${maven-assembly-plugin.version}</version>
 
 				<executions>
 					<execution>
