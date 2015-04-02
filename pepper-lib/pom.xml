@@ -16,6 +16,11 @@
 			<name>WSO2repo</name>
 			<url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
 		</repository>
+		<repository>
+			<id>Jabylon</id>
+			<name>Jabylon</name>
+			<url>http://www.jabylon.org/maven/</url>
+		</repository>
 	</repositories>
 	<scm>
 		<developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-starter/</developerConnection>
@@ -55,59 +60,59 @@
 		</dependency>
 		<dependency>
 			<groupId>janino.wso2</groupId>
-		    <artifactId>janino</artifactId>
-		    <version>2.5.15.wso2v1</version>
+			<artifactId>janino</artifactId>
+			<version>2.5.15.wso2v1</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-api</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-util</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-impl</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-connector-basic</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-transport-file</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-transport-http</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-transport-wagon</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.apache.maven</groupId>
-    		<artifactId>maven-aether-provider</artifactId>
-    		<version>3.1.0</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.apache.maven.wagon</groupId>
-    		<artifactId>wagon-provider-api</artifactId>
-    		<version>1.0</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.aether</groupId>
-    		<artifactId>aether-spi</artifactId>
-    		<version>${org.eclipse.aether.version}</version>
-    	</dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-api</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-util</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-impl</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-connector-basic</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-file</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-http</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-wagon</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-aether-provider</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-provider-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-spi</artifactId>
+			<version>${org.eclipse.aether.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient-osgi</artifactId>
@@ -118,9 +123,34 @@
 			<artifactId>httpcore-osgi</artifactId>
 			<version>4.2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>util</artifactId>
+			<version>1.0.500</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>ds</artifactId>
+			<version>1.4.101</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<configuration>
+					<properties combine.self="override">
+						<descriptors>
+							<descriptor>${assemblies.name}</descriptor>
+						</descriptors>
+						<appendAssemblyId>false</appendAssemblyId>
+						<finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName>
+						<!-- <outputDirectory>target/distribution</outputDirectory> -->
+						<workDirectory>target/assembly/work</workDirectory>
+					</properties>
+				</configuration>
+			</plugin>
 			<!-- start: Creation of jar file -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
