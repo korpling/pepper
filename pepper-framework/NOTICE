@@ -28,6 +28,7 @@ This project includes:
   org.eclipse.emf under The Eclipse Public License Version 1.0
   org.eclipse.emf.ecore under The Eclipse Public License Version 1.0
   org.eclipse.emf.ecore.xmi under The Eclipse Public License Version 1.0
+  org.eclipse.osgi.services_3.4.0.v20140312-2051.jar under Eclipse Public License - v 1.0
   osgi.cmpn under Apache License, Version 2.0
   osgi.core under Apache License, Version 2.0
   pepper-framework under The Apache Software License, Version 2.0
