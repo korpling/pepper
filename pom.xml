@@ -76,9 +76,10 @@
 		<carrot-osgi-anno-scr-make.version>2.0.2</carrot-osgi-anno-scr-make.version>
 		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
+		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
-		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version>-->
+		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version> -->
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-assembly-plugin.version>2.2</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -139,6 +140,11 @@
 			<version>${org.osgi.compendium.version}</version>
 		</dependency>
 		<!-- start: OSGi declaractive services -->
+		<dependency>
+			<groupId>org.eclipse.birt.runtime</groupId>
+			<artifactId>org.eclipse.osgi.services</artifactId>
+			<version>${org.eclipse.osgi.services.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.carrotgarden.osgi</groupId>
 			<artifactId>carrot-osgi-anno-scr-core</artifactId>
