@@ -10,6 +10,7 @@
 		<module>pepper-parentModule</module>
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
+		<module>pepper-gui</module>
 	</modules>
 	<description>Pepper is a plugable converter framework to convert linguistic data between several
         formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged
@@ -76,6 +77,7 @@
 		<carrot-osgi-anno-scr-make.version>2.0.2</carrot-osgi-anno-scr-make.version>
 		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
+		<vaadin.version>7.4.3</vaadin.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version>-->
