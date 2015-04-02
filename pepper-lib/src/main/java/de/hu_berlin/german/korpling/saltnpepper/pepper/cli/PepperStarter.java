@@ -534,9 +534,20 @@ public class PepperStarter {
 	 * @return
 	 */
 	private String update(List<String> params){
+		if (params.size()==0) {return "Please specify a module you want to update.";}				
 		StringBuilder retVal = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		String indent = "\t";
+		
+		if (logger.isDebugEnabled()){			
+			StringBuilder paramOut = new StringBuilder();
+			paramOut.append("update parameters:");
+			for (String param : params){
+				paramOut.append(newLine).append(param);
+			}
+			logger.debug(paramOut.toString());
+		}
+		
 		boolean isSnapshot	= params.size()>0 && "snapshot".equalsIgnoreCase(params.get(0)) ||
 							  params.size()>1 && "snapshot".equalsIgnoreCase(params.get(1));
 		boolean ignoreVersion = params.size()>0 && "iv".equalsIgnoreCase(params.get(0)) ||

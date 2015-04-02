@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.registry.LocateRegistry;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -35,6 +36,12 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.building.DefaultModelBuilder;
+import org.apache.maven.model.building.DefaultModelBuilderFactory;
+import org.apache.maven.model.building.DefaultModelBuildingRequest;
+import org.apache.maven.model.building.ModelBuildingRequest;
+import org.apache.maven.model.superpom.SuperPomProvider;
 import org.apache.maven.repository.internal.DefaultArtifactDescriptorReader;
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.apache.maven.repository.internal.DefaultVersionResolver;
@@ -81,6 +88,7 @@ import org.eclipse.aether.transfer.TransferResource;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry;
+import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.manager.ClassicDependencyManager;
 import org.eclipse.aether.util.graph.selector.AndDependencySelector;
 import org.eclipse.aether.util.graph.selector.ExclusionDependencySelector;
@@ -157,8 +165,8 @@ public class MavenAccessor {
 	        locator.addService( MetadataGeneratorFactory.class, VersionsMetadataGeneratorFactory.class );
 	        locator.addService( RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class );
 	        locator.addService( TransporterFactory.class, FileTransporterFactory.class );
-	        locator.addService( TransporterFactory.class, HttpTransporterFactory.class );
-			system = locator.getService( RepositorySystem.class );
+	        locator.addService( TransporterFactory.class, HttpTransporterFactory.class );	        
+			system = locator.getService( RepositorySystem.class );			
 		}
 		repoBuilder = new RemoteRepository.Builder("", "default", "");
 		repos = new HashMap<String, RemoteRepository>();
@@ -210,7 +218,8 @@ public class MavenAccessor {
     		CollectRequest collectRequest = new CollectRequest();
             collectRequest.setRoot( new Dependency( pepArt, "" ) );
             collectRequest.setRepositories(null);
-            collectRequest.addRepository(repo);	            
+            collectRequest.addRepository(repo);
+            collectRequest.addRepository(repos.get(CENTRAL_REPO));
             collectRequest.setRootArtifact(pepArt);
             try {
 				CollectResult collectResult = system.collectDependencies( session, collectRequest );
@@ -260,6 +269,7 @@ public class MavenAccessor {
         stereotypes.add( new DefaultArtifactType( "pom" ) );
         stereotypes.add( new DefaultArtifactType( "maven-plugin", "jar", "", "java" ) );
         stereotypes.add( new DefaultArtifactType( "jar", "jar", "", "java" ) );
+        stereotypes.add( new DefaultArtifactType( "zip", "zip", "", "java" ) );
         stereotypes.add( new DefaultArtifactType( "ejb", "jar", "", "java" ) );
         stereotypes.add( new DefaultArtifactType( "ejb-client", "jar", "client", "java" ) );
         stereotypes.add( new DefaultArtifactType( "test-jar", "jar", "tests", "java" ) );
@@ -387,7 +397,7 @@ public class MavenAccessor {
 	            collectRequest.addRepository(repos.get(CENTRAL_REPO));
 	            collectRequest.addRepository(repo);
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );            
-	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);                
+	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);             
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
             	 * not already on the blacklist
@@ -397,10 +407,12 @@ public class MavenAccessor {
 	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(allDependencies.get(i).getArtifact().getArtifactId())){
 	            		parentVersion = allDependencies.get(i).getArtifact().getVersion();
 	            	}
+	            } 
+	            if (parentVersion==null){	            	
+	            	logger.warn(artifactId+": Could not perform update: pepper-parent version could not be determined.");
+	            	return false;
 	            }            	
-        		allDependencies = cleanDependencies(allDependencies, session, parentVersion);
-            	
-	            
+	            allDependencies = cleanDependencies(allDependencies, session, parentVersion);
 	            Bundle bundle = null;
 	            Dependency dependency = null;	            
 	            //in the following we ignore the first dependency (i=0), because it is the module itself         	            
@@ -417,7 +429,7 @@ public class MavenAccessor {
 	            			return false;
 	            		}	            		
 	            	}
-	            	else {	            		
+	            	else {	            	
 	            		artifactRequest.addRepository(repos.get(CENTRAL_REPO));
 	            		artifactRequest.addRepository(repo);
 	            		artifactRequest.setArtifact(dependency.getArtifact());

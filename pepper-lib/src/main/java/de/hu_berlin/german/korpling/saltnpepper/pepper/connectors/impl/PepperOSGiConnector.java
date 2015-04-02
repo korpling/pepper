@@ -84,10 +84,7 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiConnector.class);
-	/** this {@link Set} stores all dependencies, that are installed. The format of the {@link String}s is GROUP_ID:ARTIFACT_ID:EXTENSION:VERSION, which is also the output format of {@link Dependency#getArtifact()#toString()}.*/
-	private Set<String> forbiddenFruits = null;
-	/** contains the path to the blacklist file. */
-	private static final String BLACKLIST_PATH = "./conf/dep/blacklist.cfg";
+
 	/** this String contains the artifactId of pepper-framework. */
 	private static final String ARTIFACT_ID_PEPPER_FRAMEWORK = "pepper-framework";
 	/** contains the version of pepper framework. {@link #PEPPER_VERSION} is not used on purpose. This {@link String} contains the value of the pepper-framework OSGi {@link Bundle}.*/
