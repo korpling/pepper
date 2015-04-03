@@ -11,17 +11,24 @@
 
 	<fileSets>
 		<fileSet>
-			<!-- copies the scripts -->
+			<!-- copies all plugins to distributions plugin folder -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<includes>
 				<include>${basedir}/plugins/</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<!-- copies the scripts -->
+			<!-- copies all libraries to distributions lib folder -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<includes>
 				<include>${basedir}/lib/</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<!-- copies all configurations of update to distributions conf folder -->
+			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/conf/dep</outputDirectory>
+			<includes>
+				<include>${basedir}/conf/dep/**</include>
 			</includes>
 		</fileSet>
 		<fileSet>
