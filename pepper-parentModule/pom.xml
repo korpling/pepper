@@ -208,9 +208,6 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 					<instructions>
-						<Embed-Dependency>*;scope=compile;optional=false</Embed-Dependency>
-						<Embed-Transitive>true</Embed-Transitive>
-						<_exportcontents>*</_exportcontents>
 						<Bundle-Name>${project.artifactId}</Bundle-Name>
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
