@@ -146,10 +146,11 @@
 					<!-- removes META-INF and OSGI-INF, lib and plugins -->
 					<filesets>
 						<fileset>
-							<directory>META-INF</directory>
-							<directory>OSGI-INF</directory>
-							<directory>lib</directory>
-							<directory>plugins</directory>
+							<directory>${basedir}</directory>
+							<includes>
+								<include>plugins/**</include>
+								<include>lib/**</include>
+							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>
