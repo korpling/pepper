@@ -11,20 +11,6 @@
 
 	<fileSets>
 		<fileSet>
-			<!-- copies all plugins to distributions plugin folder -->
-			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-			<includes>
-				<include>${basedir}/plugins/</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<!-- copies all libraries to distributions lib folder -->
-			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-			<includes>
-				<include>${basedir}/lib/</include>
-			</includes>
-		</fileSet>
-		<fileSet>
 			<!-- copies all configurations of update to distributions conf folder -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}/conf/dep</outputDirectory>
 			<includes>
@@ -32,24 +18,18 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<!-- copies the scripts -->
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<includes>
+				<!-- copies all plugins to distributions plugin folder -->
+				<include>${basedir}/plugins/</include>
+				<!-- copies all libraries to distributions lib folder -->
+				<include>${basedir}/lib/</include>
+				<!-- copies the start scripts sh and bat -->
 				<include>${basedir}/pepperStart.*</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<!-- copies the license stuff -->
-			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-			<includes>
+				<!-- copies the license stuff -->
 				<include>LICENSE</include>
 				<include>NOTICE</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<!-- copies the readme file -->
-			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
-			<includes>
+				<!-- copies the readme file -->
 				<include>readme.txt</include>
 			</includes>
 		</fileSet>
