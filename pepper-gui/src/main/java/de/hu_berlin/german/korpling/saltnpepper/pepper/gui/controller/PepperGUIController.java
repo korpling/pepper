@@ -1,13 +1,26 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
+import com.vaadin.server.ErrorHandler;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
-public class PepperGUIController implements PepperGUIComponentDictionary, ClickListener{
-	
-	
-	public static void main(String[] args){
-		
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
+
+@Title("Pepper converter framework")
+@Theme("base")
+public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, ErrorHandler{	
+	protected void init(VaadinRequest request){	
+		VerticalLayout layout = new VerticalLayout();
+		layout.setSizeFull();
+		layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		layout.addComponent(new PepperGUI(this));
+		setContent(layout);		
 	}
 
 	@Override
@@ -21,7 +34,29 @@ public class PepperGUIController implements PepperGUIComponentDictionary, ClickL
 		}
 		else if (ID_BUTTON_LOAD.equals(id)){
 			
-		}		
+		}
+		else if (ID_BUTTON_IMPORTERS.equals(id)){
+			
+		}
+		else if (ID_BUTTON_EXPORTERS.equals(id)){
+			
+		}
+		else if (ID_BUTTON_MANIPULATORS.equals(id)){
+			
+		}
+		else if (ID_BUTTON_RESULTS.equals(id)){
+			
+		}
+		else if (ID.BUTTON_ABOUT.equals(id)){
+			
+		}
+		
+	}
+
+	@Override
+	public void error(com.vaadin.server.ErrorEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

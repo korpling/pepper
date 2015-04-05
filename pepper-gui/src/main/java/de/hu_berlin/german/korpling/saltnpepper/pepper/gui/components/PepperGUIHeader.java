@@ -9,67 +9,64 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIC
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 
 public class PepperGUIHeader extends HorizontalLayout implements PepperGUIComponentDictionary{
-	protected static final String HEADER_HEIGHT = "100px";
-	protected static final String HEADER_LEFT_WIDTH = "208px";
+	protected static final String GUI_HEADER_HEIGHT = "100px";
+	protected static final String GUI_HEADER_LEFT_WIDTH = "208px";
 	protected static final String HEADER_MENU_WIDTH = "508px";
 	protected static final String HEADER_RIGHT_WIDTH = "308px";
 	private static final String CAPTION_NEW = "New workflow";
 	private static final String CAPTION_ABOUT = "About";
 	private static final String CAPTION_LOAD = "Load workflow";
-	private HorizontalLayout headerLeft = null;	
-	private HorizontalLayout headerRight = null;
-	private HorizontalLayout headerMenu = null;
-	private Button buttonNew = null;
-	private Button buttonLoad = null;
-	private Button buttonAbout = null;
 	
-	
-	private PepperGUIController controller;
-	
-	protected PepperGUIHeader(PepperGUIController GUIcontroller){
-		controller = GUIcontroller;		
-		
+	protected PepperGUIHeader(PepperGUIController guiController){
+		/*DEBUG*/setCaption("I AM HEADER");
 		setWidth(PepperGUI.GUI_WIDTH);
-		setHeight(HEADER_HEIGHT);
-		headerLeft = new HorizontalLayout();
-		headerMenu = new HorizontalLayout();
-		headerRight = new HorizontalLayout();
+		setHeight(GUI_HEADER_HEIGHT);		
 		
-		initLeft();
-		initMenu();
-		initRight();
-		
-		addComponent(headerLeft);
-		addComponent(headerMenu);
-		addComponent(headerRight);
+		addComponent(new PepperGUIHeaderLeft());
+		addComponent(new PepperGUIHeaderMenu(guiController));
+		addComponent(new PepperGUIHeaderRight());
 	}
 	
-	private void initLeft(){
-		headerLeft.setWidth(HEADER_LEFT_WIDTH);
-		headerLeft.setHeight(HEADER_HEIGHT);		
+	private class PepperGUIHeaderLeft extends HorizontalLayout{
+		
+		private PepperGUIHeaderLeft(){
+			setWidth(GUI_HEADER_LEFT_WIDTH);
+			setHeight(GUI_HEADER_HEIGHT);	
+			/*DEBUG*/setCaption("I AM HEADER_LEFT");
+		}
 	}
 	
-	private void initMenu(){
-		headerMenu.setWidth(HEADER_MENU_WIDTH);
-		headerMenu.setHeight(HEADER_HEIGHT);
+	private class PepperGUIHeaderMenu extends HorizontalLayout{
 		
-		buttonNew = new Button();
-		buttonNew.setCaption(CAPTION_NEW);
-		buttonNew.setId(ID_BUTTON_NEW);
-		buttonNew.addClickListener(controller);
-		buttonLoad = new Button();
-		buttonLoad.setCaption(CAPTION_LOAD);
-		buttonLoad.setId(ID_BUTTON_LOAD);
-		buttonLoad.addClickListener(controller);
-		buttonAbout = new Button();
-		buttonAbout.setCaption(CAPTION_ABOUT);
-		buttonAbout.setId(ID_BUTTON_ABOUT);
-		buttonAbout.addClickListener(controller);
-		
+		private PepperGUIHeaderMenu(PepperGUIController guiController){
+			setWidth(HEADER_MENU_WIDTH);
+			setHeight(GUI_HEADER_HEIGHT);
+			
+			Button buttonNew = new Button();
+			buttonNew.setCaption(CAPTION_NEW);
+			buttonNew.setId(ID_BUTTON_NEW);
+			buttonNew.addClickListener(guiController);
+			Button buttonLoad = new Button();
+			buttonLoad.setCaption(CAPTION_LOAD);
+			buttonLoad.setId(ID_BUTTON_LOAD);
+			buttonLoad.addClickListener(guiController);
+			Button buttonAbout = new Button();
+			buttonAbout.setCaption(CAPTION_ABOUT);
+			buttonAbout.setId(ID_BUTTON_ABOUT);
+			buttonAbout.addClickListener(guiController);
+			/*DEBUG*/setCaption("I AM HEADER_MENU");
+//			addComponent(buttonNew);
+//			addComponent(buttonLoad);
+//			addComponent(buttonAbout);
+		}			
 	}
 
-	private void initRight(){
-		headerRight.setWidth(HEADER_RIGHT_WIDTH);
-		headerRight.setHeight(HEADER_HEIGHT);		
+	private class PepperGUIHeaderRight extends HorizontalLayout{
+		
+		private PepperGUIHeaderRight(){
+			setWidth(HEADER_RIGHT_WIDTH);
+			setHeight(GUI_HEADER_HEIGHT);
+			/*DEBUG*/setCaption("I AM HEADER_RIGHT");
+		}
 	}
 }

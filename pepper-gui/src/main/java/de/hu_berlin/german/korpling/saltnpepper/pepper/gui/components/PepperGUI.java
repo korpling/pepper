@@ -7,19 +7,16 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIC
 
 public class PepperGUI extends VerticalLayout {
 	protected static final String GUI_WIDTH = "1024px";
-	protected static final String GUI_HEIGHT = "768px";
-	private PepperGUIHeader header;
-	private PepperGUIBody body;
+	protected static final String GUI_HEIGHT = "768px";	
 	
 	/*MAYBE?*/
 	private HorizontalLayout footer;
 	
-	public PepperGUI(PepperGUIController GUIcontroller){
+	public PepperGUI(PepperGUIController GUIcontroller){		
 		setWidth(GUI_WIDTH);
 		setHeight(GUI_HEIGHT);		
-		header = new PepperGUIHeader(GUIcontroller);
-		body = new PepperGUIBody(GUIcontroller);
-		addComponent(header);
-		addComponent(body);
+//		addComponent(new PepperGUIHeader(GUIcontroller));				
+		addComponent(new PepperGUIBody(GUIcontroller));
+		
 	}
 }
