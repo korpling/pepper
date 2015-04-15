@@ -34,7 +34,6 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -65,11 +64,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundExc
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
-import java.io.FilenameFilter;
-import java.util.LinkedList;
-import java.util.List;
-import javax.xml.stream.XMLStreamWriter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
 
 /**
  * This class is an implementation of {@link Pepper}. It acts as a bridge
@@ -199,6 +194,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		frameworkProperties.put(EclipseStarter.PROP_NOSHUTDOWN, "true");
 		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 
+		System.out.println("framework properties: "+frameworkProperties);
+		
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		bc = EclipseStarter.startup(new String[] {}, null);
 
