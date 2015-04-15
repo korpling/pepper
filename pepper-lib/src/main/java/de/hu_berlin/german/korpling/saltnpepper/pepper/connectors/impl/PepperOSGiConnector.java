@@ -63,6 +63,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
 
@@ -177,7 +178,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		
 		isInit = true;
 	}
-
+	/**
+	 * A list of packages to be shared between OSGi environment and normal environment. 
+	 */
+	private Map<String, String> frameworkProperties = null;
 	/**
 	 * Starts the OSGi Equinox environment.
 	 * 
@@ -187,15 +191,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected BundleContext startEquinox() throws Exception {
 		BundleContext bc = null;
 
-		Map<String, String> frameworkProperties = new HashMap<String, String>();
+		frameworkProperties = new HashMap<String, String>();
 		frameworkProperties.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
 		frameworkProperties.put(EclipseStarter.PROP_CLEAN, "true");
 		frameworkProperties.put(EclipseStarter.PROP_CONSOLE, "true");
 		frameworkProperties.put(EclipseStarter.PROP_NOSHUTDOWN, "true");
 		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 
-		System.out.println("framework properties: "+frameworkProperties);
-		
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		bc = EclipseStarter.startup(new String[] {}, null);
 
@@ -259,7 +261,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						pepperOSGi = (Pepper) getBundleContext().getService(serviceReference);
 					}
 				} else {
-					throw new PepperException("The pepper-framework was not found in OSGi environment. Searching for class: " + Pepper.class.getName() + ". ");
+					throw new PepperFWException("The pepper-framework was not found in OSGi environment. Searching for class: " + Pepper.class.getName() + " brought no result. May be the container package is not listed in property '"+Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA+"': '"+frameworkProperties+"'. ");
 				}
 				pepper = pepperOSGi;
 				pepper.setConfiguration(getConfiguration());
