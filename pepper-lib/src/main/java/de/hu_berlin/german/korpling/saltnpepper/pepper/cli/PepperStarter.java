@@ -902,51 +902,60 @@ public class PepperStarter {
 				}
 				i++;
 			}
-			if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(help());
-			} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
-				output.println(list());
-			} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
-				if (params.size() == 1) {
-					output.println(list(params.get(0)));
-				} else {
-					output.println("Please pass exactly one module name.");
+			try{
+				if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(help());
+				} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+					output.println(list());
+				} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+					if (params.size() == 1) {
+						output.println(list(params.get(0)));
+					} else {
+						output.println("Please pass exactly one module name.");
+					}
+				} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(conf());
+				} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(selfTest());
+				} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
+					break;
+				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+					if (params.size() == 1) {
+						convert(params.get(0));
+					} else {
+						convert(null);
+					}
+				} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(osgi());
+				} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(installAndStart(params));
+					// }else if(
+					// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+					// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
+					// output.println(update(params));
+				} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(remove(params));
+				} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(start_osgi());
+				} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(stop_osgi());
+				} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(clean());
+				} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
+					output.println(debug());
+				}else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+							(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command)) ){				
+					output.println(update(params));
+				}else{
+					output.println("Type 'help' for help.");
 				}
-			} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(conf());
-			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(selfTest());
-			} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
-				break;
-			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
-				if (params.size() == 1) {
-					convert(params.get(0));
-				} else {
-					convert(null);
+			}catch (Exception e){
+				output.print("An error occured while processing '"+userInput+"': "+e.getMessage()+". ");
+				if (!isDebug){
+					output.println("For more details enter '"+COMMAND.DEBUG.getName()+"' and redo last action. ");
+				}else{
+					logger.error(" ", e);
 				}
-			} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(osgi());
-			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(installAndStart(params));
-				// }else if(
-				// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
-				// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
-				// output.println(update(params));
-			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(remove(params));
-			} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(start_osgi());
-			} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(stop_osgi());
-			} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(clean());
-			} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(debug());
-			}else if(  (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
-						(COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command)) ){				
-				output.println(update(params));
-			}else{
-				output.println("Type 'help' for help.");
 			}
 		}
 	}
