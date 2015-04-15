@@ -638,9 +638,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public String createJob() {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().createJob());
 	}
 
@@ -649,9 +649,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public PepperJob getJob(String id) throws JobNotFoundException {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().getJob(id));
 	}
 
@@ -660,9 +660,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public boolean removeJob(String id) throws JobNotFoundException {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().removeJob(id));
 	}
 
@@ -679,16 +679,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	@Override
 	public String getRegisteredModulesAsString() {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().getRegisteredModulesAsString());
 	}
 
 	@Override
 	public Collection<String> selfTest() {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
 		return (getPepper().selfTest());
 	}	
 	
