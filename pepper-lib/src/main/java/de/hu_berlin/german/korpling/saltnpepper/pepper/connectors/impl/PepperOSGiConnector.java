@@ -262,7 +262,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						pepperOSGi = (Pepper) getBundleContext().getService(serviceReference);
 					}
 				} else {
-					throw new PepperException("The pepper-framework was not found in OSGi environment for '" + Pepper.class.getName() + "'.");
+					throw new PepperException("The pepper-framework was not found in OSGi environment. Searching for class: " + Pepper.class.getName() + ". ");
 				}
 				pepper = pepperOSGi;
 				pepper.setConfiguration(getConfiguration());
