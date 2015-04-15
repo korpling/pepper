@@ -255,7 +255,7 @@ public class MavenAccessor {
         session.setDependencyManager( depManager );
 
         DependencySelector depFilter =
-            new AndDependencySelector( new ScopeDependencySelector( "test", "provided" ),
+            new AndDependencySelector( new ScopeDependencySelector( "test"/*, "provided"*/ ),
                                        new OptionalDependencySelector(), new ExclusionDependencySelector() );
         session.setDependencySelector( depFilter );
 
@@ -499,7 +499,11 @@ public class MavenAccessor {
 	 * This method returns all dependencies as list.
 	 * Elementary dependencies and their daughters are skipped. 
 	 */
-	private List<Dependency> getAllDependencies(DependencyNode startNode, boolean skipFramework){
+	private List<Dependency> getAllDependencies(DependencyNode startNode, boolean skipFramework){		
+		if ("provided".equalsIgnoreCase(startNode.getDependency().getScope())){
+			forbiddenFruits.add(startNode.getDependency().getArtifact().toString()+DELIMITER+STATUS.OVERRIDABLE);
+			return Collections.<Dependency>emptyList();
+		}
 		List<Dependency> retVal = new ArrayList<Dependency>();
 		retVal.add(startNode.getDependency());
 		for (DependencyNode node : startNode.getChildren()){
