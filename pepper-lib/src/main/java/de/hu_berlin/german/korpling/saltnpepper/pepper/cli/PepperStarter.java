@@ -204,7 +204,7 @@ public class PepperStarter {
 		String retVal = null;
 
 		Integer[] length = new Integer[4];
-		if (getPepperConfiguration().getConsoleWidth() == PepperStarterConfiguration.CONSOLE_WIDTH_80) {
+		if (getPepperConfiguration().getConsoleWidth() == PepperUtil.CONSOLE_WIDTH_80) {
 			length[0] = 7;
 			length[1] = 5;
 			length[2] = 10;
@@ -996,8 +996,7 @@ public class PepperStarter {
 			if ((args.length > 0) && (args[0].equalsIgnoreCase(COMMAND.DEBUG.toString()))) {
 				starter.debug();
 			}
-
-			logger.info(PepperUtil.getHello(eMail, hp));
+			logger.info(PepperUtil.getHello(pepperProps.getConsoleWidth(), eMail, hp));
 
 			pepper = new PepperOSGiConnector();
 			pepper.setConfiguration(pepperProps);

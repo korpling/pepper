@@ -35,9 +35,14 @@ public abstract class PepperUtil {
 	/** This is the default ending of a Pepper workflow description file.  **/
 	public static final String FILE_ENDING_PEPPER="pepper";
 	/**
-	 * The width of the output console of Pepper.
+	 * The standard width of the output console of Pepper.
 	 */
 	public final static int CONSOLE_WIDTH = 120;
+	/** The width of the output console of Pepper. */
+	public final static int CONSOLE_WIDTH_120 = 120;
+	
+	/** The width of the output console of Pepper, when os is windows. */
+	public final static int CONSOLE_WIDTH_80 = 80;
 
 	/**
 	 * Returns a formatted String, a kind of a welcome screen of Pepper.
@@ -45,7 +50,7 @@ public abstract class PepperUtil {
 	 * @return welcome screen
 	 */
 	public static String getHello() {
-		return (getHello("saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
+		return (getHello(CONSOLE_WIDTH, "saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
 	}
 
 	/**
@@ -53,22 +58,41 @@ public abstract class PepperUtil {
 	 * 
 	 * @return welcome screen
 	 */
-	public static String getHello(String eMail, String hp) {
+	public static String getHello(int width, String eMail, String hp) {
 		StringBuilder retVal = new StringBuilder();
-		retVal.append("************************************************************************************************************************\n");
-		retVal.append("*                                         ____                                                                         *\n");
-		retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
-		retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
-		retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
-		retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
-		retVal.append("*                                                  |_|   |_|                                                           *\n");
-		retVal.append("*                                                                                                                      *\n");
-		retVal.append("************************************************************************************************************************\n");
-		retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
-		retVal.append("* For further information, visit: " + hp + "                                                    *\n");
-		retVal.append("* For contact write an eMail to:  " + eMail + "                                                       *\n");
-		retVal.append("************************************************************************************************************************\n");
-		retVal.append("\n");
+		
+		if (CONSOLE_WIDTH_80== width){
+			retVal.append("********************************************************************************\n");
+			retVal.append("*                    ____                                                      *\n");
+			retVal.append("*                   |  _ \\ ___ _ __  _ __   ___ _ __                           *\n");
+			retVal.append("*                   | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                          *\n");
+			retVal.append("*                   |  __/  __/ |_) | |_) |  __/ |                             *\n");
+			retVal.append("*                   |_|   \\___| .__/| .__/ \\___|_|                             *\n");
+			retVal.append("*                             |_|   |_|                                        *\n");
+			retVal.append("*                                                                              *\n");
+			retVal.append("********************************************************************************\n");
+			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.  *\n");
+			retVal.append("* For further information, visit: " + hp + "            *\n");
+			retVal.append("* For contact write an eMail to:  " + eMail + "               *\n");
+			retVal.append("********************************************************************************\n");
+			retVal.append("\n");
+		}else {
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("*                                         ____                                                                         *\n");
+			retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
+			retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
+			retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
+			retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
+			retVal.append("*                                                  |_|   |_|                                                           *\n");
+			retVal.append("*                                                                                                                      *\n");
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
+			retVal.append("* For further information, visit: " + hp + "                                                    *\n");
+			retVal.append("* For contact write an eMail to:  " + eMail + "                                                       *\n");
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("\n");
+		}
+		
 		return (retVal.toString());
 	}
 
