@@ -237,9 +237,10 @@ public abstract class PepperUtil {
 	 * @param map a map containing the Strings to be printed out sorted as [line, column]
 	 * @param hasHeader determines, if the first line of map contains a header for the table
 	 * @param hasBlanks determines if vertical lines has to be followed by a blank e.g. with blanks "| cell1 |"  or without blanks "|cell1|"
+	 * @param drawInnerVerticalLine determines whether an inner vertical line between two cells has to be drawn e.g. "|cell1 | cell2|" or "|cell1 cell2|" 
 	 * @return
 	 */
-	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
+	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks, boolean drawInnerVerticalLine){
 		if (length== null){
 			throw new PepperException("Cannot create a table with empty length. ");
 		}
@@ -275,6 +276,10 @@ public abstract class PepperUtil {
 			}
 			StringBuilder out= new StringBuilder();
 			boolean goOn= true;
+			if ("--".equalsIgnoreCase(currLine[0])){
+				goOn= false;
+				retVal.append(hr);
+			}
 			while(goOn){
 				goOn= false;
 				for (int col= 0; col< currLine.length; col++){
@@ -288,7 +293,9 @@ public abstract class PepperUtil {
 					if (currLine[col]!= null){
 						goOn= true;
 					}
-					retVal.append("|");
+					if (drawInnerVerticalLine){
+						retVal.append("|");
+					}
 					if (hasBlanks){
 						retVal.append(" ");
 					}
@@ -484,7 +491,7 @@ public abstract class PepperUtil {
 				length[4]= 31;
 				length[5]= 25;
 			}
-			retVal= createTable(length, map, true, true);
+			retVal= createTable(length, map, true, true, true);
 		}
 		return (retVal);
 	}
