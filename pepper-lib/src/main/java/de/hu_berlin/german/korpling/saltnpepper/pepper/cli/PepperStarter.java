@@ -949,7 +949,7 @@ public class PepperStarter {
 				}else{
 					output.println("Type 'help' for help.");
 				}
-			}catch (Exception e){
+			}catch (Exception|Error e){
 				output.print("An error occured while processing '"+userInput+"': "+e.getMessage()+". ");
 				if (!isDebug){
 					output.println("For more details enter '"+COMMAND.DEBUG.getName()+"' and redo last action. ");
