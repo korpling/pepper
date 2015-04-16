@@ -41,12 +41,19 @@ This project includes:
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
   CDI APIs under Apache License, Version 2.0
+  Common Eclipse Runtime under Eclipse Public License - v 1.0
   Commons Codec under The Apache Software License, Version 2.0
   Commons IO under The Apache Software License, Version 2.0
   Commons Logging under The Apache Software License, Version 2.0
+  Core Runtime under Eclipse Public License - v 1.0
   de.hu_berlin.german.korpling.saltnpepper.pepper under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepper-parentModule under The Apache Software License, Version 2.0
   de.hu_berlin.german.korpling.saltnpepper.pepperModules-SampleModules under The Apache Software License, Version 2.0
+  Eclipse Content Mechanism under Eclipse Public License - v 1.0
+  Eclipse Jobs Mechanism under Eclipse Public License - v 1.0
+  Eclipse Preferences Mechanism under Eclipse Public License - v 1.0
+  Equinox Application Container under Eclipse Public License - v 1.0
+  Extension Registry Support under Eclipse Public License - v 1.0
   Fluent API for Apache HttpClient under Apache License
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   Hamcrest Core under New BSD License
@@ -63,7 +70,7 @@ This project includes:
   Maven Repository Metadata Model under The Apache Software License, Version 2.0
   Maven Wagon API under The Apache Software License, Version 2.0
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
-  org.eclipse.emf under The Eclipse Public License Version 1.0
+  org.eclipse.emf.common under The Eclipse Public License Version 1.0
   org.eclipse.emf.ecore under The Eclipse Public License Version 1.0
   org.eclipse.emf.ecore.xmi under The Eclipse Public License Version 1.0
   org.eclipse.equinox:ds under Eclipse Public License - v 1.0
