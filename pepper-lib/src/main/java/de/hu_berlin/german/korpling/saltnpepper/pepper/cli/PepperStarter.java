@@ -252,7 +252,7 @@ public class PepperStarter {
 			retVal.append("Cannot not display any Pepper module. Calling " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
-		retVal.append(PepperUtil.reportModuleList(moduleDescs));
+		retVal.append(PepperUtil.reportModuleList(getPepperConfiguration().getConsoleWidth(), moduleDescs));
 		return (retVal.toString());
 	}
 

@@ -432,7 +432,7 @@ public abstract class PepperUtil {
 	 * @param moduleDescs
 	 * @return
 	 */
-	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs) {
+	public static String reportModuleList(int width, Collection<PepperModuleDesc> moduleDescs) {
 		String retVal = "- no modules registered -\n";
 		if ((moduleDescs != null) && (moduleDescs.size() != 0)){
 			String[][] map= new String[moduleDescs.size()+1][6];
@@ -466,11 +466,24 @@ public abstract class PepperUtil {
 				}else{
 					map[i][5]= "";
 				}
-				
-				
 				i++;
 			}
-			Integer[] length= {4,20,15,11,31,20};
+			Integer[] length= new Integer[6];
+			if (CONSOLE_WIDTH_80== width){
+				length[0]= 4;
+				length[1]= 15;
+				length[2]= 10;
+				length[3]= 11;
+				length[4]= 16;
+				length[5]= 10;
+			}else{
+				length[0]= 4;
+				length[1]= 20;
+				length[2]= 15;
+				length[3]= 11;
+				length[4]= 31;
+				length[5]= 20;
+			}
 			retVal= createTable(length, map, true, true);
 		}
 		return (retVal);
