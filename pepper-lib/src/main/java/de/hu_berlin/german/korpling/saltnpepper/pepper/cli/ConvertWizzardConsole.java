@@ -703,7 +703,7 @@ public class ConvertWizzardConsole {
 			}
 			num++;
 		}
-		retStr = PepperUtil.createTable(length, map, true, true);
+		retStr = PepperUtil.createTable(length, map, true, true,true);
 		return (retStr);
 	}
 
@@ -734,7 +734,7 @@ public class ConvertWizzardConsole {
 				number2propName.put(i, prop.getName());
 				i++;
 			}
-			retStr = PepperUtil.createTable(length, map, true, true);
+			retStr = PepperUtil.createTable(length, map, true, true,true);
 		}
 
 		return (retStr);
