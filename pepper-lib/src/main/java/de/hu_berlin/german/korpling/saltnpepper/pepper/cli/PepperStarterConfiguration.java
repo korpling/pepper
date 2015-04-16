@@ -33,6 +33,7 @@ import com.google.common.base.Splitter;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperPropertyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 
 /**
  * This class represents all properties to customize Pepper. This class is
@@ -269,12 +270,6 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 		return (this.getProperty(PROP_OSGI_SHAREDPACKAGES));
 	}
 	
-	/** The width of the output console of Pepper. */
-	public final static int CONSOLE_WIDTH_120 = 120;
-	
-	/** The width of the output console of Pepper, when os is windows. */
-	public final static int CONSOLE_WIDTH_80 = 80;
-	
 	/** 
 	 * Returns the width of the output console. The width could be either 120 or 80. 
 	**/
@@ -291,15 +286,15 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 		if (width== null){
 			String os= System.getProperty("os.name");
 			if (os.startsWith("Windows")){
-				width= CONSOLE_WIDTH_80;
+				width= PepperUtil.CONSOLE_WIDTH_80;
 			}else{
-				width= CONSOLE_WIDTH_120;
+				width= PepperUtil.CONSOLE_WIDTH_120;
 			}
 		}
-		if (width< CONSOLE_WIDTH_120){
-			width= CONSOLE_WIDTH_80;
+		if (width< PepperUtil.CONSOLE_WIDTH_120){
+			width= PepperUtil.CONSOLE_WIDTH_80;
 		}else{
-			width= CONSOLE_WIDTH_120;
+			width= PepperUtil.CONSOLE_WIDTH_120;
 		}
 		return(width);
 	}

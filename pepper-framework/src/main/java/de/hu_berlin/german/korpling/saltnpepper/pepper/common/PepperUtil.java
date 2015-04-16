@@ -35,9 +35,14 @@ public abstract class PepperUtil {
 	/** This is the default ending of a Pepper workflow description file.  **/
 	public static final String FILE_ENDING_PEPPER="pepper";
 	/**
-	 * The width of the output console of Pepper.
+	 * The standard width of the output console of Pepper.
 	 */
 	public final static int CONSOLE_WIDTH = 120;
+	/** The width of the output console of Pepper. */
+	public final static int CONSOLE_WIDTH_120 = 120;
+	
+	/** The width of the output console of Pepper, when os is windows. */
+	public final static int CONSOLE_WIDTH_80 = 80;
 
 	/**
 	 * Returns a formatted String, a kind of a welcome screen of Pepper.
@@ -45,7 +50,7 @@ public abstract class PepperUtil {
 	 * @return welcome screen
 	 */
 	public static String getHello() {
-		return (getHello("saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
+		return (getHello(CONSOLE_WIDTH, "saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
 	}
 
 	/**
@@ -53,22 +58,41 @@ public abstract class PepperUtil {
 	 * 
 	 * @return welcome screen
 	 */
-	public static String getHello(String eMail, String hp) {
+	public static String getHello(int width, String eMail, String hp) {
 		StringBuilder retVal = new StringBuilder();
-		retVal.append("************************************************************************************************************************\n");
-		retVal.append("*                                         ____                                                                         *\n");
-		retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
-		retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
-		retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
-		retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
-		retVal.append("*                                                  |_|   |_|                                                           *\n");
-		retVal.append("*                                                                                                                      *\n");
-		retVal.append("************************************************************************************************************************\n");
-		retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
-		retVal.append("* For further information, visit: " + hp + "                                                    *\n");
-		retVal.append("* For contact write an eMail to:  " + eMail + "                                                       *\n");
-		retVal.append("************************************************************************************************************************\n");
-		retVal.append("\n");
+		
+		if (CONSOLE_WIDTH_80== width){
+			retVal.append("********************************************************************************\n");
+			retVal.append("*                    ____                                                      *\n");
+			retVal.append("*                   |  _ \\ ___ _ __  _ __   ___ _ __                           *\n");
+			retVal.append("*                   | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                          *\n");
+			retVal.append("*                   |  __/  __/ |_) | |_) |  __/ |                             *\n");
+			retVal.append("*                   |_|   \\___| .__/| .__/ \\___|_|                             *\n");
+			retVal.append("*                             |_|   |_|                                        *\n");
+			retVal.append("*                                                                              *\n");
+			retVal.append("********************************************************************************\n");
+			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.  *\n");
+			retVal.append("* For further information, visit: " + hp + "            *\n");
+			retVal.append("* For contact write an eMail to:  " + eMail + "               *\n");
+			retVal.append("********************************************************************************\n");
+			retVal.append("\n");
+		}else {
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("*                                         ____                                                                         *\n");
+			retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
+			retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
+			retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
+			retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
+			retVal.append("*                                                  |_|   |_|                                                           *\n");
+			retVal.append("*                                                                                                                      *\n");
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
+			retVal.append("* For further information, visit: " + hp + "                                                    *\n");
+			retVal.append("* For contact write an eMail to:  " + eMail + "                                                       *\n");
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("\n");
+		}
+		
 		return (retVal.toString());
 	}
 
@@ -213,9 +237,10 @@ public abstract class PepperUtil {
 	 * @param map a map containing the Strings to be printed out sorted as [line, column]
 	 * @param hasHeader determines, if the first line of map contains a header for the table
 	 * @param hasBlanks determines if vertical lines has to be followed by a blank e.g. with blanks "| cell1 |"  or without blanks "|cell1|"
+	 * @param drawInnerVerticalLine determines whether an inner vertical line between two cells has to be drawn e.g. "|cell1 | cell2|" or "|cell1 cell2|" 
 	 * @return
 	 */
-	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks){
+	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks, boolean drawInnerVerticalLine){
 		if (length== null){
 			throw new PepperException("Cannot create a table with empty length. ");
 		}
@@ -251,6 +276,10 @@ public abstract class PepperUtil {
 			}
 			StringBuilder out= new StringBuilder();
 			boolean goOn= true;
+			if ("--".equalsIgnoreCase(currLine[0])){
+				goOn= false;
+				retVal.append(hr);
+			}
 			while(goOn){
 				goOn= false;
 				for (int col= 0; col< currLine.length; col++){
@@ -264,7 +293,9 @@ public abstract class PepperUtil {
 					if (currLine[col]!= null){
 						goOn= true;
 					}
-					retVal.append("|");
+					if (drawInnerVerticalLine){
+						retVal.append("|");
+					}
 					if (hasBlanks){
 						retVal.append(" ");
 					}
@@ -408,7 +439,7 @@ public abstract class PepperUtil {
 	 * @param moduleDescs
 	 * @return
 	 */
-	public static String reportModuleList(Collection<PepperModuleDesc> moduleDescs) {
+	public static String reportModuleList(int width, Collection<PepperModuleDesc> moduleDescs) {
 		String retVal = "- no modules registered -\n";
 		if ((moduleDescs != null) && (moduleDescs.size() != 0)){
 			String[][] map= new String[moduleDescs.size()+1][6];
@@ -442,12 +473,25 @@ public abstract class PepperUtil {
 				}else{
 					map[i][5]= "";
 				}
-				
-				
 				i++;
 			}
-			Integer[] length= {4,20,15,11,31,20};
-			retVal= createTable(length, map, true, true);
+			Integer[] length= new Integer[6];
+			if (CONSOLE_WIDTH_80== width){
+				length[0]= 4;
+				length[1]= 15;
+				length[2]= 10;
+				length[3]= 11;
+				length[4]= 16;
+				length[5]= 10;
+			}else{
+				length[0]= 4;
+				length[1]= 20;
+				length[2]= 15;
+				length[3]= 11;
+				length[4]= 31;
+				length[5]= 25;
+			}
+			retVal= createTable(length, map, true, true, true);
 		}
 		return (retVal);
 	}

@@ -163,7 +163,7 @@ public class PepperOSGiRunner implements Runnable {
 			}
 
 			// print registered pepper modules
-			logger.info(PepperUtil.reportModuleList(getPepper().getRegisteredModules()));
+			logger.info(PepperUtil.reportModuleList(PepperUtil.CONSOLE_WIDTH, getPepper().getRegisteredModules()));
 
 			if (isSelfTest()) {
 				logger.info("Pepper is running in self test mode...");
