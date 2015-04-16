@@ -135,6 +135,12 @@
 			<artifactId>ds</artifactId>
 			<version>1.4.101</version>
 		</dependency>
+		<dependency>
+			<!-- Necessary to run Salt upto version 2.10.1 (unfortunatly version from 2.10.1 produce a class incompatibility error) -->
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>runtime</artifactId>
+			<version>3.10.0-v20140318-2214</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
