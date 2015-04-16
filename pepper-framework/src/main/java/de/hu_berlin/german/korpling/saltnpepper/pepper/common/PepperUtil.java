@@ -482,7 +482,7 @@ public abstract class PepperUtil {
 				length[2]= 15;
 				length[3]= 11;
 				length[4]= 31;
-				length[5]= 20;
+				length[5]= 25;
 			}
 			retVal= createTable(length, map, true, true);
 		}
