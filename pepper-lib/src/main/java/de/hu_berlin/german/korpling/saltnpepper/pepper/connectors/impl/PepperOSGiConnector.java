@@ -34,7 +34,6 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -64,12 +63,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperOSGiRunner;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
-import java.io.FilenameFilter;
-import java.util.LinkedList;
-import java.util.List;
-import javax.xml.stream.XMLStreamWriter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
 
 /**
  * This class is an implementation of {@link Pepper}. It acts as a bridge
@@ -182,7 +178,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		
 		isInit = true;
 	}
-
+	/**
+	 * A list of packages to be shared between OSGi environment and normal environment. 
+	 */
+	private Map<String, String> frameworkProperties = null;
 	/**
 	 * Starts the OSGi Equinox environment.
 	 * 
@@ -192,7 +191,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected BundleContext startEquinox() throws Exception {
 		BundleContext bc = null;
 
-		Map<String, String> frameworkProperties = new HashMap<String, String>();
+		frameworkProperties = new HashMap<String, String>();
 		frameworkProperties.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSharedPackages());
 		frameworkProperties.put(EclipseStarter.PROP_CLEAN, "true");
 		frameworkProperties.put(EclipseStarter.PROP_CONSOLE, "true");
@@ -262,7 +261,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						pepperOSGi = (Pepper) getBundleContext().getService(serviceReference);
 					}
 				} else {
-					throw new PepperException("The pepper-framework was not found in OSGi environment for '" + Pepper.class.getName() + "'.");
+					throw new PepperFWException("The pepper-framework was not found in OSGi environment. Searching for class: " + Pepper.class.getName() + " brought no result. May be the container package is not listed in property '"+Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA+"': '"+frameworkProperties+"'. ");
 				}
 				pepper = pepperOSGi;
 				pepper.setConfiguration(getConfiguration());
@@ -638,9 +637,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public String createJob() {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().createJob());
 	}
 
@@ -649,9 +648,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public PepperJob getJob(String id) throws JobNotFoundException {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().getJob(id));
 	}
 
@@ -660,9 +659,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	@Override
 	public boolean removeJob(String id) throws JobNotFoundException {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().removeJob(id));
 	}
 
@@ -679,16 +678,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 
 	@Override
 	public String getRegisteredModulesAsString() {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
-
+		}
 		return (getPepper().getRegisteredModulesAsString());
 	}
 
 	@Override
 	public Collection<String> selfTest() {
-		if (getPepper() == null)
+		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
 		return (getPepper().selfTest());
 	}	
 	
