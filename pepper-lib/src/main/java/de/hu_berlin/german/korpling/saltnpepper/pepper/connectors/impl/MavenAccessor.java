@@ -631,8 +631,7 @@ public class MavenAccessor {
 			itDeps = null;			
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
-			pepperFramework = next;
-			newDeps.add(pepperFramework);//we need pepper-framework on the list (TODO is it correct to assume that next==pepper-framework?
+			pepperFramework = next;//(TODO is it correct to assume that next==pepper-framework?)			
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
 				next = dependencies.get(i);
@@ -648,6 +647,7 @@ public class MavenAccessor {
 					logger.debug("The following dependency was put on blacklist, because it equals a parent dependency: "+next.getArtifact().toString());
 				}
 			}
+			newDeps.add(pepperFramework);//we need pepper-framework on the list
 			return newDeps;
 		} catch (DependencyCollectionException e) {
 			logger.warn("Could not collect dependencies for parent. No dependencies will be installed.");
