@@ -437,6 +437,7 @@ public class PepperStarter {
 			// if no parameter is given open convert wizzard
 			ConvertWizzardConsole console = new ConvertWizzardConsole(PROMPT);
 			console.setPepper(getPepper());
+			console.isDebug= this.isDebug;
 			pepperJob = console.start(input, output);
 			if (pepperJob != null) {
 				jobId = pepperJob.getId();
