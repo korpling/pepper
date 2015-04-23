@@ -112,12 +112,29 @@ import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
  * How does this class work?
- * On the first construction of this class the dependency blacklist is initialized, since there is no
- * dependency black list file yet (and this HAS to be like that). The dependency blacklist itself contains
- * all dependencies, which are not supposed to be installed (e.g. dependencies with scope "provided" and already
- * installed dependencies).
+ * One elementary part is the dependency blacklist. It stores maven artifact strings in this scheme:
+ * 
+ * groupId:artifactId:extension:version:STATUS
+ * 
+ * The status can be either FINAL or OVERRIDABLE. FINAL are only dependencies of pepper framework.
+ * These dependencies cannot be overriden by newer versions, whilest dependencies with STATUS OVERRIDABLE
+ * can. Dependencies of pepper plugins will be OVERRIDABLE, more details follow. * 
+ *     
+ * On the first run of pepper, the dependency blacklist is initialized with all dependencies of pepper-parent (includes
+ * dependencies of pepper-framework) with STATUS FINAL, since there is no dependency black list file yet (and it HAS to be like that).
+ * 
+ * The dependency blacklist itself contains all dependencies, which are not supposed to be installed (e.g. dependencies
+ * with scope "provided" and already installed dependencies). When update() terminates, this list is saved to the blacklist.cfg,
+ * which is loaded on every start-up.
+ * 
+ * The core functionality of this class is to perform an update for a specified pepper plugin, when update() is
+ * called. The update method uses two elementary methods: getAllDependencies() and cleanDependencies().
+ * First of all, getAllDependencies() returns a list of all dependencies of the provided artifact recursively and breadth
+ * first. Only dependencies with scope "test" are fully skipped, dependencies with scope "provided" are written to the blacklist (OVERRIDABLE),
+ * because another plugin might be interested in installing it.
+ *  
  * 
  */
 public class MavenAccessor {
@@ -140,8 +157,6 @@ public class MavenAccessor {
 	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2";
 	/** path to maven central */
 	public static final String CENTRAL_REPO = "http://central.maven.org/maven2/";
-	/** path to local repo */
-	public static final String PATH_LOCAL_REPO = "target/local-repo";
 	
 	/** flag which is added to the blacklist entry of a dependency – a FINAL dependency can not be overridden */
 	private static enum STATUS{
@@ -246,7 +261,7 @@ public class MavenAccessor {
 	
 	private DefaultRepositorySystemSession getNewSession(){
 		DefaultRepositorySystemSession session = new DefaultRepositorySystemSession();
-		LocalRepository localRepo = new LocalRepository( PATH_LOCAL_REPO );
+		LocalRepository localRepo = new LocalRepository( pepperOSGiConnector.getPepperStarterConfiguration().getTempPath()+"/local-repo/" );
 		LocalRepositoryManager repoManager = system.newLocalRepositoryManager( session, localRepo );
         session.setLocalRepositoryManager( repoManager );
         session.setRepositoryListener(repoListener);
@@ -301,7 +316,7 @@ public class MavenAccessor {
 	private final MavenRepositoryListener repoListener = new MavenRepositoryListener();
 	
 	/**
-	 * This method checks the pepperModules in the modules.xml for updates
+	 * This method checks the provided pepper plugin for updates
 	 * and triggers the installation process if a newer version is available
 	 */
 	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle){
@@ -320,7 +335,7 @@ public class MavenAccessor {
 		
 		DefaultRepositorySystemSession session = getNewSession();
         
-        boolean update = true; //MUST be born true       
+        boolean update = true; //MUST be born true!       
         
         /*build repository*/
         
@@ -359,7 +374,7 @@ public class MavenAccessor {
     		
     		/* compare, if the listed version really exists in the maven repository */
     		File file = null;	      		
-    		while(!srcExists && itVersions.hasNext() && update){
+    		while (!srcExists && itVersions.hasNext() && update){
 	    			newestVersion = itVersions.next();														    			
 	    			artifact = new DefaultArtifact(groupId, artifactId, "zip", newestVersion.toString());
 	    			if (!(	artifact.isSnapshot() && !isSnapshot 	)){
