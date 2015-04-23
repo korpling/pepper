@@ -114,7 +114,11 @@ import org.slf4j.LoggerFactory;
 
 /*
  * How does this class work?
- * On the first construction of this class 
+ * On the first construction of this class the dependency blacklist is initialized, since there is no
+ * dependency black list file yet (and this HAS to be like that). The dependency blacklist itself contains
+ * all dependencies, which are not supposed to be installed (e.g. dependencies with scope "provided" and already
+ * installed dependencies).
+ * 
  */
 public class MavenAccessor {
 	
