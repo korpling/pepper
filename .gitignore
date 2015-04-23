@@ -3,5 +3,5 @@
 */OSGI-INF
 */target
 /target/
-/pepper-lib/plugins
-/pepper-lib/lib
+/pepper-lib/plugins/*
+/pepper-lib/lib/*
