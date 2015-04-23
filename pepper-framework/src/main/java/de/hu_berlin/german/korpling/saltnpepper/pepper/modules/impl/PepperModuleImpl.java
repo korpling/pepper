@@ -664,8 +664,20 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		for (SCorpusGraph sCorpusGraph : corpGraphs) {
 			if (sCorpusGraph != null) {
 				if (MODULE_TYPE.IMPORTER.equals(getModuleType())){
+					boolean belongsToSetCorpusGraph= false;
+					if (	(sCorpusGraph.getSElementId()!= null)&&
+							(((PepperImporter)this).getSCorpusGraph()!= null)&&
+							(((PepperImporter)this).getSCorpusGraph().getSElementId()!= null)){
+						if (sCorpusGraph.getSElementId().equals(((PepperImporter)this).getSCorpusGraph().getSElementId())){
+							belongsToSetCorpusGraph= true;
+						}
+					}else{
+						if (sCorpusGraph.equals(((PepperImporter)this).getSCorpusGraph())){
+							belongsToSetCorpusGraph= true;
+						}
+					}
 					//in case of module is an importer, only import corpora from set corpus graph
-					if (sCorpusGraph.equals(((PepperImporter)this).getSCorpusGraph())){
+					if (belongsToSetCorpusGraph){
 						for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
 							corporaToEnd.add(sCorpus);
 						}
