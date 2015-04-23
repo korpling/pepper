@@ -7,20 +7,17 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
 
 @Title("Pepper converter framework")
-@Theme("base")
+@Theme("valo")
 public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, ErrorHandler{	
-	protected void init(VaadinRequest request){	
-		VerticalLayout layout = new VerticalLayout();
-		layout.setSizeFull();
-		layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		layout.addComponent(new PepperGUI(this));
-		setContent(layout);		
+	protected void init(VaadinRequest request){
+		setContent(new PepperGUI(this));		
 	}
 
 	@Override

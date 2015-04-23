@@ -8,8 +8,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIC
 public class PepperGUIBody extends HorizontalLayout {	
 	protected static final String GUI_BODY_HEIGHT = "668px";
 	
-	protected PepperGUIBody(PepperGUIController guiController){		
-		/*DEBUG*/setCaption("I AM BODY");
+	protected PepperGUIBody(PepperGUIController guiController){	
 		setWidth(PepperGUI.GUI_WIDTH);
 		setHeight(GUI_BODY_HEIGHT);
 		addComponent(new PepperGUIStepsMenu(guiController));

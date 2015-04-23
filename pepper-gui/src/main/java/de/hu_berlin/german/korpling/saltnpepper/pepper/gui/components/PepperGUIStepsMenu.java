@@ -14,7 +14,6 @@ public class PepperGUIStepsMenu extends VerticalLayout implements PepperGUICompo
 	protected static final String CAPTION_RESULTS = "Results";
 	
 	protected PepperGUIStepsMenu(PepperGUIController guiController) {
-		/*DEBUG*/setCaption("I AM STEPSMENU");
 		setWidth(PepperGUIHeader.GUI_HEADER_LEFT_WIDTH);
 		setHeight(PepperGUIBody.GUI_BODY_HEIGHT);
 		addComponent(new PepperGUIMenuStep(guiController, CAPTION_IMPORTERS, ID_BUTTON_IMPORTERS));
@@ -24,16 +23,17 @@ public class PepperGUIStepsMenu extends VerticalLayout implements PepperGUICompo
 	}
 	
 	private class PepperGUIMenuStep extends HorizontalLayout {
-		private static final String GUI_STEPMENU_ELEM_HEIGHT = "204";		
+		private static final String GUI_STEPMENU_ELEM_HEIGHT = "167px";		
 		
 		private PepperGUIMenuStep(PepperGUIController guiController, String buttonCaption, String id) {
-			/*DEBUG*/setCaption("I AM A STEP SECTION");
 			setWidth(PepperGUIHeader.GUI_HEADER_LEFT_WIDTH);
 			setHeight(GUI_STEPMENU_ELEM_HEIGHT);
 			Button b = new Button();
 			b.setCaption(buttonCaption);
 			b.setId(id);
 			b.addClickListener(guiController);
+			b.setWidth(PepperGUIHeader.GUI_HEADER_LEFT_WIDTH);
+			b.setHeight(GUI_STEPMENU_ELEM_HEIGHT);
 			addComponent(b);
 		}
 	}

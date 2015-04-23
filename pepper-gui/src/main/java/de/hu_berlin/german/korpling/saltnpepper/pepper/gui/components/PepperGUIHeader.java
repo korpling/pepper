@@ -18,7 +18,6 @@ public class PepperGUIHeader extends HorizontalLayout implements PepperGUICompon
 	private static final String CAPTION_LOAD = "Load workflow";
 	
 	protected PepperGUIHeader(PepperGUIController guiController){
-		/*DEBUG*/setCaption("I AM HEADER");
 		setWidth(PepperGUI.GUI_WIDTH);
 		setHeight(GUI_HEADER_HEIGHT);		
 		
@@ -31,8 +30,7 @@ public class PepperGUIHeader extends HorizontalLayout implements PepperGUICompon
 		
 		private PepperGUIHeaderLeft(){
 			setWidth(GUI_HEADER_LEFT_WIDTH);
-			setHeight(GUI_HEADER_HEIGHT);	
-			/*DEBUG*/setCaption("I AM HEADER_LEFT");
+			setHeight(GUI_HEADER_HEIGHT);
 		}
 	}
 	
@@ -54,10 +52,10 @@ public class PepperGUIHeader extends HorizontalLayout implements PepperGUICompon
 			buttonAbout.setCaption(CAPTION_ABOUT);
 			buttonAbout.setId(ID_BUTTON_ABOUT);
 			buttonAbout.addClickListener(guiController);
-			/*DEBUG*/setCaption("I AM HEADER_MENU");
-//			addComponent(buttonNew);
-//			addComponent(buttonLoad);
-//			addComponent(buttonAbout);
+			addComponent(buttonNew);
+			addComponent(buttonLoad);
+			addComponent(buttonAbout);
+			
 		}			
 	}
 
@@ -66,7 +64,6 @@ public class PepperGUIHeader extends HorizontalLayout implements PepperGUICompon
 		private PepperGUIHeaderRight(){
 			setWidth(HEADER_RIGHT_WIDTH);
 			setHeight(GUI_HEADER_HEIGHT);
-			/*DEBUG*/setCaption("I AM HEADER_RIGHT");
 		}
 	}
 }
