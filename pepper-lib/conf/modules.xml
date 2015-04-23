@@ -18,6 +18,9 @@
 	<pepperModules>
 		<artifactId>pepperModules-FALKOModules</artifactId>
 	</pepperModules>
+		<pepperModules>
+		<artifactId>pepperModules-GATEModules</artifactId>
+	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-GenericXMLModules</artifactId>
 	</pepperModules>
