@@ -244,7 +244,6 @@ public class ConvertWizzardConsole {
 
 						outputFile = new File(params.get(params.size() - 1));
 					}
-
 					try {
 						deresolveURIs(outputFile, pepperJob);
 						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
@@ -285,7 +284,12 @@ public class ConvertWizzardConsole {
 		}
 		for (StepDesc stepDesc : pepperJob.getStepDescs()) {
 			if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getCorpusPath() != null)) {
+				URI before= stepDesc.getCorpusDesc().getCorpusPath();
 				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
+				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)){
+					//creates a leading './' if URI is relative
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./"+stepDesc.getCorpusDesc().getCorpusPath()));
+				}
 			}
 		}
 	}
@@ -560,7 +564,6 @@ public class ConvertWizzardConsole {
 					if (!path.endsWith("/")){
 						path= path + "/";
 					}
-					System.out.println("path: "+ path);
 					stepDesc = pepperJob.createStepDesc();
 					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));

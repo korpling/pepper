@@ -86,7 +86,7 @@ public class ConvertWizzardConsoleTest {
 		
 		ConvertWizzardConsole.deresolveURIs(pepperFile, pepperJob);
 		
-		assertEquals(URI.createFileURI("importFolder/"), importStep.getCorpusDesc().getCorpusPath());
-		assertEquals(URI.createFileURI("exportFolder/"), exportStep.getCorpusDesc().getCorpusPath());
+		assertEquals(URI.createFileURI("./importFolder/"), importStep.getCorpusDesc().getCorpusPath());
+		assertEquals(URI.createFileURI("./exportFolder/"), exportStep.getCorpusDesc().getCorpusPath());
 	}
 }
