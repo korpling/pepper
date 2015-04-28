@@ -257,7 +257,7 @@ public class PepperStarter {
 		}
 		number2module= new HashMap<Integer, PepperModuleDesc>(moduleDescs.size());
 		retVal.append(PepperUtil.reportModuleList(getPepperConfiguration().getConsoleWidth(), moduleDescs, number2module));
-
+		retVal.append("To get more information on a particular module enter 'list No' or 'list module-name'. ");
 		return (retVal.toString());
 	}
 
