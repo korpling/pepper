@@ -7,6 +7,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -27,7 +28,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			
 		}
 		else if (ID_BUTTON_NEW.equals(id)){
-			
+			Notification.show("Coucou");
 		}
 		else if (ID_BUTTON_LOAD.equals(id)){
 			
@@ -42,9 +43,6 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			
 		}
 		else if (ID_BUTTON_RESULTS.equals(id)){
-			
-		}
-		else if (ID.BUTTON_ABOUT.equals(id)){
 			
 		}
 		

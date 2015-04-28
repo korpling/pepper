@@ -1,15 +1,19 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.annotations.DesignRoot;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.declarative.Design;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 
-public class PepperGUIMain extends HorizontalLayout {
-	protected static final String GUI_BODY_MAIN_WIDTH = "816px";	
+@DesignRoot
+public class PepperGUIMain extends VerticalLayout {
+	private VerticalLayout layout;
 	
 	protected PepperGUIMain(PepperGUIController guiController) {
-		setWidth(GUI_BODY_MAIN_WIDTH);
-		setHeight(PepperGUIBody.GUI_BODY_HEIGHT);		
+		Design.read("importers.xml", this);	
+		
 	}
 
 }
