@@ -123,18 +123,26 @@ import org.slf4j.LoggerFactory;
  * can. Dependencies of pepper plugins will be OVERRIDABLE, more details follow. * 
  *     
  * On the first run of pepper, the dependency blacklist is initialized with all dependencies of pepper-parent (includes
- * dependencies of pepper-framework) with STATUS FINAL, since there is no dependency black list file yet (and it HAS to be like that).
+ * dependencies of pepper-framework) with STATUS FINAL, since there is no dependency black list file yet (and it HAS to be like that –
+ * another option would be an empty black list file – but the assembly should never be allowed to include blacklist.cfg).
  * 
  * The dependency blacklist itself contains all dependencies, which are not supposed to be installed (e.g. dependencies
  * with scope "provided" and already installed dependencies). When update() terminates, this list is saved to the blacklist.cfg,
- * which is loaded on every start-up.
+ * which is loaded on every start-up of pepper.
  * 
  * The core functionality of this class is to perform an update for a specified pepper plugin, when update() is
  * called. The update method uses two elementary methods: getAllDependencies() and cleanDependencies().
  * First of all, getAllDependencies() returns a list of all dependencies of the provided artifact recursively and breadth
- * first. Only dependencies with scope "test" are fully skipped, dependencies with scope "provided" are written to the blacklist (OVERRIDABLE),
- * because another plugin might be interested in installing it.
- *  
+ * first. Only dependencies with scope "test" and dependencies found on the blacklist are fully skipped, dependencies with scope "provided" are written
+ * to the blacklist (OVERRIDABLE), because another plugin might be interested in installing it. But since another plugin already "knows", that this 
+ * dependency is provided, there is no need to install it (it can be even dangerous). All Salt dependencies (salt-saltX itself) are dropped itself and
+ * their children. Pepper-framework is put on the dependency list, but it's children are dropped. This is necessary to ensure we can determine the pepper
+ * version the plugin was developed for.
+ * After having collected all dependencies, they have to be cleaned, because we still have dependencies which are provided (but scope="compile")
+ * by the system (e.g. OSGi and EMF dependencies). These are actually dependencies of pepper-Parent which are inherited as direct dependencies.
+ * To deal with that, cleanDependencies() collects all dependencies of pepper-Parent (version determined with pepper-framework dependency) and
+ * strikes them off the list.
+ * One little detail: getAllDependencies() is version sensitive. cleanDependencies() doesn't have to be.
  * 
  */
 public class MavenAccessor {
