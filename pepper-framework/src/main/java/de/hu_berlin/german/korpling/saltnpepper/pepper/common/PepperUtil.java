@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
@@ -435,11 +436,13 @@ public abstract class PepperUtil {
 
 	/**
 	 * Creates a table containing all passed Pepper modules corresponding to their description and
-	 * their fingerprint 
-	 * @param moduleDescs
-	 * @return
+	 * their fingerprint
+	 * @param maximal width of the returned string
+	 * @param moduleDescs all modules to be listed
+	 * @param number2module a map containing a module description and a corresponding number for identification
+	 * @return a table displaying all passed modules and a corresponding description
 	 */
-	public static String reportModuleList(int width, Collection<PepperModuleDesc> moduleDescs) {
+	public static String reportModuleList(final int width, final Collection<PepperModuleDesc> moduleDescs, Map<Integer, PepperModuleDesc> number2module){
 		String retVal = "- no modules registered -\n";
 		if ((moduleDescs != null) && (moduleDescs.size() != 0)){
 			String[][] map= new String[moduleDescs.size()+1][6];
@@ -473,6 +476,10 @@ public abstract class PepperUtil {
 				}else{
 					map[i][5]= "";
 				}
+				if (number2module!= null){
+					number2module.put(i, desc);
+				}
+					
 				i++;
 			}
 			Integer[] length= new Integer[6];
@@ -494,6 +501,18 @@ public abstract class PepperUtil {
 			retVal= createTable(length, map, true, true, true);
 		}
 		return (retVal);
+	}
+	
+	/**
+	 * Creates a table containing all passed Pepper modules corresponding to their description and
+	 * their fingerprint 
+	 * @param maximal width of the returned string
+	 * @param moduleDescs all modules to be listed
+	 * @param number2module a map containing a module description and a corresponding number for identification
+	 * @return a table displaying all passed modules and a corresponding description
+	 */
+	public static String reportModuleList(int width, Collection<PepperModuleDesc> moduleDescs) {
+		return(reportModuleList(width, moduleDescs, null));
 	}
 
 	/**
