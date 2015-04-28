@@ -119,6 +119,10 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 				stepDesc.setProps(props);
 			}
 		}else if (TAG_PROP.equals(qName)){
+			if (stepDesc.getProps()== null){
+				props= new Properties();
+				stepDesc.setProps(props);
+			}
 			propName= attributes.getValue(ATT_KEY);
 			propName= propName.trim();
 		}
