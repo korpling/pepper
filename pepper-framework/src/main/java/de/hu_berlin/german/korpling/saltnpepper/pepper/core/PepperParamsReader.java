@@ -129,7 +129,6 @@ public class PepperParamsReader extends DefaultHandler2 {
 				File pathFile= resolveFile(attributes.getValue(ATT_DEST_PATH));
 				if (pathFile!= null){
 					String pathStr= pathFile.getAbsolutePath();
-					pathStr= pathStr.replace(".", "_");
 					URI path= URI.createFileURI(pathStr);
 					stepDesc.getCorpusDesc().setCorpusPath(path);	
 				}
