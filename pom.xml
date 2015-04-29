@@ -250,6 +250,14 @@
 				<groupId>com.carrotgarden.maven</groupId>
 				<artifactId>carrot-maven-scr-plugin</artifactId>
 				<version>${carrot-maven-scr-plugin.version}</version>
+                <dependencies>
+                    <!-- manually update to latest ASM version in order to compile under Java 8 -->
+                    <dependency>  
+                        <groupId>org.ow2.asm</groupId>  
+                        <artifactId>asm</artifactId>  
+                        <version>5.0.3</version>  
+                    </dependency> 
+                </dependencies>
 				<configuration>
 					<!-- Unwanted interfaces. -->
 					<excludedServices>
