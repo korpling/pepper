@@ -443,7 +443,7 @@ public class PepperStarter {
 	/**
 	 * Loads the passed workflow description file and starts the conversion.
 	 * 
-	 * @param workFlowFile
+	 * @param workflowFile
 	 */
 	public void convert(String workFlowFile) {
 		PepperJob pepperJob = null;
@@ -458,11 +458,16 @@ public class PepperStarter {
 				jobId = pepperJob.getId();
 			}
 		} else {
-			URI workFlowUri = URI.createFileURI(workFlowFile);
-			jobId = pepper.createJob();
-
-			pepperJob = pepper.getJob(jobId);
-			pepperJob.load(workFlowUri);
+			if ("water".equalsIgnoreCase(workFlowFile)){
+				String msg= "###############___\n##############)===(\n##############)===(\n##############|H##|\n##############|H##|\n##############|H##|\n#############/=====\\\n############/#######\\\n###########/=========\\\n##########:HHHHHHHH##H:\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|===========|\n##########|###########|\n##########|#\\\\########|\n##########|OOO#In#####|#_________\n##########|#OO#vino###||#########|\n##########|##O#veritas|%#########%\n##########|###########|#\\#######/\n##########|===========|##`.###.'\n##########|HHHHHHHH##H|####\\#/\n##########|HHHHHHHH##H|####(#)\n##########|HHHHHHHH##H|####.|.\n###########~~~~~~~~~~~###~~~^~~~\n Cheers!\n";
+				output.println(msg.replace("#", " "));
+			}else{
+				URI workFlowUri = URI.createFileURI(workFlowFile);
+				jobId = pepper.createJob();
+	
+				pepperJob = pepper.getJob(jobId);
+				pepperJob.load(workFlowUri);
+			}
 		}
 		if (pepperJob != null) {
 			PepperJobReporter observer = new PepperJobReporter(pepperJob, getPepper().getConfiguration().getReportInterval());
