@@ -1084,12 +1084,9 @@ public class PepperStarter {
 					starter.convert(workFlowFile);
 
 					timestamp = System.currentTimeMillis() - timestamp;
-					logger.info("CONVERSION ENDED SUCCESSFULLY, REQUIRED TIME: " + timestamp + " ms");
 				} catch (Exception e) {
 					timestamp = System.currentTimeMillis() - timestamp;
 					endedWithErrors = true;
-					logger.info("CONVERSION ENDED WITH ERRORS, REQUIRED TIME:  " + timestamp + " ms");
-					logger.info(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
 					throw e;
 				}
 			}
