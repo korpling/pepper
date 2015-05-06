@@ -22,13 +22,12 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnManipulators;
 	private Button btnResults;
 
-	private VerticalLayout main;
+	private PepperGuiMain main;
 		
 	public PepperGUI(PepperGUIController GUIcontroller){	
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Design.read("gui.xml", this);
-		main.addComponent(new PepperGUIMain(GUIcontroller));
-		Design.read("importers.xml", main);
+//		Design.read("importers.xml", main);
 		btnNewWorkflow.setId(ID_BUTTON_NEW);
 		btnLoadWorkflow.setId(ID_BUTTON_LOAD);
 		btnAbout.setId(ID_BUTTON_ABOUT);

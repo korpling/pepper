@@ -12,7 +12,7 @@ public class PepperGUIBody extends HorizontalLayout {
 		setWidth(PepperGUI.GUI_WIDTH);
 		setHeight(GUI_BODY_HEIGHT);
 		addComponent(new PepperGUIStepsMenu(guiController));
-		addComponent(new PepperGUIMain(guiController));
+		addComponent(new PepperGuiMain(guiController));
 	}
 	
 }
