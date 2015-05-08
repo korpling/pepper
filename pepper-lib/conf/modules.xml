@@ -73,4 +73,7 @@
 	<pepperModules>
 		<artifactId>pepperModules-UAMModules</artifactId>
 	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-GrAFModules</artifactId>
+	</pepperModules>
 </pepperModulesList>
