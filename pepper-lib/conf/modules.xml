@@ -73,4 +73,7 @@
 	<pepperModules>
 		<artifactId>pepperModules-UAMModules</artifactId>
 	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-GraphAnnoModules</artifactId>
+	</pepperModules>
 </pepperModulesList>
