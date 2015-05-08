@@ -8,6 +8,7 @@ import com.vaadin.ui.declarative.Design;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.WINDOW;
 
 @DesignRoot
 public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary{
@@ -21,13 +22,11 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnExporters;
 	private Button btnManipulators;
 	private Button btnResults;
-
 	private PepperGuiMain main;
 		
 	public PepperGUI(PepperGUIController GUIcontroller){	
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		Design.read("gui.xml", this);
-//		Design.read("importers.xml", main);
+		Design.read(this);
 		btnNewWorkflow.setId(ID_BUTTON_NEW);
 		btnLoadWorkflow.setId(ID_BUTTON_LOAD);
 		btnAbout.setId(ID_BUTTON_ABOUT);
@@ -42,6 +41,11 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnImporters.addClickListener(GUIcontroller);
 		btnExporters.addClickListener(GUIcontroller);
 		btnManipulators.addClickListener(GUIcontroller);
-		btnResults.addClickListener(GUIcontroller);		
+		btnResults.addClickListener(GUIcontroller);
+		main.setController(GUIcontroller);
+	}
+	
+	public void setWindow(WINDOW window){
+		main.setWindow(window);
 	}
 }

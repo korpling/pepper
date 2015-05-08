@@ -45,6 +45,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_RESULTS.equals(id)){
 			
 		}
+		else if ("test".equals(id)){
+			Notification.show("it worked");
+		}
 		
 	}
 
