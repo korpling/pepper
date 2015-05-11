@@ -23,6 +23,8 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnManipulators;
 	private Button btnResults;
 	private PepperGuiMain main;
+	
+	private Button btnTest;
 		
 	public PepperGUI(PepperGUIController GUIcontroller){	
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -34,6 +36,7 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnExporters.setId(ID_BUTTON_EXPORTERS);
 		btnManipulators.setId(ID_BUTTON_MANIPULATORS);
 		btnResults.setId(ID_BUTTON_RESULTS);
+		btnTest.setId("test");
 		
 		btnNewWorkflow.addClickListener(GUIcontroller);		
 		btnLoadWorkflow.addClickListener(GUIcontroller);
