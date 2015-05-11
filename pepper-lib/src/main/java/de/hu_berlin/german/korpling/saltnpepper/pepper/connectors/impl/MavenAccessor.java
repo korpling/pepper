@@ -395,7 +395,7 @@ public class MavenAccessor {
 		    					file = artifact.getFile();
 		    				
 		    			}catch (ArtifactResolutionException e){
-		    					logger.warn("Highest version in repository could not be found. Checking the next lower version ...");
+		    					logger.warn("Plugin version "+newestVersion+" could not be found in repository. Checking the next lower version ...");
 		    			}
 	    			}
     		}    	
