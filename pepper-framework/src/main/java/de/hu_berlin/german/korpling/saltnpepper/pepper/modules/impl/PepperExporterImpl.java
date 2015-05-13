@@ -219,7 +219,18 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 								for (String segment : sDocument.getSElementPath().segments()) {
 									resourceURI = resourceURI.appendSegment(segment);
 								}
-								getSElementId2ResourceTable().put(sDocument.getSElementId(), resourceURI.appendFileExtension(ending));
+								resourceURI= resourceURI.appendFileExtension(ending);
+								getSElementId2ResourceTable().put(sDocument.getSElementId(), resourceURI);
+								
+								//in case of folders in hierarchie does not exist, create them
+								String fileName= resourceURI.toFileString();
+								if (fileName== null){
+									resourceURI.toString();
+								}
+								File outFile= new File(fileName);
+								if (!outFile.getParentFile().exists()){
+									outFile.getParentFile().mkdirs();
+								}
 							}
 						}
 					}
