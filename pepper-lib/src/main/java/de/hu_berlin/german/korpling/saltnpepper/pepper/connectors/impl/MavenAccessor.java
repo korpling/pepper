@@ -82,6 +82,7 @@ import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
 import org.eclipse.aether.transfer.AbstractTransferListener;
+import org.eclipse.aether.transfer.ArtifactNotFoundException;
 import org.eclipse.aether.transfer.MetadataNotFoundException;
 import org.eclipse.aether.transfer.TransferEvent;
 import org.eclipse.aether.transfer.TransferResource;
@@ -162,7 +163,7 @@ public class MavenAccessor {
 	/** this String contains the artifactId of pepper-parentModule. */
 	public static final String ARTIFACT_ID_PEPPER_PARENT = "pepper-parentModule";
 	/** path to korpling maven repo */
-	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2";
+	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2/";
 	/** path to maven central */
 	public static final String CENTRAL_REPO = "http://central.maven.org/maven2/";
 	
@@ -349,7 +350,7 @@ public class MavenAccessor {
         
         RemoteRepository repo = repos.get(repositoryUrl);
         if (repo==null){
-        	repo = buildRepo("any", repositoryUrl);
+        	repo = buildRepo("repo", repositoryUrl);
         	repos.put(repositoryUrl, repo);
         }     
         
@@ -423,15 +424,15 @@ public class MavenAccessor {
 	            collectRequest.setRoot( new Dependency( artifact, "" ) );
 	            collectRequest.addRepository(repos.get(CENTRAL_REPO));
 	            collectRequest.addRepository(repo);
-	            CollectResult collectResult = system.collectDependencies( session, collectRequest );            
-	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);             
+	            CollectResult collectResult = system.collectDependencies( session, collectRequest );           
+	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);            
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
             	 * not already on the blacklist
             	 * */           
 	            String parentVersion = null;
 	            for(int i=0; i<allDependencies.size()&&parentVersion==null; i++){
-	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(allDependencies.get(i).getArtifact().getArtifactId())){
+	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(allDependencies.get(i).getArtifact().getArtifactId())){ 
 	            		parentVersion = allDependencies.get(i).getArtifact().getVersion();
 	            	}
 	            } 
@@ -515,8 +516,20 @@ public class MavenAccessor {
 	    		 */
         		write2Blacklist();	            
 			}	    	
-    	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {    		
-    		logger.debug("Update failed.", e);
+    	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {		
+			if (e instanceof DependencyCollectionException){
+				Throwable t = e.getCause();
+				while(t.getCause()!=null){
+					t = t.getCause();
+				}
+				if (t instanceof ArtifactNotFoundException){
+					if (logger.isDebugEnabled()) {
+						logger.debug(t.getMessage(), e);
+					}else{
+						logger.warn("Update of "+artifactId+" failed, could not resolve dependencies "/*, e*/);//TODO decide
+					}
+				}
+			}
     		update = false;			
 		}       		
         return update;
@@ -658,7 +671,7 @@ public class MavenAccessor {
 			itDeps = null;			
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
-			pepperFramework = next;//(TODO is it correct to assume that next==pepper-framework?)			
+			pepperFramework = next;		
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
 				next = dependencies.get(i);
