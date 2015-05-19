@@ -8,9 +8,10 @@ public interface PepperGUIComponentDictionary {
 	public static final String ID_BUTTON_EXPORTERS = "4";
 	public static final String ID_BUTTON_MANIPULATORS = "5";
 	public static final String ID_BUTTON_RESULTS = "6";
-	public static enum ID{
-		BUTTON_NEW,
-		BUTTON_LOAD,
-		BUTTON_ABOUT;
-	}
+	
+//	public static final String ID_MAIN_START = "7";
+//	public static final String ID_MAIN_IMPORTERS = "8";
+//	public static final String ID_MAIN_EXPORTERS = "9";
+//	public static final String ID_MAIN_MANIPULATORS = "A";
+//	public static final String ID_MAIN_RESULTS = "B";
 }

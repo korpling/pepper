@@ -3,9 +3,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
-import com.vaadin.ui.declarative.DesignException;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
@@ -23,13 +23,15 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnExporters;
 	private Button btnManipulators;
 	private Button btnResults;
-	private PepperGuiMain main;
+	private VerticalLayout start;
+	private VerticalLayout importers;
+	private VerticalLayout exporters;
+	private VerticalLayout manipulators;
+	private VerticalLayout results;
 		
 	public PepperGUI(PepperGUIController GUIcontroller){	
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		try{Design.read(this);} catch (DesignException e){
-			main.setWindow(WINDOW.START);
-		}
+		Design.read(this);
 		btnNewWorkflow.setId(ID_BUTTON_NEW);
 		btnLoadWorkflow.setId(ID_BUTTON_LOAD);
 		btnAbout.setId(ID_BUTTON_ABOUT);
@@ -45,10 +47,24 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnExporters.addClickListener(GUIcontroller);
 		btnManipulators.addClickListener(GUIcontroller);
 		btnResults.addClickListener(GUIcontroller);
-		main.setController(GUIcontroller);
 	}
 	
-	public void setWindow(WINDOW window){
-		main.setWindow(window);
+	public VerticalLayout setWindow(WINDOW window, VerticalLayout currentWindow){
+		currentWindow = currentWindow==null? start : currentWindow;
+		currentWindow.setVisible(false);
+		if (window.equals(WINDOW.IMPORTERS)){
+			currentWindow = importers;
+		}
+		else if (window.equals(WINDOW.EXPORTERS)){
+			currentWindow = exporters;
+		}
+		else if (window.equals(WINDOW.MANIPULATORS)){
+			currentWindow = manipulators;
+		}
+		else{
+			currentWindow = results;
+		}
+		currentWindow.setVisible(true);
+		return currentWindow;
 	}
 }
