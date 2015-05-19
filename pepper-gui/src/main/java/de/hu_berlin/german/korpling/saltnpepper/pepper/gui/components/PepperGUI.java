@@ -1,9 +1,9 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
-import com.google.gwt.user.client.ui.FileUpload;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
@@ -12,10 +12,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIC
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.WINDOW;
 
 @DesignRoot
-public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary{
-	protected static final String GUI_WIDTH = "1024px";
-	protected static final String GUI_HEIGHT = "768px";
-	
+public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary{	
 	private Button btnNewWorkflow;
 	private Button btnLoadWorkflow;
 	private Button btnAbout;
@@ -30,9 +27,9 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private VerticalLayout results;
 	
 	/*Components of importers section*/
-	private FileUpload fileUpload;
+	private Upload upload;
 		
-	public PepperGUI(PepperGUIController GUIcontroller){	
+	public PepperGUI(PepperGUIController GUIcontroller){
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Design.read(this);
 		btnNewWorkflow.setId(ID_BUTTON_NEW);
