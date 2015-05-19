@@ -33,7 +33,7 @@
 	</distributionManagement>
 	<properties>
 		<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
-		<pepper.version>2.1.0</pepper.version>
+		<pepper.version>2.1.0-SNAPSHOT</pepper.version>
 	</properties>
 	<dependencies>
 		<!-- Lists all dependencies comming from parent and sets their scope to 
