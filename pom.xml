@@ -78,6 +78,7 @@
 		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
 		<vaadin.version>7.4.3</vaadin.version>
+		<com.google.gwt.version>2.7.0</com.google.gwt.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version>-->
@@ -93,7 +94,7 @@
 		<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
 		<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
 		<xmlunit.version>1.5</xmlunit.version>
-		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
+		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>		
 	</properties>
 	<dependencies>
 		<!-- <dependency> <groupId>org.codehaus.janino</groupId> <artifactId>janino</artifactId> 
