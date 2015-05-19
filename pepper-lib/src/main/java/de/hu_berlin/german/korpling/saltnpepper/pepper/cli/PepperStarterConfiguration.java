@@ -284,12 +284,7 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 			}
 		}
 		if (width== null){
-			String os= System.getProperty("os.name");
-			if (os.startsWith("Windows")){
-				width= PepperUtil.CONSOLE_WIDTH_80;
-			}else{
-				width= PepperUtil.CONSOLE_WIDTH_120;
-			}
+			width= PepperUtil.CONSOLE_WIDTH_120;
 		}
 		if (width< PepperUtil.CONSOLE_WIDTH_120){
 			width= PepperUtil.CONSOLE_WIDTH_80;
