@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.registry.LocateRegistry;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -36,12 +35,6 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.building.DefaultModelBuilder;
-import org.apache.maven.model.building.DefaultModelBuilderFactory;
-import org.apache.maven.model.building.DefaultModelBuildingRequest;
-import org.apache.maven.model.building.ModelBuildingRequest;
-import org.apache.maven.model.superpom.SuperPomProvider;
 import org.apache.maven.repository.internal.DefaultArtifactDescriptorReader;
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.apache.maven.repository.internal.DefaultVersionResolver;
@@ -89,7 +82,6 @@ import org.eclipse.aether.transfer.TransferResource;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry;
-import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.manager.ClassicDependencyManager;
 import org.eclipse.aether.util.graph.selector.AndDependencySelector;
 import org.eclipse.aether.util.graph.selector.ExclusionDependencySelector;
@@ -425,7 +417,7 @@ public class MavenAccessor {
 	            collectRequest.addRepository(repos.get(CENTRAL_REPO));
 	            collectRequest.addRepository(repo);
 	            CollectResult collectResult = system.collectDependencies( session, collectRequest );           
-	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);            
+	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);          
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
             	 * not already on the blacklist
@@ -446,8 +438,14 @@ public class MavenAccessor {
 	            //in the following we ignore the first dependency (i=0), because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
-	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){            			            		
-	            		if (!ignoreFrameworkVersion && !dependency.getArtifact().getVersion().replace("-SNAPSHOT", "").equals(pepperOSGiConnector.getFrameworkVersion().replace("-SNAPSHOT", ""))){	            			
+	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){
+	            		Version frameworkVersion = vScheme.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "").replace("-SNAPSHOT", ""));
+	            		Version depParentVersion = vScheme.parseVersion(parentVersion.replace("-SNAPSHOT", ""));
+	            		int m = 1+Integer.parseInt(depParentVersion.toString().split("\\.")[0]);
+	            		Version maxVersion = vScheme.parseVersion(m+".0.0");
+	            		boolean compatible = depParentVersion.compareTo(frameworkVersion)<=0 && frameworkVersion.compareTo(maxVersion)<0 
+	            				&& !(frameworkVersion.equals(depParentVersion) && pepperOSGiConnector.getFrameworkVersion().contains("SNAPSHOT") && !parentVersion.contains("SNAPSHOT"));	            		
+	            		if (!ignoreFrameworkVersion && !compatible){	            			
 	            			logger.info(
 	            					(new StringBuilder())
 	            					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
