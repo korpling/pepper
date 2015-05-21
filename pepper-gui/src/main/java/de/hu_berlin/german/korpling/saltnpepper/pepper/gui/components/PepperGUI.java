@@ -3,6 +3,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
@@ -25,11 +26,19 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private VerticalLayout exporters;
 	private VerticalLayout manipulators;
 	private VerticalLayout results;
+	private HorizontalLayout itemList;
+	private int buttonCount = 0;
+	private PepperGUIController controller = null;
+	private PepperGuiMain main;
 	
 	/*Components of importers section*/
 	private Upload upload;
 		
 	public PepperGUI(PepperGUIController GUIcontroller){
+		controller = GUIcontroller;
+		
+//		main.setController(GUIcontroller);
+		
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Design.read(this);
 		btnNewWorkflow.setId(ID_BUTTON_NEW);
@@ -47,6 +56,23 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnExporters.addClickListener(GUIcontroller);
 		btnManipulators.addClickListener(GUIcontroller);
 		btnResults.addClickListener(GUIcontroller);
+		
+//		addButton();
+	}
+	
+	@Override
+	public void attach(){
+		super.attach();
+		main.setController(controller);
+	}
+	
+	private void addButton(){
+		Button b = new Button();
+		b.setCaption(Integer.toString(buttonCount++));
+		b.setWidth("20");
+		b.setHeight("20");
+		b.addClickListener(controller);
+		itemList.addComponent(b);//FIXME --> first check, which itemlist, bla bla bla		
 	}
 	
 	public VerticalLayout setWindow(WINDOW window, VerticalLayout currentWindow){
