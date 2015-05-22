@@ -17,12 +17,15 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 
 public abstract class PepperJob {
@@ -35,6 +38,38 @@ public abstract class PepperJob {
 	public String getId() {
 		return id;
 	}
+	
+	/** The base directory is either the directory from which the Pepper workflow description was loaded or the directory from 
+	 * which Pepper was started. **/
+	private URI baseDir= null;
+	
+	/**
+	 * Sets the base directory for this {@link ModuleController}. The base directory is either 
+	 * the directory from which the Pepper workflow description was loaded or the directory from 
+	 * which Pepper was started.
+	 * @param baseDir base directory
+	 */
+	public void setBaseDir(URI baseDir){
+		this.baseDir= baseDir;
+	}
+	
+	/**
+	 * Returns the base directory for this {@link ModuleController}. The base directory is either 
+	 * the directory from which the Pepper workflow description was loaded or the directory from 
+	 * which Pepper was started.
+	 * @return base directory
+	 */
+	public URI getBaseDir(){
+		if (baseDir== null){
+			try {
+				baseDir= URI.createFileURI(new File("./").getCanonicalPath());
+			} catch (IOException e) {
+				baseDir= URI.createFileURI(new File("./").getAbsolutePath());
+			}
+		}
+		return(baseDir);
+	}
+	
 	/** status of job **/
 	protected JOB_STATUS status= JOB_STATUS.NOT_STARTED;
 	/**
@@ -89,21 +124,6 @@ public abstract class PepperJob {
 	public StepDesc createStepDesc(){
 		return(new StepDesc());
 	}
-//	/**
-//	 * Creates a {@link StepDesc} object an returns it. Further the {@link StepDesc} type {@link StepDesc}s
-//	 * module type is set to the passed one.
-//	 * @param moduleType 
-//	 * @return
-//	 */
-//	public StepDesc createStepDesc(MODULE_TYPE moduleType){
-//		if (moduleType== null){
-//			throw new PepperException("Cannot create a step desc object when passed module type is empty.");
-//		}
-//		StepDesc stepDesc= createStepDesc();
-//		stepDesc.setModuleType(moduleType);
-//		addStepDesc(stepDesc);
-//		return(stepDesc);
-//	}
 
 	/**
 	 * Starts the conversion of this job.

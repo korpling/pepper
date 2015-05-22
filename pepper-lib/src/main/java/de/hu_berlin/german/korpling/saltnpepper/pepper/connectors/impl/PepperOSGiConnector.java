@@ -94,7 +94,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * in and outside of OSGi. This could be removed, when there is a better way
 	 * to detect the current Pepper version automatically.
 	 */
-	public static final String PEPPER_VERSION = "2.1.0";
+	public static final String PEPPER_VERSION = "2.1.1.SNAPSHOT";
 
 	/** Determines if this object has been initialized **/
 	private boolean isInit = false;

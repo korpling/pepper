@@ -17,12 +17,17 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.core;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +39,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentControlle
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 
 /**
@@ -217,8 +226,7 @@ public class ModuleControllerImpl implements ModuleController{
 		}
 		if (!getBusyLock().tryLock()){
 			throw new PepperInActionException("Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
-		}
-		else{
+		}else{
 			this.sCorpusGraph= sCorpusGraph;
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			Runnable task = new Runnable() {
@@ -247,26 +255,32 @@ public class ModuleControllerImpl implements ModuleController{
 	 * request all {@link DocumentController} object waiting in the incoming {@link DocumentBus}.
 	 */
 	public synchronized Future<?> processDocumentStructures(){
-		if (getPepperModule()== null)
+		if (getPepperModule()== null){
 			throw new PepperFWException("Cannot start imort corpus structure, because the contained Pepper module is null.");
-		if (!getBusyLock().tryLock())
+		}
+		if (!getBusyLock().tryLock()){
 			throw new PepperInActionException("Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
-		else{
+		}else{
 			
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			Runnable task = new Runnable() {
 			  public void run() {
+				  //calls before() to do some work before everything is processed when set in customization property
+				  before();
 				  getPepperModule().start();
 				  if (getControllList().size()!= 0){
 					  throw new PepperModuleException(getPepperModule(), "Some documents are still in the processing queue by module '"+getPepperModule().getName()+"' and neither set to '"+DOCUMENT_STATUS.COMPLETED+"', '"+DOCUMENT_STATUS.DELETED+"' or '"+DOCUMENT_STATUS.FAILED+"'. Remaining documents are: "+getControllList());
 				  }
 				  getOutputDocumentBus().finish(getPepperModule().getModuleController().getId());
 				  mLogger.debug("[{}] completed processing of documents and corpora. ", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "));
+				  //calls after() to do some work after everything was processed when set in customization property
+				  after();
 			  }
 			};
 
-			if (!getBusyLock().tryLock())
+			if (!getBusyLock().tryLock()){
 				throw new PepperInActionException("cannot import document structure, because module controller '"+getId()+"' currently is busy with another process.");
+			}
 			getBusyLock().lock();
 			Future<?> future= null;
 			try{
@@ -277,6 +291,93 @@ public class ModuleControllerImpl implements ModuleController{
 			return(future);
 		}
 	}
+	
+	/** {@inheritDoc PepperModule#before(SElementId)} */
+	private void before() throws PepperModuleException {
+		
+	}
+	
+	/** {@inheritDoc PepperModule#after(SElementId)} */
+	private void after() throws PepperModuleException {
+		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES) != null) {
+			// copies resources as files from source to target
+			copyResources();
+		}
+	}
+	
+	/**
+	 * Reads customization property {@link PepperModuleProperties#PROP_AFTER_COPY_RES} and copies the listed 
+	 * resources to the named target folder.
+	 */
+	private void copyResources(){
+		String resString = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
+		if ((resString != null) && (!resString.isEmpty())) {
+			String[] resources = resString.split(";");
+			if (resources.length > 0) {
+				for (String resource : resources) {
+					resource = resource.trim();
+					String[] parts = resource.split("->");
+					if (parts.length == 2) {
+						String sourceStr= parts[0];
+						String targetStr= parts[1];
+						
+						//check if source and target is given
+						boolean copyOk= true;
+						if (	(sourceStr== null)||
+								(sourceStr.isEmpty())){
+							logger.warn("Cannot copy resources for '"+getPepperModule().getName()+"' because no source file was given in property value '"+resource+"'. ");
+							copyOk= false;
+						}
+						if (	(targetStr== null)||
+								(targetStr.isEmpty())){
+							logger.warn("Cannot copy resources for '"+getPepperModule().getName()+"' because no target file was given in property value '"+resource+"'. ");
+							copyOk= false;
+						}
+						if (copyOk){
+							File source= new File(sourceStr);
+							File target= new File(targetStr);
+							
+							// in case of source or target aren't absolute resolve them against current Job's base directory
+							String baseDir= getJob().getBaseDir().toFileString();
+							if (!baseDir.endsWith("/")){
+								baseDir= baseDir+ "/"; 
+							}
+							if (!source.isAbsolute()){
+								source= new File(baseDir + sourceStr);
+							}
+							if (!source.exists()){
+								logger.warn("Cannot copy resources for '"+getPepperModule().getName()+"' because source does not exist '"+source.getAbsolutePath()+"'. Check the property value '"+resource+"'. ");
+							}else{
+								//only copy if source exists
+								
+								if (!target.isAbsolute()){
+									target= new File(baseDir + targetStr);
+								}
+								if (!target.exists()){
+									target.mkdirs();
+								}
+								try {
+									if (source.isDirectory()){
+										FileUtils.copyDirectory(source, target);
+									}else{
+										targetStr= target.getCanonicalPath();
+										if (!targetStr.endsWith("/")){
+											targetStr= targetStr+ "/";
+										}
+										target= new File(targetStr+source.getName());
+										FileUtils.copyFile(source, target);
+									}
+								} catch (IOException e) {
+									logger.warn("Cannot copy resources for '"+getPepperModule().getName()+"' because of '"+e.getMessage()+"'. Check the property value '"+resource+"'. ");
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	/** A lock determining, whether this object currently is busy with importing corpus structure or importing document structure.  **/
 	protected ReentrantLock busyLock= null;
 	/**

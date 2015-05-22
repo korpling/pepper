@@ -17,6 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -276,10 +279,11 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 					(sElementId.getSIdentifiableElement() != null)){
 				if (sElementId.getSIdentifiableElement() instanceof SDocument){
 					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
-					//add layers
-					String layers= (String)getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
-					addSLayers(sDoc, layers);
-					
+					if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER)!= null){
+						// add slayers after processing
+						String layers= (String)getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
+						addSLayers(sDoc, layers);
+					}
 				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
 					
 				}

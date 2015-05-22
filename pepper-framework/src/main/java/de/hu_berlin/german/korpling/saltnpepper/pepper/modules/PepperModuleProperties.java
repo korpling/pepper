@@ -86,6 +86,14 @@ public class PepperModuleProperties implements Serializable {
 	 * object.
 	 */
 	public static final String PROP_AFTER_ADD_SLAYER = PREFIX_PEPPER_AFTER + "addSLayer";
+	
+	/**
+	 * Copies one or more source files to one or more target files after processing. This is very helpful, 
+	 * in case of customizations should be done in target format.
+	 * Syntax is: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*
+	 * 
+	 */
+	public static final String PROP_AFTER_COPY_RES = PREFIX_PEPPER_AFTER + "copyRes";
 	/**
 	 * Consumes a semicolon separated list of names for {@link SLayer} objects.
 	 * For each list element, one {@link SLayer} is created and added to all
@@ -104,6 +112,7 @@ public class PepperModuleProperties implements Serializable {
 	public PepperModuleProperties() {
 		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
 	}
 
 	/**

@@ -1230,7 +1230,9 @@ public class PepperJobImpl extends PepperJob {
 	public void load(URI uri) {
 		if (uri.isFile()) {
 			File wdFile = new File(uri.toFileString());
-
+			//set folder containing workflow description as base dir
+			setBaseDir(uri.trimSegments(1));
+			
 			SAXParser parser;
 			XMLReader xmlReader;
 			SAXParserFactory factory = SAXParserFactory.newInstance();
