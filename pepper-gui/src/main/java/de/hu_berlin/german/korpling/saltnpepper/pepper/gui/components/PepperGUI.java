@@ -10,7 +10,7 @@ import com.vaadin.ui.declarative.Design;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.WINDOW;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.VIEW;
 
 @DesignRoot
 public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary{	
@@ -21,23 +21,12 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnExporters;
 	private Button btnManipulators;
 	private Button btnResults;
-	private VerticalLayout start;
-	private VerticalLayout importers;
-	private VerticalLayout exporters;
-	private VerticalLayout manipulators;
-	private VerticalLayout results;
-	private HorizontalLayout itemList;
-	private int buttonCount = 0;
 	private PepperGUIController controller = null;
 	private PepperGuiMain main;
-	
-	/*Components of importers section*/
-	private Upload upload;
 		
 	public PepperGUI(PepperGUIController GUIcontroller){
+		super();
 		controller = GUIcontroller;
-		
-//		main.setController(GUIcontroller);
 		
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Design.read(this);
@@ -63,34 +52,10 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	@Override
 	public void attach(){
 		super.attach();
-		main.setController(controller);
+		//TODO add initial method calls for main here
 	}
 	
-	private void addButton(){
-		Button b = new Button();
-		b.setCaption(Integer.toString(buttonCount++));
-		b.setWidth("20");
-		b.setHeight("20");
-		b.addClickListener(controller);
-		itemList.addComponent(b);//FIXME --> first check, which itemlist, bla bla bla		
-	}
-	
-	public VerticalLayout setWindow(WINDOW window, VerticalLayout currentWindow){
-		currentWindow = currentWindow==null? start : currentWindow;
-		currentWindow.setVisible(false);
-		if (window.equals(WINDOW.IMPORTERS)){
-			currentWindow = importers;
-		}
-		else if (window.equals(WINDOW.EXPORTERS)){
-			currentWindow = exporters;
-		}
-		else if (window.equals(WINDOW.MANIPULATORS)){
-			currentWindow = manipulators;
-		}
-		else{
-			currentWindow = results;
-		}
-		currentWindow.setVisible(true);
-		return currentWindow;
+	public void setView(VIEW view){
+		main.setView(view);
 	}
 }
