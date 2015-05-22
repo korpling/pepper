@@ -89,7 +89,8 @@ public class PepperModuleProperties implements Serializable {
 	
 	/**
 	 * Copies one or more source files to one or more target files after processing. This is very helpful, 
-	 * in case of customizations should be done in target format.
+	 * in case of customizations should be done in target format. If you use relative paths, the are anchored
+	 * to either the location of the workflow description file or where Pepper was started.
 	 * Syntax is: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*
 	 * 
 	 */
@@ -112,7 +113,7 @@ public class PepperModuleProperties implements Serializable {
 	public PepperModuleProperties() {
 		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
-		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
 	}
 
 	/**
