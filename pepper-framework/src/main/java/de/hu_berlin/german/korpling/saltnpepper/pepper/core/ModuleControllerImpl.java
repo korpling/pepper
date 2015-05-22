@@ -301,7 +301,9 @@ public class ModuleControllerImpl implements ModuleController{
 	private void after() throws PepperModuleException {
 		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES) != null) {
 			// copies resources as files from source to target
-			copyResources();
+			
+			String resString = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
+			copyResources(resString);
 		}
 	}
 	
@@ -309,8 +311,7 @@ public class ModuleControllerImpl implements ModuleController{
 	 * Reads customization property {@link PepperModuleProperties#PROP_AFTER_COPY_RES} and copies the listed 
 	 * resources to the named target folder.
 	 */
-	private void copyResources(){
-		String resString = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
+	protected void copyResources(String resString){
 		if ((resString != null) && (!resString.isEmpty())) {
 			String[] resources = resString.split(";");
 			if (resources.length > 0) {
@@ -320,6 +321,8 @@ public class ModuleControllerImpl implements ModuleController{
 					if (parts.length == 2) {
 						String sourceStr= parts[0];
 						String targetStr= parts[1];
+						sourceStr= sourceStr.trim();
+						targetStr= targetStr.trim();
 						
 						//check if source and target is given
 						boolean copyOk= true;
@@ -358,6 +361,11 @@ public class ModuleControllerImpl implements ModuleController{
 								}
 								try {
 									if (source.isDirectory()){
+										targetStr= target.getAbsolutePath();
+										if (!targetStr.endsWith("/")){
+											targetStr= targetStr+"/";
+										}
+										target= new File(targetStr+source.getName());
 										FileUtils.copyDirectory(source, target);
 										logger.trace("Copied resource from '"+source.getAbsolutePath()+"' to '"+target.getAbsolutePath()+"'.");
 									}else{
