@@ -359,6 +359,7 @@ public class ModuleControllerImpl implements ModuleController{
 								try {
 									if (source.isDirectory()){
 										FileUtils.copyDirectory(source, target);
+										logger.trace("Copied resource from '"+source.getAbsolutePath()+"' to '"+target.getAbsolutePath()+"'.");
 									}else{
 										targetStr= target.getCanonicalPath();
 										if (!targetStr.endsWith("/")){
@@ -366,6 +367,7 @@ public class ModuleControllerImpl implements ModuleController{
 										}
 										target= new File(targetStr+source.getName());
 										FileUtils.copyFile(source, target);
+										logger.trace("Copied resource from '"+source.getAbsolutePath()+"' to '"+target.getAbsolutePath()+"'.");
 									}
 								} catch (IOException e) {
 									logger.warn("Cannot copy resources for '"+getPepperModule().getName()+"' because of '"+e.getMessage()+"'. Check the property value '"+resource+"'. ");
