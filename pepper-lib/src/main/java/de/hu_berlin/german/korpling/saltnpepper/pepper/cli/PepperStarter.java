@@ -252,7 +252,7 @@ public class PepperStarter {
 			if (isDebug) {
 				e.printStackTrace();
 			}
-			retVal.append("Cannot not display any Pepper module. Calling " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
+			retVal.append("Cannot display any Pepper module. Call " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
 		number2module= new HashMap<Integer, PepperModuleDesc>(moduleDescs.size());
@@ -278,7 +278,7 @@ public class PepperStarter {
 			if (isDebug) {
 				e.printStackTrace();
 			}
-			retVal.append("Cannot not display any Pepper module.");
+			retVal.append("Cannot display any Pepper module.");
 			return (retVal.toString());
 		}
 		Integer numOfModule = null;
