@@ -18,6 +18,8 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +28,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -55,11 +58,19 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.german.korpling.saltnpepper.salt.graph.Label;
+import de.hu_berlin.german.korpling.saltnpepper.salt.graph.LabelableElement;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SAnnotatableElement;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SIdentifiableElement;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SMetaAnnotatableElement;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 
 /**
  * TODO make docu
@@ -704,9 +715,13 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			this.getMapperControllers().put(id, controller);
 			controller.setUncaughtExceptionHandler(this);
 			controller.setPepperModule(this);
-
+			
+			//preprocessing
+			before(sElementId);
 			PepperMapper mapper = this.createPepperMapper(sElementId);
 			mapper.setProperties(this.getProperties());
+			//postprocessing
+			after(sElementId);
 
 			if (this instanceof PepperImporter) {
 				if (mapper.getResourceURI()== null){
@@ -731,10 +746,171 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
+	 * Invokes processings, before the mapping was started. This could be
+	 * helpful, for instance to make some preparations for the mapping. To
+	 * trigger this pre processing for a specific Pepper module a set of
+	 * customization properties is available. Customization properties
+	 * triggering a pre processing starts with
+	 * {@value PepperModuleProperties#PREFIX_PEPPER_BEFORE}. This method is
+	 * called by the method {@link #map()}, before
+	 * {@link PepperMapper#mapSDocument()} was called.
+	 * 
+	 * @param sElementId
+	 *            id of either {@link SDocument} or {@link SCorpus} object to be
+	 *            prepared
+	 * @throws PepperModuleException
+	 */
+	public void before(SElementId sElementId) throws PepperModuleException {
+		System.out.println("-->" + sElementId.getId());
+
+		if (getProperties() != null) {
+			if (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER) != null) {
+				// add slayers after processing
+
+				if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
+					if (sElementId.getSIdentifiableElement() instanceof SDocument) {
+						SDocument sDoc = (SDocument) sElementId.getSIdentifiableElement();
+
+						// add layers
+						String layers = (String) getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
+						addSLayers(sDoc, layers);
+					} else if (sElementId.getSIdentifiableElement() instanceof SCorpus) {
+
+					}
+				}
+			}
+			if (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null) {
+				// read meta data
+
+				if (this instanceof PepperImporter) {
+
+					URI resourceURI = ((PepperImporter)this).getSElementId2ResourceTable().get(sElementId);
+					String ending = getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue().toString().trim();
+					if (resourceURI != null) {
+						File resource = new File(resourceURI.toFileString());
+						File metaFile = null;
+						if (resource.isDirectory()) {
+							// resource is directory, search for meta data file
+							// (all files having customized ending)
+							File[] files = resource.listFiles();
+							if (files != null) {
+								for (File file : resource.listFiles()) {
+									
+									// extract ending of current file
+									String[] names = file.getName().split("[.]");
+									if (names != null) {
+										if (ending.equalsIgnoreCase(names[names.length - 1])) {
+											metaFile = file;
+											break;
+										}
+									}
+								}
+							}
+						} else {
+							// resource is a file, search for meta data file
+							// (file having the same name as current corpus or
+							// document and having customized ending)
+
+							String[] parts = resource.getName().split("[.]");
+							if (parts != null) {
+								String currEnding = parts[parts.length - 1];
+								metaFile = new File(resource.getAbsolutePath().replace(currEnding, ending));
+								if (!metaFile.exists()) {
+									metaFile = null;
+								}
+							}
+						}
+						if (metaFile != null) {
+							Properties props = new Properties();
+							try {
+								props.load(new FileInputStream(metaFile));
+							} catch (IOException e) {
+								logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);
+							}
+							for (Object key : props.keySet()) {
+								SIdentifiableElement container= sElementId.getSIdentifiableElement(); 
+								if ((container!= null)&& (container instanceof SMetaAnnotatableElement)){
+									if (!((SMetaAnnotatableElement)container).hasLabel(key.toString())){
+										((SMetaAnnotatableElement)container).createSMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
+									}else{
+										logger.warn("Cannot add meta annotation '"+key.toString()+"', because it already exist on object '"+sElementId.getSId()+"' please check file '"+metaFile.getAbsolutePath()+"'. ");
+									}
+								}
+								
+								
+							}
+						}
+
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
 	 */
 	public PepperMapper createPepperMapper(SElementId sElementId) {
 		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '" + this.getName() + "' has not been overridden. Please check that first.");
+	}
+
+	/**
+	 * Invokes processings, after the mapping is done. This could be helpful, for instance to make some processing 
+	 * after the mapping e.g. adding all created nodes and relations to a layer. 
+	 * To trigger this post processing for a specific Pepper module a set of customization properties is
+	 * available. Customization properties triggering a post processing starts with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}.
+	 * This method is called by the method {@link #map()}, after {@link PepperMapper#mapSDocument()} was called. 
+	 * @param sElementId id of either {@link SDocument} or {@link SCorpus} object to be post processed
+	 * @throws PepperModuleException 
+	 */
+	public void after(SElementId sElementId) throws PepperModuleException {
+		if (getProperties()!= null){
+			if (	(sElementId!= null)&&
+					(sElementId.getSIdentifiableElement() != null)){
+				if (sElementId.getSIdentifiableElement() instanceof SDocument){
+					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
+					if (getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER)!= null){
+						// add slayers after processing
+						String layers= (String)getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
+						addSLayers(sDoc, layers);
+					}
+				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
+					
+				}
+			}
+		}
+	}
+	
+	private void addSLayers(SDocument sDoc, String layers){
+		if (	(layers!= null)&&
+				(!layers.isEmpty())){
+			String[] layerArray= layers.split(";");
+			if (layerArray.length> 0){
+				for (String layer: layerArray){
+					layer= layer.trim();
+					//create SLayer and add to document-structure
+					List<SLayer> sLayers= sDoc.getSDocumentGraph().getSLayerByName(layer);
+					SLayer sLayer= null;
+					if (	(sLayers!= null)&&
+							(sLayers.size() > 0)){
+						sLayer= sLayers.get(0);	
+					}
+					if (sLayer== null){
+						sLayer= SaltFactory.eINSTANCE.createSLayer();
+						sLayer.setSName(layer);
+						sDoc.getSDocumentGraph().addSLayer(sLayer);
+					}
+					//add all nodes to new layer
+					for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
+						sNode.getSLayers().add(sLayer);
+					}
+					//add all relations to new layer
+					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
+						sRel.getSLayers().add(sLayer);
+					}
+				}
+			}
+		}
 	}
 
 	/**

@@ -241,16 +241,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			mappingResult = this.getPepperMapper().mapSCorpus();
 			progress = 1d;
 		} else if (this.getPepperMapper().getSDocument() != null){
-			//preprocessing
-			for (MappingSubject subj: getMappingSubjects()){
-				before(subj.getSElementId());
-			}
 			//real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
-			//postprocessing
-			for (MappingSubject subj: getMappingSubjects()){
-				after(subj.getSElementId());
-			}
 		}else{
 			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		}
@@ -261,132 +253,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		}
 	}
 
-	/** {@inheritDoc PepperModule#before(SElementId)} */
-	@Override
-	public void before(SElementId sElementId) throws PepperModuleException {
-		System.out.println("-->"+sElementId.getId());
 		
-		if (getPepperMapper().getProperties() != null) {
-			if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER) != null) {
-				// add slayers after processing
-
-				if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
-					if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-						SDocument sDoc = (SDocument) sElementId.getSIdentifiableElement();
-
-						// add layers
-						String layers = (String) getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
-						addSLayers(sDoc, layers);
-					} else if (sElementId.getSIdentifiableElement() instanceof SCorpus) {
-
-					}
-				}
-			}
-			if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null) {
-				//read meta data
-				
-				String ending= getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).toString().trim();
-				if (	(getPepperMapper()!= null)&&
-						(getPepperMapper().getResourceURI()!= null)){
-					File resource= new File(getPepperMapper().getResourceURI().toFileString());
-					File metaFile= null;
-					if (resource.isDirectory()){
-						//resource is directory, search for meta data file (all files having customized ending)
-						File[] files= resource.listFiles();
-						if (files!= null){
-							for (File file: resource.listFiles()){
-								//extract ending of current file
-								String[] names= file.getName().split("[.]");
-								if (names!= null){
-									if (ending.equalsIgnoreCase(names[names.length-1])){
-										metaFile= file;
-										break;
-									}
-								}
-							}
-						}
-					}else{
-						//resource is a file, search for meta data file (file having the same name as current corpus or document and having customized ending)
-						
-						String[] parts= resource.getName().split("[.]");
-						if (parts!= null){
-							String currEnding= parts[parts.length-1];
-							metaFile= new File(resource.getAbsolutePath().replace(currEnding, ending));
-							if (!metaFile.exists()){
-								metaFile= null;
-							}
-						}
-					}
-					System.out.println("-------> Meta data file: "+ metaFile);
-					if (metaFile!= null){
-						Properties props= new Properties();
-						try {
-							props.load(new FileInputStream(metaFile));
-						} catch (IOException e) {
-							logger.warn("Tried to load meta data file '"+metaFile.getAbsolutePath()+"', but a problem occured: "+e.getMessage()+". ", e);
-						}
-						for (Object key: props.keySet()){
-							System.out.println("--------> "+key+" : "+ props.getProperty(key.toString()));
-						}
-					}
-					
-				}
-			}
-		}
-	}
-	
-	/** {@inheritDoc PepperModule#after(SElementId)} */
-	@Override
-	public void after(SElementId sElementId) throws PepperModuleException {
-		if (getPepperMapper().getProperties()!= null){
-			if (	(sElementId!= null)&&
-					(sElementId.getSIdentifiableElement() != null)){
-				if (sElementId.getSIdentifiableElement() instanceof SDocument){
-					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
-					if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER)!= null){
-						// add slayers after processing
-						String layers= (String)getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
-						addSLayers(sDoc, layers);
-					}
-				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
-					
-				}
-			}
-		}
-	}
-	
-	private void addSLayers(SDocument sDoc, String layers){
-		if (	(layers!= null)&&
-				(!layers.isEmpty())){
-			String[] layerArray= layers.split(";");
-			if (layerArray.length> 0){
-				for (String layer: layerArray){
-					layer= layer.trim();
-					//create SLayer and add to document-structure
-					List<SLayer> sLayers= sDoc.getSDocumentGraph().getSLayerByName(layer);
-					SLayer sLayer= null;
-					if (	(sLayers!= null)&&
-							(sLayers.size() > 0)){
-						sLayer= sLayers.get(0);	
-					}
-					if (sLayer== null){
-						sLayer= SaltFactory.eINSTANCE.createSLayer();
-						sLayer.setSName(layer);
-						sDoc.getSDocumentGraph().addSLayer(sLayer);
-					}
-					//add all nodes to new layer
-					for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
-						sNode.getSLayers().add(sLayer);
-					}
-					//add all relations to new layer
-					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
-						sRel.getSLayers().add(sLayer);
-					}
-				}
-			}
-		}
-	}
-	
 	/** {@link PepperModule} containing this object **/
 	protected PepperModule pepperModule = null;
 
