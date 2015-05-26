@@ -18,9 +18,15 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Properties;
+
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
@@ -57,6 +63,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
 
+	protected Logger logger = LoggerFactory.getLogger("Pepper");
+	
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
 	 * the thread.
@@ -79,8 +87,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperMapper(PepperMapper pepperMapper) {
 		this.pepperMapper = pepperMapper;
-		if (this.pepperMapper != null)
+		if (this.pepperMapper != null){
 			mappingSubjects = pepperMapper.getMappingSubjects();
+		}
 	}
 
 	/**
@@ -255,8 +264,10 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	/** {@inheritDoc PepperModule#before(SElementId)} */
 	@Override
 	public void before(SElementId sElementId) throws PepperModuleException {
+		System.out.println("-->"+sElementId.getId());
+		
 		if (getPepperMapper().getProperties() != null) {
-			if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
+			if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER) != null) {
 				// add slayers after processing
 
 				if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
@@ -269,6 +280,56 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 					} else if (sElementId.getSIdentifiableElement() instanceof SCorpus) {
 
 					}
+				}
+			}
+			if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null) {
+				//read meta data
+				
+				String ending= getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).toString().trim();
+				if (	(getPepperMapper()!= null)&&
+						(getPepperMapper().getResourceURI()!= null)){
+					File resource= new File(getPepperMapper().getResourceURI().toFileString());
+					File metaFile= null;
+					if (resource.isDirectory()){
+						//resource is directory, search for meta data file (all files having customized ending)
+						File[] files= resource.listFiles();
+						if (files!= null){
+							for (File file: resource.listFiles()){
+								//extract ending of current file
+								String[] names= file.getName().split("[.]");
+								if (names!= null){
+									if (ending.equalsIgnoreCase(names[names.length-1])){
+										metaFile= file;
+										break;
+									}
+								}
+							}
+						}
+					}else{
+						//resource is a file, search for meta data file (file having the same name as current corpus or document and having customized ending)
+						
+						String[] parts= resource.getName().split("[.]");
+						if (parts!= null){
+							String currEnding= parts[parts.length-1];
+							metaFile= new File(resource.getAbsolutePath().replace(currEnding, ending));
+							if (!metaFile.exists()){
+								metaFile= null;
+							}
+						}
+					}
+					System.out.println("-------> Meta data file: "+ metaFile);
+					if (metaFile!= null){
+						Properties props= new Properties();
+						try {
+							props.load(new FileInputStream(metaFile));
+						} catch (IOException e) {
+							logger.warn("Tried to load meta data file '"+metaFile.getAbsolutePath()+"', but a problem occured: "+e.getMessage()+". ", e);
+						}
+						for (Object key: props.keySet()){
+							System.out.println("--------> "+key+" : "+ props.getProperty(key.toString()));
+						}
+					}
+					
 				}
 			}
 		}
@@ -335,6 +396,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperModule(PepperModule pepperModule) {
 		this.pepperModule = pepperModule;
+		if (this.pepperModule!= null){
+			logger= LoggerFactory.getLogger(getPepperModule().getName());
+		}
 	}
 
 	/**
