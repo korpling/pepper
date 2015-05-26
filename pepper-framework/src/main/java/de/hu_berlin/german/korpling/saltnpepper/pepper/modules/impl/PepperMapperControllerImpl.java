@@ -255,17 +255,20 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	/** {@inheritDoc PepperModule#before(SElementId)} */
 	@Override
 	public void before(SElementId sElementId) throws PepperModuleException {
-		if (getPepperMapper().getProperties()!= null){
-			if (	(sElementId!= null)&&
-					(sElementId.getSIdentifiableElement() != null)){
-				if (sElementId.getSIdentifiableElement() instanceof SDocument){
-					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
-					
-					//add layers
-					String layers= (String)getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
-					addSLayers(sDoc, layers);
-				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
-					
+		if (getPepperMapper().getProperties() != null) {
+			if (getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
+				// add slayers after processing
+
+				if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
+					if (sElementId.getSIdentifiableElement() instanceof SDocument) {
+						SDocument sDoc = (SDocument) sElementId.getSIdentifiableElement();
+
+						// add layers
+						String layers = (String) getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
+						addSLayers(sDoc, layers);
+					} else if (sElementId.getSIdentifiableElement() instanceof SCorpus) {
+
+					}
 				}
 			}
 		}
