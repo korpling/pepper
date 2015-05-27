@@ -52,10 +52,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 public abstract class PepperExporterImpl extends PepperModuleImpl implements PepperExporter {
 	/**
 	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#EXPORTER}. The
-	 * name of this module is set to "MyExporter". 
-	 * <br/>
+	 * name of this module is set to "MyExporter". <br/>
 	 * We recommend to use the constructor
-	 * {@link PepperExporterImpl#PepperExporterImpl(String)} and pass a proper name.
+	 * {@link PepperExporterImpl#PepperExporterImpl(String)} and pass a proper
+	 * name.
 	 */
 	protected PepperExporterImpl() {
 		super("MyExporter");
@@ -219,16 +219,17 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 								for (String segment : sDocument.getSElementPath().segments()) {
 									resourceURI = resourceURI.appendSegment(segment);
 								}
-								resourceURI= resourceURI.appendFileExtension(ending);
+								resourceURI = resourceURI.appendFileExtension(ending);
 								getSElementId2ResourceTable().put(sDocument.getSElementId(), resourceURI);
-								
-								//in case of folders in hierarchie does not exist, create them
-								String fileName= resourceURI.toFileString();
-								if (fileName== null){
+
+								// in case of folders in hierarchie does not
+								// exist, create them
+								String fileName = resourceURI.toFileString();
+								if (fileName == null) {
 									resourceURI.toString();
 								}
-								File outFile= new File(fileName);
-								if (!outFile.getParentFile().exists()){
+								File outFile = new File(fileName);
+								if (!outFile.getParentFile().exists()) {
 									outFile.getParentFile().mkdirs();
 								}
 							}
