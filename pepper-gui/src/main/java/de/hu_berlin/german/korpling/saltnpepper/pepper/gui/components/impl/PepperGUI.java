@@ -1,4 +1,4 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.impl;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Alignment;
@@ -10,7 +10,7 @@ import com.vaadin.ui.declarative.Design;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.VIEW;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.VIEW_NAME;
 
 @DesignRoot
 public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary{	
@@ -21,12 +21,10 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnExporters;
 	private Button btnManipulators;
 	private Button btnResults;
-	private PepperGUIController controller = null;
 	private PepperGuiMain main;
 		
-	public PepperGUI(PepperGUIController GUIcontroller){
+	public PepperGUI(PepperGUIController controller){
 		super();
-		controller = GUIcontroller;
 		
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Design.read(this);
@@ -38,13 +36,13 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnManipulators.setId(ID_BUTTON_MANIPULATORS);
 		btnResults.setId(ID_BUTTON_RESULTS);
 		
-		btnNewWorkflow.addClickListener(GUIcontroller);		
-		btnLoadWorkflow.addClickListener(GUIcontroller);
-		btnAbout.addClickListener(GUIcontroller);
-		btnImporters.addClickListener(GUIcontroller);
-		btnExporters.addClickListener(GUIcontroller);
-		btnManipulators.addClickListener(GUIcontroller);
-		btnResults.addClickListener(GUIcontroller);
+		btnNewWorkflow.addClickListener(controller);		
+		btnLoadWorkflow.addClickListener(controller);
+		btnAbout.addClickListener(controller);
+		btnImporters.addClickListener(controller);
+		btnExporters.addClickListener(controller);
+		btnManipulators.addClickListener(controller);
+		btnResults.addClickListener(controller);
 		
 //		addButton();
 	}
@@ -55,7 +53,7 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		//TODO add initial method calls for main here
 	}
 	
-	public void setView(VIEW view){
+	public void setView(VIEW_NAME view){
 		main.setView(view);
 	}
 }

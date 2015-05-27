@@ -1,0 +1,11 @@
+<v-vertical-layout width="750" height="500">
+	<v-horizontal-layout>
+		<v-button _id="btnStart">Convert</v-button>
+		<v-button _id="btnAbort">Abort</v-button>
+		<v-button _id="btnSave">Save workflow</v-button>
+	</v-horizontal-layout>
+	<v-absolute-layout :expand>
+		<v-progress-bar :top="50" :left="20" width="600" _id="progressTotal" caption="TOTAL"></v-progress-bar>
+		<v-button :top="50" :left="630" _id="btnProgress">Details ▸▾</v-button>
+	</v-absolute-layout>
+</v-vertical-layout>

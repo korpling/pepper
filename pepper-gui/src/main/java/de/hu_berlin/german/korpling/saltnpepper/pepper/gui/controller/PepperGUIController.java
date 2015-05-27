@@ -14,7 +14,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.VerticalLayout;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.impl.PepperGUI;
 
 @Title("Pepper converter framework")
 @Theme("valo")
@@ -23,7 +23,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	
 	protected void init(VaadinRequest request){
 		gui = new PepperGUI(this);
-		this.setErrorHandler(this);
+		setErrorHandler(this);
 		setContent(gui);		
 	}
 
@@ -40,16 +40,16 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			
 		}
 		else if (ID_BUTTON_IMPORTERS.equals(id)){
-			gui.setView(VIEW.IMPORTERS);
+			gui.setView(VIEW_NAME.IMPORTERS);
 		}
 		else if (ID_BUTTON_EXPORTERS.equals(id)){
-			gui.setView(VIEW.EXPORTERS);
+			gui.setView(VIEW_NAME.EXPORTERS);
 		}
 		else if (ID_BUTTON_MANIPULATORS.equals(id)){
-			gui.setView(VIEW.MANIPULATORS);
+			gui.setView(VIEW_NAME.MANIPULATORS);
 		}
 		else if (ID_BUTTON_RESULTS.equals(id)){
-			gui.setView(VIEW.RESULTS);
+			gui.setView(VIEW_NAME.RESULTS);
 		}
 		else if ("test".equals(id)){
 			Notification.show("it worked");
