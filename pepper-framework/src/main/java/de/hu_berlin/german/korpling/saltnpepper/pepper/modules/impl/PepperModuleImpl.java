@@ -779,8 +779,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					}
 				}
 			}
-			if (	(getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null)&&
-					(getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue() != null)){
+			if ((getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null) && (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue() != null)) {
 				// read meta data
 
 				readMeta(sElementId);
@@ -894,13 +893,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 						File[] files = resource.listFiles();
 						if (files != null) {
 							for (File file : resource.listFiles()) {
-								// extract ending of current file
-								String[] names = file.getName().split("[.]");
-								if (names != null) {
-									if (ending.equalsIgnoreCase(names[names.length - 1])) {
-										metaFile = file;
-										break;
-									}
+								if (file.getName().equalsIgnoreCase(sElementId.getSElementPath().lastSegment() + "." + ending)) {
+									metaFile = file;
+									break;
 								}
 							}
 						}
@@ -912,7 +907,11 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 						String[] parts = resource.getName().split("[.]");
 						if (parts != null) {
 							String currEnding = parts[parts.length - 1];
-							metaFile = new File(resource.getAbsolutePath().replace(currEnding, ending));
+							resource.getAbsolutePath().lastIndexOf(".");
+							// metaFile = new
+							// File(resource.getAbsolutePath().replace(currEnding,
+							// ending));
+							metaFile = new File(resource.getAbsolutePath().substring(0, resource.getAbsolutePath().lastIndexOf(".")) + "." + ending);
 							if (!metaFile.exists()) {
 								metaFile = null;
 							}

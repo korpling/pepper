@@ -102,12 +102,12 @@ public class PepperModuleImplTest extends PepperImporterImpl{
 		
 		getFixture().readMeta(subCorpus.getSElementId());
 		assertEquals(2, subCorpus.getSMetaAnnotations().size());
-		assertEquals("b", subCorpus.getSMetaAnnotation("a").getSValue());
-		assertEquals("d", subCorpus.getSMetaAnnotation("c").getSValue());
+		assertEquals("2", subCorpus.getSMetaAnnotation("1").getSValue());
+		assertEquals("4", subCorpus.getSMetaAnnotation("3").getSValue());
 		
 		getFixture().readMeta(document.getSElementId());
 		assertEquals(2, document.getSMetaAnnotations().size());
-		assertEquals("b", document.getSMetaAnnotation("a").getSValue());
-		assertEquals("d", document.getSMetaAnnotation("c").getSValue());
+		assertEquals("Bart", document.getSMetaAnnotation("name").getSValue());
+		assertEquals("Springfield", document.getSMetaAnnotation("place").getSValue());
 	}
 }
