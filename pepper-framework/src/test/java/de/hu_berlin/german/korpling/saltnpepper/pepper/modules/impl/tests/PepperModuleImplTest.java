@@ -51,7 +51,7 @@ public class PepperModuleImplTest extends PepperModuleImpl{
 	}
 
 	@Test
-	public void test_PropAddSLayer() {
+	public void testPropAddSLayer() {
 		SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
 		SampleGenerator.createSDocumentStructure(sDoc);
 		int layersBefore = sDoc.getSDocumentGraph().getSLayers().size();
@@ -72,4 +72,8 @@ public class PepperModuleImplTest extends PepperModuleImpl{
 		}
 	}
 
+	@Test
+	public void testPropReadMeta(){
+		
+	}
 }

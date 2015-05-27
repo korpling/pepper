@@ -761,9 +761,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * @throws PepperModuleException
 	 */
 	public void before(SElementId sElementId) throws PepperModuleException {
-		System.out.println("-->" + sElementId.getId());
-
-		if (getProperties() != null) {
+			if (getProperties() != null) {
 			if (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER) != null) {
 				// add slayers after processing
 
@@ -782,67 +780,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			if (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null) {
 				// read meta data
 
-				if (this instanceof PepperImporter) {
-
-					URI resourceURI = ((PepperImporter)this).getSElementId2ResourceTable().get(sElementId);
-					String ending = getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue().toString().trim();
-					if (resourceURI != null) {
-						File resource = new File(resourceURI.toFileString());
-						File metaFile = null;
-						if (resource.isDirectory()) {
-							// resource is directory, search for meta data file
-							// (all files having customized ending)
-							File[] files = resource.listFiles();
-							if (files != null) {
-								for (File file : resource.listFiles()) {
-									
-									// extract ending of current file
-									String[] names = file.getName().split("[.]");
-									if (names != null) {
-										if (ending.equalsIgnoreCase(names[names.length - 1])) {
-											metaFile = file;
-											break;
-										}
-									}
-								}
-							}
-						} else {
-							// resource is a file, search for meta data file
-							// (file having the same name as current corpus or
-							// document and having customized ending)
-
-							String[] parts = resource.getName().split("[.]");
-							if (parts != null) {
-								String currEnding = parts[parts.length - 1];
-								metaFile = new File(resource.getAbsolutePath().replace(currEnding, ending));
-								if (!metaFile.exists()) {
-									metaFile = null;
-								}
-							}
-						}
-						if (metaFile != null) {
-							Properties props = new Properties();
-							try {
-								props.load(new FileInputStream(metaFile));
-							} catch (IOException e) {
-								logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);
-							}
-							for (Object key : props.keySet()) {
-								SIdentifiableElement container= sElementId.getSIdentifiableElement(); 
-								if ((container!= null)&& (container instanceof SMetaAnnotatableElement)){
-									if (!((SMetaAnnotatableElement)container).hasLabel(key.toString())){
-										((SMetaAnnotatableElement)container).createSMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
-									}else{
-										logger.warn("Cannot add meta annotation '"+key.toString()+"', because it already exist on object '"+sElementId.getSId()+"' please check file '"+metaFile.getAbsolutePath()+"'. ");
-									}
-								}
-								
-								
-							}
-						}
-
-					}
-				}
+				readMeta(sElementId);
 			}
 		}
 	}
@@ -907,6 +845,75 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					//add all relations to new layer
 					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
 						sRel.getSLayers().add(sLayer);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Loads meta data form a meta data file and adds them to the object corresponding to the passed {@link SElementId}.
+	 * The meta data file is localized in the directory in case of the URI corresponding to passed {@link SElementId} is a 
+	 * directory or (in case the corresponding URI addresses a file) in the same directory as the 
+	 * resource corresponding to the passed {@link SElementId}. The meta data file must have the ending passed in 
+	 * {@link PepperModuleProperties#PROP_BEFORE_READ_META}.
+	 * 
+	 * @param sElementId identifying the current object
+	 */
+	public void readMeta(SElementId sElementId) {
+		if (this instanceof PepperImporter) {
+			URI resourceURI = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
+			String ending = getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue().toString().trim();
+			if (resourceURI != null) {
+				File resource = new File(resourceURI.toFileString());
+				File metaFile = null;
+				if (resource.isDirectory()) {
+					// resource is directory, search for meta data file
+					// (all files having customized ending)
+					File[] files = resource.listFiles();
+					if (files != null) {
+						for (File file : resource.listFiles()) {
+
+							// extract ending of current file
+							String[] names = file.getName().split("[.]");
+							if (names != null) {
+								if (ending.equalsIgnoreCase(names[names.length - 1])) {
+									metaFile = file;
+									break;
+								}
+							}
+						}
+					}
+				} else {
+					// resource is a file, search for meta data file
+					// (file having the same name as current corpus or
+					// document and having customized ending)
+
+					String[] parts = resource.getName().split("[.]");
+					if (parts != null) {
+						String currEnding = parts[parts.length - 1];
+						metaFile = new File(resource.getAbsolutePath().replace(currEnding, ending));
+						if (!metaFile.exists()) {
+							metaFile = null;
+						}
+					}
+				}
+				if (metaFile != null) {
+					Properties props = new Properties();
+					try {
+						props.load(new FileInputStream(metaFile));
+					} catch (IOException e) {
+						logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);
+					}
+					for (Object key : props.keySet()) {
+						SIdentifiableElement container = sElementId.getSIdentifiableElement();
+						if ((container != null) && (container instanceof SMetaAnnotatableElement)) {
+							if (!((SMetaAnnotatableElement) container).hasLabel(key.toString())) {
+								((SMetaAnnotatableElement) container).createSMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
+							} else {
+								logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + sElementId.getSId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
+							}
+						}
 					}
 				}
 			}
