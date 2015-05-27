@@ -17,14 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,15 +32,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.MappingSubject;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 
 /**
  * The class {@link PepperMapperControllerImpl} is a communicator class between
@@ -149,9 +138,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void setSElementId(SElementId sElementId) {
-		if (sElementId == null)
+		if (sElementId == null){
 			throw new PepperModuleException(getPepperMapper(), "Cannot set an empty sElementId.");
-
+		}
 		MappingSubject subj = null;
 		if (getMappingSubjects().size() < 1) {
 			subj = new MappingSubject();
