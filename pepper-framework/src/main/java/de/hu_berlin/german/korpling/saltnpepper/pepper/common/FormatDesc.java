@@ -106,11 +106,8 @@ public class FormatDesc{
 	}
 	
 	/**
-	 * Two objects are equal: 
-	 * <ul>
-	 *  <li>if they are the same object</li>
-	 *  <li>if the passed object is of type {@link FormatDesc} and both {@link FormatDesc#formatName} and both {@link FormatDesc#formatName} are the same</li>
-	 * </ul>
+	 * Compares a {@link CorpusDesc} object with this object. Both objects are equal, if and only if
+	 * the have the same format name and format version. The comparison is case insensitive.
 	 */
 	@Override
 	public boolean equals(Object obj){
@@ -120,9 +117,9 @@ public class FormatDesc{
 		if (obj!= null){
 			if (obj instanceof FormatDesc){
 				if (	(getFormatName()!= null)&&
-						(getFormatName().equals(((FormatDesc) obj).getFormatName()))&&
+						(getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName()))&&
 						(getFormatVersion()!= null)&&
-						(getFormatVersion().equals(((FormatDesc) obj).getFormatVersion()))){
+						(getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))){
 					return(true);
 				}else{
 					return(false);
