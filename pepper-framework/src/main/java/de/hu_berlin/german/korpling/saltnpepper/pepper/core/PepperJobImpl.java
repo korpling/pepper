@@ -1245,9 +1245,9 @@ public class PepperJobImpl extends PepperJob {
 				xmlReader = parser.getXMLReader();
 				xmlReader.setContentHandler(contentHandler);
 			} catch (ParserConfigurationException e) {
-				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "'.", e);
+				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e.getMessage()+". ", e);
 			} catch (Exception e) {
-				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "'.", e);
+				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e.getMessage()+". ", e);
 			}
 			try {
 				InputStream inputStream = new FileInputStream(wdFile);
@@ -1262,13 +1262,14 @@ public class PepperJobImpl extends PepperJob {
 					xmlReader.setContentHandler(contentHandler);
 					xmlReader.parse(wdFile.getAbsolutePath());
 				} catch (Exception e1) {
-					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "'.", e1);
+					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e1.getMessage()+". ", e1);
 				}
 			} catch (Exception e) {
-				if (e instanceof PepperModuleException)
+				if (e instanceof PepperModuleException){
 					throw (PepperModuleException) e;
-				else
-					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception. ", e);
+				}else{
+					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception: "+e.getMessage()+". ", e);
+				}
 			}
 		} else{
 			throw new UnsupportedOperationException("Currently Pepper can only load workflow description from local files.");

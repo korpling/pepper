@@ -985,7 +985,13 @@ public class PepperStarter {
 				if (!isDebug) {
 					output.println("For more details enter '" + COMMAND.DEBUG.getName() + "' and redo last action. ");
 				} else {
-					logger.error(" ", e.getMessage());
+					String msg= e.getMessage();
+					if (	(msg!= null)&&
+							(!msg.isEmpty())){
+						logger.error(" ", e.getMessage());
+					}else{
+						e.printStackTrace();
+					}
 				}
 			}
 		}
