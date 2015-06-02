@@ -108,6 +108,11 @@ public class PepperConfiguration extends Properties {
 	 */
 	public static final String PROP_KEEP_TEMP_DOCS = PROP_PREFIX + ".keepTempDocs";
 	/**
+	 * Name of the property to determine Property to determine whether the status report should contain a progress for each module 
+	 * or just the global progress. 
+	 */
+	public static final String PROP_DETAILED_STATUS_REPORT = PROP_PREFIX + ".detailedStatusReport";
+	/**
 	 * name of the flag to determine a workspace for pepper, where all jobs are
 	 * stored by default.
 	 */
@@ -148,6 +153,7 @@ public class PepperConfiguration extends Properties {
 		put(PROP_CALL_GC_AFTER_DOCUMENT, Boolean.TRUE);
 		put(PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE);
 		put(PROP_MAX_AMOUNT_OF_SDOCUMENTS, 10);
+		put(PROP_DETAILED_STATUS_REPORT, true);
 	}
 
 	/**
@@ -361,5 +367,13 @@ public class PepperConfiguration extends Properties {
 	public Integer getReportInterval() {
 		String interval = getProperty(PROP_REPORT_INTERVAL, new Integer(1000).toString());
 		return (Integer.valueOf(interval));
+	}
+	/**
+	 * Property to determine whether the status report should contain a progress for each module or just the global progress.
+	 * @return
+	 */
+	public Boolean getDetaialedStatReport() {
+		String callGC = getProperty(PROP_DETAILED_STATUS_REPORT);
+		return (Boolean.valueOf(callGC));
 	}
 }

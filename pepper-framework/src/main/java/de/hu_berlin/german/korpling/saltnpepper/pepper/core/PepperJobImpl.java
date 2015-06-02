@@ -797,10 +797,10 @@ public class PepperJobImpl extends PepperJob {
 				retVal.append(new DecimalFormat("###.##").format(progressOverAll / numOfDocuments * 100) + "%");
 			}
 			retVal.append("\n");
-			retVal.append(detailedStr.toString());
+			if (getConfiguration().getDetaialedStatReport()){
+				retVal.append(detailedStr.toString());
+			}
 		}
-
-		
 		retVal.append("-------------------------------------------------------------------------");
 		retVal.append("\n");
 		return (retVal.toString());
