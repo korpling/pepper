@@ -1,15 +1,15 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.impl;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
+
+import java.io.File;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.data.util.FilesystemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Upload;
-import com.vaadin.ui.Upload.Receiver;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGuiView;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 
 @DesignRoot
@@ -21,12 +21,13 @@ public class PepperGuiImportersView extends PepperGuiView{
 	private Button btnShowAll;
 	private Table descriptionTable;
 	private Button btnAddImport;
+	private Button btnBrowseLocal;
 	private boolean isInit = false;
 	
 	public PepperGuiImportersView(){
-		super();		
-		
-		btnShowAll.setId(ID_BUTTON_SHOW_ALL);	
+		super();	
+		btnShowAll.setId(ID_BUTTON_SHOW_ALL);
+		btnBrowseLocal.setId(ID_BUTTON_BROWSE_LOCAL);
 	}
 	
 	@Override
@@ -37,6 +38,7 @@ public class PepperGuiImportersView extends PepperGuiView{
 			upload.setReceiver(controller);
 			btnShowAll.addClickListener(controller);
 			btnAddImport.addClickListener(controller);
+			btnBrowseLocal.addClickListener(controller);
 			isInit = true;
 		}
 	}

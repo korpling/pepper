@@ -1,4 +1,4 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.impl;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Alignment;

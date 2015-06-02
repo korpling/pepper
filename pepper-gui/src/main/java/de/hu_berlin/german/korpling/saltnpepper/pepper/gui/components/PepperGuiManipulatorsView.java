@@ -1,17 +1,16 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.impl;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGuiView;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 
 @DesignRoot
-public class PepperGuiResultsView extends PepperGuiView {
+public class PepperGuiManipulatorsView extends PepperGuiView {
 	private boolean isInit = false;
 	
-	public PepperGuiResultsView(){
+	public PepperGuiManipulatorsView(){
 		super();
 	}
 	
@@ -23,5 +22,5 @@ public class PepperGuiResultsView extends PepperGuiView {
 			//TODO set controller for elements here
 			isInit = true;
 		}
-	}	
+	}
 }

@@ -1,9 +1,8 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.impl;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGuiView;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.VIEW_NAME;
 
