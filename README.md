@@ -278,6 +278,39 @@ pepperJob.convert();
 Thats it. Now you know how to use the basic functionalities of the Pepper library. We hope you will
 be happy with it.
 
+##Configuring Pepper
+The Pepper home folder contains a folder named 'conf/', here you find two files to adapt the behavior of Pepper. First you can change the logging behavior by adapting the file logback.xml. The default configuation is configured using the INFO log level:
+```xml
+<root level="info">
+   ...
+</root>
+```
+A log level determines, which types of log messages are printed. The hierarchy is the following (ascending): trace, debug, info, warn, error. That means, when setting the log level to info, even warn and error messages are printed, but no trace and debug messages.
+
+Second by adapting the file 'pepper.properties' you can change the processing behavior of Pepper. This file has a key-value notion, which mean an entry has a key, followed by the qual sign and the corresponding value. Here is an excerpt of that file:
+```
+##########
+# Determines where to find the plugins for Pepper $PEPPER_HOME points to the pepper home folder (this is not an environment variable)
+##########
+pepper.plugin.path=./plugins/
+
+##########
+# Determines if Pepper shall measure and display the performance of the used PepperModules
+##########
+pepper.computePerformance=true
+
+##########
+# The maximal number of currently processed SDocument-objects
+########## 
+pepper.maxAmountOfProcessedSDocuments=4
+
+##########
+# Determines if an SDocument-object shall be removed after it was processed by all PepperModules
+########## 
+pepper.removeSDocumentAfterProcessing=true
+```
+
+
 
 ##Maven
 
