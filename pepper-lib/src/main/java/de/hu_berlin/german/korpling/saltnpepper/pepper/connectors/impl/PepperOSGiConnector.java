@@ -374,24 +374,25 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			File[] fileLocations =
 				new File(dropinLocation.getPath())
 					.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
-			for (File bundleJar : fileLocations) {
-				// check if file is file-object
-				if (bundleJar.isFile() && bundleJar.canRead()) {
-					// check if file is file jar
-					URI bundleURI = bundleJar.toURI();
-					Bundle bundle = install(bundleURI);
-					if (bundle != null) {
-						bundles.add(bundle);
-						logger.debug("\t\tinstalling bundle: " + bundle.
-							getSymbolicName() + "-" + bundle.getVersion());
+			if (fileLocations!= null){
+				for (File bundleJar : fileLocations) {
+					// check if file is file-object
+					if (bundleJar.isFile() && bundleJar.canRead()) {
+						// check if file is file jar
+						URI bundleURI = bundleJar.toURI();
+						Bundle bundle = install(bundleURI);
+						if (bundle != null) {
+							bundles.add(bundle);
+							logger.debug("\t\tinstalling bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
 
-						// set system property for bundle pathes
-						if (osgiBundlesProp == null) {
-							osgiBundlesProp = new StringBuilder();
+							// set system property for bundle pathes
+							if (osgiBundlesProp == null) {
+								osgiBundlesProp = new StringBuilder();
+							}
+							osgiBundlesProp.append("reference:");
+							osgiBundlesProp.append(bundleURI);
+							osgiBundlesProp.append(",");
 						}
-						osgiBundlesProp.append("reference:");
-						osgiBundlesProp.append(bundleURI);
-						osgiBundlesProp.append(",");
 					}
 				}
 			}
