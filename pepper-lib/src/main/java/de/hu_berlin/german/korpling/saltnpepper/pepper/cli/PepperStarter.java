@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
+import ch.qos.logback.classic.LoggerContext;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -1020,6 +1021,14 @@ public class PepperStarter {
 		PepperConnector pepper = null;
 		boolean endedWithErrors = false;
 
+		if(LoggerFactory.getILoggerFactory() instanceof LoggerContext) {
+			LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+			// in our OSGI environment package data extraction 
+			// results in strange errors when log() is called with an 
+			// exception as argument
+			lc.setPackagingDataEnabled(false);
+		}
+		
 		try {
 			PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
 			pepperProps.load();
