@@ -6,14 +6,11 @@ import java.io.OutputStream;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.util.FilesystemContainer;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.UploadException;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
@@ -28,32 +25,36 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
 
 @Title("Pepper converter framework")
 @Theme("valo")
-public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, ItemClickListener, LayoutClickListener, Receiver, ErrorHandler{	
+public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, LayoutClickListener, Receiver, ErrorHandler{	
 	private PepperGUI gui = null;
-	private Window pathSelectDialogueWindow;
-	private static final String DEFAULT_DIALOGUE_PATH = null; //TODO set!
+	private Window pathSelectDialogueWindow = null;
+	private PathSelectDialogue pathDialogue = null;
+	private static final String DEFAULT_DIALOGUE_PATH = "/home"; //TODO set!
+	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	
 	protected void init(VaadinRequest request){		
 		gui = new PepperGUI(this);
 		setErrorHandler(this);
 		
-		Window w = new Window("Select your path, please");
-		w.setContent(new PathSelectDialogue());
-		w.center();
-		w.setModal(true);
-		pathSelectDialogueWindow = w; //TODO try to finalize the window
-		
+		{//prepare path select window
+			Window w = new Window(PATH_DIALOGUE_TITLE);
+			pathDialogue = new PathSelectDialogue();
+			w.setContent(pathDialogue);
+			w.center();
+			w.setModal(true);
+			pathSelectDialogueWindow = w; //TODO try to finalize the window
+		}
 		setContent(gui);		
 	}
 
 	@Override
 	public void buttonClick(ClickEvent event) {
 		String id = event.getComponent().getId();
+		debugOut("click event, id="+id);
 		if (ID_BUTTON_ABOUT.equals(id)){
 			
 		}
 		else if (ID_BUTTON_NEW.equals(id)){
-			Notification.show("Coucou");
 		}
 		else if (ID_BUTTON_LOAD.equals(id)){
 			
@@ -70,22 +71,29 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_RESULTS.equals(id)){
 			gui.setView(VIEW_NAME.RESULTS);
 		}
-		else if (ID_BUTTON_UP.equals(id)){
+		else if (ID_BUTTON_BROWSE_LOCAL.equals(id)){
+			displayPathSelectDialogue(DEFAULT_DIALOGUE_PATH);
+		}
+		else if (ID_BUTTON_BC_PATH.equals(id)){
 			
 		}
-		else if (ID_BUTTON_BROWSE_LOCAL.equals(id)){			
-			displayPathSelectDialogue(null);
+		else if (id.startsWith("/")){//make OS-sensitive
+			//TODO breadcrumb path
 		}
 		else if ("test".equals(id)){
-			Notification.show("it worked");
 		}
 		
+	}
+	
+	//FIXME remove on release
+	public void debugOut(String message){
+		gui.debugOut(message);
 	}
 	
 	private void displayPathSelectDialogue(String rootPath){
 		String path = rootPath==null || rootPath.isEmpty()? "/" : rootPath; //TODO we still have to look for the operating system 
 		FilesystemContainer fsc = new FilesystemContainer(new File(path), "", false);
-		((PathSelectDialogue)pathSelectDialogueWindow.getContent()).display(fsc);
+		pathDialogue.reload(fsc);
 		fsc = null;
 		addWindow(pathSelectDialogueWindow);
 	}
@@ -114,12 +122,6 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			String newRoot = ((ListSelect)c).getValue().toString();
 			displayPathSelectDialogue(newRoot);			
 		}
-	}
-
-	@Override
-	public void itemClick(ItemClickEvent event) {
-		//TODO, necessary? seems no
-		Notification.show("item clicked: "+event.getItem());
 	}
 
 }

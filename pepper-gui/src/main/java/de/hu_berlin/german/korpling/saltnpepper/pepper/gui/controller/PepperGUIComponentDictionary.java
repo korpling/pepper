@@ -9,8 +9,8 @@ public interface PepperGUIComponentDictionary {
 	public static final String ID_BUTTON_MANIPULATORS = "5";
 	public static final String ID_BUTTON_RESULTS = "6";	
 	public static final String ID_BUTTON_SHOW_ALL = "7";
-	public static final String ID_BUTTON_UP = "8";
-	public static final String ID_BUTTON_BROWSE_LOCAL = "9";
+	public static final String ID_BUTTON_BROWSE_LOCAL = "8";
 	
 	public static final String ID_PATH_SELECT = "A";
+	public static final String ID_BUTTON_BC_PATH = "B";
 }

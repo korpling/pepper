@@ -1,4 +1,5 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
+import com.vaadin.data.util.FilesystemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;

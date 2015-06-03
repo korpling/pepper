@@ -3,8 +3,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Upload;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
@@ -22,6 +21,8 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnManipulators;
 	private Button btnResults;
 	private PepperGuiMain main;
+	
+	private Label lblDebug;
 		
 	public PepperGUI(PepperGUIController controller){
 		super();
@@ -55,5 +56,10 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	
 	public void setView(VIEW_NAME view){
 		main.setView(view);
+	}
+	
+	//FIXME remove on release
+	public void debugOut(String message){
+		lblDebug.setCaption(message);
 	}
 }
