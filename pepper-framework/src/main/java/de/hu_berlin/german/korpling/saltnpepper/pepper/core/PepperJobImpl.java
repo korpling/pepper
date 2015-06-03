@@ -43,6 +43,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
@@ -69,7 +70,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentControlle
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
@@ -773,7 +773,7 @@ public class PepperJobImpl extends PepperJob {
 					distance = globalId.length();
 				}
 			}
-			// distance is distance plus 4??? plus length of string sleep
+			// distance is distance plus 4??? plus length of string 'sleep'
 			distance = distance + 4 + sleep.length() + DOCUMENT_STATUS.IN_PROGRESS.toString().length();
 			StringBuilder docInfo = null;
 			for (DocumentController docController : getDocumentControllers()) {
@@ -796,6 +796,9 @@ public class PepperJobImpl extends PepperJob {
 			if (numOfDocuments != 0) {
 				retVal.append(new DecimalFormat("###.##").format(progressOverAll / numOfDocuments * 100) + "%");
 			}
+			retVal.append("\n");
+			retVal.append("processing time:\t");
+			retVal.append(DurationFormatUtils.formatDurationHMS(getProcessingTime()));
 			retVal.append("\n");
 			if (getConfiguration().getDetaialedStatReport()){
 				retVal.append(detailedStr.toString());
@@ -826,6 +829,20 @@ public class PepperJobImpl extends PepperJob {
 		return (retVal);
 	}
 
+	/** Stores the time when this job was started **/
+	private Long startTime= 0l;
+	/** Returns the time when this job was started **/
+	private Long getStartTime(){
+		return startTime;
+	}
+	/**
+	 * Returns the amount of time the job already took.
+	 * @return time in milli seconds
+	 */
+	public Long getProcessingTime(){
+		return System.currentTimeMillis()- startTime;
+	}
+	
 	/**
 	 * Specifies if this job currently runs a conversion. If this is the case,
 	 * some other operations, like adding {@link Step}s cannot be done
@@ -851,6 +868,7 @@ public class PepperJobImpl extends PepperJob {
 		}
 		inProgress.lock();
 		try {
+			startTime= System.currentTimeMillis();
 			status = JOB_STATUS.IN_PROGRESS;
 			if (!isWired) {
 				wire();
