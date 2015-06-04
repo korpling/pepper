@@ -154,7 +154,7 @@ public class PepperStarter {
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
-		CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."),
+		CONVERT("convert", "c", "workflow file", "If no workflow file is passed, Pepper opens a conversion wizzard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
 		//
 		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
