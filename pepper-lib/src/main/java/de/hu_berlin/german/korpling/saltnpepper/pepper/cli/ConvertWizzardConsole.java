@@ -85,14 +85,15 @@ public class ConvertWizzardConsole {
 	private static final String PROMPT = "wizzard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter (a further) path to corpus you want to import or press enter to skip. The current path is:'"+new File("").getAbsolutePath()+"'. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
 	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter (a further) path to which you want to export the corpus. ";
+	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
+	
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
 
 	/** Determines if debug mode is on or off **/
@@ -311,7 +312,7 @@ public class ConvertWizzardConsole {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
-		out.println(MSG_IMPORT_CORPUS);
+		out.println(MSG_IMPORT_CORPUS.replace("(further) ", ""));
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -351,6 +352,7 @@ public class ConvertWizzardConsole {
 								(!path.endsWith("/"))){
 							path= path + "/";
 						}
+						out.println("import corpus from: "+ path);
 						stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
 						
 						if ((number2Module == null) || (name2Module == null)) {
@@ -526,7 +528,7 @@ public class ConvertWizzardConsole {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
-		out.println(MSG_EX_CORPUS);
+		out.println(MSG_EX_CORPUS.replace("(further) ", ""));
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -564,6 +566,7 @@ public class ConvertWizzardConsole {
 					if (!path.endsWith("/")){
 						path= path + "/";
 					}
+					out.println("export corpus to: "+ path);
 					stepDesc = pepperJob.createStepDesc();
 					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
