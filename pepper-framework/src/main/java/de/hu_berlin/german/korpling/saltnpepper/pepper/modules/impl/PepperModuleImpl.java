@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -350,27 +351,43 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		}
 	}
 
+	/** a list containing reasons why this module is not ready to start **/ 
+	private Collection<String> startProblems= new ArrayList<String>();
+	/**
+	 * {@inheritDoc PepperModule#getStartProblems()}
+	 */
+	@Override
+	public Collection<String> getStartProblems(){
+		return(startProblems);
+	}
 	/**
 	 * {@inheritDoc PepperModule#isReadyToStart()}
 	 */
+	@Override
 	public boolean isReadyToStart() throws PepperModuleNotReadyException {
 		Boolean retVal = true;
 		if (getResources() == null) {
+			startProblems.add("No resource is given for module.");
 			retVal = false;
 		} else {
 			File resourceFile = new File(getResources().toFileString());
 			if (!resourceFile.exists()) {
+				startProblems.add("Given resource file '"+resourceFile.getAbsolutePath()+"' does not exist.");
 				retVal = false;
 			}
 		}
 		if (getModuleType() == null) {
+			startProblems.add("No module-type is set for module.");
 			retVal = false;
 		}
 		if (getName() == null) {
+			startProblems.add("No name is set for module.");
 			retVal = false;
 		}
 		return (retVal);
 	}
+	
+	
 
 	/**
 	 * the controller object, which acts as bridge between Pepper framework and

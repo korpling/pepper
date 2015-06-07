@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -816,13 +817,14 @@ public class PepperJobImpl extends PepperJob {
 	 * Checks for each {@link PepperModule} in all steps, if it is ready to
 	 * start, via calling {@link PepperModule#isReadyToStart()}.
 	 * 
-	 * @return false, if one of the {@link PepperModule} objects returned false.
+	 * @return a list of steps whose modules are not ready to start
 	 */
-	protected synchronized Boolean checkReadyToStart() {
-		Boolean retVal = true;
+	protected synchronized Collection<Pair<Step, Collection<String>>> checkReadyToStart() {
+		ArrayList<Pair<Step, Collection<String>>> retVal = new ArrayList<>();
 		for (Step step : getAllSteps()) {
 			if (!step.getModuleController().getPepperModule().isReadyToStart()) {
-				retVal = false;
+				Pair<Step, Collection<String>> stepReason= new ImmutablePair<Step, Collection<String>>(step, step.getModuleController().getPepperModule().getStartProblems());
+				retVal.add(stepReason);
 				logger.error("Cannot run pepper job '" + getId() + "', because one of the involved modules '" + step.getModuleController().getPepperModule().getFingerprint() + "' is not ready to run.");
 			}
 		}
@@ -874,8 +876,17 @@ public class PepperJobImpl extends PepperJob {
 				wire();
 			}
 			if (!isReadyToStart) {
-				if (!checkReadyToStart()) {
-					throw new PepperException("Cannot run Pepper job '" + getId() + "', because one of the involved job is not ready to run.");
+				Collection<Pair<Step, Collection<String>>> notReadyModules= checkReadyToStart();
+				if (notReadyModules.size() != 0) {
+					StringBuilder str= new StringBuilder();
+					for (Pair<Step, Collection<String>> problems: notReadyModules){
+						str.append("[");
+						str.append(problems.getLeft());
+						str.append(": ");
+						str.append(problems.getRight());
+						str.append("], ");
+					}
+					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '"+str.toString()+"'. ");
 				}
 			}
 			if (!isImportedCorpusStructure){

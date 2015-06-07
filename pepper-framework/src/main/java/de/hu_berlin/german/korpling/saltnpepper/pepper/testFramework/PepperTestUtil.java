@@ -184,6 +184,9 @@ public class PepperTestUtil {
 			}
 			i++;
 
+			//if module does not have a resource, set a default one
+			fixture.setResources(URI.createFileURI("src/main/resources"));
+			
 			// fill importers manipulators and exporters collection
 			if (fixture instanceof PepperImporter) {
 				importers.add((PepperImporter) fixture);
