@@ -23,8 +23,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
@@ -52,6 +52,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.Pepper
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.FileComparator;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
@@ -165,6 +166,171 @@ public abstract class PepperModuleTest
 	}
 	
 	/**
+	 * Creates an alibi {@link Step} for the method {@link #start(Collection)}.
+	 * 
+	 * @param createAlibiImporter
+	 * @return
+	 */
+	private static Step createAlibiStep(boolean createAlibiImporter) {
+		URI dummyResourceURI = URI.createFileURI(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
+		FormatDesc formatDesc;
+
+		// set tmp folder
+		File tmpFolder = PepperModuleTest.getTempPath_static("pepperModuleTest");
+
+		Step step = null;
+		CorpusDesc corpusDesc = new CorpusDesc();
+		corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
+		formatDesc = new FormatDesc();
+		formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
+		formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
+		corpusDesc.setFormatDesc(formatDesc);
+
+		if (createAlibiImporter) {
+			step = new Step("doNothing_import_step");
+			PepperImporter importer = new DoNothingImporter();
+			importer.setResources(dummyResourceURI);
+			step.setPepperModule(importer);
+			importer.setCorpusDesc(corpusDesc);
+		} else {
+			step = new Step("doNothing_export_step");
+			PepperExporter exporter = new DoNothingExporter();
+			exporter.setCorpusDesc(corpusDesc);
+			exporter.setResources(dummyResourceURI);
+			step.setPepperModule(exporter);
+		}
+		step.setCorpusDesc(corpusDesc);
+		step.setModuleType(MODULE_TYPE.EXPORTER);
+		step.setName(DoNothingImporter.MODULE_NAME);
+
+		return (step);
+	}
+
+	/**
+	 * This methods starts the processing of Pepper in the development
+	 * environment for a set of Pepper modules. This enables the test of
+	 * multiple modules at once, for instance the import and export of data to
+	 * check no data is lost. In case of the fixture is {@link PepperImporter},
+	 * first the method
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called. For
+	 * all kinds of fixture, the method
+	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * is called for each {@link SDocument} object contained in the variable
+	 * {@link PepperModule#getSaltProject()}. This method will wait, until each
+	 * {@link ModuleControllerImpl} return having finished the process. <br/>
+	 * To create a test using this method do the following:<br/>
+	 * <ul>
+	 * <li>Create {@link CorpusDefinition} and add it to this object and set its
+	 * {@link FormatDefinition} and corpus path</li>
+	 * <li>Create a {@link SCorpusGraph} object as the one to be filled and add
+	 * it with
+	 * 
+	 * <pre>
+	 * this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
+	 * this.getFixture().importCorpusStructure(importedCorpusGraph);
+	 * </pre>
+	 * 
+	 * </li>
+	 * </ul>
+	 */
+	public static void start(Collection<PepperModule> fixtures) {
+		if (fixtures == null) {
+			throw new PepperModuleTestException("Cannot start Pepper modules, because the list of fixtures is not set.");
+		}
+		//
+		Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
+		Collection<PepperManipulator> manipulators = new ArrayList<PepperManipulator>();
+		Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
+
+		/**
+		 * set the salt project for all modules, if it is already set, check
+		 * that it is equal in all modules. Extract all importers, manipulators
+		 * and exporters
+		 */
+		SaltProject saltProject = null;
+		int i = 1;
+		for (PepperModule fixture : fixtures) {
+			if (i == 1) {
+				saltProject = fixture.getSaltProject();
+			} else if (saltProject != fixture.getSaltProject()) {
+				throw new PepperModuleTestException("Cannot run test because the SaltProject objects are not equal for all Pepper modules. ");
+			}
+			i++;
+
+			// fill importers manipulators and exporters collection
+			if (fixture instanceof PepperImporter) {
+				importers.add((PepperImporter) fixture);
+			} else if (fixture instanceof PepperManipulator) {
+				manipulators.add((PepperManipulator) fixture);
+			} else if (fixture instanceof PepperExporter) {
+				exporters.add((PepperExporter) fixture);
+			}
+		}
+		if (saltProject == null) {
+			saltProject = SaltFactory.eINSTANCE.createSaltProject();
+			for (PepperModule fixture : fixtures) {
+				fixture.setSaltProject(saltProject);
+			}
+		}
+
+		// Create a Pepper object
+		PepperImpl pepper = new PepperImpl();
+		PepperConfiguration conf = new PepperConfiguration();
+		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
+		pepper.setConfiguration(conf);
+
+		// create a Pepper job object
+		PepperJob job = pepper.getJob(pepper.createJob());
+		if (!(job instanceof PepperJobImpl)) {
+			throw new PepperModuleTestException("Cannot start Pepper module test, because '" + PepperJob.class + "' is not of type '" + PepperJobImpl.class + "'. ");
+		} else {
+			((PepperJobImpl) job).setSaltProject(saltProject);
+		}
+
+		/** Create a step for each fixture. **/
+		for (PepperModule fixture : fixtures) {
+			Step fixtureStep = null;
+			fixtureStep = new Step("fixture_step");
+			fixtureStep.setModuleType(fixture.getModuleType());
+			fixtureStep.setName(fixture.getName());
+			fixtureStep.setVersion(fixture.getVersion());
+			if (fixture instanceof PepperImporter) {
+				fixtureStep.setCorpusDesc(((PepperImporter) fixture).getCorpusDesc());
+			} else if (fixture instanceof PepperExporter) {
+				fixtureStep.setCorpusDesc(((PepperExporter) fixture).getCorpusDesc());
+			}
+			fixtureStep.setPepperModule(fixture);
+			((PepperJobImpl) job).addStep(fixtureStep);
+		}
+
+		/** Create and add alibi steps **/
+		if ((importers.size() == 0) || (importers.size() != saltProject.getSCorpusGraphs().size())) {
+			for (SCorpusGraph cGraph : saltProject.getSCorpusGraphs()) {
+				boolean isAssociated = false;
+				for (PepperModule fixture : fixtures) {
+					if (fixture.getSCorpusGraph() == cGraph) {
+						isAssociated = true;
+						break;
+					}
+				}
+				if (!isAssociated) {
+					((PepperJobImpl) job).addStep(createAlibiStep(true));
+				}
+			}
+		}
+		if (exporters.size() == 0) {
+			((PepperJobImpl) job).addStep(createAlibiStep(false));
+		}
+
+		// start the conversion
+		job.convert();
+
+		for (DocumentController controller : ((PepperJobImpl) job).getDocumentControllers()) {
+			controller.awake();
+		}
+	}
+	
+	/**
 	 * This methods starts the processing of Pepper in the development environment. In case of the fixture is 
 	 * {@link PepperImporter}, first the method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called.
 	 * For all kinds of fixture, the method {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
@@ -182,112 +348,137 @@ public abstract class PepperModuleTest
 	 * </li>
 	 * </ul>
 	 */
-	public void start()
-	{
-		if (this.getFixture()== null)
-			throw new PepperModuleTestException("Cannot start Pepper module, because the fixture is not set.");
-
-		if (this.getFixture().getSaltProject()== null)
-			this.getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
-		
-		File tmpFolder= getTempPath("pepperModuleTest");
-		
-		PepperImpl pepper= new PepperImpl();
-		PepperConfiguration conf= new PepperConfiguration();
-		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
-		pepper.setConfiguration(conf);
-		PepperJob job= pepper.getJob(pepper.createJob());
-		
-		if (!(job instanceof PepperJobImpl))
-			throw new PepperModuleTestException("Cannot start Pepper module test, because '"+PepperJob.class+"' is not of type '"+PepperJobImpl.class+"'. ");
-		
-		((PepperJobImpl)job).setSaltProject(getFixture().getSaltProject());
-		
-		CorpusDesc corpusDesc;
-		FormatDesc formatDesc;
-		
-		Step fixtureStep= null;
-		fixtureStep= new Step("fixture_step");
-		fixtureStep.setModuleType(getFixture().getModuleType());
-		fixtureStep.setName(getFixture().getName());
-		fixtureStep.setVersion(getFixture().getVersion());
-		if (getFixture() instanceof PepperImporter){
-			fixtureStep.setCorpusDesc(((PepperImporter)getFixture()).getCorpusDesc());
-		}else if (getFixture() instanceof PepperExporter){
-			fixtureStep.setCorpusDesc(((PepperExporter)getFixture()).getCorpusDesc());
-		}
-		fixtureStep.setPepperModule(getFixture());
-		((PepperJobImpl)job).addStep(fixtureStep);
-		
-		URI dummyResourceURI= URI.createFileURI(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
-		
-		//define export step
-			Step exportStep= new Step("doNothing_export_step");
-			exportStep.setModuleType(MODULE_TYPE.EXPORTER);
-			exportStep.setName(DoNothingImporter.MODULE_NAME);
-			PepperExporter exporter= new DoNothingExporter();
-			exporter.setResources(dummyResourceURI);
-			exportStep.setPepperModule(exporter);
-		
-			corpusDesc= new CorpusDesc();
-			corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
-			formatDesc= new FormatDesc();
-			formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
-			formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
-			corpusDesc.setFormatDesc(formatDesc);
-			exportStep.setCorpusDesc(corpusDesc);
-			exporter.setCorpusDesc(corpusDesc);
-		//define export step
-		
-		//define import step
-			List<Step> importSteps= new Vector<Step>();
-			for (SCorpusGraph sCorpusgraph: getFixture().getSaltProject().getSCorpusGraphs()){
-				Step importStep= new Step("doNothing_import_step");
-				importStep.setModuleType(MODULE_TYPE.IMPORTER);
-				importStep.setName(DoNothingImporter.MODULE_NAME);
-				PepperImporter importer= new DoNothingImporter();
-				importer.setResources(dummyResourceURI);
-				importStep.setPepperModule(importer);
-				
-				corpusDesc= new CorpusDesc();
-				corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
-				formatDesc= new FormatDesc();
-				formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
-				formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
-				corpusDesc.setFormatDesc(formatDesc);
-				importer.setCorpusDesc(corpusDesc);
-				importSteps.add(importStep);
-			}
-		//define import step
-		if (getFixture() instanceof PepperImporter){
-			((PepperJobImpl)job).addStep(exportStep);
-		}else if (getFixture() instanceof PepperManipulator){
-			if (	(importSteps.size()== 0)&&
-					(getFixture().getSaltProject().getSCorpusGraphs().size()== 0)){
-				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be manipulated. ");
-			}
-			for (Step importStep: importSteps){
-				((PepperJobImpl)job).addStep(importStep);
-			}
-			((PepperJobImpl)job).addStep(exportStep);
-		}else if (getFixture() instanceof PepperExporter){
-			if (	(importSteps.size()== 0)&&
-					(getFixture().getSaltProject()== null)){
-				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be exported. ");
-			}
-			for (Step importStep: importSteps){
-				((PepperJobImpl)job).addStep(importStep);
-			}
-		}else{
-			throw new PepperModuleTestException(getFixture(), "Cannot run test, because given fixture '"+getFixture()+"' was neither of type '"+PepperImporter.class+"', '"+PepperManipulator.class+"' nor '"+PepperExporter.class+"'. ");
-		}
-		
-		job.convert();
-		
-		for (DocumentController controller: ((PepperJobImpl)job).getDocumentControllers()){
-			controller.awake();
-		}
+	public void start(){
+		Collection<PepperModule> fixtures= new ArrayList<PepperModule>();
+		fixtures.add(getFixture());
+		start(fixtures);
 	}
+	
+//	/**
+//	 * This methods starts the processing of Pepper in the development environment. In case of the fixture is 
+//	 * {@link PepperImporter}, first the method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called.
+//	 * For all kinds of fixture, the method {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+//	 * is called for each {@link SDocument} object contained in the variable {@link PepperModule#getSaltProject()}.
+//	 * This method will wait, until each {@link ModuleControllerImpl} return having finished the process.
+//	 * <br/>
+//	 * To create a test using this method do the following:<br/>
+//	 * <ul>
+//	 * <li>Create {@link CorpusDefinition} and add it to this object and set its {@link FormatDefinition} and corpus path </li>
+//	 * <li>Create a {@link SCorpusGraph} object as the one to be filled and add it with  
+//	 * 	<pre>
+//	 *  this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
+//	 *	this.getFixture().importCorpusStructure(importedCorpusGraph);
+//	 * </pre>
+//	 * </li>
+//	 * </ul>
+//	 */
+//	public void start()
+//	{
+//		if (this.getFixture()== null)
+//			throw new PepperModuleTestException("Cannot start Pepper module, because the fixture is not set.");
+//
+//		if (this.getFixture().getSaltProject()== null)
+//			this.getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+//		
+//		File tmpFolder= getTempPath("pepperModuleTest");
+//		
+//		PepperImpl pepper= new PepperImpl();
+//		PepperConfiguration conf= new PepperConfiguration();
+//		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
+//		pepper.setConfiguration(conf);
+//		PepperJob job= pepper.getJob(pepper.createJob());
+//		
+//		if (!(job instanceof PepperJobImpl))
+//			throw new PepperModuleTestException("Cannot start Pepper module test, because '"+PepperJob.class+"' is not of type '"+PepperJobImpl.class+"'. ");
+//		
+//		((PepperJobImpl)job).setSaltProject(getFixture().getSaltProject());
+//		
+//		CorpusDesc corpusDesc;
+//		FormatDesc formatDesc;
+//		
+//		Step fixtureStep= null;
+//		fixtureStep= new Step("fixture_step");
+//		fixtureStep.setModuleType(getFixture().getModuleType());
+//		fixtureStep.setName(getFixture().getName());
+//		fixtureStep.setVersion(getFixture().getVersion());
+//		if (getFixture() instanceof PepperImporter){
+//			fixtureStep.setCorpusDesc(((PepperImporter)getFixture()).getCorpusDesc());
+//		}else if (getFixture() instanceof PepperExporter){
+//			fixtureStep.setCorpusDesc(((PepperExporter)getFixture()).getCorpusDesc());
+//		}
+//		fixtureStep.setPepperModule(getFixture());
+//		((PepperJobImpl)job).addStep(fixtureStep);
+//		
+//		URI dummyResourceURI= URI.createFileURI(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
+//		
+//		//define export step
+//			Step exportStep= new Step("doNothing_export_step");
+//			exportStep.setModuleType(MODULE_TYPE.EXPORTER);
+//			exportStep.setName(DoNothingImporter.MODULE_NAME);
+//			PepperExporter exporter= new DoNothingExporter();
+//			exporter.setResources(dummyResourceURI);
+//			exportStep.setPepperModule(exporter);
+//		
+//			corpusDesc= new CorpusDesc();
+//			corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
+//			formatDesc= new FormatDesc();
+//			formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
+//			formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
+//			corpusDesc.setFormatDesc(formatDesc);
+//			exportStep.setCorpusDesc(corpusDesc);
+//			exporter.setCorpusDesc(corpusDesc);
+//		//define export step
+//		
+//		//define import step
+//			List<Step> importSteps= new Vector<Step>();
+//			for (SCorpusGraph sCorpusgraph: getFixture().getSaltProject().getSCorpusGraphs()){
+//				Step importStep= new Step("doNothing_import_step");
+//				importStep.setModuleType(MODULE_TYPE.IMPORTER);
+//				importStep.setName(DoNothingImporter.MODULE_NAME);
+//				PepperImporter importer= new DoNothingImporter();
+//				importer.setResources(dummyResourceURI);
+//				importStep.setPepperModule(importer);
+//				
+//				corpusDesc= new CorpusDesc();
+//				corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
+//				formatDesc= new FormatDesc();
+//				formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
+//				formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
+//				corpusDesc.setFormatDesc(formatDesc);
+//				importer.setCorpusDesc(corpusDesc);
+//				importSteps.add(importStep);
+//			}
+//		//define import step
+//		if (getFixture() instanceof PepperImporter){
+//			((PepperJobImpl)job).addStep(exportStep);
+//		}else if (getFixture() instanceof PepperManipulator){
+//			if (	(importSteps.size()== 0)&&
+//					(getFixture().getSaltProject().getSCorpusGraphs().size()== 0)){
+//				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be manipulated. ");
+//			}
+//			for (Step importStep: importSteps){
+//				((PepperJobImpl)job).addStep(importStep);
+//			}
+//			((PepperJobImpl)job).addStep(exportStep);
+//		}else if (getFixture() instanceof PepperExporter){
+//			if (	(importSteps.size()== 0)&&
+//					(getFixture().getSaltProject()== null)){
+//				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be exported. ");
+//			}
+//			for (Step importStep: importSteps){
+//				((PepperJobImpl)job).addStep(importStep);
+//			}
+//		}else{
+//			throw new PepperModuleTestException(getFixture(), "Cannot run test, because given fixture '"+getFixture()+"' was neither of type '"+PepperImporter.class+"', '"+PepperManipulator.class+"' nor '"+PepperExporter.class+"'. ");
+//		}
+//		
+//		job.convert();
+//		
+//		for (DocumentController controller: ((PepperJobImpl)job).getDocumentControllers()){
+//			controller.awake();
+//		}
+//	}
+	
 	@Test
 	public void testSetGetCorpusGraph()
 	{
