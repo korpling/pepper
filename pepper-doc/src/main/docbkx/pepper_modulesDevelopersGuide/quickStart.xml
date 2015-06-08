@@ -373,8 +373,8 @@ public class MyImporter extends PepperImporterImpl
                 <para>Sometimes it is necessary to include libraries, which are not accessible via a
                     Maven repository and therefore can not be resolved by Maven. In that case we
                     recommend, to create a 'lib' folder in the project directory and to copy all the
-                    libraries you need into it. Unfortunately, you have register them twice, first
-                    for Maven and second for OSGi.</para>
+                    libraries you need into it. Unfortunately, you have to register them twice,
+                    first for Maven and second for OSGi.</para>
                 <para>To register such a library to Maven, you need to install them to your local
                     Maven repository. You can do that with:
                     <programlisting>
