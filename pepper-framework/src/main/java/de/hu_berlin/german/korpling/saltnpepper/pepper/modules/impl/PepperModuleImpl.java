@@ -993,7 +993,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
-		logger.error("An exception was thrown by the mapper threads '" + t + "'. ", e);
+		//TODO this is a workaround because of a bug in slf4j. Currently errors are not passable to slf4j. Therefore just the error message is passed, and because this is quite unuseful, the stacktrace is also printed.
+		logger.error("An exception was thrown by the mapper threads '" + t + "'. ", e.getMessage());
+		e.printStackTrace();
 		if (logger instanceof NOPLogger) {
 			e.printStackTrace();
 		}
@@ -1004,19 +1006,20 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public Double getProgress(String globalId) {
-		if (globalId == null)
+		if (globalId == null){
 			throw new PepperFWException("Cannot return the progress for an empty sDocumentId.");
-
+		}
 		PepperMapperController controller = this.getMapperControllers().get(globalId);
 		// outcommented for downwards compatibility to modules implemented with
 		// < pepper 1.1.6
 		// if (controller== null)
 		// throw new
 		// PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
-		if (controller != null)
+		if (controller != null){
 			return (controller.getProgress());
-		else
+		}else{
 			return (null);
+		}
 	}
 
 	/**
