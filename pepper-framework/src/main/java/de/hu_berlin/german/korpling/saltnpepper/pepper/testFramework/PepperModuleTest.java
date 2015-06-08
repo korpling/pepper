@@ -23,34 +23,17 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperTestException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingExporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleTestException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.FileComparator;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
@@ -104,9 +87,9 @@ public abstract class PepperModuleTest
 	}
 	
 	/**
-	 * Name of the directory where tests for Pepper and Pepper modules can be stored.
+	 * {@inheritDoc PepperTestUtil#TMP_TEST_DIR}
 	 */
-	public static String TMP_TEST_DIR="pepper-test";
+	public static String TMP_TEST_DIR=PepperTestUtil.TMP_TEST_DIR;
 	
 	/**
 	 * Returns a {@link File} object pointing to a temporary path, where the caller can store temporary files.
@@ -130,38 +113,24 @@ public abstract class PepperModuleTest
 	}
 	
 	/**
-	 * Returns a {@link File} object pointing to a temporary path, where the caller can store temporary files.
-	 * The temporary path is located in the temporary directory provided by the underlying os. The resulting
-	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/<code>testDirectory</code>.
-	 * @param testDirectory last part of the temporary path
-	 * @return a file object locating to a temporary folder, where files can be stored temporarily
+	 * {@inheritDoc PepperTestUtil#getTempPath_static(String)}
 	 */
 	public static File getTempPath_static(String testDirectory){
-		if 	(	(testDirectory== null)||
-				(testDirectory.isEmpty())){
-			throw new PepperModuleTestException("Cannot return a temporary directory, since the given last part is empty.");
-		}
-		File retVal= null;
-		retVal= PepperUtil.getTempTestFile(TMP_TEST_DIR+"/"+testDirectory);
-		return(retVal);
+		return(PepperTestUtil.getTempPath_static(testDirectory));
 	}
 	
 	/**
-	 * Returns a default test folder, where to find resources for tests. When using the default
-	 * maven structure, this folder is located at 'src/test/resources/'.  
-	 * @return a folder where to find test resources
+	 * {@inheritDoc PepperTestUtil#getTestResources()}
 	 */
 	public static String getTestResources(){
-		return("src/test/resources/");
+		return(PepperTestUtil.getTestResources());
 	}
 	
 	/**
-	 * Returns a default test folder, where to find resources for tests. When using the default
-	 * maven structure, this folder is located at 'src/test/resources/'.  
-	 * @return a folder where to find test resources
+	 * {@inheritDoc PepperTestUtil#getSrcResources()}
 	 */
 	public static String getSrcResources(){
-		return("src/main/resources/");
+		return(PepperTestUtil.getSrcResources());
 	}
 	
 	/**
@@ -182,112 +151,12 @@ public abstract class PepperModuleTest
 	 * </li>
 	 * </ul>
 	 */
-	public void start()
-	{
-		if (this.getFixture()== null)
-			throw new PepperModuleTestException("Cannot start Pepper module, because the fixture is not set.");
-
-		if (this.getFixture().getSaltProject()== null)
-			this.getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
-		
-		File tmpFolder= getTempPath("pepperModuleTest");
-		
-		PepperImpl pepper= new PepperImpl();
-		PepperConfiguration conf= new PepperConfiguration();
-		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
-		pepper.setConfiguration(conf);
-		PepperJob job= pepper.getJob(pepper.createJob());
-		
-		if (!(job instanceof PepperJobImpl))
-			throw new PepperModuleTestException("Cannot start Pepper module test, because '"+PepperJob.class+"' is not of type '"+PepperJobImpl.class+"'. ");
-		
-		((PepperJobImpl)job).setSaltProject(getFixture().getSaltProject());
-		
-		CorpusDesc corpusDesc;
-		FormatDesc formatDesc;
-		
-		Step fixtureStep= null;
-		fixtureStep= new Step("fixture_step");
-		fixtureStep.setModuleType(getFixture().getModuleType());
-		fixtureStep.setName(getFixture().getName());
-		fixtureStep.setVersion(getFixture().getVersion());
-		if (getFixture() instanceof PepperImporter){
-			fixtureStep.setCorpusDesc(((PepperImporter)getFixture()).getCorpusDesc());
-		}else if (getFixture() instanceof PepperExporter){
-			fixtureStep.setCorpusDesc(((PepperExporter)getFixture()).getCorpusDesc());
-		}
-		fixtureStep.setPepperModule(getFixture());
-		((PepperJobImpl)job).addStep(fixtureStep);
-		
-		URI dummyResourceURI= URI.createFileURI(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
-		
-		//define export step
-			Step exportStep= new Step("doNothing_export_step");
-			exportStep.setModuleType(MODULE_TYPE.EXPORTER);
-			exportStep.setName(DoNothingImporter.MODULE_NAME);
-			PepperExporter exporter= new DoNothingExporter();
-			exporter.setResources(dummyResourceURI);
-			exportStep.setPepperModule(exporter);
-		
-			corpusDesc= new CorpusDesc();
-			corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
-			formatDesc= new FormatDesc();
-			formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
-			formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
-			corpusDesc.setFormatDesc(formatDesc);
-			exportStep.setCorpusDesc(corpusDesc);
-			exporter.setCorpusDesc(corpusDesc);
-		//define export step
-		
-		//define import step
-			List<Step> importSteps= new Vector<Step>();
-			for (SCorpusGraph sCorpusgraph: getFixture().getSaltProject().getSCorpusGraphs()){
-				Step importStep= new Step("doNothing_import_step");
-				importStep.setModuleType(MODULE_TYPE.IMPORTER);
-				importStep.setName(DoNothingImporter.MODULE_NAME);
-				PepperImporter importer= new DoNothingImporter();
-				importer.setResources(dummyResourceURI);
-				importStep.setPepperModule(importer);
-				
-				corpusDesc= new CorpusDesc();
-				corpusDesc.setCorpusPath(URI.createFileURI(tmpFolder.getAbsolutePath()));
-				formatDesc= new FormatDesc();
-				formatDesc.setFormatName(DoNothingImporter.FORMAT_NAME);
-				formatDesc.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
-				corpusDesc.setFormatDesc(formatDesc);
-				importer.setCorpusDesc(corpusDesc);
-				importSteps.add(importStep);
-			}
-		//define import step
-		if (getFixture() instanceof PepperImporter){
-			((PepperJobImpl)job).addStep(exportStep);
-		}else if (getFixture() instanceof PepperManipulator){
-			if (	(importSteps.size()== 0)&&
-					(getFixture().getSaltProject().getSCorpusGraphs().size()== 0)){
-				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be manipulated. ");
-			}
-			for (Step importStep: importSteps){
-				((PepperJobImpl)job).addStep(importStep);
-			}
-			((PepperJobImpl)job).addStep(exportStep);
-		}else if (getFixture() instanceof PepperExporter){
-			if (	(importSteps.size()== 0)&&
-					(getFixture().getSaltProject()== null)){
-				throw new PepperModuleTestException(getFixture(), "Please add either an importer to workflow or create a filled SaltProject to be exported. ");
-			}
-			for (Step importStep: importSteps){
-				((PepperJobImpl)job).addStep(importStep);
-			}
-		}else{
-			throw new PepperModuleTestException(getFixture(), "Cannot run test, because given fixture '"+getFixture()+"' was neither of type '"+PepperImporter.class+"', '"+PepperManipulator.class+"' nor '"+PepperExporter.class+"'. ");
-		}
-		
-		job.convert();
-		
-		for (DocumentController controller: ((PepperJobImpl)job).getDocumentControllers()){
-			controller.awake();
-		}
-	}
+	public void start(){
+		Collection<PepperModule> fixtures= new ArrayList<PepperModule>();
+		fixtures.add(getFixture());
+		PepperTestUtil.start(fixtures);
+	}	
+	
 	@Test
 	public void testSetGetCorpusGraph()
 	{

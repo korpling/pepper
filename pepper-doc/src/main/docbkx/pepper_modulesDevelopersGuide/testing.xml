@@ -77,8 +77,8 @@ protected void setUp() throws Exception {
     //X SCorpus objects
     assertEquals(X, getFixture().getSaltProject()
         .getSCorpusGraphs().getSCorpora().size());
-}</programlisting>More
-            samples for tests can be found in the sample project in the classes
+}</programlisting></para>
+        <para>More samples for tests can be found in the sample project in the classes
                 <classname>SampleImporterTest</classname>,
                 <classname>SampleManipulatorTest</classname> and
                 <classname>SampleExporterTest</classname>. </para>
@@ -88,5 +88,16 @@ protected void setUp() throws Exception {
             the layers, you want to use. For more information, take a look into the Salt quick
             user's guide (see <link xlink:href="u.hu-berlin.de/saltnpepper"
             />).</para>
+        <para>The class de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperTestUtil
+            provides some very helpful methods like getSrcResources() to get a reference to the
+            resources folder (.../src/main/resources) or the method getTestResources to get a
+            reference to the test resource folder (.../src/test/resources). </para>
+        <para>When you are implementing an importer and an exporter you may want to make sure that
+            no data is lost, you can orchestrate the im- and the exporter and compare the input
+            files with the output files. In that case implementing the classes PepperImporterTest
+            and PepperExporterTest want do the job, because they assume that you are testing a
+            single module. To load multiple modules in the Pepper test environment, use the method
+            PepperUtil.start(Collection&lt;PepperModule> fixtures) instead and pass your im and your
+            exporter.</para>
     </sect1>
 </chapter>
