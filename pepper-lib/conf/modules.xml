@@ -46,6 +46,9 @@
 	<pepperModules>
 		<artifactId>pepperModules-RelANNISModules</artifactId>
 	</pepperModules>
+    <pepperModules>
+		<artifactId>pepperModules-ANNISModules</artifactId>
+	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-RidgesModules</artifactId>
 	</pepperModules>
