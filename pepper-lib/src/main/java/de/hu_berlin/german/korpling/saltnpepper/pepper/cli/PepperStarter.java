@@ -18,6 +18,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
 import ch.qos.logback.classic.LoggerContext;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +45,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.BundleException;
@@ -477,10 +479,10 @@ public class PepperStarter {
 			try {
 				pepperJob.convert();
 				timestamp = System.currentTimeMillis() - timestamp;
-				output.println("conversion ended successfully, required time: " + (timestamp / 1000) + " s");
+				output.println("conversion ended successfully, required time: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
 			} catch (Exception e) {
 				timestamp = System.currentTimeMillis() - timestamp;
-				output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + (timestamp / 1000) + " s");
+				output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
 				output.println(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
 				output.println("full stack trace:");
 				e.printStackTrace(output);
