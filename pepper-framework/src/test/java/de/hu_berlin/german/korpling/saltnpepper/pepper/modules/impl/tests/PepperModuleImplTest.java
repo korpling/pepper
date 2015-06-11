@@ -110,4 +110,27 @@ public class PepperModuleImplTest extends PepperImporterImpl{
 		assertEquals("Bart", document.getSMetaAnnotation("name").getSValue());
 		assertEquals("Springfield", document.getSMetaAnnotation("place").getSValue());
 	}
+	
+	@Test
+	public void test_PropAddSLayer() {
+		SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+		SampleGenerator.createSDocumentStructure(sDoc);
+		int layersBefore = sDoc.getSDocumentGraph().getSLayers().size();
+		getFixture().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
+		sDoc.setSElementId(SaltFactory.eINSTANCE.createSElementId());
+		
+		getFixture().after(sDoc.getSElementId());
+
+		assertEquals(layersBefore + 2, sDoc.getSDocumentGraph().getSLayers().size());
+		SLayer layer1 = sDoc.getSDocumentGraph().getSLayers().get(layersBefore);
+		SLayer layer2 = sDoc.getSDocumentGraph().getSLayers().get(layersBefore + 1);
+		for (SNode sNode : sDoc.getSDocumentGraph().getSNodes()) {
+			assertTrue(sNode.getSLayers().contains(layer1));
+			assertTrue(sNode.getSLayers().contains(layer2));
+		}
+		for (SRelation sRel : sDoc.getSDocumentGraph().getSRelations()) {
+			assertTrue(sRel.getSLayers().contains(layer1));
+			assertTrue(sRel.getSLayers().contains(layer2));
+		}
+	}
 }
