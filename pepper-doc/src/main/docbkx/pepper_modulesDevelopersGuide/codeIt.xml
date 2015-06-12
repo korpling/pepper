@@ -454,7 +454,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
     getSDocumentEndings().add(ENDING_LEAF_FOLDER);
     ...
 }</programlisting></para>
-            <para>In general the paramter of the method '<emphasis role="italic"
+            <para>In general the parameter of the method '<emphasis role="italic"
                     >getSDocumentEndings()</emphasis>' is just a String, but there are some
                 predefined endings you can use. The two lines marked as option 1, will add the
                 endings 'xml' and 'tab' to the list of file endings to be imported. That means, that
