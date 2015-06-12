@@ -438,7 +438,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
                     <para>In case you are wondering, yes this sounds a bit strange, since each file
                         ending which is not contained in the second list won't be imported by
                         default. But there is an option to set this to import each file, no matter
-                        wjat's the ending.</para>
+                        what's the ending.</para>
                 </footnote> Now let's show some code for adapting. The following snippet is placed
                 into the method 'isReadyToStart()', but even could be located inside the
                 constructor:
