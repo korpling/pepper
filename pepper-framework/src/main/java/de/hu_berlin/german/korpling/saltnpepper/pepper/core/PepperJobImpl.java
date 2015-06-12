@@ -1053,7 +1053,8 @@ public class PepperJobImpl extends PepperJob {
 	 * 
 	 * <b>Don't call this function if you have other options to solve your problem!</b>.
 	 * 
-	 * Normally the configuration should be the only way of setting this value.
+	 * Normally the user defined configuration in the pepper.properties file 
+	 * should be the only way of setting this value.
 	 * If the setting is too low for a module (e.g. when merging documents)
 	 * this function is the last resort you have to solve this problem. <br />
 	 * 
