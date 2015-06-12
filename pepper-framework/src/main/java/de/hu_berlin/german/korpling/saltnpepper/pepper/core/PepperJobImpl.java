@@ -1047,7 +1047,30 @@ public class PepperJobImpl extends PepperJob {
 	 **/
 	private volatile int maxNumOfDocuments = 10;
 
-	protected void setMaxNumerOfDocuments(int maxNumOfDocuments) {
+	/**
+	 * <b>USE WITH CAUTION</b>: Allows to set the maximal number of documents which are allowed to be
+	 * processed at the same time.<br/>
+	 * 
+	 * <b>Don't call this function if you have other options to solve your problem!</b>.
+	 * 
+	 * Normally the configuration should be the only way of setting this value.
+	 * If the setting is too low for a module (e.g. when merging documents)
+	 * this function is the last resort you have to solve this problem. <br />
+	 * 
+	 * If the conversion is already in progress a warning will be emitted to 
+	 * the user to inform about the change.
+	 * 
+	 * @param maxNumOfDocuments 
+	 */
+	public void setMaxNumerOfDocuments(int maxNumOfDocuments) {
+		
+		if(inProgress.isLocked()) {
+			// if already started, warn the user about the change
+			logger.warn("Maximal number of documents processed at the same time "
+				+ "was changed from {} to {}", 
+				this.maxNumOfDocuments, maxNumOfDocuments);
+		}
+		
 		this.maxNumOfDocuments = maxNumOfDocuments;
 	}
 
