@@ -177,7 +177,7 @@ public class PepperJobImpl extends PepperJob {
 		this.props = conf;
 
 		setMemPolicy(getConfiguration().getMemPolicy());
-		setMaxNumerOfDocuments(getConfiguration().getMaxAmountOfDocuments());
+		setMaxNumberOfDocuments(getConfiguration().getMaxAmountOfDocuments());
 	}
 
 	/**
@@ -1062,7 +1062,7 @@ public class PepperJobImpl extends PepperJob {
 	 * 
 	 * @param maxNumOfDocuments 
 	 */
-	public void setMaxNumerOfDocuments(int maxNumOfDocuments) {
+	public void setMaxNumberOfDocuments(int maxNumOfDocuments) {
 		
 		if(inProgress.isLocked()) {
 			// if already started, warn the user about the change
