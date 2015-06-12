@@ -3,7 +3,7 @@
       <!-- encoders are assigned the type
            ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
       <encoder>
-        <pattern>%msg%n</pattern>
+        <pattern>[%level] %msg%n</pattern>
       </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
@@ -15,7 +15,7 @@
         </encoder>
     </appender> 
     <root level="info">
-                <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 	<logger name="de.hu_berlin.german.korpling.saltnpepper" level="INFO" />
