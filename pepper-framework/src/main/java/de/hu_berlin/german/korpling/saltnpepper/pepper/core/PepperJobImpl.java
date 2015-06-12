@@ -1067,7 +1067,8 @@ public class PepperJobImpl extends PepperJob {
 		if(inProgress.isLocked()) {
 			// if already started, warn the user about the change
 			logger.warn("Maximal number of documents processed at the same time "
-				+ "was changed from {} to {}", 
+				+ "was changed from {} to {}. The value which was configured in "
+				+ "the pepper.properties file was overriden by this change.", 
 				this.maxNumOfDocuments, maxNumOfDocuments);
 		}
 		
