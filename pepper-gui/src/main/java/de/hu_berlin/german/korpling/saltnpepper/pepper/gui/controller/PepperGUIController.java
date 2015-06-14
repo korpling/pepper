@@ -29,7 +29,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;
 	private PathSelectDialogue pathDialogue = null;
-	private static final String DEFAULT_DIALOGUE_PATH = "/home"; //TODO set!
+	private static final String DEFAULT_DIALOGUE_PATH = "/home/klotzmaz/test"; //TODO set!
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	
 	protected void init(VaadinRequest request){		
@@ -78,7 +78,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			
 		}
 		else if (id.startsWith("/")){//make OS-sensitive
-			//TODO breadcrumb path
+			displayPathSelectDialogue(id);
 		}
 		else if ("test".equals(id)){
 		}
@@ -93,9 +93,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private void displayPathSelectDialogue(String rootPath){
 		String path = rootPath==null || rootPath.isEmpty()? "/" : rootPath; //TODO we still have to look for the operating system 
 		FilesystemContainer fsc = new FilesystemContainer(new File(path), "", false);
-		pathDialogue.reload(fsc);
+		pathDialogue.reload(fsc, this);
 		fsc = null;
-		addWindow(pathSelectDialogueWindow);
+		if (!pathSelectDialogueWindow.isAttached()) {addWindow(pathSelectDialogueWindow);}
 	}
 
 	@Override

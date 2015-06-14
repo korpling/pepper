@@ -44,8 +44,6 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnExporters.addClickListener(controller);
 		btnManipulators.addClickListener(controller);
 		btnResults.addClickListener(controller);
-		
-//		addButton();
 	}
 	
 	@Override
