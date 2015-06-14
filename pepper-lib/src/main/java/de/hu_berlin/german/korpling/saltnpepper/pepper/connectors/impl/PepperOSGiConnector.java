@@ -727,20 +727,36 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		return maven.getBlacklist();
 	}
 	
-	public String getBundleNameByDependency(String groupId, String artifactId){
+	protected String getBundleNameByDependency(String groupId, String artifactId){
 		String symName = null;
 		for (Bundle bundle : bundleIdMap.values()){
 			symName = bundle.getSymbolicName();
 			if (symName!=null &&
-				(symName.contains(groupId) && symName.contains(artifactId))	){
+				((symName.contains(groupId)
+						||groupId.contains(symName)
+						) 
+						&& symName.contains(artifactId))){
 				return symName;
+			}
+		}
+		return null;
+	}
+	
+	protected Bundle getBundle(String bundleName, String version){
+		for (Bundle bundle : bundleIdMap.values()){	
+			if (bundleName!=null 
+					&& bundle!=null
+					&& bundle.getSymbolicName()!=null
+					&& (bundleName.contains(bundle.getSymbolicName()) || bundle.getSymbolicName().contains(bundleName)) 
+					&& (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version))){
+				return bundle;
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
+ 	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
 		if (getPepper() == null){
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}

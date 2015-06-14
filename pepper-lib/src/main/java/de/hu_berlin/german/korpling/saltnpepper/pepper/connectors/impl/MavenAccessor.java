@@ -27,6 +27,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -245,8 +247,14 @@ public class MavenAccessor {
 				CollectResult collectResult = system.collectDependencies( session, collectRequest );
 				List<Dependency> allDeps = getAllDependencies(collectResult.getRoot(), false);
 				parentDependencies.put(frameworkVersion.replace("-SNAPSHOT", ""), allDeps);
+				Bundle bundle = null;
+				String bundleName = null;
+				STATUS status = null;
 				for (Dependency dependency : allDeps){
-					forbiddenFruits.add(dependency.getArtifact().toString()+DELIMITER+STATUS.FINAL);
+					bundleName = pepperOSGiConnector.getBundleNameByDependency(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId());
+					bundle = pepperOSGiConnector.getBundle(bundleName, dependency.getArtifact().getVersion());
+					status = bundle==null || bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true")? STATUS.FINAL : STATUS.OVERRIDABLE;
+					forbiddenFruits.add(dependency.getArtifact().toString()+DELIMITER+status);
 				}
 				write2Blacklist();				
 				collectResult = null;
@@ -460,7 +468,7 @@ public class MavenAccessor {
 	            		artifactRequest.addRepository(repo);
 	            		artifactRequest.setArtifact(dependency.getArtifact());
 	            		try{
-	            			artifactResult = system.resolveArtifact(session, artifactRequest);    			
+	            			artifactResult = system.resolveArtifact(session, artifactRequest);		
 		            		installArtifacts.add(artifactResult.getArtifact());
 	            		}catch (ArtifactResolutionException e){	            			
 	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            			
@@ -576,11 +584,12 @@ public class MavenAccessor {
 						return true;
 					}
 					else {
-						/* find and delete dependency */
+						/* find dependency and delete old bundle, if it (or the new) is singleton */						
 						String bundleName = pepperOSGiConnector.getBundleNameByDependency(coords[0], coords[1]);
-						if (bundleName!=null){
+						Bundle oldBundle = pepperOSGiConnector.getBundle(bundleName, testCoords[3]);						
+						if (bundleName!=null){ //FIXME right now we are assuming, that a bundle's singleton status does never change between versions
 							try {
-								pepperOSGiConnector.remove(bundleName);
+								if (oldBundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true")) {pepperOSGiConnector.remove(bundleName);}
 								logger.info("removed dependency "+coords[1]+". Newer version is about to be installed.");
 								return false;
 							} catch (BundleException | IOException e) {
@@ -669,16 +678,18 @@ public class MavenAccessor {
 			itDeps = null;			
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
-			pepperFramework = next;		
+			pepperFramework = next;
+			STATUS status = null;
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
 				next = dependencies.get(i);
+				status = getDependencyStatus(next.toString());
 				while (	j<parentDeps.size() &&
-						!(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId()))
+						!(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId())||STATUS.OVERRIDABLE.equals(status))
 						){
 					j++;
 				}					
-				if(j==parentDeps.size()){
+				if(j==parentDeps.size() || STATUS.OVERRIDABLE.equals(status)){
 					newDeps.add(next);
 				}else{					
 					forbiddenFruits.add(next.getArtifact().toString()+DELIMITER+STATUS.FINAL);
@@ -693,6 +704,19 @@ public class MavenAccessor {
 		ArrayList<Dependency> retVal = new ArrayList<Dependency>();
 		retVal.add(pepperFramework);
 		return retVal;
+	}
+	
+	private STATUS getDependencyStatus(String dependencyString){	
+		dependencyString = dependencyString.substring(0, dependencyString.lastIndexOf(':'));
+		for (String fruit : forbiddenFruits){
+			if (fruit.startsWith(dependencyString)){
+				if (fruit.split(DELIMITER)[4].equals(STATUS.FINAL)){
+					return STATUS.FINAL;
+				}
+				return STATUS.OVERRIDABLE;				
+			}
+		}
+		return null;
 	}
 	
 	/**
