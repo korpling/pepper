@@ -735,13 +735,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			controller.setUncaughtExceptionHandler(this);
 			controller.setPepperModule(this);
 
-			// preprocessing
-			before(sElementId);
 			PepperMapper mapper = this.createPepperMapper(sElementId);
 			mapper.setProperties(this.getProperties());
-			// postprocessing
-			after(sElementId);
-
+		
 			if (this instanceof PepperImporter) {
 				if (mapper.getResourceURI() == null) {
 					URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
@@ -765,6 +761,13 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
+	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
+	 */
+	public PepperMapper createPepperMapper(SElementId sElementId) {
+		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '" + this.getName() + "' has not been overridden. Please check that first.");
+	}
+
+	/**
 	 * Invokes processings, before the mapping was started. This could be
 	 * helpful, for instance to make some preparations for the mapping. To
 	 * trigger this pre processing for a specific Pepper module a set of
@@ -779,6 +782,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 *            prepared
 	 * @throws PepperModuleException
 	 */
+	@Override
 	public void before(SElementId sElementId) throws PepperModuleException {
 		if (getProperties() != null) {
 			if (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER) != null) {
@@ -805,13 +809,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
-	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
-	 */
-	public PepperMapper createPepperMapper(SElementId sElementId) {
-		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '" + this.getName() + "' has not been overridden. Please check that first.");
-	}
-
-	/**
 	 * Invokes processings, after the mapping is done. This could be helpful,
 	 * for instance to make some processing after the mapping e.g. adding all
 	 * created nodes and relations to a layer. To trigger this post processing
@@ -826,6 +823,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 *            post processed
 	 * @throws PepperModuleException
 	 */
+	@Override
 	public void after(SElementId sElementId) throws PepperModuleException {
 		if (getProperties() != null) {
 			if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
@@ -853,7 +851,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * @param sDoc
 	 * @param layers
 	 */
-	private void addSLayers(SDocument sDoc, String layers) {
+	public void addSLayers(SDocument sDoc, String layers) {
 		if ((layers != null) && (!layers.isEmpty())) {
 			String[] layerArray = layers.split(";");
 			if (layerArray.length > 0) {

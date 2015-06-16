@@ -357,4 +357,38 @@ public interface PepperModule{
 	 * @param controller The object which is done with its job
 	 */
 	public void done(PepperMapperController controller);
+	
+	/**
+	 * Invokes processings, before the mapping was started. This could be
+	 * helpful, for instance to make some preparations for the mapping. To
+	 * trigger this pre processing for a specific Pepper module a set of
+	 * customization properties is available. Customization properties
+	 * triggering a pre processing starts with
+	 * {@value PepperModuleProperties#PREFIX_PEPPER_BEFORE}. This method is
+	 * called by the method {@link #map()}, before
+	 * {@link PepperMapper#mapSDocument()} was called.
+	 * 
+	 * @param sElementId
+	 *            id of either {@link SDocument} or {@link SCorpus} object to be
+	 *            prepared
+	 * @throws PepperModuleException
+	 */
+	public void before(SElementId sElementId) throws PepperModuleException;
+
+	/**
+	 * Invokes processings, after the mapping is done. This could be helpful,
+	 * for instance to make some processing after the mapping e.g. adding all
+	 * created nodes and relations to a layer. To trigger this post processing
+	 * for a specific Pepper module a set of customization properties is
+	 * available. Customization properties triggering a post processing starts
+	 * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
+	 * called by the method {@link #map()}, after
+	 * {@link PepperMapper#mapSDocument()} was called.
+	 * 
+	 * @param sElementId
+	 *            id of either {@link SDocument} or {@link SCorpus} object to be
+	 *            post processed
+	 * @throws PepperModuleException
+	 */
+	public void after(SElementId sElementId) throws PepperModuleException;
 }
