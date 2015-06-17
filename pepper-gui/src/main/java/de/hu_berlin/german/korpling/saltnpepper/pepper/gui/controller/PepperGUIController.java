@@ -3,6 +3,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 import java.io.File;
 import java.io.OutputStream;
 
+import org.apache.commons.lang3.SystemUtils;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -33,7 +35,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;
 	private PathSelectDialogue pathDialogue = null;
-	private static final String DEFAULT_DIALOGUE_PATH = "/home/klotzmaz"; //TODO set!
+	private static final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserDir().getAbsolutePath();
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	
 	protected void init(VaadinRequest request){		
@@ -82,7 +84,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_PATH_SELECT.equals(id)){
 			//TODO store workflow data somewhere
 			removeWindow(pathSelectDialogueWindow);			
-		}else if (id.startsWith("/")){//make OS-sensitive
+		}else if (id.startsWith("/")){//TODO make OS-sensitive
 			modifyPathSelectDialogue(id, false);
 		}
 		else if ("test".equals(id)){//TODO remove before RELEASE

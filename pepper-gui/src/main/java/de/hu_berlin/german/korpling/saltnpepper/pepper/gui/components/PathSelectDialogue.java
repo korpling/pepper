@@ -48,6 +48,12 @@ public class PathSelectDialogue extends AbsoluteLayout implements PepperGUICompo
 		setImmediate(true);
 		if (SystemUtils.IS_OS_WINDOWS){
 			/*fill in buttons for drives*/
+			Button b = null;
+			for (File f : File.listRoots()){
+				b = new Button(f.getAbsolutePath());
+				rootListLayout.addComponent(b);
+				b.setId(f.getAbsolutePath());				
+			}
 		}
 	}
 		
