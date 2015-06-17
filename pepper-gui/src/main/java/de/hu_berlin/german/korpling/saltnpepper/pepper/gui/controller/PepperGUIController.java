@@ -3,9 +3,15 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 import java.io.File;
 import java.io.OutputStream;
 
+import org.eclipse.emf.common.util.URI;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.FilesystemContainer;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.server.ErrorHandler;
@@ -20,21 +26,23 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Window;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PathSelectDialogue;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
 
 @Title("Pepper converter framework")
 @Theme("valo")
-public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, LayoutClickListener, Receiver, ErrorHandler{	
+public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, LayoutClickListener, TextChangeListener, ValueChangeListener, Receiver, ErrorHandler{	
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;
 	private PathSelectDialogue pathDialogue = null;
-	private static final String DEFAULT_DIALOGUE_PATH = "/home/klotzmaz/test"; //TODO set!
+	private static final String DEFAULT_DIALOGUE_PATH = "/home/klotzmaz"; //TODO set!
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	
 	protected void init(VaadinRequest request){		
 		gui = new PepperGUI(this);
 		setErrorHandler(this);
+		setImmediate(true);
 		
 		{//prepare path select window
 			Window w = new Window(PATH_DIALOGUE_TITLE);
@@ -72,15 +80,15 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			gui.setView(VIEW_NAME.RESULTS);
 		}
 		else if (ID_BUTTON_BROWSE_LOCAL.equals(id)){
-			displayPathSelectDialogue(DEFAULT_DIALOGUE_PATH);
+			modifyPathSelectDialogue(DEFAULT_DIALOGUE_PATH, false);
 		}
-		else if (ID_BUTTON_BC_PATH.equals(id)){
-			
+		else if (ID_BUTTON_PATH_SELECT.equals(id)){
+			//TODO store workflow data somewhere
+			removeWindow(pathSelectDialogueWindow);			
+		}else if (id.startsWith("/")){//make OS-sensitive
+			modifyPathSelectDialogue(id, false);
 		}
-		else if (id.startsWith("/")){//make OS-sensitive
-			displayPathSelectDialogue(id);
-		}
-		else if ("test".equals(id)){
+		else if ("test".equals(id)){//TODO remove before RELEASE
 		}
 		
 	}
@@ -90,10 +98,10 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		gui.debugOut(message);
 	}
 	
-	private void displayPathSelectDialogue(String rootPath){
+	private void modifyPathSelectDialogue(String rootPath, boolean calledByList){
 		String path = rootPath==null || rootPath.isEmpty()? "/" : rootPath; //TODO we still have to look for the operating system 
 		FilesystemContainer fsc = new FilesystemContainer(new File(path), "", false);
-		pathDialogue.reload(fsc, this);
+		pathDialogue.reload(fsc, this, calledByList);
 		fsc = null;
 		if (!pathSelectDialogueWindow.isAttached()) {addWindow(pathSelectDialogueWindow);}
 	}
@@ -102,8 +110,6 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	public void error(com.vaadin.server.ErrorEvent event) {
 		if (event.getThrowable() instanceof UploadException){
 			Notification.show("Please enter a path before uploading");
-			/*DEBUG – we will use the upload button as trigger for testing*/
-			/*END OF DEBUG*/
 		}
 	}
 
@@ -115,13 +121,33 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	}
 
 	@Override
-	public void layoutClick(LayoutClickEvent event) {	
+	public void layoutClick(LayoutClickEvent event) {		
 		Component c = event.getClickedComponent();
 		String id = c.getId();
-		if (event.isDoubleClick() && ID_PATH_SELECT.equals(id)){
-			String newRoot = ((ListSelect)c).getValue().toString();
-			displayPathSelectDialogue(newRoot);			
+		String newRoot = ((ListSelect)c).getValue().toString();
+		if (event.isDoubleClick() && ID_PATH_SELECT.equals(id)){			
+			modifyPathSelectDialogue(newRoot, true);			
 		}
 	}
+	
+	@Override
+	public void valueChange(ValueChangeEvent event) {		
+		pathDialogue.setPathLabelValue(pathDialogue.getListValue());
+	}
 
+	/*
+	 * using textChange() instead of valueChange() has the advantage, that we can identify the trigger component,
+	 * which is not provided by a ValueChangeEvent. Further we can now use valueChange() for other purposes.
+	 */
+	@Override
+	public void textChange(TextChangeEvent event) {
+		String txt = event.getText();
+		debugOut(txt);
+		if (ID_PATH_FIELD.equals(event.getComponent().getId())){
+			File f = new File(txt);
+			if (f.exists() && f.isDirectory()){
+				modifyPathSelectDialogue(txt, false);
+			}
+		}
+	}
 }

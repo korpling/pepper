@@ -14,7 +14,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIC
 
 @DesignRoot
 public class PepperGuiImportersView extends PepperGuiView{
-	private Upload upload;
+//	private Upload upload;
 	private Label lblImportersList;
 	private ListSelect importersList;	
 	private Table propertiesTable;
@@ -22,6 +22,7 @@ public class PepperGuiImportersView extends PepperGuiView{
 	private Table descriptionTable;
 	private Button btnAddImport;
 	private Button btnBrowseLocal;
+	private Label selectedPath;
 	private boolean isInit = false;
 	
 	public PepperGuiImportersView(){
@@ -35,11 +36,15 @@ public class PepperGuiImportersView extends PepperGuiView{
 		super.attach();
 		if (!isInit){
 			PepperGUIController controller = (PepperGUIController)getUI();
-			upload.setReceiver(controller);
+//			upload.setReceiver(controller);
 			btnShowAll.addClickListener(controller);
 			btnAddImport.addClickListener(controller);
 			btnBrowseLocal.addClickListener(controller);
 			isInit = true;
 		}
+	}
+	
+	protected void displaySelectedPath(String path){
+		selectedPath.setCaption(path);
 	}
 }

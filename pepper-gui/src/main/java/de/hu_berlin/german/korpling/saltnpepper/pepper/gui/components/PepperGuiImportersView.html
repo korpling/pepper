@@ -4,8 +4,9 @@
 <body>
 	<v-vertical-layout width="750" height="500" :expand>
 		 <v-absolute-layout width="750" height="100">
-		 	<v-upload :top="30" :left="20" caption="corpus path" _id="upload"/>
-		 	<v-button :top="30" :left="500" _id="btnBrowseLocal">browse...</v-button>
+		 	<!--v-upload :top="30" :left="20" caption="corpus path" _id="upload"/-->
+		 	<v-label :top="30" :left="20" _id="selectedPath"/>
+		 	<v-button :top="30" :left="500" _id="btnBrowseLocal">Browse...</v-button>
 		 </v-absolute-layout>
 		 <v-absolute-layout width="750" height="350" :expand>
 		 	<v-label :left="20" _id="lblImportersList" visible="false">The following importers seem to be compatible with your corpus. Select your prefered one. To see all importers, click "Show all".</v-label>
