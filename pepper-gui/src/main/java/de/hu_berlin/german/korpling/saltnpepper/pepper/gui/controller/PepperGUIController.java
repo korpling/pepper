@@ -3,8 +3,6 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 import java.io.File;
 import java.io.OutputStream;
 
-import org.eclipse.emf.common.util.URI;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -26,7 +24,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Window;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PathSelectDialogue;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
 
