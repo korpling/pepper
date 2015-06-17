@@ -242,10 +242,6 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 				getPepperModule().after(subj.getSElementId());
 			}
 			
-			
-			
-			
-			mappingResult = this.getPepperMapper().mapSDocument();
 			if (mappingResult == DOCUMENT_STATUS.COMPLETED && getPepperModule() instanceof PepperModuleImpl) {
 				for (MappingSubject subj : getMappingSubjects()) {
 					((PepperModuleImpl) getPepperModule()).after(subj.getSElementId());
