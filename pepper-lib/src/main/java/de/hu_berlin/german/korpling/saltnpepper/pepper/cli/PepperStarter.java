@@ -327,7 +327,8 @@ public class PepperStarter {
 			map[1][0] = "version:";
 			map[1][1] = moduleDesc.getVersion();
 			map[2][0] = "supplier:";
-			map[2][1] = moduleDesc.getSupplierContact().toString();
+			map[2][1] = moduleDesc.getSupplierContact() == null ? 
+				"" : moduleDesc.getSupplierContact().toString();
 			map[3][0] = "description:";
 			map[3][1] = moduleDesc.getDesc();
 
