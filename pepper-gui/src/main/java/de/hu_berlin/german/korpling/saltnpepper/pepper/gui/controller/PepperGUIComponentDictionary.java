@@ -14,4 +14,6 @@ public interface PepperGUIComponentDictionary {
 	
 	public static final String ID_PATH_SELECT = "A";
 	public static final String ID_PATH_FIELD = "B";
+	
+	public static final String PATH_PREFIX = "#";
 }

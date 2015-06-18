@@ -9,9 +9,10 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 
-public class PathLayout extends HorizontalLayout {
+public class PathLayout extends HorizontalLayout implements PepperGUIComponentDictionary{
 	/** this is a mapping from button to triggered path/file */
 	private ButtonNode root = null;
 	
@@ -26,7 +27,7 @@ public class PathLayout extends HorizontalLayout {
 			removeAllComponents();
 			String[] rt = {"/"};//TODO make OS-sensitive			
 			String[] pathSegments = absolutePath.length()>1? ArrayUtils.add(absolutePath.substring(/*TODO make OS-sensitive*/1).split(File.separator), 0, "/") : rt;//TODO make OS-sensitive
-			String id = pathSegments[0];
+			String id = PATH_PREFIX.concat(pathSegments[0]);
 			ButtonNode node = root;
 			ButtonNode prev = null;
 			int k = 0;			
@@ -74,7 +75,7 @@ public class PathLayout extends HorizontalLayout {
 		while(node.getNext()!=null){
 			node = node.getNext();
 		}
-		node.setNext(nodeValue.substring(nodeValue.lastIndexOf(File.separator)+1), nodeValue, controller);
+		node.setNext(nodeValue.substring(nodeValue.lastIndexOf(File.separator)+1), PATH_PREFIX.concat(nodeValue), controller);
 		node.getNext().display();
 	}
 	

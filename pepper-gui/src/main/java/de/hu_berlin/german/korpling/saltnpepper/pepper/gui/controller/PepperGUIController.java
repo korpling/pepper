@@ -35,7 +35,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;
 	private PathSelectDialogue pathDialogue = null;
-	private static final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserDir().getAbsolutePath();
+	private static final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserHome().getAbsolutePath();
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	
 	protected void init(VaadinRequest request){		
@@ -84,8 +84,8 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_PATH_SELECT.equals(id)){
 			//TODO store workflow data somewhere
 			removeWindow(pathSelectDialogueWindow);			
-		}else if (id.startsWith("/")){//TODO make OS-sensitive
-			modifyPathSelectDialogue(id, false);
+		}else if (id.startsWith(PATH_PREFIX)){//TODO make OS-sensitive
+			modifyPathSelectDialogue(id.substring(1), false);
 		}
 		else if ("test".equals(id)){//TODO remove before RELEASE
 		}
