@@ -1,6 +1,8 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -65,7 +67,15 @@ public class PathLayout extends HorizontalLayout implements PepperGUIComponentDi
 			}
 		}
 		catch (Exception e){	
-			e.printStackTrace();
+			e.printStackTrace();			
+			try {
+				PrintStream p = new PrintStream(new File(SystemUtils.getJavaIoTmpDir().getAbsolutePath().concat(File.separator).concat("gui_err_out.log")));
+				p.println(SystemUtils.LINE_SEPARATOR.concat("Stacktrace, occured at ").concat(Long.toString(System.currentTimeMillis()).concat(":").concat(SystemUtils.LINE_SEPARATOR).concat(SystemUtils.LINE_SEPARATOR)));
+				e.printStackTrace(p);
+				p.close();
+			} catch (FileNotFoundException e1) {
+				Notification.show("Could not write error log", Notification.TYPE_ERROR_MESSAGE);
+			}			
 			Notification.show(e.toString(), Notification.TYPE_ERROR_MESSAGE);
 		}
 	}
