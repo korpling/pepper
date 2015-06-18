@@ -17,6 +17,8 @@ public class PathLayout extends HorizontalLayout implements PepperGUIComponentDi
 	/** this is a mapping from button to triggered path/file */
 	private ButtonNode root = null;
 	
+	private static final String SPLIT_PATTERN = SystemUtils.IS_OS_WINDOWS? "\\" : File.separator;
+	
 	public PathLayout(){
 		super();
 		setImmediate(true);
@@ -25,11 +27,11 @@ public class PathLayout extends HorizontalLayout implements PepperGUIComponentDi
 	protected void set(String absolutePath, PepperGUIController controller){		
 		try{//try-catch-clause for debug only(!)			
 			removeAllComponents();
-			String[] rt = {SystemUtils.IS_OS_WINDOWS? absolutePath.split(File.separator)[0] : File.separator};			
+			String[] rt = {SystemUtils.IS_OS_WINDOWS? absolutePath.split(SPLIT_PATTERN)[0] : File.separator};			
 			String[] pathSegments = SystemUtils.IS_OS_WINDOWS? 
-										absolutePath.split(File.separator) :
+										absolutePath.split(SPLIT_PATTERN) :
 										absolutePath.length()>1?
-												ArrayUtils.add(absolutePath.substring(1).split(File.separator), 0, File.separator) 
+												ArrayUtils.add(absolutePath.substring(1).split(SPLIT_PATTERN), 0, File.separator) 
 												: rt;
 			String id = PATH_PREFIX.concat(pathSegments[0]);
 			ButtonNode node = root;
