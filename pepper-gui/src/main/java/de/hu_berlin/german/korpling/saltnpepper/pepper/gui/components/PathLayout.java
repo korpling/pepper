@@ -19,7 +19,7 @@ public class PathLayout extends HorizontalLayout implements PepperGUIComponentDi
 	/** this is a mapping from button to triggered path/file */
 	private ButtonNode root = null;
 	
-	private static final String SPLIT_PATTERN = SystemUtils.IS_OS_WINDOWS? "\\" : File.separator;
+	private static final String SPLIT_PATTERN = SystemUtils.IS_OS_WINDOWS? "\\\\" : File.separator;
 	
 	public PathLayout(){
 		super();
