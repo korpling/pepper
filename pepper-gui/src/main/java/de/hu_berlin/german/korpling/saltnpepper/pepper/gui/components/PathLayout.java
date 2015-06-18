@@ -3,6 +3,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 import java.io.File;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -21,12 +22,15 @@ public class PathLayout extends HorizontalLayout implements PepperGUIComponentDi
 		setImmediate(true);
 	}
 	
-	//TODO make OS-sensitive
 	protected void set(String absolutePath, PepperGUIController controller){		
 		try{//try-catch-clause for debug only(!)			
 			removeAllComponents();
-			String[] rt = {"/"};//TODO make OS-sensitive			
-			String[] pathSegments = absolutePath.length()>1? ArrayUtils.add(absolutePath.substring(/*TODO make OS-sensitive*/1).split(File.separator), 0, "/") : rt;//TODO make OS-sensitive
+			String[] rt = {SystemUtils.IS_OS_WINDOWS? absolutePath.split(File.separator)[0] : File.separator};			
+			String[] pathSegments = SystemUtils.IS_OS_WINDOWS? 
+										absolutePath.split(File.separator) :
+										absolutePath.length()>1?
+												ArrayUtils.add(absolutePath.substring(1).split(File.separator), 0, File.separator) 
+												: rt;
 			String id = PATH_PREFIX.concat(pathSegments[0]);
 			ButtonNode node = root;
 			ButtonNode prev = null;

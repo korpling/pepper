@@ -84,7 +84,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_PATH_SELECT.equals(id)){
 			//TODO store workflow data somewhere
 			removeWindow(pathSelectDialogueWindow);			
-		}else if (id.startsWith(PATH_PREFIX)){//TODO make OS-sensitive
+		}else if (id.startsWith(PATH_PREFIX)){
 			modifyPathSelectDialogue(id.substring(1), false);
 		}
 		else if ("test".equals(id)){//TODO remove before RELEASE
@@ -98,7 +98,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	}
 	
 	private void modifyPathSelectDialogue(String rootPath, boolean calledByList){
-		String path = rootPath==null || rootPath.isEmpty()? "/" : rootPath; //TODO we still have to look for the operating system 
+		String path = rootPath==null || rootPath.isEmpty()? SystemUtils.getUserHome().getAbsolutePath() : rootPath; 
 		FilesystemContainer fsc = new FilesystemContainer(new File(path), "", false);
 		pathDialogue.reload(fsc, this, calledByList);
 		fsc = null;
@@ -115,7 +115,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	/**We need this method when localhost!=host*/
 	@Override
 	public OutputStream receiveUpload(String filename, String mimeType) {
-		// TODO Auto-generated method stub
+		//TODO
 		return null;
 	}
 
