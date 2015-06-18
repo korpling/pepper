@@ -1,7 +1,11 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -11,13 +15,12 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
@@ -34,8 +37,9 @@ public class PathSelectDialogue extends AbsoluteLayout implements PepperGUICompo
 	private Label lblFinalPath;
 	private AbsoluteLayout rootListLayout;
 	
-	public static final String ROOT_BUTTON_WIDTH = "50";
+	private float rootButtonWidth = 50;
 	public static final String PATH_LIST_STYLE = "pathList";
+	public static final String MOUNT_FILE_PATH = "/proc/mounts";
 	
 	public PathSelectDialogue(){
 		super();		
@@ -48,7 +52,8 @@ public class PathSelectDialogue extends AbsoluteLayout implements PepperGUICompo
 		pathField.setId(ID_PATH_FIELD);
 		pathField.setImmediate(true);	
 		lblFinalPath.setImmediate(true);
-		setImmediate(true);				
+		setImmediate(true);		
+		rootListLayout.setImmediate(true);
 	}
 		
 	@SuppressWarnings("unchecked")
@@ -101,32 +106,61 @@ public class PathSelectDialogue extends AbsoluteLayout implements PepperGUICompo
 			list.addValueChangeListener(controller);
 			btnSelect.addClickListener(controller);
 			/*add buttons for drives and home folder*/
-			int top = 0;
-			Button b = new Button();
-			b.setWidth(ROOT_BUTTON_WIDTH);
-			b.setIcon(FontAwesome.HOME);
-			b.setId(PATH_PREFIX.concat(SystemUtils.getUserHome().getAbsolutePath()));
-			b.addClickListener(controller);
-			rootListLayout.addComponent(b);		
+			addRootButton(SystemUtils.getUserHome(), FontAwesome.HOME, controller, 0);
+			int top = 40;		
+			Resource icon = null;
 			for (File f : File.listRoots()){
+				icon = f.getAbsolutePath().equals(File.separator)? null : FontAwesome.HDD_O;
+				addRootButton(f, icon, controller, top);
 				top+=40;
-				b = new Button(f.getAbsolutePath());
-				rootListLayout.addComponent(b, "top:"+top);			
-				b.setId(PATH_PREFIX.concat(f.getAbsolutePath()));
-				b.addClickListener(controller);
-				b.setWidth(ROOT_BUTTON_WIDTH);
-			}
+			}		
 			if (!SystemUtils.IS_OS_WINDOWS){
 				/* get mounted drives */
-				//TODO
-				/*TODO after having implemented this, we should
-				 * refactor this method: First build a huge list
-				 * containing 1) Home dir 2) roots 3) mounted 
-				 * devices. Then add all the buttons.
-				 */
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(new File(MOUNT_FILE_PATH)));
+					String line = reader.readLine();
+					while (line!=null){
+						String[] values = line.split(",")[0].split(" ");
+						if (values[0].startsWith("/dev/")&&!values[1].equals("/")){							
+							addRootButton(new File(values[1]), FontAwesome.HDD_O, controller, top);
+							System.out.println(line);
+							top+=40;
+						}	
+						line = reader.readLine();
+					}
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			
+			rootListLayout.setWidth(rootButtonWidth, Unit.PIXELS);
+			setWidth(getWidth()+rootButtonWidth, Unit.PIXELS);
+			
+			Iterator<Component> components = rootListLayout.iterator();
+			Component c = null;
+			while (components.hasNext()){
+				c = components.next();
+				System.out.println(c.getWidth()+" (old)");
+				c.setWidth(Float.toString(rootButtonWidth));
+				System.out.println(c.getWidth()+" (new)");
+			}			
 			
 			isInit = true;
 		}
+	}
+	
+	private void addRootButton(File f, Resource icon, PepperGUIController controller, int offset){
+		Button b = new Button(f.getName()==null||f.getName().isEmpty()? File.separator : f.getName());
+		b.setImmediate(true);		
+		b.setDescription(f.getAbsolutePath());
+		b.setId(PATH_PREFIX.concat(f.getAbsolutePath()));
+		b.addClickListener(controller);
+		if (icon!=null){b.setIcon(icon);}	
+		if (b.getWidth()>rootButtonWidth){
+			rootButtonWidth = b.getWidth();
+		}
+		rootListLayout.addComponent(b, "top:".concat(Integer.toString(offset)));		
 	}
 }
