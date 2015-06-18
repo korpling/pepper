@@ -250,9 +250,9 @@ public class MavenAccessor {
 				Bundle bundle = null;
 				String bundleName = null;
 				STATUS status = null;
-				for (Dependency dependency : allDeps){
-					bundleName = pepperOSGiConnector.getBundleNameByDependency(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId());
-					bundle = pepperOSGiConnector.getBundle(bundleName, dependency.getArtifact().getVersion());
+				for (Dependency dependency : allDeps){					
+					bundleName = pepperOSGiConnector.getBundleNameByDependency(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId());					
+					bundle = pepperOSGiConnector.getBundle(bundleName, null);					
 					status = bundle==null || bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true")? STATUS.FINAL : STATUS.OVERRIDABLE;
 					forbiddenFruits.add(dependency.getArtifact().toString()+DELIMITER+status);
 				}

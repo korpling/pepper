@@ -742,13 +742,16 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		return null;
 	}
 	
+	/*FIXME version comparison still buggy */
+	/** if version==null, the first bundle found is returned, */
 	protected Bundle getBundle(String bundleName, String version){
+		boolean ignoreVersion = version==null;
 		for (Bundle bundle : bundleIdMap.values()){	
 			if (bundleName!=null 
 					&& bundle!=null
 					&& bundle.getSymbolicName()!=null
 					&& (bundleName.contains(bundle.getSymbolicName()) || bundle.getSymbolicName().contains(bundleName)) 
-					&& (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version))){
+					&& (ignoreVersion || (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version)))){
 				return bundle;
 			}
 		}
