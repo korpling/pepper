@@ -168,6 +168,9 @@ public class MavenAccessor {
 	/** delimiter for artifact strings */
 	private static final String DELIMITER = ":";
 	
+	/** path to temporary repository */
+	private final String PATH_LOCAL_REPO;
+	
 	/* MAVEN UTILS */
 	/** maven/aether utility */
 	RepositorySystem system = null;
@@ -194,6 +197,7 @@ public class MavenAccessor {
 		repos = new HashMap<String, RemoteRepository>();
 		forbiddenFruits = new HashSet<String>();
 		parentDependencies = new HashMap<String, List<Dependency>>();
+		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath()+"/local-repo/";		
 		init();
 		initDependencies();
 	}
@@ -248,16 +252,11 @@ public class MavenAccessor {
 				List<Dependency> allDeps = getAllDependencies(collectResult.getRoot(), false);
 				parentDependencies.put(frameworkVersion.replace("-SNAPSHOT", ""), allDeps);
 				Bundle bundle = null;
-				String bundleName = null;
 				STATUS status = null;
 				for (Dependency dependency : allDeps){					
-					bundleName = pepperOSGiConnector.getBundleNameByDependency(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId());					
-					if (bundleName!=null && bundleName.contains("emf")){
-						System.out.println("test");
-					}
-					bundle = pepperOSGiConnector.getBundle(bundleName, null);					
+					bundle = pepperOSGiConnector.getBundle(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId(), null);					
 					status = bundle==null || bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true")? STATUS.FINAL : STATUS.OVERRIDABLE;
-					forbiddenFruits.add(dependency.getArtifact().toString()+DELIMITER+status);
+					forbiddenFruits.add(dependency.getArtifact().toString().concat(DELIMITER).concat(status.toString()).concat(DELIMITER).concat(bundle==null?"":bundle.getSymbolicName()));
 				}
 				write2Blacklist();				
 				collectResult = null;
@@ -273,7 +272,7 @@ public class MavenAccessor {
 	
 	private DefaultRepositorySystemSession getNewSession(){
 		DefaultRepositorySystemSession session = new DefaultRepositorySystemSession();
-		LocalRepository localRepo = new LocalRepository( pepperOSGiConnector.getPepperStarterConfiguration().getTempPath()+"/local-repo/" );
+		LocalRepository localRepo = new LocalRepository( PATH_LOCAL_REPO );
 		LocalRepositoryManager repoManager = system.newLocalRepositoryManager( session, localRepo );
         session.setLocalRepositoryManager( repoManager );
         session.setRepositoryListener(repoListener);
@@ -442,31 +441,25 @@ public class MavenAccessor {
 	            if (parentVersion==null){	            	
 	            	logger.warn(artifactId+": Could not perform update: pepper-parent version could not be determined.");
 	            	return false;
-	            }            	
+	            }       
+	            Version max = isCompatiblePlugin(parentVersion);
+	            if (!ignoreFrameworkVersion && max!=null){	
+	            	//TODO logger message is inadequate
+        			logger.info(
+        					(new StringBuilder())
+        					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
+        					.append(newLine).append(artifactId).append(" only supported up to ").append(max.toString()).append(", but ").append(pepperOSGiConnector.getFrameworkVersion()).append(" is installed!")
+        					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
+        					.append(artifactId).append("\"").toString());	            			
+        			return false;
+        		}
 	            allDependencies = cleanDependencies(allDependencies, session, parentVersion);
 	            Bundle bundle = null;
 	            Dependency dependency = null;	            
 	            //in the following we ignore the first dependency (i=0), because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
-	            	if (ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())){
-	            		Version frameworkVersion = vScheme.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "").replace("-SNAPSHOT", ""));
-	            		Version depParentVersion = vScheme.parseVersion(parentVersion.replace("-SNAPSHOT", ""));
-	            		int m = 1+Integer.parseInt(depParentVersion.toString().split("\\.")[0]);
-	            		Version maxVersion = vScheme.parseVersion(m+".0.0");
-	            		boolean compatible = depParentVersion.compareTo(frameworkVersion)<=0 && frameworkVersion.compareTo(maxVersion)<0 
-	            				&& !(frameworkVersion.equals(depParentVersion) && pepperOSGiConnector.getFrameworkVersion().contains("SNAPSHOT") && !parentVersion.contains("SNAPSHOT"));	            		
-	            		if (!ignoreFrameworkVersion && !compatible){	            			
-	            			logger.info(
-	            					(new StringBuilder())
-	            					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
-	            					.append(newLine).append(artifactId).append(" needs ").append(dependency.getArtifact().getVersion()).append(", but ").append(pepperOSGiConnector.getFrameworkVersion()).append(" is installed!")
-	            					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
-	            					.append(artifactId).append("\"").toString());	            			
-	            			return false;
-	            		}	            		
-	            	}
-	            	else {	            	
+	            	if (!ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())) {	            	
 	            		artifactRequest.addRepository(repos.get(CENTRAL_REPO));
 	            		artifactRequest.addRepository(repo);
 	            		artifactRequest.setArtifact(dependency.getArtifact());
@@ -479,10 +472,6 @@ public class MavenAccessor {
 	            	}
 	            }	            
 	            artifact = null;
-	            
-	            String nxt = null;
-	            String[] next = null;
-	            Iterator<String> itDeps = null;
 	            Artifact installArtifact = null;
 	            for (int i=installArtifacts.size()-1; i>=0; i--){	            	
 	            	try {	            		
@@ -490,20 +479,10 @@ public class MavenAccessor {
 	            		logger.info("installing: "+installArtifact);	            		
 	            		bundle = pepperOSGiConnector.installAndCopy(installArtifact.getFile().toURI());
 	            		if (i!=0){//the module itself must not be put on the blacklist
-	            			itDeps = forbiddenFruits.iterator();
-	            			nxt = itDeps.next();
-	            			while (nxt!=null){	            				
-	            				next = nxt.split(DELIMITER);
-	            				if (next[0].equals(installArtifact.getGroupId()) && next[1].equals(installArtifact.getArtifactId())){
-	            					forbiddenFruits.remove(nxt);
-	            					logger.debug("Removed dependency from blacklist: "+nxt);
-	            					nxt = null;
-	            				} else {
-	            					nxt = itDeps.hasNext()? itDeps.next() : null;
-	            				}
-	            			}	 
-	            			forbiddenFruits.add(installArtifact.toString()+DELIMITER+STATUS.OVERRIDABLE);
-	            			logger.debug("Put dependency on blacklist: "+installArtifact.toString());
+	            			putOnBlacklist(installArtifact);	            			
+	            		}else if (installedBundle!=null){
+	            			pepperOSGiConnector.remove(installedBundle.getSymbolicName());
+	            			logger.info("Successfully removed version ".concat(installedBundle.getVersion().toString()).concat(" of ").concat(artifactId));
 	            		}
 	            		if (bundle!=null){
 	            			bundle.start();
@@ -544,72 +523,71 @@ public class MavenAccessor {
         return update;
 	}
 	
+	private Version isCompatiblePlugin(String pluginFrameworkVersion){
+		VersionScheme vScheme = new GenericVersionScheme();
+		Version frameworkVersion;
+		try {
+			frameworkVersion = vScheme.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "").replace("-SNAPSHOT", ""));		
+			Version depParentVersion = vScheme.parseVersion(pluginFrameworkVersion.replace("-SNAPSHOT", ""));
+			int m = 1+Integer.parseInt(depParentVersion.toString().split("\\.")[0]);
+			Version maxVersion = vScheme.parseVersion(m+".0.0");
+			if (!(depParentVersion.compareTo(frameworkVersion)<=0 && frameworkVersion.compareTo(maxVersion)<0 
+					&& !(frameworkVersion.equals(depParentVersion) && pepperOSGiConnector.getFrameworkVersion().contains("SNAPSHOT") && !pluginFrameworkVersion.contains("SNAPSHOT")))){
+				return maxVersion;
+			}
+		} catch (InvalidVersionSpecificationException e) {
+			logger.error("Could not compare required framework version to running framework. Update will not be performed.");			
+		}
+		return null;
+	}
+	
 	/**
 	 * This method returns all dependencies as list.
 	 * Elementary dependencies and their daughters are skipped. 
 	 */
 	private List<Dependency> getAllDependencies(DependencyNode startNode, boolean skipFramework){		
-		if ("provided".equalsIgnoreCase(startNode.getDependency().getScope())){
-			forbiddenFruits.add(startNode.getDependency().getArtifact().toString()+DELIMITER+STATUS.OVERRIDABLE);
-			return Collections.<Dependency>emptyList();
-		}
 		List<Dependency> retVal = new ArrayList<Dependency>();
 		retVal.add(startNode.getDependency());
 		for (DependencyNode node : startNode.getChildren()){
-			if ((!skipFramework || !node.getDependency().getArtifact().getArtifactId().contains("salt-")) && !dependencyAlreadyInstalled(node.getArtifact().toString())) {
-				retVal.addAll( getAllDependencies(node, skipFramework) );
-			}			
+			boolean isFramework = ARTIFACT_ID_PEPPER_FRAMEWORK.equals(node.getArtifact().getArtifactId());
+			boolean isSalt = node.getArtifact().getArtifactId().contains("salt-");
+			if ((isFramework&&!skipFramework)||(!isFramework&&!isSalt)) {
+				String blackListLine = getBlackListString(node.getArtifact());
+				if (blackListLine!=null && blackListLine.split(DELIMITER)[4].equals(STATUS.FINAL.toString())){//dependency already installed AND singleton
+					//do nothing at the Moment (TODO-> maybe implement a version range check, that enables an exchange of singletons)
+				}
+				else{//dependency not installed yet or not singleton
+					if ("provided".equalsIgnoreCase(startNode.getDependency().getScope())){
+						putOnBlacklist(node.getArtifact());
+						return Collections.<Dependency>emptyList();
+					}else{
+						retVal.addAll(getAllDependencies(node, skipFramework));
+					}					
+				}
+			}
+			else if (skipFramework&&isFramework){//we need this for checking compatibility
+				retVal.add(node.getDependency());
+			}
 		}
 		return retVal;
 	}
 	
-	/**
-	 * Checks, if the given coords belong to a dependency that's already
-	 * installed
-	 * @param artifactString
-	 * @return
-	 */
-	private boolean dependencyAlreadyInstalled(String artifactString){
-		String[] coords = artifactString.split(DELIMITER);
-		String[] testCoords = null;
-		for (String dependencyString : forbiddenFruits){
-			testCoords = dependencyString.split(DELIMITER);
-			if (STATUS.OVERRIDABLE.equals(testCoords[4]) &&
-				coords[1].equals(testCoords[1]) && /*artifactId*/
-				coords[0].equals(testCoords[0]) /*groupId*/
-				){
-				/* check version */
-				VersionScheme vScheme = new GenericVersionScheme();
-				try {
-					Version version = vScheme.parseVersion(coords[3]);
-					Version testVersion = vScheme.parseVersion(testCoords[3]);
-					if (version.compareTo(testVersion)<=0){
-						return true;
-					}
-					else {
-						/* find dependency and delete old bundle, if it (or the new) is singleton */						
-						String bundleName = pepperOSGiConnector.getBundleNameByDependency(coords[0], coords[1]);
-						Bundle oldBundle = pepperOSGiConnector.getBundle(bundleName, testCoords[3]);						
-						if (bundleName!=null){ //FIXME right now we are assuming, that a bundle's singleton status does never change between versions
-							try {
-								if (oldBundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true")) {pepperOSGiConnector.remove(bundleName);}
-								logger.info("removed dependency "+coords[1]+". Newer version is about to be installed.");
-								return false;
-							} catch (BundleException | IOException e) {
-								logger.warn("Could not delete dependency "+coords[1]+", so its older version remains.");
-								return true;
-							}
-						}
-					}
-				} catch (InvalidVersionSpecificationException e) {
-					logger.warn("Could not compare versions of dependency "+coords[1]+", so it will be dropped.");
-				}				
-				return true;
-			} else if (STATUS.FINAL.equals(testCoords[4])){
-				return true;
+	private void putOnBlacklist(Artifact artifact){
+		if (getBlackListString(artifact)==null){//for safety reasons (future use of this method, etc) we do the check 
+			Bundle bundle = pepperOSGiConnector.getBundle(artifact.getGroupId(), artifact.getArtifactId(), null);
+			STATUS status = bundle==null || !pepperOSGiConnector.isSingleton(bundle)? STATUS.OVERRIDABLE : STATUS.FINAL;
+			forbiddenFruits.add(artifact.toString().concat(DELIMITER).concat(status.toString()).concat(DELIMITER).concat(bundle==null?"":bundle.getSymbolicName()));
+			logger.debug("Put dependency on blacklist: ".concat(artifact.toString()));
+		}
+	}
+	private String getBlackListString(Artifact artifact){
+		String as = artifact.toString().substring(0, artifact.toString().lastIndexOf(DELIMITER.charAt(0)));
+		for (String artifactString : forbiddenFruits){
+			if (artifactString.startsWith(as)){				
+				return artifactString;
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -657,7 +635,6 @@ public class MavenAccessor {
 	 * @return
 	 */
 	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion){		
-		Dependency pepperFramework = null;
 		try {
 			final List<Dependency> parentDeps;
 			List<Dependency> checkList = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
@@ -681,7 +658,6 @@ public class MavenAccessor {
 			itDeps = null;			
 			int j=0;
 			List<Dependency> newDeps = new ArrayList<Dependency>();
-			pepperFramework = next;
 			STATUS status = null;
 			for (int i=0; i<dependencies.size(); i++){
 				j=0;
@@ -699,13 +675,11 @@ public class MavenAccessor {
 					logger.debug("The following dependency was put on blacklist, because it equals a parent dependency: "+next.getArtifact().toString());
 				}
 			}
-			newDeps.add(pepperFramework);//we need pepper-framework on the list
 			return newDeps;
 		} catch (DependencyCollectionException e) {
 			logger.warn("Could not collect dependencies for parent. No dependencies will be installed.");
 		}       
 		ArrayList<Dependency> retVal = new ArrayList<Dependency>();
-		retVal.add(pepperFramework);
 		return retVal;
 	}
 	
@@ -713,7 +687,7 @@ public class MavenAccessor {
 		dependencyString = dependencyString.substring(0, dependencyString.lastIndexOf(':'));
 		for (String fruit : forbiddenFruits){
 			if (fruit.startsWith(dependencyString)){
-				if (fruit.split(DELIMITER)[4].equals(STATUS.FINAL)){
+				if (fruit.split(DELIMITER)[4].equals(STATUS.FINAL.toString())){
 					return STATUS.FINAL;
 				}
 				return STATUS.OVERRIDABLE;				

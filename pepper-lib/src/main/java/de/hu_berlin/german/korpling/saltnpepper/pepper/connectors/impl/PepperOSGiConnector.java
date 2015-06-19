@@ -697,18 +697,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * This method checks the pepperModules in the modules.xml for updates
 	 * and triggers the installation process if a newer version is available
 	 */
-	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){
-		
-		/* checking, if a correlating bundle already exist, which would mean, the module is already installed */
-        Bundle installedBundle = null;
-        List<Bundle> bundles = new ArrayList<Bundle>(bundleIdMap.values());
-        for (int i=0; i<bundles.size() && installedBundle==null; i++){
-        	if ((groupId+"."+artifactId).equals(bundles.get(i).getSymbolicName())){
-        		installedBundle = bundles.get(i);
-        	}
-        }  
-		
-		return maven.update(groupId, artifactId, repositoryUrl, isSnapshot, ignoreFrameworkVersion, installedBundle);
+	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion){		        
+		return maven.update(groupId, artifactId, repositoryUrl, isSnapshot, ignoreFrameworkVersion, getBundle(groupId, artifactId, null));
 	}
 	
 	/**
@@ -727,39 +717,36 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		return maven.getBlacklist();
 	}
 	
-	protected String getBundleNameByDependency(String groupId, String artifactId){
+	/*FIXME version comparison */
+	/** if version==null, the first bundle found is returned, */
+	private String getBundleNameByDependency(String groupId, String artifactId, String version){
 		String symName = null;
+		boolean ignoreVersion = version==null;
 		for (Bundle bundle : bundleIdMap.values()){
 			symName = bundle.getSymbolicName();
 			if (symName!=null &&
-				((symName.contains(groupId)
-						||groupId.contains(symName)
-						) 
-						&& symName.contains(artifactId))){
-//				return symName;
+				(symName.contains(groupId)||groupId.contains(symName)) 
+						&& (symName.contains(artifactId)||artifactId.contains(symName))
+						&& (ignoreVersion || (version.contains(bundle.getVersion().toString())||bundle.getVersion().toString().contains(version)) )){
+				
 				return bundle.toString();
 			}
 		}
 		return null;
-	}
+	}	
 	
-	/*FIXME version comparison still buggy */
-	/** if version==null, the first bundle found is returned, */
-	protected Bundle getBundle(String bundleName, String version){
-		boolean ignoreVersion = version==null;
+	protected Bundle getBundle(String groupId, String artifactId, String version){
+		String bundleName = getBundleNameByDependency(groupId, artifactId, version);		
 		for (Bundle bundle : bundleIdMap.values()){	
-//			if (bundleName!=null 
-//					&& bundle!=null
-//					&& bundle.getSymbolicName()!=null
-//					&& (bundleName.contains(bundle.getSymbolicName()) || bundle.getSymbolicName().contains(bundleName)) 
-//					&& (ignoreVersion || (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version)))){
-//				return bundle;
-//			}
 			if (bundleName!=null && bundle!=null && bundleName.equals(bundle.toString())){
 				return bundle;
 			}
 		}
 		return null;
+	}
+	
+	public boolean isSingleton(Bundle bundle){
+		return bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true");
 	}
 
 	@Override
