@@ -443,8 +443,7 @@ public class MavenAccessor {
 	            	return false;
 	            }       
 	            Version max = isCompatiblePlugin(parentVersion);
-	            if (!ignoreFrameworkVersion && max!=null){	
-	            	//TODO logger message is inadequate
+	            if (!ignoreFrameworkVersion && max!=null){
         			logger.info(
         					(new StringBuilder())
         					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
@@ -706,6 +705,51 @@ public class MavenAccessor {
 		repoBuilder.setId(id);
 		repoBuilder.setUrl(url);
 		return repoBuilder.build();
+	}
+	
+	public String printDependencies(String groupId, String artifactId, String version){
+		/* utils for dependency collection */
+		DefaultRepositorySystemSession session = getNewSession();
+		Artifact artifact = new DefaultArtifact(groupId, artifactId, "pom", version); 
+		CollectRequest collectRequest = new CollectRequest();
+        collectRequest.setRoot( new Dependency( artifact, "" ) );
+        collectRequest.addRepository(repos.get(CENTRAL_REPO));
+        collectRequest.addRepository(buildRepo("test", KORPLING_MAVEN_REPO));
+        CollectResult collectResult;
+		try {
+			collectResult = system.collectDependencies( session, collectRequest );			
+			return getDependencyPrint(collectResult.getRoot(), 0, 0);
+		} catch (DependencyCollectionException e) {
+			logger.error("Could not print dependencies.");
+		}           
+         return null;
+	}
+	
+	private String getDependencyPrint(DependencyNode startNode, int level, int depth){
+		String d = "";
+		for (int i=0; i<level; i++){
+			d+=" ";
+		}
+		d+= depth==0? "" : "+";
+		for (int i=1; i<depth; i++){
+			d+="-";
+		}
+		d+=startNode.getArtifact().toString();
+		for (DependencyNode node : startNode.getChildren()){
+			d+=System.lineSeparator().concat(getDependencyPrint(node, level+1,depth+1));
+		}
+		return d;
+	}
+	
+	public String printDependencies(Bundle bundle){
+		String[] coords = null;
+		for (String s : forbiddenFruits){
+			coords = s.split(DELIMITER);
+			if (bundle!=null && coords.length==6 && coords[5].equals(bundle.getSymbolicName())){
+				return printDependencies(coords[0], coords[1], coords[3].replace(".SNAPSHOT", "-SNAPSHOT"));				
+			}
+		}
+		return "Bundle could not be found.";
 	}
 	
 	private class MavenRepositoryListener extends AbstractRepositoryListener{

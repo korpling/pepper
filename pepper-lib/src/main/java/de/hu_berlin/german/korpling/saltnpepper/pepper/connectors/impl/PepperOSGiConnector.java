@@ -748,6 +748,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	public boolean isSingleton(Bundle bundle){
 		return bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true");
 	}
+	
+	public String printDependencies(int bundleId){
+		return maven.printDependencies(bundleIdMap.get(bundleId));
+	}
+	
+	public String printDependencies(String groupId, String artifactId, String version){
+		return maven.printDependencies(groupId, artifactId, version);
+	}
 
 	@Override
  	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {

@@ -142,6 +142,8 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
+		PRINT_DEPS("dependencies", "deps", "Bundle id or groupId, artifactId and version split by ::", "displays all dependencies of the specified component"),
+		//
 		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
 		//
 		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."),
@@ -981,6 +983,8 @@ public class PepperStarter {
 					output.println(debug());
 				} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
 					output.println(update(params));
+				} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
+					output.print(printDependencies(params));
 				} else {
 					output.println("Type 'help' for help.");
 				}
@@ -999,6 +1003,16 @@ public class PepperStarter {
 				}
 			}
 		}
+	}
+
+	private String printDependencies(List<String> params) {		
+//		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();
+//		if (params.size()==1 && !params.get(0).contains("::")){
+//			return connector.printDependencies("de.hu_berlin.german.korpling.saltnpepper", "pepper-framework", "2.0.0").concat(System.lineSeparator());
+//		} else {
+//			return "test";
+//		}
+		return "";
 	}
 
 	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
@@ -1076,7 +1090,7 @@ public class PepperStarter {
 				for (int i = 1; i < args.length; i++) {
 					params.add(args[i]);
 				}
-				logger.info(starter.update(params));
+				logger.info(starter.update(params));			
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {
