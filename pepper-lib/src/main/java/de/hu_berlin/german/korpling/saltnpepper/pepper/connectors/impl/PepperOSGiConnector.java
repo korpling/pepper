@@ -736,7 +736,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						||groupId.contains(symName)
 						) 
 						&& symName.contains(artifactId))){
-				return symName;
+//				return symName;
+				return bundle.toString();
 			}
 		}
 		return null;
@@ -747,11 +748,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected Bundle getBundle(String bundleName, String version){
 		boolean ignoreVersion = version==null;
 		for (Bundle bundle : bundleIdMap.values()){	
-			if (bundleName!=null 
-					&& bundle!=null
-					&& bundle.getSymbolicName()!=null
-					&& (bundleName.contains(bundle.getSymbolicName()) || bundle.getSymbolicName().contains(bundleName)) 
-					&& (ignoreVersion || (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version)))){
+//			if (bundleName!=null 
+//					&& bundle!=null
+//					&& bundle.getSymbolicName()!=null
+//					&& (bundleName.contains(bundle.getSymbolicName()) || bundle.getSymbolicName().contains(bundleName)) 
+//					&& (ignoreVersion || (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version)))){
+//				return bundle;
+//			}
+			if (bundleName!=null && bundle!=null && bundleName.equals(bundle.toString())){
 				return bundle;
 			}
 		}

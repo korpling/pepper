@@ -252,6 +252,9 @@ public class MavenAccessor {
 				STATUS status = null;
 				for (Dependency dependency : allDeps){					
 					bundleName = pepperOSGiConnector.getBundleNameByDependency(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId());					
+					if (bundleName!=null && bundleName.contains("emf")){
+						System.out.println("test");
+					}
 					bundle = pepperOSGiConnector.getBundle(bundleName, null);					
 					status = bundle==null || bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true")? STATUS.FINAL : STATUS.OVERRIDABLE;
 					forbiddenFruits.add(dependency.getArtifact().toString()+DELIMITER+status);
