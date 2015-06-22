@@ -714,7 +714,7 @@ public class MavenAccessor {
 		CollectRequest collectRequest = new CollectRequest();
         collectRequest.setRoot( new Dependency( artifact, "" ) );
         collectRequest.addRepository(repos.get(CENTRAL_REPO));
-        collectRequest.addRepository(buildRepo("test", KORPLING_MAVEN_REPO));
+        collectRequest.addRepository(buildRepo("test", KORPLING_MAVEN_REPO));//TODO
         CollectResult collectResult;
 		try {
 			collectResult = system.collectDependencies( session, collectRequest );			
@@ -741,7 +741,7 @@ public class MavenAccessor {
 		return d;
 	}
 	
-	public String printDependencies(Bundle bundle){
+	protected String printDependencies(Bundle bundle){
 		String[] coords = null;
 		for (String s : forbiddenFruits){
 			coords = s.split(DELIMITER);
@@ -749,7 +749,9 @@ public class MavenAccessor {
 				return printDependencies(coords[0], coords[1], coords[3].replace(".SNAPSHOT", "-SNAPSHOT"));				
 			}
 		}
-		return "Bundle could not be found.";
+		//bundle could not be determined
+		System.out.println(bundle.getHeaders());
+		return null;
 	}
 	
 	private class MavenRepositoryListener extends AbstractRepositoryListener{

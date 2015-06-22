@@ -735,6 +735,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		return null;
 	}	
 	
+	/** This method returns the bundle matching the specified maven project.
+	 * @param groupId -- the projects group id 
+	 * @param artifactId -- the projects artifact id
+	 * @param version -- the projects version
+	 * @return the bundle, if it exists and can be determined, otherwise null*/
 	protected Bundle getBundle(String groupId, String artifactId, String version){
 		String bundleName = getBundleNameByDependency(groupId, artifactId, version);		
 		for (Bundle bundle : bundleIdMap.values()){	
@@ -745,16 +750,30 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		return null;
 	}
 	
+	/** Returns whether the given bundle is a singleton. */
 	public boolean isSingleton(Bundle bundle){
 		return bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true");
 	}
 	
-	public String printDependencies(int bundleId){
-		return maven.printDependencies(bundleIdMap.get(bundleId));
+	/** prints all transitive dependencies of the specified bundle, if the bundle can be
+	 * related to a maven project
+	 * @param bundleId -- the bundle's id 
+	 * @return all dependencies as printable tree string 
+	 */
+	public String printDependencies(String bundleId){System.out.println(bundleIdMap.keySet());
+		String result = maven.printDependencies(bundleIdMap.get(Long.parseLong(bundleId)));
+		return result==null? "Could not compute dependencies for bundle #".concat(bundleId).concat(System.lineSeparator()) : result;
 	}
 	
+	/** prints all transitive dependencies of the specified maven project
+	 * @param groupId -- the projects group id 
+	 * @param artifactId -- the projects artifact id
+	 * @param version -- the projects version
+	 * @return all dependencies as printable tree string 
+	 */
 	public String printDependencies(String groupId, String artifactId, String version){
-		return maven.printDependencies(groupId, artifactId, version);
+		String result = maven.printDependencies(groupId, artifactId, version);
+		return result==null? "Could not compute dependencies for given coordinates".concat(System.lineSeparator()) : result;
 	}
 
 	@Override

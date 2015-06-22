@@ -801,7 +801,7 @@ public class PepperStarter {
 
 		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
 			logger.error("Could not read module table.");
-			logger.trace(" ", e);// TODO okay?
+			logger.trace(" ", e);
 			return false;
 		}
 		return true;
@@ -1006,13 +1006,15 @@ public class PepperStarter {
 	}
 
 	private String printDependencies(List<String> params) {		
-//		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();
-//		if (params.size()==1 && !params.get(0).contains("::")){
-//			return connector.printDependencies("de.hu_berlin.german.korpling.saltnpepper", "pepper-framework", "2.0.0").concat(System.lineSeparator());
-//		} else {
-//			return "test";
-//		}
-		return "";
+		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();
+		if (params.size()==1 && !params.get(0).contains("::")){
+			String[] coords = params.get(0).split("::");
+			if (coords.length==3){
+				return connector.printDependencies(coords[0], coords[1], coords[2]).concat(System.lineSeparator());
+			} else {
+				return connector.printDependencies(params.get(0));
+			}
+		} else {return "";}
 	}
 
 	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
