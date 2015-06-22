@@ -39,6 +39,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import java.util.LinkedList;
 
 /**
  * This is an abstract implementation of {@link PepperExporter}. This class
@@ -193,7 +194,7 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	public void exportCorpusStructure() {
 		if ((getExportMode() != null) && (!getExportMode().equals(EXPORT_MODE.NO_EXPORT))) {
 			if (this.getSaltProject() != null) {
-				Collection<SCorpusGraph> corpGraphs = Collections.synchronizedList(this.getSaltProject().getSCorpusGraphs());
+				Collection<SCorpusGraph> corpGraphs = new LinkedList<>(this.getSaltProject().getSCorpusGraphs());
 				for (SCorpusGraph sCorpusGraph : corpGraphs) {
 					if (sCorpusGraph == null) {
 						logger.warn("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
