@@ -179,6 +179,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void run() {
+		//if an exception is thrown, it will be stored to do some clean up first and throw it it afterwards.
 		PepperException origException= null;
 		try {
 			this.map();

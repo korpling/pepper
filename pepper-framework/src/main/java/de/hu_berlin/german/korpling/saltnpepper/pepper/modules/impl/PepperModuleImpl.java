@@ -755,7 +755,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			if (this.isMultithreaded()) {
 				controller.start();
 			} else
-				controller.map();
+				controller.run();
 		}
 	}
 
