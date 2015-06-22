@@ -736,11 +736,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}	
 	
 	/** This method returns the bundle matching the specified maven project.
-	 * @param groupId -- the projects group id 
-	 * @param artifactId -- the projects artifact id
-	 * @param version -- the projects version
+	 * @param groupId -- the project's group id 
+	 * @param artifactId -- the project's artifact id
+	 * @param version -- the project's version
 	 * @return the bundle, if it exists and can be determined, otherwise null*/
-	protected Bundle getBundle(String groupId, String artifactId, String version){
+	public Bundle getBundle(String groupId, String artifactId, String version){
 		String bundleName = getBundleNameByDependency(groupId, artifactId, version);		
 		for (Bundle bundle : bundleIdMap.values()){	
 			if (bundleName!=null && bundle!=null && bundleName.equals(bundle.toString())){
@@ -766,13 +766,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 	
 	/** prints all transitive dependencies of the specified maven project
-	 * @param groupId -- the projects group id 
-	 * @param artifactId -- the projects artifact id
-	 * @param version -- the projects version
+	 * @param groupId -- the project's group id 
+	 * @param artifactId -- the project's artifact id
+	 * @param version -- the project's version
 	 * @return all dependencies as printable tree string 
 	 */
-	public String printDependencies(String groupId, String artifactId, String version){
-		String result = maven.printDependencies(groupId, artifactId, version);
+	public String printDependencies(String groupId, String artifactId, String version, String repositoryUrl){
+		String result = maven.printDependencies(groupId, artifactId, version, repositoryUrl);
 		return result==null? "Could not compute dependencies for given coordinates".concat(System.lineSeparator()) : result;
 	}
 

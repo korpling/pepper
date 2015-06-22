@@ -173,7 +173,7 @@ public class MavenAccessor {
 	
 	/* MAVEN UTILS */
 	/** maven/aether utility */
-	RepositorySystem system = null;
+	RepositorySystem mvnSystem = null;
 	/** this Map contains all repos already used in this pepper session, key is url, value is repo */
 	HashMap<String, RemoteRepository> repos = null;	
 	/** maven/aether utility used to build Objects of class {@link RemoteRepository}. */
@@ -191,7 +191,7 @@ public class MavenAccessor {
 	        locator.addService( RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class );
 	        locator.addService( TransporterFactory.class, FileTransporterFactory.class );
 	        locator.addService( TransporterFactory.class, HttpTransporterFactory.class );	        
-			system = locator.getService( RepositorySystem.class );			
+			mvnSystem = locator.getService( RepositorySystem.class );			
 		}
 		repoBuilder = new RemoteRepository.Builder("", "default", "");
 		repos = new HashMap<String, RemoteRepository>();
@@ -248,7 +248,7 @@ public class MavenAccessor {
             collectRequest.addRepository(repos.get(CENTRAL_REPO));
             collectRequest.setRootArtifact(pepArt);
             try {
-				CollectResult collectResult = system.collectDependencies( session, collectRequest );
+				CollectResult collectResult = mvnSystem.collectDependencies( session, collectRequest );
 				List<Dependency> allDeps = getAllDependencies(collectResult.getRoot(), false);
 				parentDependencies.put(frameworkVersion.replace("-SNAPSHOT", ""), allDeps);
 				Bundle bundle = null;
@@ -273,7 +273,7 @@ public class MavenAccessor {
 	private DefaultRepositorySystemSession getNewSession(){
 		DefaultRepositorySystemSession session = new DefaultRepositorySystemSession();
 		LocalRepository localRepo = new LocalRepository( PATH_LOCAL_REPO );
-		LocalRepositoryManager repoManager = system.newLocalRepositoryManager( session, localRepo );
+		LocalRepositoryManager repoManager = mvnSystem.newLocalRepositoryManager( session, localRepo );
         session.setLocalRepositoryManager( repoManager );
         session.setRepositoryListener(repoListener);
         session.setTransferListener(transferListener);
@@ -364,7 +364,7 @@ public class MavenAccessor {
 	        VersionRangeRequest rangeRequest = new VersionRangeRequest();	        
 	        rangeRequest.addRepository(repo);
 	        rangeRequest.setArtifact(artifact);
-	        VersionRangeResult rangeResult = system.resolveVersionRange(session, rangeRequest);
+	        VersionRangeResult rangeResult = mvnSystem.resolveVersionRange(session, rangeRequest);
 	        rangeRequest.setArtifact( artifact );       
 	                
 	        /* utils needed for request */            
@@ -392,7 +392,7 @@ public class MavenAccessor {
 		    			update = newestVersion.compareTo(installedVersion) > 0;					    			
 		    			artifactRequest.setArtifact(artifact);
 		    			try{			    				
-		    					artifactResult = system.resolveArtifact(session, artifactRequest);		    			
+		    					artifactResult = mvnSystem.resolveArtifact(session, artifactRequest);		    			
 		    					artifact = artifactResult.getArtifact();
 		    					srcExists = update && artifact.getFile().exists();
 		    					file = artifact.getFile();
@@ -426,7 +426,7 @@ public class MavenAccessor {
 	            collectRequest.setRoot( new Dependency( artifact, "" ) );
 	            collectRequest.addRepository(repos.get(CENTRAL_REPO));
 	            collectRequest.addRepository(repo);
-	            CollectResult collectResult = system.collectDependencies( session, collectRequest );           
+	            CollectResult collectResult = mvnSystem.collectDependencies( session, collectRequest );           
 	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);          
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
@@ -463,7 +463,7 @@ public class MavenAccessor {
 	            		artifactRequest.addRepository(repo);
 	            		artifactRequest.setArtifact(dependency.getArtifact());
 	            		try{
-	            			artifactResult = system.resolveArtifact(session, artifactRequest);		
+	            			artifactResult = mvnSystem.resolveArtifact(session, artifactRequest);		
 		            		installArtifacts.add(artifactResult.getArtifact());
 	            		}catch (ArtifactResolutionException e){	            			
 	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            			
@@ -643,7 +643,7 @@ public class MavenAccessor {
 		        collectRequest.addRepository(repos.get(CENTRAL_REPO));
 		        collectRequest.addRepository(repos.get(KORPLING_MAVEN_REPO));
 		        CollectResult collectResult;
-				collectResult = system.collectDependencies( session, collectRequest );				
+				collectResult = mvnSystem.collectDependencies( session, collectRequest );				
 				parentDeps = getAllDependencies(collectResult.getRoot(), false);				
 				parentDependencies.put(parentVersion.replace("-SNAPSHOT", ""), parentDeps);
 			}else{
@@ -707,20 +707,49 @@ public class MavenAccessor {
 		return repoBuilder.build();
 	}
 	
-	public String printDependencies(String groupId, String artifactId, String version){
-		/* utils for dependency collection */
+	public String printDependencies(String groupId, String artifactId, String version, String repositoryUrl){
+		/* repositories */
+		RemoteRepository repo = null;
+		if (repositoryUrl==null){        	
+        	repo = repos.get(KORPLING_MAVEN_REPO);
+        	if (repo==null){
+        		repo = buildRepo("korpling", KORPLING_MAVEN_REPO);
+        		repos.put(KORPLING_MAVEN_REPO, repo);        		
+        	}        	        	
+        } else {
+	        repo = repos.get(repositoryUrl);
+	        if (repo==null){
+	        	repo = buildRepo("repository", repositoryUrl);
+	        	repos.put(repositoryUrl, repo);
+	        }	        
+        }
+		/* version range resolution and dependency collection */
 		DefaultRepositorySystemSession session = getNewSession();
-		Artifact artifact = new DefaultArtifact(groupId, artifactId, "pom", version); 
+		Artifact artifact = new DefaultArtifact(groupId, artifactId, "pom", version==null? "[0,)" : version);
+		if (version==null){
+			VersionRangeRequest request = new VersionRangeRequest();
+			request.setArtifact(artifact);
+			if (repositoryUrl==null){request.addRepository(repos.get(CENTRAL_REPO));}
+			request.addRepository(repo);
+			try {
+				VersionRangeResult rangeResult = mvnSystem.resolveVersionRange(session, request);
+				version = rangeResult.getHighestVersion().toString();
+				artifact.setVersion(version);
+			} catch (VersionRangeResolutionException e) {
+				logger.error("Could not determine newest version.");
+				return null;
+			}			
+		}
 		CollectRequest collectRequest = new CollectRequest();
-        collectRequest.setRoot( new Dependency( artifact, "" ) );
-        collectRequest.addRepository(repos.get(CENTRAL_REPO));
-        collectRequest.addRepository(buildRepo("test", KORPLING_MAVEN_REPO));//TODO
-        CollectResult collectResult;
+        collectRequest.setRoot( new Dependency( artifact, "" ) );        
+        if (repositoryUrl==null){collectRequest.addRepository(repos.get(CENTRAL_REPO));}
+	    collectRequest.addRepository(repo);
+        CollectResult collectResult;        
 		try {
-			collectResult = system.collectDependencies( session, collectRequest );			
+			collectResult = mvnSystem.collectDependencies( session, collectRequest );			
 			return getDependencyPrint(collectResult.getRoot(), 0, 0);
 		} catch (DependencyCollectionException e) {
-			logger.error("Could not print dependencies.");
+			logger.error("Could not print dependencies for ".concat(artifactId).concat("."));
 		}           
          return null;
 	}
@@ -734,7 +763,7 @@ public class MavenAccessor {
 		for (int i=1; i<depth; i++){
 			d+="-";
 		}
-		d+=startNode.getArtifact().toString();
+		d+=startNode.getArtifact().toString().concat(" (").concat(startNode.getDependency().getScope()).concat(")");
 		for (DependencyNode node : startNode.getChildren()){
 			d+=System.lineSeparator().concat(getDependencyPrint(node, level+1,depth+1));
 		}
@@ -746,11 +775,10 @@ public class MavenAccessor {
 		for (String s : forbiddenFruits){
 			coords = s.split(DELIMITER);
 			if (bundle!=null && coords.length==6 && coords[5].equals(bundle.getSymbolicName())){
-				return printDependencies(coords[0], coords[1], coords[3].replace(".SNAPSHOT", "-SNAPSHOT"));				
+				return printDependencies(coords[0], coords[1], coords[3].replace(".SNAPSHOT", "-SNAPSHOT"), null);				
 			}
 		}
-		//bundle could not be determined
-		System.out.println(bundle.getHeaders());
+		//bundle could not be determined		
 		return null;
 	}
 	

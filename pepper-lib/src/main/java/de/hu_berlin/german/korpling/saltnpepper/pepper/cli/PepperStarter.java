@@ -48,6 +48,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1004,17 +1005,58 @@ public class PepperStarter {
 			}
 		}
 	}
-
+	
+	/** This method reads the dependency command's parameters, calls pepper to
+	 * invoke the dependency collection and returns the results. 
+	 * @param params -- command line parameters 
+	 * @return dependency tree print */
 	private String printDependencies(List<String> params) {		
-		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();
-		if (params.size()==1 && params.get(0).contains("::")){
-			String[] coords = params.get(0).split("::");
-			if (coords.length==3){
-				return connector.printDependencies(coords[0], coords[1], coords[2]).concat(System.lineSeparator());
-			} else {
-				return connector.printDependencies(params.get(0));
+		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();	
+		Map<String, Pair<String, String>> moduleTable = null;
+		try {
+			moduleTable = getModuleTable();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			logger.error("Could not parse module table.");
+			return "No operation performed.";
+		}
+		
+		StringBuilder retVal = new StringBuilder();
+		String groupId = null;
+		String version = null;
+		for (String param : params) {
+			if ("all".equalsIgnoreCase(param)){
+				retVal.delete(0, retVal.length());								
+				for (String module : moduleTable.keySet()){
+					groupId = moduleTable.get(module).getLeft();					
+					Bundle bundle = connector.getBundle(groupId, module, null);
+					version = bundle==null? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+					if (version==null) {
+						logger.info(module.concat(" not installed. Collecting dependencies for newest version."));
+					}
+					retVal.append(connector.printDependencies(moduleTable.get(module).getLeft(), module, version, moduleTable.get(module).getRight())).append(System.lineSeparator()).append(System.lineSeparator());
+				}
+				return retVal.toString();
 			}
-		} else {return "";}
+			else if (param.contains("::")){
+				String[] coords = params.get(0).split("::");
+				if (coords.length==4){
+					retVal.append(connector.printDependencies(coords[0], coords[1], coords[2], coords[3])).append(System.lineSeparator());
+				}
+			}
+			else if (moduleTable.keySet().contains(param)){
+				groupId = moduleTable.get(param).getLeft();					
+				Bundle bundle = connector.getBundle(groupId, param, null);
+				version = bundle==null? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+				if (version==null) {
+					logger.info(param.concat(" not installed. Collecting dependencies for newest version."));
+				}
+				retVal.append(connector.printDependencies(moduleTable.get(param).getLeft(), param, version, moduleTable.get(param).getRight())).append(System.lineSeparator());				
+			}
+			else if (param.matches("#?[0-9]+")){
+				retVal.append(connector.printDependencies(param.replace("#", ""))).append(System.lineSeparator());
+			}
+		}
+		return retVal.toString();
 	}
 
 	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
