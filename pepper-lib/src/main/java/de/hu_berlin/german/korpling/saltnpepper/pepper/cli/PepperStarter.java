@@ -1007,7 +1007,7 @@ public class PepperStarter {
 
 	private String printDependencies(List<String> params) {		
 		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();
-		if (params.size()==1 && !params.get(0).contains("::")){
+		if (params.size()==1 && params.get(0).contains("::")){
 			String[] coords = params.get(0).split("::");
 			if (coords.length==3){
 				return connector.printDependencies(coords[0], coords[1], coords[2]).concat(System.lineSeparator());
