@@ -143,7 +143,7 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
-		PRINT_DEPS("dependencies", "deps", "Bundle id or groupId, artifactId and version split by ::", "displays all dependencies of the specified component"),
+		PRINT_DEPS("dependencies", "deps", "Bundle id or GROUP_ID::ARTIFACT_ID::VERSION::MAVEN_REPOSITORY_URL or plugin names split by space; parameter all prints dependencies for all plugins", "displays all dependencies of the specified component"),
 		//
 		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
 		//

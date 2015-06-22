@@ -707,6 +707,9 @@ public class MavenAccessor {
 		return repoBuilder.build();
 	}
 	
+	/** This method starts invokes the computation of the dependency tree. If no version is
+	 * provided, the highest version in the specified maven repository is used. If no repository
+	 * is provided, maven central and the korpling maven repository are used for trial. */
 	public String printDependencies(String groupId, String artifactId, String version, String repositoryUrl){
 		/* repositories */
 		RemoteRepository repo = null;
@@ -747,29 +750,29 @@ public class MavenAccessor {
         CollectResult collectResult;        
 		try {
 			collectResult = mvnSystem.collectDependencies( session, collectRequest );			
-			return getDependencyPrint(collectResult.getRoot(), 0, 0);
+			return getDependencyPrint(collectResult.getRoot(), 0);
 		} catch (DependencyCollectionException e) {
 			logger.error("Could not print dependencies for ".concat(artifactId).concat("."));
 		}           
          return null;
 	}
 	
-	private String getDependencyPrint(DependencyNode startNode, int level, int depth){
+	/** this method recursively computes */
+	private String getDependencyPrint(DependencyNode startNode, int depth){
 		String d = "";
-		for (int i=0; i<level; i++){
+		for (int i=0; i<depth; i++){
 			d+=" ";
 		}
-		d+= depth==0? "" : "+";
-		for (int i=1; i<depth; i++){
-			d+="-";
-		}
+		d+= depth==0? "" : "+- ";
 		d+=startNode.getArtifact().toString().concat(" (").concat(startNode.getDependency().getScope()).concat(")");
 		for (DependencyNode node : startNode.getChildren()){
-			d+=System.lineSeparator().concat(getDependencyPrint(node, level+1,depth+1));
+			d+=System.lineSeparator().concat(getDependencyPrint(node, depth+1));
 		}
 		return d;
 	}
 	
+	/** This method tries to determine maven project coordinates from a bundle id to
+	 * invoke {@link #printDependencies(String, String, String, String)}. */
 	protected String printDependencies(Bundle bundle){
 		String[] coords = null;
 		for (String s : forbiddenFruits){
@@ -778,8 +781,10 @@ public class MavenAccessor {
 				return printDependencies(coords[0], coords[1], coords[3].replace(".SNAPSHOT", "-SNAPSHOT"), null);				
 			}
 		}
-		//bundle could not be determined		
-		return null;
+		//maven coordinates could not be determined, assume, we talk about a pepper plugin:		
+		return printDependencies(bundle.getSymbolicName().substring(0, bundle.getSymbolicName().lastIndexOf('.')), 
+									bundle.getSymbolicName().substring(bundle.getSymbolicName().lastIndexOf('.')+1), 
+									bundle.getVersion().toString(), KORPLING_MAVEN_REPO);
 	}
 	
 	private class MavenRepositoryListener extends AbstractRepositoryListener{
