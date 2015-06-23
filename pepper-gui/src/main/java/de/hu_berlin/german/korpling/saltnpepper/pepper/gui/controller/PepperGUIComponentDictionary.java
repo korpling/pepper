@@ -12,8 +12,9 @@ public interface PepperGUIComponentDictionary {
 	public static final String ID_BUTTON_BROWSE_LOCAL = "8";
 	public static final String ID_BUTTON_PATH_SELECT = "9";
 	
-	public static final String ID_PATH_SELECT = "A";
-	public static final String ID_PATH_FIELD = "B";
+	public static final String ID_BUTTON_REFRESH_ROOTS = "A";
+	public static final String ID_PATH_SELECT = "B";
+	public static final String ID_PATH_FIELD = "C";
 	
 	public static final String PATH_PREFIX = "#";
 }

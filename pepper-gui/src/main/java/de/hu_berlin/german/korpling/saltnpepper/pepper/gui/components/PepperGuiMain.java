@@ -1,13 +1,12 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
-import com.vaadin.data.util.FilesystemContainer;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.VIEW_NAME;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepDescriptor;
 
-public class PepperGuiMain extends Panel{
+public class PepperGuiMain extends Panel implements View{
 	
 	private PepperGuiView importers;
 	private PepperGuiView exporters;
@@ -35,5 +34,22 @@ public class PepperGuiMain extends Panel{
 		else{
 			setContent((Component)results);
 		}
+	}
+	
+	public void setConfig(ConversionStepDescriptor config){
+		((View)getContent()).setConfig(config);
+	}
+	
+	public ConversionStepDescriptor getConfig(){
+		return ((View)getContent()).getConfig();
+	}
+	
+	public MODULE_TYPE getModuleType(){
+		return ((View)getContent()).getModuleType();
+	}
+
+	@Override
+	public void update() {
+		((View)getContent()).update();
 	}
 }

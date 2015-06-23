@@ -26,8 +26,12 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Window;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PathSelectDialogue;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGuiImportersView;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepConfiguration;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepDescriptor;
 
 @Title("Pepper converter framework")
 @Theme("valo")
@@ -46,9 +50,10 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		{//prepare path select window
 			Window w = new Window(PATH_DIALOGUE_TITLE);
 			pathDialogue = new PathSelectDialogue();
+			w.setSizeUndefined();
 			w.setContent(pathDialogue);
 			w.center();
-			w.setModal(true);
+			w.setModal(true);		
 			pathSelectDialogueWindow = w; //TODO try to finalize the window
 		}
 		setContent(gui);		
@@ -81,9 +86,19 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_BROWSE_LOCAL.equals(id)){
 			modifyPathSelectDialogue(DEFAULT_DIALOGUE_PATH, false);
 		}
-		else if (ID_BUTTON_PATH_SELECT.equals(id)){
-			//TODO store workflow data somewhere
-			removeWindow(pathSelectDialogueWindow);			
+		else if (ID_BUTTON_REFRESH_ROOTS.equals(id)){
+			pathDialogue.refreshRoots();
+		}
+		else if (ID_BUTTON_PATH_SELECT.equals(id)){			
+			removeWindow(pathSelectDialogueWindow);		
+			ConversionStepDescriptor config = gui.getConfig(); 
+			if (config==null){
+				config = new ConversionStepConfiguration(null, null, pathDialogue.getSelectedPath(), gui.getModuleType());				
+				gui.setConfig(config);
+			} else {
+				config.setPath(pathDialogue.getSelectedPath());
+				gui.update();
+			}
 		}else if (id.startsWith(PATH_PREFIX)){
 			modifyPathSelectDialogue(id.substring(1), false);
 		}

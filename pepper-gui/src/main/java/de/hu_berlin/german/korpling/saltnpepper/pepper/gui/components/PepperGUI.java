@@ -7,12 +7,14 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIComponentDictionary;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.VIEW_NAME;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepDescriptor;
 
 @DesignRoot
-public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary{	
+public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary, View{	
 	private Button btnNewWorkflow;
 	private Button btnLoadWorkflow;
 	private Button btnAbout;
@@ -56,8 +58,25 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		main.setView(view);
 	}
 	
+	public MODULE_TYPE getModuleType(){
+		return main.getModuleType();
+	}
+	
+	public void setConfig(ConversionStepDescriptor config){
+		main.setConfig(config);
+	}
+	
+	public ConversionStepDescriptor getConfig(){
+		return main.getConfig();
+	}
+	
 	//FIXME remove on release
 	public void debugOut(String message){
 		lblDebug.setCaption(message);
+	}
+
+	@Override
+	public void update() {
+		main.update();
 	}
 }

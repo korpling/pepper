@@ -22,5 +22,11 @@ public class PepperGuiResultsView extends PepperGuiView {
 			//TODO set controller for elements here
 			isInit = true;
 		}
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	}	
 }

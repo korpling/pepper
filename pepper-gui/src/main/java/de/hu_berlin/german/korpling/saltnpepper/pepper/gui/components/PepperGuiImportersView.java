@@ -10,7 +10,10 @@ import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Upload;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepConfiguration;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepDescriptor;
 
 @DesignRoot
 public class PepperGuiImportersView extends PepperGuiView{
@@ -29,6 +32,7 @@ public class PepperGuiImportersView extends PepperGuiView{
 		super();	
 		btnShowAll.setId(ID_BUTTON_SHOW_ALL);
 		btnBrowseLocal.setId(ID_BUTTON_BROWSE_LOCAL);
+		setModuleType(MODULE_TYPE.IMPORTER);
 	}
 	
 	@Override
@@ -43,8 +47,10 @@ public class PepperGuiImportersView extends PepperGuiView{
 			isInit = true;
 		}
 	}
-	
-	protected void displaySelectedPath(String path){
-		selectedPath.setCaption(path);
-	}
+
+	@Override
+	public void update() {
+		selectedPath.setCaption(getConfig().getPath());
+		System.out.println(getConfig().getPath());//FIXME
+	}	
 }
