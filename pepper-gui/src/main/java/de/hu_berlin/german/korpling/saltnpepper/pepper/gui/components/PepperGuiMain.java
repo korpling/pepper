@@ -52,4 +52,9 @@ public class PepperGuiMain extends Panel implements View{
 	public void update() {
 		((View)getContent()).update();
 	}
+
+	@Override
+	public void display(boolean visible, Component... c) {
+		((View)getContent()).display(visible, c);
+	}
 }

@@ -438,7 +438,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
                     <para>In case you are wondering, yes this sounds a bit strange, since each file
                         ending which is not contained in the second list won't be imported by
                         default. But there is an option to set this to import each file, no matter
-                        wjat's the ending.</para>
+                        what's the ending.</para>
                 </footnote> Now let's show some code for adapting. The following snippet is placed
                 into the method 'isReadyToStart()', but even could be located inside the
                 constructor:
@@ -454,7 +454,7 @@ public PepperMapper createPepperMapper(SElementId sElementId){
     getSDocumentEndings().add(ENDING_LEAF_FOLDER);
     ...
 }</programlisting></para>
-            <para>In general the paramter of the method '<emphasis role="italic"
+            <para>In general the parameter of the method '<emphasis role="italic"
                     >getSDocumentEndings()</emphasis>' is just a String, but there are some
                 predefined endings you can use. The two lines marked as option 1, will add the
                 endings 'xml' and 'tab' to the list of file endings to be imported. That means, that

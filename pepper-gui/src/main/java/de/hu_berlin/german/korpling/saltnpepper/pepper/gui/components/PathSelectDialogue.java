@@ -51,7 +51,7 @@ public class PathSelectDialogue extends AbsoluteLayout implements PepperGUICompo
 		list.addStyleName(PATH_LIST_STYLE);
 		btnSelect.setClickShortcut(KeyCode.ENTER);
 		btnSelect.setId(ID_BUTTON_PATH_SELECT);
-		pathField.setId(ID_PATH_FIELD);
+		pathField.setId(ID_PATH_FIELD_DIALOGUE);
 		pathField.setImmediate(true);	
 		lblFinalPath.setImmediate(true);
 		setImmediate(true);		

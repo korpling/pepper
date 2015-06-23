@@ -1,6 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
@@ -18,22 +19,31 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Pepp
 	}
 
 	@Override
-	public void setConfig(ConversionStepDescriptor config) {
-		this.config = config;
-		update();
+	public final void setConfig(ConversionStepDescriptor config) {
+		if (type.equals(config.getModuleType())){
+			this.config = config;
+			update();
+		}		
 	}
 
 	@Override
-	public ConversionStepDescriptor getConfig() {
+	public final ConversionStepDescriptor getConfig() {
 		return config;
 	}
 	
 	@Override
-	public MODULE_TYPE getModuleType(){
+	public final MODULE_TYPE getModuleType(){
 		return type;
+	}	
+	
+	protected final void setModuleType(MODULE_TYPE type){
+		this.type = type;
 	}
 	
-	protected void setModuleType(MODULE_TYPE type){
-		this.type = type;
+	@Override
+	public final void display(boolean visible, Component... c){
+		for (int i=0; i<c.length; i++){
+			c[i].setVisible(visible);
+		}		
 	}
 }

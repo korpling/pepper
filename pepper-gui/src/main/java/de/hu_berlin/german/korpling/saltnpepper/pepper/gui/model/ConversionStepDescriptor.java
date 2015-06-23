@@ -10,7 +10,10 @@ public interface ConversionStepDescriptor {
 	public void setPath(String path);
 	public String getModuleName();
 	public void setModuleName(String moduleName);
-	public MODULE_TYPE getModuleType();	
+	public MODULE_TYPE getModuleType();
+	/*note no method setModuleType(), moduleType is only once set on instantiation*/
 	public Map<String, String> getProperties();
-	public void setProperties();
+	public void setProperties(Map<String, String> properties);
+	public void setProperty(String key, String value);
+	public String getPropertyValue(String key);
 }

@@ -72,14 +72,25 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	public Double isImportable(URI corpusPath) {
 		Double retVal= null;
 		File file= new File(corpusPath.toFileString());
-		while (file.isDirectory()){
-			file= file.listFiles()[0];
+		File[] allFiles= null;
+		boolean abort= false;
+		while (	(!abort)&&
+				(file.isDirectory())){
+			allFiles= file.listFiles();
+			if (	(allFiles!= null)&&
+					(allFiles.length!= 0)){
+				file= allFiles[0];
+			}else{
+				abort= true;
+			}
 		}
-		String content= readFirstLines(URI.createFileURI(file.getAbsolutePath()), 20);
-		if (	(content.contains("<?xml"))&&
-				(content.contains("xmi:version=\"2.0\""))&&
-				(content.contains("salt"))){
-			retVal= 1.0;
+		if (!abort){
+			String content= readFirstLines(URI.createFileURI(file.getAbsolutePath()), 20);
+			if (	(content.contains("<?xml"))&&
+					(content.contains("xmi:version=\"2.0\""))&&
+					(content.contains("salt"))){
+				retVal= 1.0;
+			}
 		}
 		return(retVal);
 	}

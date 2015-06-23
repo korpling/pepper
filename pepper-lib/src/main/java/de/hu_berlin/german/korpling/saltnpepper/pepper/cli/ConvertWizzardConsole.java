@@ -85,15 +85,19 @@ public class ConvertWizzardConsole {
 	private static final String PROMPT = "wizzard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter (a further) the path to corpus you want to import or press enter to skip. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
 	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter (a further) the path to which you want to export the corpus. ";
+	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
+	
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
+
+	/** Determines if debug mode is on or off **/
+	public Boolean isDebug = false;
 
 	public enum COMMAND {
 		//
@@ -241,27 +245,15 @@ public class ConvertWizzardConsole {
 
 						outputFile = new File(params.get(params.size() - 1));
 					}
-
 					try {
-						//before saving, create relative URIs for Pepper job.
-						//create a base URI to deresolve relative URIs
-						URI base;
-						if (outputFile.isDirectory()){
-							base= URI.createFileURI(outputFile.getAbsolutePath());
-						}else{
-							base= URI.createFileURI(outputFile.getParentFile().getAbsolutePath());
-						}
-						for (StepDesc stepDesc: pepperJob.getStepDescs()){
-							if (	(stepDesc.getCorpusDesc()!= null)&&
-									(stepDesc.getCorpusDesc().getCorpusPath()!= null)){
-								stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
-								System.out.println("new relative uri: "+ stepDesc.getCorpusDesc().getCorpusPath());
-							}
-						}
+						deresolveURIs(outputFile, pepperJob);
 						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
 						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
 					} catch (Exception e) {
 						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
+						if (isDebug) {
+							e.printStackTrace(out);
+						}
 					}
 
 				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
@@ -274,6 +266,33 @@ public class ConvertWizzardConsole {
 			return (null);
 		}
 		return (null);
+	}
+
+	/**
+	 * Before saving, create relative URIs for Pepper job. Create a base URI to
+	 * deresolve relative URIs
+	 * 
+	 * @param outputFile
+	 * @param pepperJob
+	 * @throws IOException
+	 */
+	public static void deresolveURIs(File outputFile, PepperJob pepperJob) throws IOException {
+		URI base;
+		if (outputFile.isDirectory()) {
+			base = URI.createFileURI(outputFile.getCanonicalPath() + "/");
+		} else {
+			base = URI.createFileURI(outputFile.getCanonicalFile().getParentFile().getCanonicalPath() + "/");
+		}
+		for (StepDesc stepDesc : pepperJob.getStepDescs()) {
+			if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getCorpusPath() != null)) {
+				URI before= stepDesc.getCorpusDesc().getCorpusPath();
+				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
+				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)){
+					//creates a leading './' if URI is relative
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./"+stepDesc.getCorpusDesc().getCorpusPath()));
+				}
+			}
+		}
 	}
 
 	/**
@@ -293,7 +312,7 @@ public class ConvertWizzardConsole {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
-		out.println(MSG_IMPORT_CORPUS);
+		out.println(MSG_IMPORT_CORPUS.replace("(further) ", ""));
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -323,7 +342,19 @@ public class ConvertWizzardConsole {
 					} else {
 						stepDesc = pepperJob.createStepDesc();
 						stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
-						stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
+						String path;
+						try {
+							path= corpusPath.getCanonicalPath();
+						} catch (IOException e) {
+							path= corpusPath.getAbsolutePath();
+						}
+						if (	(corpusPath.isDirectory())&&
+								(!path.endsWith("/"))){
+							path= path + "/";
+						}
+						out.println("import corpus from: "+ path);
+						stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
+						
 						if ((number2Module == null) || (name2Module == null)) {
 							number2Module = new HashMap<Integer, PepperModuleDesc>();
 							name2Module = new HashMap<String, PepperModuleDesc>();
@@ -497,7 +528,7 @@ public class ConvertWizzardConsole {
 		int state = 0;
 		String input = null;
 		StepDesc stepDesc = null;
-		out.println(MSG_EX_CORPUS);
+		out.println(MSG_EX_CORPUS.replace("(further) ", ""));
 		// a map containing each registered module and a corresponding number,
 		// to make selection easier (key= number, value= module desc)
 		Map<Integer, PepperModuleDesc> number2Module = null;
@@ -526,9 +557,19 @@ public class ConvertWizzardConsole {
 					if (!corpusPath.exists()) {
 						corpusPath.mkdirs();
 					}
+					String path;
+					try {
+						path= corpusPath.getCanonicalPath();
+					} catch (IOException e) {
+						path= corpusPath.getAbsolutePath();
+					}
+					if (!path.endsWith("/")){
+						path= path + "/";
+					}
+					out.println("export corpus to: "+ path);
 					stepDesc = pepperJob.createStepDesc();
 					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
-					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
 					if ((number2Module == null) || (name2Module == null)) {
 						number2Module = new HashMap<Integer, PepperModuleDesc>();
 						name2Module = new HashMap<String, PepperModuleDesc>();
@@ -661,7 +702,7 @@ public class ConvertWizzardConsole {
 		map[0][1] = "module name";
 		if ((MODULE_TYPE.IMPORTER.equals(moduleType)) || (MODULE_TYPE.EXPORTER.equals(moduleType))) {
 			map[0][2] = "format";
-		}else{
+		} else {
 			map[0][2] = "description";
 		}
 		Integer[] length = { 5, 30, 40 };
@@ -678,11 +719,11 @@ public class ConvertWizzardConsole {
 			map[num][0] = prefix + num;
 			map[num][1] = moduleDesc.getName();
 			if ((MODULE_TYPE.IMPORTER.equals(moduleType)) || (MODULE_TYPE.EXPORTER.equals(moduleType))) {
-				//module is an importer or exporter
-				
+				// module is an importer or exporter
+
 				if (moduleDesc.getSupportedFormats().size() > 0) {
-				int i = 0;
-				
+					int i = 0;
+
 					StringBuilder str = new StringBuilder();
 					str.append("(");
 					for (FormatDesc format : moduleDesc.getSupportedFormats()) {
@@ -697,13 +738,13 @@ public class ConvertWizzardConsole {
 					str.append(")");
 					map[num][2] = str.toString();
 				}
-			}else{
-				//module is a manipulator
+			} else {
+				// module is a manipulator
 				map[num][2] = moduleDesc.getDesc();
 			}
 			num++;
 		}
-		retStr = PepperUtil.createTable(length, map, true, true);
+		retStr = PepperUtil.createTable(length, map, true, true, true);
 		return (retStr);
 	}
 
@@ -734,7 +775,7 @@ public class ConvertWizzardConsole {
 				number2propName.put(i, prop.getName());
 				i++;
 			}
-			retStr = PepperUtil.createTable(length, map, true, true);
+			retStr = PepperUtil.createTable(length, map, true, true, true);
 		}
 
 		return (retStr);

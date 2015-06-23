@@ -5,6 +5,23 @@
 *	artifactId:		pepper												          *
 *													                              *
 ***********************************************************************************
+Version 2.1.0
+=============
+* a detailed log can be found on github under: https://github.com/korpling/pepper/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Pepper+2.1+release%22+
+
+* added a wizzard to create pepper workflow descriptions (open console and enter 'convert')
+* added a new update mechanism to automatically download Pepper modules (use update command)
+* removed all 3rd party libs from source code, tehy are added now by maven, but note to run mvn install assembly:single before running Pepper
+* added the support of a new workflow description file (see: https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc)
+* added possibliity to not only load bundles from plugin folder, even user defined folders can be set via configuration 'pepper.dropin.paths' in conf/pepper.properties
+* added a mechanism for customization properties available in each Pepper module
+* added a mechanism to display output for displays with width of 120 and 80 
+* added a property to module SaltValidator to determine if an invalid module should be tried to be repaired.
+* updated Pepper to use Java 1.7
+* added default, that all intermediate Salt doccuments are deleted when Pepper terminates 
+* added a naming the users name as extension for temporary folders followed by a randomized sequence ...
+* updated Salt version to 2.1.0
+
 Version 2.0.0
 =============
 	* removed EMF from Pepper (only used to access Salt)

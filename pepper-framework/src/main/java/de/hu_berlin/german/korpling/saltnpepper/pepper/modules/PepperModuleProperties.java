@@ -86,6 +86,15 @@ public class PepperModuleProperties implements Serializable {
 	 * object.
 	 */
 	public static final String PROP_AFTER_ADD_SLAYER = PREFIX_PEPPER_AFTER + "addSLayer";
+	
+	/**
+	 * Copies one or more source files to one or more target files after processing. This is very helpful, 
+	 * in case of customizations should be done in target format. If you use relative paths, the are anchored
+	 * to either the location of the workflow description file or where Pepper was started.
+	 * Syntax is: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*
+	 * 
+	 */
+	public static final String PROP_AFTER_COPY_RES = PREFIX_PEPPER_AFTER + "copyRes";
 	/**
 	 * Consumes a semicolon separated list of names for {@link SLayer} objects.
 	 * For each list element, one {@link SLayer} is created and added to all
@@ -93,6 +102,14 @@ public class PepperModuleProperties implements Serializable {
 	 * object.
 	 */
 	public static final String PROP_BEFORE_ADD_SLAYER = PREFIX_PEPPER_BEFORE + "addSLayer";
+	/**
+	 * Reads meta data for corpora and subcorpora in a very simple attribute-value format like:<br/>
+	 * a=b<br/>
+	 * c=d<br/>
+	 * To enable the reading of meta data set this property to the file ending of the metadata file. 
+	 * For instance in case of the file is named data.meta: {@value #PROP_BEFORE_READ_META}=meta
+	 */
+	public static final String PROP_BEFORE_READ_META= PREFIX_PEPPER_BEFORE + "readMeta";
 
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
@@ -103,7 +120,9 @@ public class PepperModuleProperties implements Serializable {
 	 */
 	public PepperModuleProperties() {
 		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed."));
+		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_READ_META, String.class, "Reads meta data for corpora and subcorpora in a very simple attribute-value format like: a=b. To enable the reading of meta data set this property to the file ending of the metadata file.  For instance in case of the file is named data.meta: {@value #PROP_BEFORE_READ_META}=meta"));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
 	}
 
 	/**

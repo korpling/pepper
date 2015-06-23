@@ -18,6 +18,9 @@
 	<pepperModules>
 		<artifactId>pepperModules-FALKOModules</artifactId>
 	</pepperModules>
+		<pepperModules>
+		<artifactId>pepperModules-GATEModules</artifactId>
+	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-GenericXMLModules</artifactId>
 	</pepperModules>
@@ -42,6 +45,9 @@
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-RelANNISModules</artifactId>
+	</pepperModules>
+    <pepperModules>
+		<artifactId>pepperModules-ANNISModules</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-RidgesModules</artifactId>
@@ -69,5 +75,11 @@
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-UAMModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-GraphAnnoModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-GrAFModules</artifactId>
 	</pepperModules>
 </pepperModulesList>

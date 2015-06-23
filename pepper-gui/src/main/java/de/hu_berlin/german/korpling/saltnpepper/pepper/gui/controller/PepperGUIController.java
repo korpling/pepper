@@ -2,9 +2,11 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.util.Map;
 
 import org.apache.commons.lang3.SystemUtils;
 
+import com.google.gwt.dev.util.collect.HashMap;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -22,14 +24,13 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Window;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PathSelectDialogue;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGuiImportersView;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepDescriptor;
 
@@ -39,13 +40,16 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;
 	private PathSelectDialogue pathDialogue = null;
-	private static final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserHome().getAbsolutePath();
+	private final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserHome().getAbsolutePath();
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
+	private IdProvider idProvider = null;
 	
 	protected void init(VaadinRequest request){		
 		gui = new PepperGUI(this);
 		setErrorHandler(this);
 		setImmediate(true);
+		
+		idProvider = new IdProvider();
 		
 		{//prepare path select window
 			Window w = new Window(PATH_DIALOGUE_TITLE);
@@ -56,7 +60,11 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			w.setModal(true);		
 			pathSelectDialogueWindow = w; //TODO try to finalize the window
 		}
-		setContent(gui);		
+		setContent(gui);
+	}
+	
+	public String getId(String prefix){
+		return idProvider.getId(prefix);
 	}
 
 	@Override
@@ -146,6 +154,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	
 	@Override
 	public void valueChange(ValueChangeEvent event) {		
+		/* right now this method must not be used for anything else */
 		pathDialogue.setPathLabelValue(pathDialogue.getListValue());
 	}
 
@@ -156,12 +165,25 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	@Override
 	public void textChange(TextChangeEvent event) {
 		String txt = event.getText();
+		String id = event.getComponent().getId();
 		debugOut(txt);
-		if (ID_PATH_FIELD.equals(event.getComponent().getId())){
+		if (ID_PATH_FIELD_DIALOGUE.equals(id)){
 			File f = new File(txt);
 			if (f.exists() && f.isDirectory()){
 				modifyPathSelectDialogue(txt, false);
 			}
+		}
+		else if (ID_PATH_FIELD_MAIN.equals(id)){
+			TextField c = (TextField)event.getComponent();
+			c.removeTextChangeListener(this);
+			ConversionStepDescriptor config = gui.getConfig();
+			if (config==null){
+				gui.setConfig(new ConversionStepConfiguration(null, null, txt.replace("file://", ""), gui.getModuleType()));
+			} else {
+				config.setPath(txt.replace("file://", ""));
+				gui.update();
+			}
+			c.addTextChangeListener(this);
 		}
 	}
 }

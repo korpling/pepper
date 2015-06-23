@@ -20,9 +20,10 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * This class realizes a description of a corpus to be imported or exported. The description consists of a 
- * path addressing the location of the corpus and a format description, in which the corpus currently is or 
- * is supposed to be persist in.  
+ * This class realizes a description of a corpus to be imported or exported. The
+ * description consists of a path addressing the location of the corpus and a
+ * format description, in which the corpus currently is or is supposed to be
+ * persist in.
  * 
  * @author Florian Zipser
  */
@@ -33,64 +34,77 @@ public class CorpusDesc {
 	public CorpusDesc() {
 		super();
 	}
+
 	/** format description belonging to this corpus */
-	protected FormatDesc formatDesc= null;
+	protected FormatDesc formatDesc = null;
+
 	/**
-	 * Returns a set format description.
-	 * If no {@link FormatDesc} object was set, a new one is created.
+	 * Returns a set format description. If no {@link FormatDesc} object was
+	 * set, a new one is created.
+	 * 
 	 * @return a format description
 	 */
 	public FormatDesc getFormatDesc() {
-		if (formatDesc== null){
+		if (formatDesc == null) {
 			synchronized (this) {
-				formatDesc= new FormatDesc();
+				formatDesc = new FormatDesc();
 			}
 		}
 		return formatDesc;
 	}
+
 	/**
 	 * Sets the format description for this corpus description.
-	 * @param formatDesc format description object
+	 * 
+	 * @param formatDesc
+	 *            format description object
 	 * @return this
 	 */
 	public CorpusDesc setFormatDesc(FormatDesc formatDesc) {
 		this.formatDesc = formatDesc;
-		return(this);
+		return (this);
 	}
-	
-	/** location of corpus**/
-	protected URI corpusPath= null;
+
+	/** location of corpus **/
+	protected URI corpusPath = null;
+
 	/**
 	 * Returns the path of where to store or from where to load this corpus.
+	 * 
 	 * @return location of corpus
 	 */
 	public URI getCorpusPath() {
 		return corpusPath;
 	}
+
 	/**
 	 * Sets the path of where to store or from where to load this corpus.
-	 * @param corpusPath location of corpus
+	 * 
+	 * @param corpusPath
+	 *            location of corpus
 	 * @param this object
 	 */
 	public CorpusDesc setCorpusPath(URI corpusPath) {
 		this.corpusPath = corpusPath;
-		return(this);
+		return (this);
 	}
+
 	/**
-	 * Returns a string representation of this object. 
-	 * <strong>Note: This representation cannot be used for serialization/deserialization purposes.</strong>
+	 * Returns a string representation of this object. <strong>Note: This
+	 * representation cannot be used for serialization/deserialization
+	 * purposes.</strong>
 	 */
 	@Override
-	public String toString(){
-		StringBuilder str= new StringBuilder();
+	public String toString() {
+		StringBuilder str = new StringBuilder();
 		str.append(getCorpusPath());
-		if (getFormatDesc()!= null){
+		if (getFormatDesc() != null) {
 			str.append("(");
 			str.append(getFormatDesc().getFormatName());
 			str.append(", ");
 			str.append(getFormatDesc().getFormatVersion());
 			str.append(")");
 		}
-		return(str.toString());
+		return (str.toString());
 	}
 }
