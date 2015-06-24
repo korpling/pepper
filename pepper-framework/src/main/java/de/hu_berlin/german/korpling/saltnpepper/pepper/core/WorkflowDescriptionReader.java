@@ -36,7 +36,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
  *
  */
 public class WorkflowDescriptionReader extends DefaultHandler2 {
-	public static final String TAG_PEPEPR_JOB="pepper-job";
+	public static final String TAG_PEPPER_JOB="pepper-job";
 	public static final String TAG_CUSTOMIZATION="customization";
 	public static final String TAG_PROP="property";
 	public static final String TAG_IMPORTER="importer";

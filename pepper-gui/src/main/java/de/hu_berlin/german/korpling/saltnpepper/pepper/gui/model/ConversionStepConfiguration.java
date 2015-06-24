@@ -1,10 +1,16 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
 
 import com.google.common.collect.ImmutableMap;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
 
 public class ConversionStepConfiguration implements ConversionStepDescriptor{
 	private Map<String, String> customizations;
@@ -34,9 +40,16 @@ public class ConversionStepConfiguration implements ConversionStepDescriptor{
 	}
 	
 	@Override
-	public String toXML(){
-		//TODO
-		return null;
+	public String toString(){//TODO
+//		return (moduleName==null?"undefined":moduleName)
+//				.concat(":").concat(path)
+//				.concat(":")
+//				.concat(type.toString())
+//				.concat(":")
+//				.concat(customizations==null?
+//						"null":
+//							customizations.toString());
+		return "config";
 	}
 
 	@Override

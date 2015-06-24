@@ -9,8 +9,11 @@ public interface View {
 //	public WorkflowData getData();
 //	public void reset();
 	public void setConfig(ConversionStepDescriptor config);
+	public void setConfig(int id);
 	public ConversionStepDescriptor getConfig();
 	public MODULE_TYPE getModuleType();
 	public void update();
 	public void display(boolean visible, Component... c);
+	public void add();
+	public int getSize();
 }

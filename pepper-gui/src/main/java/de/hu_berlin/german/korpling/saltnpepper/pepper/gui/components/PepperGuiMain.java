@@ -57,4 +57,19 @@ public class PepperGuiMain extends Panel implements View{
 	public void display(boolean visible, Component... c) {
 		((View)getContent()).display(visible, c);
 	}
+
+	@Override
+	public void add() {
+		((View)getContent()).add();
+	}
+
+	@Override
+	public void setConfig(int id) {
+		((View)getContent()).setConfig(id);
+	}
+
+	@Override
+	public int getSize() {
+		return ((View)getContent()).getSize();
+	}
 }

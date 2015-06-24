@@ -1174,7 +1174,7 @@ public class PepperJobImpl extends PepperJob {
 			xml.setPrettyPrint(true);
 			xml.writeStartDocument();
 				//<pepper>
-				xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPPER_JOB);
 					if (getId()!= null){
 						xml.writeAttribute(WorkflowDescriptionReader.ATT_ID, getId());
 					}

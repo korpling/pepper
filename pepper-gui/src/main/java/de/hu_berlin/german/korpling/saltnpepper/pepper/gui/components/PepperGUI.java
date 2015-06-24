@@ -1,10 +1,11 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
@@ -19,13 +20,14 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	private Button btnNewWorkflow;
 	private Button btnLoadWorkflow;
 	private Button btnAbout;
+	private Button btnAdd;
 	private Button btnImporters;
 	private Button btnExporters;
 	private Button btnManipulators;
 	private Button btnResults;
 	private PepperGuiMain main;
 	
-	private Label lblDebug;
+	private HorizontalLayout configList;	
 		
 	public PepperGUI(PepperGUIController controller){
 		super();
@@ -39,6 +41,9 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnExporters.setId(ID_BUTTON_EXPORTERS);
 		btnManipulators.setId(ID_BUTTON_MANIPULATORS);
 		btnResults.setId(ID_BUTTON_RESULTS);
+		btnAdd.setId(ID_BUTTON_ADD);
+		
+		btnAdd.setIcon(FontAwesome.PLUS);
 		
 		btnNewWorkflow.addClickListener(controller);		
 		btnLoadWorkflow.addClickListener(controller);
@@ -47,6 +52,12 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnExporters.addClickListener(controller);
 		btnManipulators.addClickListener(controller);
 		btnResults.addClickListener(controller);
+		btnAdd.addClickListener(controller);
+		
+		configList.setImmediate(true);
+		configList.setDefaultComponentAlignment(Alignment.TOP_LEFT);
+		
+		setErrorHandler(controller);
 	}
 	
 	@Override
@@ -57,6 +68,11 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	
 	public void setView(VIEW_NAME view){
 		main.setView(view);
+		btnAdd.setEnabled(!VIEW_NAME.RESULTS.equals(view));
+		configList.removeAllComponents();
+		for (int i=1; i<getSize()+1; i++){			
+			addButton(i);
+		}
 	}
 	
 	public MODULE_TYPE getModuleType(){
@@ -73,7 +89,7 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	
 	//FIXME remove on release
 	public void debugOut(String message){
-		lblDebug.setCaption(message);
+		((PepperGUIController)getUI()).debugOut(message);
 	}
 
 	@Override
@@ -84,5 +100,30 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	@Override
 	public void display(boolean visible, Component... c) {
 		main.display(visible, c);
+	}
+
+	@Override
+	public void add() {
+		if (main.getContent()!=null){						
+			main.add();
+			addButton(getSize());
+		}
+	}
+	
+	private void addButton(int id){
+		Button b = new Button(Integer.toString(id));
+		b.setId(CONFIG_BUTTON_ID_PREFIX.concat(Integer.toString(id)));		
+		configList.addComponent(b);
+		b.addClickListener((PepperGUIController)getUI());
+	}
+
+	@Override
+	public void setConfig(int id) {
+		main.setConfig(id);
+	}
+
+	@Override
+	public int getSize() {
+		return main.getSize();
 	}
 }

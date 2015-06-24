@@ -5,7 +5,6 @@ import java.util.Map;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 
 public interface ConversionStepDescriptor {
-	public String toXML();
 	public String getPath();
 	public void setPath(String path);
 	public String getModuleName();

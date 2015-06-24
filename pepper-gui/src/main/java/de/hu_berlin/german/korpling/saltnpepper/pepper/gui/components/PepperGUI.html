@@ -2,17 +2,15 @@
 	<meta name="package-mapping" content="pg:de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components"/>
 </head>
 <body>
-	<v-vertical-layout width="900" height="600" _id="gui">
-	<v-label _id="lblDebug"/>
+	<v-vertical-layout width="900" height="680" _id="gui">
 		<v-horizontal-layout _id="header" width="900" height="100">
 			<v-horizontal-layout _id="header-left" width="150" height="100">
 			</v-horizontal-layout>
-			<v-horizontal-layout _id="header-menu" width="600" height="100">
+			<v-absolute-layout _id="header-menu" width="750" height="100" :expand>
 				<v-button _id="btnNewWorkflow">New Workflow</v-button>
 				<v-button _id="btnLoadWorkflow">Load Workflow</v-button>
 				<v-button _id="btnAbout">About</v-button>
-			</v-horizontal-layout>
-			<v-horizontal-layout _id="header-right" width="150" height="100" :expand/>
+			</v-absolute-layout>
 		</v-horizontal-layout>
 		<v-horizontal-layout _id="body" width="900" height="500" :expand>
 			<v-vertical-layout _id="steps-menu" width="150" height="500">
@@ -23,5 +21,9 @@
 			</v-vertical-layout>
 			<pg-pepper-gui-main _id="main" width="750" height="500" :expand/>							
 		</v-horizontal-layout>
+		<v-absolute-layout width="900" height="80">
+			<v-button description="Add" :top="0" :left="150" _id="btnAdd"/>
+			<v-horizontal-layout :top="0" :left="200" _id="configList"/> 	
+		 </v-absolute-layout> 
 	</v-vertical-layout>
 </body>

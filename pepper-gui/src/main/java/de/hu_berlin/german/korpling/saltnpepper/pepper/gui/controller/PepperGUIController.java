@@ -2,11 +2,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.util.Map;
 
 import org.apache.commons.lang3.SystemUtils;
 
-import com.google.gwt.dev.util.collect.HashMap;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -24,6 +22,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload.Receiver;
@@ -43,6 +42,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserHome().getAbsolutePath();
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	private IdProvider idProvider = null;
+	private Window debugWindow = null;
 	
 	protected void init(VaadinRequest request){		
 		gui = new PepperGUI(this);
@@ -60,6 +60,20 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			w.setModal(true);		
 			pathSelectDialogueWindow = w; //TODO try to finalize the window
 		}
+		{//DEBUG
+			Window db = new Window("DEBUG");
+			db.setWidth("300");
+			db.setHeight("800");
+			TextArea ta = new TextArea();			
+			ta.setReadOnly(false);
+			db.setContent(ta);
+			ta.setSizeFull();
+			addWindow(db);
+			db.setPositionX(1000);
+			db.setPositionY(0);
+			debugWindow = db;
+		}//END OF DEBUG
+		
 		setContent(gui);
 	}
 	
@@ -110,6 +124,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		}else if (id.startsWith(PATH_PREFIX)){
 			modifyPathSelectDialogue(id.substring(1), false);
 		}
+		else if (ID_BUTTON_ADD.equals(id)){
+			gui.add();
+		}
 		else if ("test".equals(id)){//TODO remove before RELEASE
 		}
 		
@@ -117,7 +134,8 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	
 	//FIXME remove on release
 	public void debugOut(String message){
-		gui.debugOut(message);
+		TextArea ta = (TextArea)debugWindow.getContent(); 
+		ta.setValue(ta.getValue().concat(System.lineSeparator()).concat(message));
 	}
 	
 	private void modifyPathSelectDialogue(String rootPath, boolean calledByList){
@@ -133,6 +151,11 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		if (event.getThrowable() instanceof UploadException){
 			Notification.show("Please enter a path before uploading");
 		}
+		StackTraceElement[] trace = event.getThrowable().getStackTrace();
+		for (int i=0; i<trace.length; i++){
+			debugOut(trace[i].getClassName().substring(trace[i].getClassName().lastIndexOf('.')+1).concat(":").concat(trace[i].getMethodName()).concat(":").concat(Integer.toString(trace[i].getLineNumber())));
+		}
+		event.getThrowable().printStackTrace();
 	}
 
 	/**We need this method when localhost!=host*/
