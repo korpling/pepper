@@ -24,16 +24,25 @@
 				<include>${basedir}/plugins/</include>
 				<!-- copies all libraries to distributions lib folder -->
 				<include>${basedir}/lib/</include>
-				<!-- copies the start scripts sh and bat -->
-				<include>${basedir}/pepperStart.*</include>
+                <!-- copies the bat start script -->
+                <include>${basedir}/pepperStart.bat</include>
 				<!-- copies the license stuff -->
 				<include>LICENSE</include>
 				<include>NOTICE</include>
 				<!-- copies the readme file -->
 				<include>readme.txt</include>
+                <!-- end: copies the readme file -->
 			</includes>
+            <fileMode>0644</fileMode>
 		</fileSet>
-		<!-- end: copies the readme file -->
+        <fileSet>
+			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+			<includes>
+				<!-- copies the sh start script -->
+				<include>${basedir}/pepperStart.sh</include>
+			</includes>
+            <fileMode>0755</fileMode>
+		</fileSet>
 
 		<!-- start: copies property files -->
 		<fileSet>

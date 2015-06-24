@@ -534,9 +534,11 @@ public abstract class PepperUtil {
 		 *            the interval in which the status is printed
 		 */
 		public PepperJobReporter(PepperJob pepperJob, int interval) {
-			if (pepperJob == null)
+			if (pepperJob == null){
 				throw new PepperException("Cannot observe Pepper job, because it was null.");
+			}
 			this.pepperJob = pepperJob;
+			this.interval= interval;
 		}
 
 		/**

@@ -19,6 +19,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
 import java.util.concurrent.Future;
 
+import org.eclipse.emf.common.util.URI;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
@@ -65,7 +67,7 @@ public interface ModuleController {
 	 * @param job new {@link PepperJobImpl} object
 	 */
 	public void setJob_basic(PepperJobImpl job);
-
+	
 	/**
 	 * The {@link DocumentBus} object  working as input for this {@link ModuleControllerImpl}. All documents on bus
 	 * will be processed and set to {@link #outputDocumentBus}

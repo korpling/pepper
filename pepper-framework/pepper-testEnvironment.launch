@@ -15,12 +15,8 @@
 <stringAttribute key="featurePluginResolution" value="workspace"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<<<<<<< .mine
-<mapEntry key="PEPPER_TEST_WORKFLOW_FILE" value="/home/florian/Test/Druskat/paula2relANNIS.pepperParams"/>
-=======
 <mapEntry key="PEPPER_TEST" value="d:\projects_work\SaltNPepper\PEPPER_TEST\"/>
 <mapEntry key="PEPPER_TEST_WORKFLOW_FILE" value="d:\Test\tigerProblem\tiger2EXMARaLDA.pepperparams"/>
->>>>>>> .r8615
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
@@ -238,11 +234,7 @@
 <setEntry value="org.sonatype.tycho.m2e.feature:default"/>
 </setAttribute>
 <booleanAttribute key="show_selected_only" value="false"/>
-<<<<<<< .mine
-<stringAttribute key="target_bundles" value="com.google.guava*14.0.1@default:default,com.ibm.icu@default:default,javax.inject@default:default,javax.servlet@default:default,javax.xml@default:default,org.apache.commons.lang@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.apache.log4j@1:default,org.eclipse.ant.core@default:default,org.eclipse.compare.core@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.filesystem.linux.x86_64@default:false,org.eclipse.core.filesystem@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.resources@default:default,org.eclipse.core.runtime.compatibility.auth@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,org.eclipse.core.runtime@default:true,org.eclipse.core.variables@default:default,org.eclipse.emf.cdo.ecore.retrofit@default:false,org.eclipse.emf.common@default:default,org.eclipse.emf.ecore.xmi@default:default,org.eclipse.emf.ecore@default:default,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.team.core@default:default,org.hamcrest.core@default:default,org.junit@default:default,org.slf4j.api*1.6.4.v20120130-2120@default:default,org.slf4j.api*1.7.2.v20121108-1250@default:default"/>
-=======
 <stringAttribute key="target_bundles" value="com.google.guava*14.0.1@default:default,javax.servlet@default:default,org.apache.commons.lang@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.apache.log4j@1:default,org.eclipse.ant.core@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.filesystem@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.resources@default:default,org.eclipse.core.runtime.compatibility.auth@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,org.eclipse.core.runtime@default:true,org.eclipse.core.variables@default:default,org.eclipse.emf.common@default:default,org.eclipse.emf.ecore.xmi@default:default,org.eclipse.emf.ecore@default:default,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.team.core@default:default,org.hamcrest.core@default:default,org.junit@default:default,org.slf4j.api*1.6.4.v20120130-2120@default:default,org.slf4j.api*1.7.2.v20121108-1250@default:default"/>
->>>>>>> .r8615
 <booleanAttribute key="tracing" value="true"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>

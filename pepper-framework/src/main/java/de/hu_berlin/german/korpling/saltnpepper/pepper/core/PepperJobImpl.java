@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
@@ -69,7 +71,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentControlle
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
@@ -773,7 +774,7 @@ public class PepperJobImpl extends PepperJob {
 					distance = globalId.length();
 				}
 			}
-			// distance is distance plus 4??? plus length of string sleep
+			// distance is distance plus 4??? plus length of string 'sleep'
 			distance = distance + 4 + sleep.length() + DOCUMENT_STATUS.IN_PROGRESS.toString().length();
 			StringBuilder docInfo = null;
 			for (DocumentController docController : getDocumentControllers()) {
@@ -797,10 +798,13 @@ public class PepperJobImpl extends PepperJob {
 				retVal.append(new DecimalFormat("###.##").format(progressOverAll / numOfDocuments * 100) + "%");
 			}
 			retVal.append("\n");
-			retVal.append(detailedStr.toString());
+			retVal.append("processing time:\t");
+			retVal.append(DurationFormatUtils.formatDurationHMS(getProcessingTime()));
+			retVal.append("\n");
+			if (getConfiguration().getDetaialedStatReport()){
+				retVal.append(detailedStr.toString());
+			}
 		}
-
-		
 		retVal.append("-------------------------------------------------------------------------");
 		retVal.append("\n");
 		return (retVal.toString());
@@ -813,19 +817,34 @@ public class PepperJobImpl extends PepperJob {
 	 * Checks for each {@link PepperModule} in all steps, if it is ready to
 	 * start, via calling {@link PepperModule#isReadyToStart()}.
 	 * 
-	 * @return false, if one of the {@link PepperModule} objects returned false.
+	 * @return a list of steps whose modules are not ready to start
 	 */
-	protected synchronized Boolean checkReadyToStart() {
-		Boolean retVal = true;
+	protected synchronized Collection<Pair<Step, Collection<String>>> checkReadyToStart() {
+		ArrayList<Pair<Step, Collection<String>>> retVal = new ArrayList<>();
 		for (Step step : getAllSteps()) {
 			if (!step.getModuleController().getPepperModule().isReadyToStart()) {
-				retVal = false;
+				Pair<Step, Collection<String>> stepReason= new ImmutablePair<Step, Collection<String>>(step, step.getModuleController().getPepperModule().getStartProblems());
+				retVal.add(stepReason);
 				logger.error("Cannot run pepper job '" + getId() + "', because one of the involved modules '" + step.getModuleController().getPepperModule().getFingerprint() + "' is not ready to run.");
 			}
 		}
 		return (retVal);
 	}
 
+	/** Stores the time when this job was started **/
+	private Long startTime= 0l;
+	/** Returns the time when this job was started **/
+	private Long getStartTime(){
+		return startTime;
+	}
+	/**
+	 * Returns the amount of time the job already took.
+	 * @return time in milli seconds
+	 */
+	public Long getProcessingTime(){
+		return System.currentTimeMillis()- startTime;
+	}
+	
 	/**
 	 * Specifies if this job currently runs a conversion. If this is the case,
 	 * some other operations, like adding {@link Step}s cannot be done
@@ -851,13 +870,23 @@ public class PepperJobImpl extends PepperJob {
 		}
 		inProgress.lock();
 		try {
+			startTime= System.currentTimeMillis();
 			status = JOB_STATUS.IN_PROGRESS;
 			if (!isWired) {
 				wire();
 			}
 			if (!isReadyToStart) {
-				if (!checkReadyToStart()) {
-					throw new PepperException("Cannot run Pepper job '" + getId() + "', because one of the involved job is not ready to run.");
+				Collection<Pair<Step, Collection<String>>> notReadyModules= checkReadyToStart();
+				if (notReadyModules.size() != 0) {
+					StringBuilder str= new StringBuilder();
+					for (Pair<Step, Collection<String>> problems: notReadyModules){
+						str.append("[");
+						str.append(problems.getLeft());
+						str.append(": ");
+						str.append(problems.getRight());
+						str.append("], ");
+					}
+					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '"+str.toString()+"'. ");
 				}
 			}
 			if (!isImportedCorpusStructure){
@@ -1230,7 +1259,9 @@ public class PepperJobImpl extends PepperJob {
 	public void load(URI uri) {
 		if (uri.isFile()) {
 			File wdFile = new File(uri.toFileString());
-
+			//set folder containing workflow description as base dir
+			setBaseDir(uri.trimSegments(1));
+			
 			SAXParser parser;
 			XMLReader xmlReader;
 			SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -1243,9 +1274,9 @@ public class PepperJobImpl extends PepperJob {
 				xmlReader = parser.getXMLReader();
 				xmlReader.setContentHandler(contentHandler);
 			} catch (ParserConfigurationException e) {
-				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "'.", e);
+				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e.getMessage()+". ", e);
 			} catch (Exception e) {
-				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "'.", e);
+				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e.getMessage()+". ", e);
 			}
 			try {
 				InputStream inputStream = new FileInputStream(wdFile);
@@ -1260,13 +1291,14 @@ public class PepperJobImpl extends PepperJob {
 					xmlReader.setContentHandler(contentHandler);
 					xmlReader.parse(wdFile.getAbsolutePath());
 				} catch (Exception e1) {
-					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "'.", e1);
+					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e1.getMessage()+". ", e1);
 				}
 			} catch (Exception e) {
-				if (e instanceof PepperModuleException)
+				if (e instanceof PepperModuleException){
 					throw (PepperModuleException) e;
-				else
-					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception. ", e);
+				}else{
+					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception: "+e.getMessage()+". ", e);
+				}
 			}
 		} else{
 			throw new UnsupportedOperationException("Currently Pepper can only load workflow description from local files.");

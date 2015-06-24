@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 	<artifactId>pepper</artifactId>
-	<version>2.1.0</version>
+	<version>2.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -64,8 +64,7 @@
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
 
 		<!-- versions of dependencies -->
-		<!-- <salt.version>2.0.0</salt.version>-->
-		<salt.version>2.1.0</salt.version>
+		<salt.version>2.1.1-SNAPSHOT</salt.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.11</junit.version>
@@ -74,9 +73,10 @@
 		<org.eclipse.osgi.version>3.9.1-v20130814-1242</org.eclipse.osgi.version>
 		<carrot-osgi-anno-scr-core.version>2.0.2</carrot-osgi-anno-scr-core.version>
 		<carrot-osgi-anno-scr-make.version>2.0.2</carrot-osgi-anno-scr-make.version>
-		<org.codehaus.janino.version>2.7.6</org.codehaus.janino.version>
+		<org.codehaus.janino.version>2.7.8</org.codehaus.janino.version>
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
 		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
+		<commons.io.version>2.4</commons.io.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version> -->
@@ -133,11 +133,18 @@
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 			<version>${org.osgi.core.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 			<version>${org.osgi.compendium.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
 		</dependency>
 		<!-- start: OSGi declaractive services -->
 		<dependency>
@@ -149,11 +156,13 @@
 			<groupId>com.carrotgarden.osgi</groupId>
 			<artifactId>carrot-osgi-anno-scr-core</artifactId>
 			<version>${carrot-osgi-anno-scr-core.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.carrotgarden.osgi</groupId>
 			<artifactId>carrot-osgi-anno-scr-make</artifactId>
 			<version>${carrot-osgi-anno-scr-make.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- end: OSGi declaractive services -->
 	</dependencies>
@@ -341,6 +350,21 @@
 				</configuration>
 			</plugin>
 			<!-- end: creates a NOTICE file use mvn notice:generate -->
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+            
 		</plugins>
 		<finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
 	</build>

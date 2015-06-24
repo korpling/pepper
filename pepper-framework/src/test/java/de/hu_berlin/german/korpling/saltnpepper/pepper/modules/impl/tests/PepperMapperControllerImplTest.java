@@ -17,22 +17,16 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
-import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
 
 public class PepperMapperControllerImplTest {
 
@@ -54,25 +48,12 @@ public class PepperMapperControllerImplTest {
 	}
 
 	@Test
-	public void test_PropAddSLayer() {
-		SDocument sDoc= SaltFactory.eINSTANCE.createSDocument();
-		SampleGenerator.createSDocumentStructure(sDoc);
-		int layersBefore = sDoc.getSDocumentGraph().getSLayers().size();
-		getFixture().getPepperMapper().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
-		sDoc.setSElementId(SaltFactory.eINSTANCE.createSElementId());
-		getFixture().after(sDoc.getSElementId());
-		
-		assertEquals(layersBefore+2, sDoc.getSDocumentGraph().getSLayers().size());
-		SLayer layer1= sDoc.getSDocumentGraph().getSLayers().get(layersBefore);
-		SLayer layer2= sDoc.getSDocumentGraph().getSLayers().get(layersBefore+1);
-		for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
-			assertTrue(sNode.getSLayers().contains(layer1));
-			assertTrue(sNode.getSLayers().contains(layer2));
-		}
-		for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
-			assertTrue(sRel.getSLayers().contains(layer1));
-			assertTrue(sRel.getSLayers().contains(layer2));
+	public void testSetSElementId(){
+		try{
+			getFixture().setSElementId(null);
+			fail();
+		}catch(PepperModuleException e){
+			// do nothing
 		}
 	}
-
 }

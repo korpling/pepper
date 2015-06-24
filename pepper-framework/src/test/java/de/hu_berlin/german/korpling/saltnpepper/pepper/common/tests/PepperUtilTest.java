@@ -28,6 +28,11 @@ import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 
+/**
+ * This class is a test class to tes {@link PepperUtil}.
+ * @author florian
+ *
+ */
 public class PepperUtilTest {
 
 	@Before

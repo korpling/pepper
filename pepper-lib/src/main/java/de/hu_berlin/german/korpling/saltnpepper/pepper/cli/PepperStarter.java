@@ -17,6 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
+import ch.qos.logback.classic.LoggerContext;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -43,8 +45,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,6 +143,8 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
+		PRINT_DEPS("dependencies", "deps", "Bundle id or GROUP_ID::ARTIFACT_ID::VERSION::MAVEN_REPOSITORY_URL or plugin names split by space; parameter all prints dependencies for all plugins", "displays all dependencies of the specified component"),
+		//
 		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
 		//
 		LIST_ALL("list", "l", null, "A table with information about all available Pepper modules."),
@@ -153,7 +159,7 @@ public class PepperStarter {
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
-		CONVERT("convert", "c", "workflow file", "Loads the passed 'workflow-file' and starts the conversion."),
+		CONVERT("convert", "c", "workflow file", "If no workflow file is passed, Pepper opens a conversion wizzard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
 		//
 		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
@@ -252,7 +258,7 @@ public class PepperStarter {
 			if (isDebug) {
 				e.printStackTrace();
 			}
-			retVal.append("Cannot not display any Pepper module. Calling " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
+			retVal.append("Cannot display any Pepper module. Call " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
 		number2module= new HashMap<Integer, PepperModuleDesc>(moduleDescs.size());
@@ -278,7 +284,7 @@ public class PepperStarter {
 			if (isDebug) {
 				e.printStackTrace();
 			}
-			retVal.append("Cannot not display any Pepper module.");
+			retVal.append("Cannot display any Pepper module.");
 			return (retVal.toString());
 		}
 		Integer numOfModule = null;
@@ -324,7 +330,8 @@ public class PepperStarter {
 			map[1][0] = "version:";
 			map[1][1] = moduleDesc.getVersion();
 			map[2][0] = "supplier:";
-			map[2][1] = moduleDesc.getSupplierContact().toString();
+			map[2][1] = moduleDesc.getSupplierContact() == null ? 
+				"" : moduleDesc.getSupplierContact().toString();
 			map[3][0] = "description:";
 			map[3][1] = moduleDesc.getDesc();
 
@@ -476,10 +483,10 @@ public class PepperStarter {
 			try {
 				pepperJob.convert();
 				timestamp = System.currentTimeMillis() - timestamp;
-				output.println("conversion ended successfully, required time: " + (timestamp / 1000) + " s");
+				output.println("conversion ended successfully, required time: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
 			} catch (Exception e) {
 				timestamp = System.currentTimeMillis() - timestamp;
-				output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + (timestamp / 1000) + " s");
+				output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
 				output.println(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
 				output.println("full stack trace:");
 				e.printStackTrace(output);
@@ -795,7 +802,7 @@ public class PepperStarter {
 
 		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
 			logger.error("Could not read module table.");
-			logger.trace(" ", e);// TODO okay?
+			logger.trace(" ", e);
 			return false;
 		}
 		return true;
@@ -977,6 +984,8 @@ public class PepperStarter {
 					output.println(debug());
 				} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
 					output.println(update(params));
+				} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
+					output.print(printDependencies(params));
 				} else {
 					output.println("Type 'help' for help.");
 				}
@@ -985,10 +994,69 @@ public class PepperStarter {
 				if (!isDebug) {
 					output.println("For more details enter '" + COMMAND.DEBUG.getName() + "' and redo last action. ");
 				} else {
-					logger.error(" ", e.getMessage());
+					String msg= e.getMessage();
+					if (	(msg!= null)&&
+							(!msg.isEmpty())){
+						logger.error(" ", e.getMessage());
+					}else{
+						e.printStackTrace();
+					}
 				}
 			}
 		}
+	}
+	
+	/** This method reads the dependency command's parameters, calls pepper to
+	 * invoke the dependency collection and returns the results. 
+	 * @param params -- command line parameters 
+	 * @return dependency tree print */
+	private String printDependencies(List<String> params) {		
+		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();	
+		Map<String, Pair<String, String>> moduleTable = null;
+		try {
+			moduleTable = getModuleTable();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			logger.error("Could not parse module table.");
+			return "No operation performed.";
+		}
+		
+		StringBuilder retVal = new StringBuilder();
+		String groupId = null;
+		String version = null;
+		for (String param : params) {
+			if ("all".equalsIgnoreCase(param)){
+				retVal.delete(0, retVal.length());								
+				for (String module : moduleTable.keySet()){
+					groupId = moduleTable.get(module).getLeft();					
+					Bundle bundle = connector.getBundle(groupId, module, null);
+					version = bundle==null? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+					if (version==null) {
+						logger.info(module.concat(" not installed. Collecting dependencies for newest version."));
+					}
+					retVal.append(connector.printDependencies(moduleTable.get(module).getLeft(), module, version, moduleTable.get(module).getRight())).append(System.lineSeparator()).append(System.lineSeparator());
+				}
+				return retVal.toString();
+			}
+			else if (param.contains("::")){
+				String[] coords = params.get(0).split("::");
+				if (coords.length==4){
+					retVal.append(connector.printDependencies(coords[0], coords[1], coords[2], coords[3])).append(System.lineSeparator());
+				}
+			}
+			else if (moduleTable.keySet().contains(param)){
+				groupId = moduleTable.get(param).getLeft();					
+				Bundle bundle = connector.getBundle(groupId, param, null);
+				version = bundle==null? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+				if (version==null) {
+					logger.info(param.concat(" not installed. Collecting dependencies for newest version."));
+				}
+				retVal.append(connector.printDependencies(moduleTable.get(param).getLeft(), param, version, moduleTable.get(param).getRight())).append(System.lineSeparator());				
+			}
+			else if (param.matches("#?[0-9]+")){
+				retVal.append(connector.printDependencies(param.replace("#", ""))).append(System.lineSeparator());
+			}
+		}
+		return retVal.toString();
 	}
 
 	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
@@ -1014,6 +1082,14 @@ public class PepperStarter {
 		PepperConnector pepper = null;
 		boolean endedWithErrors = false;
 
+		if(LoggerFactory.getILoggerFactory() instanceof LoggerContext) {
+			LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+			// in our OSGI environment package data extraction 
+			// results in strange errors when log() is called with an 
+			// exception as argument
+			lc.setPackagingDataEnabled(false);
+		}
+		
 		try {
 			PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
 			pepperProps.load();
@@ -1058,7 +1134,7 @@ public class PepperStarter {
 				for (int i = 1; i < args.length; i++) {
 					params.add(args[i]);
 				}
-				logger.info(starter.update(params));
+				logger.info(starter.update(params));			
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {

@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -230,6 +231,13 @@ public interface PepperModule{
 	void setSymbolicName(String value);
 	
 	/**
+	 * If {@link #isReadyToStart()} has returned false, this method returns a list of reasons
+	 * why this module is not ready to start.  
+	 * @return a list describing the reasons, or an empty list if there were no problems
+	 */
+	public Collection<String> getStartProblems();
+	
+	/**
 	 * This method is called by the pepper framework after initializing this object and directly before start processing. 
 	 * Initializing means setting properties {@link PepperModuleProperties}, setting temporary files, resources etc. .
 	 * returns false or throws an exception in case of {@link PepperModule} instance is not ready for any reason
@@ -242,7 +250,8 @@ public interface PepperModule{
 	 *  <li>if the {@link MODULE_TYPE} is not null</li>
 	 *  <li>if the name is not null</li>
 	 * </ul>
-	 * When overriding this method, please call super.isReadyToStart() first.
+	 * When overriding this method, please call super.isReadyToStart() first and in case a
+	 * problem occured add it to the list {@link #getStartProblems()}.
 	 * @return false, {@link PepperModule} instance is not ready for any reason, true, else.
 	 */
 	public boolean isReadyToStart() throws PepperModuleNotReadyException;
@@ -348,4 +357,38 @@ public interface PepperModule{
 	 * @param controller The object which is done with its job
 	 */
 	public void done(PepperMapperController controller);
+	
+	/**
+	 * Invokes processings, before the mapping was started. This could be
+	 * helpful, for instance to make some preparations for the mapping. To
+	 * trigger this pre processing for a specific Pepper module a set of
+	 * customization properties is available. Customization properties
+	 * triggering a pre processing starts with
+	 * {@value PepperModuleProperties#PREFIX_PEPPER_BEFORE}. This method is
+	 * called by the method {@link #map()}, before
+	 * {@link PepperMapper#mapSDocument()} was called.
+	 * 
+	 * @param sElementId
+	 *            id of either {@link SDocument} or {@link SCorpus} object to be
+	 *            prepared
+	 * @throws PepperModuleException
+	 */
+	public void before(SElementId sElementId) throws PepperModuleException;
+
+	/**
+	 * Invokes processings, after the mapping is done. This could be helpful,
+	 * for instance to make some processing after the mapping e.g. adding all
+	 * created nodes and relations to a layer. To trigger this post processing
+	 * for a specific Pepper module a set of customization properties is
+	 * available. Customization properties triggering a post processing starts
+	 * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
+	 * called by the method {@link #map()}, after
+	 * {@link PepperMapper#mapSDocument()} was called.
+	 * 
+	 * @param sElementId
+	 *            id of either {@link SDocument} or {@link SCorpus} object to be
+	 *            post processed
+	 * @throws PepperModuleException
+	 */
+	public void after(SElementId sElementId) throws PepperModuleException;
 }

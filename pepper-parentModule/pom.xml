@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 		<artifactId>pepper</artifactId>
-		<version>2.1.0</version>
+		<version>2.1.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -33,7 +33,7 @@
 	</distributionManagement>
 	<properties>
 		<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
-		<pepper.version>2.1.0</pepper.version>
+		<pepper.version>2.1.1-SNAPSHOT</pepper.version>
 	</properties>
 	<dependencies>
 		<!-- Lists all dependencies comming from parent and sets their scope to 
@@ -83,13 +83,13 @@
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 			<version>${org.osgi.core.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 			<version>${org.osgi.compendium.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<!-- end: OSGI service-component -->
 		<!-- start: OSGi declaractive services -->
@@ -97,13 +97,13 @@
 			<groupId>com.carrotgarden.osgi</groupId>
 			<artifactId>carrot-osgi-anno-scr-core</artifactId>
 			<version>${carrot-osgi-anno-scr-core.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.carrotgarden.osgi</groupId>
 			<artifactId>carrot-osgi-anno-scr-make</artifactId>
 			<version>${carrot-osgi-anno-scr-make.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<!-- end: OSGi declaractive services -->
 	</dependencies>

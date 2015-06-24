@@ -129,31 +129,31 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * {@inheritDoc PepperImporter#readFirstLines(URI, int)}
 	 */
 	@Override
-	public String readFirstLines(final URI corpusPath, final int lines){
-		String retVal= null;
-		if (corpusPath!= null){
-			File importPath= new File(corpusPath.toFileString());
-			try(BufferedReader br = new BufferedReader(new FileReader(importPath))) {
-		        StringBuilder sb = new StringBuilder();
-		        String line = br.readLine();
-		        int i= 0;
-		        while (line != null) {
-		        	sb.append(line);
-		            sb.append(System.lineSeparator());
-		            line = br.readLine();
-		            i++;
-		            if (i>= lines){
-		            	break;
-		            }
-		        }
-		        retVal = sb.toString();
-		    } catch (IOException e) {
-				return(null);
+	public String readFirstLines(final URI corpusPath, final int lines) {
+		String retVal = null;
+		if (corpusPath != null) {
+			File importPath = new File(corpusPath.toFileString());
+			try (BufferedReader br = new BufferedReader(new FileReader(importPath))) {
+				StringBuilder sb = new StringBuilder();
+				String line = br.readLine();
+				int i = 0;
+				while (line != null) {
+					sb.append(line);
+					sb.append(System.lineSeparator());
+					line = br.readLine();
+					i++;
+					if (i >= lines) {
+						break;
+					}
+				}
+				retVal = sb.toString();
+			} catch (IOException e) {
+				return (null);
 			}
 		}
-		return(retVal);
+		return (retVal);
 	}
-	
+
 	/**
 	 * Stores {@link SElementId} objects corresponding to either a
 	 * {@link SDocument} or a {@link SCorpus} object, which has been created
@@ -216,27 +216,27 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		if ((this.getCorpusDesc().getCorpusPath().toFileString().endsWith("/")) || (this.getCorpusDesc().getCorpusPath().toFileString().endsWith("\\"))) {
 			this.getCorpusDesc().setCorpusPath(this.getCorpusDesc().getCorpusPath().trimSegments(1));
 		}
-		Boolean containsDocuments= importCorpusStructureRec(this.getCorpusDesc().getCorpusPath(), null);
-		if (logger.isDebugEnabled()){
-			if (getSElementId2ResourceTable().size()> 0){
-				StringBuilder str= new StringBuilder();
+		Boolean containsDocuments = importCorpusStructureRec(this.getCorpusDesc().getCorpusPath(), null);
+		if (logger.isDebugEnabled()) {
+			if (getSElementId2ResourceTable().size() > 0) {
+				StringBuilder str = new StringBuilder();
 				str.append("[");
 				str.append(getName());
 				str.append("]");
 				str.append(" import corpora and documents: \n");
-				for (URI uri: getSElementId2ResourceTable().values()){
+				for (URI uri : getSElementId2ResourceTable().values()) {
 					str.append("\t");
 					str.append(uri);
 					str.append("\n");
-				}	
+				}
 				logger.debug(str.toString());
 			}
 		}
-		if (getSElementId2ResourceTable().size()== 0){
-			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName() ,this.getCorpusDesc().getCorpusPath());
+		if (getSElementId2ResourceTable().size() == 0) {
+			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName(), this.getCorpusDesc().getCorpusPath());
 		}
-		if (!containsDocuments){
-			logger.warn("[{}] No documents fount to import in '{}'. ", getName() ,this.getCorpusDesc().getCorpusPath());
+		if (!containsDocuments) {
+			logger.warn("[{}] No documents fount to import in '{}'. ", getName(), this.getCorpusDesc().getCorpusPath());
 		}
 	}
 
@@ -258,8 +258,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @throws IOException
 	 */
 	protected Boolean importCorpusStructureRec(URI currURI, SCorpus parent) {
-		Boolean retVal= false;
-		
+		Boolean retVal = false;
+
 		// set name for corpus graph
 		if ((this.getSCorpusGraph().getSName() == null) || (this.getSCorpusGraph().getSName().isEmpty())) {
 			this.getSCorpusGraph().setSName(currURI.lastSegment());
@@ -278,9 +278,10 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					if (currFile.isDirectory()) {
 						for (File file : currFile.listFiles()) {
 							try {
-								//if retval is true or returned value is true set retVal to true
-								Boolean containsDocuments= importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
-								retVal=(retVal || containsDocuments);
+								// if retval is true or returned value is true
+								// set retVal to true
+								Boolean containsDocuments = importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
+								retVal = (retVal || containsDocuments);
 							} catch (IOException e) {
 								throw new PepperModuleException("Cannot import corpus structure, because cannot create a URI out of file '" + file + "'. ", e);
 							}
@@ -288,7 +289,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					}
 				}// resource is a SCorpus
 				else if (STYPE_NAME.SDOCUMENT.equals(type)) {
-					retVal= true;
+					retVal = true;
 					// resource is a SDocument
 					if (parent == null) {
 						// if there is no corpus given, create one with name of
@@ -310,7 +311,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 				}// resource is a SDocument
 			}// do not ignore resource
 		}// if file is not part of ignore list
-		return(retVal);
+		return (retVal);
 	}
 
 	/**

@@ -18,7 +18,7 @@
                 <listitem>
                     <para>Download Eclipse <footnote>
                             <para>Eclipse is available in several flavors e.g. for web developers,
-                                mobile developers, C++ developers etc.. We recommend the Eclipse
+                                mobile developers, C++ developers etc. We recommend the Eclipse
                                 Modeling Tools, since you might want to create or use a model for
                                 the format you want to support. In this documentation, we used
                                 Eclipse kepler, version 4.3.1 (see: <link
@@ -196,7 +196,8 @@
                             GraphViz tool (see: <link xlink:href="http://www.graphviz.org/"
                                 >http://www.graphviz.org/</link>) into a svg, png or another
                             graphical format.</para>
-                    </footnote>. </para>
+                    </footnote>
+                </para>
                 <para>Replace the entry with an absolute path to that file.</para>
             </listitem>
             <listitem>
@@ -373,8 +374,8 @@ public class MyImporter extends PepperImporterImpl
                 <para>Sometimes it is necessary to include libraries, which are not accessible via a
                     Maven repository and therefore can not be resolved by Maven. In that case we
                     recommend, to create a 'lib' folder in the project directory and to copy all the
-                    libraries you need into it. Unfortunately, you have register them twice, first
-                    for Maven and second for OSGi.</para>
+                    libraries you need into it. Unfortunately, you have to register them twice,
+                    first for Maven and second for OSGi.</para>
                 <para>To register such a library to Maven, you need to install them to your local
                     Maven repository. You can do that with:
                     <programlisting>

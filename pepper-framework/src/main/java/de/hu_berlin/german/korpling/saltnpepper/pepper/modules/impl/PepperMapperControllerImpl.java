@@ -19,6 +19,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.NotInitializedException;
@@ -29,15 +32,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.MappingSubject;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 
 /**
  * The class {@link PepperMapperControllerImpl} is a communicator class between
@@ -54,6 +52,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
 
+	protected Logger logger = LoggerFactory.getLogger("Pepper");
+	
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
 	 * the thread.
@@ -76,8 +76,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperMapper(PepperMapper pepperMapper) {
 		this.pepperMapper = pepperMapper;
-		if (this.pepperMapper != null)
+		if (this.pepperMapper != null){
 			mappingSubjects = pepperMapper.getMappingSubjects();
+		}
 	}
 
 	/**
@@ -137,9 +138,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void setSElementId(SElementId sElementId) {
-		if (sElementId == null)
+		if (sElementId == null){
 			throw new PepperModuleException(getPepperMapper(), "Cannot set an empty sElementId.");
-
+		}
 		MappingSubject subj = null;
 		if (getMappingSubjects().size() < 1) {
 			subj = new MappingSubject();
@@ -178,6 +179,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void run() {
+		//if an exception is thrown, it will be stored to do some clean up first and throw it it afterwards.
 		PepperException origException= null;
 		try {
 			this.map();
@@ -228,17 +230,19 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			progress = 0d;
 			mappingResult = this.getPepperMapper().mapSCorpus();
 			progress = 1d;
-		} else if (this.getPepperMapper().getSDocument() != null){
+		} else if (this.getPepperMapper().getSDocument() != null) {
+			//real document mapping
 			//preprocessing
 			for (MappingSubject subj: getMappingSubjects()){
-				before(subj.getSElementId());
+				getPepperModule().before(subj.getSElementId());
 			}
 			//real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
 			//postprocessing
 			for (MappingSubject subj: getMappingSubjects()){
-				after(subj.getSElementId());
+				getPepperModule().after(subj.getSElementId());
 			}
+
 		}else{
 			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		}
@@ -249,76 +253,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		}
 	}
 
-	/** {@inheritDoc PepperModule#before(SElementId)} */
-	@Override
-	public void before(SElementId sElementId) throws PepperModuleException {
-		if (getPepperMapper().getProperties()!= null){
-			if (	(sElementId!= null)&&
-					(sElementId.getSIdentifiableElement() != null)){
-				if (sElementId.getSIdentifiableElement() instanceof SDocument){
-					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
-					
-					//add layers
-					String layers= (String)getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
-					addSLayers(sDoc, layers);
-				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
-					
-				}
-			}
-		}
-	}
-	
-	/** {@inheritDoc PepperModule#after(SElementId)} */
-	@Override
-	public void after(SElementId sElementId) throws PepperModuleException {
-		if (getPepperMapper().getProperties()!= null){
-			if (	(sElementId!= null)&&
-					(sElementId.getSIdentifiableElement() != null)){
-				if (sElementId.getSIdentifiableElement() instanceof SDocument){
-					SDocument sDoc= (SDocument) sElementId.getSIdentifiableElement();
-					//add layers
-					String layers= (String)getPepperMapper().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
-					addSLayers(sDoc, layers);
-					
-				}else if (sElementId.getSIdentifiableElement() instanceof SCorpus){
-					
-				}
-			}
-		}
-	}
-	
-	private void addSLayers(SDocument sDoc, String layers){
-		if (	(layers!= null)&&
-				(!layers.isEmpty())){
-			String[] layerArray= layers.split(";");
-			if (layerArray.length> 0){
-				for (String layer: layerArray){
-					layer= layer.trim();
-					//create SLayer and add to document-structure
-					List<SLayer> sLayers= sDoc.getSDocumentGraph().getSLayerByName(layer);
-					SLayer sLayer= null;
-					if (	(sLayers!= null)&&
-							(sLayers.size() > 0)){
-						sLayer= sLayers.get(0);	
-					}
-					if (sLayer== null){
-						sLayer= SaltFactory.eINSTANCE.createSLayer();
-						sLayer.setSName(layer);
-						sDoc.getSDocumentGraph().addSLayer(sLayer);
-					}
-					//add all nodes to new layer
-					for (SNode sNode: sDoc.getSDocumentGraph().getSNodes()){
-						sNode.getSLayers().add(sLayer);
-					}
-					//add all relations to new layer
-					for (SRelation sRel: sDoc.getSDocumentGraph().getSRelations()){
-						sRel.getSLayers().add(sLayer);
-					}
-				}
-			}
-		}
-	}
-	
+		
 	/** {@link PepperModule} containing this object **/
 	protected PepperModule pepperModule = null;
 
@@ -328,6 +263,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperModule(PepperModule pepperModule) {
 		this.pepperModule = pepperModule;
+		if (this.pepperModule!= null){
+			logger= LoggerFactory.getLogger(getPepperModule().getName());
+		}
 	}
 
 	/**
