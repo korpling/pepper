@@ -5,6 +5,11 @@
 *	artifactId:		pepper												          *
 *													                              *
 ***********************************************************************************
+Version 2.1.1
+=============
+* this is a bugfix version containing fixes for the plugin mechanism and the logging, which caused LinkageExceptions becuase of a bug in the current logback implementation 
+
+
 Version 2.1.0
 =============
 * a detailed log can be found on github under: https://github.com/korpling/pepper/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Pepper+2.1+release%22+
