@@ -27,8 +27,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -101,7 +99,9 @@ import org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy;
 import org.eclipse.aether.util.version.GenericVersionScheme;
 import org.eclipse.aether.version.InvalidVersionSpecificationException;
 import org.eclipse.aether.version.Version;
+import org.eclipse.aether.version.VersionRange;
 import org.eclipse.aether.version.VersionScheme;
+import org.eclipse.aether.version.VersionRange.Bound;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
@@ -442,12 +442,12 @@ public class MavenAccessor {
 	            	logger.warn(artifactId+": Could not perform update: pepper-parent version could not be determined.");
 	            	return false;
 	            }       
-	            Version max = isCompatiblePlugin(parentVersion);
-	            if (!ignoreFrameworkVersion && max!=null){
+	            VersionRange range = isCompatiblePlugin(parentVersion);
+	            if (!ignoreFrameworkVersion && range!=null){
         			logger.info(
         					(new StringBuilder())
         					.append("No update was performed because of a version incompatibility according to pepper-framework: ")
-        					.append(newLine).append(artifactId).append(" only supported up to ").append(max.toString()).append(", but ").append(pepperOSGiConnector.getFrameworkVersion()).append(" is installed!")
+        					.append(newLine).append(artifactId).append(" only supports ").append(range.toString()).append(", but ").append(pepperOSGiConnector.getFrameworkVersion()).append(" is installed!")
         					.append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot? " snapshot ":" ").append("iv ")
         					.append(artifactId).append("\"").toString());	            			
         			return false;
@@ -522,20 +522,22 @@ public class MavenAccessor {
         return update;
 	}
 	
-	private Version isCompatiblePlugin(String pluginFrameworkVersion){
+	private VersionRange isCompatiblePlugin(String pluginFrameworkVersion){
 		VersionScheme vScheme = new GenericVersionScheme();
 		Version frameworkVersion;
 		try {
-			frameworkVersion = vScheme.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "").replace("-SNAPSHOT", ""));		
-			Version depParentVersion = vScheme.parseVersion(pluginFrameworkVersion.replace("-SNAPSHOT", ""));
+			frameworkVersion = vScheme.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "-SNAPSHOT"));		
+			final Version depParentVersion = vScheme.parseVersion(pluginFrameworkVersion);
 			int m = 1+Integer.parseInt(depParentVersion.toString().split("\\.")[0]);
-			Version maxVersion = vScheme.parseVersion(m+".0.0");
-			if (!(depParentVersion.compareTo(frameworkVersion)<=0 && frameworkVersion.compareTo(maxVersion)<0 
-					&& !(frameworkVersion.equals(depParentVersion) && pepperOSGiConnector.getFrameworkVersion().contains("SNAPSHOT") && !pluginFrameworkVersion.contains("SNAPSHOT")))){
-				return maxVersion;
+			final Version maxVersion = vScheme.parseVersion(m+".0.0");
+			String rangeString = "[".concat(pluginFrameworkVersion).concat(",").concat(maxVersion.toString()).concat(")");
+			VersionRange range = vScheme.parseVersionRange(rangeString);
+			System.out.println(range.containsVersion(frameworkVersion));
+			if (!range.containsVersion(frameworkVersion)){
+				return range;
 			}
 		} catch (InvalidVersionSpecificationException e) {
-			logger.error("Could not compare required framework version to running framework. Update will not be performed.");			
+			logger.error("Could not compare required framework version to running framework. Trying to perform update anyway...");			
 		}
 		return null;
 	}
