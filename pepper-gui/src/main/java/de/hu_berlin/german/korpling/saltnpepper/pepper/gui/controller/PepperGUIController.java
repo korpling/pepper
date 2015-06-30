@@ -1,7 +1,9 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -32,6 +34,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PathSelect
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components.PepperGUI;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.ConversionStepDescriptor;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.model.WorkflowDescriptionWriter;
 
 @Title("Pepper converter framework")
 @Theme("valo")
@@ -121,6 +124,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 				config.setPath(pathDialogue.getSelectedPath());
 				gui.update();
 			}
+		}
+		else if (ID_BUTTON_PROGRESS.equals(id)){
+			gui.update();
 		}else if (id.startsWith(PATH_PREFIX)){
 			modifyPathSelectDialogue(id.substring(1), false);
 		}
@@ -130,6 +136,21 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if ("test".equals(id)){//TODO remove before RELEASE
 		}
 		
+	}
+	
+	private boolean writeWorkflowFile(String absolutePath){
+		OutputStream xmlOutStream = WorkflowDescriptionWriter.toXML( gui.getAllConfigurations() );
+		File out = new File(absolutePath);
+		out.getParentFile().mkdirs();
+		try {
+			PrintWriter p = new PrintWriter(out);
+			p.print(xmlOutStream.toString());
+			p.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			// TODO
+			return false;
+		}		
 	}
 	
 	//FIXME remove on release

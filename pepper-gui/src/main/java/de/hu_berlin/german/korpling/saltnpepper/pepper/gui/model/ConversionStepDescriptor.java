@@ -4,7 +4,7 @@ import java.util.Map;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 
-public interface ConversionStepDescriptor {
+public interface ConversionStepDescriptor extends Descriptor{
 	public String getPath();
 	public void setPath(String path);
 	public String getModuleName();

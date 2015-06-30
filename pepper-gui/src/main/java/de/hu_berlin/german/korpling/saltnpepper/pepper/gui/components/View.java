@@ -1,5 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
+import java.util.List;
+
 import com.vaadin.ui.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
@@ -16,4 +18,5 @@ public interface View {
 	public void display(boolean visible, Component... c);
 	public void add();
 	public int getSize();
+	public List<ConversionStepDescriptor> getAllConfigurations();
 }

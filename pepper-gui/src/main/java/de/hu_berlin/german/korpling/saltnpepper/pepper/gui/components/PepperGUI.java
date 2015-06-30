@@ -1,5 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
+import java.util.List;
+
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
@@ -125,5 +127,10 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	@Override
 	public int getSize() {
 		return main.getSize();
+	}
+
+	@Override
+	public List<ConversionStepDescriptor> getAllConfigurations() {
+		return main.getAllConfigurations();
 	}
 }

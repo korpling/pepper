@@ -13,10 +13,11 @@ public interface PepperGUIComponentDictionary {
 	public static final String ID_BUTTON_PATH_SELECT = "9";
 	public static final String ID_BUTTON_ADD = "A";	
 	public static final String ID_BUTTON_REFRESH_ROOTS = "B";
+	public static final String ID_BUTTON_PROGRESS = "C";
 	
-	public static final String ID_PATH_SELECT = "C";
-	public static final String ID_PATH_FIELD_DIALOGUE = "D";
-	public static final String ID_PATH_FIELD_MAIN = "E";
+	public static final String ID_PATH_SELECT = "D";
+	public static final String ID_PATH_FIELD_DIALOGUE = "E";
+	public static final String ID_PATH_FIELD_MAIN = "F";
 	
 	public static final String PATH_PREFIX = "#";
 	public static final String CONFIG_BUTTON_ID_PREFIX = "%";

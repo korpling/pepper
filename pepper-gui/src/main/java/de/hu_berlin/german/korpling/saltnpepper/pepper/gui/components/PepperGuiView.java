@@ -2,6 +2,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Component;
@@ -112,5 +114,10 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 				pathField.addTextChangeListener((PepperGUIController)getUI());
 			}
 		}
+	}
+	
+	@Override
+	public final List<ConversionStepDescriptor> getAllConfigurations(){
+		return Collections.unmodifiableList(configurations);
 	}
 }

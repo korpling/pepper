@@ -1,4 +1,6 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.components;
+import java.util.List;
+
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 
@@ -71,5 +73,10 @@ public class PepperGuiMain extends Panel implements View{
 	@Override
 	public int getSize() {
 		return ((View)getContent()).getSize();
+	}
+
+	@Override
+	public List<ConversionStepDescriptor> getAllConfigurations() {
+		return ((View)getConfig()).getAllConfigurations();
 	}
 }
