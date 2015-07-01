@@ -532,7 +532,6 @@ public class MavenAccessor {
 			final Version maxVersion = vScheme.parseVersion(m+".0.0");
 			String rangeString = "[".concat(pluginFrameworkVersion).concat(",").concat(maxVersion.toString()).concat(")");
 			VersionRange range = vScheme.parseVersionRange(rangeString);
-			System.out.println(range.containsVersion(frameworkVersion));
 			if (!range.containsVersion(frameworkVersion)){
 				return range;
 			}
