@@ -296,10 +296,10 @@ public class PepperStarter {
 		} catch (Exception e) {
 			// do nothing
 		}
-		
-		if ((moduleDesc != null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
+		//try to read module desc by name
+		if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
 			for (PepperModuleDesc desc : moduleDescs) {
-				if (moduleName.equals(desc.getName())) {
+				if (moduleName.equalsIgnoreCase(desc.getName())) {
 					moduleDesc = desc;
 					break;
 				}
@@ -316,7 +316,7 @@ public class PepperStarter {
 				length[1] = 100;
 			}
 
-			int numOfEntries = 4;
+			int numOfEntries = 5;
 			if (moduleDesc.getProperties() != null) {
 				numOfEntries++;
 				numOfEntries++;
@@ -332,14 +332,17 @@ public class PepperStarter {
 			map[2][0] = "supplier:";
 			map[2][1] = moduleDesc.getSupplierContact() == null ? 
 				"" : moduleDesc.getSupplierContact().toString();
-			map[3][0] = "description:";
-			map[3][1] = moduleDesc.getDesc();
+			map[3][0] = "website:";
+			map[3][1] = moduleDesc.getSupplierHomepage() == null ? 
+				"" : moduleDesc.getSupplierHomepage().toString();
+			map[4][0] = "description:";
+			map[4][1] = moduleDesc.getDesc();
 
 			if (moduleDesc.getProperties() != null) {
-				map[4][0] = "--";
-				map[5][1] = "customization properties";
-				map[6][0] = "--";
-				int i = 7;
+				map[5][0] = "--";
+				map[6][1] = "customization properties";
+				map[7][0] = "--";
+				int i = 8;
 				for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
 					map[i][0] = prop.getName();
 					map[i][1] = prop.getDescription();

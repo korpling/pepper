@@ -465,7 +465,7 @@ public abstract class PepperUtil {
 			map[0][2]="module-version";
 			map[0][3]="module-type";
 			map[0][4]="formats";
-			map[0][5]="supplier-contact";
+			map[0][5]="website";
 			int i= 1;
 			for (PepperModuleDesc desc : moduleDescs) {
 				map[i][0]=new Integer(i).toString();
@@ -484,9 +484,9 @@ public abstract class PepperUtil {
 					}
 				}
 				map[i][4]= formatString;
-				URI contact= desc.getSupplierContact();
+				URI contact= desc.getSupplierHomepage();
 				if (contact!= null) {
-					map[i][5]= desc.getSupplierContact().toString();
+					map[i][5]= contact.toString();
 				}else{
 					map[i][5]= "";
 				}
