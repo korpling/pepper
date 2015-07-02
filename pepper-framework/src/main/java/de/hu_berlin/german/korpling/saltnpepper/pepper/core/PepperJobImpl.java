@@ -1139,7 +1139,7 @@ public class PepperJobImpl extends PepperJob {
 	 * {@inheritDoc PepperJob#save(URI)}
 	 */
 	@Override
-	public void save(URI uri) {
+	public URI save(URI uri) {
 		if (uri== null){
 			throw new PepperException("Cannot save Pepper job '"+getId()+"', because the passed uri is empty. ");
 		}
@@ -1217,6 +1217,7 @@ public class PepperJobImpl extends PepperJob {
 		} catch (XMLStreamException | IOException e) {
 			throw new PepperException("Cannot store Pepper job '"+getId()+"' because of a nested exception. ", e);
 		}
+		return(URI.createFileURI(file.getAbsolutePath()));
 	}
 	/** This method is just a helper method for method {@link #save(URI)} to avoid boilerplate code
 	 * @throws XMLStreamException **/

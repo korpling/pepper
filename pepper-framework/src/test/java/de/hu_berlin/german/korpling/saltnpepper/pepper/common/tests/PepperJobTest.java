@@ -77,8 +77,7 @@ public class PepperJobTest extends PepperJob{
 	}
 
 	@Override
-	public void save(URI uri) {
-		// TODO Auto-generated method stub
-		
+	public URI save(URI uri) {
+		throw new UnsupportedOperationException();
 	}
 }

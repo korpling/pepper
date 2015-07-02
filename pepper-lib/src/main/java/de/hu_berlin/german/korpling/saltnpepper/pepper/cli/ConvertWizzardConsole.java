@@ -85,15 +85,15 @@ public class ConvertWizzardConsole {
 	private static final String PROMPT = "wizzard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
 	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
-	
+	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
+
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
 
 	/** Determines if debug mode is on or off **/
@@ -247,8 +247,15 @@ public class ConvertWizzardConsole {
 					}
 					try {
 						deresolveURIs(outputFile, pepperJob);
-						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
+						URI workflowURI= pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
 						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
+						// because of the deresolving of the URI, the relative
+						// path now is incompatible with current working
+						// location, to fix this, the Pepper workflow file needs
+						// to be stored and reloaded again
+						System.out.println("Load new Job ");
+						pepperJob= getPepper().getJob(jobId);
+						pepperJob.load(workflowURI);
 					} catch (Exception e) {
 						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
 						if (isDebug) {
@@ -285,11 +292,11 @@ public class ConvertWizzardConsole {
 		}
 		for (StepDesc stepDesc : pepperJob.getStepDescs()) {
 			if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getCorpusPath() != null)) {
-				URI before= stepDesc.getCorpusDesc().getCorpusPath();
+				URI before = stepDesc.getCorpusDesc().getCorpusPath();
 				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
-				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)){
-					//creates a leading './' if URI is relative
-					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./"+stepDesc.getCorpusDesc().getCorpusPath()));
+				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)) {
+					// creates a leading './' if URI is relative
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./" + stepDesc.getCorpusDesc().getCorpusPath()));
 				}
 			}
 		}
@@ -344,17 +351,16 @@ public class ConvertWizzardConsole {
 						stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
 						String path;
 						try {
-							path= corpusPath.getCanonicalPath();
+							path = corpusPath.getCanonicalPath();
 						} catch (IOException e) {
-							path= corpusPath.getAbsolutePath();
+							path = corpusPath.getAbsolutePath();
 						}
-						if (	(corpusPath.isDirectory())&&
-								(!path.endsWith("/"))){
-							path= path + "/";
+						if ((corpusPath.isDirectory()) && (!path.endsWith("/"))) {
+							path = path + "/";
 						}
-						out.println("import corpus from: "+ path);
+						out.println("import corpus from: " + path);
 						stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
-						
+
 						if ((number2Module == null) || (name2Module == null)) {
 							number2Module = new HashMap<Integer, PepperModuleDesc>();
 							name2Module = new HashMap<String, PepperModuleDesc>();
@@ -559,14 +565,14 @@ public class ConvertWizzardConsole {
 					}
 					String path;
 					try {
-						path= corpusPath.getCanonicalPath();
+						path = corpusPath.getCanonicalPath();
 					} catch (IOException e) {
-						path= corpusPath.getAbsolutePath();
+						path = corpusPath.getAbsolutePath();
 					}
-					if (!path.endsWith("/")){
-						path= path + "/";
+					if (!path.endsWith("/")) {
+						path = path + "/";
 					}
-					out.println("export corpus to: "+ path);
+					out.println("export corpus to: " + path);
 					stepDesc = pepperJob.createStepDesc();
 					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
