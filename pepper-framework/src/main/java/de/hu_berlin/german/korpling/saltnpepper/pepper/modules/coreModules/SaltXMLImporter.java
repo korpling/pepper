@@ -54,6 +54,7 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		// setting name of module
 		super("SaltXMLImporter");
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This importer imports a Salt model from a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat("SaltXML", "1.0", null);

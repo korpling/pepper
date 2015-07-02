@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,8 @@ public class SaltValidator extends PepperManipulatorImpl {
 	public SaltValidator() {
 		super();
 		setName("SaltValidator");
+		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		this.setProperties(new SaltValidatorProperties());
 	}
 

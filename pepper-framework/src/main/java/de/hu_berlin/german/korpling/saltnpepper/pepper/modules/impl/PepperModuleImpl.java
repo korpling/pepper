@@ -164,7 +164,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			getFingerprint().setVersion(newVersion);
 		}
 	}
-
+	
 	/**
 	 * {@inheritDoc PepperModule#getModuleType()}
 	 * 
@@ -205,6 +205,16 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Override
 	public void setSupplierContact(URI supplierContact) {
 		getFingerprint().setSupplierContact(supplierContact);
+	}
+	
+	@Override
+	public URI getSupplierHomepage() {
+		return(getFingerprint().getSupplierHomepage());
+	}
+
+	@Override
+	public void setSupplierHomepage(URI hp) {
+		getFingerprint().setSupplierHomepage(hp);
 	}
 
 	/**

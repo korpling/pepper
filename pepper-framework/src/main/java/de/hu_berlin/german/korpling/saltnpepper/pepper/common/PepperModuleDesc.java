@@ -124,6 +124,22 @@ public class PepperModuleDesc {
 		this.supplierContact= supplierContact;
 	}
 	
+	protected URI hp= null;
+	/**
+	 * Sets the {@link URI} to the homepage describing the functionality of the module.
+	 * @return {@link URI} to the homepage
+	 */
+	public URI getSupplierHomepage(){
+		return(hp);
+	}
+	/**
+	 * Returns the {@link URI} to the homepage describing the functionality of the module.
+	 * @param hp {@link URI} to the homepage
+	 */
+	public void setSupplierHomepage(URI hp){
+		this.hp= hp;
+	}
+	
 	/**
 	 * a list of all formats supported by the Pepper module, this object describes
 	 */

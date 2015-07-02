@@ -55,6 +55,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	public TextImporter() {
 		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This importer imports a simple text document like .txt etc. . Even other documents can be imported as simple text. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);

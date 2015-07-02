@@ -38,6 +38,7 @@ public class DOTManipulator extends PepperManipulatorImpl {
 	public DOTManipulator() {
 		super("DOTManipulator");
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This manipulator exports a Salt model to the dot syntax. This can be used to create a graphical representation of the Salt model. ");
 		this.setProperties(new DOTManipulatorProperties());
 	}

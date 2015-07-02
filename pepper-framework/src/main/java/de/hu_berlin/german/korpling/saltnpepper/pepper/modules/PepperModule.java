@@ -120,7 +120,18 @@ public interface PepperModule{
 	 * information to contact the supplier.
 	 * @param uri contact address like eMail address or homepage address
 	 */
-	public void setSupplierContact(URI uri);
+	public void setSupplierContact(URI eMail);
+	
+	/**
+	 * Sets the {@link URI} to the homepage describing the functionality of the module.
+	 * @return {@link URI} to the homepage
+	 */
+	public URI getSupplierHomepage();
+	/**
+	 * Returns the {@link URI} to the homepage describing the functionality of the module.
+	 * @param hp {@link URI} to the homepage
+	 */
+	public void setSupplierHomepage(URI hp);
 
 	/**
 	 * Returns a {@link PepperModuleProperties} object containing properties to customize the behavior of this {@link PepperModule}.
