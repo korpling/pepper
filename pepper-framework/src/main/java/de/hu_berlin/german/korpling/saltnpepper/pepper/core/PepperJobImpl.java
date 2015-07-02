@@ -1254,6 +1254,26 @@ public class PepperJobImpl extends PepperJob {
 	}
 	
 	/**
+	 * {@inheritDoc PepperJob#clear()}
+	 */
+	@Override
+	public void clear(){
+		//remove all existing steps
+		if (stepDescs!= null){
+			stepDescs.clear();
+		}
+		if (importSteps!= null){
+			importSteps.clear();
+		}
+		if (manipulationSteps!= null){
+			manipulationSteps.clear();
+		}
+		if (exportSteps!= null){
+			exportSteps.clear();
+		}
+	}
+	
+	/**
 	 * {@inheritDoc PepperJob#load(URI)}
 	 */
 	@Override
@@ -1270,6 +1290,10 @@ public class PepperJobImpl extends PepperJob {
 			WorkflowDescriptionReader contentHandler = new WorkflowDescriptionReader();
 			contentHandler.setPepperJob(this);
 			contentHandler.setLocation(uri);
+			
+			//remove all existing steps
+			clear();
+			
 			try {
 				parser = factory.newSAXParser();
 				xmlReader = parser.getXMLReader();

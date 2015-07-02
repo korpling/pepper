@@ -324,14 +324,14 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void start() throws PepperModuleException {
 		if (getCorpusDesc() == null) {
-			throw new WorkflowException("Cannot import corpus-structure, because no corpus description was given. ");
+			throw new WorkflowException("["+getName()+"] Cannot import corpus-structure, because no corpus description was given. ");
 		}
 		if (getCorpusDesc().getCorpusPath() == null) {
-			throw new WorkflowException("Cannot import corpus-structure, because no corpus path was given. ");
+			throw new WorkflowException("["+getName()+"] Cannot import corpus-structure, because no corpus path was given. ");
 		}
 		File corpusFile = new File(getCorpusDesc().getCorpusPath().toFileString());
 		if (!corpusFile.exists()) {
-			throw new WorkflowException("Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
+			throw new WorkflowException("["+getName()+"] Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
 		}
 		super.start();
 	}

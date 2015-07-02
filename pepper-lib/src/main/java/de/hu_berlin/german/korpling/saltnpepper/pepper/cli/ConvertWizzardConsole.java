@@ -253,8 +253,6 @@ public class ConvertWizzardConsole {
 						// path now is incompatible with current working
 						// location, to fix this, the Pepper workflow file needs
 						// to be stored and reloaded again
-						System.out.println("Load new Job ");
-						pepperJob= getPepper().getJob(jobId);
 						pepperJob.load(workflowURI);
 					} catch (Exception e) {
 						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());

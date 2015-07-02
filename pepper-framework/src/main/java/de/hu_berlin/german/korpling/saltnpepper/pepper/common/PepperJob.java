@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import org.eclipse.emf.common.util.URI;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
@@ -126,8 +127,9 @@ public abstract class PepperJob {
 	 *            description object of a particular step
 	 */
 	public void addStepDesc(StepDesc stepDesc) {
-		if (stepDesc == null)
+		if (stepDesc == null){
 			throw new WorkflowException("Cannot deal with an empty StepDesc object for job '" + getId() + "'.");
+		}
 		getStepDescs().add(stepDesc);
 	}
 
@@ -197,6 +199,11 @@ public abstract class PepperJob {
 	 */
 	public abstract URI save(URI uri);
 
+	/**
+	 * Removes all {@link Step}s from all internal lists.
+	 */
+	public abstract void clear();
+	
 	/**
 	 * Returns a textual representation of this Pepper job. <strong>Note: This
 	 * representation could not be used for serialization/deserialization

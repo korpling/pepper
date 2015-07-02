@@ -80,4 +80,9 @@ public class PepperJobTest extends PepperJob{
 	public URI save(URI uri) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void clear() {
+		throw new UnsupportedOperationException();
+	}
 }
