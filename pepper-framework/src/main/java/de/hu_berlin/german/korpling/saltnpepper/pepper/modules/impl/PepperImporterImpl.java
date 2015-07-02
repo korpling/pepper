@@ -347,8 +347,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public synchronized Collection<String> getSDocumentEndings() {
-		if (sDocumentEndings == null)
+		if (sDocumentEndings == null){
 			sDocumentEndings = new HashSet<String>();
+		}
 		return (sDocumentEndings);
 	}
 
