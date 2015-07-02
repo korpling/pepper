@@ -30,7 +30,7 @@ Runtime Environment) is running, open a command line and run:
 ```bash
 java -version
 ```
-You need at least version 1.6.
+You need at least version 1.7.
 
 ## Running Pepper
 
