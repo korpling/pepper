@@ -44,6 +44,7 @@ import org.xml.sax.ext.DefaultHandler2;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
@@ -455,54 +456,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param documentLocation
 	 *            location of the xml-file
 	 */
-	// TODO moved to PepperMapperIMpl
 	protected void readXMLResource(DefaultHandler2 contentHandler, URI documentLocation) {
-		if (documentLocation == null)
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the given uri to locate file is null.");
-
-		File exmaraldaFile = new File(documentLocation.toFileString());
-		if (!exmaraldaFile.exists())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exist: " + exmaraldaFile);
-
-		if (!exmaraldaFile.canRead())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + exmaraldaFile);
-
-		SAXParser parser;
-		XMLReader xmlReader;
-
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-
-		try {
-			parser = factory.newSAXParser();
-			xmlReader = parser.getXMLReader();
-			xmlReader.setContentHandler(contentHandler);
-		} catch (ParserConfigurationException e) {
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + exmaraldaFile.getAbsolutePath() + "'.", e);
-		} catch (Exception e) {
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + exmaraldaFile.getAbsolutePath() + "'.", e);
-		}
-		try {
-			InputStream inputStream = new FileInputStream(exmaraldaFile);
-			Reader reader = new InputStreamReader(inputStream, "UTF-8");
-			InputSource is = new InputSource(reader);
-			is.setEncoding("UTF-8");
-			xmlReader.parse(is);
-		} catch (SAXException e) {
-
-			try {
-				parser = factory.newSAXParser();
-				xmlReader = parser.getXMLReader();
-				xmlReader.setContentHandler(contentHandler);
-				xmlReader.parse(exmaraldaFile.getAbsolutePath());
-			} catch (Exception e1) {
-				throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + exmaraldaFile.getAbsolutePath() + "'.", e1);
-			}
-		} catch (Exception e) {
-			if (e instanceof PepperModuleException)
-				throw (PepperModuleException) e;
-			else
-				throw new PepperModuleXMLResourceException("Cannot read xml-file'" + documentLocation + "', because of a nested exception. ", e);
-		}
+		PepperUtil.readXMLResource(contentHandler, documentLocation);
 	}
 
 	/**

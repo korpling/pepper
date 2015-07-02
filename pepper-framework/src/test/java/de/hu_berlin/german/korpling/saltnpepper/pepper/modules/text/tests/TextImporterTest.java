@@ -29,8 +29,8 @@ import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.text.TextImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.text.TextImporter.TextMapper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.TextImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.TextImporter.TextMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;

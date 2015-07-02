@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.saltXML;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.io.IOException;
 

@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;

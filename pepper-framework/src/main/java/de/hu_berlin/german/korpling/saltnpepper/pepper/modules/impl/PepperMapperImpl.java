@@ -36,6 +36,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.MappingSubject;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
@@ -263,51 +264,6 @@ public class PepperMapperImpl implements PepperMapper {
 	protected void readXMLResource(	DefaultHandler2 contentHandler, 
 									URI documentLocation)
 	{
-		if (documentLocation== null)
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the given uri to locate file is null.");
-		
-		File resourceFile= new File(documentLocation.toFileString());
-		if (!resourceFile.exists()) 
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exist: " + resourceFile);
-		
-		if (!resourceFile.canRead())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + resourceFile);
-		
-		SAXParser parser;
-        XMLReader xmlReader;
-        
-        SAXParserFactory factory= SAXParserFactory.newInstance();
-        
-        try{
-			parser= factory.newSAXParser();
-	        xmlReader= parser.getXMLReader();
-	        xmlReader.setContentHandler(contentHandler);
-        } catch (ParserConfigurationException e) {
-        	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+resourceFile.getAbsolutePath()+"'.", e);
-        }catch (Exception e) {
-	    	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+resourceFile.getAbsolutePath()+"'.", e);
-		}
-        try {
-	        InputStream inputStream= new FileInputStream(resourceFile);
-			Reader reader = new InputStreamReader(inputStream, "UTF-8");
-			InputSource is = new InputSource(reader);
-			is.setEncoding("UTF-8");
-			xmlReader.parse(is);
-        } catch (SAXException e) 
-        {
-            try{
-				parser= factory.newSAXParser();
-		        xmlReader= parser.getXMLReader();
-		        xmlReader.setContentHandler(contentHandler);
-				xmlReader.parse(resourceFile.getAbsolutePath());
-            }catch (Exception e1) {
-            	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+resourceFile.getAbsolutePath()+"'.", e1);
-			}
-		}
-        catch (Exception e) {
-			if (e instanceof PepperModuleException)
-				throw (PepperModuleException)e;
-			else throw new PepperModuleXMLResourceException("Cannot read xml-file'"+documentLocation+"', because of a nested exception. ",e);
-		}
+		PepperUtil.readXMLResource(contentHandler, documentLocation);
 	}
 }

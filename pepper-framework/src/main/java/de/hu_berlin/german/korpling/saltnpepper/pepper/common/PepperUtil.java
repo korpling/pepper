@@ -18,18 +18,32 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 
 public abstract class PepperUtil {
 
@@ -516,6 +530,65 @@ public abstract class PepperUtil {
 	}
 
 	/**
+	 * Helper method to read an xml file with a {@link DefaultHandler2} implementation given as <em>contentHandler</em>. It is assumed,
+	 * that the file encoding is set to UTF-8. 
+	 * @param contentHandler {@link DefaultHandler2} implementation
+	 * @param documentLocation location of the xml-file
+	 */
+	public static void readXMLResource(	DefaultHandler2 contentHandler, 
+										URI documentLocation)
+	{
+		if (documentLocation== null)
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the given uri to locate file is null.");
+		
+		File resourceFile= new File(documentLocation.toFileString());
+		if (!resourceFile.exists()) 
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exist: " + resourceFile);
+		
+		if (!resourceFile.canRead())
+			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + resourceFile);
+		
+		SAXParser parser;
+        XMLReader xmlReader;
+        
+        SAXParserFactory factory= SAXParserFactory.newInstance();
+        
+        try{
+			parser= factory.newSAXParser();
+	        xmlReader= parser.getXMLReader();
+	        xmlReader.setContentHandler(contentHandler);
+        } catch (ParserConfigurationException e) {
+        	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+resourceFile.getAbsolutePath()+"'.", e);
+        }catch (Exception e) {
+	    	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+resourceFile.getAbsolutePath()+"'.", e);
+		}
+        try {
+	        InputStream inputStream= new FileInputStream(resourceFile);
+			Reader reader = new InputStreamReader(inputStream, "UTF-8");
+			InputSource is = new InputSource(reader);
+			is.setEncoding("UTF-8");
+			xmlReader.parse(is);
+        } catch (SAXException e) 
+        {
+            try{
+				parser= factory.newSAXParser();
+		        xmlReader= parser.getXMLReader();
+		        xmlReader.setContentHandler(contentHandler);
+				xmlReader.parse(resourceFile.getAbsolutePath());
+            }catch (Exception e1) {
+            	throw new PepperModuleXMLResourceException("Cannot load a xml-resource '"+resourceFile.getAbsolutePath()+"'.", e1);
+			}
+		}
+        catch (Exception e) {
+			if (e instanceof PepperModuleException){
+				throw (PepperModuleException)e;
+			}else{
+				throw new PepperModuleXMLResourceException("Cannot read xml-file'"+documentLocation+"', because of a nested exception. ",e);
+			}
+		}
+	}
+	
+	/**
 	 * Prints the status of the passed {@link PepperJob} object, until {@link
 	 * #setStop(Boolean#TRUE)} was called.
 	 * 
@@ -611,6 +684,5 @@ public abstract class PepperUtil {
 				}
 			}
 		}
-
 	}
 }
