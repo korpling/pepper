@@ -223,11 +223,11 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 								resourceURI = resourceURI.appendFileExtension(ending);
 								getSElementId2ResourceTable().put(sDocument.getSElementId(), resourceURI);
 
-								// in case of folders in hierarchie does not
+								// in case of folders in hierarchy does not
 								// exist, create them
 								String fileName = resourceURI.toFileString();
 								if (fileName == null) {
-									resourceURI.toString();
+									fileName= resourceURI.toString();
 								}
 								File outFile = new File(fileName);
 								if (!outFile.getParentFile().exists()) {
