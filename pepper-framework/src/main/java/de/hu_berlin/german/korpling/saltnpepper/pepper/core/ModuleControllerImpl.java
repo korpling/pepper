@@ -494,6 +494,9 @@ public class ModuleControllerImpl implements ModuleController{
 //			throw new PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
 
 		documentController.updateStatus(getId(), DOCUMENT_STATUS.DELETED);
+		SDocument doc = documentController.getSDocument();
+		doc.getSCorpusGraph().removeNode(doc);
+		
 		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule()!= null)?getPepperModule().getName():" EMPTY "), ((documentController!= null)? documentController.getGlobalId(): "UNKNOWN"));
 		//if document is not processed any further, release slot
 		if (getJob()!= null){
