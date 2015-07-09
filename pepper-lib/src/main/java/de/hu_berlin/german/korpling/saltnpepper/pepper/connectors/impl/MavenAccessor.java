@@ -285,7 +285,7 @@ public class MavenAccessor {
         session.setDependencyManager( depManager );
 
         DependencySelector depFilter =
-            new AndDependencySelector( new ScopeDependencySelector( "test"/*, "provided"*/ ),
+            new AndDependencySelector( new ScopeDependencySelector( "test", "Test"/*, "provided"*/ ),
                                        new OptionalDependencySelector(), new ExclusionDependencySelector() );
         session.setDependencySelector( depFilter );
 
