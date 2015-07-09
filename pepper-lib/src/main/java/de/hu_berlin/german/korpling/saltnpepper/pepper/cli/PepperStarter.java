@@ -829,6 +829,8 @@ public class PepperStarter {
 		private String artifactId;
 		/** this string contains the group id */
 		private String groupId;
+		/** this string contains the repository */
+		private String repo;
 		/** the name of the tag between the modules are listed */
 		private static final String TAG_LIST = "pepperModulesList";
 		/**
@@ -865,32 +867,34 @@ public class PepperStarter {
 		/** is used to read the module name character by character */
 		private StringBuilder chars;
 		/** this boolean says, whether characters should be read or ignored */
-		private boolean openEyes;
+//		private boolean openEyes;		
 
 		public ModuleTableReader(Map<String, Pair<String, String>> artifactIdUrlMap) {
 			listedModules = artifactIdUrlMap;
 			chars = new StringBuilder();
 			groupId = null;
 			artifactId = null;
-			openEyes = false;
+			repo = null;
+//			openEyes = false;
 		}
 
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			localName = qName.substring(qName.lastIndexOf(":") + 1);
-			openEyes = TAG_GROUPID.equals(localName) || TAG_ARTIFACTID.equals(localName) || TAG_REPO.equals(localName);
+//			openEyes = TAG_GROUPID.equals(localName) || TAG_ARTIFACTID.equals(localName) || TAG_REPO.equals(localName);
 			if (TAG_LIST.equals(localName)) {
 				defaultRepository = attributes.getValue(ATT_DEFAULTREPO);
 				defaultGroupId = attributes.getValue(ATT_DEFAULTGROUPID);
 			}
+			chars.delete(0, chars.length());			
 		}
 
 		@Override
-		public void characters(char[] ch, int start, int length) throws SAXException {
-			for (int i = start; i < start + length && openEyes; i++) {
+		public void characters(char[] ch, int start, int length) throws SAXException {			
+			for (int i = start; i < start + length /*&& openEyes*/; i++) {
 				chars.append(ch[i]);
 			}
-			openEyes = false;
+//			openEyes = false;
 		}
 
 		@Override
@@ -903,13 +907,15 @@ public class PepperStarter {
 				groupId = chars.toString();
 				chars.delete(0, chars.length());
 			} else if (TAG_REPO.equals(localName)) {
+				repo = chars.toString();
 				chars.delete(0, chars.length());
 			} else if (TAG_ITEM.equals(localName)) {
 				groupId = groupId == null ? defaultGroupId : groupId;
-				listedModules.put(artifactId, Pair.of(groupId, (chars.length() == 0 ? defaultRepository : chars.toString())));
+				listedModules.put(artifactId, Pair.of(groupId, (repo==null || repo.isEmpty() ? defaultRepository : repo)));
 				chars.delete(0, chars.length());
 				groupId = null;
 				artifactId = null;
+				repo = null;
 			}
 		}
 	}

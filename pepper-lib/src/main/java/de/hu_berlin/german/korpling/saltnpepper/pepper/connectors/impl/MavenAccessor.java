@@ -40,6 +40,7 @@ import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.apache.maven.repository.internal.DefaultVersionResolver;
 import org.apache.maven.repository.internal.SnapshotMetadataGeneratorFactory;
 import org.apache.maven.repository.internal.VersionsMetadataGeneratorFactory;
+import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.aether.AbstractRepositoryListener;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositoryEvent;
@@ -197,7 +198,15 @@ public class MavenAccessor {
 		repos = new HashMap<String, RemoteRepository>();
 		forbiddenFruits = new HashSet<String>();
 		parentDependencies = new HashMap<String, List<Dependency>>();
-		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath()+"/local-repo/";		
+		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath()+"/local-repo/";	
+		try {
+			File lr = new File(PATH_LOCAL_REPO);
+			if (lr.exists()){
+				FileUtils.deleteDirectory(lr);
+			}			
+		} catch (IOException e) {
+			logger.warn("Failed to clean local repository.");
+		}
 		init();
 		initDependencies();
 	}
