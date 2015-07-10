@@ -170,7 +170,8 @@ public class PepperStarter {
 		//
 		STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."),
 		//
-		DEBUG("debug", "d", null, "Switches on/off the debug output.");
+		DEBUG("debug", "d", null, "Switches on/off the debug output."),
+		REPEAT("repeat", "r", null, "Repeats the last command.");
 
 		private String name = null;
 		private String abbreviation = null;
@@ -930,7 +931,10 @@ public class PepperStarter {
 	public void runInteractive() {
 		boolean exit = false;
 		String userInput = null;
-
+		String lastCommand = null;
+		List<String> lastParams = null;
+		String lastUserInput = null;
+		
 		output.println("Welcome to Pepper, type '" + COMMAND.HELP.getName() + "' for help or '" + COMMAND.CONVERT.getName() + "' to start a conversion.");
 		while (!exit) {
 			try {
@@ -950,66 +954,85 @@ public class PepperStarter {
 				}
 				i++;
 			}
-			try {
-				if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(help());
-				} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
-					output.println(list());
-				} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
-					if (params.size() == 1) {
-						output.println(list(params.get(0)));
-					} else {
-						output.println("Please pass exactly one module name.");
-					}
-				} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(conf());
-				} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(selfTest());
-				} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
-					break;
-				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
-					if (params.size() == 1) {
-						convert(params.get(0));
-					} else {
-						convert(null);
-					}
-				} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(osgi());
-				} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(installAndStart(params));
-					// }else if(
-					// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
-					// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
-					// output.println(update(params));
-				} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(remove(params));
-				} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(start_osgi());
-				} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(stop_osgi());
-				} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(clean());
-				} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(debug());
-				} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(update(params));
-				} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
-					output.print(printDependencies(params));
+			
+			if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
+				// special treatment of "exit" since we have to abort the loop
+				break;
+			} else if (COMMAND.REPEAT.getName().equalsIgnoreCase(command) || COMMAND.REPEAT.getAbbreviation().equalsIgnoreCase(command)) {
+				if(lastUserInput != null && lastCommand != null && lastParams != null) {
+					executeSingleCommand(lastUserInput, lastCommand, lastParams);
 				} else {
-					output.println("Type 'help' for help.");
+					output.println("Can not repeat if no other command was executed before.");
 				}
-			} catch (Exception | Error e) {
-				output.print("An error occured while processing '" + userInput + "': " + e.getMessage() + ". ");
-				if (!isDebug) {
-					output.println("For more details enter '" + COMMAND.DEBUG.getName() + "' and redo last action. ");
+			} else {
+				executeSingleCommand(lastUserInput, command, params);
+				// only update the last command if repeat was not executed
+				lastCommand = command;
+				lastParams = params;
+				lastUserInput = userInput;
+			}
+		} // end while not exiting
+	}
+	
+	private void executeSingleCommand(String userInput, String command, List<String> params) {
+		
+		try {
+			if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(help());
+			} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+				output.println(list());
+			} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+				if (params.size() == 1) {
+					output.println(list(params.get(0)));
 				} else {
-					String msg= e.getMessage();
-					if (	(msg!= null)&&
-							(!msg.isEmpty())){
-						logger.error(" ", e.getMessage());
-					}else{
-						e.printStackTrace();
-					}
+					output.println("Please pass exactly one module name.");
+				}
+			} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(conf());
+			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(selfTest());
+			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+				if (params.size() == 1) {
+					convert(params.get(0));
+				} else {
+					convert(null);
+				}
+			} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(osgi());
+			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(installAndStart(params));
+					// }else if(
+				// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+				// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
+				// output.println(update(params));
+			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(remove(params));
+			} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(start_osgi());
+			} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(stop_osgi());
+			} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(clean());
+			} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(debug());
+			} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(update(params));
+			} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
+				output.print(printDependencies(params));
+			} else {
+				output.println("Type 'help' for help.");
+			}
+		} catch (Exception | Error e) {
+			output.print("An error occured while processing '" + userInput + "': " + e.getMessage() + ". ");
+			if (!isDebug) {
+				output.println("For more details enter '" + COMMAND.DEBUG.getName() + "' and redo last action. ");
+			} else {
+				String msg = e.getMessage();
+				if ((msg != null)
+					&& (!msg.isEmpty())) {
+					logger.error(" ", e.getMessage());
+				} else {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -1067,7 +1090,7 @@ public class PepperStarter {
 		}
 		return retVal.toString();
 	}
-
+	
 	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
 	// CONTRA SLF4J IDEA.
 	// /**
