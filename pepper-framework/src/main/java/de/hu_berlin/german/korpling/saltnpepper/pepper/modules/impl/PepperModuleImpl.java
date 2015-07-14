@@ -642,7 +642,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		if (sElementId.getIdentifiableElement() instanceof SDocument) {
 			DocumentController docController = getDocumentId2DC().get(SaltFactory.eINSTANCE.getGlobalId(sElementId));
 			if (docController == null) {
-				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.eINSTANCE.getGlobalId(sElementId) + "'. Controllers are listed for the following SElementId objects: " + getDocumentId2DC() + ". ");
+				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.eINSTANCE.getGlobalId(sElementId) + "' to pass status '"+result+"'. Controllers are listed for the following SElementId objects: " + getDocumentId2DC() + ". ");
 			}
 			if (DOCUMENT_STATUS.DELETED.equals(result)) {
 				this.getModuleController().delete(docController);

@@ -117,7 +117,6 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl{
 				public DOCUMENT_STATUS mapSDocument() {
 					try {
 						Thread.sleep(1000);
-						System.out.println("done with: "+ getSDocument());
 					} catch (InterruptedException e) {
 						throw new PepperModuleException(this,"", e);
 					}
