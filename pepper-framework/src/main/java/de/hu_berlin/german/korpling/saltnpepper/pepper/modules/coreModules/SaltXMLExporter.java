@@ -68,14 +68,18 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 @Component(name = "SaltXMLExporterComponent", factory = "PepperExporterComponentFactory")
 public class SaltXMLExporter extends PepperExporterImpl implements PepperExporter {
+	public static final String MODULE_NAME="SaltXMLExporter";
+	public static final String FORMAT_NAME_SALTXML="SaltXML";
+	public static final String FORMAT_VERSION_SALTXML="1.0";
+	
 	public SaltXMLExporter() {
 		// setting name of module
-		super("SaltXMLExporter");
+		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
 		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This exporter exports a Salt model to a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
-		this.addSupportedFormat("SaltXML", "1.0", null);
+		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);
 	}
 
 	@Activate

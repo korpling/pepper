@@ -41,7 +41,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * Such a file must contain the document structure. The corpus structure is
  * stored in a single file called saltProject +
  * {@value SaltFactory#FILE_ENDING_SALT}. The value
- * {@value SaltFactory#FILE_ENDING_SALT} can be gettet by method
+ * {@value SaltFactory#FILE_ENDING_SALT} can be got by method
  * getSaltFileEnding(). <br/>
  * 
  * @author Florian Zipser
@@ -50,14 +50,18 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 @Component(name = "SaltXMLImporterComponent", factory = "PepperImporterComponentFactory")
 public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter {
+	public static final String MODULE_NAME="SaltXMLImporter";
+	public static final String FORMAT_NAME_SALTXML="SaltXML";
+	public static final String FORMAT_VERSION_SALTXML="1.0";
+	
 	public SaltXMLImporter() {
 		// setting name of module
-		super("SaltXMLImporter");
+		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
 		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This importer imports a Salt model from a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
-		this.addSupportedFormat("SaltXML", "1.0", null);
+		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);
 		setProperties(new PepperModuleProperties());
 	}
 
