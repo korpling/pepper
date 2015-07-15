@@ -44,16 +44,16 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 
 /**
- * This class represents a console to realize a kind of an interactive wizzard
+ * This class represents a console to realize a kind of an interactive wizard
  * to guide the user through the workflow configuration. This is a step by step
- * wizzard in which the the user needs to make an input for each step:
+ * wizard in which the the user needs to make an input for each step:
  * <ol>
  * <li>Import phase
  * <ol>
  * <li>choose source corpus</li>
  * <li>choose importer (if possible show a list of recommended importers and the
  * rest)</li>
- * <li>choose configuration properties (wizzard presents a list of possible
+ * <li>choose configuration properties (wizard presents a list of possible
  * properties)</li>
  * <li>another importer? press enter for no, corpus path for yes</li>
  * </ol>
@@ -61,7 +61,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * <li>Manipulation phase
  * <ol>
  * <li>choose manipulator (enter for non)</li>
- * <li>choose configuration properties (wizzard presents a list of possible
+ * <li>choose configuration properties (wizard presents a list of possible
  * properties)</li>
  * <li>another manipulator? press enter for no</li>
  * </ol>
@@ -69,7 +69,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * <li>Export phase
  * <ol>
  * <li>choose target path for corpus</li>
- * <li>choose configuration properties (wizzard presents a list of possible
+ * <li>choose configuration properties (wizard presents a list of possible
  * properties)</li>
  * <li>another exporter? press enter for no, corpus path for yes</li>
  * </ol>
@@ -80,9 +80,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * @author Florian Zipser
  * 
  */
-public class ConvertWizzardConsole {
+public class ConvertWizardConsole {
 
-	private static final String PROMPT = "wizzard";
+	private static final String PROMPT = "wizard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
 	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
@@ -143,7 +143,7 @@ public class ConvertWizzardConsole {
 	 *            the prefix prompt to be displayed, before the prompt of this
 	 *            console.
 	 */
-	public ConvertWizzardConsole(String prefixPrompt) {
+	public ConvertWizardConsole(String prefixPrompt) {
 		prompt = prefixPrompt + "/" + PROMPT;
 	}
 
@@ -178,13 +178,13 @@ public class ConvertWizzardConsole {
 	private PrintStream out = null;
 
 	/**
-	 * Starts the wizzard for a 'session'. A wizzard can only be started as
+	 * Starts the wizard for a 'session'. A wizard can only be started as
 	 * singleton. That means it needs to be quit before it can be started again.
 	 * <ol>
-	 * <li>startes wizzard for import phase {@link #importPhase(PepperJob)}</li>
-	 * <li>startes wizzard for manipulation phase
+	 * <li>startes wizard for import phase {@link #importPhase(PepperJob)}</li>
+	 * <li>startes wizard for manipulation phase
 	 * {@link #manipulationPhase(PepperJob)}</li>
-	 * <li>startes wizzard for export phase {@link #exportPhase(PepperJob)}</li>
+	 * <li>startes wizard for export phase {@link #exportPhase(PepperJob)}</li>
 	 * <li>requests user input {@value COMMAND#SAVE} to store workflow
 	 * description or {@value COMMAND#CONVERT} to start conversion</li>
 	 * </ol>
@@ -266,7 +266,7 @@ public class ConvertWizzardConsole {
 				}
 				out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
 			}
-		} catch (ExitWizzardException e) {
+		} catch (ExitWizardException e) {
 			out.println(MSG_ABORTED);
 			return (null);
 		}
@@ -301,7 +301,7 @@ public class ConvertWizzardConsole {
 	}
 
 	/**
-	 * A sub wizzard to manage the import phase. Asks all importers from the
+	 * A sub wizard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
 	 * <li>state 0: reads corpus path, empty input leads to exit import phase</li>
@@ -425,7 +425,7 @@ public class ConvertWizzardConsole {
 	}
 
 	/**
-	 * A sub wizzard to manage the manipulation phase. Asks for all manipulators
+	 * A sub wizard to manage the manipulation phase. Asks for all manipulators
 	 * from the user.
 	 * <ol>
 	 * <li>state 1: reads name of manipulator, empty input leads to exit import
@@ -515,7 +515,7 @@ public class ConvertWizzardConsole {
 	}
 
 	/**
-	 * A sub wizzard to manage the import phase. Asks all importers from the
+	 * A sub wizard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
 	 * <li>state 0: choose output path, empty input leads to exit of export
@@ -678,7 +678,7 @@ public class ConvertWizzardConsole {
 		int numOfRecommended = 0;
 		// if module is importer, call isImportable
 		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
-			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizzardConsole.ImporterModuleDesc>();
+			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizardConsole.ImporterModuleDesc>();
 			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
 				if (MODULE_TYPE.IMPORTER.equals(moduleDesc.getModuleType())) {
 					Double isImportable = getPepper().isImportable(corpusPath, moduleDesc);
@@ -808,12 +808,12 @@ public class ConvertWizzardConsole {
 			out.println("Cannot read command.");
 		}
 		if (("exit".equalsIgnoreCase(userInput))) {
-			throw new ExitWizzardException();
+			throw new ExitWizardException();
 		}
 		return (userInput);
 	}
 
-	private class ExitWizzardException extends RuntimeException {
+	private class ExitWizardException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 	}
 

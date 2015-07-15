@@ -159,7 +159,7 @@ public class PepperStarter {
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
-		CONVERT("convert", "c", "workflow file", "If no workflow file is passed, Pepper opens a conversion wizzard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
+		CONVERT("convert", "c", "workflow file", "If no workflow file is passed, Pepper opens a conversion wizard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
 		//
 		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
@@ -460,8 +460,8 @@ public class PepperStarter {
 		PepperJob pepperJob = null;
 		String jobId = null;
 		if ((workFlowFile == null) || (workFlowFile.isEmpty())) {
-			// if no parameter is given open convert wizzard
-			ConvertWizzardConsole console = new ConvertWizzardConsole(PROMPT);
+			// if no parameter is given open convert wizard
+			ConvertWizardConsole console = new ConvertWizardConsole(PROMPT);
 			console.setPepper(getPepper());
 			console.isDebug = this.isDebug;
 			pepperJob = console.start(input, output);

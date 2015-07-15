@@ -146,7 +146,7 @@
                 call. You can run Pepper in two modes, a non-interactive mode and an interactive
                 mode. The non-interactive mode is used, when Pepper is called by a script etc. or
                 the workflow description already exists. The interactive mode provides further
-                methods to administrate Pepper and in near future, there will be a wizzard which
+                methods to administrate Pepper and in near future, there will be a wizard which
                 guides you through the conversion process.</para>
             <para>To run Pepper, just
                 call:<programlisting>pepperStart.bat COMMAND            (when using Windows)</programlisting>or<programlisting>bash pepperStart.sh COMMAND        (when using linux, unix or Mac OS),</programlisting>where
