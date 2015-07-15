@@ -197,6 +197,20 @@ public class PepperModulePropertiesTest extends TestCase {
 	}
 	
 	@Test
+	public void testRemoveProperty(){
+		String propName1 = "prop1";
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+		this.getFixture().addProperty(prop1);
+		Properties properties = new Properties();
+		properties.put(propName1, 12);
+		getFixture().setPropertyValues(properties);
+		
+		assertNotNull(getFixture().getProperty(propName1).getValue());
+		getFixture().removePropertyValue(propName1);
+		assertNull(getFixture().getProperty(propName1).getValue());
+	}
+	
+	@Test
 	public void test_PROP_SIMPLE_TOKENIZE_3(){
 		String sep = "' ', '\\'', ',', '\\\\'";
 		
