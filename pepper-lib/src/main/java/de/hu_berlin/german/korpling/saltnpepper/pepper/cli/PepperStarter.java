@@ -1023,7 +1023,7 @@ public class PepperStarter {
 			} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
 				output.print(printDependencies(params));
 			} else if (COMMAND.VERSION.getName().equalsIgnoreCase(command) || COMMAND.VERSION.getAbbreviation().equalsIgnoreCase(command)){
-				output.print(((PepperOSGiConnector)getPepper()).getFrameworkVersion());
+				output.print(((PepperOSGiConnector)getPepper()).getFrameworkVersion().concat(System.lineSeparator()));
 			} else {
 				output.println("Type 'help' for help.");
 			}
