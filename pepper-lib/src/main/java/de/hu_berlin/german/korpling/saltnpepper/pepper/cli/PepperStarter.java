@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream.GetField;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
@@ -143,6 +144,8 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
+		VERSION("version", "v", "no arguments", "prints pepper version"),
+		//
 		PRINT_DEPS("dependencies", "deps", "Bundle id or GROUP_ID::ARTIFACT_ID::VERSION::MAVEN_REPOSITORY_URL or plugin names split by space; parameter all prints dependencies for all plugins", "displays all dependencies of the specified component"),
 		//
 		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
@@ -1019,6 +1022,8 @@ public class PepperStarter {
 				output.println(update(params));
 			} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
 				output.print(printDependencies(params));
+			} else if (COMMAND.VERSION.getName().equalsIgnoreCase(command) || COMMAND.VERSION.getAbbreviation().equalsIgnoreCase(command)){
+				output.print(((PepperOSGiConnector)getPepper()).getFrameworkVersion());
 			} else {
 				output.println("Type 'help' for help.");
 			}
