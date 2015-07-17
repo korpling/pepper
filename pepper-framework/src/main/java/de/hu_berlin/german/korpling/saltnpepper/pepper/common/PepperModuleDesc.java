@@ -32,7 +32,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * @author Florian Zipser
  *
  */
-public class PepperModuleDesc {
+public class PepperModuleDesc implements Comparable<PepperModuleDesc>{
 
 	/** name of the  Pepper module **/
 	private String name= null;
@@ -213,5 +213,26 @@ public class PepperModuleDesc {
 		str.append(getVersion());
 		str.append(")");
 		return(str.toString());
+	}
+	/**
+	 * Compares the passed {@link PepperModuleDesc} object with this. The
+	 * sorting order follows the rules:
+	 * <ol>
+	 * <li>{@link MODULE_TYPE#IMPORTER}</li>
+	 * <li>{@link MODULE_TYPE#MANIPULATOR}</li>
+	 * <li>{@link MODULE_TYPE#EXPORTER}</li>
+	 * </ol>
+	 * and ascending name inside the three types.
+	 */
+	@Override
+	public int compareTo(PepperModuleDesc o) {
+		int retVal = 0;
+		if (getModuleType() != null && o.getModuleType() != null) {
+			retVal = getModuleType().compareTo(o.getModuleType());
+		}
+		if (retVal == 0) {
+			retVal = getName().compareTo(o.getName());
+		}
+		return retVal;
 	}
 }

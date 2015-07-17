@@ -35,7 +35,7 @@ import java.io.File;
  * @author Florian Zipser
  * 
  */
-public class PepperModuleProperty<T> {
+public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>{
 
 	/**
 	 * Creates a {@link PepperModuleProperty} instance and sets its values to
@@ -251,6 +251,11 @@ public class PepperModuleProperty<T> {
 
 	public String toString() {
 		return (this.getName() + "=" + this.getType() + "::" + this.getValue());
+	}
+
+	@Override
+	public int compareTo(PepperModuleProperty<?> o) {
+		return(getName().compareTo(o.getName()));
 	}
 
 }

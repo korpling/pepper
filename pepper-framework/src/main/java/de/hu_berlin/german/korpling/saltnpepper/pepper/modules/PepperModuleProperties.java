@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,7 +324,9 @@ public class PepperModuleProperties implements Serializable {
 	 * @return
 	 */
 	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions() {
-		return (pepperModuleProperties.values());
+		List<PepperModuleProperty<?>> retVal= new ArrayList<PepperModuleProperty<?>>(pepperModuleProperties.values()); 
+		Collections.sort(retVal);
+		return(retVal);
 	}
 
 	/**
@@ -381,7 +384,7 @@ public class PepperModuleProperties implements Serializable {
 		StringBuffer buf = new StringBuffer();
 		buf.append("[");
 		for (String name : getPropertyNames()) {
-			PepperModuleProperty prop = getProperty(name);
+			PepperModuleProperty<?> prop = getProperty(name);
 			buf.append(prop + ", ");
 		}
 		buf.append("]");

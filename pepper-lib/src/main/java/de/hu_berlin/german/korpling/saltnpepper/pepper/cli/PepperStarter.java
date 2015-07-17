@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream.GetField;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -255,9 +257,9 @@ public class PepperStarter {
 	public String list() {
 		StringBuilder retVal = new StringBuilder();
 
-		Collection<PepperModuleDesc> moduleDescs = null;
+		List<PepperModuleDesc> moduleDescs = null;
 		try {
-			moduleDescs = getPepper().getRegisteredModules();
+			moduleDescs = new ArrayList<PepperModuleDesc>(getPepper().getRegisteredModules());
 		} catch (Exception e) {
 			if (isDebug) {
 				e.printStackTrace();
@@ -265,6 +267,7 @@ public class PepperStarter {
 			retVal.append("Cannot display any Pepper module. Call " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
+		Collections.sort(moduleDescs);
 		number2module= new HashMap<Integer, PepperModuleDesc>(moduleDescs.size());
 		retVal.append(PepperUtil.reportModuleList(getPepperConfiguration().getConsoleWidth(), moduleDescs, number2module));
 		retVal.append("To get more information on a particular module enter 'list No' or 'list module-name'. ");
