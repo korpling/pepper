@@ -135,7 +135,6 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 	/** Reads the property values and adds them to property object **/
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		System.out.println("propName: "+ propName+"#");
 		if (	(props!= null)&&
 				(propName!= null)&&
 				(!propName.isEmpty())){
