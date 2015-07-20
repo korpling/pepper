@@ -78,7 +78,7 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 	/** the name of a property to be added to either a Pepper module or a job **/
 	private String propName=null;
 	/** the value for the property **/
-	private String propValue=null;
+	private StringBuilder propValue=null;
 	
 	/** flag determines, whether the read file is directly mapped or if is delegated to the {@link PepperParamsReader}**/
 	private PepperParamsReader delegatee= null;
@@ -135,14 +135,16 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 	/** Reads the property values and adds them to property object **/
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
+		System.out.println("propName: "+ propName+"#");
 		if (	(props!= null)&&
 				(propName!= null)&&
 				(!propName.isEmpty())){
-			StringBuilder str= new StringBuilder();
-			for (int i= start; i< start+ length; i++){
-				str.append(ch[i]);
+			if (propValue== null){
+				propValue= new StringBuilder();
 			}
-			propValue= str.toString();
+			for (int i= start; i< start+ length; i++){
+				propValue.append(ch[i]);
+			}
 		}
 	}
 	/**
@@ -154,7 +156,11 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 			if (	(props!= null)&&
 					(propName!= null)&&
 					(!propName.isEmpty())){
-				props.put(propName, (propValue== null)?"":propValue);
+				if (propValue!= null){
+					props.put(propName, propValue.toString());
+				}else{
+					props.put(propName, "");
+				}
 				propValue=null;
 				propName=null;
 			}
