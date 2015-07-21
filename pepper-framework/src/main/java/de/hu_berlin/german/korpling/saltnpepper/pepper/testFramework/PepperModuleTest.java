@@ -34,13 +34,16 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperTestExce
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.FileComparator;
+import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 /**
+ * This class is an abstract helper class to create own test classes for any {@link PepperModule}.
  * The method start simulates the Pepper framework as in normal runtime. The difference is, that here Pepper is started
  * in an development environment and enables for developers to get an access directly to the OSGi environment.
+ * 
  * @author Florian Zipser
  *
  */
@@ -59,6 +62,9 @@ public abstract class PepperModuleTest
 		if (resourceURI!= null){
 			getFixture().setResources(resourceURI);
 		}
+		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().getSaltProject().getSCorpusGraphs().add(SaltFactory.eINSTANCE.createSCorpusGraph());
+
 	}
 
 	/**
