@@ -99,6 +99,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * 	setExportMode(EXPORT_MODE.CORPORA_ONLY); 
  * 	//option 3
  * 	setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
+ *  //sets the ending, which should be added to the documents name
  * 	setSDocumentEnding(ENDING_TAB); 
  * 	.. 
  * }
