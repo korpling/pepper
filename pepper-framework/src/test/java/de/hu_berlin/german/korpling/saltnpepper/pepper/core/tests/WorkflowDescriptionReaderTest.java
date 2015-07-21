@@ -189,7 +189,7 @@ public class WorkflowDescriptionReaderTest {
 						xml.writeEndElement();
 						xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
 							xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, "prop3");
-							xml.writeCharacters("5");
+							xml.writeCharacters("5\n");
 						xml.writeEndElement();
 					xml.writeEndElement();
 				xml.writeEndElement();
@@ -219,7 +219,7 @@ public class WorkflowDescriptionReaderTest {
 		assertEquals("", stepDesc.getProps().getProperty("prop2"));
 		
 		assertTrue(stepDesc.getProps().toString(), stepDesc.getProps().containsKey("prop3"));
-		assertEquals("5", stepDesc.getProps().getProperty("prop3"));
+		assertEquals("5\n", stepDesc.getProps().getProperty("prop3"));
 	}
 	
 	@Test
