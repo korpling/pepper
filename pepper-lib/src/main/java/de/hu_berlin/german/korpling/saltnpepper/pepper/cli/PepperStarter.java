@@ -17,13 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
-import ch.qos.logback.classic.LoggerContext;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream.GetField;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,6 +59,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 
+import ch.qos.logback.classic.LoggerContext;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
@@ -623,12 +621,18 @@ public class PepperStarter {
 			moduleTable = getModuleTable();
 
 			if ("all".equalsIgnoreCase(params.get(0)) || (isSnapshot && !ignoreVersion || ignoreVersion && !isSnapshot) && params.size() > 1 && "all".equalsIgnoreCase(params.get(1)) || isSnapshot && ignoreVersion && params.size() > 2 && "all".equalsIgnoreCase(params.get(2))) {
-				for (String s : moduleTable.keySet()) {
+				List<String> lines = new ArrayList<String>();				
+				for (String s : moduleTable.keySet()) {					
 					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)) {
-						retVal.append(s).append(" successfully updated.").append(newLine);
+						lines.add(s.concat(" successfully updated."));
 					} else {
-						retVal.append(s).append(" NOT updated.").append(newLine);
-					}
+						lines.add(s.concat(" NOT updated."));
+					}					
+				}
+				Collections.<String>sort(lines);
+				retVal.append(newLine);
+				for (String line : lines) {
+					retVal.append(line).append(newLine);
 				}
 			} else {
 				String s = null;
@@ -701,7 +705,7 @@ public class PepperStarter {
 		try {
 			saxParser.parse(MODULES_XML_PATH, new ModuleTableReader(table));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.debug("Could not parse modules.xml", e);
 		}
 		return table;
 	}

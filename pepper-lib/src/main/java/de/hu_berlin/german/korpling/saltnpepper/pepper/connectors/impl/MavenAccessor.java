@@ -35,6 +35,10 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.maven.repository.internal.DefaultArtifactDescriptorReader;
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.apache.maven.repository.internal.DefaultVersionResolver;
@@ -102,11 +106,13 @@ import org.eclipse.aether.version.InvalidVersionSpecificationException;
 import org.eclipse.aether.version.Version;
 import org.eclipse.aether.version.VersionRange;
 import org.eclipse.aether.version.VersionScheme;
-import org.eclipse.aether.version.VersionRange.Bound;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.DefaultHandler2;
 
 /**
  * How does this class work?
@@ -198,7 +204,7 @@ public class MavenAccessor {
 		repos = new HashMap<String, RemoteRepository>();
 		forbiddenFruits = new HashSet<String>();
 		parentDependencies = new HashMap<String, List<Dependency>>();
-		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath()+"/local-repo/";	
+		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath().getAbsolutePath().concat("/local-repo/");	
 		try {
 			File lr = new File(PATH_LOCAL_REPO);
 			if (lr.exists()){
@@ -238,16 +244,15 @@ public class MavenAccessor {
 	 */
 	private boolean initDependencies(){
 		String frameworkVersion = pepperOSGiConnector.getFrameworkVersion();
+		RemoteRepository repo = getRepo("korpling", KORPLING_MAVEN_REPO);
+        getRepo("central", CENTRAL_REPO);	
+        
 		if (forbiddenFruits.isEmpty()){
 			logger.info("Configuring update mechanism ...");
 			/* maven access utils*/
 			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", frameworkVersion);
 			
-			DefaultRepositorySystemSession session = getNewSession();
-			
-	        RemoteRepository repo = buildRepo("korpling", KORPLING_MAVEN_REPO);
-	        repos.put(KORPLING_MAVEN_REPO, repo);
-	        repos.put(CENTRAL_REPO, buildRepo("central", CENTRAL_REPO));	        
+			DefaultRepositorySystemSession session = getNewSession();                
 			
 			/* utils for dependency collection */
     		CollectRequest collectRequest = new CollectRequest();
@@ -359,11 +364,7 @@ public class MavenAccessor {
         
         /*build repository*/
         
-        RemoteRepository repo = repos.get(repositoryUrl);
-        if (repo==null){
-        	repo = buildRepo("repo", repositoryUrl);
-        	repos.put(repositoryUrl, repo);
-        }     
+        RemoteRepository repo = getRepo("repo", repositoryUrl); 
         
         /*build artifact*/
         Artifact artifact = new DefaultArtifact(groupId, artifactId, "zip","[0,)");       
@@ -414,7 +415,33 @@ public class MavenAccessor {
 	    	update&= file!=null;//in case of only snapshots in the maven repository vs. isSnapshot=false	    	
 	    	/* if an update is possible/necessary, perform dependency collection and installation */
 	    	if (update){
-	    		/* remove older version */
+	    		/* create list of necessary repositories */
+	    		Artifact pom = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId(), "pom", artifact.getVersion());
+	    		artifactRequest.setArtifact(pom);
+	    		boolean pomReadingErrors = false;
+	    		try {
+	    			artifactResult = null;
+					artifactResult = mvnSystem.resolveArtifact(session, artifactRequest);
+				} catch (ArtifactResolutionException e1) {
+					pomReadingErrors = true;					
+				}
+	    		List<RemoteRepository> repoList = new ArrayList<RemoteRepository>();
+	    		repoList.add(repos.get(CENTRAL_REPO));
+	    		repoList.add(repos.get(repositoryUrl));
+	    		if (artifactResult!=null && artifactResult.getArtifact().getFile().exists()){
+	    			try {
+	    				SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();	    			
+	    				saxParser.parse(artifactResult.getArtifact().getFile().getAbsolutePath(), new POMReader(repoList));
+	    			} catch (SAXException | IOException | ParserConfigurationException e) {
+	    				pomReadingErrors = true;
+	    			}	    			
+	    		}
+	    		if (pomReadingErrors) {
+	    			logger.warn("Could not determine all relevant repositories, update might fail. Trying to continue ...");
+	    			repoList.add(repos.get(KORPLING_MAVEN_REPO));
+	    		}    			
+	    		
+	    		/* remove older version */	    		
 	    		if (installedBundle!=null){	    			
 	    			try {
 						if(!pepperOSGiConnector.remove(installedBundle.getSymbolicName())){
@@ -433,9 +460,8 @@ public class MavenAccessor {
 	    		/* utils for dependency collection */
 	    		CollectRequest collectRequest = new CollectRequest();
 	            collectRequest.setRoot( new Dependency( artifact, "" ) );
-	            collectRequest.addRepository(repos.get(CENTRAL_REPO));
-	            collectRequest.addRepository(repo);
-	            CollectResult collectResult = mvnSystem.collectDependencies( session, collectRequest );           
+	            collectRequest.setRepositories(repoList);
+	            CollectResult collectResult = mvnSystem.collectDependencies( session, collectRequest );          
 	            List<Dependency> allDependencies = getAllDependencies(collectResult.getRoot(), true);          
 	            
             	/* we have to remove the dependencies of pepperParent from the dependency list, since they are (sometimes)
@@ -463,19 +489,23 @@ public class MavenAccessor {
         		}
 	            allDependencies = cleanDependencies(allDependencies, session, parentVersion);
 	            Bundle bundle = null;
-	            Dependency dependency = null;	            
+	            Dependency dependency = null;	      
 	            //in the following we ignore the first dependency (i=0), because it is the module itself         	            
 	            for (int i=1; i<allDependencies.size(); i++){
 	            	dependency = allDependencies.get(i);
-	            	if (!ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())) {	            	
-	            		artifactRequest.addRepository(repos.get(CENTRAL_REPO));
-	            		artifactRequest.addRepository(repo);
-	            		artifactRequest.setArtifact(dependency.getArtifact());
+	            	if (!ARTIFACT_ID_PEPPER_FRAMEWORK.equals(dependency.getArtifact().getArtifactId())) { 
+	            		artifactRequest = new ArtifactRequest();
+	            		artifactRequest.setArtifact(dependency.getArtifact());     		
+	            		artifactRequest.setRepositories(repoList);
 	            		try{
-	            			artifactResult = mvnSystem.resolveArtifact(session, artifactRequest);		
+	            			artifactResult = mvnSystem.resolveArtifact(session, artifactRequest);
 		            		installArtifacts.add(artifactResult.getArtifact());
 	            		}catch (ArtifactResolutionException e){	            			
-	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            			
+	            			logger.warn("Artifact "+dependency.getArtifact().getArtifactId()+" could not be resolved. Dependency will not be installed.");	            				            			
+	            			if (!Boolean.parseBoolean(pepperOSGiConnector.getPepperStarterConfiguration().getProperty("pepper.forceUpdate").toString())) {
+	            				logger.error("Artifact ".concat(artifact.getArtifactId()).concat(" will not be installed. Resolution of dependency ").concat(dependency.getArtifact().getArtifactId()).concat(" failed and \"force update\" is disabled in pepper.properties."));
+	            				return false;
+	            			}
 	            		}
 	            	}
 	            }	            
@@ -711,10 +741,15 @@ public class MavenAccessor {
 	 * @param url
 	 * @return
 	 */
-	private RemoteRepository buildRepo(String id, String url){
-		repoBuilder.setId(id);
-		repoBuilder.setUrl(url);
-		return repoBuilder.build();
+	private RemoteRepository getRepo(String id, String url){
+		RemoteRepository repo = repos.get(url);
+		if (repo==null){
+			repoBuilder.setId(id);
+			repoBuilder.setUrl(url);
+			repo = repoBuilder.build();
+			repos.put(url, repo);
+		}		 
+		return repo;
 	}
 	
 	/** This method starts invokes the computation of the dependency tree. If no version is
@@ -724,17 +759,9 @@ public class MavenAccessor {
 		/* repositories */
 		RemoteRepository repo = null;
 		if (repositoryUrl==null){        	
-        	repo = repos.get(KORPLING_MAVEN_REPO);
-        	if (repo==null){
-        		repo = buildRepo("korpling", KORPLING_MAVEN_REPO);
-        		repos.put(KORPLING_MAVEN_REPO, repo);        		
-        	}        	        	
+        	repo = getRepo("korpling", KORPLING_MAVEN_REPO);      	        	
         } else {
-	        repo = repos.get(repositoryUrl);
-	        if (repo==null){
-	        	repo = buildRepo("repository", repositoryUrl);
-	        	repos.put(repositoryUrl, repo);
-	        }	        
+	        repo = getRepo("repository", repositoryUrl);        
         }
 		/* version range resolution and dependency collection */
 		DefaultRepositorySystemSession session = getNewSession();
@@ -942,5 +969,81 @@ public class MavenAccessor {
 	        return ( bytes + 1023 ) / 1024;
 	    }
 
+	} 
+	
+	private class POMReader extends DefaultHandler2{
+		
+		private boolean read = true;
+		
+		static final String TAG_REPOSITORIES = "repositories";
+		static final String TAG_REPOSITORY = "repository";
+		static final String TAG_URL = "url";
+		static final String TAG_ID = "id";
+		static final String ROOT_TAG = "project";
+		
+		private String pppparent = null;
+		private String ppparent = null;
+		private String pparent = null;
+		private String parent = null;
+		private String currTag = null;
+		private StringBuilder chars = null;
+		
+		private String url = null;
+		private String id = null;
+		
+		private List<RemoteRepository> resultsList;
+		
+		private POMReader(List<RemoteRepository> targetList){
+			chars = new StringBuilder();
+			resultsList = targetList;
+		}
+		
+		@Override
+		public void startElement(String uri, String localName, String qName, Attributes attributes){
+			if (read) {
+				localName = qName.substring(qName.lastIndexOf(":") + 1);
+				pppparent = ppparent;
+				ppparent = pparent;
+				pparent = parent;
+				parent = currTag;
+				currTag = localName;
+				chars.delete(0, chars.length());
+			}
+		}
+		
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			if (read && ROOT_TAG.equals(ppparent) && TAG_REPOSITORIES.equals(pparent) && TAG_REPOSITORY.equals(parent) && (TAG_ID.equals(currTag)||TAG_URL.equals(currTag))){
+				for (int i=start; i<start+length; i++){
+					chars.append(ch[i]);
+				}
+			}			
+		}
+		
+		@Override
+		public void endElement(java.lang.String uri, String localName, String qName) throws SAXException {
+			if (read) {
+				localName = qName.substring(qName.lastIndexOf(":") + 1);				
+				boolean constraint = ROOT_TAG.equals(ppparent) && TAG_REPOSITORIES.equals(pparent) && TAG_REPOSITORY.equals(parent);
+				if (constraint && TAG_URL.equals(localName)) {
+					url = chars.toString();
+				}
+				else if (constraint && TAG_ID.equals(localName)){
+					id = chars.toString();
+				}
+				else if (ROOT_TAG.equals(pparent) && TAG_REPOSITORIES.equals(parent) && TAG_REPOSITORY.equals(localName)){
+					resultsList.add(getRepo(id, url));
+				}
+				else if (ROOT_TAG.equals(parent) && TAG_REPOSITORIES.equals(localName)) {
+					read = false;
+				}
+				chars.delete(0, chars.length());
+				currTag = parent;
+				parent = pparent;
+				pparent = ppparent;
+				ppparent = pppparent;
+				pppparent = null;
+			}
+		}
 	}
 }
