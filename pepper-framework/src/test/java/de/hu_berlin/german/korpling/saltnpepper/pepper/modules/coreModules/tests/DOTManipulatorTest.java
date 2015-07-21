@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.dot.tests;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.tests;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
@@ -24,17 +24,14 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DOTMa
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 
+public class DOTManipulatorTest extends PepperManipulatorTest {
 
-public class DOTManipulatorTest extends PepperManipulatorTest
-{
-	
-	URI resourceURI= URI.createFileURI("./src/test/resources/resources");
-	
+	URI resourceURI = URI.createFileURI("./src/test/resources/resources");
+
 	@Before
-	public void setUp() throws Exception 
-	{
+	public void setUp() throws Exception {
 		super.setFixture(new DOTManipulator());
 		super.getFixture().setSaltProject(SaltCommonFactory.eINSTANCE.createSaltProject());
 		super.setResourcesURI(resourceURI);
-	}	
+	}
 }
