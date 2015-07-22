@@ -108,7 +108,7 @@ public class WorkflowDescriptionReaderTest {
 	@Test
 	public void test_simpleJob() throws XMLStreamException, IOException, SAXException {
 		xml.writeStartDocument();
-			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPPER_JOB);
 				xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
 				//importer
 				xml.writeStartElement(WorkflowDescriptionReader.TAG_IMPORTER);
@@ -173,7 +173,7 @@ public class WorkflowDescriptionReaderTest {
 	@Test
 	public void test_customization() throws XMLStreamException, IOException, SAXException {
 		xml.writeStartDocument();
-			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPPER_JOB);
 				xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
 				//manipulator
 				xml.writeStartElement(WorkflowDescriptionReader.TAG_MANIPULATOR);
