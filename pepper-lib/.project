@@ -26,4 +26,10 @@
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>LOOKUP_OSGI_BOOT</name>
+			<value>file:/media/workspace/tmp/download/jetty-8/jetty-osgi-boot-9.2.12.v20150709-sources</value>
+		</variable>
+	</variableList>
 </projectDescription>

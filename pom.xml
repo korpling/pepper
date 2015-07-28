@@ -10,6 +10,7 @@
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
 		<module>pepper-gui</module>
+		<module>pepper-service</module>
 	</modules>
 	<description>Pepper is a plugable converter framework to convert linguistic data between several
         formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged

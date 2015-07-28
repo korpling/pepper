@@ -206,10 +206,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 		
 		if (true /*isServer*/){
-			frameworkProperties.put("jetty.home", "path to folder containing webapp.xml, I guess");
-//			frameworkProperties.put("jetty.home.bundle", ""); //jetty.home OR jetty.home.bundle, not both! Since pepper-gui is not a bundle, it's a war, this might not work out
-			frameworkProperties.put("jetty.etc.config.urls", "webapp.xml");
-		}
+			frameworkProperties.put("jetty.home", "./conf/web/");
+//			frameworkProperties.put("org.osgi.framework.system.packages.extra",", com.eclipsesource.jaxrs.provider.multipart, org.glassfish.jersey.servlet, com.sun.jersey.spi.container.servlet, com.sun.jersey.api.core, jersey.repackaged.com.google.common.base");
+			frameworkProperties.put("jetty.etc.config.urls", /*"jetty-web.xml, jetty.xml"*/"jetty.xml");
+		} 
 		
 		EclipseStarter.setInitialProperties(frameworkProperties);
 		bc = EclipseStarter.startup(new String[] {}, null);
