@@ -430,9 +430,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 			resourcePathStr = retrieveResourcePathFromBundle(module);
 		}
 
-		if (resourcePathStr == null)
-			logger.warn("Cannot set resource for pepper module '" + module.getName() + "'.");
-		else {
+		if (resourcePathStr == null){
+			logger.warn("Cannot set resource for Pepper module '" + module.getName() + "'.");
+		}else {
 			URI resourcePathURI = URI.createFileURI(resourcePathStr);
 			File resourcePathFile = new File(resourcePathURI.toFileString());
 
@@ -483,19 +483,23 @@ public class ModuleResolverImpl implements ModuleResolver {
 						break;
 					}
 				}
-				if (location == null)
-					throw new PepperFWException("Cannot retrieve a location out of OSGi parameters for retrieving resource path for Pepper module '" + module.getName() + "'. ");
-				if (location.endsWith(".jar"))
-					location = location.replace(".jar", "/");
-				else {
-					if (!location.endsWith("/"))
-						location = location + "/";
-					location = location + PepperConfiguration.SOURCES_RESOURCES;
-
+				if (location == null){
+					logger.warn("Cannot find location of resource folder for Pepper module '" + module.getName() + "'. This could cause problems running the module. Tried to detect the location via system property '"+PROP_OSGI_BUNDLES+"' which was '"+System.getProperty(PROP_OSGI_BUNDLES)+"'. ");
+				}else{
+					if (location.endsWith(".jar")){
+						location = location.replace(".jar", "/");
+					}else {
+						if (!location.endsWith("/")){
+							location = location + "/";
+						}
+						location = location + PepperConfiguration.SOURCES_RESOURCES;
+	
+					}
+					resourcePathStr = location;
+					if (resourcePathStr.startsWith("file:")){
+						resourcePathStr = resourcePathStr.replace("file:", "");
+					}
 				}
-				resourcePathStr = location;
-				if (resourcePathStr.startsWith("file:"))
-					resourcePathStr = resourcePathStr.replace("file:", "");
 			}
 		}
 		return (resourcePathStr);
