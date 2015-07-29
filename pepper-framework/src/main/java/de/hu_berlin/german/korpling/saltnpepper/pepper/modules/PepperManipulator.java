@@ -17,8 +17,6 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
-import org.eclipse.emf.common.util.URI;
-
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;

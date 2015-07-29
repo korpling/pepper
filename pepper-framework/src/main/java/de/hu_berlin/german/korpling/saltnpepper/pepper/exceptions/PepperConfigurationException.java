@@ -17,10 +17,11 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
-
 /**
  * Is thrown, when any exception occurs concerning the configuration of Pepper.
- * For instance a configuration file cannot be read, or an invalid value is contained.
+ * For instance a configuration file cannot be read, or an invalid value is
+ * contained.
+ * 
  * @author Florian Zipser
  *
  */
@@ -30,12 +31,16 @@ public class PepperConfigurationException extends PepperException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = 6230810240391210746L;
-	public PepperConfigurationException()
-	{ super(); }
-	
-    public PepperConfigurationException(String s)
-    { super(s); }
-    
-	public PepperConfigurationException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public PepperConfigurationException() {
+		super();
+	}
+
+	public PepperConfigurationException(String s) {
+		super(s);
+	}
+
+	public PepperConfigurationException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }

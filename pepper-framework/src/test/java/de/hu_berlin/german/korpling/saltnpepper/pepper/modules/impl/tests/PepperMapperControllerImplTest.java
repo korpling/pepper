@@ -30,8 +30,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapper
 
 public class PepperMapperControllerImplTest {
 
-	private PepperMapperController fixture= null; 
-	
+	private PepperMapperController fixture = null;
+
 	public PepperMapperController getFixture() {
 		return fixture;
 	}
@@ -48,11 +48,11 @@ public class PepperMapperControllerImplTest {
 	}
 
 	@Test
-	public void testSetSElementId(){
-		try{
+	public void testSetSElementId() {
+		try {
 			getFixture().setSElementId(null);
 			fail();
-		}catch(PepperModuleException e){
+		} catch (PepperModuleException e) {
 			// do nothing
 		}
 	}

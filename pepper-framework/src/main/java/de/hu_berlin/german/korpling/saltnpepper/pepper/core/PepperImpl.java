@@ -72,16 +72,16 @@ public class PepperImpl implements Pepper {
 		}
 	}
 
-	/** {@inheritDoc Pepper#isImportable(URI, PepperModuleDesc)}} **/
-	public Double isImportable(URI corpusPath, PepperModuleDesc description){
-		for (PepperImporter importer: getModuleResolver().getPepperImporters()){
-			if (importer.getName().equals(description.getName())){
-				return(importer.isImportable(corpusPath));
+	/** {@inheritDoc Pepper#isImportable(URI, PepperModuleDesc)} **/
+	public Double isImportable(URI corpusPath, PepperModuleDesc description) {
+		for (PepperImporter importer : getModuleResolver().getPepperImporters()) {
+			if (importer.getName().equals(description.getName())) {
+				return (importer.isImportable(corpusPath));
 			}
 		}
-		return(null);
+		return (null);
 	}
-	
+
 	class JobEntry {
 		public PepperJobImpl pepperJob = null;
 		public File location = null;

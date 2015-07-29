@@ -53,7 +53,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
 
 	protected Logger logger = LoggerFactory.getLogger("Pepper");
-	
+
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
 	 * the thread.
@@ -76,7 +76,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperMapper(PepperMapper pepperMapper) {
 		this.pepperMapper = pepperMapper;
-		if (this.pepperMapper != null){
+		if (this.pepperMapper != null) {
 			mappingSubjects = pepperMapper.getMappingSubjects();
 		}
 	}
@@ -138,7 +138,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void setSElementId(SElementId sElementId) {
-		if (sElementId == null){
+		if (sElementId == null) {
 			throw new PepperModuleException(getPepperMapper(), "Cannot set an empty sElementId.");
 		}
 		MappingSubject subj = null;
@@ -179,22 +179,23 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 */
 	@Override
 	public void run() {
-		//if an exception is thrown, it will be stored to do some clean up first and throw it it afterwards.
-		PepperException origException= null;
+		// if an exception is thrown, it will be stored to do some clean up
+		// first and throw it it afterwards.
+		PepperException origException = null;
 		try {
 			this.map();
 		} catch (Exception e) {
 			if (e instanceof PepperException) {
-				origException= (PepperException) e;
+				origException = (PepperException) e;
 			} else {
-				origException= new PepperModuleException("Any exception occured while mapping.", e);
+				origException = new PepperModuleException("Any exception occured while mapping.", e);
 			}
 		} finally {// should not throw an error, if catch has catched an error,
 					// otherwise catch-block would be ignored
 			progress = 1d;
 			// reset mapper object, in case it uses a big amount of main memory
 			this.setPepperMapper(null);
-			if (this.getPepperModule() == null){
+			if (this.getPepperModule() == null) {
 				throw new PepperFWException("The containing PepperModule object is not set.");
 			}
 			if (getMappingSubjects().size() > 0) {
@@ -204,16 +205,18 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 					}
 				}
 			}
-			PepperException newException= null;
-			try{
-				//TODO sometimes an exception occurs on clean up in error case, weird, but true, therefore the original exception MUST be thrown
+			PepperException newException = null;
+			try {
+				// TODO sometimes an exception occurs on clean up in error case,
+				// weird, but true, therefore the original exception MUST be
+				// thrown
 				this.getPepperModule().done(this);
-			}catch(PepperException e){
-				newException= e;
-			}finally{
-				if (origException!= null){
+			} catch (PepperException e) {
+				newException = e;
+			} finally {
+				if (origException != null) {
 					throw origException;
-				}else if (newException!= null){
+				} else if (newException != null) {
 					throw newException;
 				}
 			}
@@ -231,29 +234,26 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			mappingResult = this.getPepperMapper().mapSCorpus();
 			progress = 1d;
 		} else if (this.getPepperMapper().getSDocument() != null) {
-			//real document mapping
-			//preprocessing
-			for (MappingSubject subj: getMappingSubjects()){
+			// real document mapping
+			// preprocessing
+			for (MappingSubject subj : getMappingSubjects()) {
 				getPepperModule().before(subj.getSElementId());
 			}
-			//real document mapping
+			// real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
-			//postprocessing
-			for (MappingSubject subj: getMappingSubjects()){
+			// postprocessing
+			for (MappingSubject subj : getMappingSubjects()) {
 				getPepperModule().after(subj.getSElementId());
 			}
 
-		}else{
+		} else {
 			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		}
-		if (	(!DOCUMENT_STATUS.FAILED.equals(getPepperMapper().getMappingResult()))&&
-				(!DOCUMENT_STATUS.COMPLETED.equals(getPepperMapper().getMappingResult()))&&
-				(!DOCUMENT_STATUS.DELETED.equals(getPepperMapper().getMappingResult()))){
+		if ((!DOCUMENT_STATUS.FAILED.equals(getPepperMapper().getMappingResult())) && (!DOCUMENT_STATUS.COMPLETED.equals(getPepperMapper().getMappingResult())) && (!DOCUMENT_STATUS.DELETED.equals(getPepperMapper().getMappingResult()))) {
 			this.getPepperMapper().setMappingResult(mappingResult);
 		}
 	}
 
-		
 	/** {@link PepperModule} containing this object **/
 	protected PepperModule pepperModule = null;
 
@@ -263,8 +263,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void setPepperModule(PepperModule pepperModule) {
 		this.pepperModule = pepperModule;
-		if (this.pepperModule!= null){
-			logger= LoggerFactory.getLogger(getPepperModule().getName());
+		if (this.pepperModule != null) {
+			logger = LoggerFactory.getLogger(getPepperModule().getName());
 		}
 	}
 

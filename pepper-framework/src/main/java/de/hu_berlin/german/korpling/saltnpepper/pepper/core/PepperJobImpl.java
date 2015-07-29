@@ -114,7 +114,7 @@ public class PepperJobImpl extends PepperJob {
 	 *            unique identifier for this job. The id is not changeable
 	 */
 	public PepperJobImpl(String jobId) {
-		if ((jobId == null) || (jobId.isEmpty())){
+		if ((jobId == null) || (jobId.isEmpty())) {
 			throw new PepperFWException("Cannot initialize a PepperJob with an empty id.");
 		}
 		id = jobId;
@@ -141,7 +141,7 @@ public class PepperJobImpl extends PepperJob {
 	 *            new {@link SaltProject}
 	 */
 	public void setSaltProject(SaltProject saltProject) {
-		if (inProgress.isLocked()){
+		if (inProgress.isLocked()) {
 			throw new PepperInActionException("Cannot set a new salt project to job '" + getId() + "', since this job was already started.");
 		}
 		this.saltProject = saltProject;
@@ -157,8 +157,8 @@ public class PepperJobImpl extends PepperJob {
 	 * @return given customization properties
 	 */
 	public PepperConfiguration getConfiguration() {
-		if (props== null){
-			props= new PepperConfiguration();
+		if (props == null) {
+			props = new PepperConfiguration();
 		}
 		return props;
 	}
@@ -171,7 +171,7 @@ public class PepperJobImpl extends PepperJob {
 	 *            for customization
 	 */
 	public void setConfiguration(PepperConfiguration conf) {
-		if (inProgress.isLocked()){
+		if (inProgress.isLocked()) {
 			throw new PepperInActionException("Cannot set a new configuration to job '" + getId() + "', since this job was already started.");
 		}
 		this.props = conf;
@@ -204,7 +204,7 @@ public class PepperJobImpl extends PepperJob {
 	 *            reference to resolver to resolve {@link PepperModule} objects
 	 */
 	public void setModuleResolver(ModuleResolver moduleResolver) {
-		if (inProgress.isLocked()){
+		if (inProgress.isLocked()) {
 			throw new PepperInActionException("Cannot set a new module resolver to job '" + getId() + "', since this job was already started.");
 		}
 		this.moduleResolver = moduleResolver;
@@ -219,7 +219,7 @@ public class PepperJobImpl extends PepperJob {
 	 * @return list of {@link Step} objects.
 	 **/
 	public List<Step> getManipulationSteps() {
-		if (manipulationSteps == null){
+		if (manipulationSteps == null) {
 			synchronized (this) {
 				if (manipulationSteps == null) {
 					manipulationSteps = new Vector<Step>();
@@ -238,7 +238,7 @@ public class PepperJobImpl extends PepperJob {
 	 * @return list of {@link Step} objects.
 	 **/
 	public List<Step> getImportSteps() {
-		if (importSteps == null){
+		if (importSteps == null) {
 			synchronized (this) {
 				if (importSteps == null) {
 					importSteps = new Vector<Step>();
@@ -257,7 +257,7 @@ public class PepperJobImpl extends PepperJob {
 	 * @return list of {@link Step} objects.
 	 **/
 	public List<Step> getExportSteps() {
-		if (exportSteps == null){
+		if (exportSteps == null) {
 			synchronized (this) {
 				if (exportSteps == null) {
 					exportSteps = new Vector<Step>();
@@ -277,13 +277,13 @@ public class PepperJobImpl extends PepperJob {
 	 **/
 	public List<Step> getAllSteps() {
 		List<Step> allSteps = new Vector<Step>();
-		if (getImportSteps() != null){
+		if (getImportSteps() != null) {
 			allSteps.addAll(getImportSteps());
 		}
-		if (getManipulationSteps() != null){
+		if (getManipulationSteps() != null) {
 			allSteps.addAll(getManipulationSteps());
 		}
-		if (getExportSteps() != null){
+		if (getExportSteps() != null) {
 			allSteps.addAll(getExportSteps());
 		}
 		return (allSteps);
@@ -311,24 +311,24 @@ public class PepperJobImpl extends PepperJob {
 	 * @return the created {@link Step} object
 	 */
 	public synchronized Step addStep(StepDesc stepDesc) {
-		if (inProgress.isLocked()){
+		if (inProgress.isLocked()) {
 			throw new PepperInActionException("Cannot add a new step description to job '" + getId() + "', since this job was already started.");
 		}
-		if (stepDesc == null){
+		if (stepDesc == null) {
 			throw new WorkflowException("Cannot deal with an empty StepDesc object for job '" + getId() + "'.");
 		}
-		if (getModuleResolver() == null){
+		if (getModuleResolver() == null) {
 			throw new PepperFWException("Cannot add step '" + stepDesc + "', because no module resolver is set.");
 		}
 
 		Step step = null;
-		if (MODULE_TYPE.MANIPULATOR.equals(stepDesc.getModuleType())){
+		if (MODULE_TYPE.MANIPULATOR.equals(stepDesc.getModuleType())) {
 			step = new Step("ma" + (getManipulationSteps().size() + 1), stepDesc);
-		}else if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())){
+		} else if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())) {
 			step = new Step("im" + (getImportSteps().size() + 1), stepDesc);
-		}else if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())){
+		} else if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())) {
 			step = new Step("ex" + (getExportSteps().size() + 1), stepDesc);
-		}else{
+		} else {
 			throw new WorkflowException("Cannot add step description, because the 'MODULE_TYPE' is not set.");
 		}
 		addStep(step);
@@ -349,11 +349,11 @@ public class PepperJobImpl extends PepperJob {
 	 *            {@link Step} object to be added to internal list
 	 */
 	public synchronized void addStep(Step step) {
-		if (inProgress.isLocked()){
+		if (inProgress.isLocked()) {
 			throw new PepperInActionException("Cannot add a new step to job '" + getId() + "', since this job was already started.");
 		}
 
-		if (step == null){
+		if (step == null) {
 			throw new WorkflowException("Cannot deal with an empty step object for job '" + getId() + "'.");
 		}
 		if ((step.getModuleController() == null) || (step.getModuleController().getPepperModule() == null)) {
@@ -423,10 +423,10 @@ public class PepperJobImpl extends PepperJob {
 	 */
 	protected synchronized void wire() {
 
-		if (getImportSteps().size() == 0){
+		if (getImportSteps().size() == 0) {
 			throw new NotInitializedException("Cannot wire job '" + this + "', since no import steps were given.");
 		}
-		if (getExportSteps().size() == 0){
+		if (getExportSteps().size() == 0) {
 			throw new NotInitializedException("Cannot wire job '" + this + "', since no export steps were given.");
 		}
 
@@ -466,7 +466,7 @@ public class PepperJobImpl extends PepperJob {
 
 			// connect all import steps with first manipulation step
 			Step firstManipulationStep = getManipulationSteps().get(0);
-			if (firstManipulationStep == null){
+			if (firstManipulationStep == null) {
 				throw new PepperFWException("The first step in list of manipulation steps is null.");
 			}
 			// compute all ids of first manipulation step
@@ -503,7 +503,7 @@ public class PepperJobImpl extends PepperJob {
 			}
 
 			Step lastManipulationStep = getManipulationSteps().get(getManipulationSteps().size() - 1);
-			if (lastManipulationStep == null){
+			if (lastManipulationStep == null) {
 				throw new PepperFWException("The last step in list of manipulation steps is null.");
 			}
 			// compute all ids of first manipulation step
@@ -551,13 +551,13 @@ public class PepperJobImpl extends PepperJob {
 	 */
 	protected synchronized void importCorpusStructures() {
 		try {
-			if (!isWired){
+			if (!isWired) {
 				wire();
 			}
 			List<Future<?>> futures = new Vector<Future<?>>();
 			int numOfImportStep = 0;
 			for (Step importStep : getImportSteps()) {
-				if (getSaltProject() == null){
+				if (getSaltProject() == null) {
 					throw new PepperFWException("Cannot import corpus structure, because no salt project is set.");
 				}
 				SCorpusGraph sCorpusGraph = null;
@@ -607,8 +607,8 @@ public class PepperJobImpl extends PepperJob {
 					getDocumentControllers().add(documentController);
 					File docFile = null;
 					String prefix = sDoc.getSName();
-					File tmpPath= new File(getConfiguration().getWorkspace().getAbsolutePath()+"/"+getId());
-					if (!tmpPath.exists()){
+					File tmpPath = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + getId());
+					if (!tmpPath.exists()) {
 						tmpPath.mkdirs();
 					}
 					try {
@@ -617,10 +617,10 @@ public class PepperJobImpl extends PepperJob {
 						}
 						docFile = File.createTempFile(prefix, "." + SaltFactory.FILE_ENDING_SALT, tmpPath);
 					} catch (IOException e) {
-						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' to file '"+((docFile== null)?docFile:docFile.getAbsolutePath())+"' in folder for temporary files '"+tmpPath+"'. "+e.getMessage(), e);
+						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' to file '" + ((docFile == null) ? docFile : docFile.getAbsolutePath()) + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
-					if (!getConfiguration().getKeepDocuments()){
+					if (!getConfiguration().getKeepDocuments()) {
 						docFile.deleteOnExit();
 					}
 
@@ -639,9 +639,9 @@ public class PepperJobImpl extends PepperJob {
 			}
 			isImportedCorpusStructure = true;
 		} catch (Exception e) {
-			if (e instanceof PepperException){
+			if (e instanceof PepperException) {
 				throw (PepperException) e;
-			}else{
+			} else {
 				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: ", e);
 			}
 		}
@@ -663,15 +663,15 @@ public class PepperJobImpl extends PepperJob {
 	protected List<SElementId> unifyProposedImportOrders(SCorpusGraph sCorpusGraph) {
 		List<SElementId> retVal = new Vector<SElementId>();
 
-		if (sCorpusGraph == null){
+		if (sCorpusGraph == null) {
 			throw new PepperFWException("Cannot unify the import order, for an empty SCorpusGraph object.");
 		}
 		Vector<List<SElementId>> listOfOrders = new Vector<List<SElementId>>();
 		for (Step step : getAllSteps()) {
-			if (step.getModuleController() == null){
+			if (step.getModuleController() == null) {
 				throw new PepperFWException("Cannot unify proposed import orders, since step '" + step.getId() + "' does not contain a module controller.");
 			}
-			if (step.getModuleController().getPepperModule() == null){
+			if (step.getModuleController().getPepperModule() == null) {
 				throw new PepperFWException("Cannot unify proposed import orders, since module controller '" + step.getModuleController().getId() + "' does not contain a Pepper module.");
 			}
 
@@ -801,7 +801,7 @@ public class PepperJobImpl extends PepperJob {
 			retVal.append("processing time:\t");
 			retVal.append(DurationFormatUtils.formatDurationHMS(getProcessingTime()));
 			retVal.append("\n");
-			if (getConfiguration().getDetaialedStatReport()){
+			if (getConfiguration().getDetaialedStatReport()) {
 				retVal.append(detailedStr.toString());
 			}
 		}
@@ -823,7 +823,7 @@ public class PepperJobImpl extends PepperJob {
 		ArrayList<Pair<Step, Collection<String>>> retVal = new ArrayList<>();
 		for (Step step : getAllSteps()) {
 			if (!step.getModuleController().getPepperModule().isReadyToStart()) {
-				Pair<Step, Collection<String>> stepReason= new ImmutablePair<Step, Collection<String>>(step, step.getModuleController().getPepperModule().getStartProblems());
+				Pair<Step, Collection<String>> stepReason = new ImmutablePair<Step, Collection<String>>(step, step.getModuleController().getPepperModule().getStartProblems());
 				retVal.add(stepReason);
 				logger.error("Cannot run pepper job '" + getId() + "', because one of the involved modules '" + step.getModuleController().getPepperModule().getFingerprint() + "' is not ready to run.");
 			}
@@ -832,19 +832,22 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/** Stores the time when this job was started **/
-	private Long startTime= 0l;
+	private Long startTime = 0l;
+
 	/** Returns the time when this job was started **/
-	private Long getStartTime(){
+	private Long getStartTime() {
 		return startTime;
 	}
+
 	/**
 	 * Returns the amount of time the job already took.
+	 * 
 	 * @return time in milli seconds
 	 */
-	public Long getProcessingTime(){
-		return System.currentTimeMillis()- startTime;
+	public Long getProcessingTime() {
+		return System.currentTimeMillis() - startTime;
 	}
-	
+
 	/**
 	 * Specifies if this job currently runs a conversion. If this is the case,
 	 * some other operations, like adding {@link Step}s cannot be done
@@ -865,104 +868,102 @@ public class PepperJobImpl extends PepperJob {
 	 * </ul>
 	 */
 	public void convert() {
-		if (!inProgress.tryLock()){
+		if (!inProgress.tryLock()) {
 			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
 		}
 		inProgress.lock();
 		try {
-			startTime= System.currentTimeMillis();
+			startTime = System.currentTimeMillis();
 			status = JOB_STATUS.IN_PROGRESS;
 			if (!isWired) {
 				wire();
 			}
 			if (!isReadyToStart) {
-				Collection<Pair<Step, Collection<String>>> notReadyModules= checkReadyToStart();
+				Collection<Pair<Step, Collection<String>>> notReadyModules = checkReadyToStart();
 				if (notReadyModules.size() != 0) {
-					StringBuilder str= new StringBuilder();
-					for (Pair<Step, Collection<String>> problems: notReadyModules){
+					StringBuilder str = new StringBuilder();
+					for (Pair<Step, Collection<String>> problems : notReadyModules) {
 						str.append("[");
 						str.append(problems.getLeft());
 						str.append(": ");
 						str.append(problems.getRight());
 						str.append("], ");
 					}
-					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '"+str.toString()+"'. ");
+					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '" + str.toString() + "'. ");
 				}
 			}
-			if (!isImportedCorpusStructure){
+			if (!isImportedCorpusStructure) {
 				importCorpusStructures();
 			}
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
 			// create a future for each step
 			for (Step step : getAllSteps()) {
 				if (step.getModuleController().getPepperModule().getSaltProject() == null)
-					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());{
-						futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().processDocumentStructures()));
-					}
+					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());
+				{
+					futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(), step.getModuleController().processDocumentStructures()));
+				}
 			}
-			
+
 			// log workflow information
-			int stepNum= 0; //current number of step
-			StringBuilder str= new StringBuilder();
+			int stepNum = 0; // current number of step
+			StringBuilder str = new StringBuilder();
 			for (Step step : getAllSteps()) {
 				stepNum++;
 				str.append("+----------------------------------- step ");
 				str.append(stepNum);
 				str.append(" -----------------------------------+\n");
-				
-				String format="|%-15s%-63s|\n";
-				str.append(String.format(format, step.getModuleType().toString().toLowerCase()+":", step.getName()));
+
+				String format = "|%-15s%-63s|\n";
+				str.append(String.format(format, step.getModuleType().toString().toLowerCase() + ":", step.getName()));
 				str.append(String.format(format, "path:", step.getCorpusDesc().getCorpusPath()));
-				if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())){
-					int idxCorpusGraph= getSaltProject().getSCorpusGraphs().indexOf(((PepperImporter)step.getModuleController().getPepperModule()).getSCorpusGraph());
+				if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())) {
+					int idxCorpusGraph = getSaltProject().getSCorpusGraphs().indexOf(((PepperImporter) step.getModuleController().getPepperModule()).getSCorpusGraph());
 					str.append(String.format(format, "corpus index:", idxCorpusGraph));
 				}
-				
-				boolean hasProperties= false;
-				StringBuilder propStr= new StringBuilder();
-				if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()!= null){
-					//log all properties of all modules and their values
-					
-					format="|               %-25s%-38s|\n";
-					for (PepperModuleProperty<?> prop: step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()){
-						if (prop.getValue()!= null){
-							hasProperties= true;
-							propStr.append(String.format(format, prop.getName()+":", prop.getValue()));
+
+				boolean hasProperties = false;
+				StringBuilder propStr = new StringBuilder();
+				if (step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions() != null) {
+					// log all properties of all modules and their values
+
+					format = "|               %-25s%-38s|\n";
+					for (PepperModuleProperty<?> prop : step.getModuleController().getPepperModule().getProperties().getPropertyDesctriptions()) {
+						if (prop.getValue() != null) {
+							hasProperties = true;
+							propStr.append(String.format(format, prop.getName() + ":", prop.getValue()));
 						}
 					}
 				}
-				format="|%-15s%-63s|\n";
-				if (hasProperties){
+				format = "|%-15s%-63s|\n";
+				if (hasProperties) {
 					str.append(String.format(format, "properties:", ""));
 					str.append(propStr.toString());
-				}else{
+				} else {
 					str.append(String.format(format, "properties:", "- none -"));
 				}
 				str.append("|                                                                              |\n");
 			}
 			str.append("+------------------------------------------------------------------------------+\n");
 			logger.info(str.toString());
-			
+
 			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
 				// wait until all document-structures have been imported
 				try {
 					future.getRight().get();
 				} catch (ExecutionException e) {
-					if (	(e.getCause()!= null)&&
-							(e.getCause() instanceof PepperException)){
-							throw (PepperException)e.getCause();
+					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+						throw (PepperException) e.getCause();
 					}
 					throw new PepperModuleException("Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ", e.getCause());
 				} catch (InterruptedException e) {
-					if (	(e.getCause()!= null)&&
-							(e.getCause() instanceof PepperException)){
-							throw (PepperException)e.getCause();
+					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+						throw (PepperException) e.getCause();
 					}
 					throw new PepperFWException("Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ", e.getCause());
 				} catch (CancellationException e) {
-					if (	(e.getCause()!= null)&&
-							(e.getCause() instanceof PepperException)){
-							throw (PepperException)e.getCause();
+					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+						throw (PepperException) e.getCause();
 					}
 					throw new PepperFWException("Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ", e.getCause());
 				}
@@ -970,10 +971,10 @@ public class PepperJobImpl extends PepperJob {
 			status = JOB_STATUS.ENDED;
 		} catch (Exception e) {
 			status = JOB_STATUS.ENDED_WITH_ERRORS;
-			if (e instanceof PepperException){
+			if (e instanceof PepperException) {
 				throw (PepperException) e;
-			}else{
-				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: "+e.getMessage(), e);
+			} else {
+				throw new PepperFWException("An exception occured in job '" + getId() + "' while importing the corpus-structure. See nested exception: " + e.getMessage(), e);
 			}
 		} finally {
 			inProgress.unlock();
@@ -987,7 +988,7 @@ public class PepperJobImpl extends PepperJob {
 	 * {@link SaltProject} is the result.
 	 */
 	public void convertFrom() {
-		if (!inProgress.tryLock()){
+		if (!inProgress.tryLock()) {
 			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
 		}
 		inProgress.lock();
@@ -1006,7 +1007,7 @@ public class PepperJobImpl extends PepperJob {
 	 * already 'filled'.
 	 */
 	public void convertTo() {
-		if (!inProgress.tryLock()){
+		if (!inProgress.tryLock()) {
 			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
 		}
 		inProgress.lock();
@@ -1060,7 +1061,7 @@ public class PepperJobImpl extends PepperJob {
 	public int getMaxNumberOfDocuments() {
 		return (maxNumOfDocuments);
 	}
-	
+
 	/**
 	 * Returns the current number of {@link SDocument} objects which could be
 	 * processed at the same time
@@ -1068,7 +1069,7 @@ public class PepperJobImpl extends PepperJob {
 	 * @return number of documents
 	 */
 	public int getNumOfActiveDocuments() {
-		return(getActiveDocuments().size());
+		return (getActiveDocuments().size());
 	}
 
 	/** lock for correct change of {@link #currNumOfDocuments} **/
@@ -1079,15 +1080,16 @@ public class PepperJobImpl extends PepperJob {
 	 **/
 	private volatile Condition numOfDocsCondition = numOfDocsLock.newCondition();
 	/** A set of all currently active documents. **/
-	private Set<DocumentController> activeDocuments= null;
-	/** Returns a set of all currently active documents.**/
-	public Set<DocumentController> getActiveDocuments(){
-		if (activeDocuments== null){
-			activeDocuments= new HashSet<>();
+	private Set<DocumentController> activeDocuments = null;
+
+	/** Returns a set of all currently active documents. **/
+	public Set<DocumentController> getActiveDocuments() {
+		if (activeDocuments == null) {
+			activeDocuments = new HashSet<>();
 		}
-		return(activeDocuments);
+		return (activeDocuments);
 	}
-	
+
 	/**
 	 * Returns true, if a {@link SDocument} or more precisely spoken a
 	 * {@link SDocumentGraph} could be woken up or imported. This is the case,
@@ -1140,139 +1142,143 @@ public class PepperJobImpl extends PepperJob {
 	 */
 	@Override
 	public URI save(URI uri) {
-		if (uri== null){
-			throw new PepperException("Cannot save Pepper job '"+getId()+"', because the passed uri is empty. ");
+		if (uri == null) {
+			throw new PepperException("Cannot save Pepper job '" + getId() + "', because the passed uri is empty. ");
 		}
-		File file=null;
-		if (PepperUtil.FILE_ENDING_PEPPER.equals(uri.fileExtension())){
+		File file = null;
+		if (PepperUtil.FILE_ENDING_PEPPER.equals(uri.fileExtension())) {
 			// passed uri already points to a Pepper file
-			file= new File(uri.toFileString());
-		}else{
-			//uri points to a directory
-			String directory= uri.toFileString();
-			if (!directory.endsWith("/")){
-				directory= directory+"/";
+			file = new File(uri.toFileString());
+		} else {
+			// uri points to a directory
+			String directory = uri.toFileString();
+			if (!directory.endsWith("/")) {
+				directory = directory + "/";
 			}
-			file= new File(directory+getId()+"."+PepperUtil.FILE_ENDING_PEPPER);
+			file = new File(directory + getId() + "." + PepperUtil.FILE_ENDING_PEPPER);
 		}
-		//create parent directory of file
-		if (!file.getParentFile().exists()){
-			if (!file.getParentFile().mkdirs()){
-				if (!file.getParentFile().canWrite()){
-					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file, because of an access permission. ");
-				}else{
-					throw new PepperModuleXMLResourceException("Cannot create folder '"+file.getParentFile().getAbsolutePath()+"' to store Pepper workflow file. ");
+		// create parent directory of file
+		if (!file.getParentFile().exists()) {
+			if (!file.getParentFile().mkdirs()) {
+				if (!file.getParentFile().canWrite()) {
+					throw new PepperModuleXMLResourceException("Cannot create folder '" + file.getParentFile().getAbsolutePath() + "' to store Pepper workflow file, because of an access permission. ");
+				} else {
+					throw new PepperModuleXMLResourceException("Cannot create folder '" + file.getParentFile().getAbsolutePath() + "' to store Pepper workflow file. ");
 				}
-			};
+			}
+			;
 		}
-		
-		XMLOutputFactory xof = XMLOutputFactory.newInstance();     
+
+		XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		XMLStreamWriter xml;
-		
+
 		try {
 			xml = new XMLStreamWriter(xof.createXMLStreamWriter(new FileWriter(file.getAbsolutePath())));
 			xml.setPrettyPrint(true);
 			xml.writeStartDocument();
-				//<pepper>
-				xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
-					if (getId()!= null){
-						xml.writeAttribute(WorkflowDescriptionReader.ATT_ID, getId());
-					}
-					xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
-					//<customization> ???
-					List<StepDesc> importers= new ArrayList<>();
-					List<StepDesc> manipulators= new ArrayList<>();
-					List<StepDesc> exporters= new ArrayList<>();
-					for (StepDesc step: getStepDescs()){
-						if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())){
-							importers.add(step);
-						}else if (MODULE_TYPE.MANIPULATOR.equals(step.getModuleType())){
-							manipulators.add(step);
-						}else if (MODULE_TYPE.EXPORTER.equals(step.getModuleType())){
-							exporters.add(step);
-						}
-					}
-					
-					//<importer>
-					for (StepDesc step: importers){
-						xml.writeStartElement(WorkflowDescriptionReader.TAG_IMPORTER);
-						save_module(xml, step);
-						xml.writeEndElement();
-					}
-					//<manipulator>
-					for (StepDesc step: manipulators){
-						xml.writeStartElement(WorkflowDescriptionReader.TAG_MANIPULATOR);
-						save_module(xml, step);
-						xml.writeEndElement();
-					}
-					//<exporter>
-					for (StepDesc step: exporters){
-						xml.writeStartElement(WorkflowDescriptionReader.TAG_EXPORTER);
-						save_module(xml, step);
-						xml.writeEndElement();
-					}
+			// <pepper>
+			xml.writeStartElement(WorkflowDescriptionReader.TAG_PEPEPR_JOB);
+			if (getId() != null) {
+				xml.writeAttribute(WorkflowDescriptionReader.ATT_ID, getId());
+			}
+			xml.writeAttribute(WorkflowDescriptionReader.ATT_VERSION, "1.0");
+			// <customization> ???
+			List<StepDesc> importers = new ArrayList<>();
+			List<StepDesc> manipulators = new ArrayList<>();
+			List<StepDesc> exporters = new ArrayList<>();
+			for (StepDesc step : getStepDescs()) {
+				if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())) {
+					importers.add(step);
+				} else if (MODULE_TYPE.MANIPULATOR.equals(step.getModuleType())) {
+					manipulators.add(step);
+				} else if (MODULE_TYPE.EXPORTER.equals(step.getModuleType())) {
+					exporters.add(step);
+				}
+			}
+
+			// <importer>
+			for (StepDesc step : importers) {
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_IMPORTER);
+				save_module(xml, step);
 				xml.writeEndElement();
-	        xml.writeEndDocument();
-	        xml.flush();
+			}
+			// <manipulator>
+			for (StepDesc step : manipulators) {
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_MANIPULATOR);
+				save_module(xml, step);
+				xml.writeEndElement();
+			}
+			// <exporter>
+			for (StepDesc step : exporters) {
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_EXPORTER);
+				save_module(xml, step);
+				xml.writeEndElement();
+			}
+			xml.writeEndElement();
+			xml.writeEndDocument();
+			xml.flush();
 		} catch (XMLStreamException | IOException e) {
-			throw new PepperException("Cannot store Pepper job '"+getId()+"' because of a nested exception. ", e);
+			throw new PepperException("Cannot store Pepper job '" + getId() + "' because of a nested exception. ", e);
 		}
-		return(URI.createFileURI(file.getAbsolutePath()));
+		return (URI.createFileURI(file.getAbsolutePath()));
 	}
-	/** This method is just a helper method for method {@link #save(URI)} to avoid boilerplate code
-	 * @throws XMLStreamException **/
-	private void save_module(XMLStreamWriter xml, StepDesc step) throws XMLStreamException{
-		if (step.getName()!= null){
+
+	/**
+	 * This method is just a helper method for method {@link #save(URI)} to
+	 * avoid boilerplate code
+	 * 
+	 * @throws XMLStreamException
+	 **/
+	private void save_module(XMLStreamWriter xml, StepDesc step) throws XMLStreamException {
+		if (step.getName() != null) {
 			xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, step.getName());
 		}
-		if (step.getCorpusDesc().getFormatDesc().getFormatName()!= null){
+		if (step.getCorpusDesc().getFormatDesc().getFormatName() != null) {
 			xml.writeAttribute(WorkflowDescriptionReader.ATT_FORMAT_NAME, step.getCorpusDesc().getFormatDesc().getFormatName());
 		}
-		if (step.getCorpusDesc().getFormatDesc().getFormatVersion()!= null){
+		if (step.getCorpusDesc().getFormatDesc().getFormatVersion() != null) {
 			xml.writeAttribute(WorkflowDescriptionReader.ATT_FORMAT_VERSION, step.getCorpusDesc().getFormatDesc().getFormatVersion());
 		}
-		if (step.getVersion()!= null){
+		if (step.getVersion() != null) {
 			xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, step.getName());
 		}
-		if (	(step.getCorpusDesc()!= null)&&
-				(step.getCorpusDesc().getCorpusPath()!= null)){
+		if ((step.getCorpusDesc() != null) && (step.getCorpusDesc().getCorpusPath() != null)) {
 			xml.writeAttribute(WorkflowDescriptionReader.ATT_PATH, step.getCorpusDesc().getCorpusPath().toFileString());
 		}
-		if (	(step.getProps()!= null) &&
-				(step.getProps().size() > 0)){
+		if ((step.getProps() != null) && (step.getProps().size() > 0)) {
 			xml.writeStartElement(WorkflowDescriptionReader.TAG_CUSTOMIZATION);
-				for (Object key: step.getProps().keySet()){
-					xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
-						xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, key.toString());
-						if (step.getProps().get(key)!= null){
-							xml.writeCharacters(step.getProps().get(key).toString());
-						}
-					xml.writeEndElement();
+			for (Object key : step.getProps().keySet()) {
+				xml.writeStartElement(WorkflowDescriptionReader.TAG_PROP);
+				xml.writeAttribute(WorkflowDescriptionReader.ATT_KEY, key.toString());
+				if (step.getProps().get(key) != null) {
+					xml.writeCharacters(step.getProps().get(key).toString());
 				}
+				xml.writeEndElement();
+			}
 			xml.writeEndElement();
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperJob#clear()}
 	 */
 	@Override
-	public void clear(){
-		//remove all existing steps
-		if (stepDescs!= null){
+	public void clear() {
+		// remove all existing steps
+		if (stepDescs != null) {
 			stepDescs.clear();
 		}
-		if (importSteps!= null){
+		if (importSteps != null) {
 			importSteps.clear();
 		}
-		if (manipulationSteps!= null){
+		if (manipulationSteps != null) {
 			manipulationSteps.clear();
 		}
-		if (exportSteps!= null){
+		if (exportSteps != null) {
 			exportSteps.clear();
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperJob#load(URI)}
 	 */
@@ -1280,28 +1286,28 @@ public class PepperJobImpl extends PepperJob {
 	public void load(URI uri) {
 		if (uri.isFile()) {
 			File wdFile = new File(uri.toFileString());
-			//set folder containing workflow description as base dir
+			// set folder containing workflow description as base dir
 			setBaseDir(uri.trimSegments(1));
-			
+
 			SAXParser parser;
 			XMLReader xmlReader;
 			SAXParserFactory factory = SAXParserFactory.newInstance();
-			
+
 			WorkflowDescriptionReader contentHandler = new WorkflowDescriptionReader();
 			contentHandler.setPepperJob(this);
 			contentHandler.setLocation(uri);
-			
-			//remove all existing steps
+
+			// remove all existing steps
 			clear();
-			
+
 			try {
 				parser = factory.newSAXParser();
 				xmlReader = parser.getXMLReader();
 				xmlReader.setContentHandler(contentHandler);
 			} catch (ParserConfigurationException e) {
-				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e.getMessage()+". ", e);
+				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': " + e.getMessage() + ". ", e);
 			} catch (Exception e) {
-				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e.getMessage()+". ", e);
+				throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': " + e.getMessage() + ". ", e);
 			}
 			try {
 				InputStream inputStream = new FileInputStream(wdFile);
@@ -1316,16 +1322,16 @@ public class PepperJobImpl extends PepperJob {
 					xmlReader.setContentHandler(contentHandler);
 					xmlReader.parse(wdFile.getAbsolutePath());
 				} catch (Exception e1) {
-					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': "+e1.getMessage()+". ", e1);
+					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file '" + wdFile.getAbsolutePath() + "': " + e1.getMessage() + ". ", e1);
 				}
 			} catch (Exception e) {
-				if (e instanceof PepperModuleException){
+				if (e instanceof PepperModuleException) {
 					throw (PepperModuleException) e;
-				}else{
-					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception: "+e.getMessage()+". ", e);
+				} else {
+					throw new PepperModuleXMLResourceException("Cannot load Pepper workflow description file'" + wdFile + "', because of a nested exception: " + e.getMessage() + ". ", e);
 				}
 			}
-		} else{
+		} else {
 			throw new UnsupportedOperationException("Currently Pepper can only load workflow description from local files.");
 		}
 	}

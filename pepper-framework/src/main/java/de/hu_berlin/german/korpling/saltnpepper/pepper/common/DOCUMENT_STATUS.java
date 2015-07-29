@@ -20,31 +20,29 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
-
 /**
- * This Enumeration shows the status of a more or less currently processed document.
- * The several status act on three levels:
+ * This Enumeration shows the status of a more or less currently processed
+ * document. The several status act on three levels:
  * <ol>
- *  <li>{@value #NOT_STARTED}</li>
- *  <li>{@value #IN_PROGRESS}</li>
- *  <li>
- *  	<ul>
- *  		<li>{@value #COMPLETED} means, mapping was successful</li>
- * 			<li>{@value #FAILED} means, mapping was not successful and ended with an error</li>
- *   		<li>{@value #DELETED} means, mapping was successful and Mapped object {@link SDocument} or {@link SCorpus} was deleted (for instance when merging objects, and no further processing of mapped object is necessary)</li>
- *  	</ul>
+ * <li>{@value #NOT_STARTED}</li>
+ * <li>{@value #IN_PROGRESS}</li>
+ * <li>
+ * <ul>
+ * <li>{@value #COMPLETED} means, mapping was successful</li>
+ * <li>{@value #FAILED} means, mapping was not successful and ended with an
+ * error</li>
+ * <li>{@value #DELETED} means, mapping was successful and Mapped object
+ * {@link SDocument} or {@link SCorpus} was deleted (for instance when merging
+ * objects, and no further processing of mapped object is necessary)</li>
+ * </ul>
  * </ol>
  * 
  * @author Florian Zipser
  */
 public enum DOCUMENT_STATUS {
-	NOT_STARTED(0, "NOT_STARTED"), 
-	IN_PROGRESS(1, "IN_PROGRESS"),
-	COMPLETED(2, "COMPLETED"),
-	DELETED(3, "DELETED"),
-	FAILED(4, "FAILED");
+	NOT_STARTED(0, "NOT_STARTED"), IN_PROGRESS(1, "IN_PROGRESS"), COMPLETED(2, "COMPLETED"), DELETED(3, "DELETED"), FAILED(4, "FAILED");
 
-	/**	represents the level of the type */
+	/** represents the level of the type */
 	private final int value;
 
 	/** a prosa name of the types */
@@ -57,17 +55,19 @@ public enum DOCUMENT_STATUS {
 
 	/**
 	 * Returns the level of the object in level hierarchie.
+	 * 
 	 * @return level
 	 */
 	public int getValue() {
-	  return value;
+		return value;
 	}
 
 	/**
 	 * Returns a prosa name of the type
+	 * 
 	 * @return prosa name of the type
 	 */
 	public String getName() {
-	  return name;
+		return name;
 	}
 }

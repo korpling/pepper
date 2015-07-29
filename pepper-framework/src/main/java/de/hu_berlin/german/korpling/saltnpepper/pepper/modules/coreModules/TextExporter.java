@@ -35,7 +35,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
  * This is a PepperExporter which extracts and exports the primary text of a
- * Salt model and stores it into a text file. 
+ * Salt model and stores it into a text file.
  * 
  * @author Florian Zipser
  * @version 1.0
@@ -55,10 +55,10 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 		setDesc("This is a PepperExporter which extracts and exports the primary text of a Salt model and stores it into a text file. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
-		
+
 		setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
 		setSDocumentEnding(ENDING_TXT);
-		
+
 	}
 
 	/**
@@ -69,27 +69,27 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				if (getSDocument()!= null && getResourceURI()!= null){
-					for (STextualDS text: getSDocument().getSDocumentGraph().getSTextualDSs()){
-						File outFile= null;
-						String uriStr= getResourceURI().toFileString();
-						
-						if (uriStr== null){
-							uriStr= getResourceURI().toString();
+				if (getSDocument() != null && getResourceURI() != null) {
+					for (STextualDS text : getSDocument().getSDocumentGraph().getSTextualDSs()) {
+						File outFile = null;
+						String uriStr = getResourceURI().toFileString();
+
+						if (uriStr == null) {
+							uriStr = getResourceURI().toString();
 						}
-						if (getSDocument().getSDocumentGraph().getSTextualDSs().size()>1){
-							String extension= "."+ getResourceURI().fileExtension();
-							int pos= uriStr.lastIndexOf(extension);
-							uriStr= uriStr.substring(0, pos)+"_"+text.getSElementPath().fragment()+extension;
+						if (getSDocument().getSDocumentGraph().getSTextualDSs().size() > 1) {
+							String extension = "." + getResourceURI().fileExtension();
+							int pos = uriStr.lastIndexOf(extension);
+							uriStr = uriStr.substring(0, pos) + "_" + text.getSElementPath().fragment() + extension;
 						}
-						outFile= new File(uriStr);
-						PrintWriter out= null;
+						outFile = new File(uriStr);
+						PrintWriter out = null;
 						try {
 							out = new PrintWriter(outFile);
 						} catch (FileNotFoundException e) {
-							throw new PepperModuleException(this, "Cannot write primary text '"+text.getSElementId()+"' to file '"+outFile.getAbsolutePath()+"'. ",e );
+							throw new PepperModuleException(this, "Cannot write primary text '" + text.getSElementId() + "' to file '" + outFile.getAbsolutePath() + "'. ", e);
 						}
-						if (out!= null){
+						if (out != null) {
 							out.print(text.getSText());
 							out.flush();
 							out.close();

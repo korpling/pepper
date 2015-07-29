@@ -26,65 +26,86 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * A subject is a container for {@link SDocument} or {@link SCorpus} object to be merged. Further this 
- * container contains the {@link DOCUMENT_STATUS} and the {@link URI} where the resource is located   
+ * A subject is a container for {@link SDocument} or {@link SCorpus} object to
+ * be merged. Further this container contains the {@link DOCUMENT_STATUS} and
+ * the {@link URI} where the resource is located
+ * 
  * @author Florian Zipser
  *
  */
-public class MappingSubject{
-	/** {@link URI} of resource. The URI could refer a directory or a file, which can be a corpus or a document.*/
-	protected URI resourceURI= null;
-	/**{@inheritDoc PepperMapper#getResourceURI()}*/
+public class MappingSubject {
+	/**
+	 * {@link URI} of resource. The URI could refer a directory or a file, which
+	 * can be a corpus or a document.
+	 */
+	protected URI resourceURI = null;
+
+	/** {@inheritDoc PepperMapper#getResourceURI()} */
 	public URI getResourceURI() {
-		return(resourceURI);
+		return (resourceURI);
 	}
+
 	/** {@inheritDoc PepperMapper#setResourceURI(URI)} */
 	public void setResourceURI(URI resourceURI) {
-		this.resourceURI= resourceURI;
+		this.resourceURI = resourceURI;
 	}
-	/** {@link SElementId} object corresponding to either {@link SDocument} or {@link SCorpus} which should be mapped**/
-	protected SElementId sElementId= null;
+
 	/**
-	 * Returns {@link SElementId} object corresponding to either 
+	 * {@link SElementId} object corresponding to either {@link SDocument} or
+	 * {@link SCorpus} which should be mapped
+	 **/
+	protected SElementId sElementId = null;
+
+	/**
+	 * Returns {@link SElementId} object corresponding to either
 	 * {@link SDocument} or {@link SCorpus} which should be mapped
+	 * 
 	 * @return
 	 */
 	public SElementId getSElementId() {
 		return sElementId;
 	}
+
 	/**
-	 * Sets {@link SElementId} object corresponding to either {@link SDocument} or {@link SCorpus} which should be mapped
+	 * Sets {@link SElementId} object corresponding to either {@link SDocument}
+	 * or {@link SCorpus} which should be mapped
+	 * 
 	 * @param sElementId
 	 */
 	public void setSElementId(SElementId sElementId) {
 		this.sElementId = sElementId;
 	}
-	protected volatile DOCUMENT_STATUS mappingResult= null;
+
+	protected volatile DOCUMENT_STATUS mappingResult = null;
+
 	/** {@inheritDoc PepperMapperConnector#setMappingResult(DOCUMENT_STATUS)} **/
 	public synchronized void setMappingResult(DOCUMENT_STATUS mappingResult) {
-		this.mappingResult= mappingResult;
-		
+		this.mappingResult = mappingResult;
+
 	}
+
 	/** {@inheritDoc PepperMapperConnector#getMappingResult()} **/
 	public DOCUMENT_STATUS getMappingResult() {
-		return(this.mappingResult);
+		return (this.mappingResult);
 	}
+
 	/**
-	 * Returns a String representation of this object. This representation should not be used for
-	 * serialization/deserialization purposes.
+	 * Returns a String representation of this object. This representation
+	 * should not be used for serialization/deserialization purposes.
 	 */
-	public String toString(){
-		StringBuilder builder= new StringBuilder();
-		String globalId= SaltFactory.eINSTANCE.getGlobalId(getSElementId());
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		String globalId = SaltFactory.eINSTANCE.getGlobalId(getSElementId());
 		builder.append("(");
-		if (globalId!= null){
-			builder.append(globalId);	
-		}else builder.append(getSElementId().toString());
+		if (globalId != null) {
+			builder.append(globalId);
+		} else
+			builder.append(getSElementId().toString());
 		builder.append(", ");
 		builder.append(getResourceURI());
 		builder.append(", ");
 		builder.append(getMappingResult());
 		builder.append(")");
-		return(builder.toString());
+		return (builder.toString());
 	}
 }

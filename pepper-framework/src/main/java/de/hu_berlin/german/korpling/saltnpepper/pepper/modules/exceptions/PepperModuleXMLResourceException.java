@@ -18,7 +18,8 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
 /**
- * This PepperException is thrown only by a PepperModule. 
+ * This PepperException is thrown only by a PepperModule.
+ * 
  * @author Florian Zipser
  *
  */
@@ -28,13 +29,16 @@ public class PepperModuleXMLResourceException extends PepperModuleException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -7963907048315916615L;
-	
-	public PepperModuleXMLResourceException()
-	{ super(); }
-	
-    public PepperModuleXMLResourceException(String s)
-    { super(s); }
-    
-	public PepperModuleXMLResourceException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public PepperModuleXMLResourceException() {
+		super();
+	}
+
+	public PepperModuleXMLResourceException(String s) {
+		super(s);
+	}
+
+	public PepperModuleXMLResourceException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }

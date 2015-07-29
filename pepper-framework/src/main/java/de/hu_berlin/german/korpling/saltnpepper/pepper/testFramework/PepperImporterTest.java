@@ -53,10 +53,12 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  * and creates a single {@link SCorpusGraph} object, which is added to the list
  * of corpus structures in the salt project. To access the salt project or the
  * corpus structure use the following code:
+ * 
  * <pre>
  * 	getFixture().getSaltProject();
  *  getFixture().getSaltProject().getSCorpusGraphs()
  * </pre>
+ * 
  * </p>
  * 
  * <p>

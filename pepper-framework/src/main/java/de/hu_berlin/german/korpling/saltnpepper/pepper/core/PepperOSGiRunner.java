@@ -155,7 +155,7 @@ public class PepperOSGiRunner implements Runnable {
 
 			if (pepper.getModuleResolver() == null)
 				throw new PepperException("No '" + ModuleResolverImpl.class + "' is given for passed '" + Pepper.class + "' object.");
-			PepperConfiguration conf= new PepperConfiguration();
+			PepperConfiguration conf = new PepperConfiguration();
 			conf.load(componentContext);
 			pepper.setConfiguration(conf);
 			if ((pepper.getConfiguration() != null) && (pepper.getConfiguration().size() != 0)) {
@@ -186,7 +186,7 @@ public class PepperOSGiRunner implements Runnable {
 				if (workflowDescURI != null) {// pepper can be started
 					PepperJob job = pepper.getJob(pepper.createJob());
 					job.load(workflowDescURI);
-					
+
 					PepperJobReporter observer = new PepperJobReporter(job, conf.getReportInterval());
 					observer.start();
 
@@ -198,25 +198,25 @@ public class PepperOSGiRunner implements Runnable {
 				}// pepper can be started
 			}
 			millis = System.currentTimeMillis() - millis;
-			logger.info("Conversion ended, and needed: "+ millis+" ms");
+			logger.info("Conversion ended, and needed: " + millis + " ms");
 		} catch (Exception e) {
 			logger.info(PepperUtil.breakString("Launching of pepper-osgi-runner ended with errors (the stack trace is printed out to 'System.err'):"));
-			logger.info(PepperUtil.breakString("   ",e.getMessage()+" ("+e.getClass().getSimpleName()+")"));
-			if (e instanceof PepperException){
-				throw (PepperException)e;
-			}else{
+			logger.info(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
+			if (e instanceof PepperException) {
+				throw (PepperException) e;
+			} else {
 				throw new PepperOSGiRunnerException("An error occured while running pepper-osgi-runner, because of nested exception.", e);
 			}
-		}
-		finally{
+		} finally {
 			logger.info("************************************************************************************************************************");
 		}
 	}
 
 	private Boolean isDisabled = false;
 
-	/** The {@link ComponentContext} for the current instance.**/
-	private ComponentContext componentContext= null;
+	/** The {@link ComponentContext} for the current instance. **/
+	private ComponentContext componentContext = null;
+
 	/**
 	 * Method is called by OSGi framework, when bundle is activated. <br/>
 	 * This method is the entry point, for starting pepper inside an OSGi
@@ -227,7 +227,7 @@ public class PepperOSGiRunner implements Runnable {
 	 */
 	@Activate
 	protected void activate(ComponentContext componentContext) {
-		this.componentContext= componentContext;
+		this.componentContext = componentContext;
 
 		if ((System.getProperty(PROP_TEST_DISABLED) == null) || (!Boolean.valueOf(System.getProperty(PROP_TEST_DISABLED)))) {
 			this.isDisabled = false;

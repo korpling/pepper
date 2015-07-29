@@ -36,10 +36,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 
 @RunWith(JUnit4.class)
-public class StepDescTest{
+public class StepDescTest {
 
-	protected StepDesc fixture= null;
-	
+	protected StepDesc fixture = null;
+
 	public StepDesc getFixture() {
 		return fixture;
 	}
@@ -47,32 +47,34 @@ public class StepDescTest{
 	public void setFixture(StepDesc fixture) {
 		this.fixture = fixture;
 	}
+
 	/**
 	 * {@link OutputStream} where the xml nodes are written to.
 	 */
-	private ByteArrayOutputStream outStream= null;
+	private ByteArrayOutputStream outStream = null;
 	/**
 	 * XMLWriter to write an xml stream.
 	 */
-	private XMLStreamWriter xmlWriter= null;
+	private XMLStreamWriter xmlWriter = null;
+
 	@Before
-	public void setUp() throws XMLStreamException{
+	public void setUp() throws XMLStreamException {
 		setFixture(new StepDesc());
 		outStream = new ByteArrayOutputStream();
-		XMLOutputFactory o= XMLOutputFactory.newFactory();
-		xmlWriter= o.createXMLStreamWriter(outStream);
+		XMLOutputFactory o = XMLOutputFactory.newFactory();
+		xmlWriter = o.createXMLStreamWriter(outStream);
 	}
-	
-	
+
 	@Test
-	public void testMarhallUNmarshall() throws JAXBException{
+	public void testMarhallUNmarshall() throws JAXBException {
 		getFixture().setModuleType(MODULE_TYPE.EXPORTER);
 		getFixture().setName("MyExporter");
 		getFixture().setVersion("1.0");
 		getFixture().getCorpusDesc().setCorpusPath(URI.createFileURI("/somewhere/"));
 		getFixture().getCorpusDesc().getFormatDesc().setFormatName("myFormat");
-		getFixture().getCorpusDesc().getFormatDesc().setFormatVersion("1.0");;
-		Properties props= new Properties();
+		getFixture().getCorpusDesc().getFormatDesc().setFormatVersion("1.0");
+		;
+		Properties props = new Properties();
 		props.put("propName1", "propValue");
 		props.put("propName2", "propValue");
 		props.put("propName3", "propValue");

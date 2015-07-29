@@ -17,10 +17,12 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
-
 /**
- * Exception is used in case of an exception occurs concerning {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty}. 
- * Such an exception can occur while initialization or while working with properties.
+ * Exception is used in case of an exception occurs concerning
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty}
+ * . Such an exception can occur while initialization or while working with
+ * properties.
+ * 
  * @author Florian Zipser
  *
  */
@@ -30,13 +32,16 @@ public class PepperModulePropertyException extends PepperModuleException {
 	 * 
 	 */
 	private static final long serialVersionUID = 8100717436792012869L;
-	
-	public PepperModulePropertyException()
-	{ super(); }
-	
-    public PepperModulePropertyException(String s)
-    { super(s); }
-    
-	public PepperModulePropertyException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public PepperModulePropertyException() {
+		super();
+	}
+
+	public PepperModulePropertyException(String s) {
+		super(s);
+	}
+
+	public PepperModulePropertyException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }

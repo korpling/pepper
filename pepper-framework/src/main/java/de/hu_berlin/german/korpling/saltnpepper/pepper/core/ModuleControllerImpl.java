@@ -43,7 +43,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.Pepper
 import de.hu_berlin.german.korpling.saltnpepper.salt.graph.Edge;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
 
 /**
@@ -378,16 +377,16 @@ public class ModuleControllerImpl implements ModuleController {
 	/** {@inheritDoc PepperModule#before(SElementId)} */
 	private void before() throws PepperModuleException {
 		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH) != null) {
-			boolean isReport= Boolean.parseBoolean(getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
+			boolean isReport = Boolean.parseBoolean(getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
 			if (isReport && getSCorpusGraph() != null) {
 				List<SNode> roots = getSCorpusGraph().getSRoots();
 				if (roots != null) {
-					StringBuilder str= new StringBuilder();
+					StringBuilder str = new StringBuilder();
 					str.append("corpus structure imported by ");
 					str.append(getPepperModule().getName());
 					for (SNode root : roots) {
 						str.append(":\n");
-						str.append(getPepperModule().getSaltProject().getSCorpusGraphs().indexOf(((SCorpus)root).getSCorpusGraph()));
+						str.append(getPepperModule().getSaltProject().getSCorpusGraphs().indexOf(((SCorpus) root).getSCorpusGraph()));
 						str.append("\n");
 						str.append(reportCorpusStructure(root, "", true));
 					}

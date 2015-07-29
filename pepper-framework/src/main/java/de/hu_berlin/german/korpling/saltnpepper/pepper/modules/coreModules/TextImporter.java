@@ -64,8 +64,9 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 
 	@Override
 	public Double isImportable(URI corpusPath) {
-		return(1.0);
+		return (1.0);
 	}
+
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
 	 * PepperModule#createPepperMapper(SElementId)}

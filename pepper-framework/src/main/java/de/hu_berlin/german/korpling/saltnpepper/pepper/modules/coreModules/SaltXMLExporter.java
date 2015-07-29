@@ -25,8 +25,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -52,8 +50,8 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * When method start() is called, the saltProject will be attached to a resource
  * with the uri
  * "this.getCorpusDefinition().getCorpusPath().toFileString() +"/"+ "
- * saltProject"+ SALT_ENDING". Before it can be stored, all documents have to
- * be processed. <br/>
+ * saltProject"+ SALT_ENDING". Before it can be stored, all documents have to be
+ * processed. <br/>
  * The module now waits for documents which can be exported. When a document
  * finished all previous modules, it can be exported. This means, that 1) every
  * document will also get a resource with the uri
@@ -68,10 +66,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 @Component(name = "SaltXMLExporterComponent", factory = "PepperExporterComponentFactory")
 public class SaltXMLExporter extends PepperExporterImpl implements PepperExporter {
-	public static final String MODULE_NAME="SaltXMLExporter";
-	public static final String FORMAT_NAME_SALTXML="SaltXML";
-	public static final String FORMAT_VERSION_SALTXML="1.0";
-	
+	public static final String MODULE_NAME = "SaltXMLExporter";
+	public static final String FORMAT_NAME_SALTXML = "SaltXML";
+	public static final String FORMAT_VERSION_SALTXML = "1.0";
+
 	public SaltXMLExporter() {
 		// setting name of module
 		super(MODULE_NAME);

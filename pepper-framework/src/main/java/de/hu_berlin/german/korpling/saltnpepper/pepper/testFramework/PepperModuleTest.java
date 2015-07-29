@@ -40,26 +40,29 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 /**
- * This class is an abstract helper class to create own test classes for any {@link PepperModule}.
- * The method start simulates the Pepper framework as in normal runtime. The difference is, that here Pepper is started
- * in an development environment and enables for developers to get an access directly to the OSGi environment.
+ * This class is an abstract helper class to create own test classes for any
+ * {@link PepperModule}. The method start simulates the Pepper framework as in
+ * normal runtime. The difference is, that here Pepper is started in an
+ * development environment and enables for developers to get an access directly
+ * to the OSGi environment.
  * 
  * @author Florian Zipser
  *
  */
-public abstract class PepperModuleTest 
-{
-	private URI resourceURI= null;
-	
-	protected PepperModule fixture= null;
-	
+public abstract class PepperModuleTest {
+	private URI resourceURI = null;
+
+	protected PepperModule fixture = null;
+
 	/**
 	 * Sets the current fixture to test.
-	 * @param fixture object to test, derived from {@link PepperModule}
+	 * 
+	 * @param fixture
+	 *            object to test, derived from {@link PepperModule}
 	 */
 	protected void setFixture(PepperModule fixture) {
 		this.fixture = fixture;
-		if (resourceURI!= null){
+		if (resourceURI != null) {
 			getFixture().setResources(resourceURI);
 		}
 		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
@@ -69,170 +72,192 @@ public abstract class PepperModuleTest
 
 	/**
 	 * Returns the current fixture to test.
+	 * 
 	 * @return object to test, derived from {@link PepperModule}
 	 */
 	protected PepperModule getFixture() {
 		return fixture;
 	}
-	
+
 	/**
-	 * Creates an object of type {@link PepperModuleTest}. To initialize it, the overridable method
-	 * {@link #initilaize()} is called.
+	 * Creates an object of type {@link PepperModuleTest}. To initialize it, the
+	 * overridable method {@link #initilaize()} is called.
 	 */
-	public PepperModuleTest(){
+	public PepperModuleTest() {
 		initilaize();
 	}
+
 	/**
 	 * Initializes this object. This means:
 	 * <ul>
-	 * 	<li>the resource folder {@link #setResourcesURI(URI)} is set to mavens default 'src/main/resources'</li>
+	 * <li>the resource folder {@link #setResourcesURI(URI)} is set to mavens
+	 * default 'src/main/resources'</li>
 	 * </ul>
 	 */
-	public void initilaize(){
+	public void initilaize() {
 		setResourcesURI(URI.createFileURI("src/main/resources"));
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperTestUtil#TMP_TEST_DIR}
 	 */
-	public static String TMP_TEST_DIR=PepperTestUtil.TMP_TEST_DIR;
-	
+	public static String TMP_TEST_DIR = PepperTestUtil.TMP_TEST_DIR;
+
 	/**
-	 * Returns a {@link File} object pointing to a temporary path, where the caller can store temporary files.
-	 * The temporary path is located in the temporary directory provided by the underlying os. The resulting
-	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/<code>testDirectory</code>.
-	 * @param testDirectory last part of the temporary path
-	 * @return a file object locating to a temporary folder, where files can be stored temporarily
+	 * Returns a {@link File} object pointing to a temporary path, where the
+	 * caller can store temporary files. The temporary path is located in the
+	 * temporary directory provided by the underlying os. The resulting
+	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/
+	 * <code>testDirectory</code>.
+	 * 
+	 * @param testDirectory
+	 *            last part of the temporary path
+	 * @return a file object locating to a temporary folder, where files can be
+	 *         stored temporarily
 	 */
-	public URI getTempURI(String testDirectory){
-		return(URI.createFileURI(getTempPath_static(testDirectory).getAbsolutePath()));
+	public URI getTempURI(String testDirectory) {
+		return (URI.createFileURI(getTempPath_static(testDirectory).getAbsolutePath()));
 	}
+
 	/**
-	 * Returns a {@link File} object pointing to a temporary path, where the caller can store temporary files.
-	 * The temporary path is located in the temporary directory provided by the underlying os. The resulting
-	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/<code>testDirectory</code>.
-	 * @param testDirectory last part of the temporary path
-	 * @return a file object locating to a temporary folder, where files can be stored temporarily
+	 * Returns a {@link File} object pointing to a temporary path, where the
+	 * caller can store temporary files. The temporary path is located in the
+	 * temporary directory provided by the underlying os. The resulting
+	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/
+	 * <code>testDirectory</code>.
+	 * 
+	 * @param testDirectory
+	 *            last part of the temporary path
+	 * @return a file object locating to a temporary folder, where files can be
+	 *         stored temporarily
 	 */
-	public File getTempPath(String testDirectory){
-		return(getTempPath_static(testDirectory));
+	public File getTempPath(String testDirectory) {
+		return (getTempPath_static(testDirectory));
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperTestUtil#getTempPath_static(String)}
 	 */
-	public static File getTempPath_static(String testDirectory){
-		return(PepperTestUtil.getTempPath_static(testDirectory));
+	public static File getTempPath_static(String testDirectory) {
+		return (PepperTestUtil.getTempPath_static(testDirectory));
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperTestUtil#getTestResources()}
 	 */
-	public static String getTestResources(){
-		return(PepperTestUtil.getTestResources());
+	public static String getTestResources() {
+		return (PepperTestUtil.getTestResources());
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperTestUtil#getSrcResources()}
 	 */
-	public static String getSrcResources(){
-		return(PepperTestUtil.getSrcResources());
+	public static String getSrcResources() {
+		return (PepperTestUtil.getSrcResources());
 	}
-	
+
 	/**
-	 * This methods starts the processing of Pepper in the development environment. In case of the fixture is 
-	 * {@link PepperImporter}, first the method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called.
-	 * For all kinds of fixture, the method {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
-	 * is called for each {@link SDocument} object contained in the variable {@link PepperModule#getSaltProject()}.
-	 * This method will wait, until each {@link ModuleControllerImpl} return having finished the process.
-	 * <br/>
+	 * This methods starts the processing of Pepper in the development
+	 * environment. In case of the fixture is {@link PepperImporter}, first the
+	 * method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is
+	 * called. For all kinds of fixture, the method
+	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * is called for each {@link SDocument} object contained in the variable
+	 * {@link PepperModule#getSaltProject()}. This method will wait, until each
+	 * {@link ModuleControllerImpl} return having finished the process. <br/>
 	 * To create a test using this method do the following:<br/>
 	 * <ul>
-	 * <li>Create {@link CorpusDefinition} and add it to this object and set its {@link FormatDefinition} and corpus path </li>
-	 * <li>Create a {@link SCorpusGraph} object as the one to be filled and add it with  
-	 * 	<pre>
-	 *  this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
-	 *	this.getFixture().importCorpusStructure(importedCorpusGraph);
+	 * <li>Create {@link CorpusDefinition} and add it to this object and set its
+	 * {@link FormatDefinition} and corpus path</li>
+	 * <li>Create a {@link SCorpusGraph} object as the one to be filled and add
+	 * it with
+	 * 
+	 * <pre>
+	 * this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
+	 * this.getFixture().importCorpusStructure(importedCorpusGraph);
 	 * </pre>
+	 * 
 	 * </li>
 	 * </ul>
 	 */
-	public void start(){
-		Collection<PepperModule> fixtures= new ArrayList<PepperModule>();
+	public void start() {
+		Collection<PepperModule> fixtures = new ArrayList<PepperModule>();
 		fixtures.add(getFixture());
 		PepperTestUtil.start(fixtures);
-	}	
-	
+	}
+
 	@Test
-	public void testSetGetCorpusGraph()
-	{
-		SCorpusGraph corpGraph= SaltCommonFactory.eINSTANCE.createSCorpusGraph();
+	public void testSetGetCorpusGraph() {
+		SCorpusGraph corpGraph = SaltCommonFactory.eINSTANCE.createSCorpusGraph();
 		this.getFixture().setSCorpusGraph(corpGraph);
 		assertEquals(corpGraph, this.getFixture().getSCorpusGraph());
 	}
+
 	@Test
-	public void testGetName()
-	{
-		assertNotNull("The importer has to have a name.",this.getFixture().getName());
+	public void testGetName() {
+		assertNotNull("The importer has to have a name.", this.getFixture().getName());
 		assertFalse("The name of the importer cannot be empty.", this.getFixture().getName().equals(""));
 	}
-	
+
 	/**
 	 * Sets the path to resources folder for module.
-	 * @param resourceURI URI with path 
+	 * 
+	 * @param resourceURI
+	 *            URI with path
 	 */
-	public void setResourcesURI(URI resourceURI)
-	{
-		if (resourceURI!= null)
-		{	
-			File resourceDir= new File(resourceURI.toFileString());
-			if (!resourceDir.exists()){
+	public void setResourcesURI(URI resourceURI) {
+		if (resourceURI != null) {
+			File resourceDir = new File(resourceURI.toFileString());
+			if (!resourceDir.exists()) {
 				resourceDir.mkdirs();
 			}
-			this.resourceURI= resourceURI;
-			if (getFixture()!= null){
+			this.resourceURI = resourceURI;
+			if (getFixture() != null) {
 				getFixture().setResources(resourceURI);
 			}
-		}
-		else throw new PepperTestException("A resource uri must be set.");
+		} else
+			throw new PepperTestException("A resource uri must be set.");
 	}
-	
+
 	/**
 	 * Checks if the resource path is set.
 	 */
 	@Test
-	public void testSetGetResources()
-	{
+	public void testSetGetResources() {
 		assertNotNull("Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing.", resourceURI);
 		this.getFixture().setResources(resourceURI);
 		assertEquals(resourceURI, this.getFixture().getResources());
 	}
-	
+
 	/**
-	 * Compares the content of two files. Iff they are exactly the same, 
-	 * than true will be returned. False otherwise.
-	 * @param uri1 first file to compare
-	 * @param uri2 second file to compare
+	 * Compares the content of two files. Iff they are exactly the same, than
+	 * true will be returned. False otherwise.
+	 * 
+	 * @param uri1
+	 *            first file to compare
+	 * @param uri2
+	 *            second file to compare
 	 * @return true, iff files are exactly the same
 	 * @throws IOException
 	 */
-	public boolean compareFiles(URI uri1, URI uri2) throws IOException
-	{
-		return(this.compareFiles(new File(uri1.toFileString()), new File(uri2.toFileString())));
+	public boolean compareFiles(URI uri1, URI uri2) throws IOException {
+		return (this.compareFiles(new File(uri1.toFileString()), new File(uri2.toFileString())));
 	}
-	
+
 	/**
-	 * Compares the content of two files. Iff they are exactly the same, 
-	 * than true will be returned. False otherwise.
-	 * @param file1 first file to compare
-	 * @param file2 second file to compare
+	 * Compares the content of two files. Iff they are exactly the same, than
+	 * true will be returned. False otherwise.
+	 * 
+	 * @param file1
+	 *            first file to compare
+	 * @param file2
+	 *            second file to compare
 	 * @return true, iff files are exactly the same
-	 * @throws IOException 
+	 * @throws IOException
 	 * @throws IOException
 	 */
-	public boolean compareFiles(File file1, File file2) throws IOException
-	{
-		FileComparator comparator= new FileComparator();
-		return(comparator.compareFiles(file1, file2));
+	public boolean compareFiles(File file1, File file2) throws IOException {
+		FileComparator comparator = new FileComparator();
+		return (comparator.compareFiles(file1, file2));
 	}
 }

@@ -265,8 +265,8 @@ public class PepperModuleProperties implements Serializable {
 	}
 
 	/**
-	 * Internal map to map all {@link PepperModuleProperty} objects to
-	 * their name.
+	 * Internal map to map all {@link PepperModuleProperty} objects to their
+	 * name.
 	 */
 	protected Map<String, PepperModuleProperty<?>> pepperModuleProperties = null;
 
@@ -324,9 +324,9 @@ public class PepperModuleProperties implements Serializable {
 	 * @return
 	 */
 	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions() {
-		List<PepperModuleProperty<?>> retVal= new ArrayList<PepperModuleProperty<?>>(pepperModuleProperties.values()); 
+		List<PepperModuleProperty<?>> retVal = new ArrayList<PepperModuleProperty<?>>(pepperModuleProperties.values());
 		Collections.sort(retVal);
-		return(retVal);
+		return (retVal);
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class PepperModuleProperties implements Serializable {
 	 *            name of the property to be removed
 	 */
 	public void removePropertyValue(String propName) {
-		PepperModuleProperty<?>prop= pepperModuleProperties.get(propName);
+		PepperModuleProperty<?> prop = pepperModuleProperties.get(propName);
 		prop.setValue(null);
 	}
 

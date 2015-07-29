@@ -38,6 +38,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	public PepperModuleProperties getFixture() {
 		return fixture;
 	}
+
 	@Before
 	public void setUp() {
 		this.setFixture(new PepperModuleProperties());
@@ -195,25 +196,25 @@ public class PepperModulePropertiesTest extends TestCase {
 		} catch (PepperModulePropertyException e) {
 		}
 	}
-	
+
 	@Test
-	public void testRemoveProperty(){
+	public void testRemoveProperty() {
 		String propName1 = "prop1";
 		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
 		this.getFixture().addProperty(prop1);
 		Properties properties = new Properties();
 		properties.put(propName1, 12);
 		getFixture().setPropertyValues(properties);
-		
+
 		assertNotNull(getFixture().getProperty(propName1).getValue());
 		getFixture().removePropertyValue(propName1);
 		assertNull(getFixture().getProperty(propName1).getValue());
 	}
-	
+
 	@Test
-	public void test_PROP_SIMPLE_TOKENIZE_3(){
+	public void test_PROP_SIMPLE_TOKENIZE_3() {
 		String sep = "' ', '\\'', ',', '\\\\'";
-		
+
 		assertEquals(4, getFixture().stringToCharList(sep).size());
 		assertEquals(new Character(' '), getFixture().stringToCharList(sep).get(0));
 		assertEquals(new Character('\''), getFixture().stringToCharList(sep).get(1));

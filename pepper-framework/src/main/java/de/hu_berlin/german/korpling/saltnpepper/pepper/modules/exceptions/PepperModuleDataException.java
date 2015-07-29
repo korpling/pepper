@@ -21,7 +21,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 /**
- * This PepperException is thrown only by a {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule}. 
+ * This PepperException is thrown only by a
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule}.
+ * 
  * @author Florian Zipser
  *
  */
@@ -31,22 +33,20 @@ public class PepperModuleDataException extends PepperModuleException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -7963907048315916615L;
-	
-	protected PepperModuleDataException(PepperModule pepperModule, String s)
-    { 
-		super("Error in Pepper module '"+(pepperModule.getName()!= null? pepperModule.getName(): "NO_NAME") + ", "+(pepperModule.getVersion()!= null? pepperModule.getVersion(): "NO_VERSION")+"', please contact the module supplier"+(pepperModule.getSupplierContact()!= null? " "+ pepperModule.getSupplierContact(): "")+". "+ s);
-    }
-	protected PepperModuleDataException(PepperModule pepperModule, String s, Throwable ex)
-    { 
-		super("Error in Pepper module '"+(pepperModule.getName()!= null? pepperModule.getName(): "NO_NAME") + ", "+(pepperModule.getVersion()!= null? pepperModule.getVersion(): "NO_VERSION")+"', please contact the module supplier"+(pepperModule.getSupplierContact()!= null? " "+ pepperModule.getSupplierContact(): "")+". "+ s, ex);
-    }
-	
-	public PepperModuleDataException(PepperMapper pepperMapper, String s)
-    { 
-		super("A data error occured for a Pepper mapper '"+pepperMapper.getClass().getName()+"'. "+s); 
-    }
-	public PepperModuleDataException(PepperMapper pepperMapper, String s, Throwable ex)
-    { 
-		super("A data error occured for Pepper mapper '"+pepperMapper.getClass().getName()+"'. "+s, ex);
-    }
+
+	protected PepperModuleDataException(PepperModule pepperModule, String s) {
+		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s);
+	}
+
+	protected PepperModuleDataException(PepperModule pepperModule, String s, Throwable ex) {
+		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s, ex);
+	}
+
+	public PepperModuleDataException(PepperMapper pepperMapper, String s) {
+		super("A data error occured for a Pepper mapper '" + pepperMapper.getClass().getName() + "'. " + s);
+	}
+
+	public PepperModuleDataException(PepperMapper pepperMapper, String s, Throwable ex) {
+		super("A data error occured for Pepper mapper '" + pepperMapper.getClass().getName() + "'. " + s, ex);
+	}
 }

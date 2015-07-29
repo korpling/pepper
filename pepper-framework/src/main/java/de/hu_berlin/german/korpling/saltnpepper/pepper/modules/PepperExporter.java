@@ -79,18 +79,20 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * 
  * </p>
  * 
- * </p> <h3>Export corpus structure</h3>
- * The corpus-structure export is handled in the method {@link #exportCorpusStructure()}.
- * It is invoked on top of the method ' start() ' of the PepperExporter . For
- * totally changing the default behavior just override this method. The aim of
- * the method {@link #exportCorpusStructure()} is to fill the map of corresponding corpus-structure and file
- * structure. The file structure is automatically created, there are
- * just URI s pointing to the virtual file or folder. The creation of the file
- * or folder has to be done by the Pepper module itself in method {@link PepperMapper#mapSCorpus()}
- * or {@link PepperMapper#mapSDocument()}. To adapt the creation of this 'virtual' file structure,
- * you first have to choose the mode of export. You can do this for instance in
- * method 'readyToStart()', as shown in the following snippet. But even in the
- * constructor as well. 
+ * </p> <h3>Export corpus structure</h3> The corpus-structure export is handled
+ * in the method {@link #exportCorpusStructure()}. It is invoked on top of the
+ * method ' start() ' of the PepperExporter . For totally changing the default
+ * behavior just override this method. The aim of the method
+ * {@link #exportCorpusStructure()} is to fill the map of corresponding
+ * corpus-structure and file structure. The file structure is automatically
+ * created, there are just URI s pointing to the virtual file or folder. The
+ * creation of the file or folder has to be done by the Pepper module itself in
+ * method {@link PepperMapper#mapSCorpus()} or
+ * {@link PepperMapper#mapSDocument()}. To adapt the creation of this 'virtual'
+ * file structure, you first have to choose the mode of export. You can do this
+ * for instance in method 'readyToStart()', as shown in the following snippet.
+ * But even in the constructor as well.
+ * 
  * <pre>
  * public boolean isReadyToStart(){ 
  * 	... //option 1
@@ -104,13 +106,15 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * 	.. 
  * }
  * </pre>
- * In this snippet, option 1 means that
- * nothing will be mapped. Option 2 means that only {@link SCorpus} objects are mapped
- * to a folder and {@link SDocument} objects will be ignored. And option 3 means that
- * {@link SCorpus} objects are mapped to a folder and {@link SDocument} objects are mapped to a
- * file. The ending of that file can be determined by passing the ending with
- * method {@link #setSDocumentEnding(String)}. In the given snippet a {@link URI} having the
- * ending 'tab' is created for each {@link SDocument}.
+ * 
+ * In this snippet, option 1 means that nothing will be mapped. Option 2 means
+ * that only {@link SCorpus} objects are mapped to a folder and
+ * {@link SDocument} objects will be ignored. And option 3 means that
+ * {@link SCorpus} objects are mapped to a folder and {@link SDocument} objects
+ * are mapped to a file. The ending of that file can be determined by passing
+ * the ending with method {@link #setSDocumentEnding(String)}. In the given
+ * snippet a {@link URI} having the ending 'tab' is created for each
+ * {@link SDocument}.
  * <p>
  * <h3>Export the document structure</h3>
  * In the method {@link #createPepperMapper(SElementId)} a {@link PepperMapper}

@@ -47,10 +47,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
  * <p>
- * This class is an abstract implementation of {@link PepperImporter} and
- * cannot be instantiated directly. To implement an exporter for Pepper, the
- * easiest way is to derive this class. For further information, read the
- * javadoc of {@link PepperManipulator} and the documentation of <a
+ * This class is an abstract implementation of {@link PepperImporter} and cannot
+ * be instantiated directly. To implement an exporter for Pepper, the easiest
+ * way is to derive this class. For further information, read the javadoc of
+ * {@link PepperManipulator} and the documentation of <a
  * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
  * </p>
  * 
@@ -318,14 +318,14 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void start() throws PepperModuleException {
 		if (getCorpusDesc() == null) {
-			throw new WorkflowException("["+getName()+"] Cannot import corpus-structure, because no corpus description was given. ");
+			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus description was given. ");
 		}
 		if (getCorpusDesc().getCorpusPath() == null) {
-			throw new WorkflowException("["+getName()+"] Cannot import corpus-structure, because no corpus path was given. ");
+			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus path was given. ");
 		}
 		File corpusFile = new File(getCorpusDesc().getCorpusPath().toFileString());
 		if (!corpusFile.exists()) {
-			throw new WorkflowException("["+getName()+"] Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
+			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
 		}
 		super.start();
 	}
@@ -341,7 +341,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public synchronized Collection<String> getSDocumentEndings() {
-		if (sDocumentEndings == null){
+		if (sDocumentEndings == null) {
 			sDocumentEndings = new HashSet<String>();
 		}
 		return (sDocumentEndings);

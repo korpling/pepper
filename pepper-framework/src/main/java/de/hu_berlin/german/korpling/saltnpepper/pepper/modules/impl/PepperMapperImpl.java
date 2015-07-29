@@ -17,22 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 import java.util.Vector;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.emf.common.util.URI;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -41,136 +29,145 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.MappingSubject;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 /**
- * An abstract implementation of {@link PepperMapper} to be used for further derivations for specific mapping
- * purposes.
+ * An abstract implementation of {@link PepperMapper} to be used for further
+ * derivations for specific mapping purposes.
  * 
  * @author Florian Zipser
  *
  */
 public class PepperMapperImpl implements PepperMapper {
-	
-	public PepperMapperImpl()
-	{
+
+	public PepperMapperImpl() {
 		this.initialize();
 	}
-	/** a list of all subjects ({@link SDocument} or {@link SCorpus}) to be merged*/
-	private List<MappingSubject> mappingSubjects= null;
+
 	/**
-	 * Returns a list of all subjects ({@link SDocument} or {@link SCorpus}) to be merged
+	 * a list of all subjects ({@link SDocument} or {@link SCorpus}) to be
+	 * merged
+	 */
+	private List<MappingSubject> mappingSubjects = null;
+
+	/**
+	 * Returns a list of all subjects ({@link SDocument} or {@link SCorpus}) to
+	 * be merged
+	 * 
 	 * @return a list of {@link MappingSubject}
 	 */
 	public List<MappingSubject> getMappingSubjects() {
-		if (mappingSubjects== null){
-			mappingSubjects= new Vector<MappingSubject>();
+		if (mappingSubjects == null) {
+			mappingSubjects = new Vector<MappingSubject>();
 		}
 		return mappingSubjects;
 	}
+
 	/**
 	 * {@inheritDoc PepperMapper#getResourceURI()}
 	 */
 	public URI getResourceURI() {
-		URI retVal= null;
-		if (getMappingSubjects().size()> 0){
-			retVal= getMappingSubjects().get(0).getResourceURI();
+		URI retVal = null;
+		if (getMappingSubjects().size() > 0) {
+			retVal = getMappingSubjects().get(0).getResourceURI();
 		}
-		return(retVal);
+		return (retVal);
 	}
+
 	/**
 	 * {@inheritDoc PepperMapper#setResourceURI(URI)}
 	 */
 	public void setResourceURI(URI resourceURI) {
-		MappingSubject subj= null;
-		if (getMappingSubjects().size()< 1){
-			subj= new MappingSubject();
+		MappingSubject subj = null;
+		if (getMappingSubjects().size() < 1) {
+			subj = new MappingSubject();
 			getMappingSubjects().add(subj);
-		}else{
-			subj= getMappingSubjects().get(0);
+		} else {
+			subj = getMappingSubjects().get(0);
 		}
 		subj.setResourceURI(resourceURI);
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperMapper#getSDocument()}
 	 */
 	@Override
 	public SDocument getSDocument() {
-		SDocument retVal= null;
-		if (getMappingSubjects().size()> 0){
-			if (	(getMappingSubjects().get(0).getSElementId()!= null)&&
-					(getMappingSubjects().get(0).getSElementId().getSIdentifiableElement()!= null)&&
-					(getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() instanceof SDocument)){
-				retVal= (SDocument)getMappingSubjects().get(0).getSElementId().getSIdentifiableElement();
+		SDocument retVal = null;
+		if (getMappingSubjects().size() > 0) {
+			if ((getMappingSubjects().get(0).getSElementId() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() instanceof SDocument)) {
+				retVal = (SDocument) getMappingSubjects().get(0).getSElementId().getSIdentifiableElement();
 			}
 		}
-		return(retVal);
+		return (retVal);
 	}
+
 	/**
 	 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
 	 */
 	@Override
 	public void setSDocument(SDocument sDocument) {
-		
-		MappingSubject subj= null;
-		if (getMappingSubjects().size()< 1){
-			subj= new MappingSubject();
+
+		MappingSubject subj = null;
+		if (getMappingSubjects().size() < 1) {
+			subj = new MappingSubject();
 			getMappingSubjects().add(subj);
-		}else{
-			subj= getMappingSubjects().get(0);
+		} else {
+			subj = getMappingSubjects().get(0);
 		}
-		if (sDocument.getSElementId()== null){
+		if (sDocument.getSElementId() == null) {
 			sDocument.setSElementId(SaltFactory.eINSTANCE.createSElementId());
 		}
 		subj.setSElementId(sDocument.getSElementId());
 	}
+
 	/**
 	 * {@inheritDoc PepperMapper#getSCorpus()}
 	 */
 	@Override
 	public SCorpus getSCorpus() {
-		SCorpus retVal= null;
-		if (getMappingSubjects().size()> 0){
-			if (	(getMappingSubjects().get(0).getSElementId()!= null)&&
-					(getMappingSubjects().get(0).getSElementId().getSIdentifiableElement()!= null)&&
-					(getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() instanceof SCorpus)){
-				retVal= (SCorpus)getMappingSubjects().get(0).getSElementId().getSIdentifiableElement();
+		SCorpus retVal = null;
+		if (getMappingSubjects().size() > 0) {
+			if ((getMappingSubjects().get(0).getSElementId() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() instanceof SCorpus)) {
+				retVal = (SCorpus) getMappingSubjects().get(0).getSElementId().getSIdentifiableElement();
 			}
 		}
-		return(retVal);
+		return (retVal);
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setSCorpus(SCorpus)} 
+	 * {@inheritDoc PepperMapper#setSCorpus(SCorpus)}
 	 */
 	public void setSCorpus(SCorpus sCorpus) {
-		MappingSubject subj= null;
-		if (getMappingSubjects().size()< 1){
-			subj= new MappingSubject();
+		MappingSubject subj = null;
+		if (getMappingSubjects().size() < 1) {
+			subj = new MappingSubject();
 			getMappingSubjects().add(subj);
-		}else{
-			subj= getMappingSubjects().get(0);
+		} else {
+			subj = getMappingSubjects().get(0);
 		}
-		if (sCorpus.getSElementId()== null)
+		if (sCorpus.getSElementId() == null)
 			throw new PepperModuleException(this, "Cannot set 'SCorpus'.");
 		subj.setSElementId(sCorpus.getSElementId());
 	}
+
 	/**
-	 * {@link PepperModuleProperties} object containing user customizations to be observed during the mapping.
+	 * {@link PepperModuleProperties} object containing user customizations to
+	 * be observed during the mapping.
 	 */
-	protected PepperModuleProperties props= null;
+	protected PepperModuleProperties props = null;
+
 	/**
-	 * {@inheritDoc PepperMapper#getProperties()} 
+	 * {@inheritDoc PepperMapper#getProperties()}
 	 */
 	public PepperModuleProperties getProperties() {
 		return props;
 	}
+
 	/**
-	 * {@inheritDoc PepperMapper#setProperties(PepperModuleProperties)} 
+	 * {@inheritDoc PepperMapper#setProperties(PepperModuleProperties)}
 	 */
 	public void setProperties(PepperModuleProperties props) {
 		this.props = props;
@@ -179,35 +176,35 @@ public class PepperMapperImpl implements PepperMapper {
 	/** {@inheritDoc PepperMapperConnector#setMappingResult(DOCUMENT_STATUS)} **/
 	@Override
 	public synchronized void setMappingResult(DOCUMENT_STATUS mappingResult) {
-		MappingSubject subj= null;
-		if (getMappingSubjects().size()< 1){
-			subj= new MappingSubject();
+		MappingSubject subj = null;
+		if (getMappingSubjects().size() < 1) {
+			subj = new MappingSubject();
 			getMappingSubjects().add(subj);
-		}else{
-			subj= getMappingSubjects().get(0);
+		} else {
+			subj = getMappingSubjects().get(0);
 		}
 		subj.setMappingResult(mappingResult);
 	}
+
 	/** {@inheritDoc PepperMapperConnector#getMappingResult()} **/
 	@Override
 	public DOCUMENT_STATUS getMappingResult() {
-		DOCUMENT_STATUS retVal= null;
-		if (getMappingSubjects().size()> 0){
-			retVal= getMappingSubjects().get(0).getMappingResult();
+		DOCUMENT_STATUS retVal = null;
+		if (getMappingSubjects().size() > 0) {
+			retVal = getMappingSubjects().get(0).getMappingResult();
 		}
-		return(retVal);
+		return (retVal);
 	}
-	
+
 	/**
 	 * This method initializes this object and is called by the constructor.
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 	 */
-	protected void initialize()
-	{
-		
+	protected void initialize() {
+
 	}
-	
+
 	/**
 	 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
 	 * 
@@ -215,8 +212,9 @@ public class PepperMapperImpl implements PepperMapper {
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSDocument() {
-		throw new UnsupportedOperationException("OVERRIDE THE METHOD 'public DOCUMENT_STATUS mapSDocument()' IN '"+getClass().getName()+"' FOR CUSTOMIZED MAPPING.");
+		throw new UnsupportedOperationException("OVERRIDE THE METHOD 'public DOCUMENT_STATUS mapSDocument()' IN '" + getClass().getName() + "' FOR CUSTOMIZED MAPPING.");
 	}
+
 	/**
 	 * {@inheritDoc PepperMapper#setSCorpus(SCorpus)}
 	 * 
@@ -224,46 +222,48 @@ public class PepperMapperImpl implements PepperMapper {
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSCorpus() {
-		return(DOCUMENT_STATUS.COMPLETED);
+		return (DOCUMENT_STATUS.COMPLETED);
 	}
-	/** Stores the current progress (between 0 and 1)**/
-	protected volatile Double progress= 0d;
+
+	/** Stores the current progress (between 0 and 1) **/
+	protected volatile Double progress = 0d;
+
 	/**
 	 * {@inheritDoc PepperMapper#getProgress()}
 	 */
 	@Override
-	public Double getProgress() 
-	{
-		return(progress);
+	public Double getProgress() {
+		return (progress);
 	}
+
 	/**
 	 * {@inheritDoc PepperMapper#addProgress(Double)}
 	 */
 	@Override
-	public void addProgress(Double progress)
-	{
-		this.setProgress(getProgress()+ progress);
+	public void addProgress(Double progress) {
+		this.setProgress(getProgress() + progress);
 	}
-	
+
 	/**
-	 * {@inheritDoc PepperMapper#setProgress(Double)}
-	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+	 * {@inheritDoc PepperMapper#setProgress(Double)} OVERRIDE THIS METHOD FOR
+	 * CUSTOMIZED MAPPING.
 	 */
 	@Override
-	public void setProgress(Double progress) 
-	{
-		this.progress= progress;
+	public void setProgress(Double progress) {
+		this.progress = progress;
 	}
-	
+
 	/**
-	 * Helper method to read an xml file with a {@link DefaultHandler2} implementation given as <em>contentHandler</em>. It is assumed,
-	 * that the file encoding is set to UTF-8. 
-	 * @param contentHandler {@link DefaultHandler2} implementation
-	 * @param documentLocation location of the xml-file
+	 * Helper method to read an xml file with a {@link DefaultHandler2}
+	 * implementation given as <em>contentHandler</em>. It is assumed, that the
+	 * file encoding is set to UTF-8.
+	 * 
+	 * @param contentHandler
+	 *            {@link DefaultHandler2} implementation
+	 * @param documentLocation
+	 *            location of the xml-file
 	 */
-	protected void readXMLResource(	DefaultHandler2 contentHandler, 
-									URI documentLocation)
-	{
+	protected void readXMLResource(DefaultHandler2 contentHandler, URI documentLocation) {
 		PepperUtil.readXMLResource(contentHandler, documentLocation);
 	}
 }

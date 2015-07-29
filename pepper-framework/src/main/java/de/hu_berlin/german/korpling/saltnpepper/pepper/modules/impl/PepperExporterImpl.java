@@ -43,10 +43,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
  * <p>
- * This class is an abstract implementation of {@link PepperExporter} and
- * cannot be instantiated directly. To implement an exporter for Pepper, the
- * easiest way is to derive this class. For further information, read the
- * javadoc of {@link PepperManipulator} and the documentation of <a
+ * This class is an abstract implementation of {@link PepperExporter} and cannot
+ * be instantiated directly. To implement an exporter for Pepper, the easiest
+ * way is to derive this class. For further information, read the javadoc of
+ * {@link PepperManipulator} and the documentation of <a
  * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
  * </p>
  * 

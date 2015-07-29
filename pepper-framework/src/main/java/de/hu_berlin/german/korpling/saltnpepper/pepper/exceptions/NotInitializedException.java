@@ -19,9 +19,10 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 
-
 /**
- *	This exception class is used, in case of a {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper} object was not correctly initialized. 
+ * This exception class is used, in case of a
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper}
+ * object was not correctly initialized.
  *
  **/
 public class NotInitializedException extends PepperModuleException {
@@ -30,13 +31,16 @@ public class NotInitializedException extends PepperModuleException {
 	 * 
 	 */
 	private static final long serialVersionUID = 8100717436792012869L;
-	
-	public NotInitializedException()
-	{ super(); }
-	
-    public NotInitializedException(String s)
-    { super(s); }
-    
-	public NotInitializedException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public NotInitializedException() {
+		super();
+	}
+
+	public NotInitializedException(String s) {
+		super(s);
+	}
+
+	public NotInitializedException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }
