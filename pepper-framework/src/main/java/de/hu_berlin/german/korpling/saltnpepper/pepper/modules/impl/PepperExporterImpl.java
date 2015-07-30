@@ -20,8 +20,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,20 +33,24 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConvertException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-import java.util.LinkedList;
 
 /**
- * This is an abstract implementation of {@link PepperExporter}. This class
- * cannot be instantiated directly. To provide an exporter, just inherit this
- * class.
+ * <p>
+ * This class is an abstract implementation of {@link PepperExporter} and cannot
+ * be instantiated directly. To implement an exporter for Pepper, the easiest
+ * way is to derive this class. For further information, read the javadoc of
+ * {@link PepperManipulator} and the documentation of <a
+ * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * </p>
  * 
- * @see PepperExporter
+ * @see PepperManipulator
  *
  * @author Florian Zipser
  */
@@ -185,8 +189,9 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public synchronized Map<SElementId, URI> getSElementId2ResourceTable() {
-		if (sElementId2ResourceTable == null)
+		if (sElementId2ResourceTable == null) {
 			sElementId2ResourceTable = new Hashtable<SElementId, URI>();
+		}
 		return sElementId2ResourceTable;
 	}
 
@@ -223,11 +228,11 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 								resourceURI = resourceURI.appendFileExtension(ending);
 								getSElementId2ResourceTable().put(sDocument.getSElementId(), resourceURI);
 
-								// in case of folders in hierarchie does not
+								// in case of folders in hierarchy does not
 								// exist, create them
 								String fileName = resourceURI.toFileString();
 								if (fileName == null) {
-									resourceURI.toString();
+									fileName = resourceURI.toString();
 								}
 								File outFile = new File(fileName);
 								if (!outFile.getParentFile().exists()) {

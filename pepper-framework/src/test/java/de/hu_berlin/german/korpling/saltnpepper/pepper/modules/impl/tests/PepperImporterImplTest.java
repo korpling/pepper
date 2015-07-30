@@ -17,6 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +28,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;

@@ -32,7 +32,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 public class PepperMapperImplTest {
 
-	private PepperMapperImpl fixture= null;
+	private PepperMapperImpl fixture = null;
 
 	public PepperMapperImpl getFixture() {
 		return fixture;
@@ -43,45 +43,45 @@ public class PepperMapperImplTest {
 	}
 
 	@Before
-	public void setUp(){
+	public void setUp() {
 		setFixture(new PepperMapperImpl());
 	}
-	
+
 	@Test
-	public void testSetGetSDocument(){
-		SDocument sDocument= SaltFactory.eINSTANCE.createSDocument();
-		SElementId sElementId= SaltFactory.eINSTANCE.createSElementId();
+	public void testSetGetSDocument() {
+		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
+		SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
 		sElementId.setSId("d1");
 		sDocument.setSElementId(sElementId);
 		getFixture().setSDocument(sDocument);
-		
+
 		assertEquals(sDocument, getFixture().getSDocument());
 	}
-	
+
 	@Test
-	public void testSetGetSCorpus(){
-		SCorpus sCorpus= SaltFactory.eINSTANCE.createSCorpus();
-		SElementId sElementId= SaltFactory.eINSTANCE.createSElementId();
+	public void testSetGetSCorpus() {
+		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
+		SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
 		sElementId.setSId("c1");
 		sCorpus.setSElementId(sElementId);
 		getFixture().setSCorpus(sCorpus);
-		
+
 		assertEquals(sCorpus, getFixture().getSCorpus());
 	}
-	
+
 	@Test
-	public void testSetGetResourceURI(){
-		URI resourceURI= URI.createFileURI("./");
+	public void testSetGetResourceURI() {
+		URI resourceURI = URI.createFileURI("./");
 		getFixture().setResourceURI(resourceURI);
-		
+
 		assertEquals(resourceURI, getFixture().getResourceURI());
 	}
-	
+
 	@Test
-	public void testSetGetMappingResult(){
-		DOCUMENT_STATUS mappingResult= DOCUMENT_STATUS.COMPLETED;
+	public void testSetGetMappingResult() {
+		DOCUMENT_STATUS mappingResult = DOCUMENT_STATUS.COMPLETED;
 		getFixture().setMappingResult(mappingResult);
-		
+
 		assertEquals(mappingResult, getFixture().getMappingResult());
 	}
 }

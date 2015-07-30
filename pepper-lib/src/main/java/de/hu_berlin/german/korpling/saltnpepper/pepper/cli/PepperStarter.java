@@ -17,14 +17,14 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 
-import ch.qos.logback.classic.LoggerContext;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +59,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 
+import ch.qos.logback.classic.LoggerContext;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
@@ -76,6 +77,14 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  *
  */
 public class PepperStarter {
+	/**
+	 * FIXME This is just a workaround to set the current version of Pepper,
+	 * this is necessary, mark the Pepper package, to be load by the classloader
+	 * in and outside of OSGi. This could be removed, when there is a better way
+	 * to detect the current Pepper version automatically.
+	 */
+	public static final String PEPPER_VERSION = "2.1.2";
+
 	/**
 	 * A logger for logging messages.
 	 */
@@ -143,6 +152,8 @@ public class PepperStarter {
 	}
 
 	public enum COMMAND {
+		VERSION("version", "v", "no arguments", "prints pepper version"),
+		//
 		PRINT_DEPS("dependencies", "deps", "Bundle id or GROUP_ID::ARTIFACT_ID::VERSION::MAVEN_REPOSITORY_URL or plugin names split by space; parameter all prints dependencies for all plugins", "displays all dependencies of the specified component"),
 		//
 		UPDATE("update", "u", "module name or location", "Updates the pepper module(s). Parameter \"all\" updates all modules listed in modules.xml."),
@@ -159,7 +170,7 @@ public class PepperStarter {
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
-		CONVERT("convert", "c", "workflow file", "If no workflow file is passed, Pepper opens a conversion wizzard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
+		CONVERT("convert", "c", "workflow file", "If no workflow file is passed, Pepper opens a conversion wizard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
 		//
 		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
@@ -170,7 +181,7 @@ public class PepperStarter {
 		//
 		STOP_OSGI("stop-osgi", "stop", null, "Stops the OSGi environment (the plugin system of Pepper)."), CLEAN("clean", "cl", null, "Cleans the current Pepper instance and especially removes the OSGi workspace."),
 		//
-		DEBUG("debug", "d", null, "Switches on/off the debug output.");
+		DEBUG("debug", "d", null, "Switches on/off the debug output."), REPEAT("repeat", "r", null, "Repeats the last command.");
 
 		private String name = null;
 		private String abbreviation = null;
@@ -210,7 +221,7 @@ public class PepperStarter {
 		String retVal = null;
 
 		Integer[] length = new Integer[4];
-		if (getPepperConfiguration().getConsoleWidth() == PepperUtil.CONSOLE_WIDTH_80) {
+		if (getPepperConfiguration().getConsoleWidth() == CONSOLE_WIDTH_80) {
 			length[0] = 7;
 			length[1] = 5;
 			length[2] = 10;
@@ -251,9 +262,9 @@ public class PepperStarter {
 	public String list() {
 		StringBuilder retVal = new StringBuilder();
 
-		Collection<PepperModuleDesc> moduleDescs = null;
+		List<PepperModuleDesc> moduleDescs = null;
 		try {
-			moduleDescs = getPepper().getRegisteredModules();
+			moduleDescs = new ArrayList<PepperModuleDesc>(getPepper().getRegisteredModules());
 		} catch (Exception e) {
 			if (isDebug) {
 				e.printStackTrace();
@@ -261,7 +272,8 @@ public class PepperStarter {
 			retVal.append("Cannot display any Pepper module. Call " + COMMAND.START_OSGI.getName() + " might solve the problem. ");
 			return (retVal.toString());
 		}
-		number2module= new HashMap<Integer, PepperModuleDesc>(moduleDescs.size());
+		Collections.sort(moduleDescs);
+		number2module = new HashMap<Integer, PepperModuleDesc>(moduleDescs.size());
 		retVal.append(PepperUtil.reportModuleList(getPepperConfiguration().getConsoleWidth(), moduleDescs, number2module));
 		retVal.append("To get more information on a particular module enter 'list No' or 'list module-name'. ");
 		return (retVal.toString());
@@ -296,10 +308,10 @@ public class PepperStarter {
 		} catch (Exception e) {
 			// do nothing
 		}
-		
-		if ((moduleDesc != null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
+		// try to read module desc by name
+		if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
 			for (PepperModuleDesc desc : moduleDescs) {
-				if (moduleName.equals(desc.getName())) {
+				if (moduleName.equalsIgnoreCase(desc.getName())) {
 					moduleDesc = desc;
 					break;
 				}
@@ -308,7 +320,7 @@ public class PepperStarter {
 		if (moduleDesc != null) {
 
 			Integer[] length = new Integer[2];
-			if (PepperUtil.CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
+			if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
 				length[0] = 14;
 				length[1] = 60;
 			} else {
@@ -316,7 +328,7 @@ public class PepperStarter {
 				length[1] = 100;
 			}
 
-			int numOfEntries = 4;
+			int numOfEntries = 5;
 			if (moduleDesc.getProperties() != null) {
 				numOfEntries++;
 				numOfEntries++;
@@ -330,16 +342,17 @@ public class PepperStarter {
 			map[1][0] = "version:";
 			map[1][1] = moduleDesc.getVersion();
 			map[2][0] = "supplier:";
-			map[2][1] = moduleDesc.getSupplierContact() == null ? 
-				"" : moduleDesc.getSupplierContact().toString();
-			map[3][0] = "description:";
-			map[3][1] = moduleDesc.getDesc();
+			map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
+			map[3][0] = "website:";
+			map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
+			map[4][0] = "description:";
+			map[4][1] = moduleDesc.getDesc();
 
 			if (moduleDesc.getProperties() != null) {
-				map[4][0] = "--";
-				map[5][1] = "customization properties";
-				map[6][0] = "--";
-				int i = 7;
+				map[5][0] = "--";
+				map[6][1] = "customization properties";
+				map[7][0] = "--";
+				int i = 8;
 				for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
 					map[i][0] = prop.getName();
 					map[i][1] = prop.getDescription();
@@ -456,8 +469,8 @@ public class PepperStarter {
 		PepperJob pepperJob = null;
 		String jobId = null;
 		if ((workFlowFile == null) || (workFlowFile.isEmpty())) {
-			// if no parameter is given open convert wizzard
-			ConvertWizzardConsole console = new ConvertWizzardConsole(PROMPT);
+			// if no parameter is given open convert wizard
+			ConvertWizardConsole console = new ConvertWizardConsole(PROMPT);
 			console.setPepper(getPepper());
 			console.isDebug = this.isDebug;
 			pepperJob = console.start(input, output);
@@ -465,13 +478,13 @@ public class PepperStarter {
 				jobId = pepperJob.getId();
 			}
 		} else {
-			if ("water".equalsIgnoreCase(workFlowFile)){
-				String msg= "###############___\n##############)===(\n##############)===(\n##############|H##|\n##############|H##|\n##############|H##|\n#############/=====\\\n############/#######\\\n###########/=========\\\n##########:HHHHHHHH##H:\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|===========|\n##########|###########|\n##########|#\\\\########|\n##########|OOO#In#####|#_________\n##########|#OO#vino###||#########|\n##########|##O#veritas|%#########%\n##########|###########|#\\#######/\n##########|===========|##`.###.'\n##########|HHHHHHHH##H|####\\#/\n##########|HHHHHHHH##H|####(#)\n##########|HHHHHHHH##H|####.|.\n###########~~~~~~~~~~~###~~~^~~~\n Cheers!\n";
+			if ("water".equalsIgnoreCase(workFlowFile)) {
+				String msg = "###############___\n##############)===(\n##############)===(\n##############|H##|\n##############|H##|\n##############|H##|\n#############/=====\\\n############/#######\\\n###########/=========\\\n##########:HHHHHHHH##H:\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|===========|\n##########|###########|\n##########|#\\\\########|\n##########|OOO#In#####|#_________\n##########|#OO#vino###||#########|\n##########|##O#veritas|%#########%\n##########|###########|#\\#######/\n##########|===========|##`.###.'\n##########|HHHHHHHH##H|####\\#/\n##########|HHHHHHHH##H|####(#)\n##########|HHHHHHHH##H|####.|.\n###########~~~~~~~~~~~###~~~^~~~\n Cheers!\n";
 				output.println(msg.replace("#", " "));
-			}else{
+			} else {
 				URI workFlowUri = URI.createFileURI(workFlowFile);
 				jobId = pepper.createJob();
-	
+
 				pepperJob = pepper.getJob(jobId);
 				pepperJob.load(workFlowUri);
 			}
@@ -613,12 +626,18 @@ public class PepperStarter {
 			moduleTable = getModuleTable();
 
 			if ("all".equalsIgnoreCase(params.get(0)) || (isSnapshot && !ignoreVersion || ignoreVersion && !isSnapshot) && params.size() > 1 && "all".equalsIgnoreCase(params.get(1)) || isSnapshot && ignoreVersion && params.size() > 2 && "all".equalsIgnoreCase(params.get(2))) {
+				List<String> lines = new ArrayList<String>();
 				for (String s : moduleTable.keySet()) {
 					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)) {
-						retVal.append(s).append(" successfully updated.").append(newLine);
+						lines.add(s.concat(" successfully updated."));
 					} else {
-						retVal.append(s).append(" NOT updated.").append(newLine);
+						lines.add(s.concat(" NOT updated."));
 					}
+				}
+				Collections.<String> sort(lines);
+				retVal.append(newLine);
+				for (String line : lines) {
+					retVal.append(line).append(newLine);
 				}
 			} else {
 				String s = null;
@@ -691,7 +710,7 @@ public class PepperStarter {
 		try {
 			saxParser.parse(MODULES_XML_PATH, new ModuleTableReader(table));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.debug("Could not parse modules.xml", e);
 		}
 		return table;
 	}
@@ -826,6 +845,8 @@ public class PepperStarter {
 		private String artifactId;
 		/** this string contains the group id */
 		private String groupId;
+		/** this string contains the repository */
+		private String repo;
 		/** the name of the tag between the modules are listed */
 		private static final String TAG_LIST = "pepperModulesList";
 		/**
@@ -861,33 +882,37 @@ public class PepperStarter {
 		private String defaultRepository;
 		/** is used to read the module name character by character */
 		private StringBuilder chars;
+
 		/** this boolean says, whether characters should be read or ignored */
-		private boolean openEyes;
+		// private boolean openEyes;
 
 		public ModuleTableReader(Map<String, Pair<String, String>> artifactIdUrlMap) {
 			listedModules = artifactIdUrlMap;
 			chars = new StringBuilder();
 			groupId = null;
 			artifactId = null;
-			openEyes = false;
+			repo = null;
+			// openEyes = false;
 		}
 
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			localName = qName.substring(qName.lastIndexOf(":") + 1);
-			openEyes = TAG_GROUPID.equals(localName) || TAG_ARTIFACTID.equals(localName) || TAG_REPO.equals(localName);
+			// openEyes = TAG_GROUPID.equals(localName) ||
+			// TAG_ARTIFACTID.equals(localName) || TAG_REPO.equals(localName);
 			if (TAG_LIST.equals(localName)) {
 				defaultRepository = attributes.getValue(ATT_DEFAULTREPO);
 				defaultGroupId = attributes.getValue(ATT_DEFAULTGROUPID);
 			}
+			chars.delete(0, chars.length());
 		}
 
 		@Override
 		public void characters(char[] ch, int start, int length) throws SAXException {
-			for (int i = start; i < start + length && openEyes; i++) {
+			for (int i = start; i < start + length /* && openEyes */; i++) {
 				chars.append(ch[i]);
 			}
-			openEyes = false;
+			// openEyes = false;
 		}
 
 		@Override
@@ -900,13 +925,15 @@ public class PepperStarter {
 				groupId = chars.toString();
 				chars.delete(0, chars.length());
 			} else if (TAG_REPO.equals(localName)) {
+				repo = chars.toString();
 				chars.delete(0, chars.length());
 			} else if (TAG_ITEM.equals(localName)) {
 				groupId = groupId == null ? defaultGroupId : groupId;
-				listedModules.put(artifactId, Pair.of(groupId, (chars.length() == 0 ? defaultRepository : chars.toString())));
+				listedModules.put(artifactId, Pair.of(groupId, (repo == null || repo.isEmpty() ? defaultRepository : repo)));
 				chars.delete(0, chars.length());
 				groupId = null;
 				artifactId = null;
+				repo = null;
 			}
 		}
 	}
@@ -921,6 +948,9 @@ public class PepperStarter {
 	public void runInteractive() {
 		boolean exit = false;
 		String userInput = null;
+		String lastCommand = null;
+		List<String> lastParams = null;
+		String lastUserInput = null;
 
 		output.println("Welcome to Pepper, type '" + COMMAND.HELP.getName() + "' for help or '" + COMMAND.CONVERT.getName() + "' to start a conversion.");
 		while (!exit) {
@@ -941,77 +971,101 @@ public class PepperStarter {
 				}
 				i++;
 			}
-			try {
-				if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(help());
-				} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
-					output.println(list());
-				} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
-					if (params.size() == 1) {
-						output.println(list(params.get(0)));
-					} else {
-						output.println("Please pass exactly one module name.");
-					}
-				} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(conf());
-				} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(selfTest());
-				} else if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
-					break;
-				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
-					if (params.size() == 1) {
-						convert(params.get(0));
-					} else {
-						convert(null);
-					}
-				} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(osgi());
-				} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(installAndStart(params));
-					// }else if(
-					// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
-					// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
-					// output.println(update(params));
-				} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(remove(params));
-				} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(start_osgi());
-				} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(stop_osgi());
-				} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(clean());
-				} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(debug());
-				} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
-					output.println(update(params));
-				} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
-					output.print(printDependencies(params));
+
+			if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
+				// special treatment of "exit" since we have to abort the loop
+				break;
+			} else if (COMMAND.REPEAT.getName().equalsIgnoreCase(command) || COMMAND.REPEAT.getAbbreviation().equalsIgnoreCase(command)) {
+				if (lastUserInput != null && lastCommand != null && lastParams != null) {
+					executeSingleCommand(lastUserInput, lastCommand, lastParams);
 				} else {
-					output.println("Type 'help' for help.");
+					output.println("Can not repeat if no other command was executed before.");
 				}
-			} catch (Exception | Error e) {
-				output.print("An error occured while processing '" + userInput + "': " + e.getMessage() + ". ");
-				if (!isDebug) {
-					output.println("For more details enter '" + COMMAND.DEBUG.getName() + "' and redo last action. ");
+			} else {
+				executeSingleCommand(lastUserInput, command, params);
+				// only update the last command if repeat was not executed
+				lastCommand = command;
+				lastParams = params;
+				lastUserInput = userInput;
+			}
+		} // end while not exiting
+	}
+
+	private void executeSingleCommand(String userInput, String command, List<String> params) {
+
+		try {
+			if ((COMMAND.HELP.getName().equalsIgnoreCase(command)) || (COMMAND.HELP.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(help());
+			} else if ((params.size() == 0) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+				output.println(list());
+			} else if (((params.size() > 0)) && ((COMMAND.LIST.getName().equalsIgnoreCase(command)) || (COMMAND.LIST.getAbbreviation().equalsIgnoreCase(command)))) {
+				if (params.size() == 1) {
+					output.println(list(params.get(0)));
 				} else {
-					String msg= e.getMessage();
-					if (	(msg!= null)&&
-							(!msg.isEmpty())){
-						logger.error(" ", e.getMessage());
-					}else{
-						e.printStackTrace();
-					}
+					output.println("Please pass exactly one module name.");
+				}
+			} else if ((COMMAND.CONF.getName().equalsIgnoreCase(command)) || (COMMAND.CONF.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(conf());
+			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(selfTest());
+			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+				if (params.size() == 1) {
+					convert(params.get(0));
+				} else {
+					convert(null);
+				}
+			} else if ((COMMAND.OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(osgi());
+			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(installAndStart(params));
+				// }else if(
+				// (COMMAND.UPDATE.getName().equalsIgnoreCase(command))||
+				// (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))){
+				// output.println(update(params));
+			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(remove(params));
+			} else if ((COMMAND.START_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.START_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(start_osgi());
+			} else if ((COMMAND.STOP_OSGI.getName().equalsIgnoreCase(command)) || (COMMAND.STOP_OSGI.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(stop_osgi());
+			} else if ((COMMAND.CLEAN.getName().equalsIgnoreCase(command)) || (COMMAND.CLEAN.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(clean());
+			} else if ((COMMAND.DEBUG.getName().equalsIgnoreCase(command)) || (COMMAND.DEBUG.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(debug());
+			} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(update(params));
+			} else if (COMMAND.PRINT_DEPS.getName().equalsIgnoreCase(command) || COMMAND.PRINT_DEPS.getAbbreviation().equalsIgnoreCase(command)) {
+				output.print(printDependencies(params));
+			} else if (COMMAND.VERSION.getName().equalsIgnoreCase(command) || COMMAND.VERSION.getAbbreviation().equalsIgnoreCase(command)) {
+				output.print(((PepperOSGiConnector) getPepper()).getFrameworkVersion().concat(System.lineSeparator()));
+			} else {
+				output.println("Type 'help' for help.");
+			}
+		} catch (Exception | Error e) {
+			output.print("An error occured while processing '" + userInput + "': " + e.getMessage() + ". ");
+			if (!isDebug) {
+				output.println("For more details enter '" + COMMAND.DEBUG.getName() + "' and redo last action. ");
+			} else {
+				String msg = e.getMessage();
+				if ((msg != null) && (!msg.isEmpty())) {
+					logger.error(" ", e.getMessage());
+				} else {
+					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
-	/** This method reads the dependency command's parameters, calls pepper to
-	 * invoke the dependency collection and returns the results. 
-	 * @param params -- command line parameters 
-	 * @return dependency tree print */
-	private String printDependencies(List<String> params) {		
-		PepperOSGiConnector connector = (PepperOSGiConnector)getPepper();	
+
+	/**
+	 * This method reads the dependency command's parameters, calls pepper to
+	 * invoke the dependency collection and returns the results.
+	 * 
+	 * @param params
+	 *            -- command line parameters
+	 * @return dependency tree print
+	 */
+	private String printDependencies(List<String> params) {
+		PepperOSGiConnector connector = (PepperOSGiConnector) getPepper();
 		Map<String, Pair<String, String>> moduleTable = null;
 		try {
 			moduleTable = getModuleTable();
@@ -1019,59 +1073,124 @@ public class PepperStarter {
 			logger.error("Could not parse module table.");
 			return "No operation performed.";
 		}
-		
+
 		StringBuilder retVal = new StringBuilder();
 		String groupId = null;
 		String version = null;
 		for (String param : params) {
-			if ("all".equalsIgnoreCase(param)){
-				retVal.delete(0, retVal.length());								
-				for (String module : moduleTable.keySet()){
-					groupId = moduleTable.get(module).getLeft();					
+			if ("all".equalsIgnoreCase(param)) {
+				retVal.delete(0, retVal.length());
+				for (String module : moduleTable.keySet()) {
+					groupId = moduleTable.get(module).getLeft();
 					Bundle bundle = connector.getBundle(groupId, module, null);
-					version = bundle==null? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
-					if (version==null) {
+					version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+					if (version == null) {
 						logger.info(module.concat(" not installed. Collecting dependencies for newest version."));
 					}
 					retVal.append(connector.printDependencies(moduleTable.get(module).getLeft(), module, version, moduleTable.get(module).getRight())).append(System.lineSeparator()).append(System.lineSeparator());
 				}
 				return retVal.toString();
-			}
-			else if (param.contains("::")){
+			} else if (param.contains("::")) {
 				String[] coords = params.get(0).split("::");
-				if (coords.length==4){
+				if (coords.length == 4) {
 					retVal.append(connector.printDependencies(coords[0], coords[1], coords[2], coords[3])).append(System.lineSeparator());
 				}
-			}
-			else if (moduleTable.keySet().contains(param)){
-				groupId = moduleTable.get(param).getLeft();					
+			} else if (moduleTable.keySet().contains(param)) {
+				groupId = moduleTable.get(param).getLeft();
 				Bundle bundle = connector.getBundle(groupId, param, null);
-				version = bundle==null? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
-				if (version==null) {
+				version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
+				if (version == null) {
 					logger.info(param.concat(" not installed. Collecting dependencies for newest version."));
 				}
-				retVal.append(connector.printDependencies(moduleTable.get(param).getLeft(), param, version, moduleTable.get(param).getRight())).append(System.lineSeparator());				
-			}
-			else if (param.matches("#?[0-9]+")){
+				retVal.append(connector.printDependencies(moduleTable.get(param).getLeft(), param, version, moduleTable.get(param).getRight())).append(System.lineSeparator());
+			} else if (param.matches("#?[0-9]+")) {
 				retVal.append(connector.printDependencies(param.replace("#", ""))).append(System.lineSeparator());
 			}
 		}
 		return retVal.toString();
 	}
 
-	// REMOVED THIS BECAUSE OF DEPENDENCY TO CONCRETE LOGGING FRAMEWORK IS
-	// CONTRA SLF4J IDEA.
-	// /**
-	// * Changes the logger level to debug in case of logback is used and root
-	// logger is
-	// * of type {@link ch.qos.logback.classic.Logger}.
-	// */
-	// public static void enableDebug(){
-	// Logger rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-	// if (rootLogger instanceof ch.qos.logback.classic.Logger){
-	// ((ch.qos.logback.classic.Logger)rootLogger).setLevel(Level.DEBUG);
-	// }
-	// }
+	/** This is the default ending of a Pepper workflow description file. **/
+	public static final String FILE_ENDING_PEPPER = "pepper";
+	/**
+	 * The standard width of the output console of Pepper.
+	 */
+	public final static int CONSOLE_WIDTH = 120;
+	/** The width of the output console of Pepper. */
+	public final static int CONSOLE_WIDTH_120 = 120;
+
+	/** The width of the output console of Pepper, when os is windows. */
+	public final static int CONSOLE_WIDTH_80 = 80;
+
+	/**
+	 * Returns a formatted String, a kind of a welcome screen of Pepper.
+	 * 
+	 * @return welcome screen
+	 */
+	public static String getHello() {
+		return (getHello(CONSOLE_WIDTH, "saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
+	}
+
+	/**
+	 * Returns a formatted String, a kind of a welcome screen of Pepper.
+	 * 
+	 * @return welcome screen
+	 */
+	public static String getHello(int width, String eMail, String hp) {
+		StringBuilder retVal = new StringBuilder();
+
+		if (CONSOLE_WIDTH_80 == width) {
+			retVal.append("********************************************************************************\n");
+			retVal.append("*                    ____                                                      *\n");
+			retVal.append("*                   |  _ \\ ___ _ __  _ __   ___ _ __                           *\n");
+			retVal.append("*                   | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                          *\n");
+			retVal.append("*                   |  __/  __/ |_) | |_) |  __/ |                             *\n");
+			retVal.append("*                   |_|   \\___| .__/| .__/ \\___|_|                             *\n");
+			retVal.append("*                             |_|   |_|                                        *\n");
+			retVal.append("*                                                                              *\n");
+			retVal.append("********************************************************************************\n");
+			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.  *\n");
+			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 45) + "*\n");
+			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 45) + "*\n");
+			retVal.append("* Version of Pepper:              " + fillUpBlanks(PEPPER_VERSION, 45) + "*\n");
+			retVal.append("********************************************************************************\n");
+			retVal.append("\n");
+		} else {
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("*                                         ____                                                                         *\n");
+			retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
+			retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
+			retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
+			retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
+			retVal.append("*                                                  |_|   |_|                                                           *\n");
+			retVal.append("*                                                                                                                      *\n");
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
+			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 85) + "*\n");
+			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 85) + "*\n");
+			retVal.append("* Version of Pepper:              " + fillUpBlanks(PEPPER_VERSION, 85) + "*\n");
+			retVal.append("************************************************************************************************************************\n");
+			retVal.append("\n");
+		}
+		return (retVal.toString());
+	}
+
+	/**
+	 * Fills up a string with blanks until length.
+	 * 
+	 * @param text
+	 * @param length
+	 * @return
+	 */
+	public static String fillUpBlanks(String text, int length) {
+		StringBuilder str = new StringBuilder();
+		str.append(text);
+		int numOfBlanks = length - text.length();
+		for (int i = 0; i < numOfBlanks; i++) {
+			str.append(" ");
+		}
+		return (str.toString());
+	}
 
 	/**
 	 * @param args
@@ -1082,14 +1201,14 @@ public class PepperStarter {
 		PepperConnector pepper = null;
 		boolean endedWithErrors = false;
 
-		if(LoggerFactory.getILoggerFactory() instanceof LoggerContext) {
+		if (LoggerFactory.getILoggerFactory() instanceof LoggerContext) {
 			LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-			// in our OSGI environment package data extraction 
-			// results in strange errors when log() is called with an 
+			// in our OSGI environment package data extraction
+			// results in strange errors when log() is called with an
 			// exception as argument
 			lc.setPackagingDataEnabled(false);
 		}
-		
+
 		try {
 			PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
 			pepperProps.load();
@@ -1103,7 +1222,7 @@ public class PepperStarter {
 			if ((args.length > 0) && (args[0].equalsIgnoreCase(COMMAND.DEBUG.toString()))) {
 				starter.debug();
 			}
-			logger.info(PepperUtil.getHello(pepperProps.getConsoleWidth(), eMail, hp));
+			logger.info(getHello(pepperProps.getConsoleWidth(), eMail, hp));
 
 			pepper = new PepperOSGiConnector();
 			pepper.setConfiguration(pepperProps);
@@ -1134,7 +1253,7 @@ public class PepperStarter {
 				for (int i = 1; i < args.length; i++) {
 					params.add(args[i]);
 				}
-				logger.info(starter.update(params));			
+				logger.info(starter.update(params));
 			} else if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0])) || (args[0] != null)) {
 				String workFlowFile = null;
 				if (("-p".equalsIgnoreCase(args[0])) || ("-w".equalsIgnoreCase(args[0]))) {

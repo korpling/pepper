@@ -44,16 +44,16 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 
 /**
- * This class represents a console to realize a kind of an interactive wizzard
+ * This class represents a console to realize a kind of an interactive wizard
  * to guide the user through the workflow configuration. This is a step by step
- * wizzard in which the the user needs to make an input for each step:
+ * wizard in which the the user needs to make an input for each step:
  * <ol>
  * <li>Import phase
  * <ol>
  * <li>choose source corpus</li>
  * <li>choose importer (if possible show a list of recommended importers and the
  * rest)</li>
- * <li>choose configuration properties (wizzard presents a list of possible
+ * <li>choose configuration properties (wizard presents a list of possible
  * properties)</li>
  * <li>another importer? press enter for no, corpus path for yes</li>
  * </ol>
@@ -61,7 +61,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * <li>Manipulation phase
  * <ol>
  * <li>choose manipulator (enter for non)</li>
- * <li>choose configuration properties (wizzard presents a list of possible
+ * <li>choose configuration properties (wizard presents a list of possible
  * properties)</li>
  * <li>another manipulator? press enter for no</li>
  * </ol>
@@ -69,7 +69,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * <li>Export phase
  * <ol>
  * <li>choose target path for corpus</li>
- * <li>choose configuration properties (wizzard presents a list of possible
+ * <li>choose configuration properties (wizard presents a list of possible
  * properties)</li>
  * <li>another exporter? press enter for no, corpus path for yes</li>
  * </ol>
@@ -80,20 +80,20 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  * @author Florian Zipser
  * 
  */
-public class ConvertWizzardConsole {
+public class ConvertWizardConsole {
 
-	private static final String PROMPT = "wizzard";
+	private static final String PROMPT = "wizard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
 	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'"+new File("").getAbsolutePath()+"/'. ";
-	
+	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
+
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
 
 	/** Determines if debug mode is on or off **/
@@ -143,7 +143,7 @@ public class ConvertWizzardConsole {
 	 *            the prefix prompt to be displayed, before the prompt of this
 	 *            console.
 	 */
-	public ConvertWizzardConsole(String prefixPrompt) {
+	public ConvertWizardConsole(String prefixPrompt) {
 		prompt = prefixPrompt + "/" + PROMPT;
 	}
 
@@ -178,13 +178,13 @@ public class ConvertWizzardConsole {
 	private PrintStream out = null;
 
 	/**
-	 * Starts the wizzard for a 'session'. A wizzard can only be started as
+	 * Starts the wizard for a 'session'. A wizard can only be started as
 	 * singleton. That means it needs to be quit before it can be started again.
 	 * <ol>
-	 * <li>startes wizzard for import phase {@link #importPhase(PepperJob)}</li>
-	 * <li>startes wizzard for manipulation phase
+	 * <li>startes wizard for import phase {@link #importPhase(PepperJob)}</li>
+	 * <li>startes wizard for manipulation phase
 	 * {@link #manipulationPhase(PepperJob)}</li>
-	 * <li>startes wizzard for export phase {@link #exportPhase(PepperJob)}</li>
+	 * <li>startes wizard for export phase {@link #exportPhase(PepperJob)}</li>
 	 * <li>requests user input {@value COMMAND#SAVE} to store workflow
 	 * description or {@value COMMAND#CONVERT} to start conversion</li>
 	 * </ol>
@@ -247,8 +247,13 @@ public class ConvertWizzardConsole {
 					}
 					try {
 						deresolveURIs(outputFile, pepperJob);
-						pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
+						URI workflowURI= pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
 						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
+						// because of the deresolving of the URI, the relative
+						// path now is incompatible with current working
+						// location, to fix this, the Pepper workflow file needs
+						// to be stored and reloaded again
+						pepperJob.load(workflowURI);
 					} catch (Exception e) {
 						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
 						if (isDebug) {
@@ -261,7 +266,7 @@ public class ConvertWizzardConsole {
 				}
 				out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
 			}
-		} catch (ExitWizzardException e) {
+		} catch (ExitWizardException e) {
 			out.println(MSG_ABORTED);
 			return (null);
 		}
@@ -285,18 +290,18 @@ public class ConvertWizzardConsole {
 		}
 		for (StepDesc stepDesc : pepperJob.getStepDescs()) {
 			if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getCorpusPath() != null)) {
-				URI before= stepDesc.getCorpusDesc().getCorpusPath();
+				URI before = stepDesc.getCorpusDesc().getCorpusPath();
 				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
-				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)){
-					//creates a leading './' if URI is relative
-					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./"+stepDesc.getCorpusDesc().getCorpusPath()));
+				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)) {
+					// creates a leading './' if URI is relative
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./" + stepDesc.getCorpusDesc().getCorpusPath()));
 				}
 			}
 		}
 	}
 
 	/**
-	 * A sub wizzard to manage the import phase. Asks all importers from the
+	 * A sub wizard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
 	 * <li>state 0: reads corpus path, empty input leads to exit import phase</li>
@@ -344,17 +349,16 @@ public class ConvertWizzardConsole {
 						stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
 						String path;
 						try {
-							path= corpusPath.getCanonicalPath();
+							path = corpusPath.getCanonicalPath();
 						} catch (IOException e) {
-							path= corpusPath.getAbsolutePath();
+							path = corpusPath.getAbsolutePath();
 						}
-						if (	(corpusPath.isDirectory())&&
-								(!path.endsWith("/"))){
-							path= path + "/";
+						if ((corpusPath.isDirectory()) && (!path.endsWith("/"))) {
+							path = path + "/";
 						}
-						out.println("import corpus from: "+ path);
+						out.println("import corpus from: " + path);
 						stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
-						
+
 						if ((number2Module == null) || (name2Module == null)) {
 							number2Module = new HashMap<Integer, PepperModuleDesc>();
 							name2Module = new HashMap<String, PepperModuleDesc>();
@@ -421,7 +425,7 @@ public class ConvertWizzardConsole {
 	}
 
 	/**
-	 * A sub wizzard to manage the manipulation phase. Asks for all manipulators
+	 * A sub wizard to manage the manipulation phase. Asks for all manipulators
 	 * from the user.
 	 * <ol>
 	 * <li>state 1: reads name of manipulator, empty input leads to exit import
@@ -511,7 +515,7 @@ public class ConvertWizzardConsole {
 	}
 
 	/**
-	 * A sub wizzard to manage the import phase. Asks all importers from the
+	 * A sub wizard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
 	 * <li>state 0: choose output path, empty input leads to exit of export
@@ -559,14 +563,14 @@ public class ConvertWizzardConsole {
 					}
 					String path;
 					try {
-						path= corpusPath.getCanonicalPath();
+						path = corpusPath.getCanonicalPath();
 					} catch (IOException e) {
-						path= corpusPath.getAbsolutePath();
+						path = corpusPath.getAbsolutePath();
 					}
-					if (!path.endsWith("/")){
-						path= path + "/";
+					if (!path.endsWith("/")) {
+						path = path + "/";
 					}
-					out.println("export corpus to: "+ path);
+					out.println("export corpus to: " + path);
 					stepDesc = pepperJob.createStepDesc();
 					stepDesc.setModuleType(MODULE_TYPE.EXPORTER);
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI(path));
@@ -674,7 +678,7 @@ public class ConvertWizzardConsole {
 		int numOfRecommended = 0;
 		// if module is importer, call isImportable
 		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
-			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizzardConsole.ImporterModuleDesc>();
+			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizardConsole.ImporterModuleDesc>();
 			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
 				if (MODULE_TYPE.IMPORTER.equals(moduleDesc.getModuleType())) {
 					Double isImportable = getPepper().isImportable(corpusPath, moduleDesc);
@@ -804,12 +808,12 @@ public class ConvertWizzardConsole {
 			out.println("Cannot read command.");
 		}
 		if (("exit".equalsIgnoreCase(userInput))) {
-			throw new ExitWizzardException();
+			throw new ExitWizardException();
 		}
 		return (userInput);
 	}
 
-	private class ExitWizzardException extends RuntimeException {
+	private class ExitWizardException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 	}
 

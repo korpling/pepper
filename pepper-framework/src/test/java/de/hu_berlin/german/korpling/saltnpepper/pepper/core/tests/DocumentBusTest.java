@@ -42,10 +42,10 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 @RunWith(JUnit4.class)
-public class DocumentBusTest{
+public class DocumentBusTest {
 
-	protected DocumentBus fixture= null;
-	
+	protected DocumentBus fixture = null;
+
 	public DocumentBus getFixture() {
 		return fixture;
 	}
@@ -56,85 +56,84 @@ public class DocumentBusTest{
 
 	@Before
 	public void setUp() throws Exception {
-		inputs= new Vector<String>();
-		for (int i=  0; i< 5;i++){
-			inputs.add("in_controller_"+i);
+		inputs = new Vector<String>();
+		for (int i = 0; i < 5; i++) {
+			inputs.add("in_controller_" + i);
 		}
-		
-		outputs= new Vector<String>();
-		for (int i=  0; i< 5;i++){
-			outputs.add("out_controller_"+i);
+
+		outputs = new Vector<String>();
+		for (int i = 0; i < 5; i++) {
+			outputs.add("out_controller_" + i);
 		}
-		
+
 		setFixture(new DocumentBus(inputs, outputs));
 	}
-	
-	private Vector<String> outputs= null;
-	private Vector<String> inputs= null;
-	
+
+	private Vector<String> outputs = null;
+	private Vector<String> inputs = null;
+
 	/**
-	 * Tests if the method {@link DocumentBus#getId()} returns a string 
+	 * Tests if the method {@link DocumentBus#getId()} returns a string
 	 */
 	@Test
-	public void testGetId(){
+	public void testGetId() {
 		assertNotNull(getFixture().getId());
 		assertFalse("".equals(getFixture().getId()));
 	}
-	
+
 	/**
 	 * Tests if all input and output controllers are stored in lists.
 	 */
 	@Test
-	public void testInOutControllerIds(){
+	public void testInOutControllerIds() {
 		assertEquals(inputs.size(), getFixture().getInputControllerIds().size());
 		assertTrue(inputs.containsAll(getFixture().getInputControllerIds()));
-		
+
 		assertEquals(outputs.size(), getFixture().getOutputControllerIds().size());
 		assertTrue(outputs.containsAll(getFixture().getOutputControllerIds()));
 	}
+
 	/**
-	 * Tests if {@link DocumentBus#isFinished()} returns true, when all input controllers have called 
-	 * {@link DocumentBus#finish(String)}. 
+	 * Tests if {@link DocumentBus#isFinished()} returns true, when all input
+	 * controllers have called {@link DocumentBus#finish(String)}.
 	 */
 	@Test
-	public void testIsFinished()
-	{
+	public void testIsFinished() {
 		setFixture(new DocumentBus(inputs, outputs));
-		for (String id: inputs){
+		for (String id : inputs) {
 			assertFalse(getFixture().isFinished());
 			getFixture().finish(id);
 		}
 		assertTrue(getFixture().isFinished());
 	}
-	
+
 	/**
 	 * Tests if the put of document Controllers does work correctly.
 	 */
 	@Test
-	public void testPut()
-	{
-		Vector<DocumentController> docControllers= new Vector<DocumentController>(); 
-		for (int i= 0; i < 20; i++){
-			DocumentController docController= new DocumentControllerImpl();
+	public void testPut() {
+		Vector<DocumentController> docControllers = new Vector<DocumentController>();
+		for (int i = 0; i < 20; i++) {
+			DocumentController docController = new DocumentControllerImpl();
 			docControllers.add(docController);
 			getFixture().put(docController);
 		}
-		for (ConcurrentLinkedQueue<DocumentController> queue: getFixture().getDocumentBus().values()){
-			assertTrue("Expected: "+ docControllers+", but given: "+queue, queue.containsAll(docControllers));
+		for (ConcurrentLinkedQueue<DocumentController> queue : getFixture().getDocumentBus().values()) {
+			assertTrue("Expected: " + docControllers + ", but given: " + queue, queue.containsAll(docControllers));
 		}
 	}
-	
+
 	/**
-	 * Tests if the put of a not contained document controller throws an exception.
+	 * Tests if the put of a not contained document controller throws an
+	 * exception.
 	 */
 	@Test
-	public void testPut_Empty()
-	{
-		try{
+	public void testPut_Empty() {
+		try {
 			getFixture().put(null);
 			fail("Should have thrown an exception");
-		}catch(PepperFWException e){
-			
+		} catch (PepperFWException e) {
+
 		}
 	}
 
@@ -142,128 +141,127 @@ public class DocumentBusTest{
 	 * Tests if the put and pop of document Controllers.
 	 */
 	@Test
-	public void testPutAndPop()
-	{
-		Vector<DocumentController> docControllers= new Vector<DocumentController>();
-		SCorpusGraph sCorpGraph= SaltFactory.eINSTANCE.createSCorpusGraph();
-		SCorpus sCorpus= SaltFactory.eINSTANCE.createSCorpus();
+	public void testPutAndPop() {
+		Vector<DocumentController> docControllers = new Vector<DocumentController>();
+		SCorpusGraph sCorpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
+		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
 		sCorpGraph.addSNode(sCorpus);
-		for (int i= 0; i < 20; i++){
-			SDocument sDoc= SaltFactory.eINSTANCE.createSDocument();
+		for (int i = 0; i < 20; i++) {
+			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
 			sCorpGraph.addSDocument(sCorpus, sDoc);
-			
-			DocumentController docController= new DocumentControllerImpl(sDoc);
+
+			DocumentController docController = new DocumentControllerImpl(sDoc);
 			docControllers.add(docController);
 			getFixture().put(docController);
 		}
-		for (ConcurrentLinkedQueue<DocumentController> queue: getFixture().getDocumentBus().values()){
-			assertTrue("Expected: "+ docControllers+", but given: "+queue, queue.containsAll(docControllers));
+		for (ConcurrentLinkedQueue<DocumentController> queue : getFixture().getDocumentBus().values()) {
+			assertTrue("Expected: " + docControllers + ", but given: " + queue, queue.containsAll(docControllers));
 		}
-		
-		for (int i=1; i<= docControllers.size(); i++){
-			for (String outputId: outputs){
+
+		for (int i = 1; i <= docControllers.size(); i++) {
+			for (String outputId : outputs) {
 				getFixture().pop(outputId);
 			}
-			for (ConcurrentLinkedQueue<DocumentController> queue: getFixture().getDocumentBus().values()){
-				assertEquals(docControllers.size()-i, queue.size());
+			for (ConcurrentLinkedQueue<DocumentController> queue : getFixture().getDocumentBus().values()) {
+				assertEquals(docControllers.size() - i, queue.size());
 			}
 		}
-		for (ConcurrentLinkedQueue<DocumentController> queue: getFixture().getDocumentBus().values()){
-			assertFalse("Expected: "+ docControllers+", but given: "+queue, queue.containsAll(docControllers));
+		for (ConcurrentLinkedQueue<DocumentController> queue : getFixture().getDocumentBus().values()) {
+			assertFalse("Expected: " + docControllers + ", but given: " + queue, queue.containsAll(docControllers));
 		}
 	}
-	
+
 	/**
-	 * Creates 1 module controller producing data and 5 module controllers consuming data.
-	 * 20 documents or {@link DocumentController} are produced and passed via the queue. All
-	 * module controllers are threaded.
-	 * @throws InterruptedException 
+	 * Creates 1 module controller producing data and 5 module controllers
+	 * consuming data. 20 documents or {@link DocumentController} are produced
+	 * and passed via the queue. All module controllers are threaded.
+	 * 
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void testPop_Threaded() throws InterruptedException
-	{
-		Vector<String> importModuleControllers= new Vector<String>();
-		SimplePepperModuleController importerController= new SimplePepperModuleController();
-		importerController.waitTime= new Long(25);
-		importerController.controllerId="producer";
+	public void testPop_Threaded() throws InterruptedException {
+		Vector<String> importModuleControllers = new Vector<String>();
+		SimplePepperModuleController importerController = new SimplePepperModuleController();
+		importerController.waitTime = new Long(25);
+		importerController.controllerId = "producer";
 		importModuleControllers.add(importerController.controllerId);
-		
-		Vector<DocumentController> docControllers= new Vector<DocumentController>();
-		SCorpusGraph sCorpGraph= SaltFactory.eINSTANCE.createSCorpusGraph();
-		SCorpus sCorpus= SaltFactory.eINSTANCE.createSCorpus();
+
+		Vector<DocumentController> docControllers = new Vector<DocumentController>();
+		SCorpusGraph sCorpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
+		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
 		sCorpGraph.addSNode(sCorpus);
-		for (int i= 0; i < 20; i++){
-			SDocument sDoc= SaltFactory.eINSTANCE.createSDocument();
+		for (int i = 0; i < 20; i++) {
+			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
 			sCorpGraph.addSDocument(sCorpus, sDoc);
-			
-			DocumentController docController= new DocumentControllerImpl(sDoc);
+
+			DocumentController docController = new DocumentControllerImpl(sDoc);
 			docControllers.add(docController);
 			importerController.getDocumentControllers().add(docController);
 		}
-		
-		Vector<String> exportModuleControllers= new Vector<String>();
-		Vector<SimplePepperModuleController> moduleControllers= new Vector<DocumentBusTest.SimplePepperModuleController>();
-		for (int i=0; i < 5; i++){
-			SimplePepperModuleController controller= new SimplePepperModuleController();
-			controller.waitTime= new Long(10+ i*5);
-			controller.controllerId="consumer_"+i;
+
+		Vector<String> exportModuleControllers = new Vector<String>();
+		Vector<SimplePepperModuleController> moduleControllers = new Vector<DocumentBusTest.SimplePepperModuleController>();
+		for (int i = 0; i < 5; i++) {
+			SimplePepperModuleController controller = new SimplePepperModuleController();
+			controller.waitTime = new Long(10 + i * 5);
+			controller.controllerId = "consumer_" + i;
 			moduleControllers.add(controller);
 			exportModuleControllers.add(controller.controllerId);
 		}
 		setFixture(new DocumentBus(importModuleControllers, exportModuleControllers));
-		
-		importerController.outputQueue= getFixture();
-		Thread thread= new Thread(importerController);
+
+		importerController.outputQueue = getFixture();
+		Thread thread = new Thread(importerController);
 		thread.start();
-		
-		for (SimplePepperModuleController outController: moduleControllers){
-			outController.inputQueue= getFixture();
-			thread= new Thread(outController);
+
+		for (SimplePepperModuleController outController : moduleControllers) {
+			outController.inputQueue = getFixture();
+			thread = new Thread(outController);
 			thread.start();
 		}
-		
-		Long time= System.nanoTime();
-		for (SimplePepperModuleController outController: moduleControllers){
-			while(!outController.done){
+
+		Long time = System.nanoTime();
+		for (SimplePepperModuleController outController : moduleControllers) {
+			while (!outController.done) {
 				Thread.sleep(100);
-				Long neededTime= (System.nanoTime()-time)/1000000;
-				if (neededTime> 5000){
-					System.out.println("abort test, since it took too long for consumer '"+outController+"'.");
+				Long neededTime = (System.nanoTime() - time) / 1000000;
+				if (neededTime > 5000) {
+					System.out.println("abort test, since it took too long for consumer '" + outController + "'.");
 					break;
 				}
 			}
 		}
-		for (SimplePepperModuleController outController: moduleControllers){
-			assertEquals(outController.controllerId+" has not the expected number of elements", docControllers.size(), outController.getDocumentControllers().size());
+		for (SimplePepperModuleController outController : moduleControllers) {
+			assertEquals(outController.controllerId + " has not the expected number of elements", docControllers.size(), outController.getDocumentControllers().size());
 			assertTrue(outController.getDocumentControllers().containsAll(docControllers));
-			
-			assertTrue(outController+" is not done", outController.done);
+
+			assertTrue(outController + " is not done", outController.done);
 		}
 	}
-	
-	private class SimplePepperModuleController implements Runnable{
 
-		public Long waitTime= null;
-		public String controllerId= null;
-		private List<DocumentController> documentControllers= null;
-		public List<DocumentController> getDocumentControllers(){
-			if (documentControllers== null){
-				this.documentControllers= new Vector<DocumentController>();
+	private class SimplePepperModuleController implements Runnable {
+
+		public Long waitTime = null;
+		public String controllerId = null;
+		private List<DocumentController> documentControllers = null;
+
+		public List<DocumentController> getDocumentControllers() {
+			if (documentControllers == null) {
+				this.documentControllers = new Vector<DocumentController>();
 			}
-			return(documentControllers);
+			return (documentControllers);
 		}
-		public DocumentBus inputQueue= null;
-		public DocumentBus outputQueue= null;
-		public boolean done= false;
-		
+
+		public DocumentBus inputQueue = null;
+		public DocumentBus outputQueue = null;
+		public boolean done = false;
+
 		@Override
 		public void run() {
-			Long time= System.nanoTime();
-			if (inputQueue!= null)
-			{
-				DocumentController docController= null;
-				while ((docController= inputQueue.pop(controllerId)) != null)
-				{
+			Long time = System.nanoTime();
+			if (inputQueue != null) {
+				DocumentController docController = null;
+				while ((docController = inputQueue.pop(controllerId)) != null) {
 					getDocumentControllers().add(docController);
 					try {
 						Thread.sleep(waitTime);
@@ -271,12 +269,8 @@ public class DocumentBusTest{
 						e.printStackTrace();
 					}
 				}
-			}
-			else if (	(outputQueue!= null)&&
-						(!getDocumentControllers().isEmpty()))
-			{
-				for (DocumentController docController: getDocumentControllers())
-				{
+			} else if ((outputQueue != null) && (!getDocumentControllers().isEmpty())) {
+				for (DocumentController docController : getDocumentControllers()) {
 					outputQueue.put(docController);
 					try {
 						Thread.sleep(waitTime);
@@ -286,11 +280,12 @@ public class DocumentBusTest{
 				}
 				outputQueue.finish(controllerId);
 			}
-			time= (System.nanoTime()- time)/1000000;
-			done= true;
+			time = (System.nanoTime() - time) / 1000000;
+			done = true;
 		}
-		public String toString(){
-			return(controllerId+"(wait: "+waitTime+")"+": consumed/produced: "+getDocumentControllers()+ " ==> still on bus: " +getFixture().getDocumentBus());
+
+		public String toString() {
+			return (controllerId + "(wait: " + waitTime + ")" + ": consumed/produced: " + getDocumentControllers() + " ==> still on bus: " + getFixture().getDocumentBus());
 		}
 	}
 }

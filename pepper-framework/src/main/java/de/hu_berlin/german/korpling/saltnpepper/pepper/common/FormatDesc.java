@@ -20,19 +20,25 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * This class is used by Pepper to describe a linguistic data format. Such an object is used for instance to
- * describe the set of formats which can be handled by a {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter} or a {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter}.
- * Or it can be used to determine the format of a corpus resource as given in {@link CorpusDesc}.
- * <br/>
+ * This class is used by Pepper to describe a linguistic data format. Such an
+ * object is used for instance to describe the set of formats which can be
+ * handled by a
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter}
+ * or a
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter}
+ * . Or it can be used to determine the format of a corpus resource as given in
+ * {@link CorpusDesc}. <br/>
  * Main fields are:
  * <ul>
- * 	<li>{@link #formatName} - to determine the name of the format</li>
- *  <li>{@link #formatVersion} - to determine the version of the format</li>
- *  <li>{@link #formatReference} - to set a link to a more detailed description, in most cases this is optional</li>
+ * <li>{@link #formatName} - to determine the name of the format</li>
+ * <li>{@link #formatVersion} - to determine the version of the format</li>
+ * <li>{@link #formatReference} - to set a link to a more detailed description,
+ * in most cases this is optional</li>
  * </ul>
+ * 
  * @author Florian Zipser
  */
-public class FormatDesc{
+public class FormatDesc {
 
 	/**
 	 * Initilizes an object.
@@ -40,99 +46,114 @@ public class FormatDesc{
 	public FormatDesc() {
 		super();
 	}
-	
+
 	/**
 	 * Name of the linguistic format.
 	 */
 	protected String formatName = null;
-	
+
 	/**
 	 * Sets the name of the linguistic format.
-	 * @param formatName name of the format to be used
+	 * 
+	 * @param formatName
+	 *            name of the format to be used
 	 * @return this
 	 */
 	public FormatDesc setFormatName(String formatName) {
 		this.formatName = formatName;
-		return(this);
+		return (this);
 	}
+
 	/**
 	 * Returns the name of the linguistic format.
+	 * 
 	 * @return name of the format.
 	 */
 	public String getFormatName() {
 		return formatName;
 	}
-	
+
 	/**
 	 * The version of the format.
 	 */
 	protected String formatVersion = null;
+
 	/**
 	 * Returns the version of the linguistic format.
+	 * 
 	 * @return version of the format
 	 */
 	public String getFormatVersion() {
 		return formatVersion;
 	}
+
 	/**
 	 * Sets the version of the linguistic format.
-	 * @param formatVersion version of the format
+	 * 
+	 * @param formatVersion
+	 *            version of the format
 	 * @return this
 	 */
 	public FormatDesc setFormatVersion(String formatVersion) {
 		this.formatVersion = formatVersion;
-		return(this);
+		return (this);
 	}
 
 	/**
-	 * Documentation reference for the linguistic format. 
+	 * Documentation reference for the linguistic format.
 	 */
 	protected URI formatReference = null;
+
 	/**
 	 * Returns the documentation reference for the linguistic format.
-	 * @param link to a documentation
-	 */	
+	 * 
+	 * @param link
+	 *            to a documentation
+	 */
 	public URI getFormatReference() {
 		return formatReference;
 	}
+
 	/**
 	 * Sets the documentation reference for the linguistic format.
-	 * @param formatReference link to documentation
+	 * 
+	 * @param formatReference
+	 *            link to documentation
 	 * @return this
 	 */
 	public FormatDesc setFormatReference(URI formatReference) {
 		this.formatReference = formatReference;
-		return(this);
+		return (this);
 	}
-	
+
 	/**
-	 * Compares a {@link CorpusDesc} object with this object. Both objects are equal, if and only if
-	 * the have the same format name and format version. The comparison is case insensitive.
+	 * Compares a {@link CorpusDesc} object with this object. Both objects are
+	 * equal, if and only if the have the same format name and format version.
+	 * The comparison is case insensitive.
 	 */
 	@Override
-	public boolean equals(Object obj){
-		if (this== obj){
-			return(true);
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return (true);
 		}
-		if (obj!= null){
-			if (obj instanceof FormatDesc){
-				if (	(getFormatName()!= null)&&
-						(getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName()))&&
-						(getFormatVersion()!= null)&&
-						(getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))){
-					return(true);
-				}else{
-					return(false);
+		if (obj != null) {
+			if (obj instanceof FormatDesc) {
+				if ((getFormatName() != null) && (getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName())) && (getFormatVersion() != null) && (getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))) {
+					return (true);
+				} else {
+					return (false);
 				}
-			}else{
-				return(false);
+			} else {
+				return (false);
 			}
-		}else return(false);
+		} else
+			return (false);
 	}
-	
+
 	/**
-	 * Returns a String representation of this object.
-	 * <strong>Note: This String cannot be used for serialization/ deserialization.</string>
+	 * Returns a String representation of this object. <strong>Note: This String
+	 * cannot be used for serialization/ deserialization.</string>
+	 * 
 	 * @return a String representation of this object.
 	 */
 	@Override

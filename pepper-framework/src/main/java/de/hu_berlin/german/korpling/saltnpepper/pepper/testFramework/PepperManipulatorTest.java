@@ -17,6 +17,45 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
+
+/**
+ * <p>
+ * This class is a helper class for creating tests for {@link PepperManipulator}
+ * s. This class provides a fixture declaration which could be called via
+ * {@link #setFixture(PepperManipulator)}. The fixture which is returned via
+ * {@link #getFixture()} is of type {@link PepperManipulator}. To create an
+ * easier access, we recommend to overwrite the method {@link #getFixture()} as
+ * follows:
+ * 
+ * <pre>
+ * &#064;Override
+ * public MY_MANIPULATOR_CLASS getFixture() {
+ * 	return (MY_MANIPULATOR_CLASS) fixture;
+ * }
+ * </pre>
+ * 
+ * The method {@link #setFixture(PepperManipulator)} sets the
+ * {@link SaltProject} and creates a single {@link SCorpusGraph} object, which
+ * is added to the list of corpus structures in the salt project. To access the
+ * salt project or the corpus structure use the following code:
+ * 
+ * <pre>
+ * 	getFixture().getSaltProject();
+ *  getFixture().getSaltProject().getSCorpusGraphs()
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * To run the test call {@link #start()} in your test method. This will start
+ * the test environment, which simulates a Pepper conversion process.
+ * </p>
+ * 
+ * @author florian
+ *
+ */
 public abstract class PepperManipulatorTest extends PepperModuleTest {
 
 }

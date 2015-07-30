@@ -18,8 +18,9 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 /**
- * This PepperException is thrown if an internal error occurs. This means if it is clear,
- * that the error reason is a bug.
+ * This PepperException is thrown if an internal error occurs. This means if it
+ * is clear, that the error reason is a bug.
+ * 
  * @author Florian Zipser
  *
  */
@@ -29,15 +30,18 @@ public class WorkflowException extends PepperException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -1134919182794615488L;
-	
-	public static final String MSG_PREFIX="An error occured in Pepper workflow. ";
-	
-	public WorkflowException()
-	{ this(""); }
-	
-    public WorkflowException(String s)
-    { super(MSG_PREFIX+s); }
-    
-	public WorkflowException(String s, Throwable ex)
-	{super(MSG_PREFIX+s, ex); }
+
+	public static final String MSG_PREFIX = "An error occured in Pepper workflow. ";
+
+	public WorkflowException() {
+		this("");
+	}
+
+	public WorkflowException(String s) {
+		super(MSG_PREFIX + s);
+	}
+
+	public WorkflowException(String s, Throwable ex) {
+		super(MSG_PREFIX + s, ex);
+	}
 }

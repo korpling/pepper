@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -69,7 +70,6 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SMetaAnnotatableElement;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
-import java.util.LinkedList;
 
 /**
  * TODO make docu
@@ -205,6 +205,16 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Override
 	public void setSupplierContact(URI supplierContact) {
 		getFingerprint().setSupplierContact(supplierContact);
+	}
+
+	@Override
+	public URI getSupplierHomepage() {
+		return (getFingerprint().getSupplierHomepage());
+	}
+
+	@Override
+	public void setSupplierHomepage(URI hp) {
+		getFingerprint().setSupplierHomepage(hp);
 	}
 
 	/**
@@ -349,15 +359,17 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		}
 	}
 
-	/** a list containing reasons why this module is not ready to start **/ 
-	private Collection<String> startProblems= new ArrayList<String>();
+	/** a list containing reasons why this module is not ready to start **/
+	private Collection<String> startProblems = new ArrayList<String>();
+
 	/**
 	 * {@inheritDoc PepperModule#getStartProblems()}
 	 */
 	@Override
-	public Collection<String> getStartProblems(){
-		return(startProblems);
+	public Collection<String> getStartProblems() {
+		return (startProblems);
 	}
+
 	/**
 	 * {@inheritDoc PepperModule#isReadyToStart()}
 	 */
@@ -370,7 +382,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		} else {
 			File resourceFile = new File(getResources().toFileString());
 			if (!resourceFile.exists()) {
-				startProblems.add("Given resource file '"+resourceFile.getAbsolutePath()+"' does not exist.");
+				startProblems.add("Given resource file '" + resourceFile.getAbsolutePath() + "' does not exist.");
 				retVal = false;
 			}
 		}
@@ -384,8 +396,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		}
 		return (retVal);
 	}
-	
-	
 
 	/**
 	 * the controller object, which acts as bridge between Pepper framework and
@@ -632,7 +642,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		if (sElementId.getIdentifiableElement() instanceof SDocument) {
 			DocumentController docController = getDocumentId2DC().get(SaltFactory.eINSTANCE.getGlobalId(sElementId));
 			if (docController == null) {
-				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.eINSTANCE.getGlobalId(sElementId) + "'. Controllers are listed for the following SElementId objects: " + getDocumentId2DC() + ". ");
+				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.eINSTANCE.getGlobalId(sElementId) + "' to pass status '" + result + "'. Controllers are listed for the following SElementId objects: " + getDocumentId2DC() + ". ");
 			}
 			if (DOCUMENT_STATUS.DELETED.equals(result)) {
 				this.getModuleController().delete(docController);
@@ -689,7 +699,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 		// copy all corpora into finite list
 		corporaToEnd = new Vector<SCorpus>();
-		// copy the list before iterating over it (the original one might get modified)
+		// copy the list before iterating over it (the original one might get
+		// modified)
 		List<SCorpusGraph> corpGraphs = new LinkedList<>(this.getSaltProject().getSCorpusGraphs());
 		for (SCorpusGraph sCorpusGraph : corpGraphs) {
 			if (sCorpusGraph != null) {
@@ -736,7 +747,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 			PepperMapper mapper = this.createPepperMapper(sElementId);
 			mapper.setProperties(this.getProperties());
-		
+
 			if (this instanceof PepperImporter) {
 				if (mapper.getResourceURI() == null) {
 					URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
@@ -990,7 +1001,10 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
-		//TODO this is a workaround because of a bug in slf4j. Currently errors are not passable to slf4j. Therefore just the error message is passed, and because this is quite unuseful, the stacktrace is also printed.
+		// TODO this is a workaround because of a bug in slf4j. Currently errors
+		// are not passable to slf4j. Therefore just the error message is
+		// passed, and because this is quite unuseful, the stacktrace is also
+		// printed.
 		logger.error("An exception was thrown by the mapper threads '" + t + "'. ", e.getMessage());
 		e.printStackTrace();
 		if (logger instanceof NOPLogger) {
@@ -1003,7 +1017,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public Double getProgress(String globalId) {
-		if (globalId == null){
+		if (globalId == null) {
 			throw new PepperFWException("Cannot return the progress for an empty sDocumentId.");
 		}
 		PepperMapperController controller = this.getMapperControllers().get(globalId);
@@ -1012,9 +1026,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		// if (controller== null)
 		// throw new
 		// PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
-		if (controller != null){
+		if (controller != null) {
 			return (controller.getProgress());
-		}else{
+		} else {
 			return (null);
 		}
 	}

@@ -26,10 +26,10 @@ import org.junit.Test;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
 
-public class PepperJobTest extends PepperJob{
+public class PepperJobTest extends PepperJob {
 
-	private PepperJob fixture= null;
-	
+	private PepperJob fixture = null;
+
 	public PepperJob getFixture() {
 		return fixture;
 	}
@@ -39,10 +39,10 @@ public class PepperJobTest extends PepperJob{
 	}
 
 	@Before
-	public void setUp(){
+	public void setUp() {
 		setFixture(this);
 	}
-	
+
 	/**
 	 * tests if {@link PepperJobImpl#toString()} always returns a correct value
 	 */
@@ -77,8 +77,12 @@ public class PepperJobTest extends PepperJob{
 	}
 
 	@Override
-	public void save(URI uri) {
-		// TODO Auto-generated method stub
-		
+	public URI save(URI uri) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void clear() {
+		throw new UnsupportedOperationException();
 	}
 }

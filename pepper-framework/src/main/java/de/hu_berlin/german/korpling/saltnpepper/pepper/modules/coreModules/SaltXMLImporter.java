@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.saltXML;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.io.File;
 
@@ -41,7 +41,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * Such a file must contain the document structure. The corpus structure is
  * stored in a single file called saltProject +
  * {@value SaltFactory#FILE_ENDING_SALT}. The value
- * {@value SaltFactory#FILE_ENDING_SALT} can be gettet by method
+ * {@value SaltFactory#FILE_ENDING_SALT} can be got by method
  * getSaltFileEnding(). <br/>
  * 
  * @author Florian Zipser
@@ -50,49 +50,50 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 @Component(name = "SaltXMLImporterComponent", factory = "PepperImporterComponentFactory")
 public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter {
+	public static final String MODULE_NAME = "SaltXMLImporter";
+	public static final String FORMAT_NAME_SALTXML = "SaltXML";
+	public static final String FORMAT_VERSION_SALTXML = "1.0";
+
 	public SaltXMLImporter() {
 		// setting name of module
-		super("SaltXMLImporter");
+		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This importer imports a Salt model from a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
-		this.addSupportedFormat("SaltXML", "1.0", null);
+		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);
 		setProperties(new PepperModuleProperties());
 	}
 
 	/**
 	 * Reads recursively first found file and returns 1.0 if file contains:
 	 * <ul>
-	 *  <li>&lt;?xml</li>
-	 *  <li>xmi:version=\"2.0\"</li>
-	 *  <li>salt</li>
+	 * <li>&lt;?xml</li>
+	 * <li>xmi:version=\"2.0\"</li>
+	 * <li>salt</li>
 	 * </ul>
 	 */
 	@Override
 	public Double isImportable(URI corpusPath) {
-		Double retVal= null;
-		File file= new File(corpusPath.toFileString());
-		File[] allFiles= null;
-		boolean abort= false;
-		while (	(!abort)&&
-				(file.isDirectory())){
-			allFiles= file.listFiles();
-			if (	(allFiles!= null)&&
-					(allFiles.length!= 0)){
-				file= allFiles[0];
-			}else{
-				abort= true;
+		Double retVal = null;
+		File file = new File(corpusPath.toFileString());
+		File[] allFiles = null;
+		boolean abort = false;
+		while ((!abort) && (file.isDirectory())) {
+			allFiles = file.listFiles();
+			if ((allFiles != null) && (allFiles.length != 0)) {
+				file = allFiles[0];
+			} else {
+				abort = true;
 			}
 		}
-		if (!abort){
-			String content= readFirstLines(URI.createFileURI(file.getAbsolutePath()), 20);
-			if (	(content.contains("<?xml"))&&
-					(content.contains("xmi:version=\"2.0\""))&&
-					(content.contains("salt"))){
-				retVal= 1.0;
+		if (!abort) {
+			String content = readFirstLines(URI.createFileURI(file.getAbsolutePath()), 20);
+			if ((content.contains("<?xml")) && (content.contains("xmi:version=\"2.0\"")) && (content.contains("salt"))) {
+				retVal = 1.0;
 			}
 		}
-		return(retVal);
+		return (retVal);
 	}
 
 	/**

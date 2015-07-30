@@ -32,8 +32,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperParamsReader;
 
 public class PepperParamsReaderTest {
 
-	private PepperParamsReader fixture= null;
-	
+	private PepperParamsReader fixture = null;
+
 	public PepperParamsReader getFixture() {
 		return fixture;
 	}
@@ -41,40 +41,41 @@ public class PepperParamsReaderTest {
 	public void setFixture(PepperParamsReader fixture) {
 		this.fixture = fixture;
 	}
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		setFixture(new PepperParamsReader());
-		File tmpDir= new File(getTmPath());
+		File tmpDir = new File(getTmPath());
 		if (!tmpDir.exists())
 			tmpDir.mkdirs();
 	}
-	
-	public String getTmPath(){
-		return(PepperUtil.getTempTestFile("pepperParamsTest").getAbsolutePath());
+
+	public String getTmPath() {
+		return (PepperUtil.getTempTestFile("pepperParamsTest").getAbsolutePath());
 	}
-	
+
 	@Test
 	public void testResolveFile() {
 		assertNull(getFixture().resolveFile(null));
 		assertNull(getFixture().resolveFile(""));
-		
-		File retFile=null;
-		
-		retFile= getFixture().resolveFile("file:"+getTmPath()+"/some.file");
+
+		File retFile = null;
+
+		retFile = getFixture().resolveFile("file:" + getTmPath() + "/some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
-		
-		retFile= getFixture().resolveFile("file:"+getTmPath()+"/some.file");
+		assertEquals(getTmPath() + "/some.file", retFile.getAbsolutePath());
+
+		retFile = getFixture().resolveFile("file:" + getTmPath() + "/some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
-		
-		retFile= getFixture().resolveFile(getTmPath()+"/some.file");
+		assertEquals(getTmPath() + "/some.file", retFile.getAbsolutePath());
+
+		retFile = getFixture().resolveFile(getTmPath() + "/some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
-		
+		assertEquals(getTmPath() + "/some.file", retFile.getAbsolutePath());
+
 		getFixture().setLocation(URI.createFileURI(getTmPath()));
-		retFile= getFixture().resolveFile("./some.file");
+		retFile = getFixture().resolveFile("./some.file");
 		assertNotNull(retFile);
-		assertEquals(getTmPath()+"/some.file", retFile.getAbsolutePath());
+		assertEquals(getTmPath() + "/some.file", retFile.getAbsolutePath());
 	}
 }

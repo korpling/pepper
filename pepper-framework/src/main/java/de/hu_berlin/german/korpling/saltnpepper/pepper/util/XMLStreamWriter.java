@@ -21,62 +21,74 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * This class is just a delegator class for a {@link XMLStreamWriter} with a pretty printing possibility.
+ * This class is just a delegator class for a {@link XMLStreamWriter} with a
+ * pretty printing possibility.
+ * 
  * @author Florian Zipser
  *
  */
-public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
+public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 
-	private static final String INTEND="\t";
-	private String intend= INTEND;
-	
+	private static final String INTEND = "\t";
+	private String intend = INTEND;
+
 	/**
-	 * Returns the intend character(s) for pretty printing. Default is {@link XMLStreamWriter#INTEND}. 
+	 * Returns the intend character(s) for pretty printing. Default is
+	 * {@link XMLStreamWriter#INTEND}.
+	 * 
 	 * @param intend
 	 */
 	public String getIntend() {
 		return intend;
 	}
+
 	/**
-	 * Set the intend character(s) for pretty printing. Default is {@link XMLStreamWriter#INTEND}. 
+	 * Set the intend character(s) for pretty printing. Default is
+	 * {@link XMLStreamWriter#INTEND}.
+	 * 
 	 * @param intend
 	 */
 	public void setIntend(String intend) {
 		this.intend = intend;
 	}
-	private Boolean isPrettyPrint= false;
-	
+
+	private Boolean isPrettyPrint = false;
+
 	/**
 	 * Returns whether xml should be pretty printed
+	 * 
 	 * @return
 	 */
 	public Boolean getPrettyPrint() {
 		return isPrettyPrint;
 	}
+
 	/**
 	 * Sets whether the xml should be pretty printed.
+	 * 
 	 * @param prettyPrint
 	 */
 	public void setPrettyPrint(Boolean prettyPrint) {
 		this.isPrettyPrint = prettyPrint;
 	}
+
 	/**
 	 * Current depth for xml pretty printing.
 	 */
-	private int depth= 0;
-	
+	private int depth = 0;
+
 	/**
 	 * The delegate object
 	 */
-	private javax.xml.stream.XMLStreamWriter xml= null;
-	
-	public XMLStreamWriter(javax.xml.stream.XMLStreamWriter xmlStreamWriter){
-		if (xmlStreamWriter== null){
+	private javax.xml.stream.XMLStreamWriter xml = null;
+
+	public XMLStreamWriter(javax.xml.stream.XMLStreamWriter xmlStreamWriter) {
+		if (xmlStreamWriter == null) {
 			throw new NullPointerException("The passed XMLStreamWriter which acts as a delegatee is null.");
 		}
-		xml= xmlStreamWriter;
+		xml = xmlStreamWriter;
 	}
-	
+
 	@Override
 	public void close() throws XMLStreamException {
 		xml.close();
@@ -89,12 +101,12 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
 
 	@Override
 	public NamespaceContext getNamespaceContext() {
-		return(xml.getNamespaceContext());
+		return (xml.getNamespaceContext());
 	}
 
 	@Override
 	public String getPrefix(String uri) throws XMLStreamException {
-		return(xml.getPrefix(uri));
+		return (xml.getPrefix(uri));
 	}
 
 	@Override
@@ -138,27 +150,28 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
 	}
 
 	/** states if current element contains textual content **/
-	boolean textualContent= false;
+	boolean textualContent = false;
+
 	@Override
 	public void writeCharacters(String text) throws XMLStreamException {
-		textualContent= true;
+		textualContent = true;
 		xml.writeCharacters(text);
 	}
 
 	@Override
 	public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
-		textualContent= true;
+		textualContent = true;
 		xml.writeCharacters(text, start, len);
 	}
 
 	@Override
 	public void writeComment(String data) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeComment(data);
 	}
@@ -175,36 +188,36 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
 
 	@Override
 	public void writeEmptyElement(String localName) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeEmptyElement(localName);
 	}
 
 	@Override
 	public void writeEmptyElement(String namespaceURI, String localName) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeEmptyElement(namespaceURI, localName);
 	}
 
 	@Override
 	public void writeEmptyElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeEmptyElement(prefix, localName, namespaceURI);
 	}
@@ -216,13 +229,13 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
 
 	@Override
 	public void writeEndElement() throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			depth--;
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeEndElement();
 	}
@@ -264,39 +277,39 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter{
 
 	@Override
 	public void writeStartElement(String localName) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
 			depth++;
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeStartElement(localName);
 	}
 
 	@Override
 	public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
 			depth++;
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeStartElement(localName, localName);
 	}
 
 	@Override
 	public void writeStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
-		if (isPrettyPrint){
+		if (isPrettyPrint) {
 			writeCharacters("\n");
-			for (int i= 0; i < depth; i++){
+			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
 			depth++;
-			textualContent= false;
+			textualContent = false;
 		}
 		xml.writeStartElement(prefix, localName, namespaceURI);
 	}

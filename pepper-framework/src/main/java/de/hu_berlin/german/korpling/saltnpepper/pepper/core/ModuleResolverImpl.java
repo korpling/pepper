@@ -401,9 +401,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 *            - the object for setting resources
 	 */
 	protected void setResources(PepperModule module) {
-		if ((module.getSymbolicName() == null) || (module.getSymbolicName().isEmpty()))
+		if ((module.getSymbolicName() == null) || (module.getSymbolicName().isEmpty())) {
 			throw new PepperModuleException("Cannot set resources to module '" + module.getName() + "', because its symbolic name is empty.");
-
+		}
 		// check case 1 (specific module resource property)
 		String propName = module.getSymbolicName() + RESOURCES;
 		String resourcePathStr = null;
@@ -430,9 +430,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 			resourcePathStr = retrieveResourcePathFromBundle(module);
 		}
 
-		if (resourcePathStr == null)
-			logger.warn("Cannot set resource for pepper module '" + module.getName() + "'.");
-		else {
+		if (resourcePathStr == null) {
+			logger.warn("Cannot set resource for Pepper module '" + module.getName() + "'.");
+		} else {
 			URI resourcePathURI = URI.createFileURI(resourcePathStr);
 			File resourcePathFile = new File(resourcePathURI.toFileString());
 
@@ -483,19 +483,23 @@ public class ModuleResolverImpl implements ModuleResolver {
 						break;
 					}
 				}
-				if (location == null)
-					throw new PepperFWException("Cannot retrieve a location out of OSGi parameters for retrieving resource path for Pepper module '" + module.getName() + "'. ");
-				if (location.endsWith(".jar"))
-					location = location.replace(".jar", "/");
-				else {
-					if (!location.endsWith("/"))
-						location = location + "/";
-					location = location + PepperConfiguration.SOURCES_RESOURCES;
+				if (location == null) {
+					logger.warn("Cannot find location of resource folder for Pepper module '" + module.getName() + "'. This could cause problems running the module. Tried to detect the location via system property '" + PROP_OSGI_BUNDLES + "' which was '" + System.getProperty(PROP_OSGI_BUNDLES) + "'. ");
+				} else {
+					if (location.endsWith(".jar")) {
+						location = location.replace(".jar", "/");
+					} else {
+						if (!location.endsWith("/")) {
+							location = location + "/";
+						}
+						location = location + PepperConfiguration.SOURCES_RESOURCES;
 
+					}
+					resourcePathStr = location;
+					if (resourcePathStr.startsWith("file:")) {
+						resourcePathStr = resourcePathStr.replace("file:", "");
+					}
 				}
-				resourcePathStr = location;
-				if (resourcePathStr.startsWith("file:"))
-					resourcePathStr = resourcePathStr.replace("file:", "");
 			}
 		}
 		return (resourcePathStr);
@@ -552,7 +556,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 			throw new PepperFWException("Cannot start converting, because the system property '" + PepperConfiguration.PROP_TEMP_FOLDER + "' isn't set. This might be an internal failure.");
 
 		File tmpPath = new File(genTmpPath.getAbsolutePath() + "/" + module.getSymbolicName() + "/" + number);
-		
+
 		try {
 			tmpPath.mkdirs();
 		} catch (Exception e) {
@@ -602,16 +606,15 @@ public class ModuleResolverImpl implements ModuleResolver {
 		if (getPepperImporterComponentFactories() != null) {
 			// run through all pepperImporterComponentFactories and search for
 			// mapping PepperImporter
-			List<ComponentFactory> factories= new ArrayList<ComponentFactory>(getPepperImporterComponentFactories());
+			List<ComponentFactory> factories = new ArrayList<ComponentFactory>(getPepperImporterComponentFactories());
 			for (ComponentFactory componentFactory : factories) {
-				Object instance= null;
-				try{
+				Object instance = null;
+				try {
 					instance = componentFactory.newInstance(null).getInstance();
-				}catch(ComponentException e){
-					//bundle containing Pepper module was probably removed 
+				} catch (ComponentException e) {
+					// bundle containing Pepper module was probably removed
 				}
-				if (	(instance!= null)&&
-						(instance instanceof PepperImporter)) {
+				if ((instance != null) && (instance instanceof PepperImporter)) {
 					if (pepperImporters == null)
 						pepperImporters = new Vector<PepperImporter>();
 					PepperImporter importer = (PepperImporter) instance;
@@ -639,17 +642,16 @@ public class ModuleResolverImpl implements ModuleResolver {
 		if (getPepperManipulatorComponentFactories() != null) {
 			// run through all pepperManipulatorComponentFactories and search
 			// for mapping PepperManipulator
-			try{
-				List<ComponentFactory> factories= new ArrayList<ComponentFactory>(getPepperManipulatorComponentFactories());
+			try {
+				List<ComponentFactory> factories = new ArrayList<ComponentFactory>(getPepperManipulatorComponentFactories());
 				for (ComponentFactory componentFactory : factories) {
-					Object instance= null;
-					try{
+					Object instance = null;
+					try {
 						instance = componentFactory.newInstance(null).getInstance();
-					}catch(ComponentException e){
-						//bundle containing Pepper module was probably removed 
+					} catch (ComponentException e) {
+						// bundle containing Pepper module was probably removed
 					}
-					if (	(instance!= null)&&
-							(instance instanceof PepperManipulator)) {
+					if ((instance != null) && (instance instanceof PepperManipulator)) {
 						if (pepperManipulators == null)
 							pepperManipulators = new Vector<PepperManipulator>();
 						PepperManipulator manipulator = (PepperManipulator) instance;
@@ -658,8 +660,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 						pepperManipulators.add(manipulator);
 					}
 				}
-			}catch (ConcurrentModificationException e){
-				
+			} catch (ConcurrentModificationException e) {
+
 			}
 		}
 		return (pepperManipulators);
@@ -677,16 +679,15 @@ public class ModuleResolverImpl implements ModuleResolver {
 		if (getPepperExporterComponentFactories() != null) {
 			// run through all pepperExporterComponentFactories and search for
 			// mapping PepperExporter
-			List<ComponentFactory> factories= new ArrayList<ComponentFactory>(getPepperExporterComponentFactories());
+			List<ComponentFactory> factories = new ArrayList<ComponentFactory>(getPepperExporterComponentFactories());
 			for (ComponentFactory componentFactory : factories) {
-				Object instance= null;
-				try{
+				Object instance = null;
+				try {
 					instance = componentFactory.newInstance(null).getInstance();
-				}catch(ComponentException e){
-					//bundle containing Pepper module was probably removed 
+				} catch (ComponentException e) {
+					// bundle containing Pepper module was probably removed
 				}
-				if (	(instance!= null)&&
-						(instance instanceof PepperExporter)) {
+				if ((instance != null) && (instance instanceof PepperExporter)) {
 					if (pepperExporters == null)
 						pepperExporters = new Vector<PepperExporter>();
 					PepperExporter exporter = (PepperExporter) instance;

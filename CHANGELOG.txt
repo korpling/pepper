@@ -5,25 +5,41 @@
 *	artifactId:		pepper												          *
 *													                              *
 ***********************************************************************************
+
 Version 2.1.1
 =============
-* this is a bugfix version containing fixes for the plugin mechanism and the logging, which caused LinkageExceptions becuase of a bug in the current logback implementation 
+* a TextExporter is added to Pepper for exporting just primary texts 
+* Pepper's version is displayed when starting Pepper
+* When Pepper cannot retrieve the resource folder for Pepper modules a warning is printed instead of throwing an exception
+* added a new general property to print out the corpus graph as an ascii
+* new command: version or v prints pepper version
+* new command: "repeat" or short "r" command to repeat the last command
+* added a possibility to add a suppliers homepage in Pepper modules
+* fixed #60: Properties in workflow description are not passed to Pepper, when there are characters like linebraks in the value.
+* fixed #59: sort Pepper modules in list view
+* fixed #57: Catch exceptions throwed by SAX (org.xml.sax.SAXParseException) and create a user friendly output, informing the user, that there are problems like encoding issues in the source files.
+* fixed #55: Problems with path deresolving in Pepper wizzard at least in Windows
+* fixed #56: problems with file encoding in Windows
+
+Version 2.1.1
+=============
+* this is a bugfix version containing fixes for the plugin mechanism and the logging, which caused LinkageExceptions because of a bug in the current logback implementation 
 
 
 Version 2.1.0
 =============
 * a detailed log can be found on github under: https://github.com/korpling/pepper/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Pepper+2.1+release%22+
 
-* added a wizzard to create pepper workflow descriptions (open console and enter 'convert')
+* added a wizard to create pepper workflow descriptions (open console and enter 'convert')
 * added a new update mechanism to automatically download Pepper modules (use update command)
-* removed all 3rd party libs from source code, tehy are added now by maven, but note to run mvn install assembly:single before running Pepper
+* removed all 3rd party libs from source code, they are added now by maven, but note to run mvn install assembly:single before running Pepper
 * added the support of a new workflow description file (see: https://korpling.german.hu-berlin.de/saltnpepper/pepper/schema/10/pepper.rnc)
-* added possibliity to not only load bundles from plugin folder, even user defined folders can be set via configuration 'pepper.dropin.paths' in conf/pepper.properties
+* added possibility to not only load bundles from plugin folder, even user defined folders can be set via configuration 'pepper.dropin.paths' in conf/pepper.properties
 * added a mechanism for customization properties available in each Pepper module
 * added a mechanism to display output for displays with width of 120 and 80 
 * added a property to module SaltValidator to determine if an invalid module should be tried to be repaired.
 * updated Pepper to use Java 1.7
-* added default, that all intermediate Salt doccuments are deleted when Pepper terminates 
+* added default, that all intermediate Salt documents are deleted when Pepper terminates 
 * added a naming the users name as extension for temporary folders followed by a randomized sequence ...
 * updated Salt version to 2.1.0
 

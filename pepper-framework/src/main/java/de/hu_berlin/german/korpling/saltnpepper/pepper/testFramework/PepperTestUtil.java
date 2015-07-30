@@ -39,8 +39,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingExporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing.DoNothingImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DoNothingExporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DoNothingImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleTestException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
@@ -48,49 +48,62 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 /**
- * This class offers some static fields and methods for testing {@link PepperModule} objects.
+ * This class offers some static fields and methods for testing
+ * {@link PepperModule} objects.
+ * 
  * @author florian
  *
  */
 public class PepperTestUtil {
 	/**
-	 * Name of the directory where tests for Pepper and Pepper modules can be stored.
+	 * Name of the directory where tests for Pepper and Pepper modules can be
+	 * stored.
 	 */
-	public static String TMP_TEST_DIR="pepper-test";
-	
+	public static String TMP_TEST_DIR = "pepper-test";
+
 	/**
-	 * Returns a {@link File} object pointing to a temporary path, where the caller can store temporary files.
-	 * The temporary path is located in the temporary directory provided by the underlying os. The resulting
-	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/<code>testDirectory</code>.
-	 * @param testDirectory last part of the temporary path
-	 * @return a file object locating to a temporary folder, where files can be stored temporarily
+	 * Returns a {@link File} object pointing to a temporary path, where the
+	 * caller can store temporary files. The temporary path is located in the
+	 * temporary directory provided by the underlying os. The resulting
+	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/
+	 * <code>testDirectory</code>.
+	 * 
+	 * @param testDirectory
+	 *            last part of the temporary path
+	 * @return a file object locating to a temporary folder, where files can be
+	 *         stored temporarily
 	 */
-	public static File getTempPath_static(String testDirectory){
-		if 	(	(testDirectory== null)||
-				(testDirectory.isEmpty())){
+	public static File getTempPath_static(String testDirectory) {
+		if ((testDirectory == null) || (testDirectory.isEmpty())) {
 			throw new PepperModuleTestException("Cannot return a temporary directory, since the given last part is empty.");
 		}
-		File retVal= null;
-		retVal= PepperUtil.getTempTestFile(TMP_TEST_DIR+"/"+testDirectory);
-		return(retVal);
+		File retVal = null;
+		retVal = PepperUtil.getTempTestFile(TMP_TEST_DIR + "/" + testDirectory);
+		return (retVal);
 	}
-	
+
 	/**
-	 * Returns a default test folder, where to find resources for tests. When using the default
-	 * maven structure, this folder is located at 'src/test/resources/'.  
+	 * Returns a default test folder, where to find resources for tests. When
+	 * using the default maven structure, this folder is located at
+	 * 'src/test/resources/'.
+	 * 
 	 * @return a folder where to find test resources
 	 */
-	public static String getSrcResources(){
-		return("src/main/resources/");
+	public static String getSrcResources() {
+		return ("src/main/resources/");
 	}
+
 	/**
-	 * Returns a default test folder, where to find resources for tests. When using the default
-	 * maven structure, this folder is located at 'src/test/resources/'.  
+	 * Returns a default test folder, where to find resources for tests. When
+	 * using the default maven structure, this folder is located at
+	 * 'src/test/resources/'.
+	 * 
 	 * @return a folder where to find test resources
 	 */
-	public static String getTestResources(){
-		return("src/test/resources/");
+	public static String getTestResources() {
+		return ("src/test/resources/");
 	}
+
 	/**
 	 * Creates an alibi {@link Step} for the method {@link #start(Collection)}.
 	 * 
@@ -168,7 +181,7 @@ public class PepperTestUtil {
 		Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
 		Collection<PepperManipulator> manipulators = new ArrayList<PepperManipulator>();
 		Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
-		
+
 		/**
 		 * set the salt project for all modules, if it is already set, check
 		 * that it is equal in all modules. Extract all importers, manipulators
@@ -184,9 +197,9 @@ public class PepperTestUtil {
 			}
 			i++;
 
-			//if module does not have a resource, set a default one
+			// if module does not have a resource, set a default one
 			fixture.setResources(URI.createFileURI("src/main/resources"));
-			
+
 			// fill importers manipulators and exporters collection
 			if (fixture instanceof PepperImporter) {
 				importers.add((PepperImporter) fixture);
@@ -244,13 +257,13 @@ public class PepperTestUtil {
 					}
 				}
 				if (!isAssociated) {
-					Step alibiStep= createAlibiStep(true);
+					Step alibiStep = createAlibiStep(true);
 					((PepperJobImpl) job).addStep(alibiStep);
 				}
 			}
 		}
 		if (exporters.size() == 0) {
-			Step alibiStep= createAlibiStep(false);
+			Step alibiStep = createAlibiStep(false);
 			((PepperJobImpl) job).addStep(alibiStep);
 		}
 

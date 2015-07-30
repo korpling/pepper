@@ -18,8 +18,9 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 /**
- * This PepperException is thrown if an internal error occurs. This means if it is clear,
- * that the error reason is a bug.
+ * This PepperException is thrown if an internal error occurs. This means if it
+ * is clear, that the error reason is a bug.
+ * 
  * @author Florian Zipser
  *
  */
@@ -29,13 +30,16 @@ public class PepperTestException extends PepperException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -1104119182794615488L;
-	
-	public PepperTestException()
-	{ super(); }
-	
-    public PepperTestException(String s)
-    { super("An error occured in running Pepper test: "+s); }
-    
-	public PepperTestException(String s, Throwable ex)
-	{super("An error occured in running Pepper test: "+s, ex); }
+
+	public PepperTestException() {
+		super();
+	}
+
+	public PepperTestException(String s) {
+		super("An error occured in running Pepper test: " + s);
+	}
+
+	public PepperTestException(String s, Throwable ex) {
+		super("An error occured in running Pepper test: " + s, ex);
+	}
 }

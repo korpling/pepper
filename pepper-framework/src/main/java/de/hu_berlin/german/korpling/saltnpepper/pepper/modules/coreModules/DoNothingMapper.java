@@ -15,13 +15,13 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
 
-public class DoNothingMapper extends PepperMapperImpl implements PepperMapper{
+public class DoNothingMapper extends PepperMapperImpl implements PepperMapper {
 	/**
 	 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
 	 * 
@@ -29,6 +29,6 @@ public class DoNothingMapper extends PepperMapperImpl implements PepperMapper{
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSDocument() {
-		return(DOCUMENT_STATUS.COMPLETED);
+		return (DOCUMENT_STATUS.COMPLETED);
 	}
 }

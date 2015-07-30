@@ -108,8 +108,9 @@ public class PepperConfiguration extends Properties {
 	 */
 	public static final String PROP_KEEP_TEMP_DOCS = PROP_PREFIX + ".keepTempDocs";
 	/**
-	 * Name of the property to determine Property to determine whether the status report should contain a progress for each module 
-	 * or just the global progress. 
+	 * Name of the property to determine Property to determine whether the
+	 * status report should contain a progress for each module or just the
+	 * global progress.
 	 */
 	public static final String PROP_DETAILED_STATUS_REPORT = PROP_PREFIX + ".detailedStatusReport";
 	/**
@@ -117,8 +118,11 @@ public class PepperConfiguration extends Properties {
 	 * stored by default.
 	 */
 	public static final String PROP_WORKSPACE = PROP_PREFIX + ".workspace";
-	
-	/** name of property to determine the time interval of the convert status report**/
+
+	/**
+	 * name of property to determine the time interval of the convert status
+	 * report
+	 **/
 	public static final String PROP_REPORT_INTERVAL = PROP_PREFIX + ".reportInterval";
 
 	/**
@@ -250,10 +254,10 @@ public class PepperConfiguration extends Properties {
 					if (configFileStr.startsWith("file:")) {
 						configFileStr = configFileStr.replace("file:", "");
 					}
-					File confFile= new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
-					if (!confFile.exists()){
+					File confFile = new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
+					if (!confFile.exists()) {
 						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
-					}else{
+					} else {
 						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE;
 					}
 				}
@@ -360,7 +364,7 @@ public class PepperConfiguration extends Properties {
 		String isToKeep = getProperty(PROP_KEEP_TEMP_DOCS, Boolean.FALSE.toString());
 		return (Boolean.valueOf(isToKeep));
 	}
-	
+
 	/**
 	 * Flag to determine the time interval of the convert status report
 	 */
@@ -368,8 +372,11 @@ public class PepperConfiguration extends Properties {
 		String interval = getProperty(PROP_REPORT_INTERVAL, new Integer(1000).toString());
 		return (Integer.valueOf(interval));
 	}
+
 	/**
-	 * Property to determine whether the status report should contain a progress for each module or just the global progress.
+	 * Property to determine whether the status report should contain a progress
+	 * for each module or just the global progress.
+	 * 
 	 * @return
 	 */
 	public Boolean getDetaialedStatReport() {

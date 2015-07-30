@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.dot;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class DOTExporter extends PepperExporterImpl {
 	public DOTExporter() {
 		super("DOTExporter");
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This exporter exports a Salt model to the dot syntax. This can be used to create a graphical representation of the Salt model. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat("dot", "1.0", null);

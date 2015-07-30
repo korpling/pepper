@@ -19,36 +19,26 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.emf.common.util.URI;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
@@ -56,11 +46,15 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructu
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 /**
- * This is an abstract implementation of {@link PepperImporter}. This class
- * cannot be instantiated directly. To provide an importer, just inherit this
- * class.
+ * <p>
+ * This class is an abstract implementation of {@link PepperImporter} and cannot
+ * be instantiated directly. To implement an exporter for Pepper, the easiest
+ * way is to derive this class. For further information, read the javadoc of
+ * {@link PepperManipulator} and the documentation of <a
+ * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * </p>
  * 
- * @see PepperImporter
+ * @see PepperManipulator
  * 
  * @author Florian Zipser
  */
@@ -324,14 +318,14 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void start() throws PepperModuleException {
 		if (getCorpusDesc() == null) {
-			throw new WorkflowException("Cannot import corpus-structure, because no corpus description was given. ");
+			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus description was given. ");
 		}
 		if (getCorpusDesc().getCorpusPath() == null) {
-			throw new WorkflowException("Cannot import corpus-structure, because no corpus path was given. ");
+			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus path was given. ");
 		}
 		File corpusFile = new File(getCorpusDesc().getCorpusPath().toFileString());
 		if (!corpusFile.exists()) {
-			throw new WorkflowException("Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
+			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
 		}
 		super.start();
 	}
@@ -347,8 +341,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public synchronized Collection<String> getSDocumentEndings() {
-		if (sDocumentEndings == null)
+		if (sDocumentEndings == null) {
 			sDocumentEndings = new HashSet<String>();
+		}
 		return (sDocumentEndings);
 	}
 
@@ -454,54 +449,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param documentLocation
 	 *            location of the xml-file
 	 */
-	// TODO moved to PepperMapperIMpl
 	protected void readXMLResource(DefaultHandler2 contentHandler, URI documentLocation) {
-		if (documentLocation == null)
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the given uri to locate file is null.");
-
-		File exmaraldaFile = new File(documentLocation.toFileString());
-		if (!exmaraldaFile.exists())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exist: " + exmaraldaFile);
-
-		if (!exmaraldaFile.canRead())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + exmaraldaFile);
-
-		SAXParser parser;
-		XMLReader xmlReader;
-
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-
-		try {
-			parser = factory.newSAXParser();
-			xmlReader = parser.getXMLReader();
-			xmlReader.setContentHandler(contentHandler);
-		} catch (ParserConfigurationException e) {
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + exmaraldaFile.getAbsolutePath() + "'.", e);
-		} catch (Exception e) {
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + exmaraldaFile.getAbsolutePath() + "'.", e);
-		}
-		try {
-			InputStream inputStream = new FileInputStream(exmaraldaFile);
-			Reader reader = new InputStreamReader(inputStream, "UTF-8");
-			InputSource is = new InputSource(reader);
-			is.setEncoding("UTF-8");
-			xmlReader.parse(is);
-		} catch (SAXException e) {
-
-			try {
-				parser = factory.newSAXParser();
-				xmlReader = parser.getXMLReader();
-				xmlReader.setContentHandler(contentHandler);
-				xmlReader.parse(exmaraldaFile.getAbsolutePath());
-			} catch (Exception e1) {
-				throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + exmaraldaFile.getAbsolutePath() + "'.", e1);
-			}
-		} catch (Exception e) {
-			if (e instanceof PepperModuleException)
-				throw (PepperModuleException) e;
-			else
-				throw new PepperModuleXMLResourceException("Cannot read xml-file'" + documentLocation + "', because of a nested exception. ", e);
-		}
+		PepperUtil.readXMLResource(contentHandler, documentLocation);
 	}
 
 	/**

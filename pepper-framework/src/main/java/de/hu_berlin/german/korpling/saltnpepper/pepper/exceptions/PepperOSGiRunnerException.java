@@ -19,6 +19,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 /**
  * This exception is only to use for unit tests.
+ * 
  * @author Florian Zipser
  *
  */
@@ -28,13 +29,16 @@ public class PepperOSGiRunnerException extends PepperException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -1134119182794615488L;
-	
-	public PepperOSGiRunnerException()
-	{ super(); }
-	
-    public PepperOSGiRunnerException(String s)
-    { super("An exception in Test occured. "+s); }
-    
-	public PepperOSGiRunnerException(String s, Throwable ex)
-	{super("An exception in Test occured. "+s, ex); }
+
+	public PepperOSGiRunnerException() {
+		super();
+	}
+
+	public PepperOSGiRunnerException(String s) {
+		super("An exception in Test occured. " + s);
+	}
+
+	public PepperOSGiRunnerException(String s, Throwable ex) {
+		super("An exception in Test occured. " + s, ex);
+	}
 }

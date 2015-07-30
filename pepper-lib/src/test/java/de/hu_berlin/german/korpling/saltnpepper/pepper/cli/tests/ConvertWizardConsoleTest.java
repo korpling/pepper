@@ -21,24 +21,21 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.ConvertWizzardConsole;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.ConvertWizardConsole;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 
-public class ConvertWizzardConsoleTest {
+public class ConvertWizardConsoleTest {
 	
 	class SimpleModuleResolver extends ModuleResolverImpl{
 		
@@ -67,7 +64,7 @@ public class ConvertWizzardConsoleTest {
 	 */
 	@Test
 	public void testDeresolveURIs() throws IOException{
-		File folder= PepperUtil.getTempTestFile("convertWizzard/");
+		File folder= PepperUtil.getTempTestFile("convertwizard/");
 		File pepperFile= new File(folder.getCanonicalPath()+"/corpus/test.pepper");
 		PepperJobImpl pepperJob= new PepperJobImpl("test");
 		pepperJob.setModuleResolver(new SimpleModuleResolver());
@@ -84,7 +81,7 @@ public class ConvertWizzardConsoleTest {
 		exportStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath()+"/./corpus/exportFolder").getCanonicalPath()+"/"));
 		pepperJob.addStepDesc(exportStep);
 		
-		ConvertWizzardConsole.deresolveURIs(pepperFile, pepperJob);
+		ConvertWizardConsole.deresolveURIs(pepperFile, pepperJob);
 		
 		assertEquals(URI.createFileURI("./importFolder/"), importStep.getCorpusDesc().getCorpusPath());
 		assertEquals(URI.createFileURI("./exportFolder/"), exportStep.getCorpusDesc().getCorpusPath());

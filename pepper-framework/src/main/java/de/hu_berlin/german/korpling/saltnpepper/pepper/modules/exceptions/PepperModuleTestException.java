@@ -45,7 +45,7 @@ public class PepperModuleTestException extends PepperModuleException {
 	public PepperModuleTestException(String s, Throwable ex) {
 		super(s, ex);
 	}
-	
+
 	public PepperModuleTestException(PepperModule pepperModule, String s) {
 		super("Error in Test of Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s);
 	}

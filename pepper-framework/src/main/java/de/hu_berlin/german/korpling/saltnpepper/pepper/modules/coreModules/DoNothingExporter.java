@@ -15,21 +15,21 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.doNothing;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
-@Component(name = "DoNothingImporterComponent", factory = "PepperImporterComponentFactory")
-public class DoNothingImporter extends PepperImporterImpl implements PepperImporter {
-	public static final String MODULE_NAME = "DoNothingImporter";
+@Component(name = "DoNothingExporterComponent", factory = "PepperExporterComponentFactory")
+public class DoNothingExporter extends PepperExporterImpl implements PepperExporter {
+	public static final String MODULE_NAME = "DoNothingExporter";
 	public static final String FORMAT_NAME = "doNothing";
 	public static final String FORMAT_VERSION = "0.0";
 
@@ -38,17 +38,13 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 		super.activate(componentContext);
 	}
 
-	/**
-	 * Specifies the separator, which has to be set between to the texts of two
-	 * token.
-	 */
-	public DoNothingImporter() {
+	public DoNothingExporter() {
 		// setting name of module
 		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setDesc("This is a dummy importer which imports nothing. ");
-		// set list of formats supported by this module
-		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setDesc("This is a dummy exporter which exports nothing. This exporter can be used to check if a corpus is importable. ");
+		this.addSupportedFormat("doNothing", "0.0", null);
 	}
 
 	/**
@@ -60,4 +56,5 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 		PepperMapper mapper = new DoNothingMapper();
 		return (mapper);
 	}
+
 }

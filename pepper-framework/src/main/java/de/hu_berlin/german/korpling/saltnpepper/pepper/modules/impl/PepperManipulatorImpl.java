@@ -22,8 +22,13 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 /**
- * This is an abstract implementation of {@link PepperManipulator}. This class
- * cannot be instantiated directly. To provide a manipulator, just inherit this class.
+ * <p>
+ * This class is an abstract implementation of {@link PepperManipulator} and
+ * cannot be instantiated directly. To implement an exporter for Pepper, the
+ * easiest way is to derive this class. For further information, read the
+ * javadoc of {@link PepperManipulator} and the documentation of <a
+ * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * </p>
  * 
  * @see PepperManipulator
  * 
@@ -31,11 +36,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
  */
 public abstract class PepperManipulatorImpl extends PepperModuleImpl implements PepperManipulator {
 	/**
-	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#}.
-	 * The name is set to "MyManipulator".
-	 * <br/>
+	 * Creates a {@link PepperModule} of type {@link MODULE_TYPE#}. The name is
+	 * set to "MyManipulator". <br/>
 	 * We recommend to use the constructor
-	 * {@link PepperManipulatorImpl#PepperManipulatorImpl(String)} and pass a proper name.
+	 * {@link PepperManipulatorImpl#PepperManipulatorImpl(String)} and pass a
+	 * proper name.
 	 */
 	protected PepperManipulatorImpl() {
 		super("MyManipulator");

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,12 +87,14 @@ public class PepperModuleProperties implements Serializable {
 	 * object.
 	 */
 	public static final String PROP_AFTER_ADD_SLAYER = PREFIX_PEPPER_AFTER + "addSLayer";
-	
+
 	/**
-	 * Copies one or more source files to one or more target files after processing. This is very helpful, 
-	 * in case of customizations should be done in target format. If you use relative paths, the are anchored
-	 * to either the location of the workflow description file or where Pepper was started.
-	 * Syntax is: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*
+	 * Copies one or more source files to one or more target files after
+	 * processing. This is very helpful, in case of customizations should be
+	 * done in target format. If you use relative paths, the are anchored to
+	 * either the location of the workflow description file or where Pepper was
+	 * started. Syntax is: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE ->
+	 * TARGET_FILE)*
 	 * 
 	 */
 	public static final String PROP_AFTER_COPY_RES = PREFIX_PEPPER_AFTER + "copyRes";
@@ -103,13 +106,22 @@ public class PepperModuleProperties implements Serializable {
 	 */
 	public static final String PROP_BEFORE_ADD_SLAYER = PREFIX_PEPPER_BEFORE + "addSLayer";
 	/**
-	 * Reads meta data for corpora and subcorpora in a very simple attribute-value format like:<br/>
+	 * Reads meta data for corpora and subcorpora in a very simple
+	 * attribute-value format like:<br/>
 	 * a=b<br/>
 	 * c=d<br/>
-	 * To enable the reading of meta data set this property to the file ending of the metadata file. 
-	 * For instance in case of the file is named data.meta: {@value #PROP_BEFORE_READ_META}=meta
+	 * To enable the reading of meta data set this property to the file ending
+	 * of the metadata file. For instance in case of the file is named
+	 * data.meta: {@value #PROP_BEFORE_READ_META}=meta
 	 */
-	public static final String PROP_BEFORE_READ_META= PREFIX_PEPPER_BEFORE + "readMeta";
+	public static final String PROP_BEFORE_READ_META = PREFIX_PEPPER_BEFORE + "readMeta";
+
+	/**
+	 * Prints the corpus graph to standard out after a module has processed it.
+	 * This property is mainly used for importers, to visualize the created
+	 * corpus structure.
+	 */
+	public static final String PROP_AFTER_REPORT_CORPUSGRAPH = PREFIX_PEPPER_AFTER + "reportCorpusGraph";
 
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
@@ -123,6 +135,7 @@ public class PepperModuleProperties implements Serializable {
 		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_READ_META, String.class, "Reads meta data for corpora and subcorpora in a very simple attribute-value format like: a=b. To enable the reading of meta data set this property to the file ending of the metadata file.  For instance in case of the file is named data.meta: {@value #PROP_BEFORE_READ_META}=meta"));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
+		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_REPORT_CORPUSGRAPH, Boolean.class, "When set to true, prints the corpus graph to standard out after a module has processed it. This property is mainly used for importers, to visualize the created corpus structure. The default value is 'false'.", false, false));
 	}
 
 	/**
@@ -252,8 +265,8 @@ public class PepperModuleProperties implements Serializable {
 	}
 
 	/**
-	 * Internal map to correspond all {@link PepperModuleProperty} objects to
-	 * their name.
+	 * Internal map to map all {@link PepperModuleProperty} objects to their
+	 * name.
 	 */
 	protected Map<String, PepperModuleProperty<?>> pepperModuleProperties = null;
 
@@ -311,20 +324,32 @@ public class PepperModuleProperties implements Serializable {
 	 * @return
 	 */
 	public Collection<PepperModuleProperty<?>> getPropertyDesctriptions() {
-		return (pepperModuleProperties.values());
+		List<PepperModuleProperty<?>> retVal = new ArrayList<PepperModuleProperty<?>>(pepperModuleProperties.values());
+		Collections.sort(retVal);
+		return (retVal);
 	}
 
 	/**
-	 * Expects a list of characters encoded as a String. The String is split and returned as
-	 * a list of characters. The list must be build like this:
+	 * Removes the value of the property with the passed property name from the
+	 * properties.
+	 * 
+	 * @param propName
+	 *            name of the property to be removed
+	 */
+	public void removePropertyValue(String propName) {
+		PepperModuleProperty<?> prop = pepperModuleProperties.get(propName);
+		prop.setValue(null);
+	}
+
+	/**
+	 * Expects a list of characters encoded as a String. The String is split and
+	 * returned as a list of characters. The list must be build like this: <br/>
+	 * LIST: ITEM (,ITEM)* <br/>
+	 * ITEM: 'CHARACTER' <br/>
 	 * <br/>
-	 * LIST: ITEM (,ITEM)*
-	 * <br/>
-	 * ITEM: 'CHARACTER'
-	 * <br/>
-	 * <br/>
-	 * For instance the passed String "'a', 'b', 'c'" is returned as a list containing 'a', 'b' and 'c'.
-	 * In case of the characters "'" or "\" are used as items, they must be escaped as "\'" or "\\".
+	 * For instance the passed String "'a', 'b', 'c'" is returned as a list
+	 * containing 'a', 'b' and 'c'. In case of the characters "'" or
+	 * "\" are used as items, they must be escaped as "\'" or "\\".
 	 * 
 	 * @return the isToTokenize
 	 */
@@ -359,7 +384,7 @@ public class PepperModuleProperties implements Serializable {
 		StringBuffer buf = new StringBuffer();
 		buf.append("[");
 		for (String name : getPropertyNames()) {
-			PepperModuleProperty prop = getProperty(name);
+			PepperModuleProperty<?> prop = getProperty(name);
 			buf.append(prop + ", ");
 		}
 		buf.append("]");

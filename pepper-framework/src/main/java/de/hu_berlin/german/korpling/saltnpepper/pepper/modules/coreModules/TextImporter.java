@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.text;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -55,6 +55,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	public TextImporter() {
 		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This importer imports a simple text document like .txt etc. . Even other documents can be imported as simple text. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
@@ -63,8 +64,9 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 
 	@Override
 	public Double isImportable(URI corpusPath) {
-		return(1.0);
+		return (1.0);
 	}
+
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
 	 * PepperModule#createPepperMapper(SElementId)}

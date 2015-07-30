@@ -18,24 +18,27 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 /**
- * This class is highest exception. All PepperExceptions are derived from this class. 
- * It can be instantiated, if no other Exception maps to the problem.
+ * This class is highest exception. All PepperExceptions are derived from this
+ * class. It can be instantiated, if no other Exception maps to the problem.
+ * 
  * @author Florian Zipser
  *
  */
-public class PepperException extends java.lang.RuntimeException
-{
+public class PepperException extends java.lang.RuntimeException {
 	/**
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = 7152733137673010658L;
 
-	public PepperException()
-	{ super(); }
-	
-    public PepperException(String s)
-    { super(s); }
-    
-	public PepperException(String s, Throwable ex)
-	{super(s, ex); }
+	public PepperException() {
+		super();
+	}
+
+	public PepperException(String s) {
+		super(s);
+	}
+
+	public PepperException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }

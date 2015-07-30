@@ -15,7 +15,7 @@
  *
  *
  */
-package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.saltXML;
+package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.io.IOException;
 
@@ -25,8 +25,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
@@ -47,13 +45,13 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * This module stores every document in a separate file. These files then
  * contains the document structure. The corpus structure is stored in a single
  * file called saltProject + SALT_FILE_ENDING. The value SALT_FILE_ENDING can be
- * gettet by method getSaltFileEnding(). <br/>
+ * got by method getSaltFileEnding(). <br/>
  * <br/>
  * When method start() is called, the saltProject will be attached to a resource
  * with the uri
  * "this.getCorpusDefinition().getCorpusPath().toFileString() +"/"+ "
- * saltProject"+ SALT_ENDING". Before it can be storeed, all documents have to
- * be processed. <br/>
+ * saltProject"+ SALT_ENDING". Before it can be stored, all documents have to be
+ * processed. <br/>
  * The module now waits for documents which can be exported. When a document
  * finished all previous modules, it can be exported. This means, that 1) every
  * document will also get a resource with the uri
@@ -68,18 +66,18 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  */
 @Component(name = "SaltXMLExporterComponent", factory = "PepperExporterComponentFactory")
 public class SaltXMLExporter extends PepperExporterImpl implements PepperExporter {
+	public static final String MODULE_NAME = "SaltXMLExporter";
+	public static final String FORMAT_NAME_SALTXML = "SaltXML";
+	public static final String FORMAT_VERSION_SALTXML = "1.0";
+
 	public SaltXMLExporter() {
 		// setting name of module
-		super("SaltXMLExporter");
+		super(MODULE_NAME);
 		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
+		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
 		setDesc("This exporter exports a Salt model to a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
-		this.addSupportedFormat("SaltXML", "1.0", null);
-	}
-
-	@Activate
-	public void activate(ComponentContext componentContext) {
-		super.activate(componentContext);
+		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);
 	}
 
 	/**
@@ -168,7 +166,7 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	}
 
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
+	 * Creates a mapper of type {@link SaltXMLExporterMapper}. {@inheritDoc
 	 * PepperModule#createPepperMapper(SElementId)}
 	 */
 	@Override
@@ -178,7 +176,7 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	}
 
 	/**
-	 * Cretaes a {@link Resource} for the {@link SaltProject} to persist
+	 * Creates a {@link Resource} for the {@link SaltProject} to persist
 	 * contained objects like {@link SDocumentGraph} etc. This is caused by an
 	 * EMF constraint.
 	 */
@@ -190,8 +188,6 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 
 		// exporting corpus structure
 		try {
-			// ToDo a bugfix for The object 'SDocumentGraphImpl(null, sNodes:
-			// 557, sRelations: 1618)' is not contained in a resource.
 			saltProjectResource.save(null);
 		} catch (IOException e) {
 			throw new PepperModuleException("Cannot export saltProject, nested exception is: ", e);

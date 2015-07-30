@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Vector;
@@ -30,49 +31,105 @@ import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 
-public abstract class PepperExporterTest extends PepperModuleTest 
-{
+/**
+ * <p>
+ * This class is a helper class for creating tests for {@link PepperExporter}s.
+ * This class provides a fixture declaration which could be called via
+ * {@link #setFixture(PepperExporter)}. The fixture which is returned via
+ * {@link #getFixture()} is of type {@link PepperExporter}. To create an easier
+ * access, we recommend to overwrite the method {@link #getFixture()} as
+ * follows:
+ * 
+ * <pre>
+ * &#064;Override
+ * public MY_EXPORTER_CLASS getFixture() {
+ * 	return (MY_EXPORTER_CLASS) fixture;
+ * }
+ * </pre>
+ * 
+ * The method {@link #setFixture(PepperExporter)} sets the {@link SaltProject}
+ * and creates a single {@link SCorpusGraph} object, which is added to the list
+ * of corpus structures in the salt project. To access the salt project or the
+ * corpus structure use the following code:
+ * 
+ * <pre>
+ * 	getFixture().getSaltProject();
+ *  getFixture().getSaltProject().getSCorpusGraphs()
+ * </pre>
+ * 
+ * </p>
+ * 
+ * <p>
+ * This class predefines a test to check that the format of the exporter is set
+ * correctly. Therefore you need to call {@link #addSupportedFormat(FormatDesc)}
+ * and pass the format your exporter should support. Otherwise this test will
+ * fail. You can do this as follows:
+ * 
+ * <pre>
+ * addSupportedFormat(new FormatDesc().setFormatName(FORMAT_NAME).setFormatVersion(FROMAT_VERSION));
+ * </pre>
+ * 
+ * </p>
+ * 
+ * <p>
+ * To run the test call {@link #start()} in your test method. This will start
+ * the test environment, which simulates a Pepper conversion process.
+ * </p>
+ * 
+ * @author florian
+ *
+ */
+public abstract class PepperExporterTest extends PepperModuleTest {
 	/**
 	 * A list of formats, which shall be supported
 	 */
-	protected List<FormatDesc> supportedFormatsCheck= null;
-	
+	protected List<FormatDesc> supportedFormatsCheck = null;
+
+	/**
+	 * Adds a format description to the list of formats which are supported by
+	 * the module to be tested.
+	 */
+	public void addSupportedFormat(FormatDesc formatDesc) {
+		if (formatDesc == null) {
+			fail("Cannot add an empty format description.");
+		}
+		supportedFormatsCheck.add(formatDesc);
+	}
+
 	protected void setFixture(PepperExporter fixture) {
 		super.setFixture(fixture);
-		this.supportedFormatsCheck= new Vector<FormatDesc>();
+		this.supportedFormatsCheck = new Vector<FormatDesc>();
 	}
+
 	@Override
-	protected PepperExporter getFixture() 
-	{
-		return((PepperExporter) super.getFixture());
+	protected PepperExporter getFixture() {
+		return ((PepperExporter) super.getFixture());
 	}
+
 	@Test
-	public void testGetSupportedFormats()
-	{
-		assertNotNull("There have to be some supported formats",this.getFixture().getSupportedFormats());
-		List<FormatDesc> formatDefs= this.getFixture().getSupportedFormats();
+	public void testGetSupportedFormats() {
+		assertNotNull("There have to be some supported formats", this.getFixture().getSupportedFormats());
+		List<FormatDesc> formatDefs = this.getFixture().getSupportedFormats();
 		assertNotSame("Number of supported formats have to be more than 0", 0, formatDefs);
-		for (FormatDesc formatDef: formatDefs)
-		{
+		for (FormatDesc formatDef : formatDefs) {
 			assertNotNull("The name of supported formats has to be set.", formatDef.getFormatName());
 			assertFalse("The name of the supported formats can't be empty.", formatDef.getFormatName().equals(""));
-			
+
 			assertNotNull("The version of supported formats has to be set.", formatDef.getFormatVersion());
 			assertFalse("The version of the supported formats can't be empty.", formatDef.getFormatVersion().equals(""));
-		}	
+		}
 		assertTrue("Cannot test the supported formats please set variable 'supportedFormatsCheck'.", this.supportedFormatsCheck.size() > 0);
 		assertEquals("There is a different between the number formats which are supported by module, and the number of formats which shall be supported.", this.supportedFormatsCheck.size(), this.getFixture().getSupportedFormats().size());
-		for (FormatDesc formatCheck: this.supportedFormatsCheck)
-		{
-			Boolean hasOpponend= false;
-			for (FormatDesc formatDef: this.getFixture().getSupportedFormats())
-			{
-				if (	(formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName())) &&
-						(formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
-					hasOpponend= true;
+		for (FormatDesc formatCheck : this.supportedFormatsCheck) {
+			Boolean hasOpponend = false;
+			for (FormatDesc formatDef : this.getFixture().getSupportedFormats()) {
+				if ((formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName())) && (formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
+					hasOpponend = true;
 			}
-			assertTrue("The format '"+formatCheck.getFormatName()+ " "+ formatCheck.getFormatVersion()+"' has to be supported, but does not exist in list of suppoted formats.", hasOpponend);
+			assertTrue("The format '" + formatCheck.getFormatName() + " " + formatCheck.getFormatVersion() + "' has to be supported, but does not exist in list of suppoted formats.", hasOpponend);
 		}
 	}
 }

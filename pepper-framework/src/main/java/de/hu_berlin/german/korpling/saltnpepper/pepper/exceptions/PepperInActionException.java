@@ -18,9 +18,11 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 /**
- * This {@link PepperException} is thrown if a calling method tries to start a new process or an action or
- * tries to get access to a resource, but it currently is in action and therefore can not be accessed. Normally
- * this exception means, that the caller should try it again later on.
+ * This {@link PepperException} is thrown if a calling method tries to start a
+ * new process or an action or tries to get access to a resource, but it
+ * currently is in action and therefore can not be accessed. Normally this
+ * exception means, that the caller should try it again later on.
+ * 
  * @author Florian Zipser
  *
  */
@@ -30,13 +32,16 @@ public class PepperInActionException extends PepperException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -1134119182794615488L;
-	
-	public PepperInActionException()
-	{ super(); }
-	
-    public PepperInActionException(String s)
-    { super("This might be an internal exception: "+s); }
-    
-	public PepperInActionException(String s, Throwable ex)
-	{super("This might be an internal exception: "+s, ex); }
+
+	public PepperInActionException() {
+		super();
+	}
+
+	public PepperInActionException(String s) {
+		super("This might be an internal exception: " + s);
+	}
+
+	public PepperInActionException(String s, Throwable ex) {
+		super("This might be an internal exception: " + s, ex);
+	}
 }

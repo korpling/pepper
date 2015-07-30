@@ -19,9 +19,10 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 
-
 /**
- *	This exception class is used, in case of a {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper} object was not correctly initialized. 
+ * This exception class is used, in case of a
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper}
+ * object was not correctly initialized.
  *
  **/
 public class JobNotFoundException extends PepperModuleException {
@@ -30,13 +31,16 @@ public class JobNotFoundException extends PepperModuleException {
 	 * 
 	 */
 	private static final long serialVersionUID = 8100917436792012869L;
-	
-	public JobNotFoundException()
-	{ super(); }
-	
-    public JobNotFoundException(String s)
-    { super(s); }
-    
-	public JobNotFoundException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public JobNotFoundException() {
+		super();
+	}
+
+	public JobNotFoundException(String s) {
+		super(s);
+	}
+
+	public JobNotFoundException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }

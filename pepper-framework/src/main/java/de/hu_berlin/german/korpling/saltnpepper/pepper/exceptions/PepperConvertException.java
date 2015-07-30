@@ -28,12 +28,16 @@ public class PepperConvertException extends PepperException {
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = 6230819240391210746L;
-	public PepperConvertException()
-	{ super(); }
-	
-    public PepperConvertException(String s)
-    { super(s); }
-    
-	public PepperConvertException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public PepperConvertException() {
+		super();
+	}
+
+	public PepperConvertException(String s) {
+		super(s);
+	}
+
+	public PepperConvertException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }
