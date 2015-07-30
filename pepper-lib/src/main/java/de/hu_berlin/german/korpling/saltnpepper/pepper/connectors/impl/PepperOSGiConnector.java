@@ -50,6 +50,7 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
@@ -91,14 +92,6 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	private String frameworkVersion = null;
 	/** */
 	private MavenAccessor maven = null;
-
-	/**
-	 * FIXME This is just a workaround to set the current version of Pepper,
-	 * this is necessary, mark the Pepper package, to be load by the classloader
-	 * in and outside of OSGi. This could be removed, when there is a better way
-	 * to detect the current Pepper version automatically.
-	 */
-	public static final String PEPPER_VERSION = "2.1.1.SNAPSHOT";
 
 	/** Determines if this object has been initialized **/
 	private boolean isInit = false;
@@ -317,7 +310,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		} else {
 
 			// TODO is it possible, to retrieve this information automatically?
-			String pepperVersion = PEPPER_VERSION;
+			String pepperVersion = PepperStarter.PEPPER_VERSION;
 
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
