@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.cli;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -67,6 +69,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil.PepperJobReporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.PepperConnector;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 
@@ -77,13 +80,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
  *
  */
 public class PepperStarter {
-	/**
-	 * FIXME This is just a workaround to set the current version of Pepper,
-	 * this is necessary, mark the Pepper package, to be load by the classloader
-	 * in and outside of OSGi. This could be removed, when there is a better way
-	 * to detect the current Pepper version automatically.
-	 */
-	public static final String PEPPER_VERSION = "2.1.2";
 
 	/**
 	 * A logger for logging messages.
@@ -1152,7 +1148,7 @@ public class PepperStarter {
 			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.  *\n");
 			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 45) + "*\n");
 			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 45) + "*\n");
-			retVal.append("* Version of Pepper:              " + fillUpBlanks(PEPPER_VERSION, 45) + "*\n");
+			retVal.append("* Version of Pepper:              " + fillUpBlanks(getVersion(), 45) + "*\n");
 			retVal.append("********************************************************************************\n");
 			retVal.append("\n");
 		} else {
@@ -1168,7 +1164,7 @@ public class PepperStarter {
 			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
 			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 85) + "*\n");
 			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 85) + "*\n");
-			retVal.append("* Version of Pepper:              " + fillUpBlanks(PEPPER_VERSION, 85) + "*\n");
+			retVal.append("* Version of Pepper:              " + fillUpBlanks(getVersion(), 85) + "*\n");
 			retVal.append("************************************************************************************************************************\n");
 			retVal.append("\n");
 		}
@@ -1190,6 +1186,24 @@ public class PepperStarter {
 			str.append(" ");
 		}
 		return (str.toString());
+	}
+
+	/**
+	 * Resolves the current Pepper version from a file named version.properties
+	 * in the pepper-lib jar file.
+	 * 
+	 * @return the current Pepper version
+	 */
+	public static String getVersion() {
+		String version = null;
+		Properties versionProp = new Properties();
+		try (InputStream is = PepperStarter.class.getResourceAsStream("version.properties")) {
+			versionProp.load(is);
+			version = versionProp.getProperty("version");
+		} catch (IOException ex) {
+			throw new PepperException("Cannot read current Pepper version. ", ex);
+		}
+		return (version);
 	}
 
 	/**

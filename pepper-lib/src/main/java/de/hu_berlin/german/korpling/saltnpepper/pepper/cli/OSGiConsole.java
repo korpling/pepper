@@ -30,8 +30,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import de.hu_berlin.german.korpling.saltnpepper.pepper.connectors.impl.PepperOSGiConnector;
 
 /**
