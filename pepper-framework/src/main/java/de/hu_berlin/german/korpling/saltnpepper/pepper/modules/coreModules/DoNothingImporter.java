@@ -24,7 +24,9 @@ import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 @Component(name = "DoNothingImporterComponent", factory = "PepperImporterComponentFactory")
@@ -38,6 +40,11 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 		super.activate(componentContext);
 	}
 
+	@Override
+	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
+		//do nothing
+	}
+	
 	/**
 	 * Specifies the separator, which has to be set between to the texts of two
 	 * token.
