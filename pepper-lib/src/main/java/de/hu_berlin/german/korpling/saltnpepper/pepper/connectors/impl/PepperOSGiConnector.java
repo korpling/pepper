@@ -308,9 +308,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if ((sharedPackages != null) && (!sharedPackages.isEmpty())) {
 			retVal.append(sharedPackages);
 		} else {
-
-			// TODO is it possible, to retrieve this information automatically?
-			String pepperVersion = PepperStarter.PEPPER_VERSION;
+			String pepperVersion = PepperStarter.getVersion();
 
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
