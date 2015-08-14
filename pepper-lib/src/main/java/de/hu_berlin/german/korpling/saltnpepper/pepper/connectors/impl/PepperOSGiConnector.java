@@ -50,7 +50,6 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
@@ -308,26 +307,20 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if ((sharedPackages != null) && (!sharedPackages.isEmpty())) {
 			retVal.append(sharedPackages);
 		} else {
-			String pepperVersion = PepperStarter.getVersion();
-
 			// pepper.common package
 			retVal.append(Pepper.class.getPackage().getName());
-			retVal.append(";version=\"" + pepperVersion + "\"");
 			retVal.append(", ");
 
 			// pepper.exceptions package
 			retVal.append(PepperException.class.getPackage().getName());
-			retVal.append(";version=\"" + pepperVersion + "\"");
 			retVal.append(", ");
 
 			// pepper.modules package
 			retVal.append(PepperModuleProperties.class.getPackage().getName());
-			retVal.append(";version=\"" + pepperVersion + "\"");
 			retVal.append(", ");
 
 			// pepper.util package
 			retVal.append(XMLStreamWriter.class.getPackage().getName());
-			retVal.append(";version=\"" + pepperVersion + "\"");
 			retVal.append(", ");
 
 			// emf-util
