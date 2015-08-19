@@ -216,6 +216,8 @@ public class DocumentControllerImpl implements DocumentController {
 		try {
 			aSleep = true;
 			if (getSDocument().getSDocumentGraph() != null) {
+				numOfNodes= getSDocument().getSDocumentGraph().getSNodes().size();
+				numOfRelations= getSDocument().getSDocumentGraph().getSRelations().size();
 				getSDocument().saveSDocumentGraph(getLocation());
 				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
 
@@ -627,5 +629,18 @@ public class DocumentControllerImpl implements DocumentController {
 			retVal.append(moduleController.getProgress(getGlobalId()));
 		}
 		return (retVal.toString());
+	}
+
+	int numOfNodes= 0;
+	int numOfRelations= 0;
+	/** {@inheritDoc} **/
+	@Override
+	public int getSize_nodes() {
+		return numOfNodes;
+	}
+	/** {@inheritDoc} **/
+	@Override
+	public int getSize_relations() {
+		return numOfRelations;
 	}
 }

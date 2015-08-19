@@ -41,11 +41,11 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
  * The class {@link PepperMapperControllerImpl} is a communicator class between
  * a {@link PepperModule} and a {@link PepperMapper} object. The aim of this
  * class is to provide some fields, which can be set by the {@link PepperMapper}
- * and be read by the {@link PepperModule} object. It does not contain any
- * reference to the {@link PepperMapper} object. This mechanism is used, to make
- * sure that in case of a forgotten clean up, the {@link PepperMapper} object
- * can be removed by the java garbage collector and does not overfill the main
- * memory.
+ * and be read by the {@link PepperModule} object. The {@link PepperModule}
+ * object should not contain any static or object references to the
+ * {@link PepperMapper} object. This mechanism is used, to make sure that in
+ * case of a forgotten clean up, the {@link PepperMapper} object can be removed
+ * by the java garbage collector and does not overfill the main memory.
  * 
  * @author Florian Zipser
  * 
@@ -77,6 +77,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	public void setPepperMapper(PepperMapper pepperMapper) {
 		this.pepperMapper = pepperMapper;
 		if (this.pepperMapper != null) {
+			pepperMapper.setPepperMapperController(this);
 			mappingSubjects = pepperMapper.getMappingSubjects();
 		}
 	}
@@ -282,4 +283,10 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 * be processed
 	 **/
 	protected DocumentController documentController = null;
+	
+	/** {@inheritDoc} **/
+	@Override
+	public boolean getPermissionForProcessDoument(DocumentController controller){
+		return(getPepperModule().getModuleController().getJob().getPermissionForProcessDoument(controller));
+	}
 }

@@ -16,7 +16,7 @@
 			to project's version, since then the version of the Pepper dependency in 
 			the Pepper module is set to the Pepper module's version. -->
 		<!-- <pepper.version>[1.0.0,2.0.0)</pepper.version> -->
-		<pepper.version>2.1.2</pepper.version>
+		<pepper.version>2.1.3-SNAPSHOT</pepper.version>
 		<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
 	</properties>
 

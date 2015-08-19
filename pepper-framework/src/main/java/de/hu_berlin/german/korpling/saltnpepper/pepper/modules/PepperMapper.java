@@ -35,6 +35,20 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
  */
 public interface PepperMapper {
 	/**
+	 * Sets the controller of this mapper, to grant n access to Pepper via the
+	 * controller.
+	 * 
+	 * @param controller controller for this object
+	 */
+	public void setPepperMapperController(PepperMapperController controller);
+	/**
+	 * Returns the controller of this mapper, to grant n access to Pepper via the
+	 * controller.
+	 * 
+	 * @return controller for this object
+	 */
+	public PepperMapperController getPepperMapperController();
+	/**
 	 * Sets {@link URI} of resource. The URI could refer a directory or a file,
 	 * which can be a corpus or a document.
 	 * 

@@ -90,6 +90,33 @@ public class MappingSubject {
 	}
 
 	/**
+	 * If the set {@link SElementId} belongs to a {@link SDocument}, this is
+	 * it's controller.
+	 **/
+	private DocumentController documentController = null;
+
+	/**
+	 * Returns the document controller, if one was set. This is useful in case
+	 * the set {@link SElementId} belongs to a {@link SDocument}.
+	 * 
+	 * @return the controller for the {@link SDocument}
+	 */
+	public DocumentController getDocumentController() {
+		return documentController;
+	}
+
+	/**
+	 * If the set {@link SElementId} belongs to a {@link SDocument}, it's
+	 * controller can be passed with this method.
+	 * 
+	 * @param documentController
+	 *            the controller for the {@link SDocument}
+	 */
+	public void setDocumentController(DocumentController documentController) {
+		this.documentController = documentController;
+	}
+
+	/**
 	 * Returns a String representation of this object. This representation
 	 * should not be used for serialization/deserialization purposes.
 	 */

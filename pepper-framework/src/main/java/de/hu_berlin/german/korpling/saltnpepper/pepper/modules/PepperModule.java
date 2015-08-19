@@ -23,6 +23,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
@@ -493,6 +494,16 @@ public interface PepperModule {
 	 *            The object which is done with its job
 	 */
 	public void done(PepperMapperController controller);
+
+	/**
+	 * This method is called by a {@link PepperMapperController} object to
+	 * notify the {@link PepperModule} object, that the mapping for this object
+	 * is done.
+	 * 
+	 * @param sElementId
+	 * @param result
+	 */
+	public void done(SElementId sElementId, DOCUMENT_STATUS result);
 
 	/**
 	 * Invokes processings, before the mapping was started. This could be

@@ -27,6 +27,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.MappingSubject;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
@@ -265,5 +266,17 @@ public class PepperMapperImpl implements PepperMapper {
 	 */
 	protected void readXMLResource(DefaultHandler2 contentHandler, URI documentLocation) {
 		PepperUtil.readXMLResource(contentHandler, documentLocation);
+	}
+
+	protected PepperMapperController controller= null;
+	/** {@inheritDoc} **/
+	@Override
+	public void setPepperMapperController(PepperMapperController controller) {
+		this.controller= controller;
+	}
+	/** {@inheritDoc} **/
+	@Override
+	public PepperMapperController getPepperMapperController() {
+		return controller;
 	}
 }

@@ -636,7 +636,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
-	 * {@inheritDoc PepperModule#done(PepperMapperController)}
+	 * {@inheritDoc}
 	 */
 	public void done(SElementId sElementId, DOCUMENT_STATUS result) {
 		if (sElementId.getIdentifiableElement() instanceof SDocument) {

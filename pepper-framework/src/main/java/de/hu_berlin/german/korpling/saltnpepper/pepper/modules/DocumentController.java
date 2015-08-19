@@ -28,6 +28,7 @@ import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
 import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
 
 public interface DocumentController {
 
@@ -86,7 +87,22 @@ public interface DocumentController {
 	 *            location as {@link URI}
 	 **/
 	public void setLocation(URI location);
+	/**
+	 * Stores the number of {@link SNode}s a document contains, when it ws
+	 * send to sleep.
+	 * 
+	 * @return number of {@link SNode} of the contained document
+	 */
+	public int getSize_nodes();
+	/**
+	 * Stores the number of {@link SRelation}s a document contains, when it ws
+	 * send to sleep.
+	 * 
+	 * @return number of {@link SRelation} of the contained document
+	 */
+	public int getSize_relations();
 
+	// ========================================== start: sleep mechanism
 	/**
 	 * Returns if the {@link SDocumentGraph} of contained {@link SDocument} is
 	 * send to sleep or awake.
