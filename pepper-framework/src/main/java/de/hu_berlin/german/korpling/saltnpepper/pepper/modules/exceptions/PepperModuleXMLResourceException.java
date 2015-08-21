@@ -17,18 +17,17 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+
 /**
- * This PepperException is thrown only by a PepperModule.
+ * This PepperException is thrown by a {@link PepperModule}. If such an
+ * exception is thrown, it means that an xml file has not been read correctly.
  * 
  * @author Florian Zipser
  *
  */
+@SuppressWarnings("serial")
 public class PepperModuleXMLResourceException extends PepperModuleException {
-
-	/**
-	 * generated serialVersionUID
-	 */
-	private static final long serialVersionUID = -7963907048315916615L;
 
 	public PepperModuleXMLResourceException() {
 		super();

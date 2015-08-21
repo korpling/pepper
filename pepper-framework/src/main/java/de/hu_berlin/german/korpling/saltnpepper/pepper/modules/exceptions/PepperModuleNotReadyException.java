@@ -17,13 +17,17 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
+/**
+ * This PepperException is thrown only by a
+ * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule}
+ * and marks, that the module is not ready for the requested action. For
+ * instance if it has not been initialized.
+ * 
+ * @author florian
+ *
+ */
+@SuppressWarnings("serial")
 public class PepperModuleNotReadyException extends PepperModuleException {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8247013698199187030L;
-
 	public PepperModuleNotReadyException() {
 		super();
 	}

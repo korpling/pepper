@@ -27,12 +27,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
  * @author Florian Zipser
  * 
  */
+@SuppressWarnings("serial")
 public class PepperModuleTestException extends PepperModuleException {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5431375961043975520L;
 
 	public PepperModuleTestException() {
 		super();

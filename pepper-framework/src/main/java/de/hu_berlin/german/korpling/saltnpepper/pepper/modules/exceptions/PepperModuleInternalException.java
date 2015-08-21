@@ -17,27 +17,27 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+
 /**
- * Exception is used in case of an exception occurs concerning
- * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty}
- * . Such an exception can occur while initialization or while working with
- * properties.
+ * This PepperException is thrown only by a {@link PepperModule}. And is used to
+ * type an exception as an internal exception, which means, when it is thrown a
+ * bug occured.
  * 
  * @author Florian Zipser
  *
  */
 @SuppressWarnings("serial")
-public class PepperModulePropertyException extends PepperModuleException {
-
-	public PepperModulePropertyException() {
+public class PepperModuleInternalException extends PepperModuleException {
+	public PepperModuleInternalException() {
 		super();
 	}
 
-	public PepperModulePropertyException(String s) {
+	public PepperModuleInternalException(String s) {
 		super(s);
 	}
 
-	public PepperModulePropertyException(String s, Throwable ex) {
+	public PepperModuleInternalException(String s, Throwable ex) {
 		super(s, ex);
 	}
 }

@@ -23,17 +23,14 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 /**
  * This PepperException is thrown only by a
  * {@link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule}.
+ * If such an exception was thrown, it means that there are problems in the read
+ * resource.
  * 
  * @author Florian Zipser
  *
  */
+@SuppressWarnings("serial")
 public class PepperModuleDataException extends PepperModuleException {
-
-	/**
-	 * generated serialVersionUID
-	 */
-	private static final long serialVersionUID = -7963907048315916615L;
-
 	protected PepperModuleDataException(PepperModule pepperModule, String s) {
 		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s);
 	}
