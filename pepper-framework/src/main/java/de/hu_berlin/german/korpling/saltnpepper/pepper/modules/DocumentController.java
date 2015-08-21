@@ -152,6 +152,12 @@ public interface DocumentController {
 	 * @return a list of all {@link ModuleControllerImpl} objects
 	 * **/
 	public List<ModuleControllerImpl> getModuleControllers();
+	/**
+	 * Returns the module controller, which is currently processing this document.
+	 * 
+	 * @return the currently active {@link ModuleController}
+	 * **/
+	public ModuleController getCurrentModuleController();
 
 	/**
 	 * Adds a further {@link ModuleControllerImpl} to internal list of all
@@ -186,7 +192,8 @@ public interface DocumentController {
 	 * @param status
 	 *            the status to which the {@link StepStatus} shall be set to.
 	 */
-	public void updateStatus(String moduleControllerId, DOCUMENT_STATUS status);
+	public void updateStatus(ModuleController moduleController, DOCUMENT_STATUS status);
+//	public void updateStatus(String moduleControllerId, DOCUMENT_STATUS status);
 
 	/**
 	 * Returns the global status of this object. The global status is determined

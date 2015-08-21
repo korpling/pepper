@@ -216,8 +216,8 @@ public class DocumentControllerImpl implements DocumentController {
 		try {
 			aSleep = true;
 			if (getSDocument().getSDocumentGraph() != null) {
-				numOfNodes= getSDocument().getSDocumentGraph().getSNodes().size();
-				numOfRelations= getSDocument().getSDocumentGraph().getSRelations().size();
+				numOfNodes = getSDocument().getSDocumentGraph().getSNodes().size();
+				numOfRelations = getSDocument().getSDocumentGraph().getSRelations().size();
 				getSDocument().saveSDocumentGraph(getLocation());
 				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
 
@@ -425,6 +425,14 @@ public class DocumentControllerImpl implements DocumentController {
 		return (numberOfProcessingModules);
 	}
 
+	/** stores the currently active document controller **/
+	protected volatile ModuleController currentModuleController= null;
+	/** {@inheritDoc} */
+	@Override
+	public ModuleController getCurrentModuleController() {
+		return currentModuleController;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -435,26 +443,32 @@ public class DocumentControllerImpl implements DocumentController {
 	 * .communication.DOCUMENT_STATUS)
 	 */
 	@Override
-	public void updateStatus(String moduleControllerId, DOCUMENT_STATUS status) {
-		if ((moduleControllerId == null) || (moduleControllerId.isEmpty()))
+	public void updateStatus(ModuleController moduleController, DOCUMENT_STATUS status) {
+		if (moduleController == null){
 			throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the given identifier for module conttroller is empty.");
-		if (status == null)
+		}
+		if (status == null){
 			throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the passed status is null.");
-		synchronized (moduleControllerId) {
-			DetailedStatus detailedStatus = getDetailedStatuses().get(moduleControllerId);
+		}
+		synchronized (moduleController) {
+			DetailedStatus detailedStatus = getDetailedStatuses().get(moduleController.getId());
 			if (detailedStatus == null)
-				throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the passed identifier for module controller '" + moduleControllerId + "' is not registered.");
+				throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the passed identifier for module controller '" + moduleController.getId() + "' is not registered.");
 			isStarted = true;
 			if ((DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus())) && (DOCUMENT_STATUS.IN_PROGRESS.equals(status))) {
 				numberOfProcessingModules++;
 				detailedStatus.setStatus(status);
+				currentModuleController= moduleController;
 			} else if ((DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) && ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status)) || (DOCUMENT_STATUS.DELETED.equals(status)))) {
 				numberOfProcessingModules--;
-				if (getNumOfProcessingModules() < 0)
+				if (getNumOfProcessingModules() < 0){
 					throw new PepperFWException("The number of " + PepperModule.class.getSimpleName() + " for this " + DocumentControllerImpl.class.getSimpleName() + " object '" + getGlobalId() + "' was set to a value less than 0.");
+				}
+				currentModuleController= null;
 				detailedStatus.setStatus(status);
-			} else
-				throw new PepperFWException("Cannot update status of sDocument '" + getGlobalId() + "' for module controller '" + moduleControllerId + "', because the level of current status '" + detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
+			} else{
+				throw new PepperFWException("Cannot update status of sDocument '" + getGlobalId() + "' for module controller '" + moduleController + "', because the level of current status '" + detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
+			}
 			this.updateGlobalStatus();
 		}
 	}
@@ -504,37 +518,20 @@ public class DocumentControllerImpl implements DocumentController {
 		boolean completedExists = false;
 		boolean notStartedExists = false;
 		for (DetailedStatus detailedStatus : getDetailedStatuses().values()) {
-			if (DOCUMENT_STATUS.DELETED.equals(detailedStatus.getStatus())) {// if
-																				// one
-																				// PepperModuleController
-																				// says
-																				// deleted,
-																				// status
-																				// is
-																				// deleted
+			if (DOCUMENT_STATUS.DELETED.equals(detailedStatus.getStatus())) {
+				// if one PepperModuleController says deleted, status is deleted
 				newGlobalStatus = DOCUMENT_STATUS.DELETED;
 				break;
 			}// if one PepperMOduleController says deleted, status is deleted
-			else if (DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) {// if
-																						// one
-																						// PepperModuleController
-																						// says
-																						// IN_PROCESS,
-																						// status
-																						// is
-																						// IN_PROCESS
+			else if (DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) {
+				// if one PepperModuleController says IN_PROCESS, status is
+				// IN_PROCESS
 				newGlobalStatus = DOCUMENT_STATUS.IN_PROGRESS;
 				break;
 			}// if one PepperModuleController says IN_PROCESS, status is
 				// IN_PROCESS
-			else if (DOCUMENT_STATUS.FAILED.equals(detailedStatus.getStatus())) {// if
-																					// one
-																					// PepperModuleController
-																					// says
-																					// FAILED,
-																					// status
-																					// is
-																					// FAILED
+			else if (DOCUMENT_STATUS.FAILED.equals(detailedStatus.getStatus())) {
+				// if one PepperModuleController says FAILED, status is FAILED
 				newGlobalStatus = DOCUMENT_STATUS.FAILED;
 				break;
 			}// if one PepperModuleController says FAILED, status is FAILED
@@ -631,13 +628,15 @@ public class DocumentControllerImpl implements DocumentController {
 		return (retVal.toString());
 	}
 
-	int numOfNodes= 0;
-	int numOfRelations= 0;
+	int numOfNodes = 0;
+	int numOfRelations = 0;
+
 	/** {@inheritDoc} **/
 	@Override
 	public int getSize_nodes() {
 		return numOfNodes;
 	}
+
 	/** {@inheritDoc} **/
 	@Override
 	public int getSize_relations() {

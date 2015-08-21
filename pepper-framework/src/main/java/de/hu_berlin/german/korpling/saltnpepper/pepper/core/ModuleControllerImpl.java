@@ -566,7 +566,7 @@ public class ModuleControllerImpl implements ModuleController {
 		if (documentController != null) {
 			logger.debug("[{}] started processing of document '{}'. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN") + "'");
 			// notify documentController, that SDocument now is in progress
-			documentController.updateStatus(getId(), DOCUMENT_STATUS.IN_PROGRESS);
+			documentController.updateStatus(this, DOCUMENT_STATUS.IN_PROGRESS);
 			// puts the current element in list of not pipelined orders
 			getControllList().add(documentController);
 			if (documentController.getSDocument() == null)
@@ -598,13 +598,16 @@ public class ModuleControllerImpl implements ModuleController {
 	 */
 	@Override
 	public void complete(DocumentController documentController) {
-		if (documentController == null)
+		if (documentController == null){
 			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because it is null.");
-		if (!getControllList().contains(documentController))
+		}
+		if (!getControllList().contains(documentController)){
 			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because the passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
-		if (documentController.getSDocument() == null)
+		}
+		if (documentController.getSDocument() == null){
 			throw new PepperFWException("Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
-		documentController.updateStatus(getId(), DOCUMENT_STATUS.COMPLETED);
+		}
+		documentController.updateStatus(this, DOCUMENT_STATUS.COMPLETED);
 
 		// if (!this.started)
 		// throw new
@@ -626,15 +629,17 @@ public class ModuleControllerImpl implements ModuleController {
 	 */
 	@Override
 	public void delete(DocumentController documentController) {
-		if (documentController == null)
+		if (documentController == null){
 			throw new PepperFWException("Cannot notify Pepper, that the passed document controller shall not be proessed any further, because it is null.");
-		if (!getControllList().contains(documentController))
+		}
+		if (!getControllList().contains(documentController)){
 			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '" + documentController.getGlobalId() + "' shall not be proessed any further by Pepper module '" + getId() + "', because it has never been add to internal controll list '" + getControllList() + "'.");
+		}
 		// if (!this.started)
 		// throw new
 		// PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
 
-		documentController.updateStatus(getId(), DOCUMENT_STATUS.DELETED);
+		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
 		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN"));
 		// if document is not processed any further, release slot
 		if (getJob() != null) {

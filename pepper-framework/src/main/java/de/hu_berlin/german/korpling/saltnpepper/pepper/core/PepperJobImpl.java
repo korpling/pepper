@@ -742,6 +742,10 @@ public class PepperJobImpl extends PepperJob {
 		retVal.append(getNumOfActiveDocuments());
 		retVal.append(" of ");
 		retVal.append(getMaxNumberOfDocuments());
+		//TODO delete this
+		retVal.append("------>");
+		retVal.append(getActiveDocuments());
+		
 		retVal.append("\n");
 
 		retVal.append("status:\t\t\t");
@@ -788,6 +792,9 @@ public class PepperJobImpl extends PepperJob {
 				docInfo.append(docController.getGlobalStatus());
 				if (docController.isAsleep()) {
 					docInfo.append("/sleep");
+				}else{
+					docInfo.append("/");
+					docInfo.append(docController.getCurrentModuleController().getPepperModule().getName());
 				}
 				docInfo.append(")");
 				detailedStr.append(String.format("%-" + distance + "s%8s", docInfo.toString(), progressStr));

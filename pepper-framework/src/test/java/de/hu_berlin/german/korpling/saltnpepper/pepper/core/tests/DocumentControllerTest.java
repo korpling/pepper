@@ -151,7 +151,7 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		getFixture().setSDocument(SaltFactory.eINSTANCE.createSDocument());
 
 		assertTrue(new Double(0).equals(getFixture().getProgress()));
-		getFixture().updateStatus(moduleControllers.get(0).getId(), DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(moduleControllers.get(0), DOCUMENT_STATUS.IN_PROGRESS);
 		assertTrue(new Double(0).equals(getFixture().getProgress()));
 		assertEquals(DOCUMENT_STATUS.IN_PROGRESS, getFixture().getGlobalStatus());
 		try {
@@ -159,29 +159,29 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 			fail();
 		} catch (PepperFWException e) {
 		}
-		getFixture().updateStatus(moduleControllers.get(0).getId(), DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(moduleControllers.get(0), DOCUMENT_STATUS.COMPLETED);
 		assertTrue(new Double(0.2).equals(getFixture().getProgress()));
 		assertEquals(DOCUMENT_STATUS.IN_PROGRESS, getFixture().getGlobalStatus());
 		try {
-			getFixture().updateStatus(moduleControllers.get(0).getId(), DOCUMENT_STATUS.IN_PROGRESS);
+			getFixture().updateStatus(moduleControllers.get(0), DOCUMENT_STATUS.IN_PROGRESS);
 			fail();
 		} catch (Exception e) {
 		}
 
-		getFixture().updateStatus(moduleControllers.get(1).getId(), DOCUMENT_STATUS.IN_PROGRESS);
-		getFixture().updateStatus(moduleControllers.get(2).getId(), DOCUMENT_STATUS.IN_PROGRESS);
-		getFixture().updateStatus(moduleControllers.get(3).getId(), DOCUMENT_STATUS.IN_PROGRESS);
-		getFixture().updateStatus(moduleControllers.get(4).getId(), DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(moduleControllers.get(1), DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(moduleControllers.get(2), DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(moduleControllers.get(3), DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(moduleControllers.get(4), DOCUMENT_STATUS.IN_PROGRESS);
 		assertEquals(DOCUMENT_STATUS.IN_PROGRESS, getFixture().getGlobalStatus());
 		assertTrue(new Double(0.2).equals(getFixture().getProgress()));
-		getFixture().updateStatus(moduleControllers.get(1).getId(), DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(moduleControllers.get(1), DOCUMENT_STATUS.COMPLETED);
 		assertTrue(new Double(0.4).equals(getFixture().getProgress()));
-		getFixture().updateStatus(moduleControllers.get(2).getId(), DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(moduleControllers.get(2), DOCUMENT_STATUS.COMPLETED);
 		// exception because of division problem
 		assertTrue(new Double(0.6) < getFixture().getProgress() && (new Double(0.61) > getFixture().getProgress()));
-		getFixture().updateStatus(moduleControllers.get(3).getId(), DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(moduleControllers.get(3), DOCUMENT_STATUS.COMPLETED);
 		assertTrue(new Double(0.8).equals(getFixture().getProgress()));
-		getFixture().updateStatus(moduleControllers.get(4).getId(), DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(moduleControllers.get(4), DOCUMENT_STATUS.COMPLETED);
 		assertEquals(DOCUMENT_STATUS.COMPLETED, getFixture().getGlobalStatus());
 		assertTrue(new Double(1).equals(getFixture().getProgress()));
 	}
@@ -199,7 +199,7 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		} catch (PepperFWException e) {
 		}
 		try {
-			getFixture().updateStatus("anyId", null);
+			getFixture().updateStatus(new ModuleControllerImpl("anyId"), null);
 			fail();
 		} catch (PepperFWException e) {
 		}
@@ -218,23 +218,23 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		getFixture().addModuleControllers(new ModuleControllerImpl("module2"));
 		getFixture().addModuleControllers(new ModuleControllerImpl("module3"));
 
-		getFixture().updateStatus("module0", DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(0), DOCUMENT_STATUS.IN_PROGRESS);
 		assertEquals(1, getFixture().getNumOfProcessingModules());
-		getFixture().updateStatus("module0", DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(0), DOCUMENT_STATUS.COMPLETED);
 		assertEquals(0, getFixture().getNumOfProcessingModules());
 
-		getFixture().updateStatus("module1", DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(1), DOCUMENT_STATUS.IN_PROGRESS);
 		assertEquals(1, getFixture().getNumOfProcessingModules());
-		getFixture().updateStatus("module2", DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(2), DOCUMENT_STATUS.IN_PROGRESS);
 		assertEquals(2, getFixture().getNumOfProcessingModules());
-		getFixture().updateStatus("module3", DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(3), DOCUMENT_STATUS.IN_PROGRESS);
 		assertEquals(3, getFixture().getNumOfProcessingModules());
 
-		getFixture().updateStatus("module2", DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(2), DOCUMENT_STATUS.COMPLETED);
 		assertEquals(2, getFixture().getNumOfProcessingModules());
-		getFixture().updateStatus("module3", DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(3), DOCUMENT_STATUS.COMPLETED);
 		assertEquals(1, getFixture().getNumOfProcessingModules());
-		getFixture().updateStatus("module1", DOCUMENT_STATUS.FAILED);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(1), DOCUMENT_STATUS.FAILED);
 		assertEquals(0, getFixture().getNumOfProcessingModules());
 	}
 
@@ -267,10 +267,10 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		assertNotNull(getFixture().getSDocument().getSDocumentGraph());
 
 		getFixture().addModuleControllers(new ModuleControllerImpl("module0"));
-		getFixture().updateStatus("module0", DOCUMENT_STATUS.IN_PROGRESS);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(0), DOCUMENT_STATUS.IN_PROGRESS);
 		getFixture().sendToSleep();
 		assertTrue(!getFixture().isAsleep());
-		getFixture().updateStatus("module0", DOCUMENT_STATUS.COMPLETED);
+		getFixture().updateStatus(getFixture().getModuleControllers().get(0), DOCUMENT_STATUS.COMPLETED);
 		getFixture().sendToSleep();
 		assertTrue(getFixture().isAsleep());
 	}
