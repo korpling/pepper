@@ -560,8 +560,9 @@ public class ModuleControllerImpl implements ModuleController {
 	/** {@inheritDoc ModuleController#next(boolean)} */
 	@Override
 	public DocumentController next(boolean ignorePermissionForDocument) {
-		if (this.getInputDocumentBus() == null)
+		if (this.getInputDocumentBus() == null){
 			throw new PepperFWException("The input document bus is not set for module controller '" + getId() + "'.");
+		}
 		DocumentController documentController = getInputDocumentBus().pop(getId(), ignorePermissionForDocument);
 		if (documentController != null) {
 			logger.debug("[{}] started processing of document '{}'. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN") + "'");
@@ -635,10 +636,7 @@ public class ModuleControllerImpl implements ModuleController {
 		if (!getControllList().contains(documentController)){
 			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '" + documentController.getGlobalId() + "' shall not be proessed any further by Pepper module '" + getId() + "', because it has never been add to internal controll list '" + getControllList() + "'.");
 		}
-		// if (!this.started)
-		// throw new
-		// PepperConvertException("Cannot finish the given element-id, because module-controller was not started.");
-
+	
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
 		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN"));
 		// if document is not processed any further, release slot

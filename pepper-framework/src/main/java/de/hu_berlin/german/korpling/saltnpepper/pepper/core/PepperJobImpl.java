@@ -742,9 +742,6 @@ public class PepperJobImpl extends PepperJob {
 		retVal.append(getNumOfActiveDocuments());
 		retVal.append(" of ");
 		retVal.append(getMaxNumberOfDocuments());
-		//TODO delete this
-		retVal.append("------>");
-		retVal.append(getActiveDocuments());
 		
 		retVal.append("\n");
 
@@ -1132,9 +1129,9 @@ public class PepperJobImpl extends PepperJob {
 		numOfDocsLock.lock();
 		try {
 			getActiveDocuments().remove(controller);
-			// TODO not sure, if signal() is correct, or if signalAll() should
+			// not sure, if signal() is correct, or if signalAll() should
 			// be used, but I would think, that only one waiter has to be
-			// notified
+			// notified --> seems to work correctly
 			numOfDocsCondition.signal();
 		} finally {
 			numOfDocsLock.unlock();
