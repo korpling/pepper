@@ -17,6 +17,7 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 /**
@@ -29,15 +30,61 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
  */
 @SuppressWarnings("serial")
 public class PepperModuleInternalException extends PepperModuleException {
-	public PepperModuleInternalException() {
-		super();
+	/**
+	 * 
+	 * @param module
+	 *            the module, which threw the exception
+	 * @param msg
+	 *            original message
+	 * @return
+	 */
+	private static String createMsg(PepperModule module, String msg) {
+		return ("Error in Pepper module '" + (module.getName() != null ? module.getName() : "NO_NAME") + ", " + (module.getVersion() != null ? module.getVersion() : "NO_VERSION") + "':" + msg + "This might be a bug, please contact the module supplier" + (module.getSupplierHomepage() != null ? " " + module.getSupplierHomepage() : "") + ". ");
+	}
+
+	/**
+	 * 
+	 * @param mapper
+	 *            the mapper, which threw the exception
+	 * @param msg
+	 *            original message
+	 * @return
+	 */
+	private static String createMsg(PepperMapper mapper, String msg) {
+		return ("Error in Pepper mapper '" + mapper.getClass().getName() + "':" + msg + "This might be a bug. ");
+	}
+
+	/**
+	 * 
+	 * @param msg
+	 *            original message
+	 * @return
+	 */
+	private static String createMsg(String msg) {
+		return ("Error in Pepper module:" + msg + "This might be a bug. ");
 	}
 
 	public PepperModuleInternalException(String s) {
-		super(s);
+		super(createMsg(s));
 	}
 
 	public PepperModuleInternalException(String s, Throwable ex) {
-		super(s, ex);
+		super(createMsg(s), ex);
+	}
+
+	public PepperModuleInternalException(PepperModule pepperModule, String s) {
+		super(createMsg(pepperModule, s));
+	}
+
+	public PepperModuleInternalException(PepperModule pepperModule, String s, Throwable ex) {
+		super(createMsg(pepperModule, s), ex);
+	}
+
+	public PepperModuleInternalException(PepperMapper pepperMapper, String s) {
+		super(createMsg(pepperMapper, s));
+	}
+
+	public PepperModuleInternalException(PepperMapper pepperMapper, String s, Throwable ex) {
+		super(createMsg(pepperMapper, s), ex);
 	}
 }
