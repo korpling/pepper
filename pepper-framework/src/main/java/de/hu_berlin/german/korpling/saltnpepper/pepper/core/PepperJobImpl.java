@@ -742,7 +742,7 @@ public class PepperJobImpl extends PepperJob {
 		retVal.append(getNumOfActiveDocuments());
 		retVal.append(" of ");
 		retVal.append(getMaxNumberOfDocuments());
-		
+
 		retVal.append("\n");
 
 		retVal.append("status:\t\t\t");
@@ -789,9 +789,15 @@ public class PepperJobImpl extends PepperJob {
 				docInfo.append(docController.getGlobalStatus());
 				if (docController.isAsleep()) {
 					docInfo.append("/sleep");
-				}else{
+				} else {
 					docInfo.append("/");
-					docInfo.append(docController.getCurrentModuleController().getPepperModule().getName());
+					if (!DOCUMENT_STATUS.COMPLETED.equals(docController.getGlobalStatus()) && !DOCUMENT_STATUS.DELETED.equals(docController.getGlobalStatus()) && !DOCUMENT_STATUS.FAILED.equals(docController.getGlobalStatus())) {
+						if (docController.getCurrentModuleController() == null || docController.getCurrentModuleController().getPepperModule() == null) {
+							docInfo.append("???");
+						} else {
+							docInfo.append(docController.getCurrentModuleController().getPepperModule().getName());
+						}
+					}
 				}
 				docInfo.append(")");
 				detailedStr.append(String.format("%-" + distance + "s%8s", docInfo.toString(), progressStr));

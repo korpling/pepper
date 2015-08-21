@@ -705,9 +705,13 @@ public abstract class PepperUtil {
 			while (!isStop()) {
 				String report = null;
 				try {
+					if (getPepperJob()== null){
+						logger.warn("No status report is available, because no reference to the Pepper job is given. ");
+					}
 					report = getPepperJob().getStatusReport();
 				} catch (Exception e) {
 					report = "- no status report is available -";
+					logger.warn("No status report is available, because of a nested exception: ", e);
 				} finally {
 					if (report != null) {
 						logger.info(report);
