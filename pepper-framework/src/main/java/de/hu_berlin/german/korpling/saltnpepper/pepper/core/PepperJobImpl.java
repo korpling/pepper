@@ -746,17 +746,7 @@ public class PepperJobImpl extends PepperJob {
 		retVal.append("\n");
 
 		retVal.append("status:\t\t\t");
-		if (JOB_STATUS.NOT_STARTED.equals(getStatus())) {
-			retVal.append(JOB_STATUS.NOT_STARTED);
-		} else if (JOB_STATUS.ENDED.equals(getStatus())) {
-			retVal.append(JOB_STATUS.ENDED);
-		} else if (JOB_STATUS.ENDED_WITH_ERRORS.equals(getStatus())) {
-			retVal.append(JOB_STATUS.ENDED_WITH_ERRORS);
-		} else if (JOB_STATUS.IN_PROGRESS.equals(getStatus())) {
-			retVal.append(JOB_STATUS.IN_PROGRESS);
-		} else {
-			retVal.append("UNDEFINED STATUS");
-		}
+		retVal.append(getStatus());
 		retVal.append("\n");
 
 		StringBuilder detailedStr = new StringBuilder();
@@ -884,7 +874,7 @@ public class PepperJobImpl extends PepperJob {
 		inProgress.lock();
 		try {
 			startTime = System.currentTimeMillis();
-			status = JOB_STATUS.IN_PROGRESS;
+			status = JOB_STATUS.INITIALIZING;
 			if (!isWired) {
 				wire();
 			}
@@ -902,9 +892,11 @@ public class PepperJobImpl extends PepperJob {
 					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '" + str.toString() + "'. ");
 				}
 			}
+			status= JOB_STATUS.IMPORTING_CORPUS_STRUCTURE;
 			if (!isImportedCorpusStructure) {
 				importCorpusStructures();
 			}
+			status= JOB_STATUS.IMPORTING_DOCUMENT_STRUCTURE;
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
 			// create a future for each step
 			for (Step step : getAllSteps()) {

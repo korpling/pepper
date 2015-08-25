@@ -207,8 +207,9 @@ public class PepperImpl implements Pepper {
 			}
 			boolean toRemove = true;
 			if ((jobEntry != null) && (jobEntry.pepperJob != null)) {
-				if (JOB_STATUS.IN_PROGRESS.equals(jobEntry.pepperJob.getStatus()))
+				if (JOB_STATUS.INITIALIZING.equals(jobEntry.pepperJob.getStatus())){
 					toRemove = false;
+				}
 			}
 			if (toRemove)
 				removeJob(jobId);

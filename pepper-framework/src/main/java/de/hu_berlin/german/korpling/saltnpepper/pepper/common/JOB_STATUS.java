@@ -17,6 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
+import java.io.ObjectInputStream.GetField;
+
+import org.omg.CORBA.INITIALIZE;
+
 /**
  * Status of a job in Pepper, the status could be one of the following:
  * <ul>
@@ -30,5 +34,38 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
  *
  */
 public enum JOB_STATUS {
-	NOT_STARTED, IN_PROGRESS, ENDED, ENDED_WITH_ERRORS;
+	//
+	NOT_STARTED("not started"),
+	//
+	INITIALIZING("initializing"),
+	//
+	IMPORTING_CORPUS_STRUCTURE("importing corpus structure"),
+	//
+	IMPORTING_DOCUMENT_STRUCTURE("importing document structure"),
+	//
+	ENDED("ended"),
+	//
+	ENDED_WITH_ERRORS("ended with errors");
+
+	private String name = null;
+
+	private JOB_STATUS(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
+		return (name);
+	}
+
+	/**
+	 * Returns whether the status determines, that the Pepper job is still in progress.
+	 * @return true, if the type equals {@link INITIALIZE}, {@link IMPORTING_CORPUS_STRUCTURE} or {@link IMPORTING_DOCUMENT_STRUCTURE}
+	 */
+	public boolean isInProgress() {
+		if (INITIALIZING.equals(this) || IMPORTING_CORPUS_STRUCTURE.equals(this) || IMPORTING_DOCUMENT_STRUCTURE.equals(this)) {
+			return (true);
+		} else {
+			return (false);
+		}
+	}
 }
