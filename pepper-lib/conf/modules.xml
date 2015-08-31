@@ -11,6 +11,9 @@
 	<pepperModules>		
 		<artifactId>pepperModules-CoraXMLModules</artifactId>
 	</pepperModules>
+	<pepperModules>		
+		<artifactId>pepperModules-ToolboxModules</artifactId>
+	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-ElanModules</artifactId>
 		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
