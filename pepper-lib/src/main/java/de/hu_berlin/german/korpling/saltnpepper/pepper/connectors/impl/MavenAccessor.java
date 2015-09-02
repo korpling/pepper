@@ -515,13 +515,14 @@ public class MavenAccessor {
 	            	try {	            		
 	            		installArtifact = installArtifacts.get(i);	            		
 	            		logger.info("installing: "+installArtifact);	            		
-	            		bundle = pepperOSGiConnector.installAndCopy(installArtifact.getFile().toURI());
 	            		if (i!=0){//the module itself must not be put on the blacklist
+	            			bundle = pepperOSGiConnector.installAndCopy(installArtifact.getFile().toURI());
 	            			putOnBlacklist(installArtifact);	            			
 	            		}else if (installedBundle!=null){
-	            			pepperOSGiConnector.remove(installedBundle.getSymbolicName());
+	            			pepperOSGiConnector.remove(installedBundle.getSymbolicName());	            			
 	            			logger.info("Successfully removed version ".concat(installedBundle.getVersion().toString()).concat(" of ").concat(artifactId));
-	            		}
+	            			bundle = pepperOSGiConnector.installAndCopy(installArtifact.getFile().toURI());
+	            		}	            		
 	            		if (bundle!=null){
 	            			bundle.start();
 	            		}
