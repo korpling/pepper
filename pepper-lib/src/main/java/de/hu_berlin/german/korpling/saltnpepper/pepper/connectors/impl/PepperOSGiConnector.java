@@ -384,7 +384,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		StringBuilder osgiBundlesProp = null;
 
 		for (URI dropinLocation : loadLocations) {
-			File[] fileLocations = new File(dropinLocation.getPath()).listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
+			File[] fileLocations = new File(dropinLocation.getPath()).listFiles((FilenameFilter) new SuffixFileFilter(new String[] {".jar", ".war"}));
 			if (fileLocations != null) {
 				for (File bundleJar : fileLocations) {
 					// check if file is file-object

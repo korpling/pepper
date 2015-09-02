@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+ 
+<Configure id="pepper-server" class="org.eclipse.jetty.server.Server">
+ 
+  <Set name="connectors">
+    <Array type="org.eclipse.jetty.server.Connector">
+      <Item>
+        <New class="org.eclipse.jetty.server.ServerConnector">
+          <Arg><Ref refid="pepper-server"/></Arg>
+          <Set name="port">8080</Set>
+        </New>
+      </Item>
+    </Array>
+  </Set>
+ 
+  <!-- New id="context" class="org.eclipse.jetty.servlet.ServletContextHandler">
+    <Set name="contextPath">/hello</Set>
+    <Call name="addServlet">
+      <Arg>org.eclipse.jetty.embedded.HelloServlet</Arg>
+      <Arg>/</Arg>
+    </Call>
+  </New-->
+ 
+  <!-- Set name="handler">
+    <New class="org.eclipse.jetty.server.handler.HandlerCollection">
+      <Set name="handlers">
+        <Array type="org.eclipse.jetty.server.Handler">
+          <Item>
+            <Ref refid="context" />
+          </Item>
+          <Item>
+              <New id="Contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection" />
+          </Item>
+          <Item>
+            <New class="org.eclipse.jetty.server.handler.DefaultHandler" />
+          </Item>
+        </Array>
+      </Set>
+    </New>
+  </Set-->
+  
+  <!--
+  <Set name="handler">
+  <New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+	<Set name="handlers">
+	 <Array type="org.eclipse.jetty.server.Handler">
+	  <Item>
+		<New class="org.eclipse.jetty.server.handler.ContextHandler">
+			  <Set name="contextPath">/resource</Set>
+			  <Set name="handler">
+				  <New class="org.eclipse.jetty.server.handler.ResourceHandler">
+					  <Set name="directoriesListed">true</Set>
+					  <Set name="resourceBase">/WEB-INF/classes/</Set>
+				  </New>
+			  </Set>
+		</New>
+	  </Item>
+	   <Item>
+		 <New id="Contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection"/>
+	   </Item>
+	   <Item>
+		 <New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler"/>
+	   </Item>
+	  
+	 </Array>
+	</Set>
+  </New>
+ </Set>-->
+
+  
+  
+  <Set name="handler">
+        <New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+            <Set name="handlers">
+                <Array type="org.eclipse.jetty.server.Handler">
+                    <Item>
+                        <New id="Contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection"/>
+	              
+                        
+                    </Item>
+                    <Item>
+                        <New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler" />
+                    </Item>
+                </Array>
+            </Set>
+        </New>
+    </Set>
+</Configure>

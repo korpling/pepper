@@ -108,20 +108,14 @@
           <instructions>
             <Bundle-SymbolicName>pepper-RESTService</Bundle-SymbolicName>    
             <Import-Package>
-             org.glassfish.jersey.servlet, *
-            </Import-Package>        
-            <!--Import-Package>
-              javax.ws.rs.*,
-              com.sun.jersey.api.core,
-              com.sun.jersey.spi.container.servlet,
-              org.glassfish.jersey.servlet,
-              org.osgi.framework,
-              com.eclipsesource.jaxrs.provider.multipart,*
-              
-            </Import-Package--><!--  org.glassfish.jersey.servlet, com.sun.jersey.spi.container.servlet, com.sun.jersey.api.core, jersey.repackaged.com.google.common.base, *  -->
-            <Bundle-Activator>de.hu_berlin.german.korpling.saltnpepper.pepper.service.Activator</Bundle-Activator>                        
-            <!--Web-ContextPath>/myresource</Web-ContextPath>
-            <Webapp-Context>myresource</Webapp-Context-->
+             org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
+            </Import-Package>                
+            <Export-Package>            
+            de.hu_berlin.german.korpling.saltnpepper.pepper.service
+            </Export-Package>            
+            <Bundle-Activator>de.hu_berlin.german.korpling.saltnpepper.pepper.service.osgi.Activator</Bundle-Activator>                        
+            <Web-ContextPath>/resource</Web-ContextPath>
+            <Webapp-Context>resource</Webapp-Context>
             <_wab>src/main/webapp</_wab>
           </instructions>
         </configuration>
