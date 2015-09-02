@@ -15,6 +15,9 @@
 		<artifactId>pepperModules-ToolboxModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-ModuleBox</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-ElanModules</artifactId>
 		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
 	</pepperModules>
