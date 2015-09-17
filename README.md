@@ -18,4 +18,4 @@
 * Code: https://github.com/korpling/pepper
 * Bug and issue tracking: https://github.com/korpling/pepper/issues
 
-![](http://korpling.github.io/pepper/images/pepper_weapon.jpg)
+![](./gh-site/img/pepper_weapon.jpg)
