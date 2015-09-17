@@ -18,4 +18,4 @@
 * Code: https://github.com/korpling/pepper
 * Bug and issue tracking: https://github.com/korpling/pepper/issues
 
-![](./gh-site/img/pepper_weapon.jpg)
+<img width="50%" alt="Pepper is your weapon to fight the format monster" src="./gh-site/img/pepper_weapon.jpg"/>
