@@ -17,5 +17,6 @@
 * Homepage: http://annis-tools.org/pepper
 * Code: https://github.com/korpling/pepper
 * Bug and issue tracking: https://github.com/korpling/pepper/issues
-
+<p align="center">
 <img width="50%" alt="Pepper is your weapon to fight the format monster" src="./gh-site/img/pepper_weapon.jpg"/>
+</p>
