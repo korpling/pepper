@@ -241,29 +241,33 @@ public class PepperConfiguration extends Properties {
 							break;
 						}
 					}
-					if (location.endsWith(".jar")) {
-						location = location.replace(".jar", "/");
-					} else {
-						if (!location.endsWith("/")) {
-							location = location + "/";
-						}
-						location = location + SOURCES_RESOURCES;
+					if (location != null) {
+						if (location.endsWith(".jar")) {
+							location = location.replace(".jar", "/");
+						} else {
+							if (!location.endsWith("/")) {
+								location = location + "/";
+							}
+							location = location + SOURCES_RESOURCES;
 
-					}
-					configFileStr = location;
-					if (configFileStr.startsWith("file:")) {
-						configFileStr = configFileStr.replace("file:", "");
-					}
-					File confFile = new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
-					if (!confFile.exists()) {
-						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
-					} else {
-						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE;
+						}
+						configFileStr = location;
+						if (configFileStr.startsWith("file:")) {
+							configFileStr = configFileStr.replace("file:", "");
+						}
+						File confFile = new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
+						if (!confFile.exists()) {
+							configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
+						} else {
+							configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE;
+						}
 					}
 				}
 			}
 		}
-		load(new File(configFileStr));
+		if (configFileStr != null) {
+			load(new File(configFileStr));
+		}
 	}
 
 	/** folder containing the configuration file(s) **/
