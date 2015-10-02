@@ -22,7 +22,6 @@ import org.junit.Before;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DOTManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
 
 public class DOTManipulatorTest extends PepperManipulatorTest {
 

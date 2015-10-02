@@ -34,10 +34,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperTestExce
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.FileComparator;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * This class is an abstract helper class to create own test classes for any
@@ -65,8 +64,8 @@ public abstract class PepperModuleTest {
 		if (resourceURI != null) {
 			getFixture().setResources(resourceURI);
 		}
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
-		getFixture().getSaltProject().getSCorpusGraphs().add(SaltFactory.eINSTANCE.createSCorpusGraph());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
+		getFixture().getSaltProject().getCorpusGraphs().add(SaltFactory.createSCorpusGraph());
 
 	}
 
@@ -188,7 +187,7 @@ public abstract class PepperModuleTest {
 
 	@Test
 	public void testSetGetCorpusGraph() {
-		SCorpusGraph corpGraph = SaltCommonFactory.eINSTANCE.createSCorpusGraph();
+		SCorpusGraph corpGraph = SaltFactory.createSCorpusGraph();
 		this.getFixture().setSCorpusGraph(corpGraph);
 		assertEquals(corpGraph, this.getFixture().getSCorpusGraph());
 	}

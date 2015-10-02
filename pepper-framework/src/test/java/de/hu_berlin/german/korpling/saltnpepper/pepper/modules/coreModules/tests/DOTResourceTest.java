@@ -24,8 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
+import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 public class DOTResourceTest extends TestCase {
 	private SaltProject fixture = null;

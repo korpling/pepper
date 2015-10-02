@@ -42,10 +42,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DoNothingExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DoNothingImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleTestException;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 /**
  * This class offers some static fields and methods for testing
@@ -210,7 +210,7 @@ public class PepperTestUtil {
 			}
 		}
 		if (saltProject == null) {
-			saltProject = SaltFactory.eINSTANCE.createSaltProject();
+			saltProject = SaltFactory.createSaltProject();
 			for (PepperModule fixture : fixtures) {
 				fixture.setSaltProject(saltProject);
 			}
@@ -247,8 +247,8 @@ public class PepperTestUtil {
 		}
 
 		/** Create and add alibi steps **/
-		if ((importers.size() == 0) || (importers.size() != saltProject.getSCorpusGraphs().size())) {
-			for (SCorpusGraph cGraph : saltProject.getSCorpusGraphs()) {
+		if ((importers.size() == 0) || (importers.size() != saltProject.getCorpusGraphs().size())) {
+			for (SCorpusGraph cGraph : saltProject.getCorpusGraphs()) {
 				boolean isAssociated = false;
 				for (PepperModule fixture : fixtures) {
 					if (fixture.getSCorpusGraph() == cGraph) {
