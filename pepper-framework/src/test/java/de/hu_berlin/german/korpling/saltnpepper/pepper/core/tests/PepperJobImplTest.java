@@ -427,7 +427,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		// create three corpus graphs
-		getFixture().getSaltProject().getCorpusGraphs().add(SampleGenerator.createCorpusStructure());
+		getFixture().getSaltProject().addCorpusGraph(SampleGenerator.createCorpusStructure());
 
 		Vector<Identifier> primitiveOrder = new Vector<Identifier>();
 		for (SDocument sDocument : getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments()) {

@@ -65,7 +65,7 @@ public abstract class PepperModuleTest {
 			getFixture().setResources(resourceURI);
 		}
 		getFixture().setSaltProject(SaltFactory.createSaltProject());
-		getFixture().getSaltProject().getCorpusGraphs().add(SaltFactory.createSCorpusGraph());
+		getFixture().getSaltProject().addCorpusGraph(SaltFactory.createSCorpusGraph());
 
 	}
 
