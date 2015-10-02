@@ -40,9 +40,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
+import de.hu_berlin.u.saltnpepper.graph.Relation;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.core.SNode;
+import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
 
 /**
  * An object of this types contains a {@link PepperModule} and handles as a
@@ -247,10 +249,10 @@ public class ModuleControllerImpl implements ModuleController {
 	 * 
 	 * @see
 	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getSCorpusGraph()
+	 * #getCorpusGraph()
 	 */
 	@Override
-	public SCorpusGraph getSCorpusGraph() {
+	public SCorpusGraph getCorpusGraph() {
 		return (sCorpusGraph);
 	}
 
@@ -308,7 +310,7 @@ public class ModuleControllerImpl implements ModuleController {
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			Runnable task = new Runnable() {
 				public void run() {
-					((PepperImporter) getPepperModule()).importCorpusStructure(getSCorpusGraph());
+					((PepperImporter) getPepperModule()).importCorpusStructure(getCorpusGraph());
 					mLogger.debug("[{}] corpus structure imported. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
 				}
 			};
@@ -373,19 +375,19 @@ public class ModuleControllerImpl implements ModuleController {
 		}
 	}
 
-	/** {@inheritDoc PepperModule#before(SElementId)} */
+	/** {@inheritDoc PepperModule#before(Identifier)} */
 	private void before() throws PepperModuleException {
 		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH) != null) {
 			boolean isReport = Boolean.parseBoolean(getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
-			if (isReport && getSCorpusGraph() != null) {
-				List<SNode> roots = getSCorpusGraph().getSRoots();
+			if (isReport && getCorpusGraph() != null) {
+				List<SNode> roots = getCorpusGraph().getRoots();
 				if (roots != null) {
 					StringBuilder str = new StringBuilder();
 					str.append("corpus structure imported by ");
 					str.append(getPepperModule().getName());
 					for (SNode root : roots) {
 						str.append(":\n");
-						str.append(getPepperModule().getSaltProject().getSCorpusGraphs().indexOf(((SCorpus) root).getSCorpusGraph()));
+						str.append(getPepperModule().getSaltProject().getCorpusGraphs().indexOf(((SCorpus) root).getGraph()));
 						str.append("\n");
 						str.append(reportCorpusStructure(root, "", true));
 					}
@@ -395,7 +397,7 @@ public class ModuleControllerImpl implements ModuleController {
 		}
 	}
 
-	/** {@inheritDoc PepperModule#after(SElementId)} */
+	/** {@inheritDoc PepperModule#after(Identifier)} */
 	private void after() throws PepperModuleException {
 		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES) != null) {
 			// copies resources as files from source to target
@@ -408,12 +410,12 @@ public class ModuleControllerImpl implements ModuleController {
 	protected String reportCorpusStructure(SNode node, String prefix, boolean isTail) {
 		StringBuilder retStr = new StringBuilder();
 		retStr.append(prefix);
-		retStr.append(((isTail ? "└── " : "├── ") + node.getSName()));
+		retStr.append(((isTail ? "└── " : "├── ") + node.getName()));
 		retStr.append("\n");
-		List<Edge> outEdges = getSCorpusGraph().getOutEdges(node.getSId());
+		List<SRelation<SNode, SNode>> outRelations = getCorpusGraph().getOutRelations(node.getId());
 		int i = 0;
-		for (Edge out : outEdges) {
-			if (i < outEdges.size() - 1) {
+		for (Relation out : outRelations) {
+			if (i < outRelations.size() - 1) {
 				retStr.append(prefix);
 				retStr.append(reportCorpusStructure((SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), false));
 			} else {
@@ -569,7 +571,7 @@ public class ModuleControllerImpl implements ModuleController {
 			documentController.updateStatus(this, DOCUMENT_STATUS.IN_PROGRESS);
 			// puts the current element in list of not pipelined orders
 			getControllList().add(documentController);
-			if (documentController.getSDocument() == null)
+			if (documentController.getDocument() == null)
 				throw new PepperFWException("The current documentController to '" + documentController.getGlobalId() + "' contains no document.");
 		}
 		return (documentController);
@@ -604,7 +606,7 @@ public class ModuleControllerImpl implements ModuleController {
 		if (!getControllList().contains(documentController)){
 			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because the passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
 		}
-		if (documentController.getSDocument() == null){
+		if (documentController.getDocument() == null){
 			throw new PepperFWException("Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
 		}
 		documentController.updateStatus(this, DOCUMENT_STATUS.COMPLETED);

@@ -56,7 +56,7 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
 
 		setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
-		setSDocumentEnding(ENDING_TXT);
+		setDocumentEnding(ENDING_TXT);
 
 	}
 
@@ -68,15 +68,15 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				if (getSDocument() != null && getResourceURI() != null) {
-					for (STextualDS text : getSDocument().getSDocumentGraph().getSTextualDSs()) {
+				if (getDocument() != null && getResourceURI() != null) {
+					for (STextualDS text : getDocument().getDocumentGraph().getTextualDSs()) {
 						File outFile = null;
 						String uriStr = getResourceURI().toFileString();
 
 						if (uriStr == null) {
 							uriStr = getResourceURI().toString();
 						}
-						if (getSDocument().getSDocumentGraph().getSTextualDSs().size() > 1) {
+						if (getDocument().getDocumentGraph().getTextualDSs().size() > 1) {
 							String extension = "." + getResourceURI().fileExtension();
 							int pos = uriStr.lastIndexOf(extension);
 							uriStr = uriStr.substring(0, pos) + "_" + text.getSElementPath().fragment() + extension;
@@ -89,7 +89,7 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 							throw new PepperModuleException(this, "Cannot write primary text '" + text.getSElementId() + "' to file '" + outFile.getAbsolutePath() + "'. ", e);
 						}
 						if (out != null) {
-							out.print(text.getSText());
+							out.print(text.getText());
 							out.flush();
 							out.close();
 						}

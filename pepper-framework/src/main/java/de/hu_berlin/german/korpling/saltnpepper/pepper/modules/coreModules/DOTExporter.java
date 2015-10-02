@@ -46,13 +46,13 @@ public class DOTExporter extends PepperExporterImpl {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				// workaround to deal with a bug in salt
-				SCorpusGraph sCorpusGraph = getSDocument().getSCorpusGraph();
+				SCorpusGraph sCorpusGraph = getDocument().getCorpusGraph();
 
-				SaltFactory.eINSTANCE.save_DOT(getSDocument(), getResourceURI());
+				SaltFactory.save_DOT(getDocument(), getResourceURI());
 
 				// workaround to deal with a bug in salt
-				if (getSDocument().getSCorpusGraph() == null) {
-					getSDocument().setSCorpusGraph(sCorpusGraph);
+				if (getDocument().getCorpusGraph() == null) {
+					getDocument().setCorpusGraph(sCorpusGraph);
 				}
 
 				addProgress(1.0);
@@ -63,10 +63,10 @@ public class DOTExporter extends PepperExporterImpl {
 				// this is a workaround, it would be easier to use
 				// exportCorpusStructure(SCorpusGraph corpusGraph), but because
 				// of a strange bug, this doesn't work
-				List<Node> roots = getSCorpus().getSCorpusGraph().getRoots();
+				List<Node> roots = getCorpus().getCorpusGraph().getRoots();
 				if ((roots != null) && (!roots.isEmpty())) {
-					if (getSCorpus().equals(roots.get(0))) {
-						SaltFactory.eINSTANCE.save_DOT(getSCorpus().getSCorpusGraph(), getCorpusDesc().getCorpusPath());
+					if (getCorpus().equals(roots.get(0))) {
+						SaltFactory.save_DOT(getCorpus().getCorpusGraph(), getCorpusDesc().getCorpusPath());
 					}
 				}
 

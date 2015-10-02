@@ -70,7 +70,7 @@ public interface PepperMapper {
 	 * 
 	 * @return {@link SDocument} object to be mapped
 	 */
-	public SDocument getSDocument();
+	public SDocument getDocument();
 
 	/**
 	 * Returns a list of all subjects ({@link SDocument} or {@link SCorpus}) to
@@ -86,14 +86,14 @@ public interface PepperMapper {
 	 * @param sDocument
 	 *            {@link SDocument} object to be mapped
 	 */
-	public void setSDocument(SDocument sDocument);
+	public void setDocument(SDocument sDocument);
 
 	/**
 	 * Returns the {@link SCorpus} object to be mapped by this mapper.
 	 * 
 	 * @return {@link SCorpus} object to be mapped
 	 */
-	public SCorpus getSCorpus();
+	public SCorpus getCorpus();
 
 	/**
 	 * Sets the {@link SCorpus} object to be mapped by this mapper.
@@ -101,7 +101,7 @@ public interface PepperMapper {
 	 * @param sCorpus
 	 *            {@link SCorpus} object to be mapped
 	 */
-	public void setSCorpus(SCorpus sCorpus);
+	public void setCorpus(SCorpus sCorpus);
 
 	/**
 	 * Returns the {@link PepperModuleProperties} object containing user

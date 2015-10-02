@@ -121,7 +121,7 @@ public interface ModuleController {
 	 * 
 	 * @return
 	 */
-	public SCorpusGraph getSCorpusGraph();
+	public SCorpusGraph getCorpusGraph();
 
 	/**
 	 * Starts the import of corpus structure via the set {@link PepperImporter}

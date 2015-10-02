@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
@@ -50,28 +51,28 @@ public class MappingSubject {
 	}
 
 	/**
-	 * {@link SElementId} object corresponding to either {@link SDocument} or
+	 * {@link Identifier} object corresponding to either {@link SDocument} or
 	 * {@link SCorpus} which should be mapped
 	 **/
-	protected SElementId sElementId = null;
+	protected Identifier sElementId = null;
 
 	/**
-	 * Returns {@link SElementId} object corresponding to either
+	 * Returns {@link Identifier} object corresponding to either
 	 * {@link SDocument} or {@link SCorpus} which should be mapped
 	 * 
 	 * @return
 	 */
-	public SElementId getSElementId() {
+	public Identifier getIdentifier() {
 		return sElementId;
 	}
 
 	/**
-	 * Sets {@link SElementId} object corresponding to either {@link SDocument}
+	 * Sets {@link Identifier} object corresponding to either {@link SDocument}
 	 * or {@link SCorpus} which should be mapped
 	 * 
 	 * @param sElementId
 	 */
-	public void setSElementId(SElementId sElementId) {
+	public void setIdentifier(Identifier sElementId) {
 		this.sElementId = sElementId;
 	}
 
@@ -89,14 +90,14 @@ public class MappingSubject {
 	}
 
 	/**
-	 * If the set {@link SElementId} belongs to a {@link SDocument}, this is
+	 * If the set {@link Identifier} belongs to a {@link SDocument}, this is
 	 * it's controller.
 	 **/
 	private DocumentController documentController = null;
 
 	/**
 	 * Returns the document controller, if one was set. This is useful in case
-	 * the set {@link SElementId} belongs to a {@link SDocument}.
+	 * the set {@link Identifier} belongs to a {@link SDocument}.
 	 * 
 	 * @return the controller for the {@link SDocument}
 	 */
@@ -105,7 +106,7 @@ public class MappingSubject {
 	}
 
 	/**
-	 * If the set {@link SElementId} belongs to a {@link SDocument}, it's
+	 * If the set {@link Identifier} belongs to a {@link SDocument}, it's
 	 * controller can be passed with this method.
 	 * 
 	 * @param documentController
@@ -121,12 +122,12 @@ public class MappingSubject {
 	 */
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		String globalId = SaltFactory.eINSTANCE.getGlobalId(getSElementId());
+		String globalId = SaltFactory.getGlobalId(getIdentifier());
 		builder.append("(");
 		if (globalId != null) {
 			builder.append(globalId);
 		} else
-			builder.append(getSElementId().toString());
+			builder.append(getIdentifier().toString());
 		builder.append(", ");
 		builder.append(getResourceURI());
 		builder.append(", ");

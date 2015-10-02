@@ -52,7 +52,7 @@ public class DOTManipulator extends PepperManipulatorImpl {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				Salt2DOT salt2Dot = new Salt2DOT();
-				salt2Dot.salt2Dot(getSDocument().getSElementId(), getResourceURI());
+				salt2Dot.salt2Dot(getDocument().getSElementId(), getResourceURI());
 				addProgress(1.0);
 				return (DOCUMENT_STATUS.COMPLETED);
 			}

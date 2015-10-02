@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 import java.util.List;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
@@ -88,21 +89,21 @@ public interface PepperMapperController extends Runnable {
 	public List<MappingSubject> getMappingSubjects();
 
 	/**
-	 * Returns {@link SElementId} object of the {@link SCorpus} or
+	 * Returns {@link Identifier} object of the {@link SCorpus} or
 	 * {@link SDocument} object, which is contained by containing
 	 * {@link PepperMapper}.
 	 * 
 	 * @return
 	 */
-	public SElementId getSElementId();
+	public Identifier getIdentifier();
 
 	/**
-	 * Set {@link SElementId} object of the {@link SCorpus} or {@link SDocument}
+	 * Set {@link Identifier} object of the {@link SCorpus} or {@link SDocument}
 	 * object, which is contained by containing {@link PepperMapper}.
 	 * 
 	 * @param sElementId
 	 */
-	public void setSElementId(SElementId sElementId);
+	public void setIdentifier(Identifier sElementId);
 
 	/**
 	 * This method is invoked by the containing {@link PepperModule} object, to
@@ -119,8 +120,8 @@ public interface PepperMapperController extends Runnable {
 
 	/**
 	 * This method starts the {@link PepperMapper} object. If
-	 * {@link #getSCorpus()} is not null, {@link #mapSCorpus()} is called, if
-	 * {@link #getSDocument()} is not null, {@link #mapSDocument()} is called.
+	 * {@link #getCorpus()} is not null, {@link #mapSCorpus()} is called, if
+	 * {@link #getDocument()} is not null, {@link #mapSDocument()} is called.
 	 */
 	public void map();
 

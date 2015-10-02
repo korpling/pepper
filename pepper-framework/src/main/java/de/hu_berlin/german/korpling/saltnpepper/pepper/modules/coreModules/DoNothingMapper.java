@@ -23,7 +23,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapper
 
 public class DoNothingMapper extends PepperMapperImpl implements PepperMapper {
 	/**
-	 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
+	 * {@inheritDoc PepperMapper#setDocument(SDocument)}
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 	 */

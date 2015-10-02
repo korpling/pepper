@@ -92,24 +92,24 @@ public class PepperMapperImpl implements PepperMapper {
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#getSDocument()}
+	 * {@inheritDoc PepperMapper#getDocument()}
 	 */
 	@Override
-	public SDocument getSDocument() {
+	public SDocument getDocument() {
 		SDocument retVal = null;
 		if (getMappingSubjects().size() > 0) {
-			if ((getMappingSubjects().get(0).getSElementId() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() instanceof SDocument)) {
-				retVal = (SDocument) getMappingSubjects().get(0).getSElementId().getSIdentifiableElement();
+			if ((getMappingSubjects().get(0).getIdentifier() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() instanceof SDocument)) {
+				retVal = (SDocument) getMappingSubjects().get(0).getIdentifier().getIdentifiableElement();
 			}
 		}
 		return (retVal);
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
+	 * {@inheritDoc PepperMapper#setDocument(SDocument)}
 	 */
 	@Override
-	public void setSDocument(SDocument sDocument) {
+	public void setDocument(SDocument sDocument) {
 
 		MappingSubject subj = null;
 		if (getMappingSubjects().size() < 1) {
@@ -118,30 +118,30 @@ public class PepperMapperImpl implements PepperMapper {
 		} else {
 			subj = getMappingSubjects().get(0);
 		}
-		if (sDocument.getSElementId() == null) {
-			sDocument.setSElementId(SaltFactory.eINSTANCE.createSElementId());
+		if (sDocument.getIdentifier() == null) {
+			sDocument.setIdentifier(SaltFactory.createIdentifier());
 		}
-		subj.setSElementId(sDocument.getSElementId());
+		subj.setIdentifier(sDocument.getIdentifier());
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#getSCorpus()}
+	 * {@inheritDoc PepperMapper#getCorpus()}
 	 */
 	@Override
-	public SCorpus getSCorpus() {
+	public SCorpus getCorpus() {
 		SCorpus retVal = null;
 		if (getMappingSubjects().size() > 0) {
-			if ((getMappingSubjects().get(0).getSElementId() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() != null) && (getMappingSubjects().get(0).getSElementId().getSIdentifiableElement() instanceof SCorpus)) {
-				retVal = (SCorpus) getMappingSubjects().get(0).getSElementId().getSIdentifiableElement();
+			if ((getMappingSubjects().get(0).getIdentifier() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() instanceof SCorpus)) {
+				retVal = (SCorpus) getMappingSubjects().get(0).getIdentifier().getIdentifiableElement();
 			}
 		}
 		return (retVal);
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setSCorpus(SCorpus)}
+	 * {@inheritDoc PepperMapper#setCorpus(SCorpus)}
 	 */
-	public void setSCorpus(SCorpus sCorpus) {
+	public void setCorpus(SCorpus sCorpus) {
 		MappingSubject subj = null;
 		if (getMappingSubjects().size() < 1) {
 			subj = new MappingSubject();
@@ -149,9 +149,9 @@ public class PepperMapperImpl implements PepperMapper {
 		} else {
 			subj = getMappingSubjects().get(0);
 		}
-		if (sCorpus.getSElementId() == null)
+		if (sCorpus.getIdentifier() == null)
 			throw new PepperModuleException(this, "Cannot set 'SCorpus'.");
-		subj.setSElementId(sCorpus.getSElementId());
+		subj.setIdentifier(sCorpus.getIdentifier());
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class PepperMapperImpl implements PepperMapper {
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
+	 * {@inheritDoc PepperMapper#setDocument(SDocument)}
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 	 */
@@ -217,7 +217,7 @@ public class PepperMapperImpl implements PepperMapper {
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setSCorpus(SCorpus)}
+	 * {@inheritDoc PepperMapper#setCorpus(SCorpus)}
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 	 */

@@ -59,11 +59,14 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
+import de.hu_berlin.u.saltnpepper.graph.IdentifiableElement;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
+import de.hu_berlin.u.saltnpepper.salt.core.SAnnotationContainer;
 import de.hu_berlin.u.saltnpepper.salt.core.SLayer;
 import de.hu_berlin.u.saltnpepper.salt.core.SNode;
 import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
@@ -432,23 +435,23 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	protected SCorpusGraph sCorpusGraph = null;
 
 	/**
-	 * {@inheritDoc PepperModule#getSCorpusGraph()}
+	 * {@inheritDoc PepperModule#getCorpusGraph()}
 	 */
-	public SCorpusGraph getSCorpusGraph() {
+	public SCorpusGraph getCorpusGraph() {
 		return sCorpusGraph;
 	}
 
 	/**
-	 * {@inheritDoc PepperModule#setSCorpusGraph(SCorpusGraph)}
+	 * {@inheritDoc PepperModule#setCorpusGraph(SCorpusGraph)}
 	 */
-	public void setSCorpusGraph(SCorpusGraph newSCorpusGraph) {
+	public void setCorpusGraph(SCorpusGraph newSCorpusGraph) {
 		sCorpusGraph = newSCorpusGraph;
 	}
 
 	/**
 	 * A threadsafe map of all {@link PepperMapperController} objects which are
 	 * connected with a started {@link PepperMapper} corresponding to their
-	 * {@link SElementId}.
+	 * {@link Identifier}.
 	 */
 	private Map<String, PepperMapperController> mappersControllers = null;
 
@@ -518,19 +521,19 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 	// ========================== end: extract corpus-path
 	/**
-	 * an internal flag, to check if {@link #start(SElementId)} has been
+	 * an internal flag, to check if {@link #start(Identifier)} has been
 	 * overridden or not. For downwards compatibility to modules implemented
 	 * with < pepper 1.1.6
 	 **/
 	private boolean isStartOverridden = true;
 	/**
-	 * A map relating {@link SElementId} belonging to {@link SDocument} objects
+	 * A map relating {@link Identifier} belonging to {@link SDocument} objects
 	 * to their {@link DocumentController} container.
 	 **/
 	private Map<String, DocumentController> documentId2DC = null;
 
 	/**
-	 * Returns the map relating {@link SElementId} belonging to
+	 * Returns the map relating {@link Identifier} belonging to
 	 * {@link SDocument} objects to their {@link DocumentController} container.
 	 * 
 	 * @return map
@@ -557,7 +560,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		// creating new thread group for mapper threads
 		mapperThreadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup(), this.getName() + "_mapperGroup");
 		boolean isStart = true;
-		SElementId sElementId = null;
+		Identifier sElementId = null;
 		DocumentController documentController = null;
 		while ((isStart) || (sElementId != null)) {
 			isStart = false;
@@ -566,7 +569,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				break;
 			}
 			sElementId = documentController.getsDocumentId();
-			getDocumentId2DC().put(SaltFactory.eINSTANCE.getGlobalId(sElementId), documentController);
+			getDocumentId2DC().put(SaltFactory.getGlobalId(sElementId), documentController);
 			// call for using push-method
 			try {
 				// start mapping
@@ -635,11 +638,11 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void done(SElementId sElementId, DOCUMENT_STATUS result) {
+	public void done(Identifier sElementId, DOCUMENT_STATUS result) {
 		if (sElementId.getIdentifiableElement() instanceof SDocument) {
-			DocumentController docController = getDocumentId2DC().get(SaltFactory.eINSTANCE.getGlobalId(sElementId));
+			DocumentController docController = getDocumentId2DC().get(SaltFactory.getGlobalId(sElementId));
 			if (docController == null) {
-				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.eINSTANCE.getGlobalId(sElementId) + "' to pass status '" + result + "'. Controllers are listed for the following SElementId objects: " + getDocumentId2DC() + ". ");
+				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.getGlobalId(sElementId) + "' to pass status '" + result + "'. Controllers are listed for the following Identifier objects: " + getDocumentId2DC() + ". ");
 			}
 			if (DOCUMENT_STATUS.DELETED.equals(result)) {
 				this.getModuleController().delete(docController);
@@ -649,7 +652,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				logger.error("Cannot map '" + sElementId + "' with module '" + this.getName() + "', because of a mapping result was '" + DOCUMENT_STATUS.FAILED + "'.");
 				this.getModuleController().delete(docController);
 			} else
-				throw new PepperModuleException(this, "Cannot notify pepper framework for process of SElementId '" + sElementId.getSId() + "', because the mapping result was '" + result + "', and only '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.FAILED + "' and '" + DOCUMENT_STATUS.DELETED + "' is permitted.");
+				throw new PepperModuleException(this, "Cannot notify pepper framework for process of Identifier '" + sElementId.getId() + "', because the mapping result was '" + result + "', and only '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.FAILED + "' and '" + DOCUMENT_STATUS.DELETED + "' is permitted.");
 		}
 	}
 
@@ -662,17 +665,17 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			throw new PepperFWException("This might be a bug of Pepper framework. The given PepperMapperController is null in methode done().");
 		if (controller.getMappingSubjects() != null) {
 			for (MappingSubject subject : controller.getMappingSubjects()) {
-				String globalId = SaltFactory.eINSTANCE.getGlobalId(subject.getSElementId());
+				String globalId = SaltFactory.getGlobalId(subject.getIdentifier());
 				DOCUMENT_STATUS result = null;
 				if (!getMappedIds().contains(globalId)) {
 					// only if framework has not already been notified
-					this.getMappedIds().add(SaltFactory.eINSTANCE.getGlobalId(subject.getSElementId()));
+					this.getMappedIds().add(SaltFactory.getGlobalId(subject.getIdentifier()));
 					try {
 						result = subject.getMappingResult();
 					} catch (Exception e) {
 						result = DOCUMENT_STATUS.FAILED;
 					}
-					this.done(subject.getSElementId(), result);
+					this.done(subject.getIdentifier(), result);
 				}
 			}
 		}
@@ -687,7 +690,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 *            the id value for the current document or corpus to process
 	 */
 	@Override
-	public void start(SElementId sElementId) throws PepperModuleException {
+	public void start(Identifier sElementId) throws PepperModuleException {
 		// for downwards compatibility to modules implemented with < pepper
 		// 1.1.6
 		isStartOverridden = false;
@@ -698,45 +701,45 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		corporaToEnd = new Vector<SCorpus>();
 		// copy the list before iterating over it (the original one might get
 		// modified)
-		List<SCorpusGraph> corpGraphs = new LinkedList<>(this.getSaltProject().getSCorpusGraphs());
+		List<SCorpusGraph> corpGraphs = new LinkedList<>(this.getSaltProject().getCorpusGraphs());
 		for (SCorpusGraph sCorpusGraph : corpGraphs) {
 			if (sCorpusGraph != null) {
 				if (MODULE_TYPE.IMPORTER.equals(getModuleType())) {
 					boolean belongsToSetCorpusGraph = false;
-					if ((sCorpusGraph.getSElementId() != null) && (((PepperImporter) this).getSCorpusGraph() != null) && (((PepperImporter) this).getSCorpusGraph().getSElementId() != null)) {
-						if (sCorpusGraph.getSElementId().equals(((PepperImporter) this).getSCorpusGraph().getSElementId())) {
+					if ((sCorpusGraph.getIdentifier() != null) && (((PepperImporter) this).getCorpusGraph() != null) && (((PepperImporter) this).getCorpusGraph().getIdentifier() != null)) {
+						if (sCorpusGraph.getIdentifier().equals(((PepperImporter) this).getCorpusGraph().getIdentifier())) {
 							belongsToSetCorpusGraph = true;
 						}
 					} else {
-						if (sCorpusGraph.equals(((PepperImporter) this).getSCorpusGraph())) {
+						if (sCorpusGraph.equals(((PepperImporter) this).getCorpusGraph())) {
 							belongsToSetCorpusGraph = true;
 						}
 					}
 					// in case of module is an importer, only import corpora
 					// from set corpus graph
 					if (belongsToSetCorpusGraph) {
-						for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
+						for (SCorpus sCorpus : sCorpusGraph.getCorpora()) {
 							corporaToEnd.add(sCorpus);
 						}
 					}
 				} else {
 					// if module is not an importer, process all corpora
 
-					for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
+					for (SCorpus sCorpus : sCorpusGraph.getCorpora()) {
 						corporaToEnd.add(sCorpus);
 					}
 				}
 			}
 		}
 
-		if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null) && ((sElementId.getSIdentifiableElement() instanceof SDocument) || ((sElementId.getSIdentifiableElement() instanceof SCorpus)))) {
+		if ((sElementId != null) && (sElementId.getIdentifiableElement() != null) && ((sElementId.getIdentifiableElement() instanceof SDocument) || ((sElementId.getIdentifiableElement() instanceof SCorpus)))) {
 			// only if given sElementId belongs to an object of type SDocument
 			// or SCorpus
-			PepperMapperController controller = new PepperMapperControllerImpl(mapperThreadGroup, this.getName() + "_mapper(" + sElementId.getSId() + ")");
+			PepperMapperController controller = new PepperMapperControllerImpl(mapperThreadGroup, this.getName() + "_mapper(" + sElementId.getId() + ")");
 
-			String id = sElementId.getSId();
-			if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-				id = SaltFactory.eINSTANCE.getGlobalId(sElementId);
+			String id = sElementId.getId();
+			if (sElementId.getIdentifiableElement() instanceof SDocument) {
+				id = SaltFactory.getGlobalId(sElementId);
 			}
 			this.getMapperControllers().put(id, controller);
 			controller.setUncaughtExceptionHandler(this);
@@ -747,15 +750,15 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 			if (this instanceof PepperImporter) {
 				if (mapper.getResourceURI() == null) {
-					URI resource = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
+					URI resource = ((PepperImporter) this).getIdentifier2ResourceTable().get(sElementId);
 					mapper.setResourceURI(resource);
 				}
 			}
 
-			if ((sElementId.getSIdentifiableElement() instanceof SDocument) && (mapper.getSDocument() == null)) {
-				mapper.setSDocument((SDocument) sElementId.getSIdentifiableElement());
-			} else if ((sElementId.getSIdentifiableElement() instanceof SCorpus) && (mapper.getSCorpus() == null)) {
-				mapper.setSCorpus((SCorpus) sElementId.getSIdentifiableElement());
+			if ((sElementId.getIdentifiableElement() instanceof SDocument) && (mapper.getDocument() == null)) {
+				mapper.setDocument((SDocument) sElementId.getIdentifiableElement());
+			} else if ((sElementId.getIdentifiableElement() instanceof SCorpus) && (mapper.getCorpus() == null)) {
+				mapper.setCorpus((SCorpus) sElementId.getIdentifiableElement());
 			}
 
 			controller.setPepperMapper(mapper);
@@ -768,9 +771,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
-	 * {@inheritDoc PepperModule#createPepperMapper(SElementId)}
+	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '" + this.getName() + "' has not been overridden. Please check that first.");
 	}
 
@@ -790,19 +793,19 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * @throws PepperModuleException
 	 */
 	@Override
-	public void before(SElementId sElementId) throws PepperModuleException {
+	public void before(Identifier sElementId) throws PepperModuleException {
 		if (getProperties() != null) {
 			if (getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER) != null) {
 				// add slayers after processing
 
-				if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
-					if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-						SDocument sDoc = (SDocument) sElementId.getSIdentifiableElement();
+				if ((sElementId != null) && (sElementId.getIdentifiableElement() != null)) {
+					if (sElementId.getIdentifiableElement() instanceof SDocument) {
+						SDocument sDoc = (SDocument) sElementId.getIdentifiableElement();
 
 						// add layers
 						String layers = (String) getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
 						addSLayers(sDoc, layers);
-					} else if (sElementId.getSIdentifiableElement() instanceof SCorpus) {
+					} else if (sElementId.getIdentifiableElement() instanceof SCorpus) {
 
 					}
 				}
@@ -831,17 +834,17 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * @throws PepperModuleException
 	 */
 	@Override
-	public void after(SElementId sElementId) throws PepperModuleException {
+	public void after(Identifier sElementId) throws PepperModuleException {
 		if (getProperties() != null) {
-			if ((sElementId != null) && (sElementId.getSIdentifiableElement() != null)) {
-				if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-					SDocument sDoc = (SDocument) sElementId.getSIdentifiableElement();
+			if ((sElementId != null) && (sElementId.getIdentifiableElement() != null)) {
+				if (sElementId.getIdentifiableElement() instanceof SDocument) {
+					SDocument sDoc = (SDocument) sElementId.getIdentifiableElement();
 					if (getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
 						// add slayers after processing
 						String layers = (String) getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
 						addSLayers(sDoc, layers);
 					}
-				} else if (sElementId.getSIdentifiableElement() instanceof SCorpus) {
+				} else if (sElementId.getIdentifiableElement() instanceof SCorpus) {
 
 				}
 			}
@@ -865,23 +868,23 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				for (String layer : layerArray) {
 					layer = layer.trim();
 					// create SLayer and add to document-structure
-					List<SLayer> sLayers = sDoc.getSDocumentGraph().getSLayerByName(layer);
+					List<SLayer> sLayers = sDoc.getDocumentGraph().getLayerByName(layer);
 					SLayer sLayer = null;
 					if ((sLayers != null) && (sLayers.size() > 0)) {
 						sLayer = sLayers.get(0);
 					}
 					if (sLayer == null) {
-						sLayer = SaltFactory.eINSTANCE.createSLayer();
-						sLayer.setSName(layer);
-						sDoc.getSDocumentGraph().addSLayer(sLayer);
+						sLayer = SaltFactory.createSLayer();
+						sLayer.setName(layer);
+						sDoc.getDocumentGraph().addLayer(sLayer);
 					}
 					// add all nodes to new layer
-					for (SNode sNode : sDoc.getSDocumentGraph().getSNodes()) {
-						sNode.getSLayers().add(sLayer);
+					for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
+						sNode.addLayer(sLayer);
 					}
 					// add all relations to new layer
-					for (SRelation sRel : sDoc.getSDocumentGraph().getSRelations()) {
-						sRel.getSLayers().add(sLayer);
+					for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
+						sRel.addLayer(sLayer);
 					}
 				}
 			}
@@ -890,19 +893,19 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 	/**
 	 * Loads meta data form a meta data file and adds them to the object
-	 * corresponding to the passed {@link SElementId}. The meta data file is
+	 * corresponding to the passed {@link Identifier}. The meta data file is
 	 * localized in the directory in case of the URI corresponding to passed
-	 * {@link SElementId} is a directory or (in case the corresponding URI
+	 * {@link Identifier} is a directory or (in case the corresponding URI
 	 * addresses a file) in the same directory as the resource corresponding to
-	 * the passed {@link SElementId}. The meta data file must have the ending
+	 * the passed {@link Identifier}. The meta data file must have the ending
 	 * passed in {@link PepperModuleProperties#PROP_BEFORE_READ_META}.
 	 * 
 	 * @param sElementId
 	 *            identifying the current object
 	 */
-	public void readMeta(SElementId sElementId) {
+	public void readMeta(Identifier sElementId) {
 		if (this instanceof PepperImporter) {
-			URI resourceURI = ((PepperImporter) this).getSElementId2ResourceTable().get(sElementId);
+			URI resourceURI = ((PepperImporter) this).getIdentifier2ResourceTable().get(sElementId);
 			Object endingObj = getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue();
 			if (endingObj != null) {
 				String ending = endingObj.toString().trim();
@@ -942,12 +945,12 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 							logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);
 						}
 						for (Object key : props.keySet()) {
-							SIdentifiableElement container = sElementId.getSIdentifiableElement();
-							if ((container != null) && (container instanceof SMetaAnnotatableElement)) {
-								if (!((SMetaAnnotatableElement) container).hasLabel(key.toString())) {
-									((SMetaAnnotatableElement) container).createSMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
+							IdentifiableElement container = sElementId.getIdentifiableElement();
+							if ((container != null) && (container instanceof SAnnotationContainer)) {
+								if (!((SAnnotationContainer) container).containsLabel(key.toString())) {
+									((SAnnotationContainer) container).createMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
 								} else {
-									logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + sElementId.getSId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
+									logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + sElementId.getId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
 								}
 							}
 						}
@@ -969,7 +972,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	private Collection<SCorpus> corporaToEnd = null;
 
 	/**
-	 * Calls method {@link #start(SElementId)} for every root {@link SCorpus} of
+	 * Calls method {@link #start(Identifier)} for every root {@link SCorpus} of
 	 * {@link SaltProject} object.
 	 */
 	@Override
@@ -978,12 +981,12 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		if (getSaltProject() == null) {
 			throw new PepperModuleException(this, "Error in method end() salt project was empty.");
 		}
-		if (getSaltProject().getSCorpusGraphs() == null) {
+		if (getSaltProject().getCorpusGraphs() == null) {
 			throw new PepperModuleException(this, "Error in method end() corpus graphs of salt project were empty.");
 		}
 		if (corporaToEnd != null) {
 			for (SCorpus sCorpus : corporaToEnd) {
-				this.start(sCorpus.getSElementId());
+				this.start(sCorpus.getIdentifier());
 			}
 		}
 	}
@@ -1052,8 +1055,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * {@inheritDoc PeppeprotectdrModule#proposeImportOrder()}
 	 */
 	@Override
-	public List<SElementId> proposeImportOrder(SCorpusGraph sCorpusGraph) {
-		return (new Vector<SElementId>());
+	public List<Identifier> proposeImportOrder(SCorpusGraph sCorpusGraph) {
+		return (new Vector<Identifier>());
 	}
 
 	/**

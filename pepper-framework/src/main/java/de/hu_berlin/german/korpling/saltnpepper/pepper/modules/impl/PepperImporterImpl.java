@@ -39,9 +39,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.util.SALT_TYPE;
 
 /**
  * <p>
@@ -147,10 +149,10 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 
 	/**
-	 * Stores {@link SElementId} objects corresponding to either a
+	 * Stores {@link Identifier} objects corresponding to either a
 	 * {@link SDocument} or a {@link SCorpus} object, which has been created
 	 * during the run of {@link #importCorpusStructure(SCorpusGraph)}.
-	 * Corresponding to the {@link SElementId} object this table stores the
+	 * Corresponding to the {@link Identifier} object this table stores the
 	 * resource from where the element shall be imported.<br/>
 	 * For instance:
 	 * <table>
@@ -173,15 +175,15 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * </table>
 	 * 
 	 */
-	private Map<SElementId, URI> sElementId2ResourceTable = null;
+	private Map<Identifier, URI> sElementId2ResourceTable = null;
 
 	/**
-	 * {@inheritDoc PepperImporter#getSElementId2ResourceTable()}
+	 * {@inheritDoc PepperImporter#getIdentifier2ResourceTable()}
 	 */
 	@Override
-	public synchronized Map<SElementId, URI> getSElementId2ResourceTable() {
+	public synchronized Map<Identifier, URI> getIdentifier2ResourceTable() {
 		if (sElementId2ResourceTable == null)
-			sElementId2ResourceTable = new Hashtable<SElementId, URI>();
+			sElementId2ResourceTable = new Hashtable<Identifier, URI>();
 		return sElementId2ResourceTable;
 	}
 
@@ -190,8 +192,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
-		this.setSCorpusGraph(corpusGraph);
-		if (this.getSCorpusGraph() == null) {
+		this.setCorpusGraph(corpusGraph);
+		if (this.getCorpusGraph() == null) {
 			throw new PepperModuleException(this, "Cannot start with importing corpus, because salt project isn't set.");
 		}
 		if (this.getCorpusDesc() == null) {
@@ -210,13 +212,13 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}
 		Boolean containsDocuments = importCorpusStructureRec(this.getCorpusDesc().getCorpusPath(), null);
 		if (logger.isDebugEnabled()) {
-			if (getSElementId2ResourceTable().size() > 0) {
+			if (getIdentifier2ResourceTable().size() > 0) {
 				StringBuilder str = new StringBuilder();
 				str.append("[");
 				str.append(getName());
 				str.append("]");
 				str.append(" import corpora and documents: \n");
-				for (URI uri : getSElementId2ResourceTable().values()) {
+				for (URI uri : getIdentifier2ResourceTable().values()) {
 					str.append("\t");
 					str.append(uri);
 					str.append("\n");
@@ -224,7 +226,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 				logger.debug(str.toString());
 			}
 		}
-		if (getSElementId2ResourceTable().size() == 0) {
+		if (getIdentifier2ResourceTable().size() == 0) {
 			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName(), this.getCorpusDesc().getCorpusPath());
 		}
 		if (!containsDocuments) {
@@ -238,9 +240,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * corpus-structure via a top down traversal in file structure. For each
 	 * found file (real file and folder), the method
 	 * {@link #setTypeOfResource(URI)} is called to set the type of the
-	 * resource. If the type is a {@link STYPE_NAME#SDOCUMENT} a
+	 * resource. If the type is a {@link SALT_TYPE#SDOCUMENT} a
 	 * {@link SDocument} object is created for the resource, if the type is a
-	 * {@link STYPE_NAME#SCORPUS} a {@link SCorpus} object is created, if the
+	 * {@link SALT_TYPE#SCORPUS} a {@link SCorpus} object is created, if the
 	 * type is null, the resource is ignored.
 	 * 
 	 * @param currURI
@@ -253,20 +255,20 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		Boolean retVal = false;
 
 		// set name for corpus graph
-		if ((this.getSCorpusGraph().getSName() == null) || (this.getSCorpusGraph().getSName().isEmpty())) {
-			this.getSCorpusGraph().setSName(currURI.lastSegment());
+		if ((this.getCorpusGraph().getName() == null) || (this.getCorpusGraph().getName().isEmpty())) {
+			this.getCorpusGraph().setName(currURI.lastSegment());
 		}
 
 		if ((currURI.lastSegment() != null) && (!this.getIgnoreEndings().contains(currURI.lastSegment()))) {// if
-			STYPE_NAME type = this.setTypeOfResource(currURI);
+			SALT_TYPE type = this.setTypeOfResource(currURI);
 			if (type != null) {
 				// do not ignore resource create new id
 				File currFile = new File(currURI.toFileString());
 
-				if (STYPE_NAME.SCORPUS.equals(type)) {
+				if (SALT_TYPE.SCORPUS.equals(type)) {
 					// resource is a SCorpus create corpus
-					SCorpus sCorpus = getSCorpusGraph().createSCorpus(parent, currURI.lastSegment());
-					this.getSElementId2ResourceTable().put(sCorpus.getSElementId(), currURI);
+					SCorpus sCorpus = getCorpusGraph().createSCorpus(parent, currURI.lastSegment());
+					this.getIdentifier2ResourceTable().put(sCorpus.getIdentifier(), currURI);
 					if (currFile.isDirectory()) {
 						for (File file : currFile.listFiles()) {
 							try {
@@ -280,26 +282,26 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						}
 					}
 				}// resource is a SCorpus
-				else if (STYPE_NAME.SDOCUMENT.equals(type)) {
+				else if (SALT_TYPE.SDOCUMENT.equals(type)) {
 					retVal = true;
 					// resource is a SDocument
 					if (parent == null) {
 						// if there is no corpus given, create one with name of
 						// document
-						parent = getSCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						parent = getCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 
-						this.getSElementId2ResourceTable().put(parent.getSElementId(), currURI);
+						this.getIdentifier2ResourceTable().put(parent.getIdentifier(), currURI);
 					}
 					File docFile = new File(currURI.toFileString());
 					SDocument sDocument = null;
 					if (docFile.isDirectory()) {
-						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment());
+						sDocument = getCorpusGraph().createSDocument(parent, currURI.lastSegment());
 					} else {
 						// if uri is a file, cut off file ending
-						sDocument = getSCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						sDocument = getCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 					}
 					// link documentId with resource
-					this.getSElementId2ResourceTable().put(sDocument.getSElementId(), currURI);
+					this.getIdentifier2ResourceTable().put(sDocument.getIdentifier(), currURI);
 				}// resource is a SDocument
 			}// do not ignore resource
 		}// if file is not part of ignore list
@@ -335,10 +337,10 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private Collection<String> sDocumentEndings = null;
 
 	/**
-	 * {@inheritDoc PepperImporter#getSDocumentEndings()}
+	 * {@inheritDoc PepperImporter#getDocumentEndings()}
 	 */
 	@Override
-	public synchronized Collection<String> getSDocumentEndings() {
+	public synchronized Collection<String> getDocumentEndings() {
 		if (sDocumentEndings == null) {
 			sDocumentEndings = new HashSet<String>();
 		}
@@ -352,10 +354,10 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private Collection<String> sCorpusEndings = null;
 
 	/**
-	 * {@inheritDoc PepperImporter#getSCorpusEndings()}
+	 * {@inheritDoc PepperImporter#getCorpusEndings()}
 	 */
 	@Override
-	public synchronized Collection<String> getSCorpusEndings() {
+	public synchronized Collection<String> getCorpusEndings() {
 		if (sCorpusEndings == null) {
 			sCorpusEndings = new HashSet<String>();
 			sCorpusEndings.add(ENDING_FOLDER);
@@ -367,21 +369,21 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * {@inheritDoc PepperImporter#setTypeOfResource(URI)}
 	 */
 	@Override
-	public STYPE_NAME setTypeOfResource(URI resource) {
+	public SALT_TYPE setTypeOfResource(URI resource) {
 		File file = new File(resource.toFileString());
 		if (file.isDirectory()) {// resource is a folder
 			File folder = new File(resource.toFileString());
 			if (isLeafFolder(folder)) {// resource is leaf folder
-				if (this.getSDocumentEndings().contains(ENDING_LEAF_FOLDER)) {
-					return (STYPE_NAME.SDOCUMENT);
-				} else if ((this.getSCorpusEndings().contains(ENDING_FOLDER)) || (this.getSCorpusEndings().contains(ENDING_LEAF_FOLDER))) {
-					return (STYPE_NAME.SCORPUS);
+				if (this.getDocumentEndings().contains(ENDING_LEAF_FOLDER)) {
+					return (SALT_TYPE.SDOCUMENT);
+				} else if ((this.getCorpusEndings().contains(ENDING_FOLDER)) || (this.getCorpusEndings().contains(ENDING_LEAF_FOLDER))) {
+					return (SALT_TYPE.SCORPUS);
 				} else
 					return (null);
 			}// resource is leaf folder
 			else {// resource is no leaf folder
-				if (this.getSCorpusEndings().contains(ENDING_FOLDER))
-					return (STYPE_NAME.SCORPUS);
+				if (this.getCorpusEndings().contains(ENDING_FOLDER))
+					return (SALT_TYPE.SCORPUS);
 				else
 					return (null);
 			}// resource is no leaf folder
@@ -389,12 +391,12 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}// resource is a folder
 		else {// resource is not a folder
 			String ending = resource.fileExtension();
-			if (this.getSDocumentEndings().contains(ENDING_ALL_FILES)) {
-				return (STYPE_NAME.SDOCUMENT);
-			} else if (this.getSDocumentEndings().contains(ending)) {
-				return (STYPE_NAME.SDOCUMENT);
-			} else if (this.getSCorpusEndings().contains(ending)) {
-				return (STYPE_NAME.SCORPUS);
+			if (this.getDocumentEndings().contains(ENDING_ALL_FILES)) {
+				return (SALT_TYPE.SDOCUMENT);
+			} else if (this.getDocumentEndings().contains(ending)) {
+				return (SALT_TYPE.SDOCUMENT);
+			} else if (this.getCorpusEndings().contains(ending)) {
+				return (SALT_TYPE.SCORPUS);
 			} else {
 				return (null);
 			}

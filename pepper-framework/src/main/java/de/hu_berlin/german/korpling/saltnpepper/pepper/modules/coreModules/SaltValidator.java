@@ -78,17 +78,17 @@ public class SaltValidator extends PepperManipulatorImpl {
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSCorpus() {
-			if (getSCorpus() != null) {
+			if (getCorpus() != null) {
 				Boolean isLeafCorpus = null;
-				for (Edge edge : getSCorpus().getSCorpusGraph().getOutEdges(getSCorpus().getSId())) {
-					if (edge.getTarget() instanceof SDocument) {
+				for (Relation relation : getCorpus().getCorpusGraph().getOutRelations(getCorpus().getId())) {
+					if (relation.getTarget() instanceof SDocument) {
 						if ((isLeafCorpus != null) && (!isLeafCorpus)) {
-							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + edge.getSource().getId() + "' contains corpora and documents as well.");
+							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId() + "' contains corpora and documents as well.");
 						}
 						isLeafCorpus = true;
-					} else if (edge.getTarget() instanceof SCorpus) {
+					} else if (relation.getTarget() instanceof SCorpus) {
 						if ((isLeafCorpus != null) && (isLeafCorpus)) {
-							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + edge.getSource().getId() + "' contains corpora and documents as well.");
+							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId() + "' contains corpora and documents as well.");
 						}
 						isLeafCorpus = true;
 					}
@@ -99,7 +99,7 @@ public class SaltValidator extends PepperManipulatorImpl {
 
 		/**
 		 * <ul>
-		 * <li>Checks whether {@link STextualDS#getSText()} is not empty when an
+		 * <li>Checks whether {@link STextualDS#getText()} is not empty when an
 		 * {@link STextualRelation} is pointing to it.</li>
 		 * <li>Checks whether start and end values of {@link STextualRelation}
 		 * are not empty and fit into corresponding text</li>
@@ -110,65 +110,65 @@ public class SaltValidator extends PepperManipulatorImpl {
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			List<String> invalidities = new ArrayList<String>();
-			if (getSDocument().getSDocumentGraph() != null) {
-				for (SRelation rel : getSDocument().getSDocumentGraph().getSRelations()) {
-					if (rel.getSSource() == null) {
+			if (getDocument().getDocumentGraph() != null) {
+				for (SRelation rel : getDocument().getDocumentGraph().getRelations()) {
+					if (rel.getSource() == null) {
 						// relation has no source
 
-						String msg = "The relation '" + rel.getSId() + "' has no source node. ";
+						String msg = "The relation '" + rel.getId() + "' has no source node. ";
 						if (((SaltValidatorProperties) getProperties()).isClean()) {
-							getSDocument().getSDocumentGraph().removeEdge(rel);
+							getDocument().getDocumentGraph().removeRelation(rel);
 							msg = msg + "[DELETED] ";
 						}
 						invalidities.add(msg);
 					}
-					if (rel.getSTarget() == null) {
+					if (rel.getTarget() == null) {
 						// relation has no target
 
-						String msg = "The relation '" + rel.getSId() + "' has no target node.";
+						String msg = "The relation '" + rel.getId() + "' has no target node.";
 						if (((SaltValidatorProperties) getProperties()).isClean()) {
-							getSDocument().getSDocumentGraph().removeEdge(rel);
+							getDocument().getDocumentGraph().removeRelation(rel);
 							msg = msg + "[DELETED] ";
 						}
 						invalidities.add(msg);
 					}
 
-					if ((rel.getSSource() != null) && (rel.getSTarget() != null) && (rel.getSSource().equals(rel.getSTarget()))) {
+					if ((rel.getSource() != null) && (rel.getTarget() != null) && (rel.getSource().equals(rel.getTarget()))) {
 						// source and target of relation point to the same node
 						if (((SaltValidatorProperties) getProperties()).isSelfRelation()) {
-							getSDocument().getSDocumentGraph().removeEdge(rel);
-							invalidities.add("[DELETED] The source and target of relation '" + rel.getSId() + "' points to the same node '" + rel.getSSource().getSId() + "'. ");
+							getDocument().getDocumentGraph().removeRelation(rel);
+							invalidities.add("[DELETED] The source and target of relation '" + rel.getId() + "' points to the same node '" + rel.getSource().getId() + "'. ");
 						}
 					}
 
 					if (rel instanceof STextualRelation) {
 						STextualRelation textRel = (STextualRelation) rel;
-						if (textRel.getSStart() == null) {
+						if (textRel.getStart() == null) {
 							// relation has no start value
 
-							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getSId() + "' has no sStart value.");
+							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' has no sStart value.");
 						}
-						if (textRel.getSEnd() == null) {
+						if (textRel.getEnd() == null) {
 							// relation has no end value
 
-							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getSId() + "' has no sEnd value.");
+							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' has no sEnd value.");
 						}
-						if (textRel.getSTextualDS().getSText() == null) {
+						if (textRel.getSTextualDS().getText() == null) {
 							// relation target has no text
 
-							invalidities.add("The " + STextualDS.class.getSimpleName() + " '" + textRel.getSTextualDS().getSId() + "' has contains no sText value, but there are '" + STextualRelation.class.getSimpleName() + "' relations refering it.");
+							invalidities.add("The " + STextualDS.class.getSimpleName() + " '" + textRel.getSTextualDS().getId() + "' has contains no sText value, but there are '" + STextualRelation.class.getSimpleName() + "' relations refering it.");
 						}
-						if ((textRel.getSStart() > textRel.getSTextualDS().getSText().length()) || (textRel.getSStart() < 0)) {
+						if ((textRel.getStart() > textRel.getSTextualDS().getText().length()) || (textRel.getStart() < 0)) {
 							// end value is bigger than size of text or is less
 							// than o
 
-							invalidities.add("The sStart value '" + textRel.getSStart() + "' of " + STextualRelation.class.getSimpleName() + " '" + rel.getSId() + "' is not in range of target text. It's length is '" + textRel.getSTextualDS().getSText().length() + "'.");
+							invalidities.add("The sStart value '" + textRel.getStart() + "' of " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' is not in range of target text. It's length is '" + textRel.getSTextualDS().getText().length() + "'.");
 						}
-						if ((textRel.getSEnd() > textRel.getSTextualDS().getSText().length()) || (textRel.getSEnd() < 0)) {
+						if ((textRel.getEnd() > textRel.getSTextualDS().getText().length()) || (textRel.getEnd() < 0)) {
 							// end value is bigger than size of text or is less
 							// than o
 
-							invalidities.add("The sEnd value '" + textRel.getSEnd() + "' of " + STextualRelation.class.getSimpleName() + " '" + rel.getSId() + "' is not in range of target text. It's length is '" + textRel.getSTextualDS().getSText().length() + "'.");
+							invalidities.add("The sEnd value '" + textRel.getEnd() + "' of " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' is not in range of target text. It's length is '" + textRel.getSTextualDS().getText().length() + "'.");
 						}
 					}
 				}
@@ -178,7 +178,7 @@ public class SaltValidator extends PepperManipulatorImpl {
 				if (!((SaltValidatorProperties) getProperties()).isClean()) {
 					msg = msg + MSG_HELP;
 				}
-				msg = msg + "The following invalidities have been found in document-structure '" + getSDocument().getSId() + "':";
+				msg = msg + "The following invalidities have been found in document-structure '" + getDocument().getId() + "':";
 				logger.info(msg);
 				for (String invalidity : invalidities) {
 					logger.info("\t" + invalidity);

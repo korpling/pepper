@@ -29,6 +29,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperModuleImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
@@ -44,29 +45,29 @@ public interface PepperModule {
 	 * A string specifying a value for a folder as ending. This is useful for
 	 * {@link #setTypeOfResource(URI)}, to determine, that even a folder can be
 	 * mapped to a resource.Can be used by importers to be put in collection
-	 * {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
 	public static final String ENDING_FOLDER = "FOLDER";
 	/**
 	 * A string specifying a value for a leaf folder as ending. This is useful
 	 * for {@link #setTypeOfResource(URI)}, to determine, that even a leaf
 	 * folder can be mapped to a resource. Can be used by importers to be put in
-	 * collection {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 * collection {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
 	public static final String ENDING_LEAF_FOLDER = "LEAF_FOLDER";
 	/**
 	 * Ending for an xml file. Can be used by importers to be put in collection
-	 * {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
 	public static final String ENDING_XML = "xml";
 	/**
 	 * Ending for an txt file. Can be used by importers to be put in collection
-	 * {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
 	public static final String ENDING_TXT = "txt";
 	/**
 	 * Ending for an tab file. Can be used by importers to be put in collection
-	 * {@link #getSDocumentEndings()} or {@link #getSCorpusEndings()}
+	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
 	public static final String ENDING_TAB = "tab";
 	/** All kinds of file endings **/
@@ -254,7 +255,7 @@ public interface PepperModule {
 	 * 
 	 * @return the value of the '<em>SCorpus Graph</em>' attribute.
 	 */
-	SCorpusGraph getSCorpusGraph();
+	SCorpusGraph getCorpusGraph();
 
 	/**
 	 * Sets the {@link SCorpusGraph} object which is filled, manipulated or
@@ -265,7 +266,7 @@ public interface PepperModule {
 	 * @param value
 	 *            the new value of the '<em>SCorpus Graph</em>' attribute.
 	 */
-	void setSCorpusGraph(SCorpusGraph value);
+	void setCorpusGraph(SCorpusGraph value);
 
 	/**
 	 * Returns the path of the folder which might contain resources for a Pepper
@@ -371,7 +372,7 @@ public interface PepperModule {
 	/**
 	 * Starts the conversion process. This method is the main method of a pepper
 	 * module. I fthis method is not overridden, it will call
-	 * {@link #start(SElementId)} for each {@link SDocument} and {@link SCorpus}
+	 * {@link #start(Identifier)} for each {@link SDocument} and {@link SCorpus}
 	 * object being contained in the set {@link SCorpusGraph}. This is done in a
 	 * multithreaded way by default. <strong>Note: When your module should not
 	 * run in multithreaded mode, call {@link #setIsMultithreaded(boolean)}
@@ -387,10 +388,10 @@ public interface PepperModule {
 	 * call in Pepper. You do not need to override this method, in case of you
 	 * are happy with the default behavior. In default, this method invokes a
 	 * multithreaded process, which creates {@link PepperMapper} objects for
-	 * each given {@link SElementId} object, to process the corresponding
+	 * each given {@link Identifier} object, to process the corresponding
 	 * {@link SDocument} or {@link SCorpus} object. The {@link PepperMapper}
 	 * objects are not created by the method itself, the creation is delegated
-	 * to {@link #createPepperMapper(SElementId)}, which has to be overridden.
+	 * to {@link #createPepperMapper(Identifier)}, which has to be overridden.
 	 * Default initializations are done there (for more details, please take a
 	 * look into the doc of that method). Further this method links the created
 	 * {@link PepperMapper} object to a {@link PepperMapperController} object
@@ -400,23 +401,23 @@ public interface PepperModule {
 	 * <strong>Note: In case of you override this method, please make sure to
 	 * also override the following methods:
 	 * <ul>
-	 * <li>{@link #getProgress(SElementId)}</li>
+	 * <li>{@link #getProgress(Identifier)}</li>
 	 * </ul>
 	 * </strong>
 	 * 
 	 * @model exceptions=
 	 *        "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
 	 *        sElementIdDataType=
-	 *        "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.SElementId"
+	 *        "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.Identifier"
 	 */
-	void start(SElementId sElementId) throws PepperModuleException;
+	void start(Identifier sElementId) throws PepperModuleException;
 
 	/**
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 	 * 
 	 * This method creates a customized {@link PepperMapper} object and returns
 	 * it. You can here do some additional initialisations. Thinks like setting
-	 * the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object
+	 * the {@link Identifier} of the {@link SDocument} or {@link SCorpus} object
 	 * and the {@link URI} resource is done by the framework (or more in detail
 	 * in method {@link #start()}). The parameter <code>sElementId</code>, if a
 	 * {@link PepperMapper} object should be created in case of the object to
@@ -425,12 +426,12 @@ public interface PepperModule {
 	 * <strong>Note: Override this method.</strong>
 	 * 
 	 * @param sElementId
-	 *            {@link SElementId} of the {@link SCorpus} or {@link SDocument}
+	 *            {@link Identifier} of the {@link SCorpus} or {@link SDocument}
 	 *            to be processed.
 	 * @return {@link PepperMapper} object to do the mapping task for object
-	 *         connected to given {@link SElementId}
+	 *         connected to given {@link Identifier}
 	 */
-	public PepperMapper createPepperMapper(SElementId sElementId);
+	public PepperMapper createPepperMapper(Identifier sElementId);
 
 	/**
 	 * This method could be overridden, to make a proposal for the import order
@@ -448,21 +449,21 @@ public interface PepperModule {
 	 *            proposed
 	 * @return a list determining the import order of {@link SDocument} objects
 	 */
-	public List<SElementId> proposeImportOrder(SCorpusGraph sCorpusGraph);
+	public List<Identifier> proposeImportOrder(SCorpusGraph sCorpusGraph);
 
 	/**
 	 * This method is invoked by the Pepper framework, to get the current
 	 * progress concerning the {@link SDocument} object corresponding to the
-	 * given {@link SElementId} in percent. A valid value return must be between
+	 * given {@link Identifier} in percent. A valid value return must be between
 	 * 0 and 1. <br/>
 	 * <strong>Note: In case, you have overridden the method
-	 * {@link #start(SElementId)} or {@link #start()}, please also override this
+	 * {@link #start(Identifier)} or {@link #start()}, please also override this
 	 * method, because it accesses an internal list of all mappers, which
-	 * initialized in {@link #start(SElementId)}.</strong>
+	 * initialized in {@link #start(Identifier)}.</strong>
 	 * 
 	 * @param globalID
 	 *            identifier of the requested {@link SDocument} object, note,
-	 *            that this is not the {@link SElementId}.
+	 *            that this is not the {@link Identifier}.
 	 */
 	Double getProgress(String globalId);
 
@@ -502,7 +503,7 @@ public interface PepperModule {
 	 * @param sElementId
 	 * @param result
 	 */
-	public void done(SElementId sElementId, DOCUMENT_STATUS result);
+	public void done(Identifier sElementId, DOCUMENT_STATUS result);
 
 	/**
 	 * Invokes processings, before the mapping was started. This could be
@@ -519,7 +520,7 @@ public interface PepperModule {
 	 *            prepared
 	 * @throws PepperModuleException
 	 */
-	public void before(SElementId sElementId) throws PepperModuleException;
+	public void before(Identifier sElementId) throws PepperModuleException;
 
 	/**
 	 * Invokes processings, after the mapping is done. This could be helpful,
@@ -536,5 +537,5 @@ public interface PepperModule {
 	 *            post processed
 	 * @throws PepperModuleException
 	 */
-	public void after(SElementId sElementId) throws PepperModuleException;
+	public void after(Identifier sElementId) throws PepperModuleException;
 }

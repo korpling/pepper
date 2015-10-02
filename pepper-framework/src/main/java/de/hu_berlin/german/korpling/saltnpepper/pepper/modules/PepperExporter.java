@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
@@ -101,7 +102,7 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
  * 	//option 3
  * 	setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
  *  //sets the ending, which should be added to the documents name
- * 	setSDocumentEnding(ENDING_TAB); 
+ * 	setDocumentEnding(ENDING_TAB); 
  * 	.. 
  * }
  * </pre>
@@ -111,12 +112,12 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
  * {@link SDocument} objects will be ignored. And option 3 means that
  * {@link SCorpus} objects are mapped to a folder and {@link SDocument} objects
  * are mapped to a file. The ending of that file can be determined by passing
- * the ending with method {@link #setSDocumentEnding(String)}. In the given
+ * the ending with method {@link #setDocumentEnding(String)}. In the given
  * snippet a {@link URI} having the ending 'tab' is created for each
  * {@link SDocument}.
  * <p>
  * <h3>Export the document structure</h3>
- * In the method {@link #createPepperMapper(SElementId)} a {@link PepperMapper}
+ * In the method {@link #createPepperMapper(Identifier)} a {@link PepperMapper}
  * object needs to be initialized and returned. The {@link PepperMapper} is the
  * major part major part doing the mapping. It provides the methods
  * {@link PepperMapper#mapSCorpus()} to handle the mapping of a single
@@ -125,11 +126,11 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
  * framework. To set the {@link PepperMapper#getResourceURI()}, which offers the
  * mapper the file or folder of the current {@link SCorpus} or {@link SDocument}
  * object, this filed needs to be set in the
- * {@link #createPepperMapper(SElementId)} method. The following snippet shows a
+ * {@link #createPepperMapper(Identifier)} method. The following snippet shows a
  * dummy of that method:
  * 
  * <pre>
- * public PepperMapper createPepperMapper(SElementId sElementId) {
+ * public PepperMapper createPepperMapper(Identifier sElementId) {
  * 	PepperMapper mapper = new PepperMapperImpl() {
  * 		&#064;Override
  * 		public DOCUMENT_STATUS mapSCorpus() {
@@ -157,7 +158,7 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
  * 	// PepperImporter.importCorpusStructure or
  * 	// PepperExporter.exportCorpusStructure, the mapping between file or folder
  * 	// and SCorpus or SDocument was stored here
- * 	mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+ * 	mapper.setResourceURI(getIdentifier2ResourceTable().get(sElementId));
  * 	return (mapper);
  * }
  * </pre>
@@ -203,7 +204,7 @@ public interface PepperExporter extends PepperModule {
 	 * 
 	 * @return file ending for {@link SDocument} objects to be exported.
 	 */
-	public String getSDocumentEnding();
+	public String getDocumentEnding();
 
 	/**
 	 * Sets the format ending for files to be exported and related to
@@ -212,7 +213,7 @@ public interface PepperExporter extends PepperModule {
 	 * @param file
 	 *            ending for {@link SDocument} objects to be exported.
 	 */
-	public void setSDocumentEnding(String sDocumentEnding);
+	public void setDocumentEnding(String sDocumentEnding);
 
 	/**
 	 * TODO docu
@@ -222,11 +223,11 @@ public interface PepperExporter extends PepperModule {
 	void setCorpusDesc(CorpusDesc corpusDesc);
 
 	/**
-	 * Returns table correspondence between {@link SElementId} and a resource.
-	 * Stores {@link SElementId} objects corresponding to either a
+	 * Returns table correspondence between {@link Identifier} and a resource.
+	 * Stores {@link Identifier} objects corresponding to either a
 	 * {@link SDocument} or a {@link SCorpus} object, which has been created
 	 * during the run of {@link #importCorpusStructure(SCorpusGraph)}.
-	 * Corresponding to the {@link SElementId} object this table stores the
+	 * Corresponding to the {@link Identifier} object this table stores the
 	 * resource from where the element shall be imported.<br/>
 	 * For instance:
 	 * <table>
@@ -248,19 +249,19 @@ public interface PepperExporter extends PepperModule {
 	 * </tr>
 	 * </table>
 	 * 
-	 * @return table correspondence between {@link SElementId} and a resource.
+	 * @return table correspondence between {@link Identifier} and a resource.
 	 */
-	public Map<SElementId, URI> getSElementId2ResourceTable();
+	public Map<Identifier, URI> getIdentifier2ResourceTable();
 
 	/**
 	 * Creates a folder structure basing on the passed corpus path in (
 	 * {@link CorpusDesc#getCorpusPath()}). For each segment in
-	 * {@link SElementId} a folder is created.
+	 * {@link Identifier} a folder is created.
 	 * 
-	 * @return the entire path of {@link SElementId} as file path, which was
+	 * @return the entire path of {@link Identifier} as file path, which was
 	 *         created on disk
 	 */
-	URI createFolderStructure(SElementId sElementId);
+	URI createFolderStructure(Identifier sElementId);
 
 	/**
 	 * Determines how the corpus-structure should be exported.
@@ -279,7 +280,7 @@ public interface PepperExporter extends PepperModule {
 		/**
 		 * {@link SCorpus} objects are exported into a folder structure and
 		 * {@link SDocument} objects are stored in files having the ending
-		 * determined by PepperExporter#getSDocumentEnding()
+		 * determined by PepperExporter#getDocumentEnding()
 		 **/
 		DOCUMENTS_IN_FILES
 	}
@@ -299,7 +300,7 @@ public interface PepperExporter extends PepperModule {
 	 * folder structure, but {@link SDocument} objects are not exported</li>
 	 * <li>EXPORT_MODE#DOCUMENTS_IN_FILES - {@link SCorpus} objects are exported
 	 * into a folder structure and {@link SDocument} objects are stored in files
-	 * having the ending determined by PepperExporter#getSDocumentEnding()</li>
+	 * having the ending determined by PepperExporter#getDocumentEnding()</li>
 	 * </ul>
 	 * 
 	 * @param exportMode
@@ -308,13 +309,13 @@ public interface PepperExporter extends PepperModule {
 
 	/**
 	 * This method is called by {@link #start()} to export the corpus-structure
-	 * into a folder-structure. That means, each {@link SElementId} belonging to
+	 * into a folder-structure. That means, each {@link Identifier} belonging to
 	 * a {@link SDocument} or {@link SCorpus} object is stored
-	 * {@link #getSElementId2ResourceTable()} together with thze corresponding
+	 * {@link #getIdentifier2ResourceTable()} together with thze corresponding
 	 * file-structure object (file or folder) located by a {@link URI}. The
 	 * {@link URI} object corresponding to files will get the file ending
-	 * determined by {@link #getSDocumentEnding(String)}, which could be set by
-	 * {@link #setSDocumentEnding(String)}. <br/>
+	 * determined by {@link #getDocumentEnding(String)}, which could be set by
+	 * {@link #setDocumentEnding(String)}. <br/>
 	 * To adapt the creation of {@link URI}s set the export mode via
 	 * {@link #setExportMode(EXPORT_MODE)}.
 	 */

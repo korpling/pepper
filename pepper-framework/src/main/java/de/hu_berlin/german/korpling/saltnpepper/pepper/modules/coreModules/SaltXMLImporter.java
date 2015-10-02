@@ -101,7 +101,7 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	 */
 	@Override
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
-		setSCorpusGraph(corpusGraph);
+		setCorpusGraph(corpusGraph);
 		// compute position of SCorpusGraph in Saltproject
 		corpusGraph.load(this.getCorpusDesc().getCorpusPath());
 	}
@@ -113,8 +113,8 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	@Override
 	public PepperMapper createPepperMapper(SElementId sElementId) {
 		SaltXMLMapper mapper = new SaltXMLMapper();
-		if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-			SDocument sDocument = (SDocument) sElementId.getSIdentifiableElement();
+		if (sElementId.getIdentifiableElement() instanceof SDocument) {
+			SDocument sDocument = (SDocument) sElementId.getIdentifiableElement();
 			URI location = getCorpusDesc().getCorpusPath();
 			location = location.appendSegments(sDocument.getSElementPath().segments());
 			location = location.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
@@ -125,13 +125,13 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 
 	private class SaltXMLMapper extends PepperMapperImpl {
 		/**
-		 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
+		 * {@inheritDoc PepperMapper#setDocument(SDocument)}
 		 * 
 		 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			getSDocument().loadSDocumentGraph(getResourceURI());
+			getDocument().loadSDocumentGraph(getResourceURI());
 			return (DOCUMENT_STATUS.COMPLETED);
 		}
 	}

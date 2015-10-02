@@ -172,8 +172,8 @@ public abstract class PepperModuleTest {
 	 * it with
 	 * 
 	 * <pre>
-	 * this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
-	 * this.getFixture().importCorpusStructure(importedCorpusGraph);
+	 * getFixture().getSaltProject().getCorpusGraphs().add(importedCorpusGraph);
+	 * getFixture().importCorpusStructure(importedCorpusGraph);
 	 * </pre>
 	 * 
 	 * </li>
@@ -188,14 +188,14 @@ public abstract class PepperModuleTest {
 	@Test
 	public void testSetGetCorpusGraph() {
 		SCorpusGraph corpGraph = SaltFactory.createSCorpusGraph();
-		this.getFixture().setSCorpusGraph(corpGraph);
-		assertEquals(corpGraph, this.getFixture().getSCorpusGraph());
+		getFixture().setCorpusGraph(corpGraph);
+		assertEquals(corpGraph, getFixture().getCorpusGraph());
 	}
 
 	@Test
 	public void testGetName() {
-		assertNotNull("The importer has to have a name.", this.getFixture().getName());
-		assertFalse("The name of the importer cannot be empty.", this.getFixture().getName().equals(""));
+		assertNotNull("The importer has to have a name.", getFixture().getName());
+		assertFalse("The name of the importer cannot be empty.", getFixture().getName().equals(""));
 	}
 
 	/**
@@ -224,8 +224,8 @@ public abstract class PepperModuleTest {
 	@Test
 	public void testSetGetResources() {
 		assertNotNull("Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing.", resourceURI);
-		this.getFixture().setResources(resourceURI);
-		assertEquals(resourceURI, this.getFixture().getResources());
+		getFixture().setResources(resourceURI);
+		assertEquals(resourceURI, getFixture().getResources());
 	}
 
 	/**

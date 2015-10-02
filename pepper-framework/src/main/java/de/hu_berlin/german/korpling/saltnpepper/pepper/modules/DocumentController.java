@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
@@ -37,7 +38,7 @@ public interface DocumentController {
 	 * 
 	 * @return document id
 	 */
-	public SDocument getSDocument();
+	public SDocument getDocument();
 
 	/**
 	 * Sets the {@link SDocument} object, to which this object belongs to.
@@ -47,23 +48,23 @@ public interface DocumentController {
 	 * @param sDocument
 	 *            {@link SDocument} object to which this object belongs to
 	 */
-	public void setSDocument(SDocument sDocument);
+	public void setDocument(SDocument sDocument);
 
 	/**
-	 * Returns the {@link SElementId} of the {@link SDocument} object, to which
+	 * Returns the {@link Identifier} of the {@link SDocument} object, to which
 	 * this object belongs to.
 	 * 
 	 * @return document id
 	 */
-	public SElementId getsDocumentId();
+	public Identifier getsDocumentId();
 
 	/**
 	 * Returns a global unique (inside one Salt project) id for the contained
 	 * {@link SDocument} object. This identifier is computed by mthe number of
 	 * the {@link SCorpusGraph} in list, this {@link SDocument} object is
-	 * contained in and the {@link SElementId} of the {@link SDocument}. Imagine
+	 * contained in and the {@link Identifier} of the {@link SDocument}. Imagine
 	 * the number of the {@link SCorpusGraph} is 1 and the
-	 * {@link SElementId#getSId()} is /corpus1/document1, than the returned
+	 * {@link Identifier#getId()} is /corpus1/document1, than the returned
 	 * global id is /1/corpus1/document1.
 	 * 
 	 * @return a global unique (inside one Salt project) id for the contained

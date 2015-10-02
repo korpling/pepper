@@ -75,11 +75,13 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 /**
  * This class represents a single, but entire conversion process in Pepper,
@@ -545,7 +547,7 @@ public class PepperJobImpl extends PepperJob {
 	 * This method produces as much as {@link SCorpusGraph} objects as
 	 * {@link Step} given in import step list {@link #getImportSteps()}. The
 	 * position of {@link SCorpusGraph} corresponding to {@link PepperImporter}
-	 * (importing that graph) in {@link SaltProject#getSCorpusGraphs()} is
+	 * (importing that graph) in {@link SaltProject#getCorpusGraphs()} is
 	 * equivalent to position of {@link Step} in list {@link #getImportSteps()}.
 	 */
 	protected synchronized void importCorpusStructures() {
@@ -561,11 +563,11 @@ public class PepperJobImpl extends PepperJob {
 				}
 				SCorpusGraph sCorpusGraph = null;
 
-				if ((getSaltProject().getSCorpusGraphs().size() > numOfImportStep) && (getSaltProject().getSCorpusGraphs().get(numOfImportStep) != null)) {
-					sCorpusGraph = getSaltProject().getSCorpusGraphs().get(numOfImportStep);
+				if ((getSaltProject().getCorpusGraphs().size() > numOfImportStep) && (getSaltProject().getCorpusGraphs().get(numOfImportStep) != null)) {
+					sCorpusGraph = getSaltProject().getCorpusGraphs().get(numOfImportStep);
 				} else {
 					sCorpusGraph = SaltFactory.createSCorpusGraph();
-					getSaltProject().getSCorpusGraphs().add(sCorpusGraph);
+					getSaltProject().getCorpusGraphs().add(sCorpusGraph);
 				}
 
 				futures.add(importStep.getModuleController().importCorpusStructure(sCorpusGraph));
@@ -585,19 +587,19 @@ public class PepperJobImpl extends PepperJob {
 			}
 			int i = 0;
 			for (Step step : getImportSteps()) {
-				if (getSaltProject().getSCorpusGraphs().get(i) == null) {
+				if (getSaltProject().getCorpusGraphs().get(i) == null) {
 					throw new PepperModuleException("The importer '" + step.getModuleController().getPepperModule() + "' did not import a corpus structure.");
 				}
 
 				// handle proposed import order
-				List<SElementId> importOrder = unifyProposedImportOrders(getSaltProject().getSCorpusGraphs().get(i));
-				for (SElementId sDocumentId : importOrder) {
+				List<Identifier> importOrder = unifyProposedImportOrders(getSaltProject().getCorpusGraphs().get(i));
+				for (Identifier sDocumentId : importOrder) {
 					DocumentControllerImpl documentController = new DocumentControllerImpl();
-					SDocument sDoc = (SDocument) sDocumentId.getSIdentifiableElement();
+					SDocument sDoc = (SDocument) sDocumentId.getIdentifiableElement();
 					if (sDoc.getDocumentGraph() == null) {
-						sDoc.setSDocumentGraph(SaltFactory.createSDocumentGraph());
+						sDoc.setDocumentGraph(SaltFactory.createSDocumentGraph());
 					}
-					documentController.setSDocument(sDoc);
+					documentController.setDocument(sDoc);
 					// sets flag to determine whether garbage collector should
 					// be called after document was send to sleep
 					if (getConfiguration() != null) {
@@ -605,7 +607,7 @@ public class PepperJobImpl extends PepperJob {
 					}
 					getDocumentControllers().add(documentController);
 					File docFile = null;
-					String prefix = sDoc.getSName();
+					String prefix = sDoc.getName();
 					File tmpPath = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + getId());
 					if (!tmpPath.exists()) {
 						tmpPath.mkdirs();
@@ -614,9 +616,9 @@ public class PepperJobImpl extends PepperJob {
 						if (prefix.length() < 3) {
 							prefix = prefix + "artificial";
 						}
-						docFile = File.createTempFile(prefix, "." + SaltFactory.FILE_ENDING_SALT, tmpPath);
+						docFile = File.createTempFile(prefix, "." + SaltUtil.FILE_ENDING_SALT_XML, tmpPath);
 					} catch (IOException e) {
-						throw new PepperFWException("Cannot store document '" + sDoc.getSName() + "' to file '" + ((docFile == null) ? docFile : docFile.getAbsolutePath()) + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
+						throw new PepperFWException("Cannot store document '" + sDoc.getName() + "' to file '" + ((docFile == null) ? docFile : docFile.getAbsolutePath()) + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
 					if (!getConfiguration().getKeepDocuments()) {
@@ -647,7 +649,7 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Returns a list of {@link SElementId}s corresponding to the
+	 * Returns a list of {@link Identifier}s corresponding to the
 	 * {@link SDocument} objects contained in the passed {@link SCorpusGraph}
 	 * object. If all registered modules, do not make a proposal, the natural
 	 * one (the one given by the order of {@link SDocument}s in
@@ -659,13 +661,13 @@ public class PepperJobImpl extends PepperJob {
 	 *            the {@link SCorpusGraph} for which the list has to be unified
 	 * @return unified list
 	 */
-	protected List<SElementId> unifyProposedImportOrders(SCorpusGraph sCorpusGraph) {
-		List<SElementId> retVal = new Vector<SElementId>();
+	protected List<Identifier> unifyProposedImportOrders(SCorpusGraph sCorpusGraph) {
+		List<Identifier> retVal = new Vector<Identifier>();
 
 		if (sCorpusGraph == null) {
 			throw new PepperFWException("Cannot unify the import order, for an empty SCorpusGraph object.");
 		}
-		Vector<List<SElementId>> listOfOrders = new Vector<List<SElementId>>();
+		Vector<List<Identifier>> listOfOrders = new Vector<List<Identifier>>();
 		for (Step step : getAllSteps()) {
 			if (step.getModuleController() == null) {
 				throw new PepperFWException("Cannot unify proposed import orders, since step '" + step.getId() + "' does not contain a module controller.");
@@ -674,12 +676,12 @@ public class PepperJobImpl extends PepperJob {
 				throw new PepperFWException("Cannot unify proposed import orders, since module controller '" + step.getModuleController().getId() + "' does not contain a Pepper module.");
 			}
 
-			List<SElementId> importOrder = step.getModuleController().getPepperModule().proposeImportOrder(sCorpusGraph);
+			List<Identifier> importOrder = step.getModuleController().getPepperModule().proposeImportOrder(sCorpusGraph);
 			if ((importOrder != null) && (importOrder.size() > 0)) {
-				if (importOrder.size() < sCorpusGraph.getSDocuments().size()) {
-					for (SDocument sDoc : sCorpusGraph.getSDocuments()) {
-						if (!importOrder.contains(sDoc.getSElementId()))
-							importOrder.add(sDoc.getSElementId());
+				if (importOrder.size() < sCorpusGraph.getDocuments().size()) {
+					for (SDocument sDoc : sCorpusGraph.getDocuments()) {
+						if (!importOrder.contains(sDoc.getIdentifier()))
+							importOrder.add(sDoc.getIdentifier());
 					}
 				}
 				listOfOrders.add(importOrder);
@@ -687,8 +689,8 @@ public class PepperJobImpl extends PepperJob {
 		}
 		if (listOfOrders.size() == 0) {
 			// if no proposals have been made, make the natural one
-			for (SDocument sDocument : sCorpusGraph.getSDocuments()) {
-				retVal.add(sDocument.getSElementId());
+			for (SDocument sDocument : sCorpusGraph.getDocuments()) {
+				retVal.add(sDocument.getIdentifier());
 			}
 		} else if (listOfOrders.size() == 1) {
 			retVal = listOfOrders.get(0);
@@ -919,7 +921,7 @@ public class PepperJobImpl extends PepperJob {
 				str.append(String.format(format, step.getModuleType().toString().toLowerCase() + ":", step.getName()));
 				str.append(String.format(format, "path:", step.getCorpusDesc().getCorpusPath()));
 				if (MODULE_TYPE.IMPORTER.equals(step.getModuleType())) {
-					int idxCorpusGraph = getSaltProject().getSCorpusGraphs().indexOf(((PepperImporter) step.getModuleController().getPepperModule()).getSCorpusGraph());
+					int idxCorpusGraph = getSaltProject().getCorpusGraphs().indexOf(((PepperImporter) step.getModuleController().getPepperModule()).getCorpusGraph());
 					str.append(String.format(format, "corpus index:", idxCorpusGraph));
 				}
 

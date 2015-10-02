@@ -166,8 +166,8 @@ public class PepperTestUtil {
 	 * it with
 	 * 
 	 * <pre>
-	 * this.getFixture().getSaltProject().getSCorpusGraphs().add(importedCorpusGraph);
-	 * this.getFixture().importCorpusStructure(importedCorpusGraph);
+	 * getFixture().getSaltProject().getCorpusGraphs().add(importedCorpusGraph);
+	 * getFixture().importCorpusStructure(importedCorpusGraph);
 	 * </pre>
 	 * 
 	 * </li>
@@ -251,7 +251,7 @@ public class PepperTestUtil {
 			for (SCorpusGraph cGraph : saltProject.getCorpusGraphs()) {
 				boolean isAssociated = false;
 				for (PepperModule fixture : fixtures) {
-					if (fixture.getSCorpusGraph() == cGraph) {
+					if (fixture.getCorpusGraph() == cGraph) {
 						isAssociated = true;
 						break;
 					}

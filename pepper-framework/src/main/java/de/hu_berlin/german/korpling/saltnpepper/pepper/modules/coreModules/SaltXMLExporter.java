@@ -141,23 +141,23 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	private class SaltXMLExporterMapper extends PepperMapperImpl {
 
 		/**
-		 * {@inheritDoc PepperMapper#setSDocument(SDocument)}
+		 * {@inheritDoc PepperMapper#setDocument(SDocument)}
 		 * 
 		 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// creating uri for exporting document
-			URI sDocumentURI = getCorpusDesc().getCorpusPath().appendSegments(getSDocument().getSElementId().getSElementPath().segments());
+			URI sDocumentURI = getCorpusDesc().getCorpusPath().appendSegments(getDocument().getSElementId().getSElementPath().segments());
 			sDocumentURI = sDocumentURI.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
 
 			XMLResource sDocumentResource = (XMLResource) getResourceSet().createResource(sDocumentURI);
-			sDocumentResource.getContents().add(getSDocument().getSDocumentGraph());
+			sDocumentResource.getContents().add(getDocument().getDocumentGraph());
 			sDocumentResource.setEncoding("UTF-8");
 			try {
 				sDocumentResource.save(null);
 			} catch (IOException e) {
-				throw new PepperModuleException("Cannot export document '" + getSDocument().getSId() + "', nested exception is: ", e);
+				throw new PepperModuleException("Cannot export document '" + getDocument().getId() + "', nested exception is: ", e);
 			}
 			return (DOCUMENT_STATUS.COMPLETED);
 		}

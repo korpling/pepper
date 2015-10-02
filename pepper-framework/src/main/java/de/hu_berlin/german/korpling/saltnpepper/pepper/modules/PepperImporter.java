@@ -28,12 +28,14 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusDocumentRelation;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusRelation;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
+import de.hu_berlin.u.saltnpepper.salt.util.SALT_TYPE;
 
 /**
  * <p>
@@ -122,12 +124,12 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
  * are linked with a {@link SCorpusDocumentRelation}.<br/>
  * For keeping the correspondance between the corpus-structure and the file
  * structure, both the im- and the exporter make use of a map, which can be
- * accessed via {@link #getSElementId2ResourceTable()}. <br/>
+ * accessed via {@link #getIdentifier2ResourceTable()}. <br/>
  * To adapt the behavior, you can set the file endings in the constructor as
  * follows:
  * 
  * <pre>
- * this.getSDocumentEndings().add(&quot;file ending&quot;);
+ * this.getDocumentEndings().add(&quot;file ending&quot;);
  * </pre>
  * 
  * You can also add the value {@link PepperModule#ENDING_LEAF_FOLDER} to import
@@ -137,7 +139,7 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
  * </p>
  * <p>
  * <h3>Import the document structure</h3>
- * In the method {@link #createPepperMapper(SElementId)} a {@link PepperMapper}
+ * In the method {@link #createPepperMapper(Identifier)} a {@link PepperMapper}
  * object needs to be initialized and returned. The {@link PepperMapper} is the
  * major part major part doing the mapping. It provides the methods
  * {@link PepperMapper#mapSCorpus()} to handle the mapping of a single
@@ -146,11 +148,11 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
  * framework. To set the {@link PepperMapper#getResourceURI()}, which offers the
  * mapper the file or folder of the current {@link SCorpus} or {@link SDocument}
  * object, this filed needs to be set in the
- * {@link #createPepperMapper(SElementId)} method. The following snippet shows a
+ * {@link #createPepperMapper(Identifier)} method. The following snippet shows a
  * dummy of that method:
  * 
  * <pre>
- * public PepperMapper createPepperMapper(SElementId sElementId) {
+ * public PepperMapper createPepperMapper(Identifier sElementId) {
  * 	PepperMapper mapper = new PepperMapperImpl() {
  * 		&#064;Override
  * 		public DOCUMENT_STATUS mapSCorpus() {
@@ -178,7 +180,7 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
  * 	// PepperImporter.importCorpusStructure or
  * 	// PepperExporter.exportCorpusStructure, the mapping between file or folder
  * 	// and SCorpus or SDocument was stored here
- * 	mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+ * 	mapper.setResourceURI(getIdentifier2ResourceTable().get(sElementId));
  * 	return (mapper);
  * }
  * </pre>
@@ -232,10 +234,10 @@ public interface PepperImporter extends PepperModule {
 	void setCorpusDesc(CorpusDesc corpusDesc);
 
 	/**
-	 * Stores {@link SElementId} objects corresponding to either a
+	 * Stores {@link Identifier} objects corresponding to either a
 	 * {@link SDocument} or a {@link SCorpus} object, which has been created
 	 * during the run of {@link #importCorpusStructure(SCorpusGraph)}.
-	 * Corresponding to the {@link SElementId} object this table stores the
+	 * Corresponding to the {@link Identifier} object this table stores the
 	 * resource from where the element shall be imported.<br/>
 	 * For instance:
 	 * <table>
@@ -258,7 +260,7 @@ public interface PepperImporter extends PepperModule {
 	 * </table>
 	 * 
 	 */
-	public Map<SElementId, URI> getSElementId2ResourceTable();
+	public Map<Identifier, URI> getIdentifier2ResourceTable();
 
 	/**
 	 * Returns list containing all format endings for files, which are
@@ -267,20 +269,20 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings
 	 */
-	public Collection<String> getSDocumentEndings();
+	public Collection<String> getDocumentEndings();
 
 	/**
 	 * Returns a collection of all file endings for a {@link SCorpus} object.
 	 * See {@inheritDoc #sCorpusEndings}. This list contains per default value
 	 * {@value #ENDING_FOLDER}. To remove the default value, call
-	 * {@link Collection#remove(Object)} on {@link #getSCorpusEndings()}. To add
+	 * {@link Collection#remove(Object)} on {@link #getCorpusEndings()}. To add
 	 * endings to the collection, call {@link Collection#add(Ending)} and to
 	 * remove endings from the collection, call
 	 * {@link Collection#remove(Ending)}.
 	 * 
 	 * @return a collection of endings
 	 */
-	public Collection<String> getSCorpusEndings();
+	public Collection<String> getCorpusEndings();
 
 	/**
 	 * Returns a collection of filenames, not to be imported. {@inheritDoc
@@ -303,28 +305,28 @@ public interface PepperImporter extends PepperModule {
 	 * If this method is not overridden, the default behavior is:
 	 * <ul>
 	 * <li>For each file having an ending, which is contained in
-	 * {@link #getSDocumentEndings()} {@link STYPE_NAME#SDOCUMENT} is returned</li>
+	 * {@link #getDocumentEndings()} {@link SALT_TYPE#SDOCUMENT} is returned</li>
 	 * <li>For each file having an ending, which is contained in
-	 * {@link #getSCorpusEndings()} {@link STYPE_NAME#SCorpus} is returned</li>
-	 * <li>If {@link #getSDocumentEndings()} contains {@link #ENDING_ALL_FILES},
-	 * for each file (which is not a folder) {@link STYPE_NAME#SDOCUMENT} is
+	 * {@link #getCorpusEndings()} {@link SALT_TYPE#SCorpus} is returned</li>
+	 * <li>If {@link #getDocumentEndings()} contains {@link #ENDING_ALL_FILES},
+	 * for each file (which is not a folder) {@link SALT_TYPE#SDOCUMENT} is
 	 * returned</li>
-	 * <li>If {@link #getSDocumentEndings()} contains
+	 * <li>If {@link #getDocumentEndings()} contains
 	 * {@link #ENDING_LEAF_FOLDER}, for each leaf folder
-	 * {@link STYPE_NAME#SDOCUMENT} is returned</li>
-	 * <li>If {@link #getSCorpusEndings()} contains {@link #ENDING_FOLDER}, for
-	 * each folder {@link STYPE_NAME#SCORPUS} is returned</li>
+	 * {@link SALT_TYPE#SDOCUMENT} is returned</li>
+	 * <li>If {@link #getCorpusEndings()} contains {@link #ENDING_FOLDER}, for
+	 * each folder {@link SALT_TYPE#SCORPUS} is returned</li>
 	 * <li>null otherwise</li>
 	 * </ul>
 	 * 
 	 * @param resource
 	 *            {@link URI} resource to be specified
-	 * @return {@link STYPE_NAME#SCORPUS} if resource represents a
-	 *         {@link SCorpus} object, {@link STYPE_NAME#SDOCUMENT} if resource
+	 * @return {@link SALT_TYPE#SCORPUS} if resource represents a
+	 *         {@link SCorpus} object, {@link SALT_TYPE#SDOCUMENT} if resource
 	 *         represents a {@link SDocument} object or null, if it shall be
 	 *         igrnored.
 	 */
-	public STYPE_NAME setTypeOfResource(URI resource);
+	public SALT_TYPE setTypeOfResource(URI resource);
 
 	/**
 	 * This method is called by Pepper at the start of a conversion process to
@@ -340,9 +342,9 @@ public interface PepperImporter extends PepperModule {
 	 * This method creates the corpus-structure via a top down traversal in file
 	 * structure. For each found file (real file and folder), the method
 	 * {@link #setTypeOfResource(URI)} is called to set the type of the
-	 * resource. If the type is a {@link STYPE_NAME#SDOCUMENT} a
+	 * resource. If the type is a {@link SALT_TYPE#SDOCUMENT} a
 	 * {@link SDocument} object is created for the resource, if the type is a
-	 * {@link STYPE_NAME#SCORPUS} a {@link SCorpus} object is created, if the
+	 * {@link SALT_TYPE#SCORPUS} a {@link SCorpus} object is created, if the
 	 * type is null, the resource is ignored.
 	 * 
 	 * @param corpusGraph

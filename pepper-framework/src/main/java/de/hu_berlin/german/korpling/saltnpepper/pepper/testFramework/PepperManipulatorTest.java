@@ -44,7 +44,7 @@ import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
  * 
  * <pre>
  * 	getFixture().getSaltProject();
- *  getFixture().getSaltProject().getSCorpusGraphs()
+ *  getFixture().getSaltProject().getCorpusGraphs()
  * </pre>
  * 
  * </p>

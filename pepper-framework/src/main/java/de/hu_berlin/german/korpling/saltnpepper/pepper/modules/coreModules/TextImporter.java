@@ -58,7 +58,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 		setDesc("This importer imports a simple text document like .txt etc. . Even other documents can be imported as simple text. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
-		this.getSDocumentEndings().add(FORMAT_NAME);
+		this.getDocumentEndings().add(FORMAT_NAME);
 	}
 
 	@Override
@@ -94,8 +94,8 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 			if (getResourceURI() == null) {
 				throw new PepperModuleException(this, "Cannot map txt-file, because the given resurce uri is empty.");
 			}
-			if (getSDocument().getSDocumentGraph() == null) {
-				getSDocument().setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+			if (getDocument().getDocumentGraph() == null) {
+				getDocument().setDocumentGraph(SaltFactory.createSDocumentGraph());
 			}
 			StringBuilder sb = new StringBuilder();
 			BufferedReader br = null;
@@ -124,7 +124,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 					}
 				}
 			}
-			getSDocument().getSDocumentGraph().createSTextualDS(sb.toString());
+			getDocument().getDocumentGraph().createSTextualDS(sb.toString());
 			return (DOCUMENT_STATUS.COMPLETED);
 		}
 	}

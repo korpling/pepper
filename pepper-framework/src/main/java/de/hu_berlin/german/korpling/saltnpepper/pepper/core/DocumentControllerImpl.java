@@ -33,6 +33,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWExcept
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
@@ -65,7 +66,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 *            {@link SDocument} object which is controlled by this object
 	 */
 	public DocumentControllerImpl(SDocument sDocument) {
-		setSDocument(sDocument);
+		setDocument(sDocument);
 		globalStatus = DOCUMENT_STATUS.NOT_STARTED;
 	}
 
@@ -79,10 +80,10 @@ public class DocumentControllerImpl implements DocumentController {
 	 * 
 	 * @see
 	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getSDocument()
+	 * #getDocument()
 	 */
 	@Override
-	public SDocument getSDocument() {
+	public SDocument getDocument() {
 		return sDocument;
 	}
 
@@ -91,12 +92,12 @@ public class DocumentControllerImpl implements DocumentController {
 	 * 
 	 * @see
 	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #setSDocument
+	 * #setDocument
 	 * (de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
 	 * .SDocument)
 	 */
 	@Override
-	public void setSDocument(SDocument sDocument) {
+	public void setDocument(SDocument sDocument) {
 		this.sDocument = sDocument;
 	}
 
@@ -108,10 +109,10 @@ public class DocumentControllerImpl implements DocumentController {
 	 * #getsDocumentId()
 	 */
 	@Override
-	public SElementId getsDocumentId() {
-		if (getSDocument() == null)
+	public Identifier getsDocumentId() {
+		if (getDocument() == null)
 			return (null);
-		return getSDocument().getSElementId();
+		return getDocument().getIdentifier();
 	}
 
 	/*
@@ -123,7 +124,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	@Override
 	public String getGlobalId() {
-		String globalId = SaltFactory.eINSTANCE.getGlobalId(getsDocumentId());
+		String globalId = SaltFactory.getGlobalId(getsDocumentId());
 		return (globalId);
 	}
 
@@ -206,7 +207,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 * synchronized.
 	 */
 	protected void sleep() {
-		if (getSDocument() == null) {
+		if (getDocument() == null) {
 			throw new PepperFWException("Cannot send SDocument to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
 		if (getLocation() == null)
@@ -214,11 +215,11 @@ public class DocumentControllerImpl implements DocumentController {
 		sleepLock.lock();
 		try {
 			aSleep = true;
-			if (getSDocument().getSDocumentGraph() != null) {
-				numOfNodes = getSDocument().getSDocumentGraph().getSNodes().size();
-				numOfRelations = getSDocument().getSDocumentGraph().getSRelations().size();
-				getSDocument().saveSDocumentGraph(getLocation());
-				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
+			if (getDocument().getDocumentGraph() != null) {
+				numOfNodes = getDocument().getDocumentGraph().getNodes().size();
+				numOfRelations = getDocument().getDocumentGraph().getRelations().size();
+				getDocument().saveDocumentGraph(getLocation());
+				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltFactory.getGlobalId(getsDocumentId()));
 
 				Runtime runtime = Runtime.getRuntime();
 				long usedMem = runtime.totalMemory() - runtime.freeMemory();
@@ -263,16 +264,16 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	@Override
 	public void awake() {
-		if (getSDocument() == null) {
+		if (getDocument() == null) {
 			throw new PepperFWException("Cannot send SDocument to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
 		sleepLock.lock();
 		try {
-			getSDocument().loadSDocumentGraph(getLocation());
+			getDocument().loadDocumentGraph(getLocation());
 			aSleep = false;
-			logger.debug("[Pepper] woke up document '{}'. ", SaltFactory.eINSTANCE.getGlobalId(getsDocumentId()));
+			logger.debug("[Pepper] woke up document '{}'. ", SaltFactory.getGlobalId(getsDocumentId()));
 		} catch (Exception e) {
-			throw new PepperFWException("Cannot awake the document '" + getsDocumentId().getSId() + "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
+			throw new PepperFWException("Cannot awake the document '" + getsDocumentId().getId() + "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
 		} finally {
 			sleepLock.unlock();
 		}

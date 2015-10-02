@@ -33,6 +33,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
@@ -120,13 +121,13 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	}
 
 	/**
-	 * {@inheritDoc PepperMapperController#getSElementId()}
+	 * {@inheritDoc PepperMapperController#getIdentifier()}
 	 */
 	@Override
-	public SElementId getSElementId() {
-		SElementId retVal = null;
+	public Identifier getIdentifier() {
+		Identifier retVal = null;
 		if (getMappingSubjects().size() > 0) {
-			retVal = getMappingSubjects().get(0).getSElementId();
+			retVal = getMappingSubjects().get(0).getIdentifier();
 		} else {
 			throw new PepperModuleException(getPepperMapper(), "This might be a bug. No mapping result is given in mapper controller.");
 		}
@@ -134,10 +135,10 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	}
 
 	/**
-	 * {@inheritDoc PepperMapperController#setSElementId(SElementId)}
+	 * {@inheritDoc PepperMapperController#setIdentifier(Identifier)}
 	 */
 	@Override
-	public void setSElementId(SElementId sElementId) {
+	public void setIdentifier(Identifier sElementId) {
 		if (sElementId == null) {
 			throw new PepperModuleException(getPepperMapper(), "Cannot set an empty sElementId.");
 		}
@@ -148,7 +149,7 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		} else {
 			subj = getMappingSubjects().get(0);
 		}
-		subj.setSElementId(sElementId);
+		subj.setIdentifier(sElementId);
 	}
 
 	/**
@@ -172,8 +173,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 
 	/**
 	 * This method starts the {@link PepperMapper} object in a thread. If
-	 * {@link #getSCorpus()} is not null, {@link #mapSCorpus()} is called, if
-	 * {@link #getSDocument()} is not null, {@link #mapSDocument()} is called. <br/>
+	 * {@link #getCorpus()} is not null, {@link #mapSCorpus()} is called, if
+	 * {@link #getDocument()} is not null, {@link #mapSDocument()} is called. <br/>
 	 * If an exception occurs in this method, it will be caught by
 	 * {@link PepperManipulatorImpl#uncaughtException(Thread, Throwable)}.
 	 */
@@ -229,21 +230,21 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void map() {
 		DOCUMENT_STATUS mappingResult = null;
-		if (this.getPepperMapper().getSCorpus() != null) {
+		if (this.getPepperMapper().getCorpus() != null) {
 			progress = 0d;
 			mappingResult = this.getPepperMapper().mapSCorpus();
 			progress = 1d;
-		} else if (this.getPepperMapper().getSDocument() != null) {
+		} else if (this.getPepperMapper().getDocument() != null) {
 			// real document mapping
 			// preprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
-				getPepperModule().before(subj.getSElementId());
+				getPepperModule().before(subj.getIdentifier());
 			}
 			// real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
 			// postprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
-				getPepperModule().after(subj.getSElementId());
+				getPepperModule().after(subj.getIdentifier());
 			}
 
 		} else {
