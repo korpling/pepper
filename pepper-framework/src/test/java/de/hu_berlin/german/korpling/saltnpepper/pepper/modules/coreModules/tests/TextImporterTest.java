@@ -67,16 +67,16 @@ public class TextImporterTest extends PepperImporterTest {
 		writer.close();
 
 		TextMapper fixture = new TextMapper();
-		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
-		fixture.setSDocument(sDocument);
+		SDocument sDocument = SaltFactory.createSDocument();
+		fixture.setDocument(sDocument);
 		fixture.setResourceURI(URI.createFileURI(txtFile.getAbsolutePath()));
 		fixture.mapSDocument();
 
-		assertNotNull(sDocument.getSDocumentGraph());
-		assertNotNull(sDocument.getSDocumentGraph().getSTextualDSs());
-		assertEquals(1, sDocument.getSDocumentGraph().getSTextualDSs().size());
-		assertNotNull(sDocument.getSDocumentGraph().getSTextualDSs().get(0));
-		assertEquals(text, sDocument.getSDocumentGraph().getSTextualDSs().get(0).getSText());
+		assertNotNull(sDocument.getDocumentGraph());
+		assertNotNull(sDocument.getDocumentGraph().getTextualDSs());
+		assertEquals(1, sDocument.getDocumentGraph().getTextualDSs().size());
+		assertNotNull(sDocument.getDocumentGraph().getTextualDSs().get(0));
+		assertEquals(text, sDocument.getDocumentGraph().getTextualDSs().get(0).getText());
 	}
 
 	/**
@@ -128,15 +128,15 @@ public class TextImporterTest extends PepperImporterTest {
 		formatDesc.setFormatVersion(TextImporter.FORMAT_VERSION);
 		corpDesc.setFormatDesc(formatDesc);
 		corpDesc.setCorpusPath(URI.createFileURI(c1.getAbsolutePath()));
-		this.getFixture().setCorpusDesc(corpDesc);
+		getFixture().setCorpusDesc(corpDesc);
 
 		start();
 
 		assertNotNull(getFixture().getSaltProject());
-		assertEquals(1, getFixture().getSaltProject().getSCorpusGraphs().size());
-		assertNotNull(getFixture().getSaltProject().getSCorpusGraphs().get(0));
+		assertEquals(1, getFixture().getSaltProject().getCorpusGraphs().size());
+		assertNotNull(getFixture().getSaltProject().getCorpusGraphs().get(0));
 
-		assertEquals(3, getFixture().getSaltProject().getSCorpusGraphs().get(0).getSCorpora().size());
-		assertEquals(4, getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments().size());
+		assertEquals(3, getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora().size());
+		assertEquals(4, getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments().size());
 	}
 }

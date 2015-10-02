@@ -22,6 +22,7 @@ import org.junit.Before;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DOTManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
+import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 
 public class DOTManipulatorTest extends PepperManipulatorTest {
 
@@ -30,7 +31,7 @@ public class DOTManipulatorTest extends PepperManipulatorTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setFixture(new DOTManipulator());
-		super.getFixture().setSaltProject(SaltCommonFactory.eINSTANCE.createSaltProject());
+		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
 		super.setResourcesURI(resourceURI);
 	}
 }

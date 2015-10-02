@@ -54,22 +54,22 @@ public class PepperExporterImplTest extends PepperExporterImpl {
 	 */
 	@Test
 	public void testExportCoprusStructure() {
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		SampleGenerator.createCorpusStructure(getFixture().getSaltProject());
-		getFixture().setSDocumentEnding(".txt");
+		getFixture().setDocumentEnding(".txt");
 		getFixture().setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
 		CorpusDesc corpusDesc = new CorpusDesc();
 		corpusDesc.setCorpusPath(URI.createFileURI(PepperUtil.getTempTestFile().getAbsolutePath()));
 		getFixture().setCorpusDesc(corpusDesc);
 
 		getFixture().exportCorpusStructure();
-		assertNotNull(getFixture().getSElementId2ResourceTable());
-		for (SCorpusGraph sCorpusGraph : getFixture().getSaltProject().getSCorpusGraphs()) {
-			for (SCorpus sCorpus : sCorpusGraph.getSCorpora()) {
-				assertNotNull(getFixture().getSElementId2ResourceTable().get(sCorpus.getSElementId()));
+		assertNotNull(getFixture().getIdentifier2ResourceTable());
+		for (SCorpusGraph sCorpusGraph : getFixture().getSaltProject().getCorpusGraphs()) {
+			for (SCorpus sCorpus : sCorpusGraph.getCorpora()) {
+				assertNotNull(getFixture().getIdentifier2ResourceTable().get(sCorpus.getIdentifier()));
 			}
-			for (SDocument sDocument : sCorpusGraph.getSDocuments()) {
-				assertNotNull(getFixture().getSElementId2ResourceTable().get(sDocument.getSElementId()));
+			for (SDocument sDocument : sCorpusGraph.getDocuments()) {
+				assertNotNull(getFixture().getIdentifier2ResourceTable().get(sDocument.getIdentifier()));
 			}
 		}
 	}

@@ -38,6 +38,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
@@ -74,8 +75,8 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 	public void testDocumentRemoveFromMM() {
 		List<SDocument> expectedSDocuments = new Vector<SDocument>();
 		for (int i = 0; i < 30; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
-			sDoc.setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+			SDocument sDoc = SaltFactory.createSDocument();
+			sDoc.setDocumentGraph(SaltFactory.createSDocumentGraph());
 			expectedSDocuments.add(sDoc);
 		}
 
@@ -93,7 +94,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		getFixture().addStep(exportStep1);
 
 		for (SDocument sDoc : expectedSDocuments) {
-			assertNotNull(sDoc.getSDocumentGraph());
+			assertNotNull(sDoc.getDocumentGraph());
 		}
 		PepperConfiguration conf = new PepperConfiguration();
 		conf.setProperty(PepperConfiguration.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
@@ -101,7 +102,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		getFixture().convert();
 
 		for (SDocument sDoc : expectedSDocuments) {
-			assertNull(sDoc.getSDocumentGraph());
+			assertNull(sDoc.getDocumentGraph());
 		}
 	}
 
@@ -111,9 +112,9 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		}
 
 		@Override
-		public PepperMapper createPepperMapper(SElementId sElementId) {
-			if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-				if (((SDocument) sElementId.getSIdentifiableElement()).getSDocumentGraph() == null) {
+		public PepperMapper createPepperMapper(Identifier sElementId) {
+			if (sElementId.getIdentifiableElement() instanceof SDocument) {
+				if (((SDocument) sElementId.getIdentifiableElement()).getDocumentGraph() == null) {
 					throw new PepperModuleException(this, "An error in test occured, because the SDocumentGraph was null.");
 				}
 			}

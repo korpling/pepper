@@ -33,6 +33,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DOTExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperExporterTest;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusDocumentRelation;
@@ -49,19 +50,19 @@ public class DOTExporterTest extends PepperExporterTest {
 	URI outputURI = URI.createFileURI("_TMP/ExporterTest/");
 
 	// SaltSample saltSample = new SaltSample();
-	SaltProject saltProject = SaltFactory.eINSTANCE.createSaltProject();
+	SaltProject saltProject = SaltFactory.createSaltProject();
 
 	@Before
 	public void setUp() throws Exception {
 		super.setFixture(new DOTExporter());
-		super.getFixture().setSaltProject(SaltCommonFactory.eINSTANCE.createSaltProject());
+		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
 		super.setResourcesURI(resourceURI);
 		// setting temproraries and resources
 
 		File resourceDir = new File(resourceURI.toFileString());
 		if (!resourceDir.exists())
 			resourceDir.mkdirs();
-		this.getFixture().setResources(resourceURI);
+		getFixture().setResources(resourceURI);
 		// setting temproraries and resources
 
 		// set formats to support
@@ -91,7 +92,7 @@ public class DOTExporterTest extends PepperExporterTest {
 			formatDef.setFormatVersion("1.0");
 			corpDef.setFormatDesc(formatDef);
 			corpDef.setCorpusPath(corpusPath);
-			this.getFixture().setCorpusDesc(corpDef);
+			getFixture().setCorpusDesc(corpDef);
 
 		}
 		logger.debug("created Corpus Def for testcase 1");
@@ -100,7 +101,7 @@ public class DOTExporterTest extends PepperExporterTest {
 		// start:create corpus structure
 
 		SDocument sDoc = this.createCorpusStructure(null);
-		sDoc.setSDocumentGraph(null);
+		sDoc.setDocumentGraph(null);
 		// logger.debug("Created corpus structure for sDocument");
 		// end: create sample
 
@@ -139,7 +140,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// formatDef.setFormatVersion("1.0");
 	// corpDef.setFormatDefinition(formatDef);
 	// corpDef.setCorpusPath(corpusPath);
-	// this.getFixture().setCorpusDefinition(corpDef);
+	// getFixture().setCorpusDefinition(corpDef);
 	//
 	// }
 	// // logger.debug("created Corpus Def for testcase 1");
@@ -191,7 +192,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// formatDef.setFormatVersion("1.0");
 	// corpDef.setFormatDefinition(formatDef);
 	// corpDef.setCorpusPath(corpusPath);
-	// this.getFixture().setCorpusDefinition(corpDef);
+	// getFixture().setCorpusDefinition(corpDef);
 	//
 	// }
 	// // logger.debug("created Corpus Def for testcase 1");
@@ -200,7 +201,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// //start:create corpus structure
 	//
 	// SDocument sDoc = this.createCorpusStructure(sCorpusGraph);
-	// //sDoc.setSDocumentGraph(null);
+	// //sDoc.setDocumentGraph(null);
 	// SaltSample.createPrimaryData(sDoc);
 	// SaltSample.createTokens(sDoc);
 	// // logger.debug("Created corpus structure for sDocument");
@@ -244,7 +245,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// formatDef.setFormatVersion("1.0");
 	// corpDef.setFormatDefinition(formatDef);
 	// corpDef.setCorpusPath(corpusPath);
-	// this.getFixture().setCorpusDefinition(corpDef);
+	// getFixture().setCorpusDefinition(corpDef);
 	//
 	// }
 	// // logger.debug("created Corpus Def for testcase 1");
@@ -300,7 +301,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// formatDef.setFormatVersion("1.0");
 	// corpDef.setFormatDefinition(formatDef);
 	// corpDef.setCorpusPath(corpusPath);
-	// this.getFixture().setCorpusDefinition(corpDef);
+	// getFixture().setCorpusDefinition(corpDef);
 	//
 	// }
 	// // logger.debug("created Corpus Def for testcase 1");
@@ -357,7 +358,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// formatDef.setFormatVersion("1.0");
 	// corpDef.setFormatDefinition(formatDef);
 	// corpDef.setCorpusPath(corpusPath);
-	// this.getFixture().setCorpusDefinition(corpDef);
+	// getFixture().setCorpusDefinition(corpDef);
 	//
 	// }
 	// // logger.debug("created Corpus Def for testcase 1");
@@ -366,7 +367,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	// //start:create corpus structure
 	//
 	// SDocument sDoc = this.createCorpusStructure(sCorpusGraph);
-	// //sDoc.setSDocumentGraph(null);
+	// //sDoc.setDocumentGraph(null);
 	// SaltSample.createPrimaryData(sDoc);
 	// SaltSample.createTokens(sDoc);
 	// SaltSample.createMorphologyAnnotations(sDoc);
@@ -412,38 +413,33 @@ public class DOTExporterTest extends PepperExporterTest {
 	 */
 	private SDocument createCorpusStructure(SCorpusGraph corpGraph) {
 		{// creating corpus structure
-			corpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-			this.getFixture().getSaltProject().getSCorpusGraphs().add(corpGraph);
+			corpGraph = SaltFactory.createSCorpusGraph();
+			getFixture().getSaltProject().getCorpusGraphs().add(corpGraph);
 			// corp1
 			// |
 			// doc1
 
 			// corp1
-			SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
-			sElementId.setSId("corp1");
-			SCorpus corp1 = SaltFactory.eINSTANCE.createSCorpus();
-			corp1.setSName("corp1");
+			
+			SCorpus corp1 = SaltFactory.createSCorpus();
+			Identifier sElementId = SaltFactory.createIdentifier(corp1, "corp1");
+			corp1.setName("corp1");
 			corp1.setId("corp1");
-			corp1.setSElementId(sElementId);
-			corpGraph.addSNode(corp1);
+			corpGraph.addNode(corp1);
 
 			// doc1
-			SDocument doc1 = SaltFactory.eINSTANCE.createSDocument();
-			sElementId = SaltFactory.eINSTANCE.createSElementId();
-			sElementId.setSId("corp1/doc1");
-			doc1.setSElementId(sElementId);
-			doc1.setSName("doc1");
-			corpGraph.addSNode(doc1);
-			doc1.setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+			SDocument doc1 = SaltFactory.createSDocument();
+			sElementId = SaltFactory.createIdentifier(doc1, "corp1/doc1");
+			doc1.setName("doc1");
+			corpGraph.addNode(doc1);
+			doc1.setDocumentGraph(SaltFactory.createSDocumentGraph());
 			// CorpDocRel
-			SCorpusDocumentRelation corpDocRel1 = SaltFactory.eINSTANCE.createSCorpusDocumentRelation();
-			sElementId = SaltFactory.eINSTANCE.createSElementId();
-			sElementId.setSId("rel1");
-			corpDocRel1.setSElementId(sElementId);
-			corpDocRel1.setSName("rel1");
-			corpDocRel1.setSCorpus(corp1);
-			corpDocRel1.setSDocument(doc1);
-			corpGraph.addSRelation(corpDocRel1);
+			SCorpusDocumentRelation corpDocRel1 = SaltFactory.createSCorpusDocumentRelation();
+			sElementId = SaltFactory.createIdentifier(corpDocRel1, "rel1");
+			corpDocRel1.setName("rel1");
+			corpDocRel1.setSource(corp1);
+			corpDocRel1.setTarget(doc1);
+			corpGraph.addRelation(corpDocRel1);
 			return (doc1);
 		}
 	}

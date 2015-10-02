@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
@@ -48,24 +49,20 @@ public class PepperMapperImplTest {
 
 	@Test
 	public void testSetGetSDocument() {
-		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
-		SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
-		sElementId.setSId("d1");
-		sDocument.setSElementId(sElementId);
-		getFixture().setSDocument(sDocument);
+		SDocument sDocument = SaltFactory.createSDocument();
+		Identifier sElementId = SaltFactory.createIdentifier(sDocument, "d1");
+		getFixture().setDocument(sDocument);
 
-		assertEquals(sDocument, getFixture().getSDocument());
+		assertEquals(sDocument, getFixture().getDocument());
 	}
 
 	@Test
 	public void testSetGetSCorpus() {
-		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
-		SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
-		sElementId.setSId("c1");
-		sCorpus.setSElementId(sElementId);
-		getFixture().setSCorpus(sCorpus);
+		SCorpus sCorpus = SaltFactory.createSCorpus();
+		Identifier sElementId = SaltFactory.createIdentifier(sCorpus, "c1");
+		getFixture().setCorpus(sCorpus);
 
-		assertEquals(sCorpus, getFixture().getSCorpus());
+		assertEquals(sCorpus, getFixture().getCorpus());
 	}
 
 	@Test

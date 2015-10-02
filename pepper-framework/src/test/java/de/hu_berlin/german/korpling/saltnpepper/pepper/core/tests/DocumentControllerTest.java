@@ -45,6 +45,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.samples.SampleGenerator;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 @RunWith(JUnit4.class)
 public class DocumentControllerTest extends DocumentControllerImpl {
@@ -95,9 +96,9 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 	 */
 	@Test
 	public void testSetGetSDocument() {
-		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
-		getFixture().setSDocument(sDocument);
-		assertEquals(sDocument, getFixture().getSDocument());
+		SDocument sDocument = SaltFactory.createSDocument();
+		getFixture().setDocument(sDocument);
+		assertEquals(sDocument, getFixture().getDocument());
 	}
 
 	// /**
@@ -105,10 +106,10 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 	// */
 	// @Test
 	// public void testGlobalId(){
-	// getFixture().setSDocument(SaltFactory.eINSTANCE.createSDocument());
+	// getFixture().setDocument(SaltFactory.createSDocument());
 	// assertEquals("", getFixture().getGlobalId());
-	// SCorpusGraph sCorpusGraph= SaltFactory.eINSTANCE.createSCorpusGraph();
-	// sCorpusGraph.addSNode(getFixture().getSDocument());
+	// SCorpusGraph sCorpusGraph= SaltFactory.createSCorpusGraph();
+	// sCorpusGraph.addNode(getFixture().getDocument());
 	// assertEquals("salt:doc1", getFixture().getGlobalId());
 	// }
 
@@ -148,7 +149,7 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 			getFixture().addModuleControllers(moduleController);
 			moduleControllers.add(moduleController);
 		}
-		getFixture().setSDocument(SaltFactory.eINSTANCE.createSDocument());
+		getFixture().setDocument(SaltFactory.createSDocument());
 
 		assertTrue(new Double(0).equals(getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(0), DOCUMENT_STATUS.IN_PROGRESS);
@@ -251,20 +252,20 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 			fail();
 		} catch (PepperFWException e) {
 		}
-		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
-		sDocument.setSName("myDocument");
+		SDocument sDocument = SaltFactory.createSDocument();
+		sDocument.setName("myDocument");
 		SampleGenerator.createSDocumentStructure(sDocument);
-		getFixture().setSDocument(sDocument);
-		getFixture().setLocation(URI.createFileURI(File.createTempFile(sDocument.getSName(), "." + SaltFactory.FILE_ENDING_SALT).getAbsolutePath()));
+		getFixture().setDocument(sDocument);
+		getFixture().setLocation(URI.createFileURI(File.createTempFile(sDocument.getName(), "." + SaltUtil.FILE_ENDING_SALT_XML).getAbsolutePath()));
 
 		getFixture().sendToSleep();
 		assertTrue(getFixture().isAsleep());
-		assertNotNull(getFixture().getSDocument().getSDocumentGraphLocation());
-		assertNull(getFixture().getSDocument().getSDocumentGraph());
+		assertNotNull(getFixture().getDocument().getDocumentGraphLocation());
+		assertNull(getFixture().getDocument().getDocumentGraph());
 
 		getFixture().awake();
 		assertTrue(!getFixture().isAsleep());
-		assertNotNull(getFixture().getSDocument().getSDocumentGraph());
+		assertNotNull(getFixture().getDocument().getDocumentGraph());
 
 		getFixture().addModuleControllers(new ModuleControllerImpl("module0"));
 		getFixture().updateStatus(getFixture().getModuleControllers().get(0), DOCUMENT_STATUS.IN_PROGRESS);

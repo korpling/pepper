@@ -143,12 +143,12 @@ public class DocumentBusTest {
 	@Test
 	public void testPutAndPop() {
 		Vector<DocumentController> docControllers = new Vector<DocumentController>();
-		SCorpusGraph sCorpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
-		sCorpGraph.addSNode(sCorpus);
+		SCorpusGraph sCorpGraph = SaltFactory.createSCorpusGraph();
+		SCorpus sCorpus = SaltFactory.createSCorpus();
+		sCorpGraph.addNode(sCorpus);
 		for (int i = 0; i < 20; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
-			sCorpGraph.addSDocument(sCorpus, sDoc);
+			SDocument sDoc = SaltFactory.createSDocument();
+			sCorpGraph.addDocument(sCorpus, sDoc);
 
 			DocumentController docController = new DocumentControllerImpl(sDoc);
 			docControllers.add(docController);
@@ -187,12 +187,12 @@ public class DocumentBusTest {
 		importModuleControllers.add(importerController.controllerId);
 
 		Vector<DocumentController> docControllers = new Vector<DocumentController>();
-		SCorpusGraph sCorpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
-		sCorpGraph.addSNode(sCorpus);
+		SCorpusGraph sCorpGraph = SaltFactory.createSCorpusGraph();
+		SCorpus sCorpus = SaltFactory.createSCorpus();
+		sCorpGraph.addNode(sCorpus);
 		for (int i = 0; i < 20; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
-			sCorpGraph.addSDocument(sCorpus, sDoc);
+			SDocument sDoc = SaltFactory.createSDocument();
+			sCorpGraph.addDocument(sCorpus, sDoc);
 
 			DocumentController docController = new DocumentControllerImpl(sDoc);
 			docControllers.add(docController);

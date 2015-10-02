@@ -48,9 +48,9 @@ public class PepperMapperControllerImplTest {
 	}
 
 	@Test
-	public void testSetSElementId() {
+	public void testSetIdentifier() {
 		try {
-			getFixture().setSElementId(null);
+			getFixture().setIdentifier(null);
 			fail();
 		} catch (PepperModuleException e) {
 			// do nothing
