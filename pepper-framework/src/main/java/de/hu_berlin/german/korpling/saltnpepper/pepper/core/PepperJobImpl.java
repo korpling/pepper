@@ -75,12 +75,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 /**
  * This class represents a single, but entire conversion process in Pepper,
@@ -118,7 +117,7 @@ public class PepperJobImpl extends PepperJob {
 			throw new PepperFWException("Cannot initialize a PepperJob with an empty id.");
 		}
 		id = jobId;
-		setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		setSaltProject(SaltFactory.createSaltProject());
 
 	}
 
@@ -565,7 +564,7 @@ public class PepperJobImpl extends PepperJob {
 				if ((getSaltProject().getSCorpusGraphs().size() > numOfImportStep) && (getSaltProject().getSCorpusGraphs().get(numOfImportStep) != null)) {
 					sCorpusGraph = getSaltProject().getSCorpusGraphs().get(numOfImportStep);
 				} else {
-					sCorpusGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
+					sCorpusGraph = SaltFactory.createSCorpusGraph();
 					getSaltProject().getSCorpusGraphs().add(sCorpusGraph);
 				}
 
@@ -595,8 +594,8 @@ public class PepperJobImpl extends PepperJob {
 				for (SElementId sDocumentId : importOrder) {
 					DocumentControllerImpl documentController = new DocumentControllerImpl();
 					SDocument sDoc = (SDocument) sDocumentId.getSIdentifiableElement();
-					if (sDoc.getSDocumentGraph() == null) {
-						sDoc.setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+					if (sDoc.getDocumentGraph() == null) {
+						sDoc.setSDocumentGraph(SaltFactory.createSDocumentGraph());
 					}
 					documentController.setSDocument(sDoc);
 					// sets flag to determine whether garbage collector should

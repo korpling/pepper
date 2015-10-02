@@ -34,7 +34,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWExcept
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * This object is an implementation of a threadsafe queue to store

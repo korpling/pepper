@@ -33,10 +33,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWExcept
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
 
 /**
  * Stores the global status of a {@link SDocument}. And a list of tuples for all

@@ -17,10 +17,6 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
-import java.io.ObjectInputStream.GetField;
-
-import org.omg.CORBA.INITIALIZE;
-
 /**
  * Status of a job in Pepper, the status could be one of the following:
  * <ul>

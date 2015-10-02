@@ -17,8 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * This Enumeration shows the status of a more or less currently processed

@@ -19,8 +19,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
 
 /**
  * Describes the main memory policy of {@link PepperJob}s. More specific, it

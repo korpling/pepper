@@ -23,9 +23,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * An object of this types contains a {@link PepperModule} and handles as a

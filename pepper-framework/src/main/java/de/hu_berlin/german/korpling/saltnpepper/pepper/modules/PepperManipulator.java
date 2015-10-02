@@ -17,9 +17,8 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * <p>

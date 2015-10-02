@@ -20,10 +20,8 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 import java.util.List;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperModuleImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * The interface {@link PepperMapperController} is a communicator class between

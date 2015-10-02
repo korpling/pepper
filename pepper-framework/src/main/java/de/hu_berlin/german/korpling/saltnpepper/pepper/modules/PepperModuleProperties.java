@@ -37,10 +37,10 @@ import org.osgi.service.component.annotations.Property;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModulePropertyException;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SLayer;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
+import de.hu_berlin.u.saltnpepper.salt.core.SLayer;
+import de.hu_berlin.u.saltnpepper.salt.core.SNode;
+import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
 
 /**
  * This class is a container for a set of {@link PepperModuleProperty} objects.

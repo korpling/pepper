@@ -56,7 +56,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-			<artifactId>salt-saltCommon</artifactId>
+			<artifactId>salt-core</artifactId>
 			<version>${salt.version}</version>
 			<scope>compile</scope>
 		</dependency>
