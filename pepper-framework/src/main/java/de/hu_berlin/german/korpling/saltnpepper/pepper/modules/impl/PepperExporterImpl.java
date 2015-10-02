@@ -40,6 +40,7 @@ import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.core.SNode;
 
 /**
  * <p>
@@ -251,12 +252,12 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	@Deprecated
-	public URI createFolderStructure(Identifier sElementId) {
-		if (sElementId == null)
+	public URI createFolderStructure(Identifier id) {
+		if (id == null)
 			throw new PepperConvertException("Cannot export the given sElementID, because given Identifier-object is null.");
-		if (sElementId.getIdentifiableElement() == null)
+		if (id.getIdentifiableElement() == null)
 			throw new PepperConvertException("Cannot export the given sElementID, because the SIdentifiableElement-object of given Identifier-object is null.");
-		if ((!(sElementId.getIdentifiableElement() instanceof SDocument)) && ((!(sElementId.getIdentifiableElement() instanceof SCorpus))))
+		if ((!(id.getIdentifiableElement() instanceof SDocument)) && ((!(id.getIdentifiableElement() instanceof SCorpus))))
 			throw new PepperConvertException("Cannot export the given sElementID, because the element corresponding to it, isn't of type SDocument or SCorpus.");
 		if (getCorpusDesc() == null)
 			throw new PepperFWException("Cannot export the corpus-structure to file structure, because no corpus description was given. ");
@@ -265,11 +266,11 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 
 		try {
 			File folder = new File(getCorpusDesc().getCorpusPath().toFileString());
-			File newFolder = new File(folder.getCanonicalPath() + "/" + sElementId.getSElementPath().toString());
+			File newFolder = new File(folder.getCanonicalPath() + "/" + ((SNode)id.getIdentifiableElement()).getPath().toString());
 			newFolder.mkdirs();
 			return (URI.createFileURI(newFolder.getAbsolutePath()));
 		} catch (IOException e) {
-			throw new PepperConvertException("Cannot create corpus path as folders for '" + sElementId + "'.", e);
+			throw new PepperConvertException("Cannot create corpus path as folders for '" + id + "'.", e);
 		}
 	}
 }

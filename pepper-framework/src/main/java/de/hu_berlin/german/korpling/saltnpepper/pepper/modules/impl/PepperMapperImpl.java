@@ -25,6 +25,7 @@ import org.xml.sax.ext.DefaultHandler2;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.MappingSubject;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
@@ -119,7 +120,8 @@ public class PepperMapperImpl implements PepperMapper {
 			subj = getMappingSubjects().get(0);
 		}
 		if (sDocument.getIdentifier() == null) {
-			sDocument.setIdentifier(SaltFactory.createIdentifier());
+			throw new PepperFWException("This should not happen, please fix me. ");
+			//sDocument.setIdentifier(SaltFactory.createIdentifier());
 		}
 		subj.setIdentifier(sDocument.getIdentifier());
 	}

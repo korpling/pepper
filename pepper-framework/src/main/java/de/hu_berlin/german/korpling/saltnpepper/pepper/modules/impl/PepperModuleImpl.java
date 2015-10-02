@@ -70,6 +70,7 @@ import de.hu_berlin.u.saltnpepper.salt.core.SAnnotationContainer;
 import de.hu_berlin.u.saltnpepper.salt.core.SLayer;
 import de.hu_berlin.u.saltnpepper.salt.core.SNode;
 import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 /**
  * TODO make docu
@@ -569,7 +570,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				break;
 			}
 			sElementId = documentController.getsDocumentId();
-			getDocumentId2DC().put(SaltFactory.getGlobalId(sElementId), documentController);
+			getDocumentId2DC().put(SaltUtil.getGlobalId(sElementId), documentController);
 			// call for using push-method
 			try {
 				// start mapping
@@ -640,9 +641,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	public void done(Identifier sElementId, DOCUMENT_STATUS result) {
 		if (sElementId.getIdentifiableElement() instanceof SDocument) {
-			DocumentController docController = getDocumentId2DC().get(SaltFactory.getGlobalId(sElementId));
+			DocumentController docController = getDocumentId2DC().get(SaltUtil.getGlobalId(sElementId));
 			if (docController == null) {
-				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltFactory.getGlobalId(sElementId) + "' to pass status '" + result + "'. Controllers are listed for the following Identifier objects: " + getDocumentId2DC() + ". ");
+				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltUtil.getGlobalId(sElementId) + "' to pass status '" + result + "'. Controllers are listed for the following Identifier objects: " + getDocumentId2DC() + ". ");
 			}
 			if (DOCUMENT_STATUS.DELETED.equals(result)) {
 				this.getModuleController().delete(docController);
@@ -665,11 +666,11 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			throw new PepperFWException("This might be a bug of Pepper framework. The given PepperMapperController is null in methode done().");
 		if (controller.getMappingSubjects() != null) {
 			for (MappingSubject subject : controller.getMappingSubjects()) {
-				String globalId = SaltFactory.getGlobalId(subject.getIdentifier());
+				String globalId = SaltUtil.getGlobalId(subject.getIdentifier());
 				DOCUMENT_STATUS result = null;
 				if (!getMappedIds().contains(globalId)) {
 					// only if framework has not already been notified
-					this.getMappedIds().add(SaltFactory.getGlobalId(subject.getIdentifier()));
+					this.getMappedIds().add(SaltUtil.getGlobalId(subject.getIdentifier()));
 					try {
 						result = subject.getMappingResult();
 					} catch (Exception e) {
@@ -739,7 +740,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 			String id = sElementId.getId();
 			if (sElementId.getIdentifiableElement() instanceof SDocument) {
-				id = SaltFactory.getGlobalId(sElementId);
+				id = SaltUtil.getGlobalId(sElementId);
 			}
 			this.getMapperControllers().put(id, controller);
 			controller.setUncaughtExceptionHandler(this);
@@ -900,12 +901,12 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * the passed {@link Identifier}. The meta data file must have the ending
 	 * passed in {@link PepperModuleProperties#PROP_BEFORE_READ_META}.
 	 * 
-	 * @param sElementId
+	 * @param id
 	 *            identifying the current object
 	 */
-	public void readMeta(Identifier sElementId) {
+	public void readMeta(Identifier id) {
 		if (this instanceof PepperImporter) {
-			URI resourceURI = ((PepperImporter) this).getIdentifier2ResourceTable().get(sElementId);
+			URI resourceURI = ((PepperImporter) this).getIdentifier2ResourceTable().get(id);
 			Object endingObj = getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue();
 			if (endingObj != null) {
 				String ending = endingObj.toString().trim();
@@ -918,7 +919,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 						File[] files = resource.listFiles();
 						if (files != null) {
 							for (File file : resource.listFiles()) {
-								if (file.getName().equalsIgnoreCase(sElementId.getSElementPath().lastSegment() + "." + ending)) {
+								if (file.getName().equalsIgnoreCase(((SNode)id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
 									metaFile = file;
 									break;
 								}
@@ -945,12 +946,12 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 							logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);
 						}
 						for (Object key : props.keySet()) {
-							IdentifiableElement container = sElementId.getIdentifiableElement();
+							IdentifiableElement container = id.getIdentifiableElement();
 							if ((container != null) && (container instanceof SAnnotationContainer)) {
 								if (!((SAnnotationContainer) container).containsLabel(key.toString())) {
 									((SAnnotationContainer) container).createMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
 								} else {
-									logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + sElementId.getId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
+									logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + id.getId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
 								}
 							}
 						}

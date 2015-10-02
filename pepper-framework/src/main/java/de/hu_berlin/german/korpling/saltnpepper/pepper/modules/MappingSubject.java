@@ -21,9 +21,9 @@ import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 /**
  * A subject is a container for {@link SDocument} or {@link SCorpus} object to
@@ -122,7 +122,7 @@ public class MappingSubject {
 	 */
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		String globalId = SaltFactory.getGlobalId(getIdentifier());
+		String globalId = SaltUtil.getGlobalId(getIdentifier());
 		builder.append("(");
 		if (globalId != null) {
 			builder.append(globalId);

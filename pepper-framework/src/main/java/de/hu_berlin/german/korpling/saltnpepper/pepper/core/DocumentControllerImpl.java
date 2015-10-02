@@ -34,9 +34,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentControlle
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 /**
  * Stores the global status of a {@link SDocument}. And a list of tuples for all
@@ -124,7 +124,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	@Override
 	public String getGlobalId() {
-		String globalId = SaltFactory.getGlobalId(getsDocumentId());
+		String globalId = SaltUtil.getGlobalId(getsDocumentId());
 		return (globalId);
 	}
 
@@ -219,7 +219,7 @@ public class DocumentControllerImpl implements DocumentController {
 				numOfNodes = getDocument().getDocumentGraph().getNodes().size();
 				numOfRelations = getDocument().getDocumentGraph().getRelations().size();
 				getDocument().saveDocumentGraph(getLocation());
-				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltFactory.getGlobalId(getsDocumentId()));
+				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltUtil.getGlobalId(getsDocumentId()));
 
 				Runtime runtime = Runtime.getRuntime();
 				long usedMem = runtime.totalMemory() - runtime.freeMemory();
@@ -271,7 +271,7 @@ public class DocumentControllerImpl implements DocumentController {
 		try {
 			getDocument().loadDocumentGraph(getLocation());
 			aSleep = false;
-			logger.debug("[Pepper] woke up document '{}'. ", SaltFactory.getGlobalId(getsDocumentId()));
+			logger.debug("[Pepper] woke up document '{}'. ", SaltUtil.getGlobalId(getsDocumentId()));
 		} catch (Exception e) {
 			throw new PepperFWException("Cannot awake the document '" + getsDocumentId().getId() + "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
 		} finally {
