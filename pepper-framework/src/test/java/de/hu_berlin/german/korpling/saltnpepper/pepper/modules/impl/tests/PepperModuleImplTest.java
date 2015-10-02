@@ -69,7 +69,7 @@ public class PepperModuleImplTest extends PepperImporterImpl {
 
 		assertEquals(layersBefore + 2, sDoc.getDocumentGraph().getLayers().size());
 		SLayer layer1 = sDoc.getDocumentGraph().getLayerByName("layer1").get(0);
-		SLayer layer2 = sDoc.getDocumentGraph().getLayerByName("layer2").get(1);
+		SLayer layer2 = sDoc.getDocumentGraph().getLayerByName("layer2").get(0);
 		for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
 			assertTrue(sNode.getLayers().contains(layer1));
 			assertTrue(sNode.getLayers().contains(layer2));
@@ -123,7 +123,7 @@ public class PepperModuleImplTest extends PepperImporterImpl {
 
 		assertEquals(layersBefore + 2, sDoc.getDocumentGraph().getLayers().size());
 		SLayer layer1 = sDoc.getDocumentGraph().getLayerByName("layer1").get(0);
-		SLayer layer2 = sDoc.getDocumentGraph().getLayerByName("layer2").get(1);
+		SLayer layer2 = sDoc.getDocumentGraph().getLayerByName("layer2").get(0);
 		for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
 			assertTrue(sNode.getLayers().contains(layer1));
 			assertTrue(sNode.getLayers().contains(layer2));
