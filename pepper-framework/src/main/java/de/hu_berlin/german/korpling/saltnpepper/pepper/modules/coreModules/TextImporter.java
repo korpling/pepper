@@ -31,6 +31,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
 
@@ -68,12 +69,12 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(SElementId)}
+	 * PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new TextMapper();
-		mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+		mapper.setResourceURI(getIdentifier2ResourceTable().get(sElementId));
 		return (mapper);
 	}
 
@@ -124,7 +125,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 					}
 				}
 			}
-			getDocument().getDocumentGraph().createSTextualDS(sb.toString());
+			getDocument().getDocumentGraph().createTextualDS(sb.toString());
 			return (DOCUMENT_STATUS.COMPLETED);
 		}
 	}

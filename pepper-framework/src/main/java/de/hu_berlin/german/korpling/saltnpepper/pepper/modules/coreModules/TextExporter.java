@@ -30,6 +30,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
 
 /**
@@ -64,7 +65,7 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 	 * Creates a mapper to export primary texts.
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
@@ -79,14 +80,14 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 						if (getDocument().getDocumentGraph().getTextualDSs().size() > 1) {
 							String extension = "." + getResourceURI().fileExtension();
 							int pos = uriStr.lastIndexOf(extension);
-							uriStr = uriStr.substring(0, pos) + "_" + text.getSElementPath().fragment() + extension;
+							uriStr = uriStr.substring(0, pos) + "_" + text.getPath().fragment() + extension;
 						}
 						outFile = new File(uriStr);
 						PrintWriter out = null;
 						try {
 							out = new PrintWriter(outFile);
 						} catch (FileNotFoundException e) {
-							throw new PepperModuleException(this, "Cannot write primary text '" + text.getSElementId() + "' to file '" + outFile.getAbsolutePath() + "'. ", e);
+							throw new PepperModuleException(this, "Cannot write primary text '" + text.getIdentifier() + "' to file '" + outFile.getAbsolutePath() + "'. ", e);
 						}
 						if (out != null) {
 							out.print(text.getText());
@@ -98,7 +99,7 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 				return (DOCUMENT_STATUS.COMPLETED);
 			}
 		};
-		mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+		mapper.setResourceURI(getIdentifier2ResourceTable().get(sElementId));
 		return (mapper);
 	}
 }

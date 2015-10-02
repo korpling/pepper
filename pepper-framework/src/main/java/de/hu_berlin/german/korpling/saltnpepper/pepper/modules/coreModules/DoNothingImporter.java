@@ -26,6 +26,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 
 @Component(name = "DoNothingImporterComponent", factory = "PepperImporterComponentFactory")
@@ -60,10 +61,10 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(SElementId)}
+	 * PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new DoNothingMapper();
 		return (mapper);
 	}

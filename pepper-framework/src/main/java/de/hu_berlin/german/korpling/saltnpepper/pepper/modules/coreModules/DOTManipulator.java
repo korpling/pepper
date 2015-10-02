@@ -30,6 +30,9 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
+import de.hu_berlin.u.saltnpepper.salt.core.SNode;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 @Component(name = "DOTManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class DOTManipulator extends PepperManipulatorImpl {
@@ -47,19 +50,22 @@ public class DOTManipulator extends PepperManipulatorImpl {
 	}
 
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				Salt2DOT salt2Dot = new Salt2DOT();
-				salt2Dot.salt2Dot(getDocument().getSElementId(), getResourceURI());
+				//TODO fixme
+//				Salt2DOT salt2Dot = new Salt2DOT();
+//				salt2Dot.salt2Dot(getDocument().getIdentifier(), getResourceURI());
+				
+				SaltUtil.saveDocumentGraph(getDocument().getDocumentGraph(), getResourceURI());
 				addProgress(1.0);
 				return (DOCUMENT_STATUS.COMPLETED);
 			}
 		};
 
 		String outputStr = ((DOTManipulatorProperties) this.getProperties()).getOutputFile().getAbsolutePath();
-		File outputFile = new File(outputStr + "/" + sElementId.getSElementPath() + "." + ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
+		File outputFile = new File(outputStr + "/" + ((SNode)sElementId.getIdentifiableElement()).getPath() + "." + ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
 		if (!outputFile.exists()) {
 			try {
 				if (!outputFile.getParentFile().exists())

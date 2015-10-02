@@ -29,10 +29,12 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 /**
  * This is a {@link PepperImporter} which imports the SaltXML format into a salt
@@ -108,16 +110,16 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(SElementId)}
+	 * PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		SaltXMLMapper mapper = new SaltXMLMapper();
 		if (sElementId.getIdentifiableElement() instanceof SDocument) {
 			SDocument sDocument = (SDocument) sElementId.getIdentifiableElement();
 			URI location = getCorpusDesc().getCorpusPath();
-			location = location.appendSegments(sDocument.getSElementPath().segments());
-			location = location.appendFileExtension(SaltFactory.FILE_ENDING_SALT);
+			location = location.appendSegments(sDocument.getPath().segments());
+			location = location.appendFileExtension(SaltUtil.FILE_ENDING_SALT_XML);
 			mapper.setResourceURI(location);
 		}
 		return (mapper);
@@ -131,7 +133,7 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			getDocument().loadSDocumentGraph(getResourceURI());
+			getDocument().loadDocumentGraph(getResourceURI());
 			return (DOCUMENT_STATUS.COMPLETED);
 		}
 	}

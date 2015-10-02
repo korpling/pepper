@@ -26,8 +26,10 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.core.SNode;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 @Component(name = "DOTExporterComponent", factory = "PepperExporterComponentFactory", enabled = true)
 public class DOTExporter extends PepperExporterImpl {
@@ -41,18 +43,18 @@ public class DOTExporter extends PepperExporterImpl {
 	}
 
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				// workaround to deal with a bug in salt
-				SCorpusGraph sCorpusGraph = getDocument().getCorpusGraph();
+				SCorpusGraph sCorpusGraph = getDocument().getGraph();
 
-				SaltFactory.save_DOT(getDocument(), getResourceURI());
+				SaltUtil.save_DOT(getDocument(), getResourceURI());
 
 				// workaround to deal with a bug in salt
-				if (getDocument().getCorpusGraph() == null) {
-					getDocument().setCorpusGraph(sCorpusGraph);
+				if (getDocument().getGraph() == null) {
+					getDocument().setGraph(sCorpusGraph);
 				}
 
 				addProgress(1.0);
@@ -63,10 +65,10 @@ public class DOTExporter extends PepperExporterImpl {
 				// this is a workaround, it would be easier to use
 				// exportCorpusStructure(SCorpusGraph corpusGraph), but because
 				// of a strange bug, this doesn't work
-				List<Node> roots = getCorpus().getCorpusGraph().getRoots();
+				List<SNode> roots = getCorpus().getGraph().getRoots();
 				if ((roots != null) && (!roots.isEmpty())) {
 					if (getCorpus().equals(roots.get(0))) {
-						SaltFactory.save_DOT(getCorpus().getCorpusGraph(), getCorpusDesc().getCorpusPath());
+						SaltUtil.save_DOT(getCorpus().getGraph(), getCorpusDesc().getCorpusPath());
 					}
 				}
 
@@ -77,9 +79,9 @@ public class DOTExporter extends PepperExporterImpl {
 		String segments = "";
 		URI outputURI = null;
 
-		for (String segment : sElementId.getSElementPath().segmentsList())
+		for (String segment : ((SNode)sElementId.getIdentifiableElement()).getPath().segmentsList())
 			segments = segments + "/" + segment;
-		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments + "." + SaltFactory.FILE_ENDING_DOT);
+		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments + "." + SaltUtil.FILE_ENDING_SALT_XML);
 
 		mapper.setResourceURI(outputURI);
 		return (mapper);

@@ -25,6 +25,7 @@ import org.osgi.service.component.annotations.Component;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
 
 @Component(name = "DoNothingExporterComponent", factory = "PepperExporterComponentFactory")
 public class DoNothingExporter extends PepperExporterImpl implements PepperExporter {
@@ -48,10 +49,10 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(SElementId)}
+	 * PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new DoNothingMapper();
 		return (mapper);
 	}
