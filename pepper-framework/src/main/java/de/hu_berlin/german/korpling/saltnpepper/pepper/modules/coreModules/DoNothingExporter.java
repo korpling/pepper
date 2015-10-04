@@ -22,6 +22,7 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
@@ -41,8 +42,8 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 	public DoNothingExporter() {
 		// setting name of module
 		super(MODULE_NAME);
-		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This is a dummy exporter which exports nothing. This exporter can be used to check if a corpus is importable. ");
 		this.addSupportedFormat("doNothing", "0.0", null);
 	}

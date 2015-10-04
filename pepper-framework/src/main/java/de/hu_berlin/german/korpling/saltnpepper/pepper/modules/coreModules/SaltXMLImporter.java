@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
@@ -58,8 +59,8 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	public SaltXMLImporter() {
 		// setting name of module
 		super(MODULE_NAME);
-		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This importer imports a Salt model from a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);

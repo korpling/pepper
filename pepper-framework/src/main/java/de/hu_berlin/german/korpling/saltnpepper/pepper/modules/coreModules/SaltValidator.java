@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
@@ -53,8 +54,8 @@ public class SaltValidator extends PepperManipulatorImpl {
 	public SaltValidator() {
 		super();
 		setName("SaltValidator");
-		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		this.setProperties(new SaltValidatorProperties());
 	}
 

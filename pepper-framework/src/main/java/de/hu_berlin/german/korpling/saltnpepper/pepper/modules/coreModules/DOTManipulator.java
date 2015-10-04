@@ -26,6 +26,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
@@ -38,8 +39,8 @@ import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 public class DOTManipulator extends PepperManipulatorImpl {
 	public DOTManipulator() {
 		super("DOTManipulator");
-		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This manipulator exports a Salt model to the dot syntax. This can be used to create a graphical representation of the Salt model. ");
 		this.setProperties(new DOTManipulatorProperties());
 	}

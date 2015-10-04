@@ -65,13 +65,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
  * @author Florian Zipser
  * 
  */
+@SuppressWarnings("serial")
 public class PepperStarterConfiguration extends PepperConfiguration {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3427728837658732050L;
-
 	/** prefix of all properties */
 	public static final String PROP_PREFIX = "pepper.";
 
@@ -80,7 +75,10 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 
 	/** Name of the system property specifying the pepper home path. */
 	public static final String PROP_PEPPER_HOME = PROP_PREFIX + "home";
-	/** Name of property to determine the width of outout console. The width could be either 120 or 80. **/
+	/**
+	 * Name of property to determine the width of outout console. The width
+	 * could be either 120 or 80.
+	 **/
 	public static final String PROP_CONSOLE_WIDTH = PROP_PREFIX + "console.width";
 	/**
 	 * A key for using the a variable for the pepper home path inside of
@@ -101,10 +99,6 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	public static final String PROP_OSGI_PROFILE = PROP_PREFIX + "osgi.profile";
 	/** name of the property of the location of the osgi profile */
 	public static final String PROP_OSGI_SHAREDPACKAGES = PROP_PREFIX + Constants.FRAMEWORK_SYSTEMPACKAGES;
-	/** pepper-eMail address */
-	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
-	/** pepper-homepage */
-	public static final String HOMEPAGE = "http://u.hu-berlin.de/saltnpepper";
 
 	/**
 	 * Extracts the home path of pepper and returns it. The home path is
@@ -217,8 +211,7 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	public List<String> getDropInPaths() {
 		String rawList = this.getProperty(PepperStarterConfiguration.PROP_DROPIN_PATHS);
 		if (rawList != null) {
-			Iterator<String> it
-				= Splitter.on(',').trimResults().omitEmptyStrings().split(rawList).iterator();
+			Iterator<String> it = Splitter.on(',').trimResults().omitEmptyStrings().split(rawList).iterator();
 			List<String> result = new ArrayList<>();
 			while (it.hasNext()) {
 				result.add(it.next());
@@ -269,28 +262,28 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	public String getSharedPackages() {
 		return (this.getProperty(PROP_OSGI_SHAREDPACKAGES));
 	}
-	
-	/** 
-	 * Returns the width of the output console. The width could be either 120 or 80. 
-	**/
-	public int getConsoleWidth(){
-		Integer width= null;
-		String widthProp= getProperty(PROP_CONSOLE_WIDTH);
-		if (	(widthProp!= null)&&
-				(!widthProp.isEmpty())){
-			try{
-				width= Integer.valueOf(widthProp.trim());
-			}catch (NumberFormatException e){
+
+	/**
+	 * Returns the width of the output console. The width could be either 120 or
+	 * 80.
+	 **/
+	public int getConsoleWidth() {
+		Integer width = null;
+		String widthProp = getProperty(PROP_CONSOLE_WIDTH);
+		if ((widthProp != null) && (!widthProp.isEmpty())) {
+			try {
+				width = Integer.valueOf(widthProp.trim());
+			} catch (NumberFormatException e) {
 			}
 		}
-		if (width== null){
-			width= PepperUtil.CONSOLE_WIDTH_120;
+		if (width == null) {
+			width = PepperUtil.CONSOLE_WIDTH_120;
 		}
-		if (width< PepperUtil.CONSOLE_WIDTH_120){
-			width= PepperUtil.CONSOLE_WIDTH_80;
-		}else{
-			width= PepperUtil.CONSOLE_WIDTH_120;
+		if (width < PepperUtil.CONSOLE_WIDTH_120) {
+			width = PepperUtil.CONSOLE_WIDTH_80;
+		} else {
+			width = PepperUtil.CONSOLE_WIDTH_120;
 		}
-		return(width);
+		return (width);
 	}
 }

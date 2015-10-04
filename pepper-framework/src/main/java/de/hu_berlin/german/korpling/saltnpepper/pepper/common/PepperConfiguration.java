@@ -54,11 +54,13 @@ import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
  * @author Florian Zipser
  * 
  */
+@SuppressWarnings("serial")
 public class PepperConfiguration extends Properties {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7702415220939613420L;
+	
+	/** pepper-eMail address */
+	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
+	/** pepper-homepage */
+	public static final String HOMEPAGE = "http://corpus-tools.org/pepper/";
 	/**
 	 * A sub folder in Pepper directory to be used as workspace (to store jobs
 	 * etc.)

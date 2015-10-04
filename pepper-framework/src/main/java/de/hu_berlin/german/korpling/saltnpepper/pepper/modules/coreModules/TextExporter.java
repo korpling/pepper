@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
@@ -50,8 +51,8 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 	public TextExporter() {
 		// setting name of module
 		super(MODULE_NAME);
-		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This is a PepperExporter which extracts and exports the primary text of a Salt model and stores it into a text file. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);

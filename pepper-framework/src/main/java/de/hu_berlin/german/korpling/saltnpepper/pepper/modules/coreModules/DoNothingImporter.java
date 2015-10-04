@@ -18,14 +18,15 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
 import de.hu_berlin.u.saltnpepper.graph.Identifier;
 import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
 
@@ -35,16 +36,11 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 	public static final String FORMAT_NAME = "doNothing";
 	public static final String FORMAT_VERSION = "0.0";
 
-	@Activate
-	public void activate(ComponentContext componentContext) {
-		super.activate(componentContext);
-	}
-
 	@Override
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
-		//do nothing
+		// do nothing
 	}
-	
+
 	/**
 	 * Specifies the separator, which has to be set between to the texts of two
 	 * token.
@@ -52,8 +48,8 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 	public DoNothingImporter() {
 		// setting name of module
 		super(MODULE_NAME);
-		setSupplierContact(URI.createURI("saltnpepper@lists.hu-berlin.de"));
-		setSupplierHomepage(URI.createURI("https://github.com/korpling/pepper"));
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This is a dummy importer which imports nothing. ");
 		// set list of formats supported by this module
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
@@ -65,7 +61,17 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {
-		PepperMapper mapper = new DoNothingMapper();
+		PepperMapper mapper = new PepperMapperImpl() {
+			/**
+			 * {@inheritDoc PepperMapper#setDocument(SDocument)}
+			 * 
+			 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+			 */
+			@Override
+			public DOCUMENT_STATUS mapSDocument() {
+				return (DOCUMENT_STATUS.COMPLETED);
+			}
+		};
 		return (mapper);
 	}
 }

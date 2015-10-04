@@ -210,8 +210,9 @@ public class DocumentControllerImpl implements DocumentController {
 		if (getDocument() == null) {
 			throw new PepperFWException("Cannot send SDocument to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
-		if (getLocation() == null)
+		if (getLocation() == null){
 			throw new PepperFWException("Cannot send SDocument to sleep, since no location to store document '" + getsDocumentId() + "' is set.");
+		}
 		sleepLock.lock();
 		try {
 			aSleep = true;
