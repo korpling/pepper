@@ -29,7 +29,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperExporterTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleExporter;
-import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
+import de.hu_berlin.u.saltnpepper.salt.samples.SampleGenerator;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the

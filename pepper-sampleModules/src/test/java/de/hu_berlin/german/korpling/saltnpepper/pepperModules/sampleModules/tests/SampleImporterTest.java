@@ -28,9 +28,8 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleImporter;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the {@link SampleImporter} class.
@@ -83,32 +82,32 @@ public class SampleImporterTest extends PepperImporterTest{
 		//checks if the salt project, which is a container for the created salt model exists.
 		assertNotNull(getFixture().getSaltProject());
 		//checks if really one corpus-structure was created in the target salt model
-		assertEquals(1, getFixture().getSaltProject().getSCorpusGraphs().size());
+		assertEquals(1, getFixture().getSaltProject().getCorpusGraphs().size());
 		//checks that the corpus-structure contains 3 corpora
-		assertEquals(3, getFixture().getSaltProject().getSCorpusGraphs().get(0).getSCorpora().size());
+		assertEquals(3, getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora().size());
 		//checks that the corpus-structure contains 4 documents
-		assertEquals(4, getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments().size());
+		assertEquals(4, getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments().size());
 		
 		//checks that each corpus contains a date annotation and that its value is 1989-12-17
-		for (SCorpus sCorpus: getFixture().getSaltProject().getSCorpusGraphs().get(0).getSCorpora()){
-			assertNotNull(sCorpus.getSMetaAnnotation("date"));
-			assertEquals("1989-12-17", sCorpus.getSMetaAnnotation("date").getSValue());
+		for (SCorpus sCorpus: getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora()){
+			assertNotNull(sCorpus.getMetaAnnotation("date"));
+			assertEquals("1989-12-17", sCorpus.getMetaAnnotation("date").getValue());
 		}
 		
 		//checks for each document-structure, that all kinds of nodes and relations are contained
-		for (SDocument sDocument: getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments()){
+		for (SDocument sDocument: getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments()){
 			//checks that all nodes are contained
-			assertEquals(27, sDocument.getSDocumentGraph().getSNodes().size());
+			assertEquals(27, sDocument.getDocumentGraph().getNodes().size());
 			//checks that all relations are contained
-			assertEquals(46, sDocument.getSDocumentGraph().getSRelations().size());
+			assertEquals(46, sDocument.getDocumentGraph().getRelations().size());
 			//checks that all tokens (subclass of nodes) are contained
-			assertEquals(11, sDocument.getSDocumentGraph().getSTokens().size());
+			assertEquals(11, sDocument.getDocumentGraph().getTokens().size());
 			//checks that all spans (subclass of nodes) are contained
-			assertEquals(3, sDocument.getSDocumentGraph().getSSpans().size());
+			assertEquals(3, sDocument.getDocumentGraph().getSpans().size());
 			//checks that all structures (subclass of nodes) are contained
-			assertEquals(12, sDocument.getSDocumentGraph().getSStructures().size());
+			assertEquals(12, sDocument.getDocumentGraph().getStructures().size());
 			//checks that all pointing relations (subclass of relations) are contained
-			assertEquals(1, sDocument.getSDocumentGraph().getSPointingRelations().size());
+			assertEquals(1, sDocument.getDocumentGraph().getPointingRelations().size());
 		}
 	}
 

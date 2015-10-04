@@ -25,8 +25,8 @@ import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleManipulator;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.samples.SampleGenerator;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
@@ -79,9 +79,9 @@ public class SampleManipulatorTest extends PepperManipulatorTest {
 		// is 1989-12-17 just to show how tests work, for more tests, please
 		// take a look
 		// into SampleManipulator
-		for (SCorpus sCorpus : getFixture().getSaltProject().getSCorpusGraphs().get(0).getSCorpora()) {
-			assertNotNull(sCorpus.getSMetaAnnotation("date"));
-			assertEquals("1989-12-17", sCorpus.getSMetaAnnotation("date").getSValue());
+		for (SCorpus sCorpus : getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora()) {
+			assertNotNull(sCorpus.getMetaAnnotation("date"));
+			assertEquals("1989-12-17", sCorpus.getMetaAnnotation("date").getValue());
 		}
 	}
 
