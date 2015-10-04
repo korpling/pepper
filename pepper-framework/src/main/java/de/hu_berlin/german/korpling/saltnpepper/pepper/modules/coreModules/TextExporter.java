@@ -20,6 +20,7 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
@@ -71,7 +72,9 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				if (getDocument() != null && getResourceURI() != null) {
-					for (STextualDS text : getDocument().getDocumentGraph().getTextualDSs()) {
+					Iterator<STextualDS> iterator= getDocument().getDocumentGraph().getTextualDSs().iterator();
+					while (iterator.hasNext()) {
+						STextualDS text= iterator.next();
 						File outFile = null;
 						String uriStr = getResourceURI().toFileString();
 
