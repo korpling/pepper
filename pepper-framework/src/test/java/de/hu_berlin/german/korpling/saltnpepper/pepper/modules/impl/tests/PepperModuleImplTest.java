@@ -85,9 +85,9 @@ public class PepperModuleImplTest extends PepperImporterImpl {
 		File corpusPath = new File(PepperModuleTest.getTestResources() + "/readMeta/");
 		URI corpusURI = URI.createFileURI(corpusPath.getCanonicalPath());
 		SCorpusGraph graph = SaltFactory.createSCorpusGraph();
-		SCorpus corpus = graph.createSCorpus(null, "corpus");
-		SCorpus subCorpus = graph.createSCorpus(corpus, "subcorpus");
-		SDocument document = graph.createSDocument(subCorpus, "document");
+		SCorpus corpus = graph.createCorpus(null, "corpus");
+		SCorpus subCorpus = graph.createCorpus(corpus, "subcorpus");
+		SDocument document = graph.createDocument(subCorpus, "document");
 
 		this.getIdentifier2ResourceTable().put(corpus.getIdentifier(), corpusURI.appendSegment("corpus"));
 		this.getIdentifier2ResourceTable().put(subCorpus.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus"));

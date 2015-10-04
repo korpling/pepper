@@ -17,8 +17,9 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -33,17 +34,17 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.Pepper
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SPointingRelation;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SSpan;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SStructure;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STYPE_NAME;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STextualDS;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SToken;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
+import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
+import de.hu_berlin.u.saltnpepper.salt.common.SPointingRelation;
+import de.hu_berlin.u.saltnpepper.salt.common.SSpan;
+import de.hu_berlin.u.saltnpepper.salt.common.SStructure;
+import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
+import de.hu_berlin.u.saltnpepper.salt.common.SToken;
+import de.hu_berlin.u.saltnpepper.salt.util.SALT_TYPE;
 
 /**
  * This is a dummy implementation of a {@link PepperImporter}, which can be used as a template to create your own
@@ -100,13 +101,13 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	public SampleImporter(){
 		super();
 		//TODO change the name of the module, for example use the format name and the ending Importer (FORMATImporter)
-		this.setName("SampleImporter");
+		setName("SampleImporter");
 		//TODO change the version of your module, we recommend to synchronize this value with the maven version in your pom.xml
-		this.setVersion("1.1.0");
+		setVersion("1.1.0");
 		//TODO change "sample" with format name and 1.0 with format version to support
-		this.addSupportedFormat("sample", "1.0", null);
+		addSupportedFormat("sample", "1.0", null);
 		//TODO change the endings in endings of files you want to import, see also predefined endings beginning with 'ENDING_' 
-		this.getSDocumentEndings().add("ENDING OF FILES TO IMPORT");
+		getDocumentEndings().add("ENDING OF FILES TO IMPORT");
 	}
 	
 	/**
@@ -153,38 +154,38 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		 */
 		//super.importCorpusStructure(sCorpusGraph);
 		
-		this.setSCorpusGraph(sCorpusGraph);
+		setCorpusGraph(sCorpusGraph);
 		// creates the super-corpus c1, in Salt you can create corpora via a URI
-		SCorpus c1= sCorpusGraph.createSCorpus(URI.createURI("salt:/c1")).get(0);
+		SCorpus c1= sCorpusGraph.createCorpus(URI.createURI("salt:/c1")).get(0);
 		//creates the sub-corpora c2 and c3, in Salt you can also create corpora adding a corpus to a parent
-		SCorpus c2= sCorpusGraph.createSCorpus(c1, "c2");
-		SCorpus c3= sCorpusGraph.createSCorpus(c1, "c3");
+		SCorpus c2= sCorpusGraph.createCorpus(c1, "c2");
+		SCorpus c3= sCorpusGraph.createCorpus(c1, "c3");
 		
 		//creates the documents d1, d2 as children of c2 
-		SDocument d1= sCorpusGraph.createSDocument(c2, "d1");
-		SDocument d2= sCorpusGraph.createSDocument(c2, "d2");
+		SDocument d1= sCorpusGraph.createDocument(c2, "d1");
+		SDocument d2= sCorpusGraph.createDocument(c2, "d2");
 		
 		//creates the documents d3, d4 as children of c3 via the URI mechanism 
-		SDocument d3= sCorpusGraph.createSDocument(URI.createURI("salt:/c1/c3/d3"));
-		SDocument d4= sCorpusGraph.createSDocument(URI.createURI("salt:/c1/c3/d4"));
+		SDocument d3= sCorpusGraph.createDocument(URI.createURI("salt:/c1/c3/d3"));
+		SDocument d4= sCorpusGraph.createDocument(URI.createURI("salt:/c1/c3/d4"));
 		
 		//adds a meta-annotation 'author' to all documents, a meta-annotation has a namespace, a name and a value
-		d1.createSMetaAnnotation(null, "author", "Bart Simpson");
-		d2.createSMetaAnnotation(null, "author", "Lisa Simpson");
-		d3.createSMetaAnnotation(null, "author", "Marge Simpson");
-		d4.createSMetaAnnotation(null, "author", "Homer Simpson");
+		d1.createMetaAnnotation(null, "author", "Bart Simpson");
+		d2.createMetaAnnotation(null, "author", "Lisa Simpson");
+		d3.createMetaAnnotation(null, "author", "Marge Simpson");
+		d4.createMetaAnnotation(null, "author", "Homer Simpson");
 		
 		//also corpora can take meta-annotations
-		c3.createSMetaAnnotation(null, "author", "Maggie Simpson");
+		c3.createMetaAnnotation(null, "author", "Maggie Simpson");
 	}
 	
 	/**
 	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong>
 	 * <br/>
 	 * This method creates a customized {@link PepperMapper} object and returns it. You can here do some additional initialisations. 
-	 * Thinks like setting the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object and the {@link URI} resource is done
+	 * Thinks like setting the {@link Identifier} of the {@link SDocument} or {@link SCorpus} object and the {@link URI} resource is done
 	 * by the framework (or more in detail in method {@link #start()}).<br/> 
-	 * The parameter <code>sElementId</code>, if a {@link PepperMapper} object should be created in case of the object to map is either 
+	 * The parameter <code>Identifier</code>, if a {@link PepperMapper} object should be created in case of the object to map is either 
 	 * an {@link SDocument} object or an {@link SCorpus} object of the mapper should be initialized differently. 
 	 * <br/>
 	 * Just to show how the creation of such a mapper works, we here create a sample mapper of type {@link SampleMapper}, 
@@ -192,17 +193,17 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * corpora for further meta-annotations in the method {@link SampleMapper#mapSCorpus()}.
 	 * <br/>
 	 * If your mapper needs to have set variables, this is the place to do it.
-	 * @param sElementId {@link SElementId} of the {@link SCorpus} or {@link SDocument} to be processed. 
-	 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link SElementId}
+	 * @param Identifier {@link Identifier} of the {@link SCorpus} or {@link SDocument} to be processed. 
+	 * @return {@link PepperMapper} object to do the mapping task for object connected to given {@link Identifier}
 	 */
-	public PepperMapper createPepperMapper(SElementId sElementId){
+	public PepperMapper createPepperMapper(Identifier Identifier){
 		SampleMapper mapper= new SampleMapper();
 		/**
 		 * TODO Set the exact resource, which should be processed by the created mapper object, if the default 
 		 * mechanism of importCorpusStructure() was used, the resource could be retrieved by 
-		 * getSElementId2ResourceTable().get(sElementId), just uncomment this line
+		 * getIdentifier2ResourceTable().get(Identifier), just uncomment this line
 		 */
-		//mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+		//mapper.setResourceURI(getIdentifier2ResourceTable().get(Identifier));
 		return(mapper);
 	}
 	
@@ -229,7 +230,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		@Override
 		public DOCUMENT_STATUS mapSCorpus() {
 			//getScorpus() returns the current corpus object.
-			getSCorpus().createSMetaAnnotation(null, "date", "1989-12-17");
+			getCorpus().createMetaAnnotation(null, "date", "1989-12-17");
 			
 			return(DOCUMENT_STATUS.COMPLETED);
 		}
@@ -252,8 +253,8 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			//the method getSDocument() returns the current document for creating the document-structure
-			getSDocument().setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+			//the method getDocument() returns the current document for creating the document-structure
+			getDocument().setDocumentGraph(SaltFactory.createSDocumentGraph());
 			//to get the exact resource, which be processed now, call getResources(), make sure, it was set in createMapper()  
 			URI resource= getResourceURI();
 			
@@ -264,7 +265,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			 * STEP 1:
 			 * we create the primary data and hold a reference on the primary data object
 			 */
-			STextualDS primaryText= getSDocument().getSDocumentGraph().createSTextualDS("Is this example more complicated than it appears to be?");
+			STextualDS primaryText= getDocument().getDocumentGraph().createTextualDS("Is this example more complicated than it appears to be?");
 			
 			//we add a progress to notify the user about the process status (this is very helpful, especially for longer taking processes)
 			addProgress(0.16);
@@ -273,17 +274,17 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			 * STEP 2:
 			 * we create a tokenization over the primary data
 			 */
-			SToken tok_is= getSDocument().getSDocumentGraph().createSToken(primaryText, 0,2);		//Is
-			SToken tok_thi= getSDocument().getSDocumentGraph().createSToken(primaryText, 3,7);		//this
-			SToken tok_exa= getSDocument().getSDocumentGraph().createSToken(primaryText, 8,15);		//example
-			SToken tok_mor= getSDocument().getSDocumentGraph().createSToken(primaryText, 16,20);	//more
-			SToken tok_com= getSDocument().getSDocumentGraph().createSToken(primaryText, 21,32);	//complicated
-			SToken tok_tha= getSDocument().getSDocumentGraph().createSToken(primaryText, 33,37);	//than
-			SToken tok_it= getSDocument().getSDocumentGraph().createSToken(primaryText, 38,40);		//it
-			SToken tok_app= getSDocument().getSDocumentGraph().createSToken(primaryText, 41,48);	//appears
-			SToken tok_to= getSDocument().getSDocumentGraph().createSToken(primaryText, 49,51);		//to
-			SToken tok_be= getSDocument().getSDocumentGraph().createSToken(primaryText, 52,54);		//be
-			SToken tok_PUN= getSDocument().getSDocumentGraph().createSToken(primaryText, 54,55);	//?
+			SToken tok_is= getDocument().getDocumentGraph().createToken(primaryText, 0,2);		//Is
+			SToken tok_thi= getDocument().getDocumentGraph().createToken(primaryText, 3,7);		//this
+			SToken tok_exa= getDocument().getDocumentGraph().createToken(primaryText, 8,15);		//example
+			SToken tok_mor= getDocument().getDocumentGraph().createToken(primaryText, 16,20);	//more
+			SToken tok_com= getDocument().getDocumentGraph().createToken(primaryText, 21,32);	//complicated
+			SToken tok_tha= getDocument().getDocumentGraph().createToken(primaryText, 33,37);	//than
+			SToken tok_it= getDocument().getDocumentGraph().createToken(primaryText, 38,40);		//it
+			SToken tok_app= getDocument().getDocumentGraph().createToken(primaryText, 41,48);	//appears
+			SToken tok_to= getDocument().getDocumentGraph().createToken(primaryText, 49,51);		//to
+			SToken tok_be= getDocument().getDocumentGraph().createToken(primaryText, 52,54);		//be
+			SToken tok_PUN= getDocument().getDocumentGraph().createToken(primaryText, 54,55);	//?
 			
 			//we add a progress to notify the user about the process status (this is very helpful, especially for longer taking processes)
 			addProgress(0.16);
@@ -293,30 +294,30 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			 * we create a part-of-speech and a lemma annotation for tokens
 			 */
 			//we create part-of-speech annotations
-			tok_is.createSAnnotation(null, "pos", "VBZ");
-			tok_thi.createSAnnotation(null, "pos", "DT");
-			tok_exa.createSAnnotation(null, "pos", "NN");
-			tok_mor.createSAnnotation(null, "pos", "RBR");
-			tok_com.createSAnnotation(null, "pos", "JJ");
-			tok_tha.createSAnnotation(null, "pos", "IN");
-			tok_it.createSAnnotation(null, "pos", "PRP");
-			tok_app.createSAnnotation(null, "pos", "VBZ");
-			tok_to.createSAnnotation(null, "pos", "TO");
-			tok_be.createSAnnotation(null, "pos", "VB");
-			tok_PUN.createSAnnotation(null, "pos", ".");
+			tok_is.createAnnotation(null, "pos", "VBZ");
+			tok_thi.createAnnotation(null, "pos", "DT");
+			tok_exa.createAnnotation(null, "pos", "NN");
+			tok_mor.createAnnotation(null, "pos", "RBR");
+			tok_com.createAnnotation(null, "pos", "JJ");
+			tok_tha.createAnnotation(null, "pos", "IN");
+			tok_it.createAnnotation(null, "pos", "PRP");
+			tok_app.createAnnotation(null, "pos", "VBZ");
+			tok_to.createAnnotation(null, "pos", "TO");
+			tok_be.createAnnotation(null, "pos", "VB");
+			tok_PUN.createAnnotation(null, "pos", ".");
 			
 			//we create lemma annotations
-			tok_is.createSAnnotation(null, "lemma", "be");
-			tok_thi.createSAnnotation(null, "lemma", "this");
-			tok_exa.createSAnnotation(null, "lemma", "example");
-			tok_mor.createSAnnotation(null, "lemma", "more");
-			tok_com.createSAnnotation(null, "lemma", "complicated");
-			tok_tha.createSAnnotation(null, "lemma", "than");
-			tok_it.createSAnnotation(null, "lemma", "it");
-			tok_app.createSAnnotation(null, "lemma", "appear");
-			tok_to.createSAnnotation(null, "lemma", "to");
-			tok_be.createSAnnotation(null, "lemma", "be");
-			tok_PUN.createSAnnotation(null, "lemma", ".");
+			tok_is.createAnnotation(null, "lemma", "be");
+			tok_thi.createAnnotation(null, "lemma", "this");
+			tok_exa.createAnnotation(null, "lemma", "example");
+			tok_mor.createAnnotation(null, "lemma", "more");
+			tok_com.createAnnotation(null, "lemma", "complicated");
+			tok_tha.createAnnotation(null, "lemma", "than");
+			tok_it.createAnnotation(null, "lemma", "it");
+			tok_app.createAnnotation(null, "lemma", "appear");
+			tok_to.createAnnotation(null, "lemma", "to");
+			tok_be.createAnnotation(null, "lemma", "be");
+			tok_PUN.createAnnotation(null, "lemma", ".");
 			
 			//we add a progress to notify the user about the process status (this is very helpful, especially for longer taking processes)
 			addProgress(0.16);
@@ -344,9 +345,9 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			 *  </tr>
 			 * </table>
 			 */
-			SSpan contrastFocus= getSDocument().getSDocumentGraph().createSSpan(tok_is);
-			contrastFocus.createSAnnotation(null, "Inf-Struct", "contrast-focus");
-			EList<SToken> topic_set= new BasicEList<SToken>();
+			SSpan contrastFocus= getDocument().getDocumentGraph().createSpan(tok_is);
+			contrastFocus.createAnnotation(null, "Inf-Struct", "contrast-focus");
+			List<SToken> topic_set= new ArrayList<SToken>();
 			topic_set.add(tok_thi);
 			topic_set.add(tok_exa);
 			topic_set.add(tok_mor);
@@ -356,8 +357,8 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			topic_set.add(tok_app);
 			topic_set.add(tok_to);
 			topic_set.add(tok_be);
-			SSpan topic= getSDocument().getSDocumentGraph().createSSpan(topic_set);
-			topic.createSAnnotation(null, "Inf-Struct", "topic");
+			SSpan topic= getDocument().getDocumentGraph().createSpan(topic_set);
+			topic.createAnnotation(null, "Inf-Struct", "topic");
 			
 			//we add a progress to notify the user about the process status (this is very helpful, especially for longer taking processes)
 			addProgress(0.16);
@@ -368,16 +369,16 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			 * to a span. This makes use of the graph based model of Salt. First we create a relation, than we
 			 * set its source and its target node and last we add the relation to the graph.
 			 */
-			EList<SToken> target_set= new BasicEList<SToken>();
+			List<SToken> target_set= new ArrayList<SToken>();
 			target_set.add(tok_thi);
 			target_set.add(tok_exa);
-			SSpan target= getSDocument().getSDocumentGraph().createSSpan(target_set);
-			SPointingRelation anaphoricRel= SaltFactory.eINSTANCE.createSPointingRelation();
-			anaphoricRel.setSStructuredSource(tok_is);
-			anaphoricRel.setSStructuredTarget(target);
-			anaphoricRel.addSType("anaphoric");
+			SSpan target= getDocument().getDocumentGraph().createSpan(target_set);
+			SPointingRelation anaphoricRel= SaltFactory.createSPointingRelation();
+			anaphoricRel.setSource(tok_is);
+			anaphoricRel.setTarget(target);
+			anaphoricRel.setType("anaphoric");
 			//we add the created relation to the graph
-			getSDocument().getSDocumentGraph().addSRelation(anaphoricRel);
+			getDocument().getDocumentGraph().addRelation(anaphoricRel);
 			
 			//we add a progress to notify the user about the process status (this is very helpful, especially for longer taking processes)
 			addProgress(0.16);
@@ -386,59 +387,59 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 			 * STEP 6:
 			 * We create a syntax tree following the Tiger scheme
 			 */
-			SStructure root  = SaltFactory.eINSTANCE.createSStructure();
-			SStructure sq    = SaltFactory.eINSTANCE.createSStructure();
-			SStructure np1   = SaltFactory.eINSTANCE.createSStructure();
-			SStructure adjp1 = SaltFactory.eINSTANCE.createSStructure();
-			SStructure adjp2 = SaltFactory.eINSTANCE.createSStructure();
-			SStructure sbar  = SaltFactory.eINSTANCE.createSStructure();
-			SStructure s1    = SaltFactory.eINSTANCE.createSStructure();
-			SStructure np2   = SaltFactory.eINSTANCE.createSStructure();
-			SStructure vp1   = SaltFactory.eINSTANCE.createSStructure();
-			SStructure s2    = SaltFactory.eINSTANCE.createSStructure();
-			SStructure vp2   = SaltFactory.eINSTANCE.createSStructure();
-			SStructure vp3   = SaltFactory.eINSTANCE.createSStructure();
+			SStructure root  = SaltFactory.createSStructure();
+			SStructure sq    = SaltFactory.createSStructure();
+			SStructure np1   = SaltFactory.createSStructure();
+			SStructure adjp1 = SaltFactory.createSStructure();
+			SStructure adjp2 = SaltFactory.createSStructure();
+			SStructure sbar  = SaltFactory.createSStructure();
+			SStructure s1    = SaltFactory.createSStructure();
+			SStructure np2   = SaltFactory.createSStructure();
+			SStructure vp1   = SaltFactory.createSStructure();
+			SStructure s2    = SaltFactory.createSStructure();
+			SStructure vp2   = SaltFactory.createSStructure();
+			SStructure vp3   = SaltFactory.createSStructure();
 			
 			//we add annotations to each SStructure node
-			root.createSAnnotation(null, "cat", "ROOT");
-			sq.createSAnnotation(null, "cat", "SQ");
-			np1.createSAnnotation(null, "cat", "NP");
-			adjp1.createSAnnotation(null, "cat", "ADJP");
-			adjp2.createSAnnotation(null, "cat", "ADJP");
-			sbar.createSAnnotation(null, "cat", "SBAR");
-			s1.createSAnnotation(null, "cat", "S");
-			np2.createSAnnotation(null, "cat", "NP");
-			vp1.createSAnnotation(null, "cat", "VP");
-			s2.createSAnnotation(null, "cat", "S");
-			vp2.createSAnnotation(null, "cat", "VP");
-			vp3.createSAnnotation(null, "cat", "VP");
+			root.createAnnotation(null, "cat", "ROOT");
+			sq.createAnnotation(null, "cat", "SQ");
+			np1.createAnnotation(null, "cat", "NP");
+			adjp1.createAnnotation(null, "cat", "ADJP");
+			adjp2.createAnnotation(null, "cat", "ADJP");
+			sbar.createAnnotation(null, "cat", "SBAR");
+			s1.createAnnotation(null, "cat", "S");
+			np2.createAnnotation(null, "cat", "NP");
+			vp1.createAnnotation(null, "cat", "VP");
+			s2.createAnnotation(null, "cat", "S");
+			vp2.createAnnotation(null, "cat", "VP");
+			vp3.createAnnotation(null, "cat", "VP");
 			
 			//we add the root node first
-			getSDocument().getSDocumentGraph().addSNode(root);
-			STYPE_NAME domRel = STYPE_NAME.SDOMINANCE_RELATION;
+			getDocument().getDocumentGraph().addNode(root);
+			SALT_TYPE domRel = SALT_TYPE.SDOMINANCE_RELATION;
 			//than we add the rest and connect them to each other
-			getSDocument().getSDocumentGraph().addSNode(root,  sq,      domRel);
-			getSDocument().getSDocumentGraph().addSNode(sq,    tok_is,  domRel); // "Is"
-			getSDocument().getSDocumentGraph().addSNode(sq,    np1,     domRel);
-			getSDocument().getSDocumentGraph().addSNode(np1,   tok_thi, domRel); // "this"
-			getSDocument().getSDocumentGraph().addSNode(np1,   tok_exa, domRel); // "example"
-			getSDocument().getSDocumentGraph().addSNode(sq,    adjp1,   domRel);
-			getSDocument().getSDocumentGraph().addSNode(adjp1, adjp2,   domRel);
-			getSDocument().getSDocumentGraph().addSNode(adjp2, tok_mor, domRel); // "more"
-			getSDocument().getSDocumentGraph().addSNode(adjp2, tok_com, domRel); // "complicated"				
-			getSDocument().getSDocumentGraph().addSNode(adjp1, sbar,    domRel);
-			getSDocument().getSDocumentGraph().addSNode(sbar,  tok_tha, domRel); // "than"
-			getSDocument().getSDocumentGraph().addSNode(sbar,  s1,      domRel);				
-			getSDocument().getSDocumentGraph().addSNode(s1,    np2,     domRel);				
-			getSDocument().getSDocumentGraph().addSNode(np2,   tok_it,  domRel); // "it"
-			getSDocument().getSDocumentGraph().addSNode(s1,    vp1,     domRel);
-			getSDocument().getSDocumentGraph().addSNode(vp1,   tok_app, domRel); // "appears"				
-			getSDocument().getSDocumentGraph().addSNode(vp1,   s2,      domRel);				
-			getSDocument().getSDocumentGraph().addSNode(s2,    vp2,     domRel);
-			getSDocument().getSDocumentGraph().addSNode(vp2,   tok_to,  domRel); // "to"				
-			getSDocument().getSDocumentGraph().addSNode(vp2,   vp3,     domRel);
-			getSDocument().getSDocumentGraph().addSNode(vp3,   tok_be,  domRel); // "be"
-			getSDocument().getSDocumentGraph().addSNode(root,  tok_PUN, domRel); // "?"
+			getDocument().getDocumentGraph().addNode(root,  sq,      domRel);
+			getDocument().getDocumentGraph().addNode(sq,    tok_is,  domRel); // "Is"
+			getDocument().getDocumentGraph().addNode(sq,    np1,     domRel);
+			getDocument().getDocumentGraph().addNode(np1,   tok_thi, domRel); // "this"
+			getDocument().getDocumentGraph().addNode(np1,   tok_exa, domRel); // "example"
+			getDocument().getDocumentGraph().addNode(sq,    adjp1,   domRel);
+			getDocument().getDocumentGraph().addNode(adjp1, adjp2,   domRel);
+			getDocument().getDocumentGraph().addNode(adjp2, tok_mor, domRel); // "more"
+			getDocument().getDocumentGraph().addNode(adjp2, tok_com, domRel); // "complicated"				
+			getDocument().getDocumentGraph().addNode(adjp1, sbar,    domRel);
+			getDocument().getDocumentGraph().addNode(sbar,  tok_tha, domRel); // "than"
+			getDocument().getDocumentGraph().addNode(sbar,  s1,      domRel);				
+			getDocument().getDocumentGraph().addNode(s1,    np2,     domRel);				
+			getDocument().getDocumentGraph().addNode(np2,   tok_it,  domRel); // "it"
+			getDocument().getDocumentGraph().addNode(s1,    vp1,     domRel);
+			getDocument().getDocumentGraph().addNode(vp1,   tok_app, domRel); // "appears"				
+			getDocument().getDocumentGraph().addNode(vp1,   s2,      domRel);				
+			getDocument().getDocumentGraph().addNode(s2,    vp2,     domRel);
+			getDocument().getDocumentGraph().addNode(vp2,   tok_to,  domRel); // "to"				
+			getDocument().getDocumentGraph().addNode(vp2,   vp3,     domRel);
+			getDocument().getDocumentGraph().addNode(vp3,   tok_be,  domRel); // "be"
+			getDocument().getDocumentGraph().addNode(root,  tok_PUN, domRel); // "?"
 			
 			//we set progress to 'done' to notify the user about the process status (this is very helpful, especially for longer taking processes)
 			setProgress(1.0);

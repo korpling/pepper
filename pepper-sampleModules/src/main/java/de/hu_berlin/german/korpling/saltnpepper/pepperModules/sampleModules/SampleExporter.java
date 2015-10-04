@@ -29,10 +29,11 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
+import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
+import de.hu_berlin.u.saltnpepper.salt.core.SNode;
+import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 /**
  * This class is a dummy implementation of a {@link PepperExporter} to show how
@@ -66,20 +67,20 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 		super();
 		// TODO change the name of the module, for example use the format name
 		// and the ending Exporter (FORMATExporter)
-		this.setName("SampleExporter");
+		setName("SampleExporter");
 		setName(ENDING_XML);
 		// TODO change the version of your module, we recommend to synchronize
 		// this value with the maven version in your pom.xml
-		this.setVersion("1.1.0");
+		setVersion("1.1.0");
 		// TODO change "dot" with format name and 1.0 with format version to
 		// support
-		this.addSupportedFormat("dot", "1.0", null);
+		addSupportedFormat("dot", "1.0", null);
 		// TODO change file ending, here it is set to 'dot' to create dot files
-		setSDocumentEnding("dot");
+		setDocumentEnding("dot");
 		// TODO change if necessary, this means, that the method
 		// exportCorpusStructure will create a file-structure corresponding to
 		// the given corpus-structure. One folder per SCorpus object
-		this.setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
+		setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
 	}
 
 	/**
@@ -89,9 +90,9 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 	 * exported to is set.
 	 */
 	@Override
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier Identifier) {
 		PepperMapper mapper = new SampleMapper();
-		mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+		mapper.setResourceURI(getIdentifier2ResourceTable().get(Identifier));
 		return (mapper);
 	}
 
@@ -103,13 +104,13 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// workaround to deal with a bug in Salt
-			SCorpusGraph sCorpusGraph = getSDocument().getSCorpusGraph();
+			SCorpusGraph sCorpusGraph = getDocument().getGraph();
 
-			SaltFactory.eINSTANCE.save_DOT(getSDocument(), getResourceURI());
+			SaltUtil.save_DOT(getDocument(), getResourceURI());
 
 			// workaround to deal with a bug in Salt
-			if (getSDocument().getSCorpusGraph() == null) {
-				getSDocument().setSCorpusGraph(sCorpusGraph);
+			if (getDocument().getGraph() == null) {
+				getDocument().setGraph(sCorpusGraph);
 			}
 
 			addProgress(1.0);
@@ -121,10 +122,10 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSCorpus() {
-			List<SCorpus> roots = getSCorpus().getSCorpusGraph().getSRootCorpus();
+			List<SNode> roots = getCorpus().getGraph().getRoots();
 			if ((roots != null) && (!roots.isEmpty())) {
-				if (getSCorpus().equals(roots.get(0))) {
-					SaltFactory.eINSTANCE.save_DOT(getSCorpus().getSCorpusGraph(), getResourceURI());
+				if (getCorpus().equals(roots.get(0))) {
+					SaltUtil.save_DOT(getCorpus().getGraph(), getResourceURI());
 				}
 			}
 

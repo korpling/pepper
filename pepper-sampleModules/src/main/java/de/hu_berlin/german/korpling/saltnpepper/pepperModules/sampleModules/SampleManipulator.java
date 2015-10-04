@@ -18,9 +18,9 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules;
 
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
@@ -32,15 +32,13 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModulePrope
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.graph.GRAPH_TRAVERSE_TYPE;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.STextualDS;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SAnnotation;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SGraphTraverseHandler;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SNode;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SRelation;
+import de.hu_berlin.u.saltnpepper.graph.Identifier;
+import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
+import de.hu_berlin.u.saltnpepper.salt.core.GraphTraverseHandler;
+import de.hu_berlin.u.saltnpepper.salt.core.SAnnotation;
+import de.hu_berlin.u.saltnpepper.salt.core.SGraph.GRAPH_TRAVERSE_TYPE;
+import de.hu_berlin.u.saltnpepper.salt.core.SNode;
+import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
 
 /**
  * This is a dummy implementation to show how a {@link PepperManipulator} works.
@@ -80,20 +78,20 @@ public class SampleManipulator extends PepperManipulatorImpl {
 	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
 	 * This method creates a customized {@link PepperMapper} object and returns
 	 * it. You can here do some additional initialisations. Thinks like setting
-	 * the {@link SElementId} of the {@link SDocument} or {@link SCorpus} object
+	 * the {@link Identifier} of the {@link SDocument} or {@link SCorpus} object
 	 * and the {@link URI} resource is done by the framework (or more in detail
-	 * in method {@link #start()}). The parameter <code>sElementId</code>, if a
+	 * in method {@link #start()}). The parameter <code>Identifier</code>, if a
 	 * {@link PepperMapper} object should be created in case of the object to
 	 * map is either an {@link SDocument} object or an {@link SCorpus} object of
 	 * the mapper should be initialized differently. <br/>
 	 * 
-	 * @param sElementId
-	 *            {@link SElementId} of the {@link SCorpus} or {@link SDocument}
+	 * @param Identifier
+	 *            {@link Identifier} of the {@link SCorpus} or {@link SDocument}
 	 *            to be processed.
 	 * @return {@link PepperMapper} object to do the mapping task for object
-	 *         connected to given {@link SElementId}
+	 *         connected to given {@link Identifier}
 	 */
-	public PepperMapper createPepperMapper(SElementId sElementId) {
+	public PepperMapper createPepperMapper(Identifier Identifier) {
 		SampleMapper mapper = new SampleMapper();
 		return (mapper);
 	}
@@ -114,14 +112,14 @@ public class SampleManipulator extends PepperManipulatorImpl {
 	 * @author Florian Zipser
 	 * 
 	 */
-	public class SampleMapper extends PepperMapperImpl implements SGraphTraverseHandler {
+	public class SampleMapper extends PepperMapperImpl implements GraphTraverseHandler {
 		/**
 		 * Creates meta annotations, if not already exists
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSCorpus() {
-			if (getSCorpus().getSMetaAnnotation("date") == null) {
-				getSCorpus().createSMetaAnnotation(null, "date", "1989-12-17");
+			if (getCorpus().getMetaAnnotation("date") == null) {
+				getCorpus().createMetaAnnotation(null, "date", "1989-12-17");
 			}
 			return (DOCUMENT_STATUS.COMPLETED);
 		}
@@ -138,36 +136,36 @@ public class SampleManipulator extends PepperManipulatorImpl {
 			StringBuilder out = new StringBuilder();
 			out.append("\n");
 			// print out the id of the document
-			out.append(getSDocument().getSId());
+			out.append(getDocument().getId());
 			out.append("\n");
 			out.append("+---------------------------------+\n");
 			// print out the general number of nodes
-			out.append(String.format(format, "nodes", getSDocument().getSDocumentGraph().getSNodes().size()));
+			out.append(String.format(format, "nodes", getDocument().getDocumentGraph().getNodes().size()));
 			addProgress((double) (1 / 7));
 			// print out the general number of relations
-			out.append(String.format(format, "relations", getSDocument().getSDocumentGraph().getSRelations().size()));
+			out.append(String.format(format, "relations", getDocument().getDocumentGraph().getRelations().size()));
 			addProgress((double) (1 / 7));
 			// print out the general number of primary texts
-			out.append(String.format(format, "texts", getSDocument().getSDocumentGraph().getSTextualDSs().size()));
+			out.append(String.format(format, "texts", getDocument().getDocumentGraph().getTextualDSs().size()));
 			addProgress((double) (1 / 7));
 			// print out the general number of tokens
-			out.append(String.format(format, "tokens", getSDocument().getSDocumentGraph().getSTokens().size()));
+			out.append(String.format(format, "tokens", getDocument().getDocumentGraph().getTokens().size()));
 			addProgress((double) (1 / 7));
 			// print out the general number of spans
-			out.append(String.format(format, "spans", getSDocument().getSDocumentGraph().getSSpans().size()));
+			out.append(String.format(format, "spans", getDocument().getDocumentGraph().getSpans().size()));
 			addProgress((double) (1 / 7));
 			// print out the general number of structures
-			out.append(String.format(format, "structures", getSDocument().getSDocumentGraph().getSStructures().size()));
+			out.append(String.format(format, "structures", getDocument().getDocumentGraph().getStructures().size()));
 			addProgress((double) (1 / 7));
 
 			// create alist of all root nodes of the current document-structure
-			EList<SNode> roots = getSDocument().getSDocumentGraph().getSRoots();
+			List<SNode> roots = getDocument().getDocumentGraph().getRoots();
 			// traverse the document-structure beginning at the roots in
 			// depth-first order top down. The id 'sampleTraversal' is used for
 			// uniqueness, in case of one class uses multiple traversals. This
 			// object then takes the call-backs implemented with methods
 			// checkConstraint, nodeReached and nodeLeft
-			getSDocument().getSDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "sampleTraversal", this);
+			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "sampleTraversal", this);
 
 			// print out computed frequencies
 			for (String key : frequencies.keySet()) {
@@ -192,18 +190,18 @@ public class SampleManipulator extends PepperManipulatorImpl {
 		 */
 		@Override
 		public void nodeReached(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation sRelation, SNode fromNode, long order) {
-			if (currNode.getSAnnotations().size() != 0) {
+			if (currNode.getAnnotations().size() != 0) {
 				// step through all annotations to collect them in frequencies
 				// table
-				for (SAnnotation annotation : currNode.getSAnnotations()) {
-					Integer frequence = frequencies.get(annotation.getSName());
+				for (SAnnotation annotation : currNode.getAnnotations()) {
+					Integer frequence = frequencies.get(annotation.getName());
 					// if annotation hasn't been seen yet, create entry in
 					// frequencies set frequency to 0
 					if (frequence == null) {
 						frequence = 0;
 					}
 					frequence++;
-					frequencies.put(annotation.getSName(), frequence);
+					frequencies.put(annotation.getName(), frequence);
 				}
 			}
 		}

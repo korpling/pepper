@@ -267,7 +267,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 
 				if (SALT_TYPE.SCORPUS.equals(type)) {
 					// resource is a SCorpus create corpus
-					SCorpus sCorpus = getCorpusGraph().createSCorpus(parent, currURI.lastSegment());
+					SCorpus sCorpus = getCorpusGraph().createCorpus(parent, currURI.lastSegment());
 					this.getIdentifier2ResourceTable().put(sCorpus.getIdentifier(), currURI);
 					if (currFile.isDirectory()) {
 						for (File file : currFile.listFiles()) {
@@ -288,17 +288,17 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					if (parent == null) {
 						// if there is no corpus given, create one with name of
 						// document
-						parent = getCorpusGraph().createSCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						parent = getCorpusGraph().createCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 
 						this.getIdentifier2ResourceTable().put(parent.getIdentifier(), currURI);
 					}
 					File docFile = new File(currURI.toFileString());
 					SDocument sDocument = null;
 					if (docFile.isDirectory()) {
-						sDocument = getCorpusGraph().createSDocument(parent, currURI.lastSegment());
+						sDocument = getCorpusGraph().createDocument(parent, currURI.lastSegment());
 					} else {
 						// if uri is a file, cut off file ending
-						sDocument = getCorpusGraph().createSDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						sDocument = getCorpusGraph().createDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 					}
 					// link documentId with resource
 					this.getIdentifier2ResourceTable().put(sDocument.getIdentifier(), currURI);
