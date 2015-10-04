@@ -120,8 +120,7 @@ public class PepperMapperImpl implements PepperMapper {
 			subj = getMappingSubjects().get(0);
 		}
 		if (sDocument.getIdentifier() == null) {
-			throw new PepperFWException("This should not happen, please fix me. ");
-			//sDocument.setIdentifier(SaltFactory.createIdentifier());
+			SaltFactory.createIdentifier(sDocument, "doc");
 		}
 		subj.setIdentifier(sDocument.getIdentifier());
 	}
