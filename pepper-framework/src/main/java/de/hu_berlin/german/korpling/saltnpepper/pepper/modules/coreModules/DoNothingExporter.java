@@ -22,10 +22,12 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
+import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
+import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
 import de.hu_berlin.u.saltnpepper.graph.Identifier;
 
 @Component(name = "DoNothingExporterComponent", factory = "PepperExporterComponentFactory")
@@ -54,8 +56,12 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {
-		PepperMapper mapper = new DoNothingMapper();
+		PepperMapper mapper = new PepperMapperImpl() {
+			@Override
+			public DOCUMENT_STATUS mapSDocument() {
+				return (DOCUMENT_STATUS.COMPLETED);
+			}
+		};
 		return (mapper);
 	}
-
 }
