@@ -18,6 +18,6 @@
 
 # Want to know more?
 
-* Homepage: http://annis-tools.org/pepper
+* Homepage: http://corpus-tools.org/pepper
 * Code: https://github.com/korpling/pepper
 * Bug and issue tracking: https://github.com/korpling/pepper/issues
