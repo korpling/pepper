@@ -19,12 +19,13 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
 import java.util.concurrent.Future;
 
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * An object of this types contains a {@link PepperModule} and handles as a

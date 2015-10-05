@@ -19,6 +19,10 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.util.List;
 
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.core.SNode;
+import org.corpus_tools.salt.graph.Identifier;
+import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
@@ -27,10 +31,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguratio
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.core.SNode;
-import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 @Component(name = "DOTExporterComponent", factory = "PepperExporterComponentFactory", enabled = true)
 public class DOTExporter extends PepperExporterImpl {

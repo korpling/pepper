@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,10 +40,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 @RunWith(JUnit4.class)
 public class DocumentBusTest {

@@ -19,16 +19,16 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 public class PepperMapperImplTest {
 

@@ -21,6 +21,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SaltProject;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
@@ -42,10 +46,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DoNothingExporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DoNothingImporter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleTestException;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
-import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 /**
  * This class offers some static fields and methods for testing

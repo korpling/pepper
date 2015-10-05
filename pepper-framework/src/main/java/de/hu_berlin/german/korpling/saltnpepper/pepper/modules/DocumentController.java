@@ -19,17 +19,17 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
 import java.util.List;
 
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SDocumentGraph;
+import org.corpus_tools.salt.core.SNode;
+import org.corpus_tools.salt.core.SRelation;
+import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocumentGraph;
-import de.hu_berlin.u.saltnpepper.salt.core.SNode;
-import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
 
 public interface DocumentController {
 

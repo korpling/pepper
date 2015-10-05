@@ -20,6 +20,12 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.STextualDS;
+import org.corpus_tools.salt.common.STextualRelation;
+import org.corpus_tools.salt.core.SRelation;
+import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -30,12 +36,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguratio
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
-import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
-import de.hu_berlin.u.saltnpepper.salt.common.STextualRelation;
-import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
 
 /**
  * This class analyzes a Salt model and prints out a report about conflicts in

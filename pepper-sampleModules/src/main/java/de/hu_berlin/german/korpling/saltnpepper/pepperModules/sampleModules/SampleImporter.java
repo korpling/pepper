@@ -20,6 +20,17 @@ package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SPointingRelation;
+import org.corpus_tools.salt.common.SSpan;
+import org.corpus_tools.salt.common.SStructure;
+import org.corpus_tools.salt.common.STextualDS;
+import org.corpus_tools.salt.common.SToken;
+import org.corpus_tools.salt.graph.Identifier;
+import org.corpus_tools.salt.util.SALT_TYPE;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -34,17 +45,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.Pepper
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
-import de.hu_berlin.u.saltnpepper.salt.common.SPointingRelation;
-import de.hu_berlin.u.saltnpepper.salt.common.SSpan;
-import de.hu_berlin.u.saltnpepper.salt.common.SStructure;
-import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
-import de.hu_berlin.u.saltnpepper.salt.common.SToken;
-import de.hu_berlin.u.saltnpepper.salt.util.SALT_TYPE;
 
 /**
  * This is a dummy implementation of a {@link PepperImporter}, which can be used as a template to create your own

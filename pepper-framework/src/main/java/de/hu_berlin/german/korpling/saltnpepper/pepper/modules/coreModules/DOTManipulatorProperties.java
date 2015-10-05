@@ -19,9 +19,10 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 
 import java.io.File;
 
+import org.corpus_tools.salt.util.SaltUtil;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
-import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 public class DOTManipulatorProperties extends PepperModuleProperties {
 	public static final String PREFIX = "dotManipulator.";

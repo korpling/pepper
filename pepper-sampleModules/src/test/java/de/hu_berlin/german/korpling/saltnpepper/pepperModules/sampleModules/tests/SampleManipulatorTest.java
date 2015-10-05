@@ -20,13 +20,13 @@ package de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.tes
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.samples.SampleGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
 import de.hu_berlin.german.korpling.saltnpepper.pepperModules.sampleModules.SampleManipulator;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
-import de.hu_berlin.u.saltnpepper.salt.samples.SampleGenerator;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the

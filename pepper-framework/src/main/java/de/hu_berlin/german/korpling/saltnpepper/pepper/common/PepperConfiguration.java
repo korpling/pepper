@@ -25,13 +25,13 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import org.corpus_tools.salt.common.SDocument;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Property;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperConfigurationException;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * This class contains all possible configurations, to take influence on the

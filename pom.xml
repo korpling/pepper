@@ -100,7 +100,7 @@
 			</dependency> -->
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-			<artifactId>salt-core</artifactId>
+			<artifactId>salt-api</artifactId>
 			<version>${salt.version}</version>
 			<scope>compile</scope>
 		</dependency>

@@ -22,12 +22,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.salt.common.SaltProject;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.ModuleController;
-import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 public abstract class PepperJob {
 	/** Identifier of this job. Should be unique in Pepper. **/

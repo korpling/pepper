@@ -27,6 +27,9 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SaltProject;
+import org.corpus_tools.salt.samples.SampleGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,9 +40,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWExcept
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperModuleImpl;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
-import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
-import de.hu_berlin.u.saltnpepper.salt.samples.SampleGenerator;
 
 public class ModuleControllerTest {
 

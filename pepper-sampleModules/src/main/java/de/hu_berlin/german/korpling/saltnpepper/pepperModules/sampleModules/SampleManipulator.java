@@ -21,24 +21,23 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.STextualDS;
+import org.corpus_tools.salt.core.GraphTraverseHandler;
+import org.corpus_tools.salt.core.SAnnotation;
+import org.corpus_tools.salt.core.SGraph.GRAPH_TRAVERSE_TYPE;
+import org.corpus_tools.salt.core.SNode;
+import org.corpus_tools.salt.core.SRelation;
+import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleNotReadyException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.common.STextualDS;
-import de.hu_berlin.u.saltnpepper.salt.core.GraphTraverseHandler;
-import de.hu_berlin.u.saltnpepper.salt.core.SAnnotation;
-import de.hu_berlin.u.saltnpepper.salt.core.SGraph.GRAPH_TRAVERSE_TYPE;
-import de.hu_berlin.u.saltnpepper.salt.core.SNode;
-import de.hu_berlin.u.saltnpepper.salt.core.SRelation;
 
 /**
  * This is a dummy implementation to show how a {@link PepperManipulator} works.
@@ -68,10 +67,10 @@ public class SampleManipulator extends PepperManipulatorImpl {
 		super();
 		// TODO change the name of the module, for example use the format name
 		// and the ending Manipulator
-		this.setName("SampleManipulator");
+		setName("SampleManipulator");
 		// TODO change the version of your module, we recommend to synchronize
 		// this value with the maven version in your pom.xml
-		this.setVersion("1.1.0");
+		setVersion("1.1.0");
 	}
 
 	/**

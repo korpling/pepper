@@ -19,11 +19,11 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules;
 
 import java.util.List;
 
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpus;
-import de.hu_berlin.u.saltnpepper.salt.common.SDocument;
 
 /**
  * This interface can be used in a threaded environment, where the

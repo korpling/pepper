@@ -26,12 +26,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SaltProject;
 import org.junit.Test;
 
 import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 /**
  * <p>

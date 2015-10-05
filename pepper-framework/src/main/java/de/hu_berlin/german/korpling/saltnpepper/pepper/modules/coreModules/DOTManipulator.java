@@ -20,6 +20,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules;
 import java.io.File;
 import java.io.IOException;
 
+import org.corpus_tools.salt.core.SNode;
+import org.corpus_tools.salt.graph.Identifier;
+import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -31,9 +34,6 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.u.saltnpepper.graph.Identifier;
-import de.hu_berlin.u.saltnpepper.salt.core.SNode;
-import de.hu_berlin.u.saltnpepper.salt.util.SaltUtil;
 
 @Component(name = "DOTManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class DOTManipulator extends PepperManipulatorImpl {

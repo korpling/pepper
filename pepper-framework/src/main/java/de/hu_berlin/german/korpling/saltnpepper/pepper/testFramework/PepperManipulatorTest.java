@@ -17,9 +17,10 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework;
 
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SaltProject;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
-import de.hu_berlin.u.saltnpepper.salt.common.SCorpusGraph;
-import de.hu_berlin.u.saltnpepper.salt.common.SaltProject;
 
 /**
  * <p>
