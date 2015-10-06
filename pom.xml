@@ -10,10 +10,8 @@
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
 	</modules>
-	<description>Pepper is a plugable converter framework to convert linguistic data between several
-        formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged
-        into the framework via creating a PepperModule.</description>
-	<url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
+	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>
+	<url>http://corpus-tools.org/pepper/</url>
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/korpling/pepper/issues</url>

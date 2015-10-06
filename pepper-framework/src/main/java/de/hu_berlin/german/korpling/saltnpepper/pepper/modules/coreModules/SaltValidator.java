@@ -54,9 +54,10 @@ public class SaltValidator extends PepperManipulatorImpl {
 	public SaltValidator() {
 		super();
 		setName("SaltValidator");
+		setDesc("The aim of the SaltValidator is to check a Salt model and to detect possible problems for further modules. This might be very helpful, when developing an importer or a manipulator, to check their output. This could also be used by end users, to check if a module produces a processable output.");
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
-		this.setProperties(new SaltValidatorProperties());
+		setProperties(new SaltValidatorProperties());
 	}
 
 	@Override
