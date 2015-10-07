@@ -623,7 +623,7 @@ public class MavenAccessor {
 	private String getBlackListString(Artifact artifact){
 		String as = artifact.toString().substring(0, artifact.toString().lastIndexOf(DELIMITER.charAt(0)));
 		for (String artifactString : forbiddenFruits){
-			if (artifactString.startsWith(as)){				
+			if (artifactString.startsWith(as) || artifactString.split(":")[1].equals(as.split(":")[1])){				
 				return artifactString;
 			}
 		}
