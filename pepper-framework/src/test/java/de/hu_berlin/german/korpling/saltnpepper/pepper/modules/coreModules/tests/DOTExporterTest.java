@@ -52,7 +52,6 @@ public class DOTExporterTest extends PepperExporterTest {
 
 	// SaltSample saltSample = new SaltSample();
 	SaltProject saltProject = SaltFactory.eINSTANCE.createSaltProject();
-	SCorpusGraph sCorpusGraph = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -102,7 +101,7 @@ public class DOTExporterTest extends PepperExporterTest {
 		// start: create sample
 		// start:create corpus structure
 
-		SDocument sDoc = this.createCorpusStructure(sCorpusGraph);
+		SDocument sDoc = this.createCorpusStructure(null);
 		sDoc.setSDocumentGraph(null);
 		// logger.debug("Created corpus structure for sDocument");
 		// end: create sample

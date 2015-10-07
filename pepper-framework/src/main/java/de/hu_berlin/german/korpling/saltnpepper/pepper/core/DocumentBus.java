@@ -514,24 +514,21 @@ public class DocumentBus {
 		}
 		try {
 			if ((queue.size() == 0) && (!this.isFinished())) {
-				if ((queue.size() == 0) && (!this.isFinished())) {
-					logger.trace("[Pepper] start waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ", getId(), outputControllerId);
-					waitUntilAllDocumentsArePut.await();
-					logger.trace("[Pepper] ended waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ", getId(), outputControllerId);
-				}
+				logger.trace("[Pepper] start waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ", getId(), outputControllerId);
+				waitUntilAllDocumentsArePut.await();
+				logger.trace("[Pepper] ended waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ", getId(), outputControllerId);
 			}
 
 			documentController = queue.poll();
 
 			if (!ignorePermissionForDocument) {
-				if (documentController != null)
-					if ((documentController != null) && (documentController.isAsleep())) {
-						if (getPepperJob() != null) {
-							logger.debug("[Pepper] waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ", (documentController.getGlobalId() != null) ? documentController.getGlobalId() : "NULL", outputControllerId, getId());
-							getPepperJob().getPermissionForProcessDoument(documentController);
-						}
-						documentController.awake();
+				if ((documentController != null) && (documentController.isAsleep())) {
+					if (getPepperJob() != null) {
+						logger.debug("[Pepper] waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ", (documentController.getGlobalId() != null) ? documentController.getGlobalId() : "NULL", outputControllerId, getId());
+						getPepperJob().getPermissionForProcessDoument(documentController);
 					}
+					documentController.awake();
+				}
 			}
 		} catch (InterruptedException e) {
 			throw new PepperFWException("Something went wrong, when waiting for lock 'waitUntilAllDocumentsArePut'.", e);

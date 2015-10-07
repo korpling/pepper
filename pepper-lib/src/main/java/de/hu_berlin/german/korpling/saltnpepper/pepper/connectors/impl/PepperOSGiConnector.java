@@ -50,6 +50,9 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarterConfiguration;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.cli.exceptions.PepperOSGiException;
@@ -402,7 +405,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	/** Stores all bundle ids and the corresponding bundles. */
 	private Map<Long, Bundle> bundleIdMap = new Hashtable<Long, Bundle>();
 	/** Stores all locations of bundles and the corresponding bundle ids **/
-	private Map<URI, Long> locationBundleIdMap = new Hashtable<URI, Long>();
+	private BiMap<URI, Long> locationBundleIdMap = HashBiMap.create();
 
 	/**
 	 * Returns the bundle id to an already installed bundle from the passed
@@ -589,7 +592,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			try {
 				bundle.start();
 			} catch (BundleException e) {
-				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. This could cause other problems. For more details turn on log mode to debug and see log file. ", e);
+				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. The bundle is located at '"+locationBundleIdMap.inverse().get(bundleId)+"'. This could cause other problems. For more details turn on log mode to debug and see log file. ", e);
 			}
 		}
 		if (bundle.getState() != Bundle.ACTIVE) {

@@ -931,8 +931,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 
 						String[] parts = resource.getName().split("[.]");
 						if (parts != null) {
-							String currEnding = parts[parts.length - 1];
-							resource.getAbsolutePath().lastIndexOf(".");
 							metaFile = new File(resource.getAbsolutePath().substring(0, resource.getAbsolutePath().lastIndexOf(".")) + "." + ending);
 							if (!metaFile.exists()) {
 								metaFile = null;

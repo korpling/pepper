@@ -426,13 +426,14 @@ public class DocumentControllerImpl implements DocumentController {
 	}
 
 	/** stores the currently active document controller **/
-	protected volatile ModuleController currentModuleController= null;
+	protected volatile ModuleController currentModuleController = null;
+
 	/** {@inheritDoc} */
 	@Override
 	public ModuleController getCurrentModuleController() {
 		return currentModuleController;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -444,10 +445,10 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	@Override
 	public void updateStatus(ModuleController moduleController, DOCUMENT_STATUS status) {
-		if (moduleController == null){
+		if (moduleController == null) {
 			throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the given identifier for module conttroller is empty.");
 		}
-		if (status == null){
+		if (status == null) {
 			throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the passed status is null.");
 		}
 		synchronized (moduleController) {
@@ -458,15 +459,15 @@ public class DocumentControllerImpl implements DocumentController {
 			if ((DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus())) && (DOCUMENT_STATUS.IN_PROGRESS.equals(status))) {
 				numberOfProcessingModules++;
 				detailedStatus.setStatus(status);
-				currentModuleController= moduleController;
+				currentModuleController = moduleController;
 			} else if ((DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) && ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status)) || (DOCUMENT_STATUS.DELETED.equals(status)))) {
 				numberOfProcessingModules--;
-				if (getNumOfProcessingModules() < 0){
+				if (getNumOfProcessingModules() < 0) {
 					throw new PepperFWException("The number of " + PepperModule.class.getSimpleName() + " for this " + DocumentControllerImpl.class.getSimpleName() + " object '" + getGlobalId() + "' was set to a value less than 0.");
 				}
-				currentModuleController= null;
+				currentModuleController = null;
 				detailedStatus.setStatus(status);
-			} else{
+			} else {
 				throw new PepperFWException("Cannot update status of sDocument '" + getGlobalId() + "' for module controller '" + moduleController + "', because the level of current status '" + detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
 			}
 			this.updateGlobalStatus();
@@ -573,15 +574,17 @@ public class DocumentControllerImpl implements DocumentController {
 					Double newVal = moduleController.getProgress(getGlobalId());
 					if (newVal == null) {
 						DetailedStatus detailedStatus = getDetailedStatuses().get(moduleController.getId());
-						if (DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus()))
+						if (DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) {
 							newVal = 0d;
-						else if (DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus()))
+						} else if (DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus())) {
 							newVal = 0d;
-						else if (DOCUMENT_STATUS.COMPLETED.equals(detailedStatus.getStatus()))
+						} else if (DOCUMENT_STATUS.COMPLETED.equals(detailedStatus.getStatus())) {
 							newVal = 1d;
+						}
 					}
-					if (0d != newVal)
+					if (newVal!= null && 0d != newVal){
 						p_total = p_total + (newVal / Double.valueOf(moduleControllers.size()));
+					}
 				}
 			}
 			return (p_total);

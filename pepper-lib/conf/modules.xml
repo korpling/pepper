@@ -27,7 +27,7 @@
 	<pepperModules>
 		<artifactId>pepperModules-FALKOModules</artifactId>
 	</pepperModules>
-		<pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-GATEModules</artifactId>
 	</pepperModules>
 	<pepperModules>
