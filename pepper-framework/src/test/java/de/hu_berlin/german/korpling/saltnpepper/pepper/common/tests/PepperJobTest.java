@@ -19,12 +19,11 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common.tests;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.corpus_tools.pepper.common.PepperJob;
+import org.corpus_tools.pepper.core.PepperJobImpl;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperJob;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
 
 public class PepperJobTest extends PepperJob {
 

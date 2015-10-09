@@ -27,19 +27,18 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.pepper.core.DocumentBus;
+import org.corpus_tools.pepper.core.DocumentControllerImpl;
+import org.corpus_tools.pepper.core.ModuleControllerImpl;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.impl.PepperModuleImpl;
+import org.corpus_tools.pepper.modules.DocumentController;
+import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.salt.common.SDocument;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.SampleGenerator;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperModuleImpl;
 
 public class ModuleControllerTest {
 

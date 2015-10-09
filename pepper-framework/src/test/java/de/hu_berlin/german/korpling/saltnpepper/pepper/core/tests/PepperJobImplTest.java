@@ -43,6 +43,33 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.common.JOB_STATUS;
+import org.corpus_tools.pepper.common.MEMORY_POLICY;
+import org.corpus_tools.pepper.common.MODULE_TYPE;
+import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.core.ModuleResolver;
+import org.corpus_tools.pepper.core.ModuleResolverImpl;
+import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.pepper.core.PepperParamsReader;
+import org.corpus_tools.pepper.core.Step;
+import org.corpus_tools.pepper.exceptions.PepperException;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.exceptions.PepperOSGiRunnerException;
+import org.corpus_tools.pepper.exceptions.WorkflowException;
+import org.corpus_tools.pepper.impl.PepperExporterImpl;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
+import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
+import org.corpus_tools.pepper.impl.PepperMapperImpl;
+import org.corpus_tools.pepper.modules.PepperExporter;
+import org.corpus_tools.pepper.modules.PepperImporter;
+import org.corpus_tools.pepper.modules.PepperManipulator;
+import org.corpus_tools.pepper.modules.PepperMapper;
+import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.testFramework.PepperModuleTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -56,34 +83,6 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.JOB_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperParamsReader;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperOSGiRunnerException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperModuleTest;
 
 public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptionHandler {
 
@@ -153,7 +152,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 	/**
 	 * Tests if
-	 * {@link PepperJobImpl#setConfiguration(de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration)}
+	 * {@link PepperJobImpl#setConfiguration(org.corpus_tools.pepper.common.PepperConfiguration)}
 	 * initializes values for {@link PepperJobImpl#getMemPolicy()} and
 	 * {@link PepperJobImpl#getMaxNumberOfDocuments()}.
 	 */

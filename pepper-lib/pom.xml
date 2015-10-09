@@ -219,7 +219,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>de.hu_berlin.german.korpling.saltnpepper.pepper.pepperStarter.PepperStarter</mainClass>
+							<mainClass>org.corpus_tools.pepper.pepperStarter.PepperStarter</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

@@ -17,12 +17,11 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.tests;
 
+import org.corpus_tools.pepper.modules.coreModules.DOTManipulator;
+import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DOTManipulator;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperManipulatorTest;
 
 public class DOTManipulatorTest extends PepperManipulatorTest {
 

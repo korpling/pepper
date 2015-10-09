@@ -21,9 +21,8 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
+import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperty;
 
 public class PepperModulePropertyTest extends TestCase {
 	/**

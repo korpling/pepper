@@ -22,6 +22,10 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.modules.coreModules.DOTExporter;
+import org.corpus_tools.pepper.testFramework.PepperExporterTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusDocumentRelation;
@@ -35,11 +39,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.DOTExporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperExporterTest;
 
 @RunWith(JUnit4.class)
 public class DOTExporterTest extends PepperExporterTest {

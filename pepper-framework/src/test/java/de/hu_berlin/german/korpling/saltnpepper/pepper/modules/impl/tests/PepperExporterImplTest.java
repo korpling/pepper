@@ -19,6 +19,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -27,10 +30,6 @@ import org.corpus_tools.salt.samples.SampleGenerator;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
 
 public class PepperExporterImplTest extends PepperExporterImpl {
 

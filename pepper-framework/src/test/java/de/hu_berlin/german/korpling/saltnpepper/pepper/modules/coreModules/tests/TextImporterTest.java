@@ -24,17 +24,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.modules.coreModules.TextImporter;
+import org.corpus_tools.pepper.modules.coreModules.TextImporter.TextMapper;
+import org.corpus_tools.pepper.testFramework.PepperImporterTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.TextImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.TextImporter.TextMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
 
 public class TextImporterTest extends PepperImporterTest {
 

@@ -29,6 +29,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.core.DocumentControllerImpl;
+import org.corpus_tools.pepper.core.ModuleControllerImpl;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.modules.DocumentController;
+import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SDocument;
 import org.corpus_tools.salt.samples.SampleGenerator;
@@ -39,13 +45,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
 
 @RunWith(JUnit4.class)
 public class DocumentControllerTest extends DocumentControllerImpl {

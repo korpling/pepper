@@ -23,10 +23,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.corpus_tools.pepper.common.PepperUtil;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
 
 /**
  * This class is a test class to tes {@link PepperUtil}.
