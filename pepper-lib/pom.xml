@@ -16,10 +16,6 @@
             <url>http://www.jabylon.org/maven/</url>
         </repository>
     </repositories>
-	<scm>
-		<developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-starter/</developerConnection>
-		<url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-starter/</url>
-	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>

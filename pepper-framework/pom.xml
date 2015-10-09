@@ -9,10 +9,6 @@
 		<version>3.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<scm>
-		<developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-framework/</developerConnection>
-		<url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-framework/</url>
-	</scm>
 	<description>This project contains the core of pepper.</description>
 	<build>
 		<plugins>
