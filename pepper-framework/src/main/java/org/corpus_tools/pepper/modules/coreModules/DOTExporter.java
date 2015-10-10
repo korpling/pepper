@@ -79,7 +79,7 @@ public class DOTExporter extends PepperExporterImpl {
 		String segments = "";
 		URI outputURI = null;
 
-		for (String segment : ((SNode)sElementId.getIdentifiableElement()).getPath().segmentsList())
+		for (String segment : ((SNode) sElementId.getIdentifiableElement()).getPath().segmentsList())
 			segments = segments + "/" + segment;
 		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments + "." + SaltUtil.FILE_ENDING_SALT_XML);
 

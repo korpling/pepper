@@ -892,11 +892,11 @@ public class PepperJobImpl extends PepperJob {
 					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '" + str.toString() + "'. ");
 				}
 			}
-			status= JOB_STATUS.IMPORTING_CORPUS_STRUCTURE;
+			status = JOB_STATUS.IMPORTING_CORPUS_STRUCTURE;
 			if (!isImportedCorpusStructure) {
 				importCorpusStructures();
 			}
-			status= JOB_STATUS.IMPORTING_DOCUMENT_STRUCTURE;
+			status = JOB_STATUS.IMPORTING_DOCUMENT_STRUCTURE;
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
 			// create a future for each step
 			for (Step step : getAllSteps()) {

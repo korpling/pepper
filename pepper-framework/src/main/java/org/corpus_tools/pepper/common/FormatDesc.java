@@ -22,12 +22,9 @@ import org.eclipse.emf.common.util.URI;
 /**
  * This class is used by Pepper to describe a linguistic data format. Such an
  * object is used for instance to describe the set of formats which can be
- * handled by a
- * {@link org.corpus_tools.pepper.modules.PepperImporter}
- * or a
- * {@link org.corpus_tools.pepper.modules.PepperExporter}
- * . Or it can be used to determine the format of a corpus resource as given in
- * {@link CorpusDesc}. <br/>
+ * handled by a {@link org.corpus_tools.pepper.modules.PepperImporter} or a
+ * {@link org.corpus_tools.pepper.modules.PepperExporter} . Or it can be used to
+ * determine the format of a corpus resource as given in {@link CorpusDesc}. <br/>
  * Main fields are:
  * <ul>
  * <li>{@link #formatName} - to determine the name of the format</li>

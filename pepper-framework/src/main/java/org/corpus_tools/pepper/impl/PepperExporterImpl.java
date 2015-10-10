@@ -265,7 +265,7 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 
 		try {
 			File folder = new File(getCorpusDesc().getCorpusPath().toFileString());
-			File newFolder = new File(folder.getCanonicalPath() + "/" + ((SNode)id.getIdentifiableElement()).getPath().toString());
+			File newFolder = new File(folder.getCanonicalPath() + "/" + ((SNode) id.getIdentifiableElement()).getPath().toString());
 			newFolder.mkdirs();
 			return (URI.createFileURI(newFolder.getAbsolutePath()));
 		} catch (IOException e) {

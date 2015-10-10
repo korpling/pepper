@@ -591,7 +591,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			try {
 				bundle.start();
 			} catch (BundleException e) {
-				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. The bundle is located at '"+locationBundleIdMap.inverse().get(bundleId)+"'. This could cause other problems. For more details turn on log mode to debug and see log file. ", e);
+				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. The bundle is located at '" + locationBundleIdMap.inverse().get(bundleId) + "'. This could cause other problems. For more details turn on log mode to debug and see log file. ", e);
 			}
 		}
 		if (bundle.getState() != Bundle.ACTIVE) {

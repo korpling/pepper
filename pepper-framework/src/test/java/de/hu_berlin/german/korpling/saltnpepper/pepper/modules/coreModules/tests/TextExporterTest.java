@@ -121,7 +121,7 @@ public class TextExporterTest extends PepperExporterTest {
 		getFixture().setCorpusDesc(new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test3")));
 		start();
 		String parent = getTestResources() + "/TextExporterTest/test3";
-		
+
 		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
 		assertTrue(compareFiles(new File(parent + "/corp1/doc2_sText1.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText1.txt")));
 		assertTrue(compareFiles(new File(parent + "/corp1/doc2_sText2.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText2.txt")));

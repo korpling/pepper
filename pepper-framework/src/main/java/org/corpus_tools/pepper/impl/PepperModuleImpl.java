@@ -918,7 +918,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 						File[] files = resource.listFiles();
 						if (files != null) {
 							for (File file : resource.listFiles()) {
-								if (file.getName().equalsIgnoreCase(((SNode)id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
+								if (file.getName().equalsIgnoreCase(((SNode) id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
 									metaFile = file;
 									break;
 								}

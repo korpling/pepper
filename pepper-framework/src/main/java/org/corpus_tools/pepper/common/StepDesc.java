@@ -29,9 +29,9 @@ import org.eclipse.emf.common.util.URI;
 /**
  * This class represents a description of a single step in Pepper. A step is a
  * conceptual unit, to which exactly one
- * {@link org.corpus_tools.pepper.modules.PepperModule}
- * instance belongs to. Such a step can belong to either the import phase, the
- * manipulation phase or the export phase. <br/>
+ * {@link org.corpus_tools.pepper.modules.PepperModule} instance belongs to.
+ * Such a step can belong to either the import phase, the manipulation phase or
+ * the export phase. <br/>
  * This class is used as a communication bridge between the Pepper framework and
  * the outside. When using Pepper as a library or a service, one can create
  * {@link StepDesc} object which an abstract description of which module is to
@@ -41,22 +41,18 @@ import org.eclipse.emf.common.util.URI;
  * The main fields of this class are:
  * <ul>
  * <li>{@link #name} - the name of the
- * {@link org.corpus_tools.pepper.modules.PepperModule}
- * to be used to identify
+ * {@link org.corpus_tools.pepper.modules.PepperModule} to be used to identify
  * {@link org.corpus_tools.pepper.modules.PepperModule}</li>
  * <li>{@link #version} - the version of the
- * {@link org.corpus_tools.pepper.modules.PepperModule}
- * to be used to identify the
- * {@link org.corpus_tools.pepper.modules.PepperModule}</li>
+ * {@link org.corpus_tools.pepper.modules.PepperModule} to be used to identify
+ * the {@link org.corpus_tools.pepper.modules.PepperModule}</li>
  * <li>{@link #corpusDesc} - an object describing the corpus to be imported or
  * exported (just in case of the
- * {@link org.corpus_tools.pepper.modules.PepperModule}
- * is a
- * {@link org.corpus_tools.pepper.modules.PepperImporter}
- * or a
- * {@link org.corpus_tools.pepper.modules.PepperExporter}
- * ). This object contains a description of the format (name and version) and a
- * path, where to find the corpus.</li>
+ * {@link org.corpus_tools.pepper.modules.PepperModule} is a
+ * {@link org.corpus_tools.pepper.modules.PepperImporter} or a
+ * {@link org.corpus_tools.pepper.modules.PepperExporter} ). This object
+ * contains a description of the format (name and version) and a path, where to
+ * find the corpus.</li>
  * <li>{@link #props} - a general property object (see: {@link Properties}) to
  * customize the mapping process</li>
  * </ul>
@@ -71,8 +67,7 @@ public class StepDesc {
 
 	/**
 	 * Returns the type of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * to be used.
+	 * {@link org.corpus_tools.pepper.modules.PepperModule} to be used.
 	 * 
 	 * @return module type
 	 */
@@ -81,8 +76,7 @@ public class StepDesc {
 	}
 
 	/**
-	 * Sets the type of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
+	 * Sets the type of the {@link org.corpus_tools.pepper.modules.PepperModule}
 	 * to be used.
 	 * 
 	 * @param moduleType
@@ -92,51 +86,45 @@ public class StepDesc {
 	}
 
 	/**
-	 * Name of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * to be used for this step.
+	 * Name of the {@link org.corpus_tools.pepper.modules.PepperModule} to be
+	 * used for this step.
 	 **/
 	private String name = null;
 
 	/**
 	 * Returns the name of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * to be used for this step.
+	 * {@link org.corpus_tools.pepper.modules.PepperModule} to be used for this
+	 * step.
 	 * 
-	 * @return name of
-	 *         {@link org.corpus_tools.pepper.modules.PepperModule}
+	 * @return name of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Sets the name of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
+	 * Sets the name of the {@link org.corpus_tools.pepper.modules.PepperModule}
 	 * to be used for this step.
 	 * 
 	 * @param name
-	 *            of
-	 *            {@link org.corpus_tools.pepper.modules.PepperModule}
+	 *            of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
 	public synchronized void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Version of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * to be used for this step.
+	 * Version of the {@link org.corpus_tools.pepper.modules.PepperModule} to be
+	 * used for this step.
 	 **/
 	private String version = null;
 
 	/**
 	 * Returns the version of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * to be used for this step.
+	 * {@link org.corpus_tools.pepper.modules.PepperModule} to be used for this
+	 * step.
 	 * 
-	 * @return version of
-	 *         {@link org.corpus_tools.pepper.modules.PepperModule}
+	 * @return version of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
 	public String getVersion() {
 		return version;
@@ -144,12 +132,11 @@ public class StepDesc {
 
 	/**
 	 * Sets the version of the
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * to be used for this step.
+	 * {@link org.corpus_tools.pepper.modules.PepperModule} to be used for this
+	 * step.
 	 * 
 	 * @param version
-	 *            of
-	 *            {@link org.corpus_tools.pepper.modules.PepperModule}
+	 *            of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
 	public synchronized void setVersion(String version) {
 		this.version = version;
@@ -210,8 +197,7 @@ public class StepDesc {
 	/**
 	 * Returns the object for temporary storage of customization properties.
 	 * This object is used to create
-	 * {@link org.corpus_tools.pepper.modules.PepperModuleProperties}
-	 * .
+	 * {@link org.corpus_tools.pepper.modules.PepperModuleProperties} .
 	 * 
 	 * @return
 	 */
@@ -220,14 +206,11 @@ public class StepDesc {
 	}
 
 	/**
-	 * If
-	 * {@link #setPepperModule(org.corpus_tools.pepper.modules.PepperModule)}
+	 * If {@link #setPepperModule(org.corpus_tools.pepper.modules.PepperModule)}
 	 * was already called, the passed {@link Properties} object is used to
-	 * create a
-	 * {@link org.corpus_tools.pepper.modules.PepperModuleProperties}
+	 * create a {@link org.corpus_tools.pepper.modules.PepperModuleProperties}
 	 * object, which is set to given
-	 * {@link org.corpus_tools.pepper.modules.PepperModule}
-	 * .
+	 * {@link org.corpus_tools.pepper.modules.PepperModule} .
 	 * 
 	 * @param props
 	 *            properties to customize processing

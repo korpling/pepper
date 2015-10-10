@@ -17,7 +17,6 @@
  */
 package org.corpus_tools.pepper.cli.exceptions;
 
-
 public class PepperOSGiFrameworkPluginException extends PepperOSGiException {
 
 	/**

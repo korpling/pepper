@@ -54,10 +54,11 @@ public class DOTManipulator extends PepperManipulatorImpl {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				//TODO fixme
-//				Salt2DOT salt2Dot = new Salt2DOT();
-//				salt2Dot.salt2Dot(getDocument().getIdentifier(), getResourceURI());
-				
+				// TODO fixme
+				// Salt2DOT salt2Dot = new Salt2DOT();
+				// salt2Dot.salt2Dot(getDocument().getIdentifier(),
+				// getResourceURI());
+
 				SaltUtil.saveDocumentGraph(getDocument().getDocumentGraph(), getResourceURI());
 				addProgress(1.0);
 				return (DOCUMENT_STATUS.COMPLETED);
@@ -65,7 +66,7 @@ public class DOTManipulator extends PepperManipulatorImpl {
 		};
 
 		String outputStr = ((DOTManipulatorProperties) this.getProperties()).getOutputFile().getAbsolutePath();
-		File outputFile = new File(outputStr + "/" + ((SNode)sElementId.getIdentifiableElement()).getPath() + "." + ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
+		File outputFile = new File(outputStr + "/" + ((SNode) sElementId.getIdentifiableElement()).getPath() + "." + ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
 		if (!outputFile.exists()) {
 			try {
 				if (!outputFile.getParentFile().exists())

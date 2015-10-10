@@ -26,7 +26,8 @@ import org.junit.Test;
 
 public class JOB_STATUSTest {
 
-	private JOB_STATUS fixture= null;
+	private JOB_STATUS fixture = null;
+
 	public JOB_STATUS getFixture() {
 		return fixture;
 	}
@@ -34,6 +35,7 @@ public class JOB_STATUSTest {
 	public void setFixture(JOB_STATUS fixture) {
 		this.fixture = fixture;
 	}
+
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -43,12 +45,10 @@ public class JOB_STATUSTest {
 		assertTrue(JOB_STATUS.INITIALIZING.isInProgress());
 		assertTrue(JOB_STATUS.IMPORTING_CORPUS_STRUCTURE.isInProgress());
 		assertTrue(JOB_STATUS.IMPORTING_DOCUMENT_STRUCTURE.isInProgress());
-		
+
 		assertFalse(JOB_STATUS.NOT_STARTED.isInProgress());
 		assertFalse(JOB_STATUS.ENDED.isInProgress());
 		assertFalse(JOB_STATUS.ENDED_WITH_ERRORS.isInProgress());
 	}
-
-	
 
 }

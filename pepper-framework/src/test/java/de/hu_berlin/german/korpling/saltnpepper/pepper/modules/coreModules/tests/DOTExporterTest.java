@@ -419,7 +419,7 @@ public class DOTExporterTest extends PepperExporterTest {
 			// doc1
 
 			// corp1
-			
+
 			SCorpus corp1 = SaltFactory.createSCorpus();
 			Identifier sElementId = SaltFactory.createIdentifier(corp1, "corp1");
 			corp1.setName("corp1");

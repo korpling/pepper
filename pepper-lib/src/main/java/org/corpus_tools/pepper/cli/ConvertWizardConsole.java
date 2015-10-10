@@ -43,8 +43,8 @@ import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * This class represents a console to realize a kind of an interactive wizard
- * to guide the user through the workflow configuration. This is a step by step
+ * This class represents a console to realize a kind of an interactive wizard to
+ * guide the user through the workflow configuration. This is a step by step
  * wizard in which the the user needs to make an input for each step:
  * <ol>
  * <li>Import phase
@@ -246,7 +246,7 @@ public class ConvertWizardConsole {
 					}
 					try {
 						deresolveURIs(outputFile, pepperJob);
-						URI workflowURI= pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
+						URI workflowURI = pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
 						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
 						// because of the deresolving of the URI, the relative
 						// path now is incompatible with current working

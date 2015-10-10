@@ -19,19 +19,21 @@ package org.corpus_tools.pepper.cli.exceptions;
 
 import org.corpus_tools.pepper.exceptions.PepperException;
 
-
-public class PepperPropertyException extends PepperException
-{
+public class PepperPropertyException extends PepperException {
 	/**
 	 * generated serialVersionUID
 	 */
 	private static final long serialVersionUID = 6230819870391210746L;
-	public PepperPropertyException()
-	{ super(); }
-	
-	public PepperPropertyException(String s)
-	{ super(s); }
-	
-	public PepperPropertyException(String s, Throwable ex)
-	{super(s, ex); }
+
+	public PepperPropertyException() {
+		super();
+	}
+
+	public PepperPropertyException(String s) {
+		super(s);
+	}
+
+	public PepperPropertyException(String s, Throwable ex) {
+		super(s, ex);
+	}
 }

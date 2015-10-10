@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 	<artifactId>pepper</artifactId>
@@ -260,14 +261,15 @@
 				<groupId>com.carrotgarden.maven</groupId>
 				<artifactId>carrot-maven-scr-plugin</artifactId>
 				<version>${carrot-maven-scr-plugin.version}</version>
-                <dependencies>
-                    <!-- manually update to latest ASM version in order to compile under Java 8 -->
-                    <dependency>  
-                        <groupId>org.ow2.asm</groupId>  
-                        <artifactId>asm</artifactId>  
-                        <version>5.0.3</version>  
-                    </dependency> 
-                </dependencies>
+				<dependencies>
+					<!-- manually update to latest ASM version in order to compile under 
+						Java 8 -->
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>5.0.3</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<!-- Unwanted interfaces. -->
 					<excludedServices>
@@ -352,15 +354,15 @@
 				</configuration>
 			</plugin>
 			<!-- end: creates a NOTICE file use mvn notice:generate -->
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
-                <executions>
-                </executions>
-            </plugin>
-            			<plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>${maven-site-plugin.version}</version>

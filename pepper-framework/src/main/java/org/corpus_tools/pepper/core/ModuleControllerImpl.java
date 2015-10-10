@@ -560,7 +560,7 @@ public class ModuleControllerImpl implements ModuleController {
 	/** {@inheritDoc ModuleController#next(boolean)} */
 	@Override
 	public DocumentController next(boolean ignorePermissionForDocument) {
-		if (this.getInputDocumentBus() == null){
+		if (this.getInputDocumentBus() == null) {
 			throw new PepperFWException("The input document bus is not set for module controller '" + getId() + "'.");
 		}
 		DocumentController documentController = getInputDocumentBus().pop(getId(), ignorePermissionForDocument);
@@ -599,13 +599,13 @@ public class ModuleControllerImpl implements ModuleController {
 	 */
 	@Override
 	public void complete(DocumentController documentController) {
-		if (documentController == null){
+		if (documentController == null) {
 			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because it is null.");
 		}
-		if (!getControllList().contains(documentController)){
+		if (!getControllList().contains(documentController)) {
 			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because the passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
 		}
-		if (documentController.getDocument() == null){
+		if (documentController.getDocument() == null) {
 			throw new PepperFWException("Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
 		}
 		documentController.updateStatus(this, DOCUMENT_STATUS.COMPLETED);
@@ -630,13 +630,13 @@ public class ModuleControllerImpl implements ModuleController {
 	 */
 	@Override
 	public void delete(DocumentController documentController) {
-		if (documentController == null){
+		if (documentController == null) {
 			throw new PepperFWException("Cannot notify Pepper, that the passed document controller shall not be proessed any further, because it is null.");
 		}
-		if (!getControllList().contains(documentController)){
+		if (!getControllList().contains(documentController)) {
 			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '" + documentController.getGlobalId() + "' shall not be proessed any further by Pepper module '" + getId() + "', because it has never been add to internal controll list '" + getControllList() + "'.");
 		}
-	
+
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
 		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN"));
 		// if document is not processed any further, release slot

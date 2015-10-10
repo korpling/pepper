@@ -82,7 +82,7 @@ public class SampleExporterTest extends PepperExporterTest {
 
 		// determine location, to where the corpus should be exported
 		getFixture().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(getTempPath("sampleExporter").getAbsolutePath())));
-		
+
 		// starts the Pepper framework and the conversion process
 		start();
 

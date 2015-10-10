@@ -19,13 +19,13 @@ package org.corpus_tools.pepper.exceptions;
 
 /**
  * This {@link PepperException} is thrown by
- * {@link org.corpus_tools.pepper.modules.PepperModule}s
- * or {@link {
+ * {@link org.corpus_tools.pepper.modules.PepperModule}s or {@link
+ * 
  * @link de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule}
- * PepperMapper} objects. The reason of exception can be any and should be
- * further specified by subtypes. This exception just determines, that it
- * occured during the processing in a
- * {@link org.corpus_tools.pepper.modules.PepperModule}.
+ *       PepperMapper} objects. The reason of exception can be any and should be
+ *       further specified by subtypes. This exception just determines, that it
+ *       occured during the processing in a
+ *       {@link org.corpus_tools.pepper.modules.PepperModule}.
  * 
  * @author Florian Zipser
  *

@@ -704,7 +704,7 @@ public abstract class PepperUtil {
 			while (!isStop()) {
 				String report = null;
 				try {
-					if (getPepperJob()== null){
+					if (getPepperJob() == null) {
 						logger.warn("No status report is available, because no reference to the Pepper job is given. ");
 					}
 					report = getPepperJob().getStatusReport();

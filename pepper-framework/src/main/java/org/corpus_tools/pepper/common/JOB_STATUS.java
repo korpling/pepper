@@ -56,8 +56,12 @@ public enum JOB_STATUS {
 	}
 
 	/**
-	 * Returns whether the status determines, that the Pepper job is still in progress.
-	 * @return true, if the type equals {@link INITIALIZE}, {@link IMPORTING_CORPUS_STRUCTURE} or {@link IMPORTING_DOCUMENT_STRUCTURE}
+	 * Returns whether the status determines, that the Pepper job is still in
+	 * progress.
+	 * 
+	 * @return true, if the type equals {@link INITIALIZE},
+	 *         {@link IMPORTING_CORPUS_STRUCTURE} or
+	 *         {@link IMPORTING_DOCUMENT_STRUCTURE}
 	 */
 	public boolean isInProgress() {
 		if (INITIALIZING.equals(this) || IMPORTING_CORPUS_STRUCTURE.equals(this) || IMPORTING_DOCUMENT_STRUCTURE.equals(this)) {

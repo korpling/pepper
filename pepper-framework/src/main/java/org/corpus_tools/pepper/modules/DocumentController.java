@@ -87,13 +87,15 @@ public interface DocumentController {
 	 *            location as {@link URI}
 	 **/
 	public void setLocation(URI location);
+
 	/**
-	 * Stores the number of {@link SNode}s a document contains, when it ws
-	 * send to sleep.
+	 * Stores the number of {@link SNode}s a document contains, when it ws send
+	 * to sleep.
 	 * 
 	 * @return number of {@link SNode} of the contained document
 	 */
 	public int getSize_nodes();
+
 	/**
 	 * Stores the number of {@link SRelation}s a document contains, when it ws
 	 * send to sleep.
@@ -152,8 +154,10 @@ public interface DocumentController {
 	 * @return a list of all {@link ModuleControllerImpl} objects
 	 * **/
 	public List<ModuleControllerImpl> getModuleControllers();
+
 	/**
-	 * Returns the module controller, which is currently processing this document.
+	 * Returns the module controller, which is currently processing this
+	 * document.
 	 * 
 	 * @return the currently active {@link ModuleController}
 	 * **/
@@ -193,7 +197,9 @@ public interface DocumentController {
 	 *            the status to which the {@link StepStatus} shall be set to.
 	 */
 	public void updateStatus(ModuleController moduleController, DOCUMENT_STATUS status);
-//	public void updateStatus(String moduleControllerId, DOCUMENT_STATUS status);
+
+	// public void updateStatus(String moduleControllerId, DOCUMENT_STATUS
+	// status);
 
 	/**
 	 * Returns the global status of this object. The global status is determined

@@ -55,7 +55,7 @@ import org.osgi.service.component.annotations.Property;
  */
 @SuppressWarnings("serial")
 public class PepperConfiguration extends Properties {
-	
+
 	/** pepper-eMail address */
 	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
 	/** pepper-homepage */

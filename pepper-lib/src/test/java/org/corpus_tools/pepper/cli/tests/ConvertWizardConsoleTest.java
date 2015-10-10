@@ -35,53 +35,51 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
 public class ConvertWizardConsoleTest {
-	
-	class SimpleModuleResolver extends ModuleResolverImpl{
-		
+
+	class SimpleModuleResolver extends ModuleResolverImpl {
+
 		@Override
 		public PepperModule getPepperModule(StepDesc stepDesc) {
-			if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())){
+			if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())) {
 				return new PepperImporterImpl() {
 				};
-			}else if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())){
+			} else if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())) {
 				return new PepperExporterImpl() {
 				};
 			}
-			return(null);
+			return (null);
 		}
 	}
-	
+
 	/**
-	 * Checks whether the deresolving of pathes works for pathes:
-	 * import path: HOME/corpus/importFolder
-	 * export path: HOME/corpus/exportFolder
-	 * workflow file: HOME/corpus/wf.pepper
-	 * should be deresolved in workflow file to
-	 * import path: ./importFolder
-	 * export path: ./exportFolder 
+	 * Checks whether the deresolving of pathes works for pathes: import path:
+	 * HOME/corpus/importFolder export path: HOME/corpus/exportFolder workflow
+	 * file: HOME/corpus/wf.pepper should be deresolved in workflow file to
+	 * import path: ./importFolder export path: ./exportFolder
+	 * 
 	 * @throws IOException
 	 */
 	@Test
-	public void testDeresolveURIs() throws IOException{
-		File folder= PepperUtil.getTempTestFile("convertwizard/");
-		File pepperFile= new File(folder.getCanonicalPath()+"/corpus/test.pepper");
-		PepperJobImpl pepperJob= new PepperJobImpl("test");
+	public void testDeresolveURIs() throws IOException {
+		File folder = PepperUtil.getTempTestFile("convertwizard/");
+		File pepperFile = new File(folder.getCanonicalPath() + "/corpus/test.pepper");
+		PepperJobImpl pepperJob = new PepperJobImpl("test");
 		pepperJob.setModuleResolver(new SimpleModuleResolver());
-		
-		StepDesc importStep= new StepDesc();
+
+		StepDesc importStep = new StepDesc();
 		importStep.setName("TestImporter");
 		importStep.setModuleType(MODULE_TYPE.IMPORTER);
-		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath()+"/./corpus/importFolder/").getCanonicalPath()+"/"));
+		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/importFolder/").getCanonicalPath() + "/"));
 		pepperJob.addStepDesc(importStep);
-		
-		StepDesc exportStep= new StepDesc();
+
+		StepDesc exportStep = new StepDesc();
 		exportStep.setName("TestImporter");
 		exportStep.setModuleType(MODULE_TYPE.IMPORTER);
-		exportStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath()+"/./corpus/exportFolder").getCanonicalPath()+"/"));
+		exportStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/exportFolder").getCanonicalPath() + "/"));
 		pepperJob.addStepDesc(exportStep);
-		
+
 		ConvertWizardConsole.deresolveURIs(pepperFile, pepperJob);
-		
+
 		assertEquals(URI.createFileURI("./importFolder/"), importStep.getCorpusDesc().getCorpusPath());
 		assertEquals(URI.createFileURI("./exportFolder/"), exportStep.getCorpusDesc().getCorpusPath());
 	}

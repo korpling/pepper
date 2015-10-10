@@ -21,8 +21,8 @@ import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This exception class is used, in case of a
- * {@link org.corpus_tools.pepper.modules.PepperMapper}
- * object was not correctly initialized.
+ * {@link org.corpus_tools.pepper.modules.PepperMapper} object was not correctly
+ * initialized.
  *
  **/
 public class JobNotFoundException extends PepperModuleException {

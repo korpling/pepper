@@ -18,18 +18,14 @@
 package org.corpus_tools.pepper.common;
 
 /**
- * Names of types of
- * {@link org.corpus_tools.pepper.modules.PepperModule}:
+ * Names of types of {@link org.corpus_tools.pepper.modules.PepperModule}:
  * <ul>
  * <li>{@link #IMPORTER} - for
- * {@link org.corpus_tools.pepper.modules.PepperExporter}
- * </li>
+ * {@link org.corpus_tools.pepper.modules.PepperExporter}</li>
  * <li>{@link #MANIPULATOR} - for
- * {@link org.corpus_tools.pepper.modules.PepperManipulator}
- * </li>
+ * {@link org.corpus_tools.pepper.modules.PepperManipulator}</li>
  * <li>{@link #EXPORTER} - for
- * {@link org.corpus_tools.pepper.modules.PepperExporter}
- * </li>
+ * {@link org.corpus_tools.pepper.modules.PepperExporter}</li>
  * </ul>
  **/
 public enum MODULE_TYPE {

@@ -21,9 +21,9 @@ import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This PepperException is thrown only by a
- * {@link org.corpus_tools.pepper.modules.PepperModule}
- * and marks, that the module is not ready for the requested action. For
- * instance if it has not been initialized.
+ * {@link org.corpus_tools.pepper.modules.PepperModule} and marks, that the
+ * module is not ready for the requested action. For instance if it has not been
+ * initialized.
  * 
  * @author florian
  *

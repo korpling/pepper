@@ -310,9 +310,8 @@ public interface PepperImporter extends PepperModule {
 	 * <li>If {@link #getDocumentEndings()} contains {@link #ENDING_ALL_FILES},
 	 * for each file (which is not a folder) {@link SALT_TYPE#SDOCUMENT} is
 	 * returned</li>
-	 * <li>If {@link #getDocumentEndings()} contains
-	 * {@link #ENDING_LEAF_FOLDER}, for each leaf folder
-	 * {@link SALT_TYPE#SDOCUMENT} is returned</li>
+	 * <li>If {@link #getDocumentEndings()} contains {@link #ENDING_LEAF_FOLDER}
+	 * , for each leaf folder {@link SALT_TYPE#SDOCUMENT} is returned</li>
 	 * <li>If {@link #getCorpusEndings()} contains {@link #ENDING_FOLDER}, for
 	 * each folder {@link SALT_TYPE#SCORPUS} is returned</li>
 	 * <li>null otherwise</li>

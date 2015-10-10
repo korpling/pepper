@@ -29,24 +29,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PepperStarterConfigurationTest {
-	private PepperStarterConfiguration fixture = null;	
+	private PepperStarterConfiguration fixture = null;
 	private static final Logger logger = LoggerFactory.getLogger(PepperStarterConfigurationTest.class);
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		setFixture(new PepperStarterConfiguration());
 	}
-	
-	private void setFixture(PepperStarterConfiguration fixture){
+
+	private void setFixture(PepperStarterConfiguration fixture) {
 		this.fixture = fixture;
 	}
-	
-	private PepperStarterConfiguration getFixture(){
+
+	private PepperStarterConfiguration getFixture() {
 		return fixture;
 	}
-	
+
 	@Test
-	public void testLoad_propertiesFile(){
+	public void testLoad_propertiesFile() {
 		PepperStarterConfiguration pSC = getFixture();
 		File propertiesFile = new File("./conf/pepper.properties");
 		assertTrue(propertiesFile.exists());

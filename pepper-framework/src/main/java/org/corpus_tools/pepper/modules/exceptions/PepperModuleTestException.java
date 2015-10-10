@@ -22,8 +22,7 @@ import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This Exception class can be used for Tests (i.e. JUnit tests) of
- * {@link org.corpus_tools.pepper.modules.PepperModule}
- * classes.
+ * {@link org.corpus_tools.pepper.modules.PepperModule} classes.
  * 
  * @author Florian Zipser
  * 

@@ -80,61 +80,69 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);
 	}
 
-//	/**
-//	 * The resource set for all resources.
-//	 */
-//	private ResourceSet resourceSet = null;
-//
-//	/**
-//	 * Creates {@link ResourceSet} if not exists and returns it.
-//	 * 
-//	 * @return
-//	 */
-//	private ResourceSet getResourceSet() {
-//		if (resourceSet == null) {
-//			synchronized (this) {
-//				if (resourceSet == null) {
-//					// Register XML resource factory
-//					resourceSet = new ResourceSetImpl();
-//					resourceSet.getPackageRegistry().put(SaltCommonPackage.eINSTANCE.getNsURI(), SaltCommonPackage.eINSTANCE);
-//					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(SaltFactory.FILE_ENDING_SALT, new XMIResourceFactoryImpl());
-//				}
-//			}
-//		}
-//		return (resourceSet);
-//	}
-//
-//	/**
-//	 * Stores the resource for salt project
-//	 */
-//	private XMLResource saltProjectResource = null;
+	// /**
+	// * The resource set for all resources.
+	// */
+	// private ResourceSet resourceSet = null;
+	//
+	// /**
+	// * Creates {@link ResourceSet} if not exists and returns it.
+	// *
+	// * @return
+	// */
+	// private ResourceSet getResourceSet() {
+	// if (resourceSet == null) {
+	// synchronized (this) {
+	// if (resourceSet == null) {
+	// // Register XML resource factory
+	// resourceSet = new ResourceSetImpl();
+	// resourceSet.getPackageRegistry().put(SaltCommonPackage.eINSTANCE.getNsURI(),
+	// SaltCommonPackage.eINSTANCE);
+	// resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(SaltFactory.FILE_ENDING_SALT,
+	// new XMIResourceFactoryImpl());
+	// }
+	// }
+	// }
+	// return (resourceSet);
+	// }
+	//
+	// /**
+	// * Stores the resource for salt project
+	// */
+	// private XMLResource saltProjectResource = null;
 
-//	/**
-//	 * Creates a {@link XMLResource} for the {@link SaltProject} object to be
-//	 * stored in. This is necessary, to persist all {@link SCorpusGraph} and
-//	 * {@link SDocumentGraph} objects, because they cannot be stored if the
-//	 * containing object is not covered by a {@link Resource} (this is a
-//	 * constraint given by the EMF). them to the resource.
-//	 */
-//	private void createSaltProjectResource() {
-//		if (this.getSaltProject() == null) {
-//			throw new PepperModuleException("Cannot export the SaltProject, because the saltProject is null.");
-//		}
-//		if (this.getCorpusDesc() == null) {
-//			throw new PepperModuleException("Cannot export the SaltProject, because no corpus definition is given for export.");
-//		}
-//		if (this.getCorpusDesc().getCorpusPath() == null) {
-//			throw new PepperModuleException("Cannot export the SaltProject, because no corpus path is given for export.");
-//		}
-//
-//		// create export URI
-//		URI saltProjectURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + "/" + SaltUtil.FILE_SALT_PROJECT);
-//		SaltUtil.saveSaltProject(saltProject, saltProjectURI);
-//		
-//		saltProjectResource = (XMLResource) getResourceSet().createResource(saltProjectURI);
-//		saltProjectResource.getContents().add(this.getSaltProject());
-//		saltProjectResource.setEncoding("UTF-8");
-//	}
+	// /**
+	// * Creates a {@link XMLResource} for the {@link SaltProject} object to be
+	// * stored in. This is necessary, to persist all {@link SCorpusGraph} and
+	// * {@link SDocumentGraph} objects, because they cannot be stored if the
+	// * containing object is not covered by a {@link Resource} (this is a
+	// * constraint given by the EMF). them to the resource.
+	// */
+	// private void createSaltProjectResource() {
+	// if (this.getSaltProject() == null) {
+	// throw new
+	// PepperModuleException("Cannot export the SaltProject, because the saltProject is null.");
+	// }
+	// if (this.getCorpusDesc() == null) {
+	// throw new
+	// PepperModuleException("Cannot export the SaltProject, because no corpus definition is given for export.");
+	// }
+	// if (this.getCorpusDesc().getCorpusPath() == null) {
+	// throw new
+	// PepperModuleException("Cannot export the SaltProject, because no corpus path is given for export.");
+	// }
+	//
+	// // create export URI
+	// URI saltProjectURI =
+	// URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() +
+	// "/" + SaltUtil.FILE_SALT_PROJECT);
+	// SaltUtil.saveSaltProject(saltProject, saltProjectURI);
+	//
+	// saltProjectResource = (XMLResource)
+	// getResourceSet().createResource(saltProjectURI);
+	// saltProjectResource.getContents().add(this.getSaltProject());
+	// saltProjectResource.setEncoding("UTF-8");
+	// }
 
 	private class SaltXMLExporterMapper extends PepperMapperImpl {
 
@@ -182,7 +190,7 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	@Override
 	public void start() throws PepperModuleException {
 		// creating resources for saltProject
-//		this.createSaltProjectResource();
+		// this.createSaltProjectResource();
 		if (this.getSaltProject() == null) {
 			throw new PepperModuleException("Cannot export the SaltProject, because the saltProject is null.");
 		}
@@ -198,12 +206,14 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		SaltUtil.saveSaltProject(saltProject, saltProjectURI);
 		super.start();
 
-//		// exporting corpus structure
-//		try {
-//			saltProjectResource.save(null);
-//		} catch (IOException e) {
-//			throw new PepperModuleException("Cannot export saltProject, nested exception is: ", e);
-//		}
+		// // exporting corpus structure
+		// try {
+		// saltProjectResource.save(null);
+		// } catch (IOException e) {
+		// throw new
+		// PepperModuleException("Cannot export saltProject, nested exception is: ",
+		// e);
+		// }
 		// exporting corpus structure
 	}
 }

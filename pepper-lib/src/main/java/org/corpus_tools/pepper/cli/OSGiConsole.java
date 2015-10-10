@@ -111,7 +111,7 @@ public class OSGiConsole {
 	public String help() {
 		StringBuilder retVal = new StringBuilder();
 		String format = "| %1$-20s | %2$-5s | %3$-15s | %4$-70s |\n";
-		String line="+----------------------+-------+-----------------+------------------------------------------------------------------------+\n";
+		String line = "+----------------------+-------+-----------------+------------------------------------------------------------------------+\n";
 		retVal.append(line);
 		retVal.append(String.format(format, "command", "short", "parameters", "description"));
 		retVal.append(line);
@@ -166,7 +166,7 @@ public class OSGiConsole {
 				update(params, out);
 			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
 				remove(params, out);
-			}else {
+			} else {
 				out.println(help());
 			}
 		}
@@ -280,30 +280,31 @@ public class OSGiConsole {
 	/**
 	 * Executes command 'launch', calling the OSGi command 'install' and
 	 * 'start'.
+	 * 
 	 * @param params
 	 * @param out
 	 */
 	public void installAndStart(List<String> params, PrintStream out) {
 		Long bundleId = install(params, out);
 		List<String> params2 = new ArrayList<String>();
-		if (bundleId!= null){
+		if (bundleId != null) {
 			params2.add("" + bundleId);
 			start(params2, out);
 		}
 	}
-	
+
 	/**
-	 * Executes command 'update', calling the OSGi commands 'uninstall', 'install' and
-	 * 'start'.
+	 * Executes command 'update', calling the OSGi commands 'uninstall',
+	 * 'install' and 'start'.
+	 * 
 	 * @param params
 	 * @param out
 	 */
 	public void update(List<String> params, PrintStream out) {
-		if (params==null){
+		if (params == null) {
 			out.println("stupid help text");
-		}
-		else if(params.size()==1 && params.get(0).equals("all")){
-			
+		} else if (params.size() == 1 && params.get(0).equals("all")) {
+
 		}
 	}
 
@@ -372,25 +373,26 @@ public class OSGiConsole {
 			}
 		}
 	}
-	
+
 	/**
 	 * Executes command 'remove'.
+	 * 
 	 * @param params
 	 * @param out
 	 */
 	public void remove(List<String> params, PrintStream out) {
-		if (	(params== null)||
-				(params.size()> 1)){
+		if ((params == null) || (params.size() > 1)) {
 			out.println("To remove a bundle, you need to pass its name.");
-		}else{
+		} else {
 			try {
-				if (getConnector().remove(params.get(0))){
-					out.println("Removed bundle '"+params.get(0)+"'.");
-				}else out.println("Cannot remove bundle '"+params.get(0)+"'.");
+				if (getConnector().remove(params.get(0))) {
+					out.println("Removed bundle '" + params.get(0) + "'.");
+				} else
+					out.println("Cannot remove bundle '" + params.get(0) + "'.");
 			} catch (BundleException e) {
-				out.println("Cannot remove bundle '"+params.get(0)+"', because of nested exception (BundleException): "+ e.getMessage());
+				out.println("Cannot remove bundle '" + params.get(0) + "', because of nested exception (BundleException): " + e.getMessage());
 			} catch (IOException e) {
-				out.println("Cannot remove bundle '"+params.get(0)+"', because of nested exception (IOException): "+ e.getMessage());
+				out.println("Cannot remove bundle '" + params.get(0) + "', because of nested exception (IOException): " + e.getMessage());
 			}
 		}
 	}

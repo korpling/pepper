@@ -159,10 +159,8 @@ public abstract class PepperJob {
 	/**
 	 * Imports a {@link SaltProject} from any format. For conversion a process
 	 * can be modeled, similar to {@link #convert()} with the difference, that
-	 * no
-	 * {@link org.corpus_tools.pepper.modules.PepperExporter}
-	 * could be defined. Instead, the processed {@link SaltProject} is the
-	 * result.
+	 * no {@link org.corpus_tools.pepper.modules.PepperExporter} could be
+	 * defined. Instead, the processed {@link SaltProject} is the result.
 	 */
 	public abstract void convertFrom();
 

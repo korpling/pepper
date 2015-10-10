@@ -267,12 +267,14 @@ public class PepperMapperImpl implements PepperMapper {
 		PepperUtil.readXMLResource(contentHandler, documentLocation);
 	}
 
-	protected PepperMapperController controller= null;
+	protected PepperMapperController controller = null;
+
 	/** {@inheritDoc} **/
 	@Override
 	public void setPepperMapperController(PepperMapperController controller) {
-		this.controller= controller;
+		this.controller = controller;
 	}
+
 	/** {@inheritDoc} **/
 	@Override
 	public PepperMapperController getPepperMapperController() {

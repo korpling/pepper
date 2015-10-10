@@ -282,10 +282,10 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	 * be processed
 	 **/
 	protected DocumentController documentController = null;
-	
+
 	/** {@inheritDoc} **/
 	@Override
-	public boolean getPermissionForProcessDoument(DocumentController controller){
-		return(getPepperModule().getModuleController().getJob().getPermissionForProcessDoument(controller));
+	public boolean getPermissionForProcessDoument(DocumentController controller) {
+		return (getPepperModule().getModuleController().getJob().getPermissionForProcessDoument(controller));
 	}
 }

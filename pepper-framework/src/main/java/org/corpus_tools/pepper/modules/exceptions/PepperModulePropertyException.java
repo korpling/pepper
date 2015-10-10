@@ -21,9 +21,8 @@ import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * Exception is used in case of an exception occurs concerning
- * {@link org.corpus_tools.pepper.modules.PepperModuleProperty}
- * . Such an exception can occur while initialization or while working with
- * properties.
+ * {@link org.corpus_tools.pepper.modules.PepperModuleProperty} . Such an
+ * exception can occur while initialization or while working with properties.
  * 
  * @author Florian Zipser
  *

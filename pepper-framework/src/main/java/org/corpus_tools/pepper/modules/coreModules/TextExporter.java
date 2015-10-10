@@ -71,9 +71,9 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				if (getDocument() != null && getResourceURI() != null) {
-					Iterator<STextualDS> iterator= getDocument().getDocumentGraph().getTextualDSs().iterator();
+					Iterator<STextualDS> iterator = getDocument().getDocumentGraph().getTextualDSs().iterator();
 					while (iterator.hasNext()) {
-						STextualDS text= iterator.next();
+						STextualDS text = iterator.next();
 						File outFile = null;
 						String uriStr = getResourceURI().toFileString();
 

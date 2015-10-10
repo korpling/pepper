@@ -29,14 +29,15 @@ import org.junit.Test;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
- * {@link SampleManipulator} class. Feel free to adapt and enhance this test class
- * for real tests to check the work of your manipulator. If you are not confirm
- * with JUnit, please have a look at <a
+ * {@link SampleManipulator} class. Feel free to adapt and enhance this test
+ * class for real tests to check the work of your manipulator. If you are not
+ * confirm with JUnit, please have a look at <a
  * href="http://www.vogella.com/tutorials/JUnit/article.html">
  * http://www.vogella.com/tutorials/JUnit/article.html</a>. <br/>
- * Please note, that the test class is derived from {@link PepperManipulatorTest}.
- * The usage of this class should simplfy your work and allows you to test only
- * your single manipulator in the Pepper environment.
+ * Please note, that the test class is derived from
+ * {@link PepperManipulatorTest}. The usage of this class should simplfy your
+ * work and allows you to test only your single manipulator in the Pepper
+ * environment.
  * 
  * @author Florian Zipser
  * 
