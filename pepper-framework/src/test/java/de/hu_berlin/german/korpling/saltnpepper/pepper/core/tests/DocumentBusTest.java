@@ -27,19 +27,18 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.corpus_tools.pepper.core.DocumentBus;
+import org.corpus_tools.pepper.core.DocumentControllerImpl;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.modules.DocumentController;
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 @RunWith(JUnit4.class)
 public class DocumentBusTest {
@@ -143,12 +142,12 @@ public class DocumentBusTest {
 	@Test
 	public void testPutAndPop() {
 		Vector<DocumentController> docControllers = new Vector<DocumentController>();
-		SCorpusGraph sCorpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
-		sCorpGraph.addSNode(sCorpus);
+		SCorpusGraph sCorpGraph = SaltFactory.createSCorpusGraph();
+		SCorpus sCorpus = SaltFactory.createSCorpus();
+		sCorpGraph.addNode(sCorpus);
 		for (int i = 0; i < 20; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
-			sCorpGraph.addSDocument(sCorpus, sDoc);
+			SDocument sDoc = SaltFactory.createSDocument();
+			sCorpGraph.addDocument(sCorpus, sDoc);
 
 			DocumentController docController = new DocumentControllerImpl(sDoc);
 			docControllers.add(docController);
@@ -187,12 +186,12 @@ public class DocumentBusTest {
 		importModuleControllers.add(importerController.controllerId);
 
 		Vector<DocumentController> docControllers = new Vector<DocumentController>();
-		SCorpusGraph sCorpGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
-		sCorpGraph.addSNode(sCorpus);
+		SCorpusGraph sCorpGraph = SaltFactory.createSCorpusGraph();
+		SCorpus sCorpus = SaltFactory.createSCorpus();
+		sCorpGraph.addNode(sCorpus);
 		for (int i = 0; i < 20; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
-			sCorpGraph.addSDocument(sCorpus, sDoc);
+			SDocument sDoc = SaltFactory.createSDocument();
+			sCorpGraph.addDocument(sCorpus, sDoc);
 
 			DocumentController docController = new DocumentControllerImpl(sDoc);
 			docControllers.add(docController);

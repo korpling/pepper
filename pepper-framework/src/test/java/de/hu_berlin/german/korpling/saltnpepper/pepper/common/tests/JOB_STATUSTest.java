@@ -17,12 +17,12 @@
  */
 package de.hu_berlin.german.korpling.saltnpepper.pepper.common.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.JOB_STATUS;
 
 public class JOB_STATUSTest {
 

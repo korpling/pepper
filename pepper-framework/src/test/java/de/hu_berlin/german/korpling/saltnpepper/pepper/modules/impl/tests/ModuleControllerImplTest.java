@@ -23,15 +23,14 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.core.ModuleControllerImpl;
+import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
+import org.corpus_tools.pepper.testFramework.PepperModuleTest;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperModuleTest;
 
 public class ModuleControllerImplTest extends ModuleControllerImpl {
 

@@ -20,10 +20,9 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.common.tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.corpus_tools.pepper.common.FormatDesc;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
 
 public class FormatDescTest {
 

@@ -24,24 +24,24 @@ import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.pepper.core.Step;
+import org.corpus_tools.pepper.impl.PepperExporterImpl;
+import org.corpus_tools.pepper.impl.PepperMapperImpl;
+import org.corpus_tools.pepper.modules.PepperMapper;
+import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SDocumentGraph;
+import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
 import de.hu_berlin.german.korpling.saltnpepper.pepper.core.tests.PepperJobImplTest.MyImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sDocumentStructure.SDocumentGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 	public PepperJobImplTest_removeDocumentFromMM() {
@@ -75,8 +75,8 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 	public void testDocumentRemoveFromMM() {
 		List<SDocument> expectedSDocuments = new Vector<SDocument>();
 		for (int i = 0; i < 30; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
-			sDoc.setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+			SDocument sDoc = SaltFactory.createSDocument();
+			sDoc.setDocumentGraph(SaltFactory.createSDocumentGraph());
 			expectedSDocuments.add(sDoc);
 		}
 
@@ -94,7 +94,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		getFixture().addStep(exportStep1);
 
 		for (SDocument sDoc : expectedSDocuments) {
-			assertNotNull(sDoc.getSDocumentGraph());
+			assertNotNull(sDoc.getDocumentGraph());
 		}
 		PepperConfiguration conf = new PepperConfiguration();
 		conf.setProperty(PepperConfiguration.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
@@ -102,7 +102,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		getFixture().convert();
 
 		for (SDocument sDoc : expectedSDocuments) {
-			assertNull(sDoc.getSDocumentGraph());
+			assertNull(sDoc.getDocumentGraph());
 		}
 	}
 
@@ -112,9 +112,9 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		}
 
 		@Override
-		public PepperMapper createPepperMapper(SElementId sElementId) {
-			if (sElementId.getSIdentifiableElement() instanceof SDocument) {
-				if (((SDocument) sElementId.getSIdentifiableElement()).getSDocumentGraph() == null) {
+		public PepperMapper createPepperMapper(Identifier sElementId) {
+			if (sElementId.getIdentifiableElement() instanceof SDocument) {
+				if (((SDocument) sElementId.getIdentifiableElement()).getDocumentGraph() == null) {
 					throw new PepperModuleException(this, "An error in test occured, because the SDocumentGraph was null.");
 				}
 			}

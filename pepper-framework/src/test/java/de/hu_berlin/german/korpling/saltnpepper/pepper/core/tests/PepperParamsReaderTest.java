@@ -23,12 +23,11 @@ import static org.junit.Assert.assertNull;
 
 import java.io.File;
 
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.core.PepperParamsReader;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperParamsReader;
 
 public class PepperParamsReaderTest {
 

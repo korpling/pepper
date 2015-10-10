@@ -19,16 +19,15 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.impl.PepperMapperImpl;
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
 
 public class PepperMapperImplTest {
 
@@ -49,24 +48,20 @@ public class PepperMapperImplTest {
 
 	@Test
 	public void testSetGetSDocument() {
-		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
-		SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
-		sElementId.setSId("d1");
-		sDocument.setSElementId(sElementId);
-		getFixture().setSDocument(sDocument);
+		SDocument sDocument = SaltFactory.createSDocument();
+		Identifier sElementId = SaltFactory.createIdentifier(sDocument, "d1");
+		getFixture().setDocument(sDocument);
 
-		assertEquals(sDocument, getFixture().getSDocument());
+		assertEquals(sDocument, getFixture().getDocument());
 	}
 
 	@Test
 	public void testSetGetSCorpus() {
-		SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
-		SElementId sElementId = SaltFactory.eINSTANCE.createSElementId();
-		sElementId.setSId("c1");
-		sCorpus.setSElementId(sElementId);
-		getFixture().setSCorpus(sCorpus);
+		SCorpus sCorpus = SaltFactory.createSCorpus();
+		Identifier sElementId = SaltFactory.createIdentifier(sCorpus, "c1");
+		getFixture().setCorpus(sCorpus);
 
-		assertEquals(sCorpus, getFixture().getSCorpus());
+		assertEquals(sCorpus, getFixture().getCorpus());
 	}
 
 	@Test
