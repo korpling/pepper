@@ -18,7 +18,6 @@
 package org.corpus_tools.pepper.modules.exceptions;
 
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This PepperException is thrown by a {@link PepperModule}. If such an

@@ -23,10 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import junit.framework.TestCase;
+
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SaltProject;
-
-import junit.framework.TestCase;
 
 public class DOTResourceTest extends TestCase {
 	private SaltProject fixture = null;

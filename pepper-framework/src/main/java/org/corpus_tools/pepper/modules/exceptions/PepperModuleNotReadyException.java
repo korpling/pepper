@@ -17,7 +17,6 @@
  */
 package org.corpus_tools.pepper.modules.exceptions;
 
-import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 
 /**
  * This PepperException is thrown only by a

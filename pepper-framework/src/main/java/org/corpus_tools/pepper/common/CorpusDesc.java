@@ -19,9 +19,6 @@ package org.corpus_tools.pepper.common;
 
 import org.eclipse.emf.common.util.URI;
 
-import org.corpus_tools.pepper.common.CorpusDesc;
-import org.corpus_tools.pepper.common.FormatDesc;
-
 /**
  * This class realizes a description of a corpus to be imported or exported. The
  * description consists of a path addressing the location of the corpus and a

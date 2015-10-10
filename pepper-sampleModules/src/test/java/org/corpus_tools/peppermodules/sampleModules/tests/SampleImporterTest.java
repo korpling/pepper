@@ -20,13 +20,11 @@ package org.corpus_tools.peppermodules.sampleModules.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
 import org.corpus_tools.peppermodules.sampleModules.SampleImporter;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SDocument;
-import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
