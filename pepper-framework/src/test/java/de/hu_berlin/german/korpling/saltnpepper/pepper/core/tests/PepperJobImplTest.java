@@ -43,47 +43,46 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.common.JOB_STATUS;
+import org.corpus_tools.pepper.common.MEMORY_POLICY;
+import org.corpus_tools.pepper.common.MODULE_TYPE;
+import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.core.ModuleResolver;
+import org.corpus_tools.pepper.core.ModuleResolverImpl;
+import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.pepper.core.PepperParamsReader;
+import org.corpus_tools.pepper.core.Step;
+import org.corpus_tools.pepper.exceptions.PepperException;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.exceptions.PepperOSGiRunnerException;
+import org.corpus_tools.pepper.exceptions.WorkflowException;
+import org.corpus_tools.pepper.impl.PepperExporterImpl;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
+import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
+import org.corpus_tools.pepper.impl.PepperMapperImpl;
+import org.corpus_tools.pepper.modules.PepperExporter;
+import org.corpus_tools.pepper.modules.PepperImporter;
+import org.corpus_tools.pepper.modules.PepperManipulator;
+import org.corpus_tools.pepper.modules.PepperMapper;
+import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.testFramework.PepperModuleTest;
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpus;
+import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SaltProject;
+import org.corpus_tools.salt.graph.Identifier;
+import org.corpus_tools.salt.samples.SampleGenerator;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.DOCUMENT_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.JOB_STATUS;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MEMORY_POLICY;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperParamsReader;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.Step;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperOSGiRunnerException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.WorkflowException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperModuleTest;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpus;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId;
-import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
 
 public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptionHandler {
 
@@ -109,7 +108,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 	@Test
 	public void testSetGetSaltProject() {
-		SaltProject saltProject = SaltFactory.eINSTANCE.createSaltProject();
+		SaltProject saltProject = SaltFactory.createSaltProject();
 		getFixture().setSaltProject(saltProject);
 		assertEquals(saltProject, getFixture().getSaltProject());
 	}
@@ -153,7 +152,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 	/**
 	 * Tests if
-	 * {@link PepperJobImpl#setConfiguration(de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperConfiguration)}
+	 * {@link PepperJobImpl#setConfiguration(org.corpus_tools.pepper.common.PepperConfiguration)}
 	 * initializes values for {@link PepperJobImpl#getMemPolicy()} and
 	 * {@link PepperJobImpl#getMaxNumberOfDocuments()}.
 	 */
@@ -274,7 +273,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 		stepDesc.setModuleType(MODULE_TYPE.MANIPULATOR);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 
 		try {
 			getFixture().addStep(stepDesc);
@@ -300,10 +299,10 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	class SampleModule extends PepperManipulatorImpl {
-		List<SElementId> orders = null;
+		List<Identifier> orders = null;
 
 		@Override
-		public List<SElementId> proposeImportOrder(SCorpusGraph sCorpusGraph) {
+		public List<Identifier> proposeImportOrder(SCorpusGraph sCorpusGraph) {
 			return (orders);
 		}
 	}
@@ -425,24 +424,24 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		} catch (PepperFWException e) {
 		}
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		// create three corpus graphs
-		getFixture().getSaltProject().getSCorpusGraphs().add(SampleGenerator.createCorpusStructure());
+		getFixture().getSaltProject().addCorpusGraph(SampleGenerator.createCorpusStructure());
 
-		Vector<SElementId> primitiveOrder = new Vector<SElementId>();
-		for (SDocument sDocument : getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments()) {
-			primitiveOrder.add(sDocument.getSElementId());
+		Vector<Identifier> primitiveOrder = new Vector<Identifier>();
+		for (SDocument sDocument : getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments()) {
+			primitiveOrder.add(sDocument.getIdentifier());
 		}
-		List<SElementId> testOrders = null;
+		List<Identifier> testOrders = null;
 
 		SampleModule sampleModule1 = new SampleModule();
-		sampleModule1.orders = new Vector<SElementId>();
+		sampleModule1.orders = new Vector<Identifier>();
 		sampleModule1.setSaltProject(getSaltProject());
 		Step step1 = new Step("step1");
 		step1.setPepperModule(sampleModule1);
 		getFixture().addStep(step1);
 
-		testOrders = this.unifyProposedImportOrders(getFixture().getSaltProject().getSCorpusGraphs().get(0));
+		testOrders = this.unifyProposedImportOrders(getFixture().getSaltProject().getCorpusGraphs().get(0));
 
 		assertEquals(primitiveOrder.size(), testOrders.size());
 		assertTrue(primitiveOrder.containsAll(testOrders));
@@ -452,21 +451,21 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		Random random = new Random();
 		for (int y = 0; y < 10; y++) {
 			int i = random.nextInt(primitiveOrder.size() - 1);
-			SElementId documentId = primitiveOrder.get(i);
+			Identifier documentId = primitiveOrder.get(i);
 			primitiveOrder.remove(i);
 			primitiveOrder.add(documentId);
 		}
 		sampleModule1.orders = primitiveOrder;
-		testOrders = this.unifyProposedImportOrders(getFixture().getSaltProject().getSCorpusGraphs().get(0));
+		testOrders = this.unifyProposedImportOrders(getFixture().getSaltProject().getCorpusGraphs().get(0));
 
 		assertEquals(primitiveOrder.size(), testOrders.size());
 		assertTrue(primitiveOrder.containsAll(testOrders));
 		assertTrue(testOrders.containsAll(primitiveOrder));
 		assertEquals(primitiveOrder, testOrders);
 
-		sampleModule1.orders = new Vector<SElementId>();
+		sampleModule1.orders = new Vector<Identifier>();
 		sampleModule1.orders.add(primitiveOrder.get(0));
-		testOrders = this.unifyProposedImportOrders(getFixture().getSaltProject().getSCorpusGraphs().get(0));
+		testOrders = this.unifyProposedImportOrders(getFixture().getSaltProject().getCorpusGraphs().get(0));
 
 		assertEquals(primitiveOrder.size(), testOrders.size());
 		assertTrue(primitiveOrder.containsAll(testOrders));
@@ -486,27 +485,27 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 		@Override
 		public void importCorpusStructure(SCorpusGraph corpusGraph) {
-			SCorpus sCorpus = SaltFactory.eINSTANCE.createSCorpus();
+			SCorpus sCorpus = SaltFactory.createSCorpus();
 			if (corpusGraph == null)
 				throw new PepperOSGiRunnerException("CorpusGraph was null.");
-			corpusGraph.addSNode(sCorpus);
+			corpusGraph.addNode(sCorpus);
 			for (SDocument sDoc : expectedSDocuments) {
-				corpusGraph.addSDocument(sCorpus, sDoc);
+				corpusGraph.addDocument(sCorpus, sDoc);
 			}
 		}
 
-		public PepperMapper createPepperMapper(SElementId sElementId) {
+		public PepperMapper createPepperMapper(Identifier sElementId) {
 			if (sElementId == null)
 				throw new PepperOSGiRunnerException("Passed sElementId cannot be null.");
-			if (sElementId.getSIdentifiableElement() == null)
+			if (sElementId.getIdentifiableElement() == null)
 				throw new PepperOSGiRunnerException("SIdentifiableElement corresponding to passed sElementId cannot be null.");
 
-			if (sElementId.getSIdentifiableElement() instanceof SDocument)
-				givenSDocuments.add((SDocument) sElementId.getSIdentifiableElement());
+			if (sElementId.getIdentifiableElement() instanceof SDocument)
+				givenSDocuments.add((SDocument) sElementId.getIdentifiableElement());
 			return (new PepperMapperImpl() {
 				public DOCUMENT_STATUS mapSDocument() {
 					try {
-						getSDocument().setSDocumentGraph(SaltFactory.eINSTANCE.createSDocumentGraph());
+						getDocument().setDocumentGraph(SaltFactory.createSDocumentGraph());
 						Thread.sleep(idleTime);
 					} catch (InterruptedException e) {
 						throw new PepperException("Cannot send thread to sleep");
@@ -528,16 +527,16 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 			givenSDocuments = new Vector<SDocument>();
 		}
 
-		public PepperMapper createPepperMapper(SElementId sElementId) {
-			if (sElementId.getSIdentifiableElement() instanceof SDocument)
-				givenSDocuments.add((SDocument) sElementId.getSIdentifiableElement());
+		public PepperMapper createPepperMapper(Identifier sElementId) {
+			if (sElementId.getIdentifiableElement() instanceof SDocument)
+				givenSDocuments.add((SDocument) sElementId.getIdentifiableElement());
 			return (new PepperMapperImpl() {
 				public DOCUMENT_STATUS mapSDocument() {
 					DOCUMENT_STATUS status = DOCUMENT_STATUS.COMPLETED;
 
 					if (deletedSDocuments != null) {
-						int idxDeleteDoc = deletedSDocuments.indexOf(getSDocument());
-						if ((idxDeleteDoc != -1) && (deletedSDocuments.get(idxDeleteDoc).getSCorpusGraph().equals(getSDocument().getSCorpusGraph()))) {
+						int idxDeleteDoc = deletedSDocuments.indexOf(getDocument());
+						if ((idxDeleteDoc != -1) && (deletedSDocuments.get(idxDeleteDoc).getGraph().equals(getDocument().getGraph()))) {
 							status = DOCUMENT_STATUS.DELETED;
 						}
 					}
@@ -562,9 +561,9 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 			givenSDocuments = new Vector<SDocument>();
 		}
 
-		public PepperMapper createPepperMapper(SElementId sElementId) {
-			if (sElementId.getSIdentifiableElement() instanceof SDocument)
-				givenSDocuments.add((SDocument) sElementId.getSIdentifiableElement());
+		public PepperMapper createPepperMapper(Identifier sElementId) {
+			if (sElementId.getIdentifiableElement() instanceof SDocument)
+				givenSDocuments.add((SDocument) sElementId.getIdentifiableElement());
 			return (new PepperMapperImpl() {
 				public DOCUMENT_STATUS mapSDocument() {
 					try {
@@ -590,7 +589,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	public void testConvert_1IM_1EX() {
 		List<SDocument> expectedSDocuments = new Vector<SDocument>();
 		for (int i = 0; i < 10; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments.add(sDoc);
 		}
 
@@ -609,7 +608,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		exportStep.setPepperModule(myExporter);
 		getFixture().addStep(exportStep);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		getFixture().convert();
 
 		assertTrue(expectedSDocuments.containsAll(myImporter.givenSDocuments));
@@ -631,12 +630,12 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	public void testConvert_2IM_1EX() {
 		List<SDocument> expectedSDocuments1 = new Vector<SDocument>();
 		for (int i = 0; i < 10; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments1.add(sDoc);
 		}
 		List<SDocument> expectedSDocuments2 = new Vector<SDocument>();
 		for (int i = 0; i < 5; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments2.add(sDoc);
 		}
 
@@ -664,7 +663,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		exportStep.setPepperModule(myExporter);
 		getFixture().addStep(exportStep);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		getFixture().convert();
 
 		assertEquals(expectedSDocuments1.size(), myImporter1.givenSDocuments.size());
@@ -696,12 +695,12 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	public void testConvert_2IM_2EX() {
 		List<SDocument> expectedSDocuments1 = new Vector<SDocument>();
 		for (int i = 0; i < 10; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments1.add(sDoc);
 		}
 		List<SDocument> expectedSDocuments2 = new Vector<SDocument>();
 		for (int i = 0; i < 5; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments2.add(sDoc);
 		}
 
@@ -735,7 +734,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		exportStep2.setPepperModule(myExporter2);
 		getFixture().addStep(exportStep2);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		getFixture().convert();
 
 		assertEquals(expectedSDocuments1.size(), myImporter1.givenSDocuments.size());
@@ -774,12 +773,12 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	public void testConvert_2IM_1MA_1EX() {
 		List<SDocument> expectedSDocuments1 = new Vector<SDocument>();
 		for (int i = 0; i < 10; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments1.add(sDoc);
 		}
 		List<SDocument> expectedSDocuments2 = new Vector<SDocument>();
 		for (int i = 0; i < 5; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments2.add(sDoc);
 		}
 
@@ -817,7 +816,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		exportStep1.setPepperModule(myExporter1);
 		getFixture().addStep(exportStep1);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		getFixture().convert();
 
 		// import phase
@@ -852,12 +851,12 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	public void testConvert_2IM_2MA_1EX() {
 		List<SDocument> expectedSDocuments1 = new Vector<SDocument>();
 		for (int i = 0; i < 10; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments1.add(sDoc);
 		}
 		List<SDocument> expectedSDocuments2 = new Vector<SDocument>();
 		for (int i = 0; i < 5; i++) {
-			SDocument sDoc = SaltFactory.eINSTANCE.createSDocument();
+			SDocument sDoc = SaltFactory.createSDocument();
 			expectedSDocuments2.add(sDoc);
 		}
 
@@ -902,7 +901,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		exportStep1.setPepperModule(myExporter1);
 		getFixture().addStep(exportStep1);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		getFixture().convert();
 
 		// import phase
@@ -943,7 +942,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 		List<SDocument> expectedDocuments = new Vector<SDocument>();
 		for (int i = 0; i < 20; i++) {
-			expectedDocuments.add(SaltFactory.eINSTANCE.createSDocument());
+			expectedDocuments.add(SaltFactory.createSDocument());
 		}
 		MyImporter myImporter = new MyImporter("myImporter");
 		myImporter.setResources(dummyResourceURI);
@@ -971,7 +970,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		exportStep1.setPepperModule(myExporter);
 		getFixture().addStep(exportStep1);
 
-		getFixture().setSaltProject(SaltFactory.eINSTANCE.createSaltProject());
+		getFixture().setSaltProject(SaltFactory.createSaltProject());
 
 		Thread watchDog = new Thread(new Runnable() {
 

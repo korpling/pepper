@@ -23,17 +23,16 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
+import org.corpus_tools.pepper.modules.PepperImporter;
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpusGraph;
 import org.eclipse.emf.common.util.URI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph;
 
 public class PepperImporterImplTest {
 
@@ -54,7 +53,7 @@ public class PepperImporterImplTest {
 	@Before
 	public void setUp() {
 		this.setFixture(new FixtureImporter());
-		sCorpusGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
+		sCorpusGraph = SaltFactory.createSCorpusGraph();
 	}
 
 	@After
@@ -80,13 +79,13 @@ public class PepperImporterImplTest {
 		tmpFolder.mkdirs();
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(tmpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
 		new File(tmpFolder.getCanonicalPath() + "/.svn").mkdirs();
-		this.getFixture().importCorpusStructure(sCorpusGraph);
+		getFixture().importCorpusStructure(sCorpusGraph);
 
-		assertEquals("sNodes: " + sCorpusGraph.getSNodes(), 1, sCorpusGraph.getSNodes().size());
-		assertEquals(0, sCorpusGraph.getSRelations().size());
+		assertEquals("sNodes: " + sCorpusGraph.getNodes(), 1, sCorpusGraph.getNodes().size());
+		assertEquals(0, sCorpusGraph.getRelations().size());
 	}
 
 	/**
@@ -100,16 +99,16 @@ public class PepperImporterImplTest {
 		tmpFolder.mkdirs();
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(tmpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
 		new File(tmpFolder.getCanonicalPath() + "/corp1").mkdirs();
 		new File(tmpFolder.getCanonicalPath() + "/corp1/.svn").mkdirs();
-		sCorpusGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-		this.getFixture().importCorpusStructure(sCorpusGraph);
+		sCorpusGraph = SaltFactory.createSCorpusGraph();
+		getFixture().importCorpusStructure(sCorpusGraph);
 
-		assertEquals(2, sCorpusGraph.getSNodes().size());
-		assertEquals(2, sCorpusGraph.getSCorpora().size());
-		assertEquals(1, sCorpusGraph.getSRelations().size());
+		assertEquals(2, sCorpusGraph.getNodes().size());
+		assertEquals(2, sCorpusGraph.getCorpora().size());
+		assertEquals(1, sCorpusGraph.getRelations().size());
 	}
 
 	/**
@@ -126,15 +125,15 @@ public class PepperImporterImplTest {
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
-		this.getFixture().importCorpusStructure(sCorpusGraph);
-		assertEquals("corp1", sCorpusGraph.getSName());
+		getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals("corp1", sCorpusGraph.getName());
 
 		new File(tmpFolder.getCanonicalPath() + "/corp1/corp2/").mkdirs();
-		sCorpusGraph = SaltFactory.eINSTANCE.createSCorpusGraph();
-		this.getFixture().importCorpusStructure(sCorpusGraph);
-		assertEquals("corp1", sCorpusGraph.getSName());
+		sCorpusGraph = SaltFactory.createSCorpusGraph();
+		getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals("corp1", sCorpusGraph.getName());
 	}
 
 	/**
@@ -157,17 +156,17 @@ public class PepperImporterImplTest {
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
 		File.createTempFile("doc1", "." + PepperImporter.ENDING_XML, corpFolder).deleteOnExit();
 		File.createTempFile("doc2", "." + PepperImporter.ENDING_XML, corpFolder).deleteOnExit();
-		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_XML);
+		getFixture().getDocumentEndings().add(PepperImporter.ENDING_XML);
 
-		this.getFixture().importCorpusStructure(sCorpusGraph);
-		assertEquals(3, sCorpusGraph.getSNodes().size());
-		assertEquals(2, sCorpusGraph.getSRelations().size());
-		assertEquals(1, sCorpusGraph.getSCorpora().size());
-		assertEquals(2, sCorpusGraph.getSDocuments().size());
+		getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals(3, sCorpusGraph.getNodes().size());
+		assertEquals(2, sCorpusGraph.getRelations().size());
+		assertEquals(1, sCorpusGraph.getCorpora().size());
+		assertEquals(2, sCorpusGraph.getDocuments().size());
 
 	}
 
@@ -195,7 +194,7 @@ public class PepperImporterImplTest {
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
 		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2");
 		corp2.mkdirs();
@@ -206,15 +205,15 @@ public class PepperImporterImplTest {
 		File.createTempFile("doc2", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();
 		File.createTempFile("doc1", "." + PepperImporter.ENDING_XML, corp3).deleteOnExit();
 		File.createTempFile("doc2", "." + PepperImporter.ENDING_XML, corp3).deleteOnExit();
-		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_XML);
+		getFixture().getDocumentEndings().add(PepperImporter.ENDING_XML);
 
-		this.getFixture().importCorpusStructure(sCorpusGraph);
-		assertEquals(7, sCorpusGraph.getSNodes().size());
-		assertEquals(6, sCorpusGraph.getSRelations().size());
-		assertEquals(2, sCorpusGraph.getSCorpusRelations().size());
-		assertEquals(4, sCorpusGraph.getSCorpusDocumentRelations().size());
-		assertEquals(3, sCorpusGraph.getSCorpora().size());
-		assertEquals(4, sCorpusGraph.getSDocuments().size());
+		getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals(7, sCorpusGraph.getNodes().size());
+		assertEquals(6, sCorpusGraph.getRelations().size());
+		assertEquals(2, sCorpusGraph.getCorpusRelations().size());
+		assertEquals(4, sCorpusGraph.getCorpusDocumentRelations().size());
+		assertEquals(3, sCorpusGraph.getCorpora().size());
+		assertEquals(4, sCorpusGraph.getDocuments().size());
 	}
 
 	/**
@@ -241,7 +240,7 @@ public class PepperImporterImplTest {
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
 		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2");
 		corp2.mkdirs();
@@ -251,15 +250,15 @@ public class PepperImporterImplTest {
 		new File(corp2 + "/doc2").mkdirs();
 		new File(corp3 + "/doc1").mkdirs();
 		new File(corp3 + "/doc2").mkdirs();
-		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
+		getFixture().getDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
 
-		this.getFixture().importCorpusStructure(sCorpusGraph);
-		assertEquals(7, sCorpusGraph.getSNodes().size());
-		assertEquals(6, sCorpusGraph.getSRelations().size());
-		assertEquals(2, sCorpusGraph.getSCorpusRelations().size());
-		assertEquals(4, sCorpusGraph.getSCorpusDocumentRelations().size());
-		assertEquals(3, sCorpusGraph.getSCorpora().size());
-		assertEquals(4, sCorpusGraph.getSDocuments().size());
+		getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals(7, sCorpusGraph.getNodes().size());
+		assertEquals(6, sCorpusGraph.getRelations().size());
+		assertEquals(2, sCorpusGraph.getCorpusRelations().size());
+		assertEquals(4, sCorpusGraph.getCorpusDocumentRelations().size());
+		assertEquals(3, sCorpusGraph.getCorpora().size());
+		assertEquals(4, sCorpusGraph.getDocuments().size());
 	}
 
 	/**
@@ -284,22 +283,22 @@ public class PepperImporterImplTest {
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
 		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2.1");
 		corp2.mkdirs();
 
 		File.createTempFile("doc1", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();
 		File.createTempFile("doc2", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();
-		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_XML);
+		getFixture().getDocumentEndings().add(PepperImporter.ENDING_XML);
 
-		this.getFixture().importCorpusStructure(sCorpusGraph);
-		assertEquals(4, sCorpusGraph.getSNodes().size());
-		assertEquals(3, sCorpusGraph.getSRelations().size());
-		assertEquals(1, sCorpusGraph.getSCorpusRelations().size());
-		assertEquals(2, sCorpusGraph.getSCorpusDocumentRelations().size());
-		assertEquals(2, sCorpusGraph.getSCorpora().size());
-		assertEquals(2, sCorpusGraph.getSDocuments().size());
+		getFixture().importCorpusStructure(sCorpusGraph);
+		assertEquals(4, sCorpusGraph.getNodes().size());
+		assertEquals(3, sCorpusGraph.getRelations().size());
+		assertEquals(1, sCorpusGraph.getCorpusRelations().size());
+		assertEquals(2, sCorpusGraph.getCorpusDocumentRelations().size());
+		assertEquals(2, sCorpusGraph.getCorpora().size());
+		assertEquals(2, sCorpusGraph.getDocuments().size());
 	}
 
 	/**
@@ -325,15 +324,15 @@ public class PepperImporterImplTest {
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(docFolder.getCanonicalPath()));
-		this.getFixture().setCorpusDesc(corpDef);
+		getFixture().setCorpusDesc(corpDef);
 
-		this.getFixture().getSDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
-		this.getFixture().importCorpusStructure(sCorpusGraph);
+		getFixture().getDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
+		getFixture().importCorpusStructure(sCorpusGraph);
 
 		assertNotNull(sCorpusGraph);
-		assertNotNull(sCorpusGraph.getSCorpora());
-		assertEquals(1, sCorpusGraph.getSCorpora().size());
-		assertNotNull(sCorpusGraph.getSDocuments());
-		assertEquals(1, sCorpusGraph.getSDocuments().size());
+		assertNotNull(sCorpusGraph.getCorpora());
+		assertEquals(1, sCorpusGraph.getCorpora().size());
+		assertNotNull(sCorpusGraph.getDocuments());
+		assertEquals(1, sCorpusGraph.getDocuments().size());
 	}
 }

@@ -27,19 +27,18 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.pepper.core.DocumentBus;
+import org.corpus_tools.pepper.core.DocumentControllerImpl;
+import org.corpus_tools.pepper.core.ModuleControllerImpl;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.impl.PepperModuleImpl;
+import org.corpus_tools.pepper.modules.DocumentController;
+import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SaltProject;
+import org.corpus_tools.salt.samples.SampleGenerator;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.PepperFWException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.DocumentController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperModuleImpl;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
-import de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator;
 
 public class ModuleControllerTest {
 
@@ -173,9 +172,9 @@ public class ModuleControllerTest {
 		getFixture().setOutputDocumentBus(output);
 		SaltProject saltProject = SampleGenerator.createSaltProject();
 		List<DocumentController> expectedDocumentControllers = new Vector<DocumentController>();
-		for (SDocument sDocument : saltProject.getSCorpusGraphs().get(0).getSDocuments()) {
+		for (SDocument sDocument : saltProject.getCorpusGraphs().get(0).getDocuments()) {
 			DocumentController controller = new DocumentControllerImpl();
-			controller.setSDocument(sDocument);
+			controller.setDocument(sDocument);
 			controller.addModuleControllers(getFixture());
 			expectedDocumentControllers.add(controller);
 			input.put(controller);
@@ -214,9 +213,9 @@ public class ModuleControllerTest {
 
 		SaltProject saltProject = SampleGenerator.createSaltProject();
 		List<DocumentController> expectedDocumentControllers = new Vector<DocumentController>();
-		for (SDocument sDocument : saltProject.getSCorpusGraphs().get(0).getSDocuments()) {
+		for (SDocument sDocument : saltProject.getCorpusGraphs().get(0).getDocuments()) {
 			DocumentController controller = new DocumentControllerImpl();
-			controller.setSDocument(sDocument);
+			controller.setDocument(sDocument);
 			controller.addModuleControllers(getFixture());
 			expectedDocumentControllers.add(controller);
 			input.put(controller);
@@ -229,7 +228,7 @@ public class ModuleControllerTest {
 
 		input.finish("firstModule");
 		DocumentController controller = null;
-		while ((controller = this.getFixture().next()) != null) {
+		while ((controller = getFixture().next()) != null) {
 			getFixture().complete(controller);
 		}
 		assertNotNull(output.getDocumentBus().get("lastModule"));
@@ -259,9 +258,9 @@ public class ModuleControllerTest {
 
 		SaltProject saltProject = SampleGenerator.createSaltProject();
 		List<DocumentController> expectedDocumentControllers = new Vector<DocumentController>();
-		for (SDocument sDocument : saltProject.getSCorpusGraphs().get(0).getSDocuments()) {
+		for (SDocument sDocument : saltProject.getCorpusGraphs().get(0).getDocuments()) {
 			DocumentController controller = new DocumentControllerImpl();
-			controller.setSDocument(sDocument);
+			controller.setDocument(sDocument);
 			controller.addModuleControllers(getFixture());
 			expectedDocumentControllers.add(controller);
 			input.put(controller);
@@ -274,7 +273,7 @@ public class ModuleControllerTest {
 
 		input.finish("firstModule");
 		DocumentController controller = null;
-		while ((controller = this.getFixture().next()) != null) {
+		while ((controller = getFixture().next()) != null) {
 			getFixture().delete(controller);
 		}
 		assertNotNull(output.getDocumentBus().get("lastModule"));
@@ -294,9 +293,9 @@ public class ModuleControllerTest {
 
 		SaltProject saltProject = SampleGenerator.createSaltProject();
 		List<DocumentController> expectedDocumentControllers = new Vector<DocumentController>();
-		for (SDocument sDocument : saltProject.getSCorpusGraphs().get(0).getSDocuments()) {
+		for (SDocument sDocument : saltProject.getCorpusGraphs().get(0).getDocuments()) {
 			DocumentController controller = new DocumentControllerImpl();
-			controller.setSDocument(sDocument);
+			controller.setDocument(sDocument);
 			controller.addModuleControllers(getFixture());
 			expectedDocumentControllers.add(controller);
 		}

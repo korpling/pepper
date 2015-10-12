@@ -25,6 +25,7 @@ This project includes:
   de.hu_berlin.german.korpling.saltnpepper.pepperModules-SampleModules under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   Hamcrest Core under New BSD License
+  Java Text Categorizing Library under GNU Lesser General Public License
   JUnit under Common Public License Version 1.0
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
   org.eclipse.emf under The Eclipse Public License Version 1.0
@@ -34,10 +35,9 @@ This project includes:
   osgi.cmpn under Apache License, Version 2.0
   osgi.core under Apache License, Version 2.0
   pepper-framework under The Apache Software License, Version 2.0
-  salt-graph under The Apache Software License, Version 2.0
-  salt-saltCommon under The Apache Software License, Version 2.0
-  salt-saltCore under The Apache Software License, Version 2.0
+  salt-api under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
-  textcat under LGPL
+  Stax2 API under The BSD License
+  Woodstox under The Apache License, Version 2.0
   XMLUnit for Java under BSD License
 

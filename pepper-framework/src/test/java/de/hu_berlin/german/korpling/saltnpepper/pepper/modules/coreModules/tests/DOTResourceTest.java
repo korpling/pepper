@@ -24,8 +24,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltCommonFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.SaltProject;
+
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SaltProject;
 
 public class DOTResourceTest extends TestCase {
 	private SaltProject fixture = null;
@@ -54,7 +55,7 @@ public class DOTResourceTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(SaltCommonFactory.eINSTANCE.createSaltProject());
+		setFixture(SaltFactory.createSaltProject());
 	}
 
 	// /**
@@ -77,50 +78,50 @@ public class DOTResourceTest extends TestCase {
 	// {//creating the graph
 	// //text
 	// STextualDS sText= SaltCommonFactory.eINSTANCE.createSTextualDS();
-	// sText.setSText("This is a sample text.");
-	// sDocGraph.addSNode(sText);
+	// sText.setText("This is a sample text.");
+	// sDocGraph.addNode(sText);
 	//
 	// //tok1
 	// SToken tok1= SaltCommonFactory.eINSTANCE.createSToken();
-	// sDocGraph.addSNode(tok1);
+	// sDocGraph.addNode(tok1);
 	// //tok2
 	// SToken tok2= SaltCommonFactory.eINSTANCE.createSToken();
-	// sDocGraph.addSNode(tok2);
+	// sDocGraph.addNode(tok2);
 	// //textlRel1
 	// STextualRelation textRel1=
 	// SaltCommonFactory.eINSTANCE.createSTextualRelation();
-	// textRel1.setSTextualDS(sText);
+	// textRel1.setTarget(sText);
 	// textRel1.setSToken(tok1);
-	// textRel1.setSStart(0);
-	// textRel1.setSEnd(4);
-	// sDocGraph.addSRelation(textRel1);
+	// textRel1.setStart(0);
+	// textRel1.setEnd(4);
+	// sDocGraph.addRelation(textRel1);
 	//
 	// //textlRel1
 	// STextualRelation textRel2=
 	// SaltCommonFactory.eINSTANCE.createSTextualRelation();
-	// textRel2.setSTextualDS(sText);
+	// textRel2.setTarget(sText);
 	// textRel2.setSToken(tok2);
-	// textRel2.setSStart(5);
-	// textRel2.setSEnd(7);
-	// sDocGraph.addSRelation(textRel2);
+	// textRel2.setStart(5);
+	// textRel2.setEnd(7);
+	// sDocGraph.addRelation(textRel2);
 	//
 	// //span1
 	// SSpan span= SaltCommonFactory.eINSTANCE.createSSpan();
-	// sDocGraph.addSNode(span);
+	// sDocGraph.addNode(span);
 	//
 	// //spanRel1
 	// SSpanningRelation spanRel1=
 	// SaltCommonFactory.eINSTANCE.createSSpanningRelation();
-	// spanRel1.setSSpan(span);
+	// spanRel1.setSource(span);
 	// spanRel1.setSToken(tok1);
-	// sDocGraph.addSRelation(spanRel1);
+	// sDocGraph.addRelation(spanRel1);
 	//
 	// //spanRel2
 	// SSpanningRelation spanRel2=
 	// SaltCommonFactory.eINSTANCE.createSSpanningRelation();
-	// spanRel2.setSSpan(span);
+	// spanRel2.setSource(span);
 	// spanRel2.setSToken(tok2);
-	// sDocGraph.addSRelation(spanRel2);
+	// sDocGraph.addRelation(spanRel2);
 	// }
 	//
 	//
@@ -163,59 +164,59 @@ public class DOTResourceTest extends TestCase {
 	//
 	// SDocumentGraph sDocGraph=
 	// SaltCommonFactory.eINSTANCE.createSDocumentGraph();
-	// sDocGraph.setSName("graph1");
-	// sDocGraph.setSId("graph1");
+	// sDocGraph.setName("graph1");
+	// sDocGraph.setId("graph1");
 	// {//creating the graph
 	// //text
 	// STextualDS sText= SaltCommonFactory.eINSTANCE.createSTextualDS();
-	// sText.setSText("This is a sample text.");
-	// sDocGraph.addSNode(sText);
+	// sText.setText("This is a sample text.");
+	// sDocGraph.addNode(sText);
 	//
 	// //tok1
 	// SToken tok1= SaltCommonFactory.eINSTANCE.createSToken();
-	// sDocGraph.addSNode(tok1);
+	// sDocGraph.addNode(tok1);
 	// //tok2
 	// SToken tok2= SaltCommonFactory.eINSTANCE.createSToken();
-	// sDocGraph.addSNode(tok2);
+	// sDocGraph.addNode(tok2);
 	// //textlRel1
 	// STextualRelation textRel1=
 	// SaltCommonFactory.eINSTANCE.createSTextualRelation();
-	// textRel1.setSTextualDS(sText);
+	// textRel1.setTarget(sText);
 	// textRel1.setSToken(tok1);
-	// textRel1.setSStart(0);
-	// textRel1.setSEnd(4);
-	// sDocGraph.addSRelation(textRel1);
+	// textRel1.setStart(0);
+	// textRel1.setEnd(4);
+	// sDocGraph.addRelation(textRel1);
 	//
 	// //textlRel1
 	// STextualRelation textRel2=
 	// SaltCommonFactory.eINSTANCE.createSTextualRelation();
-	// textRel2.setSTextualDS(sText);
+	// textRel2.setTarget(sText);
 	// textRel2.setSToken(tok2);
-	// textRel2.setSStart(5);
-	// textRel2.setSEnd(7);
-	// sDocGraph.addSRelation(textRel2);
+	// textRel2.setStart(5);
+	// textRel2.setEnd(7);
+	// sDocGraph.addRelation(textRel2);
 	//
 	// //span1
 	// SSpan span= SaltCommonFactory.eINSTANCE.createSSpan();
-	// sDocGraph.addSNode(span);
+	// sDocGraph.addNode(span);
 	//
 	// //spanRel1
 	// SSpanningRelation spanRel1=
 	// SaltCommonFactory.eINSTANCE.createSSpanningRelation();
-	// spanRel1.setSSpan(span);
+	// spanRel1.setSource(span);
 	// spanRel1.setSToken(tok1);
-	// sDocGraph.addSRelation(spanRel1);
+	// sDocGraph.addRelation(spanRel1);
 	//
 	// //spanRel2
 	// SSpanningRelation spanRel2=
 	// SaltCommonFactory.eINSTANCE.createSSpanningRelation();
-	// spanRel2.setSSpan(span);
+	// spanRel2.setSource(span);
 	// spanRel2.setSToken(tok2);
-	// sDocGraph.addSRelation(spanRel2);
+	// sDocGraph.addRelation(spanRel2);
 	//
 	// //STimeline
 	// STimeline time= SaltCommonFactory.eINSTANCE.createSTimeline();
-	// sDocGraph.addSNode(time);
+	// sDocGraph.addNode(time);
 	// time.addSPointOfTime("1");
 	// time.addSPointOfTime("2");
 	// time.addSPointOfTime("3");
@@ -224,20 +225,20 @@ public class DOTResourceTest extends TestCase {
 	// //spanRel1
 	// STimelineRelation timeRel1=
 	// SaltCommonFactory.eINSTANCE.createSTimelineRelation();
-	// timeRel1.setSTimeline(time);
+	// timeRel1.setTimeline(time);
 	// timeRel1.setSToken(tok1);
-	// timeRel1.setSStart(1);
-	// timeRel1.setSStart(1);
-	// sDocGraph.addSRelation(timeRel1);
+	// timeRel1.setStart(1);
+	// timeRel1.setStart(1);
+	// sDocGraph.addRelation(timeRel1);
 	//
 	// //spanRel1
 	// STimelineRelation timeRel2=
 	// SaltCommonFactory.eINSTANCE.createSTimelineRelation();
-	// timeRel2.setSTimeline(time);
+	// timeRel2.setTimeline(time);
 	// timeRel2.setSToken(tok2);
-	// timeRel2.setSStart(3);
-	// timeRel2.setSStart(4);
-	// sDocGraph.addSRelation(timeRel2);
+	// timeRel2.setStart(3);
+	// timeRel2.setStart(4);
+	// sDocGraph.addRelation(timeRel2);
 	// }
 	//
 	// {//save and reload

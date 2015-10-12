@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 	<artifactId>pepper</artifactId>
-	<version>2.1.3-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -10,10 +11,8 @@
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
 	</modules>
-	<description>Pepper is a plugable converter framework to convert linguistic data between several
-        formats. Pepper is based on the linguistic meta model Salt. New formats can easily plugged
-        into the framework via creating a PepperModule.</description>
-	<url>https://korpling.german.hu-berlin.de/p/projects/pepper</url>
+	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>
+	<url>http://corpus-tools.org/pepper/</url>
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/korpling/pepper/issues</url>
@@ -64,7 +63,7 @@
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
 
 		<!-- versions of dependencies -->
-		<salt.version>[2.0.0,3.0.0)</salt.version>
+		<salt.version>3.0.0-SNAPSHOT</salt.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.11</junit.version>
@@ -93,6 +92,10 @@
 		<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
 		<xmlunit.version>1.5</xmlunit.version>
 		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
+		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+		<findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
+		<maven-site-plugin.version>3.1</maven-site-plugin.version>
+		<maven-project-info-reports-plugin.version>2.8.1</maven-project-info-reports-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- <dependency> <groupId>org.codehaus.janino</groupId> <artifactId>janino</artifactId> 
@@ -100,7 +103,7 @@
 			</dependency> -->
 		<dependency>
 			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
-			<artifactId>salt-saltCommon</artifactId>
+			<artifactId>salt-api</artifactId>
 			<version>${salt.version}</version>
 			<scope>compile</scope>
 		</dependency>
@@ -258,14 +261,15 @@
 				<groupId>com.carrotgarden.maven</groupId>
 				<artifactId>carrot-maven-scr-plugin</artifactId>
 				<version>${carrot-maven-scr-plugin.version}</version>
-                <dependencies>
-                    <!-- manually update to latest ASM version in order to compile under Java 8 -->
-                    <dependency>  
-                        <groupId>org.ow2.asm</groupId>  
-                        <artifactId>asm</artifactId>  
-                        <version>5.0.3</version>  
-                    </dependency> 
-                </dependencies>
+				<dependencies>
+					<!-- manually update to latest ASM version in order to compile under 
+						Java 8 -->
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>5.0.3</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<!-- Unwanted interfaces. -->
 					<excludedServices>
@@ -350,21 +354,52 @@
 				</configuration>
 			</plugin>
 			<!-- end: creates a NOTICE file use mvn notice:generate -->
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
-                <executions>
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
-            </plugin>
-            
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>${maven-project-info-reports-plugin.version}</version>
+							<configuration>
+								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+							</configuration>
+							<reports>
+								<report>index</report>
+								<report>summary</report>
+								<report>license</report>
+							</reports>
+						</plugin>
+
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+							<version>${findbugs-maven-plugin.version}</version>
+							<configuration>
+								<excludeFilterFile>${basedir}/src/findbugs/excludeFilter.xml</excludeFilterFile>
+							</configuration>
+						</plugin>
+
+
+					</reportPlugins>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+			</plugin>
 		</plugins>
 		<finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
 	</build>

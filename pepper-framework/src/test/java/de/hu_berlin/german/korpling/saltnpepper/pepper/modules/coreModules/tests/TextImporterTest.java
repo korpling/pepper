@@ -24,17 +24,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import org.corpus_tools.pepper.common.CorpusDesc;
+import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.modules.coreModules.TextImporter;
+import org.corpus_tools.pepper.modules.coreModules.TextImporter.TextMapper;
+import org.corpus_tools.pepper.testFramework.PepperImporterTest;
+import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.CorpusDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.FormatDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.TextImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.coreModules.TextImporter.TextMapper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.testFramework.PepperImporterTest;
-import de.hu_berlin.german.korpling.saltnpepper.salt.SaltFactory;
-import de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SDocument;
 
 public class TextImporterTest extends PepperImporterTest {
 
@@ -67,16 +66,16 @@ public class TextImporterTest extends PepperImporterTest {
 		writer.close();
 
 		TextMapper fixture = new TextMapper();
-		SDocument sDocument = SaltFactory.eINSTANCE.createSDocument();
-		fixture.setSDocument(sDocument);
+		SDocument sDocument = SaltFactory.createSDocument();
+		fixture.setDocument(sDocument);
 		fixture.setResourceURI(URI.createFileURI(txtFile.getAbsolutePath()));
 		fixture.mapSDocument();
 
-		assertNotNull(sDocument.getSDocumentGraph());
-		assertNotNull(sDocument.getSDocumentGraph().getSTextualDSs());
-		assertEquals(1, sDocument.getSDocumentGraph().getSTextualDSs().size());
-		assertNotNull(sDocument.getSDocumentGraph().getSTextualDSs().get(0));
-		assertEquals(text, sDocument.getSDocumentGraph().getSTextualDSs().get(0).getSText());
+		assertNotNull(sDocument.getDocumentGraph());
+		assertNotNull(sDocument.getDocumentGraph().getTextualDSs());
+		assertEquals(1, sDocument.getDocumentGraph().getTextualDSs().size());
+		assertNotNull(sDocument.getDocumentGraph().getTextualDSs().get(0));
+		assertEquals(text, sDocument.getDocumentGraph().getTextualDSs().get(0).getText());
 	}
 
 	/**
@@ -128,15 +127,15 @@ public class TextImporterTest extends PepperImporterTest {
 		formatDesc.setFormatVersion(TextImporter.FORMAT_VERSION);
 		corpDesc.setFormatDesc(formatDesc);
 		corpDesc.setCorpusPath(URI.createFileURI(c1.getAbsolutePath()));
-		this.getFixture().setCorpusDesc(corpDesc);
+		getFixture().setCorpusDesc(corpDesc);
 
 		start();
 
 		assertNotNull(getFixture().getSaltProject());
-		assertEquals(1, getFixture().getSaltProject().getSCorpusGraphs().size());
-		assertNotNull(getFixture().getSaltProject().getSCorpusGraphs().get(0));
+		assertEquals(1, getFixture().getSaltProject().getCorpusGraphs().size());
+		assertNotNull(getFixture().getSaltProject().getCorpusGraphs().get(0));
 
-		assertEquals(3, getFixture().getSaltProject().getSCorpusGraphs().get(0).getSCorpora().size());
-		assertEquals(4, getFixture().getSaltProject().getSCorpusGraphs().get(0).getSDocuments().size());
+		assertEquals(3, getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora().size());
+		assertEquals(4, getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments().size());
 	}
 }

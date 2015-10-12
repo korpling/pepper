@@ -28,22 +28,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
+import org.corpus_tools.pepper.common.Pepper;
+import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.core.ModuleResolver;
+import org.corpus_tools.pepper.core.ModuleResolverImpl;
+import org.corpus_tools.pepper.core.PepperImpl;
+import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.pepper.exceptions.JobNotFoundException;
+import org.corpus_tools.pepper.impl.PepperExporterImpl;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
+import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
+import org.corpus_tools.pepper.modules.PepperExporter;
+import org.corpus_tools.pepper.modules.PepperImporter;
+import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.Pepper;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperModuleDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.exceptions.JobNotFoundException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperExporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperImporter;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperManipulator;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperExporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperImporterImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 
 public class PepperImplTest {
 

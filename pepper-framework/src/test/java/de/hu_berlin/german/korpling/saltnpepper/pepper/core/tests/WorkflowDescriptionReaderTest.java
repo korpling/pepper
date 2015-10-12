@@ -36,22 +36,21 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.corpus_tools.pepper.common.MODULE_TYPE;
+import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.core.ModuleResolver;
+import org.corpus_tools.pepper.core.ModuleResolverImpl;
+import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.pepper.core.WorkflowDescriptionReader;
+import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
+import org.corpus_tools.pepper.modules.PepperModule;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.MODULE_TYPE;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.PepperUtil;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.common.StepDesc;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolverImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.core.WorkflowDescriptionReader;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModule;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperManipulatorImpl;
 
 public class WorkflowDescriptionReaderTest {
 

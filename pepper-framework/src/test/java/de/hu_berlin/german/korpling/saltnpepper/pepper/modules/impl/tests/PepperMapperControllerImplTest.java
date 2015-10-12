@@ -19,14 +19,13 @@ package de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.tests;
 
 import static org.junit.Assert.fail;
 
+import org.corpus_tools.pepper.impl.PepperMapperControllerImpl;
+import org.corpus_tools.pepper.impl.PepperMapperImpl;
+import org.corpus_tools.pepper.modules.PepperMapperController;
+import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperMapperController;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.PepperModuleProperties;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.exceptions.PepperModuleException;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperControllerImpl;
-import de.hu_berlin.german.korpling.saltnpepper.pepper.modules.impl.PepperMapperImpl;
 
 public class PepperMapperControllerImplTest {
 
@@ -48,9 +47,9 @@ public class PepperMapperControllerImplTest {
 	}
 
 	@Test
-	public void testSetSElementId() {
+	public void testSetIdentifier() {
 		try {
-			getFixture().setSElementId(null);
+			getFixture().setIdentifier(null);
 			fail();
 		} catch (PepperModuleException e) {
 			// do nothing
