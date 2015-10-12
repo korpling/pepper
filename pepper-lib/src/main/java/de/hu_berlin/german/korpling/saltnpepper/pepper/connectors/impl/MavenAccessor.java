@@ -39,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.http.client.HttpResponseException;
 import org.apache.maven.repository.internal.DefaultArtifactDescriptorReader;
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.apache.maven.repository.internal.DefaultVersionResolver;
@@ -554,6 +555,9 @@ public class MavenAccessor {
 					}else{
 						logger.warn("Update of "+artifactId+" failed, could not resolve dependencies "/*, e*/);//TODO decide
 					}
+				}
+				if (t instanceof HttpResponseException){
+					logger.error("Dependency resolution failed!"+System.lineSeparator()+"\tUnsatisfying http response: "+t.getMessage());
 				}
 			}
     		update = false;			
