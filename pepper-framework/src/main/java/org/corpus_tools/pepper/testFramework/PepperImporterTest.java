@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Vector;
@@ -85,7 +86,16 @@ public abstract class PepperImporterTest extends PepperModuleTest {
 	 * A list of formats, which shall be supported
 	 */
 	protected List<FormatDesc> supportedFormatsCheck = null;
-
+	/**
+	 * Adds a format description to the list of formats which are supported by
+	 * the module to be tested.
+	 */
+	public void addSupportedFormat(FormatDesc formatDesc) {
+		if (formatDesc == null) {
+			fail("Cannot add an empty format description.");
+		}
+		supportedFormatsCheck.add(formatDesc);
+	}
 	protected void setFixture(PepperImporter fixture) {
 		super.setFixture(fixture);
 		this.supportedFormatsCheck = new Vector<FormatDesc>();
