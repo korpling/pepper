@@ -168,6 +168,7 @@ public class MavenAccessor {
 	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2/";
 	/** path to maven central */
 	public static final String CENTRAL_REPO = "http://central.maven.org/maven2/";
+
 	/** group-id of pepper-framework artifact**/
 	public static final String GROUP_ID_PEPPER = "de.hu_berlin.german.korpling.saltnpepper.pepper"; //"org.corpus_tools.pepper";
 	
@@ -253,7 +254,7 @@ public class MavenAccessor {
 		if (forbiddenFruits.isEmpty()){
 			logger.info("Configuring update mechanism ...");
 			/* maven access utils*/
-			Artifact pepArt = new DefaultArtifact(GROUP_ID_PEPPER, ARTIFACT_ID_PEPPER_PARENT, "pom", frameworkVersion);
+			Artifact pepArt = new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", frameworkVersion);
 			
 			DefaultRepositorySystemSession session = getNewSession();                
 			
@@ -688,7 +689,7 @@ public class MavenAccessor {
 			List<Dependency> checkList = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
 			if (checkList==null){
 				CollectRequest collectRequest = new CollectRequest();
-		        collectRequest.setRoot( new Dependency( new DefaultArtifact(GROUP_ID_PEPPER, ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), "" ) );
+		        collectRequest.setRoot( new Dependency( new DefaultArtifact("de.hu_berlin.german.korpling.saltnpepper", ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), "" ) );
 		        collectRequest.addRepository(repos.get(CENTRAL_REPO));
 		        collectRequest.addRepository(repos.get(KORPLING_MAVEN_REPO));
 		        CollectResult collectResult;
