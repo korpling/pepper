@@ -169,7 +169,7 @@ public class MavenAccessor {
 	/** path to maven central */
 	public static final String CENTRAL_REPO = "http://central.maven.org/maven2/";
 	/** group-id of pepper-framework artifact**/
-	public static final String GROUP_ID_PEPPER="org.corpus_tools.pepper";
+	public static final String GROUP_ID_PEPPER = "de.hu_berlin.german.korpling.saltnpepper.pepper"; //"org.corpus_tools.pepper";
 	
 	/** flag which is added to the blacklist entry of a dependency – a FINAL dependency can not be overridden */
 	private static enum STATUS{
@@ -544,7 +544,10 @@ public class MavenAccessor {
 	    		 * dominates all other nodes in the dependency tree.
 	    		 */
         		write2Blacklist();	            
-			}	    	
+			}
+	    	else {
+	    		logger.info("No (newer) version of "+artifactId+" could be found.");
+	    	}
     	} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {		
 			if (e instanceof DependencyCollectionException){
 				Throwable t = e.getCause();

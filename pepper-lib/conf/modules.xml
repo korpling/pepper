@@ -88,4 +88,9 @@
 	<pepperModules>
 		<artifactId>pepperModules-GrAFModules</artifactId>
 	</pepperModules>
+<pepperModules>
+<groupId>org.corpus_tools.peppermodules</groupId>
+<artifactId>PAULAModules</artifactId>
+<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
+</pepperModules>
 </pepperModulesList>
