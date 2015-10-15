@@ -18,5 +18,5 @@
                 <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
-	<logger name="de.hu_berlin.german.korpling.saltnpepper" level="INFO" />
+	<logger name="org.corpus_tools.pepper" level="INFO" />
 </configuration>
