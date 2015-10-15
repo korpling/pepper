@@ -613,7 +613,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				// TODO this is a workaround, to fix that module resolver is
 				// loaded as last bundle, otherwise, some modules will be
 				// ignored
-				if ("de.hu_berlin.german.korpling.saltnpepper.pepper-framework".equalsIgnoreCase(bundle.getSymbolicName())) {
+				if ("org.corpus-tools.pepper-framework".equalsIgnoreCase(bundle.getSymbolicName())) {
 					pepperBundle = bundle;
 				} else {
 					start(bundle.getBundleId());
