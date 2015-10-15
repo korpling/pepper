@@ -1200,7 +1200,7 @@ public class PepperStarter {
 		try (InputStream is = PepperStarter.class.getResourceAsStream("version.properties")) {
 			versionProp.load(is);
 			version = versionProp.getProperty("version");
-		} catch (IOException ex) {
+		} catch (IOException | NullPointerException ex) {
 			throw new PepperException("Cannot read current Pepper version. ", ex);
 		}
 		return (version);
