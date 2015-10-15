@@ -37,7 +37,7 @@
 		The parent project for instance contains all dependencies necessary for using 
 		the SaltNPepper environment (all Pepper projects and all Salt projects). -->
 	<parent>
-		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper-parentModule</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
 		<relativePath>../pepper-parentModule/pom.xml</relativePath>
