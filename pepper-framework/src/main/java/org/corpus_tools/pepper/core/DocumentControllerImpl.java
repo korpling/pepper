@@ -74,39 +74,19 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	private volatile SDocument sDocument = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getDocument()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public SDocument getDocument() {
 		return sDocument;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #setDocument
-	 * (de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure
-	 * .SDocument)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void setDocument(SDocument sDocument) {
 		this.sDocument = sDocument;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getsDocumentId()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public Identifier getsDocumentId() {
 		if (getDocument() == null)
@@ -114,13 +94,7 @@ public class DocumentControllerImpl implements DocumentController {
 		return getDocument().getIdentifier();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getGlobalId()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public String getGlobalId() {
 		String globalId = SaltUtil.getGlobalId(getsDocumentId());
@@ -150,25 +124,13 @@ public class DocumentControllerImpl implements DocumentController {
 	 **/
 	private URI location = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getLocation()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public URI getLocation() {
 		return location;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #setLocation(org.eclipse.emf.common.util.URI)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void setLocation(URI location) {
 		this.location = location;
@@ -180,13 +142,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 **/
 	private boolean aSleep = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #isAsleep()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public boolean isAsleep() {
 		return (aSleep);
@@ -236,32 +192,20 @@ public class DocumentControllerImpl implements DocumentController {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #sendToSleep()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void sendToSleep() {
 		if (getNumOfProcessingModules() == 0) {
 			sleep();
 		}
 	}
-
+	/** {@inheritDoc} **/
 	@Override
 	public void sendToSleep_FORCE() {
 		sleep();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #awake()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void awake() {
 		if (getDocument() == null) {
@@ -298,13 +242,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 **/
 	protected volatile List<ModuleControllerImpl> moduleControllers = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getModuleControllers()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<ModuleControllerImpl> getModuleControllers() {
 		if (moduleControllers == null) {
@@ -323,15 +261,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 **/
 	protected volatile boolean isStarted = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #addModuleControllers
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core
-	 * .ModuleControllerImpl)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public synchronized void addModuleControllers(ModuleControllerImpl moduleController) {
 		if (isStarted)
@@ -413,13 +343,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 **/
 	protected volatile int numberOfProcessingModules = 0;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getNumOfProcessingModules()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public int getNumOfProcessingModules() {
 		return (numberOfProcessingModules);
@@ -434,15 +358,7 @@ public class DocumentControllerImpl implements DocumentController {
 		return currentModuleController;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #updateStatus(java.lang.String,
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper
-	 * .communication.DOCUMENT_STATUS)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void updateStatus(ModuleController moduleController, DOCUMENT_STATUS status) {
 		if (moduleController == null) {
@@ -483,13 +399,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	private volatile DOCUMENT_STATUS globalStatus = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getGlobalStatus()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public DOCUMENT_STATUS getGlobalStatus() {
 		return globalStatus;
@@ -552,13 +462,7 @@ public class DocumentControllerImpl implements DocumentController {
 			globalStatus = newGlobalStatus;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getProgress()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public double getProgress() {
 		if (DOCUMENT_STATUS.DELETED.equals(globalStatus))
@@ -591,13 +495,7 @@ public class DocumentControllerImpl implements DocumentController {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController
-	 * #getProcessingTime()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public Long getProcessingTime() {
 		Long time = 0L;

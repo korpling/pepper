@@ -78,13 +78,7 @@ public class ModuleControllerImpl implements ModuleController {
 	/** id of this object **/
 	protected String id = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getId()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public String getId() {
 		return (id);
@@ -93,13 +87,7 @@ public class ModuleControllerImpl implements ModuleController {
 	/** The {@link PepperModule} object, this controller object is observing. **/
 	protected PepperModule pepperModule;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getPepperModule()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public PepperModule getPepperModule() {
 		return pepperModule;
@@ -138,39 +126,19 @@ public class ModuleControllerImpl implements ModuleController {
 	/** The {@link PepperJobImpl} object, which is container to this object. */
 	private PepperJobImpl job = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getJob()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public PepperJobImpl getJob() {
 		return job;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #setJob
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void setJob(PepperJobImpl job) {
 		setJob_basic(job);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #setJob_basic
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperJobImpl)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void setJob_basic(PepperJobImpl job) {
 		this.job = job;
@@ -183,26 +151,13 @@ public class ModuleControllerImpl implements ModuleController {
 	 **/
 	private DocumentBus inputDocumentBus = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getInputDocumentBus()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public DocumentBus getInputDocumentBus() {
 		return inputDocumentBus;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #setInputDocumentBus
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void setInputDocumentBus(DocumentBus inputDocumentBus) {
 		this.inputDocumentBus = inputDocumentBus;
@@ -215,26 +170,13 @@ public class ModuleControllerImpl implements ModuleController {
 	 **/
 	private DocumentBus outputDocumentBus = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getOutputDocumentBus()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public DocumentBus getOutputDocumentBus() {
 		return outputDocumentBus;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #setOutputDocumentBus
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentBus)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void setOutputDocumentBus(DocumentBus outputDocumentBus) {
 		this.outputDocumentBus = outputDocumentBus;
@@ -243,13 +185,7 @@ public class ModuleControllerImpl implements ModuleController {
 	/** The {@link SCorpusGraph} object to be filled. **/
 	protected volatile SCorpusGraph sCorpusGraph = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getCorpusGraph()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public SCorpusGraph getCorpusGraph() {
 		return (sCorpusGraph);
@@ -279,15 +215,7 @@ public class ModuleControllerImpl implements ModuleController {
 		return (executor);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #importCorpusStructure
-	 * (de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon
-	 * .sCorpusStructure.SCorpusGraph)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public synchronized Future<?> importCorpusStructure(SCorpusGraph sCorpusGraph) {
 		if (sCorpusGraph == null) {
@@ -576,27 +504,14 @@ public class ModuleControllerImpl implements ModuleController {
 		return (documentController);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #next()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public DocumentController next() {
 		logger.debug("[{}] is waiting for further documents in pipeline.", (getPepperModule() != null) ? getPepperModule().getName() : "NO_NAME");
 		return (next(false));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #complete
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void complete(DocumentController documentController) {
 		if (documentController == null) {
@@ -620,14 +535,7 @@ public class ModuleControllerImpl implements ModuleController {
 		mLogger.debug("[{}] completed document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN"));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #delete
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.DocumentController)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void delete(DocumentController documentController) {
 		if (documentController == null) {
@@ -648,13 +556,7 @@ public class ModuleControllerImpl implements ModuleController {
 		getControllList().remove(documentController);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleController
-	 * #getProgress(java.lang.String)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public Double getProgress(String globalId) {
 		if (globalId == null)

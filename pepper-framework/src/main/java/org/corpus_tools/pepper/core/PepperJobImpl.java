@@ -539,7 +539,7 @@ public class PepperJobImpl extends PepperJob {
 	/**
 	 * Imports corpus structures of all registered
 	 * {@link ImportCorpusStructureTest} steps. After calling
-	 * {@link PepperImporter#importCorpusStructure(de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph)}
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}
 	 * , all following modules will be asked, if they want to influence the
 	 * order of importing documents. If this is the case, an order is created
 	 * and put to all {@link PepperImporter} objects. <br/>
@@ -862,7 +862,7 @@ public class PepperJobImpl extends PepperJob {
 	 * be wired.
 	 * <li>
 	 * <li>If
-	 * {@link PepperImporter#importCorpusStructure(de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph)}
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}
 	 * has not already been called, it will be done.
 	 * <li>
 	 * </ul>

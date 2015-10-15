@@ -148,8 +148,7 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 
 	/**
 	 * {@inheritDoc
-	 * PepperExporter#setExportMode(de.hu_berlin.german.korpling.saltnpepper.
-	 * pepper.modules.PepperExporter.EXPORT_MODE)}
+	 * PepperExporter#setExportMode(org.corpus_tools.pepper.modules.PepperExporter.EXPORT_MODE)}
 	 */
 	public void setExportMode(EXPORT_MODE exportMode) {
 		this.exportMode = exportMode;

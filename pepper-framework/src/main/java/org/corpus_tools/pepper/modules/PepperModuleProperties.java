@@ -63,9 +63,9 @@ public class PepperModuleProperties implements Serializable {
 	 * Prefixes all pre processing customization properties directly provided by
 	 * Pepper ({@link PepperModule}). A pre processing property is handled by
 	 * method
-	 * {@link PepperModule#before(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * {@link PepperModule#before(org.corpus_tools.salt.graph.Identifier)}
 	 * before
-	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
 	 * is called.
 	 **/
 	public static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + ".before.";
@@ -73,9 +73,9 @@ public class PepperModuleProperties implements Serializable {
 	 * Prefixes all post processing customization properties directly provided
 	 * by Pepper ({@link PepperModule}). A post processing property is handled
 	 * by method
-	 * {@link PepperModule#after(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * {@link PepperModule#after(org.corpus_tools.salt.graph.Identifier)}
 	 * after
-	 * {@link PepperModule#start(de.hu_berlin.german.korpling.saltnpepper.salt.saltCore.SElementId)}
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
 	 * is called.
 	 **/
 	public static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + ".after.";

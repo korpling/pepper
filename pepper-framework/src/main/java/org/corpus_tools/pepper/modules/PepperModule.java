@@ -208,7 +208,7 @@ public interface PepperModule {
 	 * {@link ModuleController} object is a kind of communicator between a
 	 * {@link PepperModule} and the pepper framework. Also calls the inverse
 	 * method
-	 * {@link ModuleController#setPepperModule_basic(de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModule)}
+	 * {@link ModuleController#setPepperModule_basic(PepperModule)}
 	 * . Note, this method only should be called by pepper framework.
 	 * 
 	 * @param value
@@ -370,15 +370,12 @@ public interface PepperModule {
 
 	/**
 	 * Starts the conversion process. This method is the main method of a pepper
-	 * module. I fthis method is not overridden, it will call
+	 * module. If this method is not overridden, it will call
 	 * {@link #start(Identifier)} for each {@link SDocument} and {@link SCorpus}
 	 * object being contained in the set {@link SCorpusGraph}. This is done in a
 	 * multithreaded way by default. <strong>Note: When your module should not
 	 * run in multithreaded mode, call {@link #setIsMultithreaded(boolean)}
 	 * .</strong>
-	 * 
-	 * @model exceptions=
-	 *        "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
 	 */
 	void start() throws PepperModuleException;
 
@@ -402,12 +399,7 @@ public interface PepperModule {
 	 * <ul>
 	 * <li>{@link #getProgress(Identifier)}</li>
 	 * </ul>
-	 * </strong>
-	 * 
-	 * @model exceptions=
-	 *        "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.PepperModuleException"
-	 *        sElementIdDataType=
-	 *        "de.hu_berlin.german.korpling.saltnpepper.pepper.pepperModules.Identifier"
+	 * </strong> 
 	 */
 	void start(Identifier sElementId) throws PepperModuleException;
 

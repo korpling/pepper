@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 public class PepperOSGiRunner implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(PepperOSGiRunner.class);
 
-	public final static String PROP_TEST_DISABLED = "de.hu_berlin.german.korpling.saltnpepper.pepper.disableTest";
+	public final static String PROP_TEST_DISABLED = "org.corpus_tools.pepper.disableTest";
 	/**
 	 * name of environment variable, which is supposed to contain the workflow
 	 * description file

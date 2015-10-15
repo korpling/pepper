@@ -149,7 +149,7 @@ public abstract class PepperJob {
 	 * be wired.
 	 * <li>
 	 * <li>If
-	 * {@link org.corpus_tools.pepper.modules.PepperImporter#importCorpusStructure(de.hu_berlin.german.korpling.saltnpepper.salt.saltCommon.sCorpusStructure.SCorpusGraph)}
+	 * {@link org.corpus_tools.pepper.modules.PepperImporter#importCorpusStructure(org.corpus_tools.salt.common.SCorpusGraph)}
 	 * has not already been called, it will be done.
 	 * <li>
 	 * </ul>

@@ -58,7 +58,7 @@
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
-						<Import-Package>org.corpus_tools.pepper.common,org.corpus_tools.pepper.core,org.corpus_tools.pepper.exceptions,org.corpus_tools.pepper.modules,org.corpus_tools.pepper.modules.impl,org.corpus_tools.pepper.testFramework,*</Import-Package>
+						<Import-Package>org.corpus_tools.pepper.common,org.corpus_tools.pepper.core,org.corpus_tools.pepper.exceptions,org.corpus_tools.pepper.modules,org.corpus_tools.pepper.modules.impl,org.corpus_tools.pepper.testFramework,!org.junit, *</Import-Package>
 						<Export-Package>org.corpus_tools.pepper.*</Export-Package>
 						<Service-Component>${allServiceComponents}</Service-Component>
 						<Bundle-ClassPath>.,{maven-dependencies},lib/commons-lang3-3.0.jar</Bundle-ClassPath>

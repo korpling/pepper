@@ -86,37 +86,20 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 **/
 	private ComponentContext componentContext = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getComponentContext()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public ComponentContext getComponentContext() {
 		return (this.componentContext);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#activate
-	 * (org.osgi.service.component.ComponentContext)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	@Activate
 	public void activate(ComponentContext componentContext) {
 		this.componentContext = componentContext;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#getStatus
-	 * ()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public String getStatus() {
 		String infoString = "";
@@ -199,13 +182,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 */
 	protected List<ComponentFactory> pepperImporterComponentFactories;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * addPepperImporterComponentFactory
-	 * (org.osgi.service.component.ComponentFactory)
-	 */
+	/** {@inheritDoc} **/
 	@Reference(unbind = "removePepperImporterComponentFactory", cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC, target = "(component.factory=PepperImporterComponentFactory)")
 	@Override
 	public void addPepperImporterComponentFactory(ComponentFactory pepperImporterComponentFactory) {
@@ -216,25 +193,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 		this.getPepperImporterComponentFactories().add(pepperImporterComponentFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * removePepperImporterComponentFactory
-	 * (org.osgi.service.component.ComponentFactory)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void removePepperImporterComponentFactory(ComponentFactory pepperImporterComponentFactory) {
 		if (this.pepperImporterComponentFactories == null)
 			this.getPepperImporterComponentFactories().remove(pepperImporterComponentFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperImporterComponentFactories()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<ComponentFactory> getPepperImporterComponentFactories() {
 		if (pepperImporterComponentFactories == null) {
@@ -261,13 +227,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 */
 	protected List<ComponentFactory> pepperManipulatorComponentFactories;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * addPepperManipulatorComponentFactory
-	 * (org.osgi.service.component.ComponentFactory)
-	 */
+	/** {@inheritDoc} **/
 	@Reference(unbind = "removePepperManipulatorComponentFactory", cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC, target = "(component.factory=PepperManipulatorComponentFactory)")
 	@Override
 	public void addPepperManipulatorComponentFactory(ComponentFactory pepperManipulatorComponentFactory) {
@@ -278,25 +238,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 		this.getPepperManipulatorComponentFactories().add(pepperManipulatorComponentFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * removePepperManipulatorComponentFactory
-	 * (org.osgi.service.component.ComponentFactory)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void removePepperManipulatorComponentFactory(ComponentFactory pepperManipulatorComponentFactory) {
 		if (this.pepperManipulatorComponentFactories == null)
 			this.getPepperManipulatorComponentFactories().remove(pepperManipulatorComponentFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperManipulatorComponentFactories()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<ComponentFactory> getPepperManipulatorComponentFactories() {
 		if (pepperManipulatorComponentFactories == null) {
@@ -326,13 +275,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 */
 	protected List<ComponentFactory> pepperExporterComponentFactories;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * addPepperExporterComponentFactory
-	 * (org.osgi.service.component.ComponentFactory)
-	 */
+	/** {@inheritDoc} **/
 	@Reference(unbind = "removePepperExporterComponentFactory", cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC, target = "(component.factory=PepperExporterComponentFactory)")
 	@Override
 	public void addPepperExporterComponentFactory(ComponentFactory pepperExporterComponentFactory) {
@@ -343,25 +286,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 		this.getPepperExporterComponentFactories().add(pepperExporterComponentFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * removePepperExporterComponentFactory
-	 * (org.osgi.service.component.ComponentFactory)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public void removePepperExporterComponentFactory(ComponentFactory pepperExporterComponentFactory) {
 		if (this.pepperExporterComponentFactories == null)
 			this.getPepperExporterComponentFactories().remove(pepperExporterComponentFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperExporterComponentFactories()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<ComponentFactory> getPepperExporterComponentFactories() {
 		if (pepperExporterComponentFactories == null) {
@@ -507,25 +439,13 @@ public class ModuleResolverImpl implements ModuleResolver {
 	/** Configuration object to configure behaviour of {@link ModuleResolverImpl} **/
 	private volatile PepperConfiguration pepperConfiguration = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * setConfiguration
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.core.PepperConfiguration
-	 * )
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public synchronized void setConfiguration(PepperConfiguration pepperConfiguration) {
 		this.pepperConfiguration = pepperConfiguration;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getConfiguration()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public PepperConfiguration getConfiguration() {
 		return (pepperConfiguration);
@@ -593,12 +513,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 		return (retVal);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperImporters()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<PepperImporter> getPepperImporters() {
 		List<PepperImporter> pepperImporters = null;
@@ -629,12 +544,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 		return (pepperImporters);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperManipulators()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<PepperManipulator> getPepperManipulators() {
 		List<PepperManipulator> pepperManipulators = null;
@@ -666,12 +576,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 		return (pepperManipulators);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperExporters()
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public List<PepperExporter> getPepperExporters() {
 		List<PepperExporter> pepperExporters = null;
@@ -699,13 +604,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 		return (pepperExporters);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperModule
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.communication.StepDesc)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	@SuppressWarnings("unchecked")
 	public PepperModule getPepperModule(StepDesc stepDesc) {
@@ -753,37 +652,19 @@ public class ModuleResolverImpl implements ModuleResolver {
 		return (pepperModule);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperImporter
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.communication.StepDesc)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public PepperImporter getPepperImporter(StepDesc stepDesc) {
 		return ((PepperImporter) getPepperModule(stepDesc));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperManipulator
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.communication.StepDesc)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public PepperManipulator getPepperManipulator(StepDesc stepDesc) {
 		return ((PepperManipulator) getPepperModule(stepDesc));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.hu_berlin.german.korpling.saltnpepper.pepper.core.ModuleResolver#
-	 * getPepperExporter
-	 * (de.hu_berlin.german.korpling.saltnpepper.pepper.communication.StepDesc)
-	 */
+	/** {@inheritDoc} **/
 	@Override
 	public PepperExporter getPepperExporter(StepDesc stepDesc) {
 		return ((PepperExporter) getPepperModule(stepDesc));
