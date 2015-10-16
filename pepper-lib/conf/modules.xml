@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<pepperModulesList defaultGroupId="de.hu_berlin.german.korpling.saltnpepper" defaultRepository="http://korpling.german.hu-berlin.de/maven2/">	
+<pepperModulesList defaultGroupId="org.corpus-tools"
+	defaultRepository="http://korpling.german.hu-berlin.de/maven2/">
+	<!-- 
 	<pepperModules>
 		<artifactId>pepperModules-TCFModules</artifactId>
 	</pepperModules>
+	 -->
 	<pepperModules>
-		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
 		<artifactId>pepperModules-CoNLLModules</artifactId>
-		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
 	</pepperModules>
-	<pepperModules>		
+	<pepperModules>
 		<artifactId>pepperModules-CoraXMLModules</artifactId>
 	</pepperModules>
-	<pepperModules>		
+	<pepperModules>
 		<artifactId>pepperModules-ToolboxModules</artifactId>
 	</pepperModules>
 	<pepperModules>
@@ -21,9 +22,11 @@
 		<artifactId>pepperModules-ElanModules</artifactId>
 		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
 	</pepperModules>
+	<!-- 
 	<pepperModules>
 		<artifactId>pepperModules-EXMARaLDAModules</artifactId>
 	</pepperModules>
+	 -->
 	<pepperModules>
 		<artifactId>pepperModules-FALKOModules</artifactId>
 	</pepperModules>
@@ -36,9 +39,11 @@
 	<pepperModules>
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
+	<!-- 
 	<pepperModules>
 		<artifactId>pepperModules-MMAX2Modules</artifactId>
 	</pepperModules>
+	 -->
 	<pepperModules>
 		<artifactId>pepperModules-nlpModules</artifactId>
 	</pepperModules>
@@ -52,10 +57,12 @@
 	<pepperModules>
 		<artifactId>pepperModules-PTBModules</artifactId>
 	</pepperModules>
+	<!-- 
 	<pepperModules>
 		<artifactId>pepperModules-RelANNISModules</artifactId>
 	</pepperModules>
-    <pepperModules>
+	 -->
+	<pepperModules>
 		<artifactId>pepperModules-ANNISModules</artifactId>
 	</pepperModules>
 	<pepperModules>
@@ -88,9 +95,7 @@
 	<pepperModules>
 		<artifactId>pepperModules-GrAFModules</artifactId>
 	</pepperModules>
-<pepperModules>
-<groupId>org.corpus_tools.peppermodules</groupId>
-<artifactId>PAULAModules</artifactId>
-<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
-</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-PAULAModules</artifactId>
+	</pepperModules>
 </pepperModulesList>
