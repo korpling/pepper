@@ -203,10 +203,12 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 					if (sCorpusGraph == null) {
 						logger.warn("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
 					} else {
-						if (getCorpusDesc() == null)
+						if (getCorpusDesc() == null){
 							throw new PepperFWException("Cannot export the corpus-structure to file structure, because no corpus description was given. ");
-						if (getCorpusDesc().getCorpusPath() == null)
+						}
+						if (getCorpusDesc().getCorpusPath() == null){
 							throw new PepperFWException("Cannot export the corpus-structure to file structure, because the corpus path for module '" + getName() + "' is empty. ");
+						}
 						for (SCorpus sCorpus : sCorpusGraph.getCorpora()) {
 							URI resourceURI = getCorpusDesc().getCorpusPath();
 							for (String segment : sCorpus.getPath().segments()) {
