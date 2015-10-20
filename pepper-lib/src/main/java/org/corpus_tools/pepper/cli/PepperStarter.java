@@ -556,9 +556,9 @@ public class PepperStarter {
 	public String selfTest() {
 		StringBuilder retVal = new StringBuilder();
 		Collection<String> problems = getPepper().selfTest();
-		if (problems.size() == 0)
+		if (problems.size() == 0){
 			retVal.append("- no problems detected -");
-		else {
+		}else {
 			retVal.append("following problems have been found:");
 			for (String problem : problems) {
 				retVal.append("\t" + problem);
