@@ -24,7 +24,7 @@
 
 	<servlet-mapping>
 		<servlet-name>pepper-RESTService</servlet-name>
-		<url-pattern>/resource/*</url-pattern>
+		<url-pattern>/pepper-rest/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
    		<welcome-file>index.html</welcome-file>

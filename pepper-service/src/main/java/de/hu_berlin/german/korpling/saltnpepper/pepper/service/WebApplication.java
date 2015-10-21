@@ -24,7 +24,7 @@ public class WebApplication extends Application {
 			logger.debug("Providing classes.");
 		}
 		final Set<Class<?>> classes = new HashSet<Class<?>>();
-		classes.add(MyResource.class);
+		classes.add(PepperService.class);
 		classes.add(ServiceEventListener.class);		
 		return classes;
 	}
