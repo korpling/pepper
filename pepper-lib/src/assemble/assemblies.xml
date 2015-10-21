@@ -68,9 +68,9 @@
 		</fileSet>
 
 		<!-- Include resource files -->
-		<fileSet>
+		<!--fileSet>
 			<outputDirectory>${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
 			<directory>${basedir}/src/main/resources/</directory>
-		</fileSet>
+		</fileSet-->
 	</fileSets>
 </assembly>
