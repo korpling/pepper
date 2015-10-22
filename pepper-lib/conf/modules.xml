@@ -35,11 +35,9 @@
 	<pepperModules>
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
-	<!-- 
 	<pepperModules>
 		<artifactId>pepperModules-MMAX2Modules</artifactId>
 	</pepperModules>
-	 -->
 	<pepperModules>
 		<artifactId>pepperModules-nlpModules</artifactId>
 	</pepperModules>
