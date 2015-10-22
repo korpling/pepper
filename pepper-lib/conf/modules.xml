@@ -18,7 +18,6 @@
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-ElanModules</artifactId>
-		<repository>http://korpling.german.hu-berlin.de/maven2/</repository>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-EXMARaLDAModules</artifactId>
@@ -36,6 +35,7 @@
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+	    <groupId>edu.eurac.commul</groupId>
 		<artifactId>pepperModules-MMAX2Modules</artifactId>
 	</pepperModules>
 	<pepperModules>
