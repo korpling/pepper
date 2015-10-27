@@ -41,6 +41,8 @@ import org.corpus_tools.pepper.common.StepDesc;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class represents a console to realize a kind of an interactive wizard to
@@ -80,7 +82,8 @@ import org.eclipse.emf.common.util.URI;
  * 
  */
 public class ConvertWizardConsole {
-
+	private static final Logger logger= LoggerFactory.getLogger(PepperStarter.class);
+	
 	private static final String PROMPT = "wizard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
@@ -244,19 +247,23 @@ public class ConvertWizardConsole {
 
 						outputFile = new File(params.get(params.size() - 1));
 					}
-					try {
-						deresolveURIs(outputFile, pepperJob);
-						URI workflowURI = pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
-						out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
-						// because of the deresolving of the URI, the relative
-						// path now is incompatible with current working
-						// location, to fix this, the Pepper workflow file needs
-						// to be stored and reloaded again
-						pepperJob.load(workflowURI);
-					} catch (Exception e) {
-						out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
-						if (isDebug) {
-							e.printStackTrace(out);
+					if (outputFile != null) {
+						try {
+							deresolveURIs(outputFile, pepperJob);
+							URI workflowURI = pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
+							out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
+							// because of the deresolving of the URI, the
+							// relative
+							// path now is incompatible with current working
+							// location, to fix this, the Pepper workflow file
+							// needs
+							// to be stored and reloaded again
+							pepperJob.load(workflowURI);
+						} catch (Exception e) {
+							out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
+							if (isDebug) {
+								e.printStackTrace(out);
+							}
 						}
 					}
 
@@ -558,7 +565,9 @@ public class ConvertWizardConsole {
 
 					File corpusPath = new File(input);
 					if (!corpusPath.exists()) {
-						corpusPath.mkdirs();
+						if (!corpusPath.mkdirs()){
+							logger.warn("Cannot create folder '"+corpusPath.getAbsolutePath()+"'.");
+						}
 					}
 					String path;
 					try {
@@ -637,7 +646,7 @@ public class ConvertWizardConsole {
 		return (true);
 	}
 
-	public class ImporterModuleDesc implements Comparable<ImporterModuleDesc> {
+	public static class ImporterModuleDesc implements Comparable<ImporterModuleDesc> {
 		public Double probability = null;
 		public PepperModuleDesc moduleDesc = null;
 
@@ -655,6 +664,14 @@ public class ConvertWizardConsole {
 				arg0.probability = 0.0;
 			}
 			return (Double.compare(this.probability, arg0.probability));
+		}
+		
+		/**
+		 * This method is here to satisfy findbugs.
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			return(super.equals(obj));
 		}
 
 		public String toString() {
@@ -812,8 +829,8 @@ public class ConvertWizardConsole {
 		return (userInput);
 	}
 
-	private class ExitWizardException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
+	@SuppressWarnings("serial")
+	public static class ExitWizardException extends RuntimeException {
 	}
 
 	/**

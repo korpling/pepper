@@ -132,7 +132,9 @@ public class OSGiConsole {
 			} catch (IOException ioe) {
 				out.println("Cannot read command, type in 'help' for help.");
 			}
-			userInput = userInput.trim();
+			if (userInput != null) {
+				userInput = userInput.trim();
+			}
 			String[] parts = userInput.split(" ");
 			String command = parts[0];
 			List<String> params = new Vector<String>();

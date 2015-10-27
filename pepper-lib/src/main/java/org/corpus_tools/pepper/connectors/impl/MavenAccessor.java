@@ -645,7 +645,8 @@ public class MavenAccessor {
 	private void write2Blacklist(){
 		File blacklistFile = new File(BLACKLIST_PATH);
 		if (!blacklistFile.exists()){
-			blacklistFile.getParentFile().mkdirs();}
+			blacklistFile.getParentFile().mkdirs();
+			}
 		try {
 			blacklistFile.createNewFile();
 			PrintWriter fW = new PrintWriter(blacklistFile);	
@@ -834,7 +835,7 @@ public class MavenAccessor {
 									bundle.getVersion().toString(), KORPLING_MAVEN_REPO);
 	}
 	
-	private class MavenRepositoryListener extends AbstractRepositoryListener{
+	private static class MavenRepositoryListener extends AbstractRepositoryListener{
 		private final boolean TRACE; 
 		private MavenRepositoryListener() {
 			TRACE = logger.isTraceEnabled();
@@ -911,7 +912,7 @@ public class MavenAccessor {
 	    }
 	}
 	
-	private class MavenTransferListener extends AbstractTransferListener{
+	private static class MavenTransferListener extends AbstractTransferListener{
 		private final boolean TRACE;
 		
 		private MavenTransferListener(){

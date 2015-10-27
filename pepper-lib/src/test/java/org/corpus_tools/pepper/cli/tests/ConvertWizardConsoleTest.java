@@ -36,7 +36,7 @@ import org.junit.Test;
 
 public class ConvertWizardConsoleTest {
 
-	class SimpleModuleResolver extends ModuleResolverImpl {
+	private static class SimpleModuleResolver extends ModuleResolverImpl {
 
 		@Override
 		public PepperModule getPepperModule(StepDesc stepDesc) {

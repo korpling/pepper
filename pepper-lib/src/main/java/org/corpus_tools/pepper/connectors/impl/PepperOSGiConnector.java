@@ -448,14 +448,14 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					bundleURI = URI.create(bundleFile.getAbsolutePath());
 				}
 				if (bundleURI.getPath().endsWith("zip")) {
-					ZipFile zipFile = null;
-					try {
-						zipFile = new ZipFile(bundleURI.getPath());
+					try (ZipFile zipFile = new ZipFile(bundleURI.getPath());){
 						Enumeration<? extends ZipEntry> entries = zipFile.entries();
 						while (entries.hasMoreElements()) {
 							ZipEntry entry = entries.nextElement();
 							File entryDestination = new File(pluginPath, entry.getName());
-							entryDestination.getParentFile().mkdirs();
+							if (!entryDestination.getParentFile().mkdirs()){
+								logger.warn("Cannot create folder '"+entryDestination.getParentFile()+"'. ");
+							}
 							if (entry.isDirectory()) {
 								entryDestination.mkdirs();
 							} else {
@@ -469,8 +469,6 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 								}
 							}
 						}
-					} finally {
-						zipFile.close();
 					}
 				} else if (bundleURI.getPath().endsWith("jar")) {
 					File bundleFile = new File(bundleURI.getPath());

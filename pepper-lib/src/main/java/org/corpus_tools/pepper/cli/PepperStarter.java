@@ -307,6 +307,7 @@ public class PepperStarter {
 			}
 		} catch (Exception e) {
 			// do nothing
+			;
 		}
 		// try to read module desc by name
 		if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
@@ -837,7 +838,7 @@ public class PepperStarter {
 	 * @author klotzmaz
 	 *
 	 */
-	private class ModuleTableReader extends DefaultHandler2 {
+	private static class ModuleTableReader extends DefaultHandler2 {
 		/**
 		 * all read module names are stored here Map: artifactId --> (groupId,
 		 * repository)
@@ -962,7 +963,9 @@ public class PepperStarter {
 			} catch (IOException ioe) {
 				output.println("Cannot read command, type in 'help' for help.");
 			}
-			userInput = userInput.trim();
+			if (userInput != null) {
+				userInput = userInput.trim();
+			}
 			String[] parts = userInput.split(" ");
 			String command = parts[0];
 			List<String> params = new Vector<String>();
@@ -1141,12 +1144,12 @@ public class PepperStarter {
 		}
 		return (version);
 	}
-	
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		Long timestamp = null;
+		Long timestamp = 0l;
 		PepperStarter starter = null;
 		PepperConnector pepper = null;
 		boolean endedWithErrors = false;
@@ -1219,15 +1222,18 @@ public class PepperStarter {
 				try {
 					timestamp = System.currentTimeMillis();
 					if (logger.isDebugEnabled()) {
-						for (Object key : pepperProps.keySet()) {
-							logger.debug(String.format("%-40s%-16s", key + ":", pepperProps.get(key)));
+						for (Map.Entry<Object, Object> entry : pepperProps.entrySet()) {
+							logger.debug(String.format("%-40s%-16s", entry.getKey() + ":", entry.getValue()));
 						}
 					}
 					logger.debug(pepper.getRegisteredModulesAsString());
+					if (workFlowFile!= null){
 					workFlowFile = workFlowFile.replace("\\", "/");
 
 					starter.convert(workFlowFile);
-
+					}else{
+						logger.error("The passed workflow file was empty. ");
+					}
 					timestamp = System.currentTimeMillis() - timestamp;
 				} catch (Exception e) {
 					timestamp = System.currentTimeMillis() - timestamp;
