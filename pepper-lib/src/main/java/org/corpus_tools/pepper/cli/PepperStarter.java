@@ -23,9 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -556,9 +560,9 @@ public class PepperStarter {
 	public String selfTest() {
 		StringBuilder retVal = new StringBuilder();
 		Collection<String> problems = getPepper().selfTest();
-		if (problems.size() == 0){
+		if (problems.size() == 0) {
 			retVal.append("- no problems detected -");
-		}else {
+		} else {
 			retVal.append("following problems have been found:");
 			for (String problem : problems) {
 				retVal.append("\t" + problem);
@@ -1121,76 +1125,6 @@ public class PepperStarter {
 	public final static int CONSOLE_WIDTH_80 = 80;
 
 	/**
-	 * Returns a formatted String, a kind of a welcome screen of Pepper.
-	 * 
-	 * @return welcome screen
-	 */
-	public static String getHello() {
-		return (getHello(CONSOLE_WIDTH, "saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
-	}
-
-	/**
-	 * Returns a formatted String, a kind of a welcome screen of Pepper.
-	 * 
-	 * @return welcome screen
-	 */
-	public static String getHello(int width, String eMail, String hp) {
-		StringBuilder retVal = new StringBuilder();
-
-		if (CONSOLE_WIDTH_80 == width) {
-			retVal.append("********************************************************************************\n");
-			retVal.append("*                    ____                                                      *\n");
-			retVal.append("*                   |  _ \\ ___ _ __  _ __   ___ _ __                           *\n");
-			retVal.append("*                   | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                          *\n");
-			retVal.append("*                   |  __/  __/ |_) | |_) |  __/ |                             *\n");
-			retVal.append("*                   |_|   \\___| .__/| .__/ \\___|_|                             *\n");
-			retVal.append("*                             |_|   |_|                                        *\n");
-			retVal.append("*                                                                              *\n");
-			retVal.append("********************************************************************************\n");
-			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.  *\n");
-			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 45) + "*\n");
-			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 45) + "*\n");
-			retVal.append("* Version of Pepper:              " + fillUpBlanks(getVersion(), 45) + "*\n");
-			retVal.append("********************************************************************************\n");
-			retVal.append("\n");
-		} else {
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("*                                         ____                                                                         *\n");
-			retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
-			retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
-			retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
-			retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
-			retVal.append("*                                                  |_|   |_|                                                           *\n");
-			retVal.append("*                                                                                                                      *\n");
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
-			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 85) + "*\n");
-			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 85) + "*\n");
-			retVal.append("* Version of Pepper:              " + fillUpBlanks(getVersion(), 85) + "*\n");
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("\n");
-		}
-		return (retVal.toString());
-	}
-
-	/**
-	 * Fills up a string with blanks until length.
-	 * 
-	 * @param text
-	 * @param length
-	 * @return
-	 */
-	public static String fillUpBlanks(String text, int length) {
-		StringBuilder str = new StringBuilder();
-		str.append(text);
-		int numOfBlanks = length - text.length();
-		for (int i = 0; i < numOfBlanks; i++) {
-			str.append(" ");
-		}
-		return (str.toString());
-	}
-
-	/**
 	 * Resolves the current Pepper version from a file named version.properties
 	 * in the pepper-lib jar file.
 	 * 
@@ -1207,7 +1141,7 @@ public class PepperStarter {
 		}
 		return (version);
 	}
-
+	
 	/**
 	 * @param args
 	 */
@@ -1224,9 +1158,9 @@ public class PepperStarter {
 			// exception as argument
 			lc.setPackagingDataEnabled(false);
 		}
-
+		PepperStarterConfiguration pepperProps = null;
 		try {
-			PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
+			pepperProps = new PepperStarterConfiguration();
 			pepperProps.load();
 
 			String eMail = pepperProps.getPepperEMail();
@@ -1238,7 +1172,7 @@ public class PepperStarter {
 			if ((args.length > 0) && (args[0].equalsIgnoreCase(COMMAND.DEBUG.toString()))) {
 				starter.debug();
 			}
-			logger.info(getHello(pepperProps.getConsoleWidth(), eMail, hp));
+			logger.info(Greet.getHello(pepperProps.getConsoleWidth(), eMail, hp));
 
 			pepper = new PepperOSGiConnector();
 			pepper.setConfiguration(pepperProps);
@@ -1305,7 +1239,11 @@ public class PepperStarter {
 			logger.info("An error occured, to get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. ");
 			logger.error(" ", e);
 		} finally {
-			logger.info("************************************************************************************************************************\n");
+			if (pepperProps != null) {
+				logger.info(Greet.getGoodBye(pepperProps.getConsoleWidth()));
+			} else {
+				logger.info(Greet.getGoodBye(CONSOLE_WIDTH_120));
+			}
 		}
 		if (endedWithErrors) {
 			System.exit(-1);

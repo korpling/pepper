@@ -19,3 +19,4 @@ inside the folders plugins or lib.
 
 This project includes:
 #GENERATED_NOTICES#
+ascii art by Joan G. Stark (http://www.chris.com/ascii/joan/www.geocities.com/SoHo/7373/)
