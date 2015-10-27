@@ -673,6 +673,13 @@ public class ConvertWizardConsole {
 		public boolean equals(Object obj) {
 			return(super.equals(obj));
 		}
+		/**
+		 * This method is here to satisfy findbugs.
+		 */
+		@Override
+		public int hashCode() {
+			return super.hashCode();
+		}
 
 		public String toString() {
 			return (probability + " " + moduleDesc.getName());

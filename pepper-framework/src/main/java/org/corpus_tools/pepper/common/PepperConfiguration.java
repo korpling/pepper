@@ -185,20 +185,12 @@ public class PepperConfiguration extends Properties {
 	 */
 	public void load(File configurationFile) {
 		confFolder = configurationFile.getParentFile();
-		BufferedInputStream in = null;
-		try {
-			in = new BufferedInputStream(new FileInputStream(configurationFile.getAbsolutePath()));
+		try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(configurationFile.getAbsolutePath()));){
 			load(in);
 		} catch (FileNotFoundException e2) {
 			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e2);
 		} catch (IOException e) {
 			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				throw new PepperConfigurationException("Cannot close stream to configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
-			}
 		}
 	}
 

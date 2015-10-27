@@ -134,42 +134,42 @@ public class OSGiConsole {
 			}
 			if (userInput != null) {
 				userInput = userInput.trim();
-			}
-			String[] parts = userInput.split(" ");
-			String command = parts[0];
-			List<String> params = new Vector<String>();
-			int i = 0;
-			for (String part : parts) {
-				if (i > 0) {
-					params.add(part);
+				String[] parts = userInput.split(" ");
+				String command = parts[0];
+				List<String> params = new Vector<String>();
+				int i = 0;
+				for (String part : parts) {
+					if (i > 0) {
+						params.add(part);
+					}
+					i++;
 				}
-				i++;
-			}
 
-			if (("exit".equalsIgnoreCase(command))) {
-				exit = true;
-			} else if (("help".equalsIgnoreCase(command))) {
-				out.println(help());
-			} else if ((COMMAND.SS.getName().equalsIgnoreCase(command)) || (COMMAND.SS.getAbbreviation().equalsIgnoreCase(command))) {
-				ss(params, out);
-			} else if ((COMMAND.LS.getName().equalsIgnoreCase(command)) || (COMMAND.LS.getAbbreviation().equalsIgnoreCase(command))) {
-				ls(params, out);
-			} else if ((COMMAND.INSTALL.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL.getAbbreviation().equalsIgnoreCase(command))) {
-				install(params, out);
-			} else if ((COMMAND.STOP.getName().equalsIgnoreCase(command)) || (COMMAND.STOP.getAbbreviation().equalsIgnoreCase(command))) {
-				stop(params, out);
-			} else if ((COMMAND.START.getName().equalsIgnoreCase(command)) || (COMMAND.START.getAbbreviation().equalsIgnoreCase(command))) {
-				start(params, out);
-			} else if ((COMMAND.UNINSTALL.getName().equalsIgnoreCase(command)) || (COMMAND.UNINSTALL.getAbbreviation().equalsIgnoreCase(command))) {
-				uninstall(params, out);
-			} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
-				installAndStart(params, out);
-			} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
-				update(params, out);
-			} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
-				remove(params, out);
-			} else {
-				out.println(help());
+				if (("exit".equalsIgnoreCase(command))) {
+					exit = true;
+				} else if (("help".equalsIgnoreCase(command))) {
+					out.println(help());
+				} else if ((COMMAND.SS.getName().equalsIgnoreCase(command)) || (COMMAND.SS.getAbbreviation().equalsIgnoreCase(command))) {
+					ss(params, out);
+				} else if ((COMMAND.LS.getName().equalsIgnoreCase(command)) || (COMMAND.LS.getAbbreviation().equalsIgnoreCase(command))) {
+					ls(params, out);
+				} else if ((COMMAND.INSTALL.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL.getAbbreviation().equalsIgnoreCase(command))) {
+					install(params, out);
+				} else if ((COMMAND.STOP.getName().equalsIgnoreCase(command)) || (COMMAND.STOP.getAbbreviation().equalsIgnoreCase(command))) {
+					stop(params, out);
+				} else if ((COMMAND.START.getName().equalsIgnoreCase(command)) || (COMMAND.START.getAbbreviation().equalsIgnoreCase(command))) {
+					start(params, out);
+				} else if ((COMMAND.UNINSTALL.getName().equalsIgnoreCase(command)) || (COMMAND.UNINSTALL.getAbbreviation().equalsIgnoreCase(command))) {
+					uninstall(params, out);
+				} else if ((COMMAND.INSTALL_START.getName().equalsIgnoreCase(command)) || (COMMAND.INSTALL_START.getAbbreviation().equalsIgnoreCase(command))) {
+					installAndStart(params, out);
+				} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(command)) || (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(command))) {
+					update(params, out);
+				} else if ((COMMAND.REMOVE.getName().equalsIgnoreCase(command)) || (COMMAND.REMOVE.getAbbreviation().equalsIgnoreCase(command))) {
+					remove(params, out);
+				} else {
+					out.println(help());
+				}
 			}
 		}
 	}

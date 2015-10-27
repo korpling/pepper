@@ -965,35 +965,36 @@ public class PepperStarter {
 			}
 			if (userInput != null) {
 				userInput = userInput.trim();
-			}
-			String[] parts = userInput.split(" ");
-			String command = parts[0];
-			List<String> params = new Vector<String>();
-			int i = 0;
-			for (String part : parts) {
-				if (i > 0) {
-					params.add(part);
+				String[] parts = userInput.split(" ");
+				String command = parts[0];
+				List<String> params = new Vector<String>();
+				int i = 0;
+				for (String part : parts) {
+					if (i > 0) {
+						params.add(part);
+					}
+					i++;
 				}
-				i++;
-			}
 
-			if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
-				// special treatment of "exit" since we have to abort the loop
-				break;
-			} else if (COMMAND.REPEAT.getName().equalsIgnoreCase(command) || COMMAND.REPEAT.getAbbreviation().equalsIgnoreCase(command)) {
-				if (lastUserInput != null && lastCommand != null && lastParams != null) {
-					executeSingleCommand(lastUserInput, lastCommand, lastParams);
+				if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
+					// special treatment of "exit" since we have to abort the
+					// loop
+					break;
+				} else if (COMMAND.REPEAT.getName().equalsIgnoreCase(command) || COMMAND.REPEAT.getAbbreviation().equalsIgnoreCase(command)) {
+					if (lastUserInput != null && lastCommand != null && lastParams != null) {
+						executeSingleCommand(lastUserInput, lastCommand, lastParams);
+					} else {
+						output.println("Can not repeat if no other command was executed before.");
+					}
 				} else {
-					output.println("Can not repeat if no other command was executed before.");
+					executeSingleCommand(lastUserInput, command, params);
+					// only update the last command if repeat was not executed
+					lastCommand = command;
+					lastParams = params;
+					lastUserInput = userInput;
 				}
-			} else {
-				executeSingleCommand(lastUserInput, command, params);
-				// only update the last command if repeat was not executed
-				lastCommand = command;
-				lastParams = params;
-				lastUserInput = userInput;
-			}
-		} // end while not exiting
+			} // end while not exiting
+		}
 	}
 
 	private void executeSingleCommand(String userInput, String command, List<String> params) {
@@ -1227,11 +1228,11 @@ public class PepperStarter {
 						}
 					}
 					logger.debug(pepper.getRegisteredModulesAsString());
-					if (workFlowFile!= null){
-					workFlowFile = workFlowFile.replace("\\", "/");
+					if (workFlowFile != null) {
+						workFlowFile = workFlowFile.replace("\\", "/");
 
-					starter.convert(workFlowFile);
-					}else{
+						starter.convert(workFlowFile);
+					} else {
 						logger.error("The passed workflow file was empty. ");
 					}
 					timestamp = System.currentTimeMillis() - timestamp;

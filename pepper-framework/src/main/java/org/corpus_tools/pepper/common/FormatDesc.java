@@ -146,6 +146,13 @@ public class FormatDesc {
 		} else
 			return (false);
 	}
+	/**
+	 * This method is overwritten because of findbugs.
+	 */
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 
 	/**
 	 * Returns a String representation of this object. <strong>Note: This String

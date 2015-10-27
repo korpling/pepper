@@ -49,11 +49,8 @@ import org.osgi.service.component.annotations.Property;
  * @author Florian Zipser
  * 
  */
+@SuppressWarnings("serial")
 public class PepperModuleProperties implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7802558539252580678L;
 	/**
 	 * Prefixes all customization properties directly provided by Pepper (
 	 * {@link PepperModule}).
@@ -188,8 +185,8 @@ public class PepperModuleProperties implements Serializable {
 	public void setPropertyValues(File propFile) {
 		if ((propFile != null) && (propFile.exists())) {
 			Properties props = new Properties();
-			try {
-				props.load(new FileInputStream(propFile));
+			try (FileInputStream f= new FileInputStream(propFile)) {
+				props.load(f);
 			} catch (FileNotFoundException e) {
 				throw new PepperModulePropertyException("Cannot load property file.", e);
 			} catch (IOException e) {
