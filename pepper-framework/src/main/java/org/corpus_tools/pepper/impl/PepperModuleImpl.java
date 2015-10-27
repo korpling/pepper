@@ -638,21 +638,21 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void done(Identifier sElementId, DOCUMENT_STATUS result) {
-		if (sElementId.getIdentifiableElement() instanceof SDocument) {
-			DocumentController docController = getDocumentId2DC().get(SaltUtil.getGlobalId(sElementId));
+	public void done(Identifier id, DOCUMENT_STATUS result) {
+		if (id.getIdentifiableElement() instanceof SDocument) {
+			DocumentController docController = getDocumentId2DC().get(SaltUtil.getGlobalId(id));
 			if (docController == null) {
-				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltUtil.getGlobalId(sElementId) + "' to pass status '" + result + "'. Controllers are listed for the following Identifier objects: " + getDocumentId2DC() + ". ");
+				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltUtil.getGlobalId(id) + "' to pass status '" + result + "'. Controllers are listed for the following Identifier objects: " + getDocumentId2DC() + ". ");
 			}
 			if (DOCUMENT_STATUS.DELETED.equals(result)) {
 				this.getModuleController().delete(docController);
 			} else if (DOCUMENT_STATUS.COMPLETED.equals(result)) {
 				this.getModuleController().complete(docController);
 			} else if (DOCUMENT_STATUS.FAILED.equals(result)) {
-				logger.error("Cannot map '" + sElementId + "' with module '" + this.getName() + "', because of a mapping result was '" + DOCUMENT_STATUS.FAILED + "'.");
+				logger.error("Cannot map '" + SaltUtil.getGlobalId(id) + "' with module '" + this.getName() + "', because of a mapping result was '" + DOCUMENT_STATUS.FAILED + "'.");
 				this.getModuleController().delete(docController);
 			} else
-				throw new PepperModuleException(this, "Cannot notify pepper framework for process of Identifier '" + sElementId.getId() + "', because the mapping result was '" + result + "', and only '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.FAILED + "' and '" + DOCUMENT_STATUS.DELETED + "' is permitted.");
+				throw new PepperModuleException(this, "Cannot notify pepper framework for process of Identifier '" + id.getId() + "', because the mapping result was '" + result + "', and only '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.FAILED + "' and '" + DOCUMENT_STATUS.DELETED + "' is permitted.");
 		}
 	}
 

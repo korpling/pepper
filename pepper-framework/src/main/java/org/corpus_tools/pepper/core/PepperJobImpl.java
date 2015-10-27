@@ -1103,8 +1103,8 @@ public class PepperJobImpl extends PepperJob {
 	 *         {@link #getMaxNumberOfDocuments(), false otherwise
 	 */
 	public boolean getPermissionForProcessDoument(DocumentController controller) {
-		numOfDocsLock.lock();
 		if (!MEMORY_POLICY.GREEDY.equals(getMemPolicy())) {
+			numOfDocsLock.lock();
 			try {
 				while (getNumOfActiveDocuments() >= getMaxNumberOfDocuments()) {
 					numOfDocsCondition.await();

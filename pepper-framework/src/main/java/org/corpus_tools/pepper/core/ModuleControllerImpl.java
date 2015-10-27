@@ -539,10 +539,10 @@ public class ModuleControllerImpl implements ModuleController {
 	@Override
 	public void delete(DocumentController documentController) {
 		if (documentController == null) {
-			throw new PepperFWException("Cannot notify Pepper, that the passed document controller shall not be proessed any further, because it is null.");
+			throw new PepperFWException("Cannot notify Pepper, that the passed document controller shall not be processed any further, because it is null.");
 		}
 		if (!getControllList().contains(documentController)) {
-			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '" + documentController.getGlobalId() + "' shall not be proessed any further by Pepper module '" + getId() + "', because it has never been add to internal controll list '" + getControllList() + "'.");
+			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '" + documentController.getGlobalId() + "' shall not be processed any further by Pepper module '" + getId() + "', because it is not part of internal controll list '" + getControllList() + "'. The reason could be, that it never has been added or it was already removed. ");
 		}
 
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
