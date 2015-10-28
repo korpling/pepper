@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.salt.SaltFactory;
@@ -76,12 +77,17 @@ public class PepperImporterImplTest {
 	public void testImportCorpusStructure_SVN1() throws IOException {
 
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_SVN1");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(tmpFolder.getCanonicalPath()));
 		getFixture().setCorpusDesc(corpDef);
 
-		new File(tmpFolder.getCanonicalPath() + "/.svn").mkdirs();
+		File svnDir= new File(tmpFolder.getCanonicalPath() + "/.svn");
+		if (!svnDir.exists() && !svnDir.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+svnDir+"'. ");
+		}
 		getFixture().importCorpusStructure(sCorpusGraph);
 
 		assertEquals("sNodes: " + sCorpusGraph.getNodes(), 1, sCorpusGraph.getNodes().size());
@@ -96,13 +102,21 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_SVN2() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_SVN2");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(tmpFolder.getCanonicalPath()));
 		getFixture().setCorpusDesc(corpDef);
 
-		new File(tmpFolder.getCanonicalPath() + "/corp1").mkdirs();
-		new File(tmpFolder.getCanonicalPath() + "/corp1/.svn").mkdirs();
+		File corpDir= new File(tmpFolder.getCanonicalPath() + "/corp1");
+		if (!corpDir.exists() && !corpDir.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corpDir+"'. ");
+		}
+		File svnDir= new File(tmpFolder.getCanonicalPath() + "/corp1/.svn");
+		if (!svnDir.exists() && !svnDir.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+svnDir+"'. ");
+		}
 		sCorpusGraph = SaltFactory.createSCorpusGraph();
 		getFixture().importCorpusStructure(sCorpusGraph);
 
@@ -119,9 +133,13 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_CORP_GRAPH_NAME() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_CORP_GRAPH_NAME");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File corpFolder = new File(tmpFolder.getCanonicalPath() + "/corp1");
-		corpFolder.mkdirs();
+		if (!corpFolder.exists() && !corpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corpFolder+"'. ");
+		}
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
@@ -130,7 +148,10 @@ public class PepperImporterImplTest {
 		getFixture().importCorpusStructure(sCorpusGraph);
 		assertEquals("corp1", sCorpusGraph.getName());
 
-		new File(tmpFolder.getCanonicalPath() + "/corp1/corp2/").mkdirs();
+		File corp2Dir= new File(tmpFolder.getCanonicalPath() + "/corp1/corp2/");
+		if (!corp2Dir.exists() && !corp2Dir.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corp2Dir+"'. ");
+		}
 		sCorpusGraph = SaltFactory.createSCorpusGraph();
 		getFixture().importCorpusStructure(sCorpusGraph);
 		assertEquals("corp1", sCorpusGraph.getName());
@@ -150,9 +171,13 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_STRUCTURE1() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE1");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File corpFolder = new File(tmpFolder.getCanonicalPath() + "/corp1");
-		corpFolder.mkdirs();
+		if (!corpFolder.exists() && !corpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corpFolder+"'. ");
+		}
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
@@ -188,16 +213,22 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_STRUCTURE2() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE2");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File corpFolder = new File(tmpFolder.getCanonicalPath() + "/corp1");
-		corpFolder.mkdirs();
+		if (!corpFolder.exists() && !corpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corpFolder+"'. ");
+		}
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
 		getFixture().setCorpusDesc(corpDef);
 
 		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2");
-		corp2.mkdirs();
+		if (!corp2.exists() && !corp2.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corp2+"'. ");
+		}
 		File corp3 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp3");
 		corp3.mkdirs();
 
@@ -234,22 +265,42 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_STRUCTURE3() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE3");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File corpFolder = new File(tmpFolder.getCanonicalPath() + "/corp1");
-		corpFolder.mkdirs();
+		if (!corpFolder.exists() && !corpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corpFolder+"'. ");
+		}
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
 		getFixture().setCorpusDesc(corpDef);
 
 		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2");
-		corp2.mkdirs();
+		if (!corp2.exists() && !corp2.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corp2+"'. ");
+		}
 		File corp3 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp3");
-		corp3.mkdirs();
-		new File(corp2 + "/doc1").mkdirs();
-		new File(corp2 + "/doc2").mkdirs();
-		new File(corp3 + "/doc1").mkdirs();
-		new File(corp3 + "/doc2").mkdirs();
+		if (!corp3.exists() && !corp3.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corp3+"'. ");
+		}
+		File doc21= new File(corp2 + "/doc1");
+		if (!doc21.exists() && !doc21.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+doc21+"'. ");
+		}
+		File doc22= new File(corp2 + "/doc2");
+		if (!doc22.exists() && !doc21.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+doc22+"'. ");
+		}
+		File doc31= new File(corp3 + "/doc1");
+		if (!doc31.exists() && !doc21.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+doc31+"'. ");
+		}
+		File doc32= new File(corp3 + "/doc2");
+		if (!doc32.exists() && !doc21.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+doc32+"'. ");
+		}
 		getFixture().getDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
 
 		getFixture().importCorpusStructure(sCorpusGraph);
@@ -277,16 +328,22 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_STRUCTURE4() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE4");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File corpFolder = new File(tmpFolder.getCanonicalPath() + "/corp1");
-		corpFolder.mkdirs();
+		if (!corpFolder.exists() && !corpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corpFolder+"'. ");
+		}
 
 		CorpusDesc corpDef = new CorpusDesc();
 		corpDef.setCorpusPath(URI.createFileURI(corpFolder.getCanonicalPath()));
 		getFixture().setCorpusDesc(corpDef);
 
 		File corp2 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp2.1");
-		corp2.mkdirs();
+		if (!corp2.exists() && !corp2.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corp2+"'. ");
+		}
 
 		File.createTempFile("doc1", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();
 		File.createTempFile("doc2", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();
@@ -316,9 +373,13 @@ public class PepperImporterImplTest {
 	@Test
 	public void testImportCorpusStructure_STRUCTURE5() throws IOException {
 		File tmpFolder = new File(this.getTempFolder().getAbsolutePath() + "/case_STRUCTURE5");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File docFolder = new File(tmpFolder.getCanonicalPath() + "/doc1");
-		docFolder.mkdirs();
+		if (!docFolder.exists() && !docFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+docFolder+"'. ");
+		}
 		File.createTempFile("text", "." + PepperImporter.ENDING_XML, docFolder).deleteOnExit();
 		File.createTempFile("token", "." + PepperImporter.ENDING_XML, docFolder).deleteOnExit();
 

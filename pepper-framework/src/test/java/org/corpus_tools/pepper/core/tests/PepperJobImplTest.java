@@ -59,6 +59,7 @@ import org.corpus_tools.pepper.core.Step;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.exceptions.PepperOSGiRunnerException;
+import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
@@ -1016,7 +1017,9 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	@Test
 	public void testLoad_PepperParams() throws XMLStreamException, IOException {
 		File tmpFolder = PepperUtil.getTempTestFile("pepperJobTest");
-		tmpFolder.mkdirs();
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		}
 		File propFile = new File(tmpFolder.getAbsolutePath() + "/test.properties");
 		Properties props = new Properties();
 		try (OutputStream propStream = new FileOutputStream(propFile)) {

@@ -41,38 +41,44 @@ public class FileComparator {
 	public boolean compareFiles(File file1, File file2) throws IOException {
 		boolean retVal = false;
 
-		if ((file1 == null) || (file2 == null))
+		if ((file1 == null) || (file2 == null)){
 			throw new PepperModuleTestException("One of the files to compare are null.");
+		}
 
-		if (!file1.exists())
+		if (!file1.exists()){
 			throw new PepperModuleTestException("The file '" + file1 + "' does not exist.");
-		if (!file2.exists())
+		}
+		if (!file2.exists()){
 			throw new PepperModuleTestException("The file '" + file2 + "' does not exist.");
-		String contentFile1 = null;
-		String contentFile2 = null;
+		}
+		StringBuilder contentFile1 = new StringBuilder();
+		StringBuilder contentFile2 = new StringBuilder();
 		try (BufferedReader brFile1 = new BufferedReader(new FileReader(file1)); BufferedReader brFile2 = new BufferedReader(new FileReader(file2));){
 			
 			String line = null;
 			while ((line = brFile1.readLine()) != null) {
-				contentFile1 = contentFile1 + line;
+				contentFile1.append(line);
 			}
 			
 			line = null;
 			while ((line = brFile2.readLine()) != null) {
-				contentFile2 = contentFile2 + line;
+				contentFile2.append(line);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (contentFile1 == null) {
-			if (contentFile2 == null)
+		if (contentFile1.toString().isEmpty()) {
+			if (contentFile2 == null){
 				retVal = true;
-			else
+			}
+			else{
 				retVal = false;
-		} else if (contentFile1.equals(contentFile2))
+			}
+		} else if (contentFile1.toString().equals(contentFile2.toString())){
 			retVal = true;
+		}
 		return (retVal);
 	}
 

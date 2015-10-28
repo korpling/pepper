@@ -36,6 +36,8 @@ import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is an abstract helper class to create own test classes for any
@@ -48,6 +50,7 @@ import org.junit.Test;
  *
  */
 public abstract class PepperModuleTest {
+	private static final Logger logger= LoggerFactory.getLogger("Pepper");
 	private URI resourceURI = null;
 
 	protected PepperModule fixture = null;
@@ -207,7 +210,9 @@ public abstract class PepperModuleTest {
 		if (resourceURI != null) {
 			File resourceDir = new File(resourceURI.toFileString());
 			if (!resourceDir.exists()) {
-				resourceDir.mkdirs();
+				if (!resourceDir.mkdirs()){
+					logger.warn("Cannot create folder {}. ", resourceDir);
+				}
 			}
 			this.resourceURI = resourceURI;
 			if (getFixture() != null) {

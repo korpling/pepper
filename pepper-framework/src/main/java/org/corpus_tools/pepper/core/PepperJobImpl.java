@@ -609,7 +609,9 @@ public class PepperJobImpl extends PepperJob {
 					String prefix = sDoc.getName();
 					File tmpPath = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + getId());
 					if (!tmpPath.exists()) {
-						tmpPath.mkdirs();
+						if (!tmpPath.mkdirs()){
+							logger.warn("Cannot create folder {}. ", tmpPath);
+						}
 					}
 					try {
 						if (prefix.length() < 3) {
@@ -638,7 +640,7 @@ public class PepperJobImpl extends PepperJob {
 				i++;
 			}
 			isImportedCorpusStructure = true;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			if (e instanceof PepperException) {
 				throw (PepperException) e;
 			} else {
@@ -971,7 +973,7 @@ public class PepperJobImpl extends PepperJob {
 				}
 			}
 			status = JOB_STATUS.ENDED;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			status = JOB_STATUS.ENDED_WITH_ERRORS;
 			if (e instanceof PepperException) {
 				throw (PepperException) e;

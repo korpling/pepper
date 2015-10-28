@@ -128,7 +128,9 @@ public class PepperImpl implements Pepper {
 		job.setConfiguration(getConfiguration());
 		// initialize job
 		File jobFolder = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + newId);
-		jobFolder.mkdirs();
+		if (!jobFolder.mkdirs()){
+			logger.warn("Cannot create folder {}. ", jobFolder);
+		}
 		getMapOfJobs().put(newId, new JobEntry(job, jobFolder));
 		return (job.getId());
 	}
@@ -374,7 +376,7 @@ public class PepperImpl implements Pepper {
 		str.append("pepper");
 		str.append("[");
 		str.append("registered jobs: ");
-		getJobIds().size();
+		str.append(getJobIds().size());
 		str.append("]");
 		return (str.toString());
 	}

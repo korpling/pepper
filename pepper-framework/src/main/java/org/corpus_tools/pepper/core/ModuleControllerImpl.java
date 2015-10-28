@@ -403,7 +403,9 @@ public class ModuleControllerImpl implements ModuleController {
 									target = new File(baseDir + targetStr);
 								}
 								if (!target.exists()) {
-									target.mkdirs();
+									if (!target.mkdirs()){
+										logger.warn("Cannot create folder {}. ", target);
+									}
 								}
 								try {
 									if (source.isDirectory()) {

@@ -237,7 +237,9 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 								}
 								File outFile = new File(fileName);
 								if (!outFile.getParentFile().exists()) {
-									outFile.getParentFile().mkdirs();
+									if (!outFile.getParentFile().mkdirs()){
+										logger.warn("Cannot create folder {}. ", outFile.getParentFile());
+									}
 								}
 							}
 						}
@@ -267,7 +269,9 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 		try {
 			File folder = new File(getCorpusDesc().getCorpusPath().toFileString());
 			File newFolder = new File(folder.getCanonicalPath() + "/" + ((SNode) id.getIdentifiableElement()).getPath().toString());
-			newFolder.mkdirs();
+			if (!newFolder.mkdirs()){
+				logger.warn("Cannot create folder {}. ", newFolder);
+			}
 			return (URI.createFileURI(newFolder.getAbsolutePath()));
 		} catch (IOException e) {
 			throw new PepperConvertException("Cannot create corpus path as folders for '" + id + "'.", e);

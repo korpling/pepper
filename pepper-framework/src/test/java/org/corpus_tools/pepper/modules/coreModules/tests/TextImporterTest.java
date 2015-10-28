@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter.TextMapper;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
@@ -94,11 +95,17 @@ public class TextImporterTest extends PepperImporterTest {
 	@Test
 	public void testCorpusStructure() throws FileNotFoundException {
 		File c1 = new File(testPath.getAbsolutePath() + System.getProperty("file.separator") + "c1");
-		c1.mkdirs();
+		if (!c1.exists() && !c1.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+c1+"'. ");
+		}
 		File c2 = new File(c1.getAbsolutePath() + System.getProperty("file.separator") + "c2");
-		c2.mkdirs();
+		if (c2.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+c2+"'. ");
+		}
 		File c3 = new File(c1.getAbsolutePath() + System.getProperty("file.separator") + "c3");
-		c3.mkdirs();
+		if (!c3.exists() && !c3.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+c3+"'. ");
+		}
 
 		File d1 = new File(c2.getAbsolutePath() + System.getProperty("file.separator") + "d1.txt");
 		PrintWriter writer = new PrintWriter(d1);

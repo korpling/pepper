@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.coreModules.DOTExporter;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
 import org.corpus_tools.salt.SaltFactory;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 @RunWith(JUnit4.class)
 public class DOTExporterTest extends PepperExporterTest {
-	Logger logger = LoggerFactory.getLogger(DOTExporter.class);
+	private static final Logger logger = LoggerFactory.getLogger(DOTExporter.class);
 
 	URI resourceURI = URI.createFileURI("src/test/resources/resources");
 	
@@ -54,8 +55,11 @@ public class DOTExporterTest extends PepperExporterTest {
 		// setting temproraries and resources
 
 		File resourceDir = new File(resourceURI.toFileString());
-		if (!resourceDir.exists())
-			resourceDir.mkdirs();
+		if (!resourceDir.exists()){
+			if(!resourceDir.mkdirs()){
+				throw new PepperTestException("Cannot create folder '"+resourceDir+"'. ");
+			}
+		}
 		getFixture().setResources(resourceURI);
 		// setting temproraries and resources
 
@@ -155,7 +159,9 @@ public class DOTExporterTest extends PepperExporterTest {
 			for (File subDir : dir.listFiles()) {
 				this.removeDirRec(subDir);
 			}
-			dir.delete();
+			if (!dir.delete()){
+				logger.warn("Cannot delete folder {}. ", dir);
+			}
 		}
 	}
 }
