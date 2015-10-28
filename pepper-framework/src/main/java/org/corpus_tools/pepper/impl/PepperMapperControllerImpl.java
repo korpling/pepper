@@ -20,7 +20,6 @@ package org.corpus_tools.pepper.impl;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
-import org.corpus_tools.pepper.core.DocumentControllerImpl;
 import org.corpus_tools.pepper.exceptions.NotInitializedException;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
@@ -50,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
-
+	public Logger logger = LoggerFactory.getLogger("Pepper");
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
 	 * the thread.
