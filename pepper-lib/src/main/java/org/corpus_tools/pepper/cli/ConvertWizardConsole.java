@@ -566,7 +566,7 @@ public class ConvertWizardConsole {
 					File corpusPath = new File(input);
 					if (!corpusPath.exists()) {
 						if (!corpusPath.mkdirs()){
-							logger.warn("Cannot create folder '"+corpusPath.getAbsolutePath()+"'.");
+							logger.warn("Cannot create folder for corpus path '{}'. ", corpusPath.getAbsolutePath());
 						}
 					}
 					String path;

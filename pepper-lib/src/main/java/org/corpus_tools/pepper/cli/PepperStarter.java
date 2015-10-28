@@ -305,66 +305,64 @@ public class PepperStarter {
 			if (number2module != null) {
 				moduleDesc = number2module.get(numOfModule);
 			}
-		} catch (Exception e) {
-			// do nothing
-			;
-		}
-		// try to read module desc by name
-		if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
-			for (PepperModuleDesc desc : moduleDescs) {
-				if (moduleName.equalsIgnoreCase(desc.getName())) {
-					moduleDesc = desc;
-					break;
+		} finally {
+			// try to read module desc by name
+			if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
+				for (PepperModuleDesc desc : moduleDescs) {
+					if (moduleName.equalsIgnoreCase(desc.getName())) {
+						moduleDesc = desc;
+						break;
+					}
 				}
 			}
-		}
-		if (moduleDesc != null) {
+			if (moduleDesc != null) {
 
-			Integer[] length = new Integer[2];
-			if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
-				length[0] = 14;
-				length[1] = 60;
+				Integer[] length = new Integer[2];
+				if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
+					length[0] = 14;
+					length[1] = 60;
+				} else {
+					length[0] = 14;
+					length[1] = 100;
+				}
+
+				int numOfEntries = 5;
+				if (moduleDesc.getProperties() != null) {
+					numOfEntries++;
+					numOfEntries++;
+					numOfEntries++;
+					numOfEntries = numOfEntries + moduleDesc.getProperties().getPropertyDesctriptions().size();
+				}
+
+				String[][] map = new String[numOfEntries][2];
+				map[0][0] = "name:";
+				map[0][1] = moduleDesc.getName();
+				map[1][0] = "version:";
+				map[1][1] = moduleDesc.getVersion();
+				map[2][0] = "supplier:";
+				map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
+				map[3][0] = "website:";
+				map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
+				map[4][0] = "description:";
+				map[4][1] = moduleDesc.getDesc();
+
+				if (moduleDesc.getProperties() != null) {
+					map[5][0] = "--";
+					map[6][1] = "customization properties";
+					map[7][0] = "--";
+					int i = 8;
+					for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
+						map[i][0] = prop.getName();
+						map[i][1] = prop.getDescription();
+						i++;
+					}
+				}
+				retVal.append(PepperUtil.createTable(length, map, false, true, true));
+
+				retVal.append("\n");
 			} else {
-				length[0] = 14;
-				length[1] = 100;
+				retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
 			}
-
-			int numOfEntries = 5;
-			if (moduleDesc.getProperties() != null) {
-				numOfEntries++;
-				numOfEntries++;
-				numOfEntries++;
-				numOfEntries = numOfEntries + moduleDesc.getProperties().getPropertyDesctriptions().size();
-			}
-
-			String[][] map = new String[numOfEntries][2];
-			map[0][0] = "name:";
-			map[0][1] = moduleDesc.getName();
-			map[1][0] = "version:";
-			map[1][1] = moduleDesc.getVersion();
-			map[2][0] = "supplier:";
-			map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
-			map[3][0] = "website:";
-			map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
-			map[4][0] = "description:";
-			map[4][1] = moduleDesc.getDesc();
-
-			if (moduleDesc.getProperties() != null) {
-				map[5][0] = "--";
-				map[6][1] = "customization properties";
-				map[7][0] = "--";
-				int i = 8;
-				for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
-					map[i][0] = prop.getName();
-					map[i][1] = prop.getDescription();
-					i++;
-				}
-			}
-			retVal.append(PepperUtil.createTable(length, map, false, true, true));
-
-			retVal.append("\n");
-		} else {
-			retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
 		}
 		return (retVal.toString());
 	}
@@ -628,11 +626,11 @@ public class PepperStarter {
 
 			if ("all".equalsIgnoreCase(params.get(0)) || (isSnapshot && !ignoreVersion || ignoreVersion && !isSnapshot) && params.size() > 1 && "all".equalsIgnoreCase(params.get(1)) || isSnapshot && ignoreVersion && params.size() > 2 && "all".equalsIgnoreCase(params.get(2))) {
 				List<String> lines = new ArrayList<String>();
-				for (String s : moduleTable.keySet()) {
-					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)) {
-						lines.add(s.concat(" successfully updated."));
+				for (Map.Entry<String, Pair<String, String>> entry : moduleTable.entrySet()) {
+					if (pepperConnector.update(entry.getValue().getLeft(), entry.getKey(), entry.getValue().getRight(), isSnapshot, ignoreVersion)) {
+						lines.add(entry.getKey().concat(" successfully updated."));
 					} else {
-						lines.add(s.concat(" NOT updated."));
+						lines.add(entry.getKey().concat(" NOT updated."));
 					}
 				}
 				Collections.<String> sort(lines);
@@ -653,8 +651,8 @@ public class PepperStarter {
 					} else if ("config".equals(s)) {
 						retVal.append(newLine).append(indent).append("update configuration for pepper modules:").append(newLine).append(newLine);
 
-						for (String module : moduleTable.keySet()) {
-							retVal.append(indent).append(module).append(moduleTable.get(module)).append(newLine);
+						for (Map.Entry<String, Pair<String, String>> entry : moduleTable.entrySet()) {
+							retVal.append(indent).append(entry.getKey()).append(entry.getValue()).append(newLine);
 						}
 						retVal.append(newLine);
 						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):").append(newLine).append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
@@ -1086,14 +1084,14 @@ public class PepperStarter {
 		for (String param : params) {
 			if ("all".equalsIgnoreCase(param)) {
 				retVal.delete(0, retVal.length());
-				for (String module : moduleTable.keySet()) {
-					groupId = moduleTable.get(module).getLeft();
-					Bundle bundle = connector.getBundle(groupId, module, null);
+				for (Map.Entry<String, Pair<String, String>> entry : moduleTable.entrySet()) {
+					groupId = entry.getValue().getLeft();
+					Bundle bundle = connector.getBundle(groupId, entry.getKey(), null);
 					version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
 					if (version == null) {
-						logger.info(module.concat(" not installed. Collecting dependencies for newest version."));
+						logger.info(entry.getKey().concat(" not installed. Collecting dependencies for newest version."));
 					}
-					retVal.append(connector.printDependencies(moduleTable.get(module).getLeft(), module, version, moduleTable.get(module).getRight())).append(System.lineSeparator()).append(System.lineSeparator());
+					retVal.append(connector.printDependencies(entry.getValue().getLeft(), entry.getKey(), version, entry.getValue().getRight())).append(System.lineSeparator()).append(System.lineSeparator());
 				}
 				return retVal.toString();
 			} else if (param.contains("::")) {

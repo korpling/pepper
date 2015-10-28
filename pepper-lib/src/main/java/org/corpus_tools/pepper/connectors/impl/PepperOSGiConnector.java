@@ -448,16 +448,18 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					bundleURI = URI.create(bundleFile.getAbsolutePath());
 				}
 				if (bundleURI.getPath().endsWith("zip")) {
-					try (ZipFile zipFile = new ZipFile(bundleURI.getPath());){
+					try (ZipFile zipFile = new ZipFile(bundleURI.getPath());) {
 						Enumeration<? extends ZipEntry> entries = zipFile.entries();
 						while (entries.hasMoreElements()) {
 							ZipEntry entry = entries.nextElement();
 							File entryDestination = new File(pluginPath, entry.getName());
-							if (!entryDestination.getParentFile().mkdirs()){
-								logger.warn("Cannot create folder '"+entryDestination.getParentFile()+"'. ");
+							if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
+								logger.warn("Cannot create folder '" + entryDestination.getParentFile() + "'. ");
 							}
 							if (entry.isDirectory()) {
-								entryDestination.mkdirs();
+								if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
+									logger.warn("Cannot create folder {}. ", entryDestination.getParentFile());
+								}
 							} else {
 								InputStream in = zipFile.getInputStream(entry);
 								OutputStream out = new FileOutputStream(entryDestination);
@@ -560,10 +562,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 							File fileToRemove = new File(entry.getKey().getPath());
 							retVal = fileToRemove.delete();
 							// check for folders to be removed
-							for (File file : new File(getPepperStarterConfiguration().getPlugInPath()).listFiles()) {
-								if (file.getName().startsWith(fileToRemove.getName().replace(".jar", ""))) {
-									if (file.isDirectory()) {
-										FileUtils.deleteDirectory(file);
+							File[] files = new File(getPepperStarterConfiguration().getPlugInPath()).listFiles();
+							if (files != null) {
+								for (File file : files) {
+									if (file.getName().startsWith(fileToRemove.getName().replace(".jar", ""))) {
+										if (file.isDirectory()) {
+											FileUtils.deleteDirectory(file);
+										}
 									}
 								}
 							}
