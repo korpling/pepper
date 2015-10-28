@@ -202,7 +202,7 @@ public class DocumentBusTest {
 		Vector<SimplePepperModuleController> moduleControllers = new Vector<DocumentBusTest.SimplePepperModuleController>();
 		for (int i = 0; i < 5; i++) {
 			SimplePepperModuleController controller = new SimplePepperModuleController();
-			controller.waitTime = new Long(10 + i * 5);
+			controller.waitTime = Long.valueOf(10 + i * 5);
 			controller.controllerId = "consumer_" + i;
 			moduleControllers.add(controller);
 			exportModuleControllers.add(controller.controllerId);

@@ -347,7 +347,7 @@ public class PepperConfiguration extends Properties {
 	 * @return
 	 */
 	public Integer getMaxAmountOfDocuments() {
-		String amountOfDocs = getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, Integer.valueOf(10).toString());
+		String amountOfDocs = getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, "10");
 		return (Integer.valueOf(amountOfDocs));
 	}
 
@@ -370,7 +370,7 @@ public class PepperConfiguration extends Properties {
 	 * Flag to determine the time interval of the convert status report
 	 */
 	public Integer getReportInterval() {
-		String interval = getProperty(PROP_REPORT_INTERVAL, Integer.valueOf(1000).toString());
+		String interval = getProperty(PROP_REPORT_INTERVAL, "1000");
 		return (Integer.valueOf(interval));
 	}
 

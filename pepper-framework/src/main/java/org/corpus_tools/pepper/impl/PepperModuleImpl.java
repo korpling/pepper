@@ -917,12 +917,10 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 						// (all files having customized ending)
 						File[] files = resource.listFiles();
 						if (files != null) {
-							if (resource.listFiles() != null) {
-								for (File file : resource.listFiles()) {
-									if (file.getName().equalsIgnoreCase(((SNode) id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
-										metaFile = file;
-										break;
-									}
+							for (File file : files) {
+								if (file.getName().equalsIgnoreCase(((SNode) id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
+									metaFile = file;
+									break;
 								}
 							}
 						}
@@ -941,7 +939,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 					}
 					if (metaFile != null) {
 						Properties props = new Properties();
-						try(FileInputStream str= new FileInputStream(metaFile)) {
+						try (FileInputStream str = new FileInputStream(metaFile)) {
 							props.load(str);
 						} catch (IOException e) {
 							logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);

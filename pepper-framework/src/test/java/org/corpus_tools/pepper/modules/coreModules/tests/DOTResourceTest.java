@@ -287,7 +287,7 @@ public class DOTResourceTest extends TestCase {
 		}
 
 		if (contentFile1.toString().isEmpty()) {
-			if (contentFile2 == null){
+			if (contentFile2.toString().isEmpty()){
 				retVal = true;
 			}
 			else{

@@ -230,7 +230,9 @@ public class PepperImporterImplTest {
 			throw new PepperTestException("Cannot create folder '"+corp2+"'. ");
 		}
 		File corp3 = new File(tmpFolder.getCanonicalPath() + "/corp1/corp3");
-		corp3.mkdirs();
+		if (!corp3.exists() && !corp3.mkdirs()){
+			throw new PepperTestException("Cannot create folder '"+corp3+"'. ");
+		}
 
 		File.createTempFile("doc1", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();
 		File.createTempFile("doc2", "." + PepperImporter.ENDING_XML, corp2).deleteOnExit();

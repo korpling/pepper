@@ -46,7 +46,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	private static final Logger logger = LoggerFactory.getLogger(DOTExporter.class);
 
 	URI resourceURI = URI.createFileURI("src/test/resources/resources");
-	
+
 	@Before
 	public void setUp() throws Exception {
 		super.setFixture(new DOTExporter());
@@ -55,9 +55,9 @@ public class DOTExporterTest extends PepperExporterTest {
 		// setting temproraries and resources
 
 		File resourceDir = new File(resourceURI.toFileString());
-		if (!resourceDir.exists()){
-			if(!resourceDir.mkdirs()){
-				throw new PepperTestException("Cannot create folder '"+resourceDir+"'. ");
+		if (!resourceDir.exists()) {
+			if (!resourceDir.mkdirs()) {
+				throw new PepperTestException("Cannot create folder '" + resourceDir + "'. ");
 			}
 		}
 		getFixture().setResources(resourceURI);
@@ -155,12 +155,15 @@ public class DOTExporterTest extends PepperExporterTest {
 	}
 
 	private void removeDirRec(File dir) {
-		if (dir != null && dir.listFiles() != null && dir.listFiles().length != 0) {
-			for (File subDir : dir.listFiles()) {
-				this.removeDirRec(subDir);
-			}
-			if (!dir.delete()){
-				logger.warn("Cannot delete folder {}. ", dir);
+		if (dir != null) {
+			File[] files = dir.listFiles();
+			if (files != null && files.length != 0) {
+				for (File subDir : files) {
+					this.removeDirRec(subDir);
+				}
+				if (!dir.delete()) {
+					logger.warn("Cannot delete folder {}. ", dir);
+				}
 			}
 		}
 	}
