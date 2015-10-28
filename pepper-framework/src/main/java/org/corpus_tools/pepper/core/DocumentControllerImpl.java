@@ -176,12 +176,6 @@ public class DocumentControllerImpl implements DocumentController {
 				numOfRelations = getDocument().getDocumentGraph().getRelations().size();
 				getDocument().saveDocumentGraph(getLocation());
 				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltUtil.getGlobalId(getsDocumentId()));
-
-				Runtime runtime = Runtime.getRuntime();
-				long usedMem = runtime.totalMemory() - runtime.freeMemory();
-				long time = System.currentTimeMillis();
-				time = System.currentTimeMillis() - time;
-				usedMem = usedMem - (runtime.totalMemory() - runtime.freeMemory());
 			}
 		} finally {
 			sleepLock.unlock();
@@ -278,7 +272,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 * @author Florian Zipser
 	 *
 	 */
-	protected class DetailedStatus {
+	protected static class DetailedStatus {
 		public DetailedStatus() {
 		}
 

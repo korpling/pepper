@@ -105,7 +105,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		}
 	}
 
-	class MyExporter extends PepperExporterImpl {
+	static class MyExporter extends PepperExporterImpl {
 		public MyExporter(String name) {
 			setName(name);
 		}

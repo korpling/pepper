@@ -284,4 +284,14 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 		}
 		return retVal;
 	}
+	/** This method was overwritten because of a findbugs warning**/
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+	/** This method was overwritten because of a findbugs warning**/
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }

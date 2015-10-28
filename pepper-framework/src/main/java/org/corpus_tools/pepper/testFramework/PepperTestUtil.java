@@ -176,9 +176,7 @@ public class PepperTestUtil {
 		if (fixtures == null) {
 			throw new PepperModuleTestException("Cannot start Pepper modules, because the list of fixtures is not set.");
 		}
-		//
 		Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
-		Collection<PepperManipulator> manipulators = new ArrayList<PepperManipulator>();
 		Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
 
 		/**
@@ -202,9 +200,7 @@ public class PepperTestUtil {
 			// fill importers manipulators and exporters collection
 			if (fixture instanceof PepperImporter) {
 				importers.add((PepperImporter) fixture);
-			} else if (fixture instanceof PepperManipulator) {
-				manipulators.add((PepperManipulator) fixture);
-			} else if (fixture instanceof PepperExporter) {
+			}else if (fixture instanceof PepperExporter) {
 				exporters.add((PepperExporter) fixture);
 			}
 		}

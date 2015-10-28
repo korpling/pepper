@@ -215,9 +215,9 @@ public class PepperModulePropertiesTest extends TestCase {
 		String sep = "' ', '\\'', ',', '\\\\'";
 
 		assertEquals(4, getFixture().stringToCharList(sep).size());
-		assertEquals(new Character(' '), getFixture().stringToCharList(sep).get(0));
-		assertEquals(new Character('\''), getFixture().stringToCharList(sep).get(1));
-		assertEquals(new Character(','), getFixture().stringToCharList(sep).get(2));
-		assertEquals(new Character('\\'), getFixture().stringToCharList(sep).get(3));
+		assertEquals(Character.valueOf(' '), getFixture().stringToCharList(sep).get(0));
+		assertEquals(Character.valueOf('\''), getFixture().stringToCharList(sep).get(1));
+		assertEquals(Character.valueOf(','), getFixture().stringToCharList(sep).get(2));
+		assertEquals(Character.valueOf('\\'), getFixture().stringToCharList(sep).get(3));
 	}
 }

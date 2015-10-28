@@ -207,9 +207,8 @@ public class PepperModuleProperties implements Serializable {
 	 */
 	public void setPropertyValues(Properties properties) {
 		if (properties != null) {
-			Set<Object> keys = properties.keySet();
-			for (Object key : keys) {
-				this.setPropertyValue(key.toString(), properties.get(key));
+			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+				this.setPropertyValue(entry.getKey().toString(), entry.getValue());
 			}
 		}
 	}

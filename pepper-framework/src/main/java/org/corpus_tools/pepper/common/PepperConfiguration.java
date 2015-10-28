@@ -214,7 +214,7 @@ public class PepperConfiguration extends Properties {
 
 		String configFileStr = null;
 
-		if ((componentContext != null) && (componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null) && (componentContext.getBundleContext().getBundle().getLocation() != null)) {
+		if ((componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null) && (componentContext.getBundleContext().getBundle().getLocation() != null)) {
 			if (componentContext != null) {
 				String[] bundleNames = System.getProperty("osgi.bundles").split(",");
 				if (bundleNames.length > 0) {
@@ -343,8 +343,8 @@ public class PepperConfiguration extends Properties {
 	 * @return
 	 */
 	public Integer getMaxAmountOfDocuments() {
-		String amountOfDocs = getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, new Integer(10).toString());
-		return (new Integer(amountOfDocs));
+		String amountOfDocs = getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, Integer.valueOf(10).toString());
+		return (Integer.valueOf(amountOfDocs));
 	}
 
 	public Boolean getGcAfterDocumentSleep() {
@@ -366,7 +366,7 @@ public class PepperConfiguration extends Properties {
 	 * Flag to determine the time interval of the convert status report
 	 */
 	public Integer getReportInterval() {
-		String interval = getProperty(PROP_REPORT_INTERVAL, new Integer(1000).toString());
+		String interval = getProperty(PROP_REPORT_INTERVAL, Integer.valueOf(1000).toString());
 		return (Integer.valueOf(interval));
 	}
 

@@ -617,7 +617,7 @@ public class PepperJobImpl extends PepperJob {
 						}
 						docFile = File.createTempFile(prefix, "." + SaltUtil.FILE_ENDING_SALT_XML, tmpPath);
 					} catch (IOException e) {
-						throw new PepperFWException("Cannot store document '" + sDoc.getName() + "' to file '" + ((docFile == null) ? docFile : docFile.getAbsolutePath()) + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
+						throw new PepperFWException("Cannot store document '" + sDoc.getName() + "' to file '" + docFile + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
 					if (!getConfiguration().getKeepDocuments()) {

@@ -493,7 +493,7 @@ public class ModuleControllerImpl implements ModuleController {
 		}
 		DocumentController documentController = getInputDocumentBus().pop(getId(), ignorePermissionForDocument);
 		if (documentController != null) {
-			logger.debug("[{}] started processing of document '{}'. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN") + "'");
+			logger.debug("[{}] started processing of document '{}'. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
 			// notify documentController, that SDocument now is in progress
 			documentController.updateStatus(this, DOCUMENT_STATUS.IN_PROGRESS);
 			// puts the current element in list of not pipelined orders
@@ -532,7 +532,7 @@ public class ModuleControllerImpl implements ModuleController {
 		// removes document controller of list of to be processed document
 		// controllers
 		getControllList().remove(documentController);
-		mLogger.debug("[{}] completed document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN"));
+		mLogger.debug("[{}] completed document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
 	}
 
 	/** {@inheritDoc} **/
@@ -546,7 +546,7 @@ public class ModuleControllerImpl implements ModuleController {
 		}
 
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
-		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), ((documentController != null) ? documentController.getGlobalId() : "UNKNOWN"));
+		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
 		// if document is not processed any further, release slot
 		if (getJob() != null) {
 			getJob().releaseDocument(documentController);

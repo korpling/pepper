@@ -460,8 +460,8 @@ public abstract class PepperUtil {
 		str.append(String.format(format1, " configuration for Pepper"));
 		str.append(line);
 		if ((conf != null) && (conf.size() != 0)) {
-			for (Object key : conf.keySet()) {
-				str.append(String.format(format2, key, conf.get(key)));
+			for (Map.Entry<Object, Object> entry : conf.entrySet()) {
+				str.append(String.format(format2, entry.getKey(), entry.getValue()));
 			}
 		} else {
 			str.append(String.format(format1, "- no configurations set -"));
@@ -496,7 +496,7 @@ public abstract class PepperUtil {
 			map[0][5] = "website";
 			int i = 1;
 			for (PepperModuleDesc desc : moduleDescs) {
-				map[i][0] = new Integer(i).toString();
+				map[i][0] = Integer.valueOf(i).toString();
 				map[i][1] = desc.getName();
 				map[i][2] = desc.getVersion();
 				map[i][3] = desc.getModuleType().toString();

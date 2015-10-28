@@ -269,14 +269,17 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					SCorpus sCorpus = getCorpusGraph().createCorpus(parent, currURI.lastSegment());
 					this.getIdentifier2ResourceTable().put(sCorpus.getIdentifier(), currURI);
 					if (currFile.isDirectory()) {
-						for (File file : currFile.listFiles()) {
-							try {
-								// if retval is true or returned value is true
-								// set retVal to true
-								Boolean containsDocuments = importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
-								retVal = (retVal || containsDocuments);
-							} catch (IOException e) {
-								throw new PepperModuleException("Cannot import corpus structure, because cannot create a URI out of file '" + file + "'. ", e);
+						if (currFile.listFiles() != null) {
+							for (File file : currFile.listFiles()) {
+								try {
+									// if retval is true or returned value is
+									// true
+									// set retVal to true
+									Boolean containsDocuments = importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
+									retVal = (retVal || containsDocuments);
+								} catch (IOException e) {
+									throw new PepperModuleException("Cannot import corpus structure, because cannot create a URI out of file '" + file + "'. ", e);
+								}
 							}
 						}
 					}
@@ -316,9 +319,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 */
 	@Override
 	public void start() throws PepperModuleException {
-		if (getCorpusDesc() == null) {
-			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus description was given. ");
-		}
 		if (getCorpusDesc().getCorpusPath() == null) {
 			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus path was given. ");
 		}
@@ -409,13 +409,17 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 **/
 	private boolean isLeafFolder(File folder) {
 		if (folder.isDirectory()) {
-			for (File file : folder.listFiles()) {
-				if ((file.isDirectory()) && (!getIgnoreEndings().contains(file.getName())))
-					return (false);
+			if (folder.listFiles() != null) {
+				for (File file : folder.listFiles()) {
+					if ((file.isDirectory()) && (!getIgnoreEndings().contains(file.getName()))) {
+						return (false);
+					}
+				}
 			}
 			return (true);
-		} else
+		} else {
 			return (false);
+		}
 	}
 
 	/**

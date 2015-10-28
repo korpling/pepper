@@ -45,12 +45,7 @@ public class DOTExporterTest extends PepperExporterTest {
 	Logger logger = LoggerFactory.getLogger(DOTExporter.class);
 
 	URI resourceURI = URI.createFileURI("src/test/resources/resources");
-	URI inputURI = URI.createFileURI("src/test/resources/test/test1.saltCommon");
-	URI outputURI = URI.createFileURI("_TMP/ExporterTest/");
-
-	// SaltSample saltSample = new SaltSample();
-	SaltProject saltProject = SaltFactory.createSaltProject();
-
+	
 	@Before
 	public void setUp() throws Exception {
 		super.setFixture(new DOTExporter());
@@ -73,7 +68,7 @@ public class DOTExporterTest extends PepperExporterTest {
 
 	// TODO incomment this test in next version
 	public void testCreateCorpusStructure() throws IOException {
-		
+
 		File corpusPathFile = getTempPath("pepperModules.DotModules/Exporter/testcase1");
 		File currentFile = getTempPath(".pepperModules.DotModules/Exporter/testcase1/corp1.dot");
 		File expectedFile = new File("./src/test/resources/expected/Exporter/testcase1/corp1.dot");
@@ -133,20 +128,20 @@ public class DOTExporterTest extends PepperExporterTest {
 			// corp1
 
 			SCorpus corp1 = SaltFactory.createSCorpus();
-			Identifier sElementId = SaltFactory.createIdentifier(corp1, "corp1");
+			SaltFactory.createIdentifier(corp1, "corp1");
 			corp1.setName("corp1");
 			corp1.setId("corp1");
 			corpGraph.addNode(corp1);
 
 			// doc1
 			SDocument doc1 = SaltFactory.createSDocument();
-			sElementId = SaltFactory.createIdentifier(doc1, "corp1/doc1");
+			SaltFactory.createIdentifier(doc1, "corp1/doc1");
 			doc1.setName("doc1");
 			corpGraph.addNode(doc1);
 			doc1.setDocumentGraph(SaltFactory.createSDocumentGraph());
 			// CorpDocRel
 			SCorpusDocumentRelation corpDocRel1 = SaltFactory.createSCorpusDocumentRelation();
-			sElementId = SaltFactory.createIdentifier(corpDocRel1, "rel1");
+			SaltFactory.createIdentifier(corpDocRel1, "rel1");
 			corpDocRel1.setName("rel1");
 			corpDocRel1.setSource(corp1);
 			corpDocRel1.setTarget(doc1);
@@ -156,11 +151,9 @@ public class DOTExporterTest extends PepperExporterTest {
 	}
 
 	private void removeDirRec(File dir) {
-		if (dir != null) {
-			if (dir.listFiles() != null && dir.listFiles().length != 0) {
-				for (File subDir : dir.listFiles()) {
-					this.removeDirRec(subDir);
-				}
+		if (dir != null && dir.listFiles() != null && dir.listFiles().length != 0) {
+			for (File subDir : dir.listFiles()) {
+				this.removeDirRec(subDir);
 			}
 			dir.delete();
 		}

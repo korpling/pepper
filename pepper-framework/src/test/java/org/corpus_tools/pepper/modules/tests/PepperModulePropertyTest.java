@@ -52,7 +52,7 @@ public class PepperModulePropertyTest extends TestCase {
 	 */
 	@Test
 	public void testSetProperty_File() {
-		File value = new File("/home/me/");
+		File value = new File("./me/");
 		PepperModuleProperty<File> prop = new PepperModuleProperty<File>("prop1", File.class, "desc");
 		prop.setValueString(value.toString());
 		assertEquals(value, prop.getValue());

@@ -81,7 +81,7 @@ public class PepperImpl implements Pepper {
 		return (null);
 	}
 
-	class JobEntry {
+	static class JobEntry {
 		public PepperJobImpl pepperJob = null;
 		public File location = null;
 

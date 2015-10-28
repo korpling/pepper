@@ -50,15 +50,13 @@ public class FileComparator {
 			throw new PepperModuleTestException("The file '" + file2 + "' does not exist.");
 		String contentFile1 = null;
 		String contentFile2 = null;
-		BufferedReader brFile1 = null;
-		BufferedReader brFile2 = null;
-		try {
-			brFile1 = new BufferedReader(new FileReader(file1));
+		try (BufferedReader brFile1 = new BufferedReader(new FileReader(file1)); BufferedReader brFile2 = new BufferedReader(new FileReader(file2));){
+			
 			String line = null;
 			while ((line = brFile1.readLine()) != null) {
 				contentFile1 = contentFile1 + line;
 			}
-			brFile2 = new BufferedReader(new FileReader(file2));
+			
 			line = null;
 			while ((line = brFile2.readLine()) != null) {
 				contentFile2 = contentFile2 + line;
@@ -67,11 +65,7 @@ public class FileComparator {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			brFile1.close();
-			brFile2.close();
 		}
-
 		if (contentFile1 == null) {
 			if (contentFile2 == null)
 				retVal = true;

@@ -138,9 +138,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * tests if
-	 * {@link PepperJobImpl#setConfiguration(PepperConfiguration)}
-	 * and {@link PepperJobImpl#getConfiguration()} works correctly
+	 * tests if {@link PepperJobImpl#setConfiguration(PepperConfiguration)} and
+	 * {@link PepperJobImpl#getConfiguration()} works correctly
 	 */
 	@Test
 	public void testGetSetConfiguration() {
@@ -298,7 +297,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		assertTrue(getFixture().getAllSteps().contains(step));
 	}
 
-	class SampleModule extends PepperManipulatorImpl {
+	static class SampleModule extends PepperManipulatorImpl {
 		List<Identifier> orders = null;
 
 		@Override
@@ -1019,14 +1018,13 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		File tmpFolder = PepperUtil.getTempTestFile("pepperJobTest");
 		tmpFolder.mkdirs();
 		File propFile = new File(tmpFolder.getAbsolutePath() + "/test.properties");
-		OutputStream propStream = new FileOutputStream(propFile);
-
 		Properties props = new Properties();
-		props.put("prop1", "val1");
-		props.put("prop2", "val2");
-		props.store(propStream, "");
-
-		URI corpPath = URI.createFileURI(new File("/anyPath/").getAbsolutePath());
+		try (OutputStream propStream = new FileOutputStream(propFile)) {
+			props.put("prop1", "val1");
+			props.put("prop2", "val2");
+			props.store(propStream, "");
+		}
+		URI corpPath = URI.createFileURI(new File("./anyPath/").getAbsolutePath());
 
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		XMLOutputFactory o = XMLOutputFactory.newFactory();

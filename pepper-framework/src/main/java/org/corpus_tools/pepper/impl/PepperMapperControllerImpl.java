@@ -51,8 +51,6 @@ import org.slf4j.LoggerFactory;
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
 
-	protected Logger logger = LoggerFactory.getLogger("Pepper");
-
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
 	 * the thread.
@@ -276,12 +274,6 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	public PepperModule getPepperModule() {
 		return (this.pepperModule);
 	}
-
-	/**
-	 * {@link DocumentControllerImpl} containing the {@link SDocument} object to
-	 * be processed
-	 **/
-	protected DocumentController documentController = null;
 
 	/** {@inheritDoc} **/
 	@Override

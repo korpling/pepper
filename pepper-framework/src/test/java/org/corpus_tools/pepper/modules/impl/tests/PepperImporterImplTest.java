@@ -36,7 +36,7 @@ import org.junit.Test;
 
 public class PepperImporterImplTest {
 
-	class FixtureImporter extends PepperImporterImpl {
+	static class FixtureImporter extends PepperImporterImpl {
 
 	}
 
