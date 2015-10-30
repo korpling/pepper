@@ -32,6 +32,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
 import org.corpus_tools.salt.common.SDocumentGraph;
@@ -49,6 +51,7 @@ import org.osgi.service.component.annotations.Property;
  * @author Florian Zipser
  * 
  */
+@XmlRootElement
 public class PepperModuleProperties implements Serializable {
 	/**
 	 * 

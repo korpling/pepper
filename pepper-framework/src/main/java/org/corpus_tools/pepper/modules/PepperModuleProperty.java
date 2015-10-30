@@ -19,6 +19,10 @@ package org.corpus_tools.pepper.modules;
 
 import java.io.File;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * The class {@link PepperModuleProperty} offers a possibility to describe a
  * property, which is used by a specific {@link PepperModule}. A list of
@@ -35,6 +39,7 @@ import java.io.File;
  * @author Florian Zipser
  * 
  */
+@XmlRootElement
 public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>> {
 
 	/**
@@ -50,6 +55,10 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 		this.name = name;
 		this.clazz = clazz;
 		this.description = description;
+	}
+	
+	public PepperModuleProperty(){
+		
 	}
 
 	/**
@@ -121,7 +130,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	public String getName() {
 		return name;
 	}
-
+	@XmlElement
 	public void setType(Class<T> type) {
 		this.clazz = type;
 	}
@@ -180,7 +189,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 * Value of this property
 	 */
 	T value = null;
-
+	@XmlElement
 	public void setValue(T value) {
 		this.value = value;
 	}

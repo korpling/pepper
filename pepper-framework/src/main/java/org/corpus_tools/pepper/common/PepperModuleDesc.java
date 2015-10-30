@@ -20,6 +20,10 @@ package org.corpus_tools.pepper.common;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.eclipse.emf.common.util.URI;
@@ -31,6 +35,7 @@ import org.eclipse.emf.common.util.URI;
  * @author Florian Zipser
  *
  */
+@XmlRootElement
 public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 
 	/** name of the Pepper module **/
@@ -53,6 +58,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * @param moduleName
 	 *            name of the Pepper module
 	 */
+	@XmlElement
 	public void setName(String moduleName) {
 		this.name = moduleName;
 	}
@@ -77,6 +83,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * @param version
 	 *            of the Pepper module
 	 */
+	@XmlElement
 	public void setVersion(String version) {
 		this.version = version;
 	}
@@ -99,6 +106,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * @param moduleType
 	 *            type of module
 	 */
+	@XmlAttribute
 	public void setModuleType(MODULE_TYPE moduleType) {
 		this.moduleType = moduleType;
 	}
@@ -123,6 +131,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * @param desc
 	 *            a short description of the task of this module
 	 */
+	@XmlElement
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
@@ -146,6 +155,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * @param uri
 	 *            contact address like eMail address or homepage address
 	 */
+	@XmlElement
 	public void setSupplierContact(URI supplierContact) {
 		this.supplierContact = supplierContact;
 	}
@@ -169,6 +179,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * @param hp
 	 *            {@link URI} to the homepage
 	 */
+	@XmlElement
 	public void setSupplierHomepage(URI hp) {
 		this.hp = hp;
 	}
@@ -242,6 +253,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	 * 
 	 * @param properties
 	 */
+	@XmlElement
 	public void setProperties(PepperModuleProperties properties) {
 		this.properties = properties;
 	}
