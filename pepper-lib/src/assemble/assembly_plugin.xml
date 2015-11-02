@@ -32,7 +32,6 @@
 			<scope>runtime</scope>
 			<fileMode>0644</fileMode>
 			<excludes>
-				<exclude>de.hu_berlin.german.korpling.saltnpepper:pepper-lib</exclude>
 				<exclude>org.eclipse:osgi</exclude>
 				<exclude>*:hamcrest*</exclude>
 				<exclude>*:junit</exclude>
