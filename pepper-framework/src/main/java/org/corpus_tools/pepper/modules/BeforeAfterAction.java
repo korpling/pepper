@@ -20,10 +20,14 @@ package org.corpus_tools.pepper.modules;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Triple;
 import org.corpus_tools.pepper.core.ModuleControllerImpl;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
@@ -31,14 +35,19 @@ import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.core.SAnnotation;
 import org.corpus_tools.salt.core.SAnnotationContainer;
 import org.corpus_tools.salt.core.SLayer;
+import org.corpus_tools.salt.core.SMetaAnnotation;
 import org.corpus_tools.salt.core.SNode;
 import org.corpus_tools.salt.core.SRelation;
 import org.corpus_tools.salt.graph.IdentifiableElement;
 import org.corpus_tools.salt.graph.Identifier;
+import org.corpus_tools.salt.graph.Label;
 import org.corpus_tools.salt.graph.Relation;
+import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.service.blueprint.reflect.MapEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -348,15 +357,18 @@ public class BeforeAfterAction {
 	public void after(Identifier id) throws PepperModuleException {
 		if (getPepperModule().getProperties() != null) {
 			if ((id != null) && (id.getIdentifiableElement() != null)) {
-				if (id.getIdentifiableElement() instanceof SDocument) {
-					SDocument sDoc = (SDocument) id.getIdentifiableElement();
-					if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
+				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
+					if (id.getIdentifiableElement() instanceof SDocument) {
+						SDocument sDoc = (SDocument) id.getIdentifiableElement();
 						// add slayers after processing
 						String layers = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
 						addSLayers(sDoc, layers);
 					}
-				} else if (id.getIdentifiableElement() instanceof SCorpus) {
-
+				}
+				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue()!= null){
+					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument)id.getIdentifiableElement()).getDocumentGraph()!= null){
+					renameAnnotations(id);
+					}
 				}
 			}
 		}
@@ -464,6 +476,60 @@ public class BeforeAfterAction {
 									logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + id.getId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
 								}
 							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: "old_namespace::old_name=old_value := new_namespace::new_name=new_value", determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: "salt::pos:=part-of-speech". A list of renamings must be separated with ";".
+	 * @param id
+	 *            identifying the current object
+	 */
+	public void renameAnnotations(Identifier id) {
+		if (id != null && id.getIdentifiableElement()!= null){
+			try{
+				String str= (String)getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue();
+				Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap= new Hashtable<>();
+				// split all single renaming strings
+				String[] renamings= str.split(";");
+				for (String renaming: renamings){
+					String[] parts= renaming.split(":=");
+					renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), SaltUtil.unmarshalAnnotation(parts[1]).iterator().next());
+				}
+				SDocument document= (SDocument) id.getIdentifiableElement();
+				
+				// rename all annotations of nodes
+				Iterator<SAnnotationContainer> it= (Iterator<SAnnotationContainer>)(Iterator<? extends SNode>)document.getDocumentGraph().getNodes().iterator();
+				rename(it, renamingMap);
+				
+				// rename all annotations of relations
+				it= (Iterator<SAnnotationContainer>)(Iterator<? extends SNode>)document.getDocumentGraph().getRelations().iterator();
+				rename(it, renamingMap);
+			}catch(RuntimeException e){
+				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id, e.getMessage());
+			}
+		}
+	}
+	
+	private void rename(Iterator<SAnnotationContainer> it, Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap){
+		while(it.hasNext()){
+			SAnnotationContainer node= it.next();
+			for (Map.Entry<Triple<String, String, String>, Triple<String, String, String>> entry: renamingMap.entrySet()){
+				Label label= node.getLabel(entry.getKey().getLeft(), entry.getKey().getMiddle());
+				if (label!= null){
+					if (label.getQName().equals(SaltUtil.createQName(entry.getValue().getLeft(), entry.getValue().getMiddle()))){
+						// if only value is different
+						label.setValue(entry.getValue().getRight());
+					}else{
+						// namespace or name are different --> remove label and create a new one
+						node.removeLabel(label.getQName());
+						if (label instanceof SAnnotation){
+							node.createAnnotation(entry.getValue().getLeft(), entry.getValue().getMiddle(), entry.getValue().getRight());
+						}else if (label instanceof SMetaAnnotation){
+							node.createMetaAnnotation(entry.getValue().getLeft(), entry.getValue().getMiddle(), entry.getValue().getRight());
 						}
 					}
 				}

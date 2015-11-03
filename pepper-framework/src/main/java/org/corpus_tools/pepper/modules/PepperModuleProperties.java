@@ -118,6 +118,18 @@ public class PepperModuleProperties implements Serializable {
 	 * corpus structure.
 	 */
 	public static final String PROP_AFTER_REPORT_CORPUSGRAPH = PREFIX_PEPPER_AFTER + "reportCorpusGraph";
+	
+	/**
+	 * Renames all annotations matching the search template to the new
+	 * namespace, name or value. To rename an annotation, use the following
+	 * syntax:
+	 * "old_namespace::old_name=old_value := new_namespace::new_name=new_value",
+	 * determining the name is mandatory whereas the namespace and value are
+	 * optional. For instance a pos annotation can be renamed as follows:
+	 * "salt::pos:=part-of-speech". A list of renamings must be separated with
+	 * ";".
+	 */
+	public static final String PROP_AFTER_RENAME_ANNOTATIONS = PREFIX_PEPPER_AFTER + "renameAnnos";
 
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
@@ -132,6 +144,7 @@ public class PepperModuleProperties implements Serializable {
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
 		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_REPORT_CORPUSGRAPH, Boolean.class, "When set to true, prints the corpus graph to standard out after a module has processed it. This property is mainly used for importers, to visualize the created corpus structure. The default value is 'false'.", false, false));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_RENAME_ANNOTATIONS, String.class, "Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: 'old_namespace::old_name=old_value := new_namespace::new_name=new_value', determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: 'salt::pos:=part-of-speech'. A list of renamings must be separated with ';'.", false));
 	}
 
 	/**

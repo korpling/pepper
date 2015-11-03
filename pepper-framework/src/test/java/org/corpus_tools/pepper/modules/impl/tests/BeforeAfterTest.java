@@ -19,6 +19,8 @@ package org.corpus_tools.pepper.modules.impl.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,27 +44,30 @@ import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.STextualDS;
+import org.corpus_tools.salt.common.SToken;
+import org.corpus_tools.salt.core.SAnnotation;
 import org.corpus_tools.salt.core.SLayer;
 import org.corpus_tools.salt.core.SNode;
 import org.corpus_tools.salt.core.SRelation;
+import org.corpus_tools.salt.graph.Label;
 import org.corpus_tools.salt.samples.SampleGenerator;
+import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
 public class BeforeAfterTest {
 
-	private BeforeAfterAction fixture= null; 
-	
+	private BeforeAfterAction fixture = null;
+
 	public BeforeAfterAction getFixture() {
 		return fixture;
 	}
 
-
 	public void setFixture(BeforeAfterAction fixture) {
 		this.fixture = fixture;
 	}
-
 
 	@Before
 	public void setUp() throws Exception {
@@ -71,7 +76,6 @@ public class BeforeAfterTest {
 		getFixture().getPepperModule().setProperties(new PepperModuleProperties());
 	}
 
-	
 	@Test
 	public void testCopyRes() throws IOException {
 		File fromPath = new File(PepperModuleTest.getTestResources() + "/copyRes/");
@@ -92,7 +96,7 @@ public class BeforeAfterTest {
 		assertTrue(file2.getCanonicalPath() + " does not exist", file2.exists());
 		assertTrue(file3.getCanonicalPath() + " does not exist", file3.exists());
 	}
-	
+
 	@Test
 	public void testPropAddSLayer() {
 		SDocument sDoc = SaltFactory.createSDocument();
@@ -124,9 +128,9 @@ public class BeforeAfterTest {
 		SCorpus subCorpus = graph.createCorpus(corpus, "subcorpus");
 		SDocument document = graph.createDocument(subCorpus, "document");
 
-		((PepperImporter)getFixture().getPepperModule()).getIdentifier2ResourceTable().put(corpus.getIdentifier(), corpusURI.appendSegment("corpus"));
-		((PepperImporter)getFixture().getPepperModule()).getIdentifier2ResourceTable().put(subCorpus.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus"));
-		((PepperImporter)getFixture().getPepperModule()).getIdentifier2ResourceTable().put(document.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus").appendSegment("document.txt"));
+		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(corpus.getIdentifier(), corpusURI.appendSegment("corpus"));
+		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(subCorpus.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus"));
+		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(document.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus").appendSegment("document.txt"));
 
 		getFixture().getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).setValueString("meta");
 
@@ -167,5 +171,103 @@ public class BeforeAfterTest {
 			assertTrue(sRel.getLayers().contains(layer1));
 			assertTrue(sRel.getLayers().contains(layer2));
 		}
+	}
+
+	/**
+	 * Tests the renaming of annotations by property
+	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. Check
+	 * changing of only name.
+	 */
+	@Test
+	public void test_PropRenameAnnotation_name() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = doc.getDocumentGraph().createTextualDS("A test");
+		SToken tok1 = doc.getDocumentGraph().createToken(text, 0, 1);
+		tok1.createAnnotation(null, "pos", "NN");
+		tok1.createAnnotation("salt", "pos", "VVFIN");
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "pos:= part-of-speech");
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().renameAnnotations(doc.getIdentifier());
+
+		assertTrue(tok1.containsLabel(SaltUtil.createQName(null, "part-of-speech")));
+		assertTrue(tok1.containsLabel(SaltUtil.createQName("salt", "pos")));
+		assertFalse(tok1.containsLabel(SaltUtil.createQName(null, "pos")));
+	}
+
+	/**
+	 * Tests the renaming of annotations by property
+	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
+	 * changing of only namespace.
+	 */
+	@Test
+	public void test_PropRenameAnnotation_namespace() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = doc.getDocumentGraph().createTextualDS("A test");
+		SToken tok1 = doc.getDocumentGraph().createToken(text, 0, 1);
+		tok1.createAnnotation(null, "pos", "NN");
+		tok1.createAnnotation("salt", "pos", "VVFIN");
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos:= salt::part-of-speech");
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().renameAnnotations(doc.getIdentifier());
+
+		assertTrue(tok1.containsLabel(SaltUtil.createQName("salt", "part-of-speech")));
+		assertTrue(tok1.containsLabel(SaltUtil.createQName(null, "pos")));
+		assertFalse(tok1.containsLabel(SaltUtil.createQName("salt", "pos")));
+	}
+
+	/**
+	 * Tests the renaming of annotations by property
+	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
+	 * changing of only value.
+	 */
+	@Test
+	public void test_PropRenameAnnotation_value() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = doc.getDocumentGraph().createTextualDS("A test");
+		SToken tok1 = doc.getDocumentGraph().createToken(text, 0, 1);
+		tok1.createAnnotation(null, "pos", "NN");
+		tok1.createAnnotation("salt", "pos", "VVFIN");
+		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS");
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().renameAnnotations(doc.getIdentifier());
+
+		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
+		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName("salt", "pos")).getValue());
+		assertEquals("NN", tok1.getLabel(SaltUtil.createQName(null, "pos")).getValue());
+	}
+
+	/**
+	 * Tests the renaming of annotations by property
+	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
+	 * changing of multiple annotations.
+	 */
+	@Test
+	public void test_PropRenameAnnotation_multiple() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = doc.getDocumentGraph().createTextualDS("A test");
+		SToken tok1 = doc.getDocumentGraph().createToken(text, 0, 1);
+		tok1.createAnnotation(null, "pos", "NN");
+		tok1.createAnnotation("salt", "pos", "VVFIN");
+		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS; pos=NN:= pos=APOS");
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().renameAnnotations(doc.getIdentifier());
+
+		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
+		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName("salt", "pos")).getValue());
+		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName(null, "pos")).getValue());
 	}
 }
