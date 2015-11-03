@@ -35,7 +35,6 @@ import org.corpus_tools.pepper.core.Step;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
-import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;

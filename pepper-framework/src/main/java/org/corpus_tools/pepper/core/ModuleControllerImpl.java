@@ -17,16 +17,12 @@
  */
 package org.corpus_tools.pepper.core;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.io.FileUtils;
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
@@ -36,13 +32,8 @@ import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.ModuleController;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
-import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
-import org.corpus_tools.salt.core.SNode;
-import org.corpus_tools.salt.core.SRelation;
-import org.corpus_tools.salt.graph.Relation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

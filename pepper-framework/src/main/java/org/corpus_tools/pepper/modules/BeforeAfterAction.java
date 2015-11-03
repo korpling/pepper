@@ -47,7 +47,6 @@ import org.corpus_tools.salt.graph.Label;
 import org.corpus_tools.salt.graph.Relation;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.blueprint.reflect.MapEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -502,11 +501,11 @@ public class BeforeAfterAction {
 				SDocument document= (SDocument) id.getIdentifiableElement();
 				
 				// rename all annotations of nodes
-				Iterator<SAnnotationContainer> it= (Iterator<SAnnotationContainer>)(Iterator<? extends SNode>)document.getDocumentGraph().getNodes().iterator();
+				Iterator<SAnnotationContainer> it= (Iterator<SAnnotationContainer>)(Iterator<? extends SAnnotationContainer>)document.getDocumentGraph().getNodes().iterator();
 				rename(it, renamingMap);
 				
 				// rename all annotations of relations
-				it= (Iterator<SAnnotationContainer>)(Iterator<? extends SNode>)document.getDocumentGraph().getRelations().iterator();
+				it= (Iterator<SAnnotationContainer>)(Iterator<? extends SAnnotationContainer>)document.getDocumentGraph().getRelations().iterator();
 				rename(it, renamingMap);
 			}catch(RuntimeException e){
 				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id, e.getMessage());
