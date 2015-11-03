@@ -31,6 +31,7 @@ import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.exceptions.PepperInActionException;
+import org.corpus_tools.pepper.modules.BeforeAfterAction;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.ModuleController;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -275,7 +276,8 @@ public class ModuleControllerImpl implements ModuleController {
 				public void run() {
 					// calls before() to do some work before everything is
 					// processed when set in customization property
-					before();
+					BeforeAfterAction action= new BeforeAfterAction(getPepperModule(), logger); 
+					action.before(getCorpusGraph());
 					getPepperModule().start();
 					if (getControllList().size() != 0) {
 						throw new PepperModuleException(getPepperModule(), "Some documents are still in the processing queue by module '" + getPepperModule().getName() + "' and neither set to '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.DELETED + "' or '" + DOCUMENT_STATUS.FAILED + "'. Remaining documents are: " + getControllList());
@@ -284,7 +286,7 @@ public class ModuleControllerImpl implements ModuleController {
 					mLogger.debug("[{}] completed processing of documents and corpora. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
 					// calls after() to do some work after everything was
 					// processed when set in customization property
-					after();
+					action.after(getCorpusGraph());
 				}
 			};
 
@@ -302,139 +304,139 @@ public class ModuleControllerImpl implements ModuleController {
 		}
 	}
 
-	/** {@inheritDoc PepperModule#before(Identifier)} */
-	private void before() throws PepperModuleException {
-		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH) != null) {
-			boolean isReport = Boolean.parseBoolean(getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
-			if (isReport && getCorpusGraph() != null) {
-				List<SNode> roots = getCorpusGraph().getRoots();
-				if (roots != null) {
-					StringBuilder str = new StringBuilder();
-					str.append("corpus structure imported by ");
-					str.append(getPepperModule().getName());
-					for (SNode root : roots) {
-						str.append(":\n");
-						str.append(getPepperModule().getSaltProject().getCorpusGraphs().indexOf(((SCorpus) root).getGraph()));
-						str.append("\n");
-						str.append(reportCorpusStructure(root, "", true));
-					}
-					logger.info(str.toString());
-				}
-			}
-		}
-	}
-
-	/** {@inheritDoc PepperModule#after(Identifier)} */
-	private void after() throws PepperModuleException {
-		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES) != null) {
-			// copies resources as files from source to target
-
-			String resString = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
-			copyResources(resString);
-		}
-	}
-
-	protected String reportCorpusStructure(SNode node, String prefix, boolean isTail) {
-		StringBuilder retStr = new StringBuilder();
-		retStr.append(prefix);
-		retStr.append(((isTail ? "└── " : "├── ") + node.getName()));
-		retStr.append("\n");
-		List<SRelation<SNode, SNode>> outRelations = getCorpusGraph().getOutRelations(node.getId());
-		int i = 0;
-		for (Relation out : outRelations) {
-			if (i < outRelations.size() - 1) {
-				retStr.append(prefix);
-				retStr.append(reportCorpusStructure((SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), false));
-			} else {
-				retStr.append(reportCorpusStructure((SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), true));
-			}
-			i++;
-		}
-		return (retStr.toString());
-	}
-
-	/**
-	 * Reads customization property
-	 * {@link PepperModuleProperties#PROP_AFTER_COPY_RES} and copies the listed
-	 * resources to the named target folder.
-	 */
-	protected void copyResources(String resString) {
-		if ((resString != null) && (!resString.isEmpty())) {
-			String[] resources = resString.split(";");
-			if (resources.length > 0) {
-				for (String resource : resources) {
-					resource = resource.trim();
-					String[] parts = resource.split("->");
-					if (parts.length == 2) {
-						String sourceStr = parts[0];
-						String targetStr = parts[1];
-						sourceStr = sourceStr.trim();
-						targetStr = targetStr.trim();
-
-						// check if source and target is given
-						boolean copyOk = true;
-						if ((sourceStr == null) || (sourceStr.isEmpty())) {
-							logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because no source file was given in property value '" + resource + "'. ");
-							copyOk = false;
-						}
-						if ((targetStr == null) || (targetStr.isEmpty())) {
-							logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because no target file was given in property value '" + resource + "'. ");
-							copyOk = false;
-						}
-						if (copyOk) {
-							File source = new File(sourceStr);
-							File target = new File(targetStr);
-
-							// in case of source or target aren't absolute
-							// resolve them against current Job's base directory
-							String baseDir = getJob().getBaseDir().toFileString();
-							if (!baseDir.endsWith("/")) {
-								baseDir = baseDir + "/";
-							}
-							if (!source.isAbsolute()) {
-								source = new File(baseDir + sourceStr);
-							}
-							if (!source.exists()) {
-								logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because source does not exist '" + source.getAbsolutePath() + "'. Check the property value '" + resource + "'. ");
-							} else {
-								// only copy if source exists
-
-								if (!target.isAbsolute()) {
-									target = new File(baseDir + targetStr);
-								}
-								if (!target.exists()) {
-									if (!target.mkdirs()){
-										logger.warn("Cannot create folder {}. ", target);
-									}
-								}
-								try {
-									if (source.isDirectory()) {
-										targetStr = target.getAbsolutePath();
-										if (!targetStr.endsWith("/")) {
-											targetStr = targetStr + "/";
-										}
-										target = new File(targetStr + source.getName());
-										FileUtils.copyDirectory(source, target);
-										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '" + target.getAbsolutePath() + "'.");
-									} else {
-										targetStr = target.getCanonicalPath();
-										if (!targetStr.endsWith("/")) {
-											targetStr = targetStr + "/";
-										}
-										target = new File(targetStr + source.getName());
-										FileUtils.copyFile(source, target);
-										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '" + target.getAbsolutePath() + "'.");
-									}
-								} catch (IOException e) {
-									logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because of '" + e.getMessage() + "'. Check the property value '" + resource + "'. ");
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+//	/** {@inheritDoc PepperModule#before(Identifier)} */
+//	private void before() throws PepperModuleException {
+//		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH) != null) {
+//			boolean isReport = Boolean.parseBoolean(getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
+//			if (isReport && getCorpusGraph() != null) {
+//				List<SNode> roots = getCorpusGraph().getRoots();
+//				if (roots != null) {
+//					StringBuilder str = new StringBuilder();
+//					str.append("corpus structure imported by ");
+//					str.append(getPepperModule().getName());
+//					for (SNode root : roots) {
+//						str.append(":\n");
+//						str.append(getPepperModule().getSaltProject().getCorpusGraphs().indexOf(((SCorpus) root).getGraph()));
+//						str.append("\n");
+//						str.append(reportCorpusStructure(root, "", true));
+//					}
+//					logger.info(str.toString());
+//				}
+//			}
+//		}
+//	}
+//
+//	/** {@inheritDoc PepperModule#after(Identifier)} */
+//	private void after() throws PepperModuleException {
+//		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES) != null) {
+//			// copies resources as files from source to target
+//
+//			String resString = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
+//			copyResources(resString);
+//		}
+//	}
+//
+//	protected String reportCorpusStructure(SNode node, String prefix, boolean isTail) {
+//		StringBuilder retStr = new StringBuilder();
+//		retStr.append(prefix);
+//		retStr.append(((isTail ? "└── " : "├── ") + node.getName()));
+//		retStr.append("\n");
+//		List<SRelation<SNode, SNode>> outRelations = getCorpusGraph().getOutRelations(node.getId());
+//		int i = 0;
+//		for (Relation out : outRelations) {
+//			if (i < outRelations.size() - 1) {
+//				retStr.append(prefix);
+//				retStr.append(reportCorpusStructure((SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), false));
+//			} else {
+//				retStr.append(reportCorpusStructure((SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), true));
+//			}
+//			i++;
+//		}
+//		return (retStr.toString());
+//	}
+//
+//	/**
+//	 * Reads customization property
+//	 * {@link PepperModuleProperties#PROP_AFTER_COPY_RES} and copies the listed
+//	 * resources to the named target folder.
+//	 */
+//	protected void copyResources(String resString) {
+//		if ((resString != null) && (!resString.isEmpty())) {
+//			String[] resources = resString.split(";");
+//			if (resources.length > 0) {
+//				for (String resource : resources) {
+//					resource = resource.trim();
+//					String[] parts = resource.split("->");
+//					if (parts.length == 2) {
+//						String sourceStr = parts[0];
+//						String targetStr = parts[1];
+//						sourceStr = sourceStr.trim();
+//						targetStr = targetStr.trim();
+//
+//						// check if source and target is given
+//						boolean copyOk = true;
+//						if ((sourceStr == null) || (sourceStr.isEmpty())) {
+//							logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because no source file was given in property value '" + resource + "'. ");
+//							copyOk = false;
+//						}
+//						if ((targetStr == null) || (targetStr.isEmpty())) {
+//							logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because no target file was given in property value '" + resource + "'. ");
+//							copyOk = false;
+//						}
+//						if (copyOk) {
+//							File source = new File(sourceStr);
+//							File target = new File(targetStr);
+//
+//							// in case of source or target aren't absolute
+//							// resolve them against current Job's base directory
+//							String baseDir = getJob().getBaseDir().toFileString();
+//							if (!baseDir.endsWith("/")) {
+//								baseDir = baseDir + "/";
+//							}
+//							if (!source.isAbsolute()) {
+//								source = new File(baseDir + sourceStr);
+//							}
+//							if (!source.exists()) {
+//								logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because source does not exist '" + source.getAbsolutePath() + "'. Check the property value '" + resource + "'. ");
+//							} else {
+//								// only copy if source exists
+//
+//								if (!target.isAbsolute()) {
+//									target = new File(baseDir + targetStr);
+//								}
+//								if (!target.exists()) {
+//									if (!target.mkdirs()){
+//										logger.warn("Cannot create folder {}. ", target);
+//									}
+//								}
+//								try {
+//									if (source.isDirectory()) {
+//										targetStr = target.getAbsolutePath();
+//										if (!targetStr.endsWith("/")) {
+//											targetStr = targetStr + "/";
+//										}
+//										target = new File(targetStr + source.getName());
+//										FileUtils.copyDirectory(source, target);
+//										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '" + target.getAbsolutePath() + "'.");
+//									} else {
+//										targetStr = target.getCanonicalPath();
+//										if (!targetStr.endsWith("/")) {
+//											targetStr = targetStr + "/";
+//										}
+//										target = new File(targetStr + source.getName());
+//										FileUtils.copyFile(source, target);
+//										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '" + target.getAbsolutePath() + "'.");
+//									}
+//								} catch (IOException e) {
+//									logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because of '" + e.getMessage() + "'. Check the property value '" + resource + "'. ");
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * A lock determining, whether this object currently is busy with importing

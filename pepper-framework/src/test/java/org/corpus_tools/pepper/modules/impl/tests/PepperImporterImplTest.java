@@ -292,15 +292,15 @@ public class PepperImporterImplTest {
 			throw new PepperTestException("Cannot create folder '"+doc21+"'. ");
 		}
 		File doc22= new File(corp2 + "/doc2");
-		if (!doc22.exists() && !doc21.mkdirs()){
+		if (!doc22.exists() && !doc22.mkdirs()){
 			throw new PepperTestException("Cannot create folder '"+doc22+"'. ");
 		}
 		File doc31= new File(corp3 + "/doc1");
-		if (!doc31.exists() && !doc21.mkdirs()){
+		if (!doc31.exists() && !doc31.mkdirs()){
 			throw new PepperTestException("Cannot create folder '"+doc31+"'. ");
 		}
 		File doc32= new File(corp3 + "/doc2");
-		if (!doc32.exists() && !doc21.mkdirs()){
+		if (!doc32.exists() && !doc32.mkdirs()){
 			throw new PepperTestException("Cannot create folder '"+doc32+"'. ");
 		}
 		getFixture().getDocumentEndings().add(PepperImporter.ENDING_LEAF_FOLDER);
