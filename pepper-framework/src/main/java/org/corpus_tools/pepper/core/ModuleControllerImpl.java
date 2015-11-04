@@ -27,7 +27,7 @@ import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.exceptions.PepperInActionException;
-import org.corpus_tools.pepper.modules.BeforeAfterAction;
+import org.corpus_tools.pepper.impl.BeforeAfterAction;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.ModuleController;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -267,7 +267,7 @@ public class ModuleControllerImpl implements ModuleController {
 				public void run() {
 					// calls before() to do some work before everything is
 					// processed when set in customization property
-					BeforeAfterAction action= new BeforeAfterAction(getPepperModule(), logger); 
+					BeforeAfterAction action= new BeforeAfterAction(getPepperModule()); 
 					action.before(getCorpusGraph());
 					getPepperModule().start();
 					if (getControllList().size() != 0) {

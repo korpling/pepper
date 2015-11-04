@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.modules;
+package org.corpus_tools.pepper.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,8 +28,10 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Triple;
-import org.corpus_tools.pepper.core.ModuleControllerImpl;
-import org.corpus_tools.pepper.impl.PepperModuleImpl;
+import org.corpus_tools.pepper.modules.PepperImporter;
+import org.corpus_tools.pepper.modules.PepperMapper;
+import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
@@ -57,13 +59,13 @@ import org.slf4j.LoggerFactory;
  * the mapping of an entire corpus structure.
  * </p>
  * <p>
- * This could be helpful, for instance to make some processing after the mapping e.g. adding all
- * created nodes and relations to a layer. To trigger an action 
- * for a specific Pepper module a set of customization properties is
- * available. Customization properties triggering a post processing starts
- * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. Such an action could be the enhancement
- * of a corpus with metadata (following the property file syntax) to enhance
- * corpora in formats, which do not support metadata, see
+ * This could be helpful, for instance to make some processing after the mapping
+ * e.g. adding all created nodes and relations to a layer. To trigger an action
+ * for a specific Pepper module a set of customization properties is available.
+ * Customization properties triggering a post processing starts with
+ * {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. Such an action could be
+ * the enhancement of a corpus with metadata (following the property file
+ * syntax) to enhance corpora in formats, which do not support metadata, see
  * {@link #readMeta(Identifier)}. Or the printing of a corpus structure, see
  * {@link #reportCorpusStructure(SNode, String, boolean)}.
  * </p>
@@ -84,7 +86,7 @@ import org.slf4j.LoggerFactory;
  * <li>before
  * <ul>
  * <li>{@link #addSLayers(SDocument, String)}</li>
- * <li>{@link #readMeta(Identifier)</li>
+ * <li>{@link #readMeta(Identifier)}</li>
  * </ul>
  * </li>
  * <li>after
@@ -108,10 +110,11 @@ import org.slf4j.LoggerFactory;
  * </li>
  * </ul>
  * </li>
+ * </ul>
  * </p>
  * 
- * 
  * @author florian
+ * @since 3.0.0
  *
  */
 public class BeforeAfterAction {
@@ -121,34 +124,25 @@ public class BeforeAfterAction {
 	 * sets the internal {@link PepperModule} which does the action, and the
 	 * internal {@link SCorpusGraph} on which the action should be performed.
 	 **/
-	public BeforeAfterAction(PepperModule pepperModule, Logger logger) {
-		this.pepperModule = pepperModule;
-		this.logger= logger;
-	}
-
-	/**
-	 * Initializes this object and in case an action should be performed, it
-	 * sets the internal {@link PepperModule} which does the action, and the
-	 * internal {@link SCorpusGraph} on which the action should be performed.
-	 **/
 	public BeforeAfterAction(PepperModule pepperModule) {
 		this.pepperModule = pepperModule;
+		logger = LoggerFactory.getLogger(getPepperModule().getName());
 	}
-	
+
 	private PepperModule pepperModule;
 
 	public PepperModule getPepperModule() {
 		return pepperModule;
 	}
-	
-	private Logger logger= LoggerFactory.getLogger("Pepper");
+
+	private Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/**
-	 * Invokes an actions, after the mapping of an entire corpus structure was done.
-	 * Customization properties triggering a pre processing starts
-	 * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
-	 * called before invocation of
-	 * {@link PepperModule#start()}.
+	 * Invokes an actions, after the mapping of an entire corpus structure was
+	 * done. Customization properties triggering a pre processing starts with
+	 * {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
+	 * called before invocation of {@link PepperModule#start()}.
+	 * 
 	 * @throws PepperModuleException
 	 */
 	public void before(SCorpusGraph corpusGraph) throws PepperModuleException {
@@ -173,11 +167,11 @@ public class BeforeAfterAction {
 	}
 
 	/**
-	 * Invokes an actions, after the mapping of an entire corpus structure was done.
-	 * Customization properties triggering a post processing starts
-	 * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
-	 * called after invocation of
-	 * {@link {@link PepperModule#start()}}.
+	 * Invokes an actions, after the mapping of an entire corpus structure was
+	 * done. Customization properties triggering a post processing starts with
+	 * {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
+	 * called after invocation of {@link {@link PepperModule#start()} .
+	 * 
 	 * @throws PepperModuleException
 	 */
 	public void after(SCorpusGraph corpusGraph) throws PepperModuleException {
@@ -191,8 +185,11 @@ public class BeforeAfterAction {
 
 	/**
 	 * Returns the corpus structure as an ascii tree.
-	 * @param corpusGraph the corpus structure to be printed
-	 * @param node root node to start from
+	 * 
+	 * @param corpusGraph
+	 *            the corpus structure to be printed
+	 * @param node
+	 *            root node to start from
 	 * @param prefix
 	 * @param isTail
 	 * @return
@@ -300,11 +297,11 @@ public class BeforeAfterAction {
 	}
 
 	/**
-	 * Invokes actions, before the mapping of a corpus or document was
-	 * started. This could be helpful, for instance to make some preparations
-	 * for the mapping. To trigger this pre processing for a specific Pepper
-	 * module a set of customization properties is available. Customization
-	 * properties triggering a pre processing starts with
+	 * Invokes actions, before the mapping of a corpus or document was started.
+	 * This could be helpful, for instance to make some preparations for the
+	 * mapping. To trigger this pre processing for a specific Pepper module a
+	 * set of customization properties is available. Customization properties
+	 * triggering a pre processing starts with
 	 * {@value PepperModuleProperties#PREFIX_PEPPER_BEFORE}. This method is
 	 * called by the method {@link #map()}, before
 	 * {@link PepperMapper#mapSDocument()} was called.
@@ -339,12 +336,13 @@ public class BeforeAfterAction {
 	}
 
 	/**
-	 * Invokes actions, after the mapping of a corpus or document is done. This could be helpful,
-	 * for instance to make some processing after the mapping e.g. adding all
-	 * created nodes and relations to a layer. To trigger this post processing
-	 * for a specific Pepper module a set of customization properties is
-	 * available. Customization properties triggering a post processing starts
-	 * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
+	 * Invokes actions, after the mapping of a corpus or document is done. This
+	 * could be helpful, for instance to make some processing after the mapping
+	 * e.g. adding all created nodes and relations to a layer. To trigger this
+	 * post processing for a specific Pepper module a set of customization
+	 * properties is available. Customization properties triggering a post
+	 * processing starts with
+	 * {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method is
 	 * called by the method {@link #map()}, after
 	 * {@link PepperMapper#mapSDocument()} was called.
 	 * 
@@ -364,9 +362,9 @@ public class BeforeAfterAction {
 						addSLayers(sDoc, layers);
 					}
 				}
-				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue()!= null){
-					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument)id.getIdentifiableElement()).getDocumentGraph()!= null){
-					renameAnnotations(id);
+				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue() != null) {
+					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
+						renameAnnotations(id);
 					}
 				}
 			}
@@ -481,53 +479,62 @@ public class BeforeAfterAction {
 			}
 		}
 	}
-	
+
 	/**
-	 * Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: "old_namespace::old_name=old_value := new_namespace::new_name=new_value", determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: "salt::pos:=part-of-speech". A list of renamings must be separated with ";".
+	 * Renames all annotations matching the search template to the new
+	 * namespace, name or value. To rename an annotation, use the following
+	 * syntax:
+	 * "old_namespace::old_name=old_value := new_namespace::new_name=new_value",
+	 * determining the name is mandatory whereas the namespace and value are
+	 * optional. For instance a pos annotation can be renamed as follows:
+	 * "salt::pos:=part-of-speech". A list of renamings must be separated with
+	 * ";".
+	 * 
 	 * @param id
 	 *            identifying the current object
 	 */
 	public void renameAnnotations(Identifier id) {
-		if (id != null && id.getIdentifiableElement()!= null){
-			try{
-				String str= (String)getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue();
-				Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap= new Hashtable<>();
+		if (id != null && id.getIdentifiableElement() != null) {
+			try {
+				String str = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue();
+				Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap = new Hashtable<>();
 				// split all single renaming strings
-				String[] renamings= str.split(";");
-				for (String renaming: renamings){
-					String[] parts= renaming.split(":=");
+				String[] renamings = str.split(";");
+				for (String renaming : renamings) {
+					String[] parts = renaming.split(":=");
 					renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), SaltUtil.unmarshalAnnotation(parts[1]).iterator().next());
 				}
-				SDocument document= (SDocument) id.getIdentifiableElement();
-				
+				SDocument document = (SDocument) id.getIdentifiableElement();
+
 				// rename all annotations of nodes
-				Iterator<SAnnotationContainer> it= (Iterator<SAnnotationContainer>)(Iterator<? extends SAnnotationContainer>)document.getDocumentGraph().getNodes().iterator();
+				Iterator<SAnnotationContainer> it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getNodes().iterator();
 				rename(it, renamingMap);
-				
+
 				// rename all annotations of relations
-				it= (Iterator<SAnnotationContainer>)(Iterator<? extends SAnnotationContainer>)document.getDocumentGraph().getRelations().iterator();
+				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getRelations().iterator();
 				rename(it, renamingMap);
-			}catch(RuntimeException e){
+			} catch (RuntimeException e) {
 				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id, e.getMessage());
 			}
 		}
 	}
-	
-	private void rename(Iterator<SAnnotationContainer> it, Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap){
-		while(it.hasNext()){
-			SAnnotationContainer node= it.next();
-			for (Map.Entry<Triple<String, String, String>, Triple<String, String, String>> entry: renamingMap.entrySet()){
-				Label label= node.getLabel(entry.getKey().getLeft(), entry.getKey().getMiddle());
-				if (label!= null){
-					if (label.getQName().equals(SaltUtil.createQName(entry.getValue().getLeft(), entry.getValue().getMiddle()))){
+
+	private void rename(Iterator<SAnnotationContainer> it, Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap) {
+		while (it.hasNext()) {
+			SAnnotationContainer node = it.next();
+			for (Map.Entry<Triple<String, String, String>, Triple<String, String, String>> entry : renamingMap.entrySet()) {
+				Label label = node.getLabel(entry.getKey().getLeft(), entry.getKey().getMiddle());
+				if (label != null) {
+					if (label.getQName().equals(SaltUtil.createQName(entry.getValue().getLeft(), entry.getValue().getMiddle()))) {
 						// if only value is different
 						label.setValue(entry.getValue().getRight());
-					}else{
-						// namespace or name are different --> remove label and create a new one
+					} else {
+						// namespace or name are different --> remove label and
+						// create a new one
 						node.removeLabel(label.getQName());
-						if (label instanceof SAnnotation){
+						if (label instanceof SAnnotation) {
 							node.createAnnotation(entry.getValue().getLeft(), entry.getValue().getMiddle(), entry.getValue().getRight());
-						}else if (label instanceof SMetaAnnotation){
+						} else if (label instanceof SMetaAnnotation) {
 							node.createMetaAnnotation(entry.getValue().getLeft(), entry.getValue().getMiddle(), entry.getValue().getRight());
 						}
 					}

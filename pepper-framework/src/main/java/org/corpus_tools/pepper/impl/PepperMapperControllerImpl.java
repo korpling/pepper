@@ -23,7 +23,6 @@ import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.exceptions.NotInitializedException;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
-import org.corpus_tools.pepper.modules.BeforeAfterAction;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.MappingSubject;
 import org.corpus_tools.pepper.modules.PepperMapper;
@@ -235,14 +234,14 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			// real document mapping
 			// preprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
-				new BeforeAfterAction(getPepperModule(), logger).before(subj.getIdentifier());
+				new BeforeAfterAction(getPepperModule()).before(subj.getIdentifier());
 //				getPepperModule().before(subj.getIdentifier());
 			}
 			// real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
 			// postprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
-				new BeforeAfterAction(getPepperModule(), logger).after(subj.getIdentifier());
+				new BeforeAfterAction(getPepperModule()).after(subj.getIdentifier());
 //				getPepperModule().after(subj.getIdentifier());
 			}
 
