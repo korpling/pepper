@@ -19,9 +19,9 @@ package org.corpus_tools.pepper.modules;
 
 import java.io.File;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import org.corpus_tools.pepper.service.adapters.PepperModulePropertyMarshallable;
+import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
+import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
 
 /**
  * The class {@link PepperModuleProperty} offers a possibility to describe a
@@ -39,8 +39,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Florian Zipser
  * 
  */
-@XmlRootElement
-public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>> {
+public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>, PepperServiceReady {
 
 	/**
 	 * Creates a {@link PepperModuleProperty} instance and sets its values to
@@ -55,10 +54,6 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 		this.name = name;
 		this.clazz = clazz;
 		this.description = description;
-	}
-	
-	public PepperModuleProperty(){
-		
 	}
 
 	/**
@@ -115,6 +110,21 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 		this(name, clazz, description, required);
 		this.value = defaultValue;
 	}
+	
+
+
+	@Override
+	public PepperModulePropertyMarshallable createMarshallableInstance() {
+		PepperModulePropertyMarshallable<T> retVal = new PepperModulePropertyMarshallable<T>();
+
+		retVal.setName(name);
+		retVal.setType(clazz);
+		retVal.setDescription(description);
+		retVal.setRequired(required);
+		retVal.setValue(value);
+		
+		return retVal;		
+	}
 
 	/**
 	 * The unique name of the property. This name also serves as an identifier.
@@ -130,7 +140,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	public String getName() {
 		return name;
 	}
-	@XmlElement
+
 	public void setType(Class<T> type) {
 		this.clazz = type;
 	}
@@ -172,7 +182,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	}
 
 	/**
-	 * Determines if a property is required or optional. The dafault case is
+	 * Determines if a property is required or optional. The default case is
 	 * optional.
 	 */
 	private boolean required = false;
@@ -189,7 +199,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 * Value of this property
 	 */
 	T value = null;
-	@XmlElement
+	
 	public void setValue(T value) {
 		this.value = value;
 	}

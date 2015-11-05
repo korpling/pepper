@@ -171,13 +171,21 @@
 			<version>${carrot-osgi-anno-scr-make.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- end: OSGi declaractive services -->
+		<!-- begin: dependencies for pepper service models -->
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
 			<version>2.6.1</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- end: OSGi declaractive services -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId><!-- this dependency will maybe be removed later, it's here for testing if a newer jaxb works better than the incorporated-->
+			<artifactId>jaxb-api-osgi</artifactId>
+			<version>2.2.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- end: dependencies for pepper service models -->
 	</dependencies>
 	<organization>
 		<name>Humboldt-Universität zu Berlin, INRIA</name>
