@@ -497,7 +497,7 @@ public class BeforeAfterAction {
 		if (id != null && id.getIdentifiableElement() != null) {
 			try {
 				String str = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue();
-				Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap = new Hashtable<>();
+				Map<String[], String[]> renamingMap = new Hashtable<>();
 				// split all single renaming strings
 				String[] renamings = str.split(";");
 				for (String renaming : renamings) {
@@ -519,23 +519,23 @@ public class BeforeAfterAction {
 		}
 	}
 
-	private void rename(Iterator<SAnnotationContainer> it, Map<Triple<String, String, String>, Triple<String, String, String>> renamingMap) {
+	private void rename(Iterator<SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
 		while (it.hasNext()) {
 			SAnnotationContainer node = it.next();
-			for (Map.Entry<Triple<String, String, String>, Triple<String, String, String>> entry : renamingMap.entrySet()) {
-				Label label = node.getLabel(entry.getKey().getLeft(), entry.getKey().getMiddle());
+			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {
+				Label label = node.getLabel(entry.getKey()[0], entry.getKey()[1]);
 				if (label != null) {
-					if (label.getQName().equals(SaltUtil.createQName(entry.getValue().getLeft(), entry.getValue().getMiddle()))) {
+					if (label.getQName().equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
 						// if only value is different
-						label.setValue(entry.getValue().getRight());
+						label.setValue(entry.getValue()[2]);
 					} else {
 						// namespace or name are different --> remove label and
 						// create a new one
 						node.removeLabel(label.getQName());
 						if (label instanceof SAnnotation) {
-							node.createAnnotation(entry.getValue().getLeft(), entry.getValue().getMiddle(), entry.getValue().getRight());
+							node.createAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
 						} else if (label instanceof SMetaAnnotation) {
-							node.createMetaAnnotation(entry.getValue().getLeft(), entry.getValue().getMiddle(), entry.getValue().getRight());
+							node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
 						}
 					}
 				}

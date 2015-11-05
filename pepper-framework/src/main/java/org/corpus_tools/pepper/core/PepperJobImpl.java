@@ -46,7 +46,9 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.MEMORY_POLICY;
@@ -119,7 +121,6 @@ public class PepperJobImpl extends PepperJob {
 		}
 		id = jobId;
 		setSaltProject(SaltFactory.createSaltProject());
-
 	}
 
 	/** The {@link SaltProject} which is converted by this job. **/
@@ -873,6 +874,7 @@ public class PepperJobImpl extends PepperJob {
 		if (!inProgress.tryLock()) {
 			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
 		}
+
 		inProgress.lock();
 		try {
 			startTime = System.currentTimeMillis();
