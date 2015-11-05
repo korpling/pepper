@@ -26,6 +26,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
+import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
+import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -36,7 +39,7 @@ import org.eclipse.emf.common.util.URI;
  *
  */
 @XmlRootElement
-public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
+public class PepperModuleDesc implements Comparable<PepperModuleDesc>, PepperServiceReady {
 
 	/** name of the Pepper module **/
 	private String name = null;
@@ -294,6 +297,19 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 		if (retVal == 0) {
 			retVal = getName().compareTo(o.getName());
 		}
+		return retVal;
+	}
+
+	@Override
+	public PepperMarshallable<?> createMarshallableInstance() {
+		PepperModuleDescMarshallable retVal = new PepperModuleDescMarshallable();
+		retVal.setDesc(desc);
+		retVal.setHomepageURI(hp.toString());
+		retVal.setModuleType(moduleType);
+		retVal.setName(name);
+		retVal.setProperties(properties.createMarshallableInstance());
+		retVal.setSupplierContactURI(supplierContact.toString());
+		retVal.setVersion(version);
 		return retVal;
 	}
 }

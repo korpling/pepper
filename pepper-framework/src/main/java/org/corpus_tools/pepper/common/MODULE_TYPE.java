@@ -17,6 +17,8 @@
  */
 package org.corpus_tools.pepper.common;
 
+import javax.xml.bind.annotation.XmlEnum;
+
 /**
  * Names of types of {@link org.corpus_tools.pepper.modules.PepperModule}:
  * <ul>
@@ -28,6 +30,7 @@ package org.corpus_tools.pepper.common;
  * {@link org.corpus_tools.pepper.modules.PepperExporter}</li>
  * </ul>
  **/
+@XmlEnum
 public enum MODULE_TYPE {
 	IMPORTER, MANIPULATOR, EXPORTER
 };

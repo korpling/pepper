@@ -17,6 +17,9 @@
  */
 package org.corpus_tools.pepper.common;
 
+import org.corpus_tools.pepper.service.adapters.FormatDescMarshallable;
+import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
+import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -35,7 +38,7 @@ import org.eclipse.emf.common.util.URI;
  * 
  * @author Florian Zipser
  */
-public class FormatDesc {
+public class FormatDesc implements PepperServiceReady{
 
 	/**
 	 * Initilizes an object.
@@ -164,5 +167,14 @@ public class FormatDesc {
 		result.append(formatReference);
 		result.append(')');
 		return result.toString();
+	}
+
+	@Override
+	public PepperMarshallable<?> createMarshallableInstance() {
+		FormatDescMarshallable retVal = new FormatDescMarshallable();
+		retVal.setFormatName(formatName);
+		retVal.setFormatReferenceURI(formatReference.toString());
+		retVal.setFormatVersion(formatVersion);
+		return retVal;
 	}
 }

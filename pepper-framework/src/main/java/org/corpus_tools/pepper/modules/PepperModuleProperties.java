@@ -398,7 +398,7 @@ public class PepperModuleProperties implements PepperServiceReady, Serializable 
 	}
 
 	@Override
-	public PepperMarshallable<PepperModuleProperties> createMarshallableInstance() {
+	public PepperModulePropertiesMarshallable createMarshallableInstance() {
 		PepperModulePropertiesMarshallable retVal = new PepperModulePropertiesMarshallable();
 		for (String p : this.getPropertyNames()){
 			retVal.addProperty(((PepperModuleProperty)this.getProperty(p)).createMarshallableInstance());
