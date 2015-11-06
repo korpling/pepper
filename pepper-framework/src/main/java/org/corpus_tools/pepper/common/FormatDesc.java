@@ -170,7 +170,7 @@ public class FormatDesc implements PepperServiceReady{
 	}
 
 	@Override
-	public PepperMarshallable<?> createMarshallableInstance() {
+	public FormatDescMarshallable createMarshallableInstance() {
 		FormatDescMarshallable retVal = new FormatDescMarshallable();
 		retVal.setFormatName(formatName);
 		retVal.setFormatReferenceURI(formatReference.toString());

@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.common;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -26,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.service.adapters.FormatDescMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
+import org.corpus_tools.pepper.service.adapters.PepperModulePropertyMarshallable;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
 import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
 import org.eclipse.emf.common.util.URI;
@@ -304,10 +307,16 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc>, PepperSer
 	public PepperMarshallable<?> createMarshallableInstance() {
 		PepperModuleDescMarshallable retVal = new PepperModuleDescMarshallable();
 		retVal.setDesc(desc);
+		List<FormatDescMarshallable> sFormats = retVal.getSupportedFormats();
+		for (FormatDesc format : getSupportedFormats()){
+			sFormats.add(format.createMarshallableInstance());
+		}
 		retVal.setHomepageURI(hp.toString());
 		retVal.setModuleType(moduleType);
 		retVal.setName(name);
-		retVal.setProperties(properties.createMarshallableInstance());
+		for(String pname : this.getProperties().getPropertyNames()){
+			retVal.getProperties().add(getProperties().getProperty(pname).createMarshallableInstance());			
+		}		
 		retVal.setSupplierContactURI(supplierContact.toString());
 		retVal.setVersion(version);
 		return retVal;

@@ -114,7 +114,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 
 
 	@Override
-	public PepperModulePropertyMarshallable createMarshallableInstance() {
+	public PepperModulePropertyMarshallable<T> createMarshallableInstance() {
 		PepperModulePropertyMarshallable<T> retVal = new PepperModulePropertyMarshallable<T>();
 
 		retVal.setName(name);

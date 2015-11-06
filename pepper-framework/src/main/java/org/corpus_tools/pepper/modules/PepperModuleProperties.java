@@ -36,10 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
-import org.corpus_tools.pepper.service.adapters.PepperModulePropertiesMarshallable;
-import org.corpus_tools.pepper.service.adapters.PepperModulePropertyMarshallable;
-import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
-import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
 import org.corpus_tools.salt.common.SDocumentGraph;
 import org.corpus_tools.salt.core.SLayer;
 import org.corpus_tools.salt.core.SNode;
@@ -56,7 +52,7 @@ import org.osgi.service.component.annotations.Property;
  * 
  */
 @XmlRootElement
-public class PepperModuleProperties implements PepperServiceReady, Serializable {
+public class PepperModuleProperties implements Serializable {
 	/**
 	 * 
 	 */
@@ -395,14 +391,5 @@ public class PepperModuleProperties implements PepperServiceReady, Serializable 
 		}
 		buf.append("]");
 		return (buf.toString());
-	}
-
-	@Override
-	public PepperModulePropertiesMarshallable createMarshallableInstance() {
-		PepperModulePropertiesMarshallable retVal = new PepperModulePropertiesMarshallable();
-		for (String p : this.getPropertyNames()){
-			retVal.addProperty(((PepperModuleProperty)this.getProperty(p)).createMarshallableInstance());
-		}
-		return retVal;
 	}
 }
