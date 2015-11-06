@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>pepper-lib</artifactId>
 	<packaging>jar</packaging>
@@ -10,12 +11,12 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<repositories>
-        <repository>       
-            <id>Jabylon</id>
-            <name>Jabylon</name>
-            <url>http://www.jabylon.org/maven/</url>
-        </repository>
-    </repositories>
+		<repository>
+			<id>Jabylon</id>
+			<name>Jabylon</name>
+			<url>http://www.jabylon.org/maven/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.corpus-tools</groupId>
@@ -126,20 +127,49 @@
 			<version>1.4.101</version>
 		</dependency>
 		<dependency>
-			<!-- Necessary to run Salt upto version 2.10.1 (unfortunatly version from 2.10.1 produce a class incompatibility error) -->
+			<!-- Necessary to run Salt upto version 2.10.1 (unfortunatly version from 
+				2.10.1 produce a class incompatibility error) -->
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>runtime</artifactId>
 			<version>3.10.0-v20140318-2214</version>
 		</dependency>
 	</dependencies>
 	<build>
-	<resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
+			<!-- copies readme.txt and version.txt from resource folder and substitutes maven variables with values-->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/</directory>
+									<includes>
+										<include>version.txt</include>
+										<include>readme.txt</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<!-- a plugin to clean the project when calling mvn clean -->
 				<artifactId>maven-clean-plugin</artifactId>
@@ -152,13 +182,18 @@
 							<includes>
 								<include>plugins/**</include>
 								<include>lib/**</include>
-                                <include>conf/dep/**</include>
+								<include>conf/dep/**</include>
 							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				<version>1.8</version> <executions> <execution> <phase>process-resources</phase> 
+				<configuration> <tasks> <copy file="${project.build.outputDirectory}/version.txt" 
+				toFile="${basedir}" overwrite="true" /> </tasks> </configuration> <goals> 
+				<goal>run</goal> </goals> </execution> </executions> </plugin> -->
 			<plugin>
 				<!-- The aim of this assambly is to create a /plugin and /lib folder 
 					containing all dependencies which are necessary to start Pepper in pepper-lib. -->

@@ -50,6 +50,9 @@
 	</distributionManagement>
 
 	<properties>
+		<pepper.mail>saltnpepper@lists.hu-berlin.de</pepper.mail>
+		<pepper.hp>http://corpus-tools.org/pepper/</pepper.hp>
+		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
