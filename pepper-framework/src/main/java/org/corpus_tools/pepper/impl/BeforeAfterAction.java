@@ -20,7 +20,7 @@ package org.corpus_tools.pepper.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -367,6 +367,13 @@ public class BeforeAfterAction {
 						renameAnnotations(id);
 					}
 				}
+				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue() != null) {
+					//remove is also done by rename
+					
+					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
+						renameAnnotations(id);
+					}
+				}
 			}
 		}
 	}
@@ -497,13 +504,18 @@ public class BeforeAfterAction {
 		if (id != null && id.getIdentifiableElement() != null) {
 			try {
 				String str = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue();
-				Map<String[], String[]> renamingMap = new Hashtable<>();
+				Map<String[], String[]> renamingMap = new HashMap<>();
 				// split all single renaming strings
 				String[] renamings = str.split(";");
 				for (String renaming : renamings) {
 					String[] parts = renaming.split(":=");
-					renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), SaltUtil.unmarshalAnnotation(parts[1]).iterator().next());
+					if (parts.length == 2) {
+						renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), SaltUtil.unmarshalAnnotation(parts[1]).iterator().next());
+					} else if (parts.length == 1) {
+						renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), null);
+					}
 				}
+				
 				SDocument document = (SDocument) id.getIdentifiableElement();
 
 				// rename all annotations of nodes
@@ -514,6 +526,7 @@ public class BeforeAfterAction {
 				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getRelations().iterator();
 				rename(it, renamingMap);
 			} catch (RuntimeException e) {
+				e.printStackTrace();
 				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id, e.getMessage());
 			}
 		}
@@ -525,7 +538,11 @@ public class BeforeAfterAction {
 			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {
 				Label label = node.getLabel(entry.getKey()[0], entry.getKey()[1]);
 				if (label != null) {
-					if (label.getQName().equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
+					if (entry.getValue()== null){
+						//remove label
+						node.removeLabel(label.getQName());
+					}
+					else if (label.getQName().equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
 						// if only value is different
 						label.setValue(entry.getValue()[2]);
 					} else {

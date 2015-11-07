@@ -262,4 +262,50 @@ public class BeforeAfterTest {
 		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName("salt", "pos")).getValue());
 		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName(null, "pos")).getValue());
 	}
+	
+	/**
+	 * Tests the renaming of annotations by property
+	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
+	 * changing of multiple annotations.
+	 */
+	@Test
+	public void test_PropRenameAnnotation_remove() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = doc.getDocumentGraph().createTextualDS("A test");
+		SToken tok1 = doc.getDocumentGraph().createToken(text, 0, 1);
+		tok1.createAnnotation(null, "pos", "NN");
+		tok1.createAnnotation("salt", "pos", "VVFIN");
+		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos; pos=NN");
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().renameAnnotations(doc.getIdentifier());
+
+		assertEquals(0, tok1.getAnnotations().size());
+	}
+	
+	/**
+	 * Tests the renaming of annotations by property
+	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
+	 * changing of multiple annotations.
+	 */
+	@Test
+	public void test_PropRemoveAnnotation() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = doc.getDocumentGraph().createTextualDS("A test");
+		SToken tok1 = doc.getDocumentGraph().createToken(text, 0, 1);
+		tok1.createAnnotation(null, "pos", "NN");
+		tok1.createAnnotation("salt", "pos", "VVFIN");
+		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos; pos=NN");
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().renameAnnotations(doc.getIdentifier());
+
+		assertEquals(0, tok1.getAnnotations().size());
+	}
 }
