@@ -533,9 +533,21 @@ public class BeforeAfterAction {
 						// create a new one
 						node.removeLabel(label.getQName());
 						if (label instanceof SAnnotation) {
-							node.createAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
+							if (entry.getValue()[2] == null) {
+								//copy annotation value
+								node.createAnnotation(entry.getValue()[0], entry.getValue()[1], label.getValue());
+							} else {
+								//use new annotation value
+								node.createAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
+							}
 						} else if (label instanceof SMetaAnnotation) {
-							node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
+							if (entry.getValue()[2] == null) {
+								//copy annotation value
+								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], label.getValue());
+							} else {
+								//use new annotation value
+								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
+							}
 						}
 					}
 				}
