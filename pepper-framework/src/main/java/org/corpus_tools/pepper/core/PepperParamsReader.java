@@ -140,7 +140,7 @@ public class PepperParamsReader extends DefaultHandler2 {
 			if (attributes.getValue(ATT_SPECIAL_PARAMS) != null) {
 				File propFile = resolveFile(attributes.getValue(ATT_SPECIAL_PARAMS));
 				Properties props = new Properties();
-				try(FileInputStream str= new FileInputStream(propFile)) {
+				try (FileInputStream str = new FileInputStream(propFile)) {
 					props.load(str);
 				} catch (FileNotFoundException e) {
 					throw new PepperModulePropertyException("Cannot load property file.", e);

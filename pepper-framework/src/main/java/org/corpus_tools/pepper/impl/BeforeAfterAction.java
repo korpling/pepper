@@ -534,18 +534,18 @@ public class BeforeAfterAction {
 						node.removeLabel(label.getQName());
 						if (label instanceof SAnnotation) {
 							if (entry.getValue()[2] == null) {
-								//copy annotation value
+								// copy annotation value
 								node.createAnnotation(entry.getValue()[0], entry.getValue()[1], label.getValue());
 							} else {
-								//use new annotation value
+								// use new annotation value
 								node.createAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
 							}
 						} else if (label instanceof SMetaAnnotation) {
 							if (entry.getValue()[2] == null) {
-								//copy annotation value
+								// copy annotation value
 								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], label.getValue());
 							} else {
-								//use new annotation value
+								// use new annotation value
 								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
 							}
 						}

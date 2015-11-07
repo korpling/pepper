@@ -107,11 +107,11 @@ public class ModuleResolverImpl implements ModuleResolver {
 		{// print out all importers
 			List<PepperImporter> importers = getPepperImporters();
 			Integer numOfFactories = 0;
-			if (this.getPepperImporterComponentFactories() != null){
+			if (this.getPepperImporterComponentFactories() != null) {
 				numOfFactories = this.getPepperImporterComponentFactories().size();
 			}
 			Integer numOfImporters = 0;
-			if (importers != null){
+			if (importers != null) {
 				numOfImporters = importers.size();
 			}
 			infoString.append("=========================================================== \n");
@@ -124,7 +124,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 					infoString.append(importer.getName());
 					infoString.append("\n");
 					if (importer.getSupportedFormats() != null) {
-						for (FormatDesc formatDef : importer.getSupportedFormats()){
+						for (FormatDesc formatDef : importer.getSupportedFormats()) {
 							infoString.append("\t\t");
 							infoString.append(formatDef.getFormatName());
 							infoString.append(", ");
@@ -133,18 +133,18 @@ public class ModuleResolverImpl implements ModuleResolver {
 						}
 					}
 				}
-			} else{
+			} else {
 				infoString.append("\tno importers registered...\n");
 			}
 		}
 		{// print out all manipulators
 			List<PepperManipulator> manipulators = this.getPepperManipulators();
 			Integer numOfFactories = 0;
-			if (this.getPepperManipulatorComponentFactories() != null){
+			if (this.getPepperManipulatorComponentFactories() != null) {
 				numOfFactories = this.getPepperManipulatorComponentFactories().size();
 			}
 			Integer numOfManipulators = 0;
-			if (manipulators != null){
+			if (manipulators != null) {
 				numOfManipulators = manipulators.size();
 			}
 			infoString.append("=========================================================== \n");
@@ -159,7 +159,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 					infoString.append(manipulator.getName());
 					infoString.append("\n");
 				}
-			} else{
+			} else {
 				infoString.append("\tno manipulators registered...\n");
 			}
 		}
@@ -184,7 +184,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 					infoString.append(exporter.getName());
 					infoString.append("\n");
 					if (exporter.getSupportedFormats() != null) {
-						for (FormatDesc formatDef : exporter.getSupportedFormats()){
+						for (FormatDesc formatDef : exporter.getSupportedFormats()) {
 							infoString.append("\t\t");
 							infoString.append(formatDef.getFormatName());
 							infoString.append(", ");
@@ -193,7 +193,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 						}
 					}
 				}
-			} else{
+			} else {
 				infoString.append("\tno exporters registered...\n");
 			}
 			infoString.append("=========================================================== \n");
@@ -402,7 +402,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 
 			if (!resourcePathFile.exists()) {
 				logger.warn("Resource folder '" + resourcePathFile.getAbsolutePath() + "' for pepper module '" + module.getSymbolicName() + "' does not exist and will be created. ");
-				if (!resourcePathFile.mkdirs()){
+				if (!resourcePathFile.mkdirs()) {
 					logger.warn("Cannot create folder {}. ", resourcePathFile);
 				}
 			}

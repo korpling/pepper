@@ -152,8 +152,8 @@ public class PepperTestUtil {
 	 * first the method
 	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called. For
 	 * all kinds of fixture, the method
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
-	 * is called for each {@link SDocument} object contained in the variable
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)} is
+	 * called for each {@link SDocument} object contained in the variable
 	 * {@link PepperModule#getSaltProject()}. This method will wait, until each
 	 * {@link ModuleControllerImpl} return having finished the process. <br/>
 	 * To create a test using this method do the following:<br/>
@@ -199,7 +199,7 @@ public class PepperTestUtil {
 			// fill importers manipulators and exporters collection
 			if (fixture instanceof PepperImporter) {
 				importers.add((PepperImporter) fixture);
-			}else if (fixture instanceof PepperExporter) {
+			} else if (fixture instanceof PepperExporter) {
 				exporters.add((PepperExporter) fixture);
 			}
 		}

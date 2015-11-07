@@ -538,10 +538,10 @@ public class PepperJobImpl extends PepperJob {
 	/**
 	 * Imports corpus structures of all registered
 	 * {@link ImportCorpusStructureTest} steps. After calling
-	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}
-	 * , all following modules will be asked, if they want to influence the
-	 * order of importing documents. If this is the case, an order is created
-	 * and put to all {@link PepperImporter} objects. <br/>
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} , all
+	 * following modules will be asked, if they want to influence the order of
+	 * importing documents. If this is the case, an order is created and put to
+	 * all {@link PepperImporter} objects. <br/>
 	 * This method produces as much as {@link SCorpusGraph} objects as
 	 * {@link Step} given in import step list {@link #getImportSteps()}. The
 	 * position of {@link SCorpusGraph} corresponding to {@link PepperImporter}
@@ -608,7 +608,7 @@ public class PepperJobImpl extends PepperJob {
 					String prefix = sDoc.getName();
 					File tmpPath = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + getId());
 					if (!tmpPath.exists()) {
-						if (!tmpPath.mkdirs()){
+						if (!tmpPath.mkdirs()) {
 							logger.warn("Cannot create folder {}. ", tmpPath);
 						}
 					}
@@ -862,9 +862,8 @@ public class PepperJobImpl extends PepperJob {
 	 * <li>If the single steps of the job has not already been wired, they will
 	 * be wired.
 	 * <li>
-	 * <li>If
-	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}
-	 * has not already been called, it will be done.
+	 * <li>If {@link PepperImporter#importCorpusStructure(SCorpusGraph)} has not
+	 * already been called, it will be done.
 	 * <li>
 	 * </ul>
 	 */

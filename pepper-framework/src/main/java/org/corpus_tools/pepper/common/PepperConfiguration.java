@@ -57,9 +57,8 @@ import org.slf4j.LoggerFactory;
  */
 @SuppressWarnings("serial")
 public class PepperConfiguration extends Properties {
-	private Logger logger= LoggerFactory.getLogger("Pepper");
-	
-	
+	private Logger logger = LoggerFactory.getLogger("Pepper");
+
 	/** pepper-eMail address */
 	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
 	/** pepper-homepage */
@@ -301,7 +300,7 @@ public class PepperConfiguration extends Properties {
 			tmpFolderStr = tmpFolderStr + "/pepper/";
 			tmpFolder = new File(tmpFolderStr);
 			if (!tmpFolder.exists()) {
-				if (!tmpFolder.mkdirs()){
+				if (!tmpFolder.mkdirs()) {
 					logger.warn("Cannot create folder {}. ", tmpFolder);
 				}
 			}

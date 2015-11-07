@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
 	public Logger logger = LoggerFactory.getLogger("Pepper");
+
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
 	 * the thread.
@@ -235,14 +236,14 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			// preprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
 				new BeforeAfterAction(getPepperModule()).before(subj.getIdentifier());
-//				getPepperModule().before(subj.getIdentifier());
+				// getPepperModule().before(subj.getIdentifier());
 			}
 			// real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
 			// postprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
 				new BeforeAfterAction(getPepperModule()).after(subj.getIdentifier());
-//				getPepperModule().after(subj.getIdentifier());
+				// getPepperModule().after(subj.getIdentifier());
 			}
 
 		} else {

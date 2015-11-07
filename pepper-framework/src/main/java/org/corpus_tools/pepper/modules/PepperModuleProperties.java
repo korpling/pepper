@@ -61,8 +61,7 @@ public class PepperModuleProperties implements Serializable {
 	 * Pepper ({@link PepperModule}). A pre processing property is handled by
 	 * method
 	 * {@link PepperModule#before(org.corpus_tools.salt.graph.Identifier)}
-	 * before
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
+	 * before {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
 	 * is called.
 	 **/
 	public static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + ".before.";
@@ -70,10 +69,9 @@ public class PepperModuleProperties implements Serializable {
 	 * Prefixes all post processing customization properties directly provided
 	 * by Pepper ({@link PepperModule}). A post processing property is handled
 	 * by method
-	 * {@link PepperModule#after(org.corpus_tools.salt.graph.Identifier)}
-	 * after
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
-	 * is called.
+	 * {@link PepperModule#after(org.corpus_tools.salt.graph.Identifier)} after
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)} is
+	 * called.
 	 **/
 	public static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + ".after.";
 	/**
@@ -118,7 +116,7 @@ public class PepperModuleProperties implements Serializable {
 	 * corpus structure.
 	 */
 	public static final String PROP_AFTER_REPORT_CORPUSGRAPH = PREFIX_PEPPER_AFTER + "reportCorpusGraph";
-	
+
 	/**
 	 * Renames all annotations matching the search template to the new
 	 * namespace, name or value. To rename an annotation, use the following
@@ -198,7 +196,7 @@ public class PepperModuleProperties implements Serializable {
 	public void setPropertyValues(File propFile) {
 		if ((propFile != null) && (propFile.exists())) {
 			Properties props = new Properties();
-			try (FileInputStream f= new FileInputStream(propFile)) {
+			try (FileInputStream f = new FileInputStream(propFile)) {
 				props.load(f);
 			} catch (FileNotFoundException e) {
 				throw new PepperModulePropertyException("Cannot load property file.", e);

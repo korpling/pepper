@@ -46,9 +46,9 @@ public class PepperParamsReaderTest {
 	public void setUp() {
 		setFixture(new PepperParamsReader());
 		File tmpDir = new File(getTmPath());
-		if (!tmpDir.exists()){
-			if (!tmpDir.mkdirs()){
-				throw new PepperTestException("Cannot create folder '"+tmpDir+"'. ");
+		if (!tmpDir.exists()) {
+			if (!tmpDir.mkdirs()) {
+				throw new PepperTestException("Cannot create folder '" + tmpDir + "'. ");
 			}
 		}
 	}

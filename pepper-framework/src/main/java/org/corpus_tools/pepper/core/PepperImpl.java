@@ -128,7 +128,7 @@ public class PepperImpl implements Pepper {
 		job.setConfiguration(getConfiguration());
 		// initialize job
 		File jobFolder = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + newId);
-		if (!jobFolder.mkdirs()){
+		if (!jobFolder.mkdirs()) {
 			logger.warn("Cannot create folder {}. ", jobFolder);
 		}
 		getMapOfJobs().put(newId, new JobEntry(job, jobFolder));

@@ -45,8 +45,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
 public abstract class PepperUtil {
-	private static final Logger logger= LoggerFactory.getLogger("Pepepr");
-	
+	private static final Logger logger = LoggerFactory.getLogger("Pepepr");
+
 	/** This is the default ending of a Pepper workflow description file. **/
 	public static final String FILE_ENDING_PEPPER = "pepper";
 	/**
@@ -442,7 +442,7 @@ public abstract class PepperUtil {
 			file = new File(path + segments);
 		}
 		if (!file.exists()) {
-			if (!file.mkdirs()){
+			if (!file.mkdirs()) {
 				logger.warn("Cannot create folder {}. ", file);
 			}
 		}

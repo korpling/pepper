@@ -268,7 +268,7 @@ public class DOTResourceTest extends TestCase {
 	protected boolean compareFiles(File file1, File file2) throws IOException {
 		boolean retVal = false;
 
-		if ((file1 == null) || (file2 == null)){
+		if ((file1 == null) || (file2 == null)) {
 			throw new NullPointerException("One of the files to compare are null.");
 		}
 		StringBuilder contentFile1 = new StringBuilder();
@@ -287,13 +287,12 @@ public class DOTResourceTest extends TestCase {
 		}
 
 		if (contentFile1.toString().isEmpty()) {
-			if (contentFile2.toString().isEmpty()){
+			if (contentFile2.toString().isEmpty()) {
 				retVal = true;
-			}
-			else{
+			} else {
 				retVal = false;
 			}
-		} else if (contentFile1.toString().equals(contentFile2.toString())){
+		} else if (contentFile1.toString().equals(contentFile2.toString())) {
 			retVal = true;
 		}
 		return (retVal);

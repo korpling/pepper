@@ -193,6 +193,7 @@ public class DocumentControllerImpl implements DocumentController {
 			sleep();
 		}
 	}
+
 	/** {@inheritDoc} **/
 	@Override
 	public void sendToSleep_FORCE() {

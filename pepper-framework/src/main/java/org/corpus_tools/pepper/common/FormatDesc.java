@@ -146,6 +146,7 @@ public class FormatDesc {
 		} else
 			return (false);
 	}
+
 	/**
 	 * This method is overwritten because of findbugs.
 	 */

@@ -79,7 +79,7 @@ public class DOTExporter extends PepperExporterImpl {
 		StringBuilder segments = new StringBuilder();
 		URI outputURI = null;
 
-		for (String segment : ((SNode) sElementId.getIdentifiableElement()).getPath().segmentsList()){
+		for (String segment : ((SNode) sElementId.getIdentifiableElement()).getPath().segmentsList()) {
 			segments.append("/");
 			segments.append(segment);
 		}

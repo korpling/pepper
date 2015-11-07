@@ -215,9 +215,9 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 	public URI resolveURI(String path) {
 		URI uri = null;
 		if ((path != null) && (!path.isEmpty())) {
-			path= path.replace("\\", "/");
+			path = path.replace("\\", "/");
 			char[] seq = path.toCharArray();
-			
+
 			if ((path.startsWith(".")) && (getLocation() != null)) {
 				// if path is relative resolve against location of this document
 				uri = URI.createFileURI(path).resolve(getLocation());

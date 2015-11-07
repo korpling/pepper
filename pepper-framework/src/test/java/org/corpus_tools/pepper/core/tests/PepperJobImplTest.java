@@ -1017,8 +1017,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	@Test
 	public void testLoad_PepperParams() throws XMLStreamException, IOException {
 		File tmpFolder = PepperUtil.getTempTestFile("pepperJobTest");
-		if (!tmpFolder.exists() && !tmpFolder.mkdirs()){
-			throw new PepperTestException("Cannot create folder '"+tmpFolder+"'. ");
+		if (!tmpFolder.exists() && !tmpFolder.mkdirs()) {
+			throw new PepperTestException("Cannot create folder '" + tmpFolder + "'. ");
 		}
 		File propFile = new File(tmpFolder.getAbsolutePath() + "/test.properties");
 		Properties props = new Properties();

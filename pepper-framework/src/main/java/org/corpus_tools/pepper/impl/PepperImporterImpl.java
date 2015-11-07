@@ -269,7 +269,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					SCorpus sCorpus = getCorpusGraph().createCorpus(parent, currURI.lastSegment());
 					this.getIdentifier2ResourceTable().put(sCorpus.getIdentifier(), currURI);
 					if (currFile.isDirectory()) {
-						File[] files= currFile.listFiles(); 
+						File[] files = currFile.listFiles();
 						if (files != null) {
 							for (File file : files) {
 								try {
@@ -410,7 +410,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 **/
 	private boolean isLeafFolder(File folder) {
 		if (folder.isDirectory()) {
-			File[] files= folder.listFiles();
+			File[] files = folder.listFiles();
 			if (files != null) {
 				for (File file : files) {
 					if ((file.isDirectory()) && (!getIgnoreEndings().contains(file.getName()))) {

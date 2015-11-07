@@ -95,16 +95,16 @@ public class TextImporterTest extends PepperImporterTest {
 	@Test
 	public void testCorpusStructure() throws FileNotFoundException {
 		File c1 = new File(testPath.getAbsolutePath() + System.getProperty("file.separator") + "c1");
-		if (!c1.exists() && !c1.mkdirs()){
-			throw new PepperTestException("Cannot create folder '"+c1+"'. ");
+		if (!c1.exists() && !c1.mkdirs()) {
+			throw new PepperTestException("Cannot create folder '" + c1 + "'. ");
 		}
 		File c2 = new File(c1.getAbsolutePath() + System.getProperty("file.separator") + "c2");
-		if (!c2.exists() &&!c2.mkdirs()){
-			throw new PepperTestException("Cannot create folder '"+c2+"'. ");
+		if (!c2.exists() && !c2.mkdirs()) {
+			throw new PepperTestException("Cannot create folder '" + c2 + "'. ");
 		}
 		File c3 = new File(c1.getAbsolutePath() + System.getProperty("file.separator") + "c3");
-		if (!c3.exists() && !c3.mkdirs()){
-			throw new PepperTestException("Cannot create folder '"+c3+"'. ");
+		if (!c3.exists() && !c3.mkdirs()) {
+			throw new PepperTestException("Cannot create folder '" + c3 + "'. ");
 		}
 
 		File d1 = new File(c2.getAbsolutePath() + System.getProperty("file.separator") + "d1.txt");
