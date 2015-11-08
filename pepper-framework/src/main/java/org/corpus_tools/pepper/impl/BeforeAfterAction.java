@@ -364,14 +364,14 @@ public class BeforeAfterAction {
 				}
 				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue() != null) {
 					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
-						renameAnnotations(id);
+						renameAnnotations(id, (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue());
 					}
 				}
 				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue() != null) {
 					//remove is also done by rename
 					
 					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
-						renameAnnotations(id);
+						renameAnnotations(id, (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue());
 					}
 				}
 			}
@@ -500,13 +500,12 @@ public class BeforeAfterAction {
 	 * @param id
 	 *            identifying the current object
 	 */
-	public void renameAnnotations(Identifier id) {
+	public void renameAnnotations(Identifier id, String renameTemplate) {
 		if (id != null && id.getIdentifiableElement() != null) {
 			try {
-				String str = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue();
 				Map<String[], String[]> renamingMap = new HashMap<>();
 				// split all single renaming strings
-				String[] renamings = str.split(";");
+				String[] renamings = renameTemplate.split(";");
 				for (String renaming : renamings) {
 					String[] parts = renaming.split(":=");
 					if (parts.length == 2) {

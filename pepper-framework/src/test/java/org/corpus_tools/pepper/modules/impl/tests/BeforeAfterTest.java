@@ -182,7 +182,7 @@ public class BeforeAfterTest {
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "pos:= part-of-speech");
 		SaltFactory.createIdentifier(doc, "doc1");
 
-		getFixture().renameAnnotations(doc.getIdentifier());
+		getFixture().after(doc.getIdentifier());
 
 		assertTrue(tok1.containsLabel(SaltUtil.createQName(null, "part-of-speech")));
 		assertTrue(tok1.containsLabel(SaltUtil.createQName("salt", "pos")));
@@ -206,7 +206,7 @@ public class BeforeAfterTest {
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos:= salt::part-of-speech");
 		SaltFactory.createIdentifier(doc, "doc1");
 
-		getFixture().renameAnnotations(doc.getIdentifier());
+		getFixture().after(doc.getIdentifier());
 
 		assertTrue(tok1.containsLabel(SaltUtil.createQName("salt", "part-of-speech")));
 		assertTrue(tok1.containsLabel(SaltUtil.createQName(null, "pos")));
@@ -231,7 +231,7 @@ public class BeforeAfterTest {
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS");
 		SaltFactory.createIdentifier(doc, "doc1");
 
-		getFixture().renameAnnotations(doc.getIdentifier());
+		getFixture().after(doc.getIdentifier());
 
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName("salt", "pos")).getValue());
@@ -256,7 +256,7 @@ public class BeforeAfterTest {
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS; pos=NN:= pos=APOS");
 		SaltFactory.createIdentifier(doc, "doc1");
 
-		getFixture().renameAnnotations(doc.getIdentifier());
+		getFixture().after(doc.getIdentifier());
 
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName("salt", "pos")).getValue());
@@ -281,7 +281,7 @@ public class BeforeAfterTest {
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos; pos=NN");
 		SaltFactory.createIdentifier(doc, "doc1");
 
-		getFixture().renameAnnotations(doc.getIdentifier());
+		getFixture().after(doc.getIdentifier());
 
 		assertEquals(0, tok1.getAnnotations().size());
 	}
@@ -301,10 +301,10 @@ public class BeforeAfterTest {
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos; pos=NN");
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS, "salt::pos; pos=NN");
 		SaltFactory.createIdentifier(doc, "doc1");
 
-		getFixture().renameAnnotations(doc.getIdentifier());
+		getFixture().after(doc.getIdentifier());
 
 		assertEquals(0, tok1.getAnnotations().size());
 	}
