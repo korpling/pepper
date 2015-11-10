@@ -193,6 +193,7 @@ public class PepperOSGiRunner implements Runnable {
 						job.convert();
 					} finally {
 						observer.setStop(true);
+						logger.info(job.getStatusReport());
 					}
 				}// pepper can be started
 			}

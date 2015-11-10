@@ -495,7 +495,9 @@ public class PepperStarter {
 			try {
 				pepperJob.convert();
 				timestamp = System.currentTimeMillis() - timestamp;
-				output.println("conversion ended successfully, required time: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
+				observer.setStop(true);
+				output.println(pepperJob.getStatusReport());
+				output.println("Conversion ended successfully, required time: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
 			} catch (Exception e) {
 				timestamp = System.currentTimeMillis() - timestamp;
 				output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
