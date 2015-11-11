@@ -18,7 +18,7 @@ carefully, which should be located in the corresponding jar-files
 inside the folders plugins or lib.
 
 This project includes:
-  Apache Commons Lang under The Apache Software License, Version 2.0
+  Apache Commons Lang under Apache License, Version 2.0
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
   Commons IO under The Apache Software License, Version 2.0

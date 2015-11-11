@@ -23,9 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -301,65 +305,64 @@ public class PepperStarter {
 			if (number2module != null) {
 				moduleDesc = number2module.get(numOfModule);
 			}
-		} catch (Exception e) {
-			// do nothing
-		}
-		// try to read module desc by name
-		if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
-			for (PepperModuleDesc desc : moduleDescs) {
-				if (moduleName.equalsIgnoreCase(desc.getName())) {
-					moduleDesc = desc;
-					break;
+		} finally {
+			// try to read module desc by name
+			if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
+				for (PepperModuleDesc desc : moduleDescs) {
+					if (moduleName.equalsIgnoreCase(desc.getName())) {
+						moduleDesc = desc;
+						break;
+					}
 				}
 			}
-		}
-		if (moduleDesc != null) {
+			if (moduleDesc != null) {
 
-			Integer[] length = new Integer[2];
-			if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
-				length[0] = 14;
-				length[1] = 60;
+				Integer[] length = new Integer[2];
+				if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
+					length[0] = 14;
+					length[1] = 60;
+				} else {
+					length[0] = 14;
+					length[1] = 100;
+				}
+
+				int numOfEntries = 5;
+				if (moduleDesc.getProperties() != null) {
+					numOfEntries++;
+					numOfEntries++;
+					numOfEntries++;
+					numOfEntries = numOfEntries + moduleDesc.getProperties().getPropertyDesctriptions().size();
+				}
+
+				String[][] map = new String[numOfEntries][2];
+				map[0][0] = "name:";
+				map[0][1] = moduleDesc.getName();
+				map[1][0] = "version:";
+				map[1][1] = moduleDesc.getVersion();
+				map[2][0] = "supplier:";
+				map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
+				map[3][0] = "website:";
+				map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
+				map[4][0] = "description:";
+				map[4][1] = moduleDesc.getDesc();
+
+				if (moduleDesc.getProperties() != null) {
+					map[5][0] = "--";
+					map[6][1] = "customization properties";
+					map[7][0] = "--";
+					int i = 8;
+					for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
+						map[i][0] = prop.getName();
+						map[i][1] = prop.getDescription();
+						i++;
+					}
+				}
+				retVal.append(PepperUtil.createTable(length, map, false, true, true));
+
+				retVal.append("\n");
 			} else {
-				length[0] = 14;
-				length[1] = 100;
+				retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
 			}
-
-			int numOfEntries = 5;
-			if (moduleDesc.getProperties() != null) {
-				numOfEntries++;
-				numOfEntries++;
-				numOfEntries++;
-				numOfEntries = numOfEntries + moduleDesc.getProperties().getPropertyDesctriptions().size();
-			}
-
-			String[][] map = new String[numOfEntries][2];
-			map[0][0] = "name:";
-			map[0][1] = moduleDesc.getName();
-			map[1][0] = "version:";
-			map[1][1] = moduleDesc.getVersion();
-			map[2][0] = "supplier:";
-			map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
-			map[3][0] = "website:";
-			map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
-			map[4][0] = "description:";
-			map[4][1] = moduleDesc.getDesc();
-
-			if (moduleDesc.getProperties() != null) {
-				map[5][0] = "--";
-				map[6][1] = "customization properties";
-				map[7][0] = "--";
-				int i = 8;
-				for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
-					map[i][0] = prop.getName();
-					map[i][1] = prop.getDescription();
-					i++;
-				}
-			}
-			retVal.append(PepperUtil.createTable(length, map, false, true, true));
-
-			retVal.append("\n");
-		} else {
-			retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
 		}
 		return (retVal.toString());
 	}
@@ -492,7 +495,9 @@ public class PepperStarter {
 			try {
 				pepperJob.convert();
 				timestamp = System.currentTimeMillis() - timestamp;
-				output.println("conversion ended successfully, required time: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
+				observer.setStop(true);
+				output.println(pepperJob.getStatusReport());
+				output.println("Conversion ended successfully, required time: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
 			} catch (Exception e) {
 				timestamp = System.currentTimeMillis() - timestamp;
 				output.println("CONVERSION ENDED WITH ERRORS, REQUIRED TIME: " + DurationFormatUtils.formatDurationHMS(timestamp) + " s");
@@ -556,9 +561,9 @@ public class PepperStarter {
 	public String selfTest() {
 		StringBuilder retVal = new StringBuilder();
 		Collection<String> problems = getPepper().selfTest();
-		if (problems.size() == 0){
+		if (problems.size() == 0) {
 			retVal.append("- no problems detected -");
-		}else {
+		} else {
 			retVal.append("following problems have been found:");
 			for (String problem : problems) {
 				retVal.append("\t" + problem);
@@ -623,11 +628,11 @@ public class PepperStarter {
 
 			if ("all".equalsIgnoreCase(params.get(0)) || (isSnapshot && !ignoreVersion || ignoreVersion && !isSnapshot) && params.size() > 1 && "all".equalsIgnoreCase(params.get(1)) || isSnapshot && ignoreVersion && params.size() > 2 && "all".equalsIgnoreCase(params.get(2))) {
 				List<String> lines = new ArrayList<String>();
-				for (String s : moduleTable.keySet()) {
-					if (pepperConnector.update(moduleTable.get(s).getLeft(), s, moduleTable.get(s).getRight(), isSnapshot, ignoreVersion)) {
-						lines.add(s.concat(" successfully updated."));
+				for (Map.Entry<String, Pair<String, String>> entry : moduleTable.entrySet()) {
+					if (pepperConnector.update(entry.getValue().getLeft(), entry.getKey(), entry.getValue().getRight(), isSnapshot, ignoreVersion)) {
+						lines.add(entry.getKey().concat(" successfully updated."));
 					} else {
-						lines.add(s.concat(" NOT updated."));
+						lines.add(entry.getKey().concat(" NOT updated."));
 					}
 				}
 				Collections.<String> sort(lines);
@@ -648,8 +653,8 @@ public class PepperStarter {
 					} else if ("config".equals(s)) {
 						retVal.append(newLine).append(indent).append("update configuration for pepper modules:").append(newLine).append(newLine);
 
-						for (String module : moduleTable.keySet()) {
-							retVal.append(indent).append(module).append(moduleTable.get(module)).append(newLine);
+						for (Map.Entry<String, Pair<String, String>> entry : moduleTable.entrySet()) {
+							retVal.append(indent).append(entry.getKey()).append(entry.getValue()).append(newLine);
 						}
 						retVal.append(newLine);
 						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):").append(newLine).append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
@@ -833,7 +838,7 @@ public class PepperStarter {
 	 * @author klotzmaz
 	 *
 	 */
-	private class ModuleTableReader extends DefaultHandler2 {
+	private static class ModuleTableReader extends DefaultHandler2 {
 		/**
 		 * all read module names are stored here Map: artifactId --> (groupId,
 		 * repository)
@@ -958,35 +963,38 @@ public class PepperStarter {
 			} catch (IOException ioe) {
 				output.println("Cannot read command, type in 'help' for help.");
 			}
-			userInput = userInput.trim();
-			String[] parts = userInput.split(" ");
-			String command = parts[0];
-			List<String> params = new Vector<String>();
-			int i = 0;
-			for (String part : parts) {
-				if (i > 0) {
-					params.add(part);
+			if (userInput != null) {
+				userInput = userInput.trim();
+				String[] parts = userInput.split(" ");
+				String command = parts[0];
+				List<String> params = new Vector<String>();
+				int i = 0;
+				for (String part : parts) {
+					if (i > 0) {
+						params.add(part);
+					}
+					i++;
 				}
-				i++;
-			}
 
-			if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
-				// special treatment of "exit" since we have to abort the loop
-				break;
-			} else if (COMMAND.REPEAT.getName().equalsIgnoreCase(command) || COMMAND.REPEAT.getAbbreviation().equalsIgnoreCase(command)) {
-				if (lastUserInput != null && lastCommand != null && lastParams != null) {
-					executeSingleCommand(lastUserInput, lastCommand, lastParams);
+				if ((COMMAND.EXIT.getName().equalsIgnoreCase(command)) || (COMMAND.EXIT.getAbbreviation().equalsIgnoreCase(command))) {
+					// special treatment of "exit" since we have to abort the
+					// loop
+					break;
+				} else if (COMMAND.REPEAT.getName().equalsIgnoreCase(command) || COMMAND.REPEAT.getAbbreviation().equalsIgnoreCase(command)) {
+					if (lastUserInput != null && lastCommand != null && lastParams != null) {
+						executeSingleCommand(lastUserInput, lastCommand, lastParams);
+					} else {
+						output.println("Can not repeat if no other command was executed before.");
+					}
 				} else {
-					output.println("Can not repeat if no other command was executed before.");
+					executeSingleCommand(lastUserInput, command, params);
+					// only update the last command if repeat was not executed
+					lastCommand = command;
+					lastParams = params;
+					lastUserInput = userInput;
 				}
-			} else {
-				executeSingleCommand(lastUserInput, command, params);
-				// only update the last command if repeat was not executed
-				lastCommand = command;
-				lastParams = params;
-				lastUserInput = userInput;
-			}
-		} // end while not exiting
+			} // end while not exiting
+		}
 	}
 
 	private void executeSingleCommand(String userInput, String command, List<String> params) {
@@ -1078,14 +1086,14 @@ public class PepperStarter {
 		for (String param : params) {
 			if ("all".equalsIgnoreCase(param)) {
 				retVal.delete(0, retVal.length());
-				for (String module : moduleTable.keySet()) {
-					groupId = moduleTable.get(module).getLeft();
-					Bundle bundle = connector.getBundle(groupId, module, null);
+				for (Map.Entry<String, Pair<String, String>> entry : moduleTable.entrySet()) {
+					groupId = entry.getValue().getLeft();
+					Bundle bundle = connector.getBundle(groupId, entry.getKey(), null);
 					version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
 					if (version == null) {
-						logger.info(module.concat(" not installed. Collecting dependencies for newest version."));
+						logger.info(entry.getKey().concat(" not installed. Collecting dependencies for newest version."));
 					}
-					retVal.append(connector.printDependencies(moduleTable.get(module).getLeft(), module, version, moduleTable.get(module).getRight())).append(System.lineSeparator()).append(System.lineSeparator());
+					retVal.append(connector.printDependencies(entry.getValue().getLeft(), entry.getKey(), version, entry.getValue().getRight())).append(System.lineSeparator()).append(System.lineSeparator());
 				}
 				return retVal.toString();
 			} else if (param.contains("::")) {
@@ -1121,76 +1129,6 @@ public class PepperStarter {
 	public final static int CONSOLE_WIDTH_80 = 80;
 
 	/**
-	 * Returns a formatted String, a kind of a welcome screen of Pepper.
-	 * 
-	 * @return welcome screen
-	 */
-	public static String getHello() {
-		return (getHello(CONSOLE_WIDTH, "saltnpepper@lists.hu-berlin.de", "http://u.hu-berlin.de/saltnpepper"));
-	}
-
-	/**
-	 * Returns a formatted String, a kind of a welcome screen of Pepper.
-	 * 
-	 * @return welcome screen
-	 */
-	public static String getHello(int width, String eMail, String hp) {
-		StringBuilder retVal = new StringBuilder();
-
-		if (CONSOLE_WIDTH_80 == width) {
-			retVal.append("********************************************************************************\n");
-			retVal.append("*                    ____                                                      *\n");
-			retVal.append("*                   |  _ \\ ___ _ __  _ __   ___ _ __                           *\n");
-			retVal.append("*                   | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                          *\n");
-			retVal.append("*                   |  __/  __/ |_) | |_) |  __/ |                             *\n");
-			retVal.append("*                   |_|   \\___| .__/| .__/ \\___|_|                             *\n");
-			retVal.append("*                             |_|   |_|                                        *\n");
-			retVal.append("*                                                                              *\n");
-			retVal.append("********************************************************************************\n");
-			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.  *\n");
-			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 45) + "*\n");
-			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 45) + "*\n");
-			retVal.append("* Version of Pepper:              " + fillUpBlanks(getVersion(), 45) + "*\n");
-			retVal.append("********************************************************************************\n");
-			retVal.append("\n");
-		} else {
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("*                                         ____                                                                         *\n");
-			retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
-			retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
-			retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
-			retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
-			retVal.append("*                                                  |_|   |_|                                                           *\n");
-			retVal.append("*                                                                                                                      *\n");
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
-			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 85) + "*\n");
-			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 85) + "*\n");
-			retVal.append("* Version of Pepper:              " + fillUpBlanks(getVersion(), 85) + "*\n");
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("\n");
-		}
-		return (retVal.toString());
-	}
-
-	/**
-	 * Fills up a string with blanks until length.
-	 * 
-	 * @param text
-	 * @param length
-	 * @return
-	 */
-	public static String fillUpBlanks(String text, int length) {
-		StringBuilder str = new StringBuilder();
-		str.append(text);
-		int numOfBlanks = length - text.length();
-		for (int i = 0; i < numOfBlanks; i++) {
-			str.append(" ");
-		}
-		return (str.toString());
-	}
-
-	/**
 	 * Resolves the current Pepper version from a file named version.properties
 	 * in the pepper-lib jar file.
 	 * 
@@ -1212,7 +1150,7 @@ public class PepperStarter {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		Long timestamp = null;
+		Long timestamp = 0l;
 		PepperStarter starter = null;
 		PepperConnector pepper = null;
 		boolean endedWithErrors = false;
@@ -1224,9 +1162,9 @@ public class PepperStarter {
 			// exception as argument
 			lc.setPackagingDataEnabled(false);
 		}
-
+		PepperStarterConfiguration pepperProps = null;
 		try {
-			PepperStarterConfiguration pepperProps = new PepperStarterConfiguration();
+			pepperProps = new PepperStarterConfiguration();
 			pepperProps.load();
 
 			String eMail = pepperProps.getPepperEMail();
@@ -1238,7 +1176,7 @@ public class PepperStarter {
 			if ((args.length > 0) && (args[0].equalsIgnoreCase(COMMAND.DEBUG.toString()))) {
 				starter.debug();
 			}
-			logger.info(getHello(pepperProps.getConsoleWidth(), eMail, hp));
+			logger.info(Greet.getHello(pepperProps.getConsoleWidth(), eMail, hp));
 
 			pepper = new PepperOSGiConnector();
 			pepper.setConfiguration(pepperProps);
@@ -1285,15 +1223,18 @@ public class PepperStarter {
 				try {
 					timestamp = System.currentTimeMillis();
 					if (logger.isDebugEnabled()) {
-						for (Object key : pepperProps.keySet()) {
-							logger.debug(String.format("%-40s%-16s", key + ":", pepperProps.get(key)));
+						for (Map.Entry<Object, Object> entry : pepperProps.entrySet()) {
+							logger.debug(String.format("%-40s%-16s", entry.getKey() + ":", entry.getValue()));
 						}
 					}
 					logger.debug(pepper.getRegisteredModulesAsString());
-					workFlowFile = workFlowFile.replace("\\", "/");
+					if (workFlowFile != null) {
+						workFlowFile = workFlowFile.replace("\\", "/");
 
-					starter.convert(workFlowFile);
-
+						starter.convert(workFlowFile);
+					} else {
+						logger.error("The passed workflow file was empty. ");
+					}
 					timestamp = System.currentTimeMillis() - timestamp;
 				} catch (Exception e) {
 					timestamp = System.currentTimeMillis() - timestamp;
@@ -1305,7 +1246,11 @@ public class PepperStarter {
 			logger.info("An error occured, to get more information on that, please check the log file, which is by default located at 'PEPPER_HOME/pepper_out.log'. ");
 			logger.error(" ", e);
 		} finally {
-			logger.info("************************************************************************************************************************\n");
+			if (pepperProps != null) {
+				logger.info(Greet.getGoodBye(pepperProps.getConsoleWidth()));
+			} else {
+				logger.info(Greet.getGoodBye(CONSOLE_WIDTH_120));
+			}
 		}
 		if (endedWithErrors) {
 			System.exit(-1);

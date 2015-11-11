@@ -20,7 +20,6 @@ package org.corpus_tools.pepper.impl;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
-import org.corpus_tools.pepper.core.DocumentControllerImpl;
 import org.corpus_tools.pepper.exceptions.NotInitializedException;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
@@ -50,8 +49,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
-
-	protected Logger logger = LoggerFactory.getLogger("Pepper");
+	public Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/**
 	 * Initializes this object and sets its {@link ThreadGroup} and the name of
@@ -237,13 +235,15 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			// real document mapping
 			// preprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
-				getPepperModule().before(subj.getIdentifier());
+				new BeforeAfterAction(getPepperModule()).before(subj.getIdentifier());
+				// getPepperModule().before(subj.getIdentifier());
 			}
 			// real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
 			// postprocessing
 			for (MappingSubject subj : getMappingSubjects()) {
-				getPepperModule().after(subj.getIdentifier());
+				new BeforeAfterAction(getPepperModule()).after(subj.getIdentifier());
+				// getPepperModule().after(subj.getIdentifier());
 			}
 
 		} else {
@@ -276,12 +276,6 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	public PepperModule getPepperModule() {
 		return (this.pepperModule);
 	}
-
-	/**
-	 * {@link DocumentControllerImpl} containing the {@link SDocument} object to
-	 * be processed
-	 **/
-	protected DocumentController documentController = null;
 
 	/** {@inheritDoc} **/
 	@Override

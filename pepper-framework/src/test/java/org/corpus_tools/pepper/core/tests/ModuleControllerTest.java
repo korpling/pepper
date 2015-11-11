@@ -65,7 +65,7 @@ public class ModuleControllerTest {
 		assertEquals(id, getFixture().getId());
 	}
 
-	private class PepperModuleSample extends PepperModuleImpl {
+	private static class PepperModuleSample extends PepperModuleImpl {
 		public PepperModuleSample() {
 			super("SampleModule");
 		}
@@ -128,7 +128,7 @@ public class ModuleControllerTest {
 		assertEquals(bus, getFixture().getOutputDocumentBus());
 	}
 
-	private class SampleModule extends PepperModuleImpl {
+	private static class SampleModule extends PepperModuleImpl {
 		public SampleModule() {
 			super("SampleModule");
 		}

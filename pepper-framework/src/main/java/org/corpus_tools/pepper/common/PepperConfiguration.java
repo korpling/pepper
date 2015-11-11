@@ -31,6 +31,8 @@ import org.corpus_tools.pepper.exceptions.PepperConfigurationException;
 import org.corpus_tools.salt.common.SDocument;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Property;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class contains all possible configurations, to take influence on the
@@ -55,6 +57,7 @@ import org.osgi.service.component.annotations.Property;
  */
 @SuppressWarnings("serial")
 public class PepperConfiguration extends Properties {
+	private Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/** pepper-eMail address */
 	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
@@ -185,20 +188,12 @@ public class PepperConfiguration extends Properties {
 	 */
 	public void load(File configurationFile) {
 		confFolder = configurationFile.getParentFile();
-		BufferedInputStream in = null;
-		try {
-			in = new BufferedInputStream(new FileInputStream(configurationFile.getAbsolutePath()));
+		try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(configurationFile.getAbsolutePath()));) {
 			load(in);
 		} catch (FileNotFoundException e2) {
 			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e2);
 		} catch (IOException e) {
 			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				throw new PepperConfigurationException("Cannot close stream to configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
-			}
 		}
 	}
 
@@ -222,46 +217,44 @@ public class PepperConfiguration extends Properties {
 
 		String configFileStr = null;
 
-		if ((componentContext != null) && (componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null) && (componentContext.getBundleContext().getBundle().getLocation() != null)) {
-			if (componentContext != null) {
-				String[] bundleNames = System.getProperty("osgi.bundles").split(",");
-				if (bundleNames.length > 0) {
-					String currLocation = componentContext.getBundleContext().getBundle().getLocation();
-					currLocation = currLocation.replace("initial@reference:file:", "");
-					currLocation = currLocation.replace("../", "");
-					if (currLocation.endsWith("/")) {
-						currLocation = currLocation.substring(0, currLocation.length() - 1);
-					}
-					String location = null;
-					for (String bundleName : bundleNames) {
-						bundleName = bundleName.replace("reference:", "");
-						bundleName = bundleName.replaceAll("@([0-9]+:)?start", "");
+		if ((componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null) && (componentContext.getBundleContext().getBundle().getLocation() != null)) {
+			String[] bundleNames = System.getProperty("osgi.bundles").split(",");
+			if (bundleNames.length > 0) {
+				String currLocation = componentContext.getBundleContext().getBundle().getLocation();
+				currLocation = currLocation.replace("initial@reference:file:", "");
+				currLocation = currLocation.replace("../", "");
+				if (currLocation.endsWith("/")) {
+					currLocation = currLocation.substring(0, currLocation.length() - 1);
+				}
+				String location = null;
+				for (String bundleName : bundleNames) {
+					bundleName = bundleName.replace("reference:", "");
+					bundleName = bundleName.replaceAll("@([0-9]+:)?start", "");
 
-						if (bundleName.endsWith(currLocation)) {
-							location = bundleName;
-							break;
-						}
+					if (bundleName.endsWith(currLocation)) {
+						location = bundleName;
+						break;
 					}
-					if (location != null) {
-						if (location.endsWith(".jar")) {
-							location = location.replace(".jar", "/");
-						} else {
-							if (!location.endsWith("/")) {
-								location = location + "/";
-							}
-							location = location + SOURCES_RESOURCES;
+				}
+				if (location != null) {
+					if (location.endsWith(".jar")) {
+						location = location.replace(".jar", "/");
+					} else {
+						if (!location.endsWith("/")) {
+							location = location + "/";
+						}
+						location = location + SOURCES_RESOURCES;
 
-						}
-						configFileStr = location;
-						if (configFileStr.startsWith("file:")) {
-							configFileStr = configFileStr.replace("file:", "");
-						}
-						File confFile = new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
-						if (!confFile.exists()) {
-							configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
-						} else {
-							configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE;
-						}
+					}
+					configFileStr = location;
+					if (configFileStr.startsWith("file:")) {
+						configFileStr = configFileStr.replace("file:", "");
+					}
+					File confFile = new File(configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE);
+					if (!confFile.exists()) {
+						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_FILE;
+					} else {
+						configFileStr = configFileStr + FILE_CONF_FOLDER + "/" + FILE_CONF_TEST_FILE;
 					}
 				}
 			}
@@ -307,7 +300,9 @@ public class PepperConfiguration extends Properties {
 			tmpFolderStr = tmpFolderStr + "/pepper/";
 			tmpFolder = new File(tmpFolderStr);
 			if (!tmpFolder.exists()) {
-				tmpFolder.mkdirs();
+				if (!tmpFolder.mkdirs()) {
+					logger.warn("Cannot create folder {}. ", tmpFolder);
+				}
 			}
 		} else {
 			tmpFolder = PepperUtil.getTempFile();
@@ -351,8 +346,8 @@ public class PepperConfiguration extends Properties {
 	 * @return
 	 */
 	public Integer getMaxAmountOfDocuments() {
-		String amountOfDocs = getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, new Integer(10).toString());
-		return (new Integer(amountOfDocs));
+		String amountOfDocs = getProperty(PROP_MAX_AMOUNT_OF_SDOCUMENTS, "10");
+		return (Integer.valueOf(amountOfDocs));
 	}
 
 	public Boolean getGcAfterDocumentSleep() {
@@ -374,7 +369,7 @@ public class PepperConfiguration extends Properties {
 	 * Flag to determine the time interval of the convert status report
 	 */
 	public Integer getReportInterval() {
-		String interval = getProperty(PROP_REPORT_INTERVAL, new Integer(1000).toString());
+		String interval = getProperty(PROP_REPORT_INTERVAL, "1000");
 		return (Integer.valueOf(interval));
 	}
 

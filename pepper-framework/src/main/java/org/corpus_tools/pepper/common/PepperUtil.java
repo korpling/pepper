@@ -45,6 +45,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
 public abstract class PepperUtil {
+	private static final Logger logger = LoggerFactory.getLogger("Pepepr");
 
 	/** This is the default ending of a Pepper workflow description file. **/
 	public static final String FILE_ENDING_PEPPER = "pepper";
@@ -441,7 +442,9 @@ public abstract class PepperUtil {
 			file = new File(path + segments);
 		}
 		if (!file.exists()) {
-			file.mkdirs();
+			if (!file.mkdirs()) {
+				logger.warn("Cannot create folder {}. ", file);
+			}
 		}
 		return (file);
 	}
@@ -460,8 +463,8 @@ public abstract class PepperUtil {
 		str.append(String.format(format1, " configuration for Pepper"));
 		str.append(line);
 		if ((conf != null) && (conf.size() != 0)) {
-			for (Object key : conf.keySet()) {
-				str.append(String.format(format2, key, conf.get(key)));
+			for (Map.Entry<Object, Object> entry : conf.entrySet()) {
+				str.append(String.format(format2, entry.getKey(), entry.getValue()));
 			}
 		} else {
 			str.append(String.format(format1, "- no configurations set -"));
@@ -496,22 +499,24 @@ public abstract class PepperUtil {
 			map[0][5] = "website";
 			int i = 1;
 			for (PepperModuleDesc desc : moduleDescs) {
-				map[i][0] = new Integer(i).toString();
+				map[i][0] = Integer.valueOf(i).toString();
 				map[i][1] = desc.getName();
 				map[i][2] = desc.getVersion();
 				map[i][3] = desc.getModuleType().toString();
-				String formatString = "";
+				StringBuilder formatString = new StringBuilder();
 				if ((desc.getSupportedFormats() != null) && (desc.getSupportedFormats().size() > 0)) {
 					int j = 0;
 					for (FormatDesc formatDesc : desc.getSupportedFormats()) {
 						if (j != 0) {
-							formatString = formatString + "; ";
+							formatString.append("; ");
 						}
-						formatString = formatString + formatDesc.getFormatName() + ", " + formatDesc.getFormatVersion();
+						formatString.append(formatDesc.getFormatName());
+						formatString.append(", ");
+						formatString.append(formatDesc.getFormatVersion());
 						j++;
 					}
 				}
-				map[i][4] = formatString;
+				map[i][4] = formatString.toString();
 				URI contact = desc.getSupplierHomepage();
 				if (contact != null) {
 					map[i][5] = contact.toString();

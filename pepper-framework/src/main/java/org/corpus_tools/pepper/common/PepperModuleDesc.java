@@ -302,7 +302,6 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc>, PepperSer
 		}
 		return retVal;
 	}
-
 	@Override
 	public PepperMarshallable<?> createMarshallableInstance() {
 		PepperModuleDescMarshallable retVal = new PepperModuleDescMarshallable();
@@ -320,5 +319,16 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc>, PepperSer
 		retVal.setSupplierContactURI(supplierContact.toString());
 		retVal.setVersion(version);
 		return retVal;
+	}
+	/** This method was overwritten because of a findbugs warning **/
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	/** This method was overwritten because of a findbugs warning **/
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 }

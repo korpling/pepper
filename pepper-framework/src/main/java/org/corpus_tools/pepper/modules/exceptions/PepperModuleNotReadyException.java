@@ -17,7 +17,6 @@
  */
 package org.corpus_tools.pepper.modules.exceptions;
 
-
 /**
  * This PepperException is thrown only by a
  * {@link org.corpus_tools.pepper.modules.PepperModule} and marks, that the

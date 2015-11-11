@@ -76,12 +76,14 @@ public class DOTExporter extends PepperExporterImpl {
 			}
 		};
 
-		String segments = "";
+		StringBuilder segments = new StringBuilder();
 		URI outputURI = null;
 
-		for (String segment : ((SNode) sElementId.getIdentifiableElement()).getPath().segmentsList())
-			segments = segments + "/" + segment;
-		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments + "." + SaltUtil.FILE_ENDING_SALT_XML);
+		for (String segment : ((SNode) sElementId.getIdentifiableElement()).getPath().segmentsList()) {
+			segments.append("/");
+			segments.append(segment);
+		}
+		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments.toString() + "." + SaltUtil.FILE_ENDING_SALT_XML);
 
 		mapper.setResourceURI(outputURI);
 		return (mapper);

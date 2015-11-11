@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -37,6 +38,8 @@ import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -112,6 +115,7 @@ import org.xml.sax.ext.DefaultHandler2;
  *
  */
 public class XMLTagExtractor extends DefaultHandler2 {
+	private static final Logger logger = LoggerFactory.getLogger(PepperStarter.class);
 	/** XML file to pasre **/
 	private URI xmlResource = null;
 
@@ -148,9 +152,9 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			throw new NullPointerException("Cannot start extracting, xml resource is empty.");
 		File outFile = new File(resource.toString());
 		if (!outFile.exists()) {
-			outFile.mkdirs();
-			// throw new
-			// FileNotFoundException("Cannot start extracting, java resource '"+outFile+"' does not exist.");
+			if (!outFile.mkdirs()) {
+				logger.warn("Cannot create folder '" + outFile.getAbsolutePath() + "'.");
+			}
 		}
 
 		this.javaResource = resource;
@@ -242,11 +246,10 @@ public class XMLTagExtractor extends DefaultHandler2 {
 				throw new PepperException("Cannot read xml-file'" + getXmlResource() + "', because of a nested exception. ", e);
 		}
 
-		PrintWriter writer = null;
 		String dictionaryName = null;
-		try {
+		try (PrintWriter writer = new PrintWriter(outFile, "UTF-8");){
 			// create interface file
-			writer = new PrintWriter(outFile, "UTF-8");
+			
 			dictionaryName = outFile.getName().replace(".java", "");
 			writer.println("package myPackage;");
 			writer.println("");
@@ -276,17 +279,14 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			}
 			writer.println("}");
 
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException | FileNotFoundException e) {
 			e.printStackTrace();
-		} finally {
-			if (writer != null)
-				writer.close();
 		}
-
-		try {
+		outFile = new File(outFile.getAbsolutePath().replace(".java", "") + "Reader" + ".java");
+		
+		try (PrintWriter writer = new PrintWriter(outFile, "UTF-8");){
 			// create class file
-			outFile = new File(outFile.getAbsolutePath().replace(".java", "") + "Reader" + ".java");
-			writer = new PrintWriter(outFile, "UTF-8");
+			
 
 			writer.println("package myPackage;");
 			writer.println("");
@@ -322,11 +322,8 @@ public class XMLTagExtractor extends DefaultHandler2 {
 
 			writer.println("}");
 
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException | FileNotFoundException e) {
 			e.printStackTrace();
-		} finally {
-			if (writer != null)
-				writer.close();
 		}
 	}
 
@@ -428,8 +425,10 @@ public class XMLTagExtractor extends DefaultHandler2 {
 		try {
 			System.out.println("input: " + input);
 			System.out.println("output: " + output);
-			extractor.setXmlResource(input);
-			extractor.setJavaResource(output);
+			if (input != null && output != null) {
+				extractor.setXmlResource(input);
+				extractor.setJavaResource(output);
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(-1);

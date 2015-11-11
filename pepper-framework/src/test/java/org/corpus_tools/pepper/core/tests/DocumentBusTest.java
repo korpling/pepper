@@ -181,7 +181,7 @@ public class DocumentBusTest {
 	public void testPop_Threaded() throws InterruptedException {
 		Vector<String> importModuleControllers = new Vector<String>();
 		SimplePepperModuleController importerController = new SimplePepperModuleController();
-		importerController.waitTime = new Long(25);
+		importerController.waitTime = Long.valueOf(25);
 		importerController.controllerId = "producer";
 		importModuleControllers.add(importerController.controllerId);
 
@@ -202,7 +202,7 @@ public class DocumentBusTest {
 		Vector<SimplePepperModuleController> moduleControllers = new Vector<DocumentBusTest.SimplePepperModuleController>();
 		for (int i = 0; i < 5; i++) {
 			SimplePepperModuleController controller = new SimplePepperModuleController();
-			controller.waitTime = new Long(10 + i * 5);
+			controller.waitTime = Long.valueOf(10 + i * 5);
 			controller.controllerId = "consumer_" + i;
 			moduleControllers.add(controller);
 			exportModuleControllers.add(controller.controllerId);
@@ -257,7 +257,6 @@ public class DocumentBusTest {
 
 		@Override
 		public void run() {
-			Long time = System.nanoTime();
 			if (inputQueue != null) {
 				DocumentController docController = null;
 				while ((docController = inputQueue.pop(controllerId)) != null) {
@@ -279,7 +278,6 @@ public class DocumentBusTest {
 				}
 				outputQueue.finish(controllerId);
 			}
-			time = (System.nanoTime() - time) / 1000000;
 			done = true;
 		}
 

@@ -86,6 +86,7 @@ public abstract class PepperImporterTest extends PepperModuleTest {
 	 * A list of formats, which shall be supported
 	 */
 	protected List<FormatDesc> supportedFormatsCheck = null;
+
 	/**
 	 * Adds a format description to the list of formats which are supported by
 	 * the module to be tested.
@@ -96,6 +97,7 @@ public abstract class PepperImporterTest extends PepperModuleTest {
 		}
 		supportedFormatsCheck.add(formatDesc);
 	}
+
 	protected void setFixture(PepperImporter fixture) {
 		super.setFixture(fixture);
 		this.supportedFormatsCheck = new Vector<FormatDesc>();

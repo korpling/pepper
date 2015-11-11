@@ -31,7 +31,7 @@
 				<include>NOTICE</include>
 				<!-- copies the readme file -->
 				<include>readme.txt</include>
-                <!-- end: copies the readme file -->
+				<include>version.txt</include>
 			</includes>
             <fileMode>0644</fileMode>
 		</fileSet>

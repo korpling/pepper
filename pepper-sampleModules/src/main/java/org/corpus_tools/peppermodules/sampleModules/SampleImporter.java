@@ -253,7 +253,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * @author Florian Zipser
 	 *
 	 */
-	public class SampleMapper extends PepperMapperImpl {
+	public static class SampleMapper extends PepperMapperImpl {
 		/**
 		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
 		 * If you need to make any adaptations to the corpora like adding

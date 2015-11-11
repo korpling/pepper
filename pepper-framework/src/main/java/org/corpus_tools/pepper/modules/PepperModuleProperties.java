@@ -52,11 +52,8 @@ import org.osgi.service.component.annotations.Property;
  * 
  */
 @XmlRootElement
+@SuppressWarnings("serial")
 public class PepperModuleProperties implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7802558539252580678L;
 	/**
 	 * Prefixes all customization properties directly provided by Pepper (
 	 * {@link PepperModule}).
@@ -67,8 +64,7 @@ public class PepperModuleProperties implements Serializable {
 	 * Pepper ({@link PepperModule}). A pre processing property is handled by
 	 * method
 	 * {@link PepperModule#before(org.corpus_tools.salt.graph.Identifier)}
-	 * before
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
+	 * before {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
 	 * is called.
 	 **/
 	public static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + ".before.";
@@ -76,10 +72,9 @@ public class PepperModuleProperties implements Serializable {
 	 * Prefixes all post processing customization properties directly provided
 	 * by Pepper ({@link PepperModule}). A post processing property is handled
 	 * by method
-	 * {@link PepperModule#after(org.corpus_tools.salt.graph.Identifier)}
-	 * after
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
-	 * is called.
+	 * {@link PepperModule#after(org.corpus_tools.salt.graph.Identifier)} after
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)} is
+	 * called.
 	 **/
 	public static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + ".after.";
 	/**
@@ -126,6 +121,26 @@ public class PepperModuleProperties implements Serializable {
 	public static final String PROP_AFTER_REPORT_CORPUSGRAPH = PREFIX_PEPPER_AFTER + "reportCorpusGraph";
 
 	/**
+	 * Renames all annotations matching the search template to the new
+	 * namespace, name or value. To rename an annotation, use the following
+	 * syntax:
+	 * "old_namespace::old_name=old_value := new_namespace::new_name=new_value",
+	 * determining the name is mandatory whereas the namespace and value are
+	 * optional. For instance a pos annotation can be renamed as follows:
+	 * "salt::pos:=part-of-speech". A list of renamings must be separated with
+	 * ";".
+	 */
+	public static final String PROP_AFTER_RENAME_ANNOTATIONS = PREFIX_PEPPER_AFTER + "renameAnnos";
+
+	/**
+	 * Removes all annotations matching the search template. Several templates
+	 * are separated by a semicolon. To remove annoattions use the following
+	 * syntax:
+	 * 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value'
+	 */
+	public static final String PROP_AFTER_REMOVE_ANNOTATIONS = PREFIX_PEPPER_AFTER + "removeAnnos";
+
+	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
 	 * with a set of customization properties. These properties are:
 	 * <ul>
@@ -138,6 +153,8 @@ public class PepperModuleProperties implements Serializable {
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class, "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class, "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
 		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_REPORT_CORPUSGRAPH, Boolean.class, "When set to true, prints the corpus graph to standard out after a module has processed it. This property is mainly used for importers, to visualize the created corpus structure. The default value is 'false'.", false, false));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_RENAME_ANNOTATIONS, String.class, "Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: 'old_namespace::old_name=old_value := new_namespace::new_name=new_value', determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: 'salt::pos:=part-of-speech'. A list of renamings must be separated with ';'.", false));
+		addProperty(new PepperModuleProperty<String>(PROP_AFTER_REMOVE_ANNOTATIONS, String.class, "Removes all annotations matching the search template. Several templates are separated by a semicolon. To remove annoattions use the following syntax: 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value' ", false));
 	}
 
 	/**
@@ -191,8 +208,8 @@ public class PepperModuleProperties implements Serializable {
 	public void setPropertyValues(File propFile) {
 		if ((propFile != null) && (propFile.exists())) {
 			Properties props = new Properties();
-			try {
-				props.load(new FileInputStream(propFile));
+			try (FileInputStream f = new FileInputStream(propFile)) {
+				props.load(f);
 			} catch (FileNotFoundException e) {
 				throw new PepperModulePropertyException("Cannot load property file.", e);
 			} catch (IOException e) {
@@ -213,9 +230,8 @@ public class PepperModuleProperties implements Serializable {
 	 */
 	public void setPropertyValues(Properties properties) {
 		if (properties != null) {
-			Set<Object> keys = properties.keySet();
-			for (Object key : keys) {
-				this.setPropertyValue(key.toString(), properties.get(key));
+			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+				this.setPropertyValue(entry.getKey().toString(), entry.getValue());
 			}
 		}
 	}

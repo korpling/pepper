@@ -17,7 +17,6 @@
  */
 package org.corpus_tools.pepper.modules.exceptions;
 
-
 /**
  * Exception is used in case of an exception occurs concerning
  * {@link org.corpus_tools.pepper.modules.PepperModuleProperty} . Such an

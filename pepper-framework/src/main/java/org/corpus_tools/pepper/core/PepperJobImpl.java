@@ -119,7 +119,6 @@ public class PepperJobImpl extends PepperJob {
 		}
 		id = jobId;
 		setSaltProject(SaltFactory.createSaltProject());
-
 	}
 
 	/** The {@link SaltProject} which is converted by this job. **/
@@ -539,10 +538,10 @@ public class PepperJobImpl extends PepperJob {
 	/**
 	 * Imports corpus structures of all registered
 	 * {@link ImportCorpusStructureTest} steps. After calling
-	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}
-	 * , all following modules will be asked, if they want to influence the
-	 * order of importing documents. If this is the case, an order is created
-	 * and put to all {@link PepperImporter} objects. <br/>
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} , all
+	 * following modules will be asked, if they want to influence the order of
+	 * importing documents. If this is the case, an order is created and put to
+	 * all {@link PepperImporter} objects. <br/>
 	 * This method produces as much as {@link SCorpusGraph} objects as
 	 * {@link Step} given in import step list {@link #getImportSteps()}. The
 	 * position of {@link SCorpusGraph} corresponding to {@link PepperImporter}
@@ -609,7 +608,9 @@ public class PepperJobImpl extends PepperJob {
 					String prefix = sDoc.getName();
 					File tmpPath = new File(getConfiguration().getWorkspace().getAbsolutePath() + "/" + getId());
 					if (!tmpPath.exists()) {
-						tmpPath.mkdirs();
+						if (!tmpPath.mkdirs()) {
+							logger.warn("Cannot create folder {}. ", tmpPath);
+						}
 					}
 					try {
 						if (prefix.length() < 3) {
@@ -617,7 +618,7 @@ public class PepperJobImpl extends PepperJob {
 						}
 						docFile = File.createTempFile(prefix, "." + SaltUtil.FILE_ENDING_SALT_XML, tmpPath);
 					} catch (IOException e) {
-						throw new PepperFWException("Cannot store document '" + sDoc.getName() + "' to file '" + ((docFile == null) ? docFile : docFile.getAbsolutePath()) + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
+						throw new PepperFWException("Cannot store document '" + sDoc.getName() + "' to file '" + docFile + "' in folder for temporary files '" + tmpPath + "'. " + e.getMessage(), e);
 					}
 					documentController.setLocation(URI.createFileURI(docFile.getAbsolutePath()));
 					if (!getConfiguration().getKeepDocuments()) {
@@ -638,7 +639,7 @@ public class PepperJobImpl extends PepperJob {
 				i++;
 			}
 			isImportedCorpusStructure = true;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			if (e instanceof PepperException) {
 				throw (PepperException) e;
 			} else {
@@ -861,9 +862,8 @@ public class PepperJobImpl extends PepperJob {
 	 * <li>If the single steps of the job has not already been wired, they will
 	 * be wired.
 	 * <li>
-	 * <li>If
-	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}
-	 * has not already been called, it will be done.
+	 * <li>If {@link PepperImporter#importCorpusStructure(SCorpusGraph)} has not
+	 * already been called, it will be done.
 	 * <li>
 	 * </ul>
 	 */
@@ -871,6 +871,7 @@ public class PepperJobImpl extends PepperJob {
 		if (!inProgress.tryLock()) {
 			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
 		}
+
 		inProgress.lock();
 		try {
 			startTime = System.currentTimeMillis();
@@ -971,7 +972,7 @@ public class PepperJobImpl extends PepperJob {
 				}
 			}
 			status = JOB_STATUS.ENDED;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			status = JOB_STATUS.ENDED_WITH_ERRORS;
 			if (e instanceof PepperException) {
 				throw (PepperException) e;
@@ -1103,8 +1104,8 @@ public class PepperJobImpl extends PepperJob {
 	 *         {@link #getMaxNumberOfDocuments(), false otherwise
 	 */
 	public boolean getPermissionForProcessDoument(DocumentController controller) {
-		numOfDocsLock.lock();
 		if (!MEMORY_POLICY.GREEDY.equals(getMemPolicy())) {
+			numOfDocsLock.lock();
 			try {
 				while (getNumOfActiveDocuments() >= getMaxNumberOfDocuments()) {
 					numOfDocsCondition.await();

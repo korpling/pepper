@@ -35,7 +35,6 @@ import org.corpus_tools.pepper.core.Step;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
-import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
@@ -153,8 +152,8 @@ public class PepperTestUtil {
 	 * first the method
 	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is called. For
 	 * all kinds of fixture, the method
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
-	 * is called for each {@link SDocument} object contained in the variable
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)} is
+	 * called for each {@link SDocument} object contained in the variable
 	 * {@link PepperModule#getSaltProject()}. This method will wait, until each
 	 * {@link ModuleControllerImpl} return having finished the process. <br/>
 	 * To create a test using this method do the following:<br/>
@@ -176,9 +175,7 @@ public class PepperTestUtil {
 		if (fixtures == null) {
 			throw new PepperModuleTestException("Cannot start Pepper modules, because the list of fixtures is not set.");
 		}
-		//
 		Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
-		Collection<PepperManipulator> manipulators = new ArrayList<PepperManipulator>();
 		Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
 
 		/**
@@ -202,8 +199,6 @@ public class PepperTestUtil {
 			// fill importers manipulators and exporters collection
 			if (fixture instanceof PepperImporter) {
 				importers.add((PepperImporter) fixture);
-			} else if (fixture instanceof PepperManipulator) {
-				manipulators.add((PepperManipulator) fixture);
 			} else if (fixture instanceof PepperExporter) {
 				exporters.add((PepperExporter) fixture);
 			}

@@ -277,4 +277,15 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 		return (getName().compareTo(o.getName()));
 	}
 
+	/** This method was overwritten because of a findbugs warning **/
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	/** This method was overwritten because of a findbugs warning **/
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }

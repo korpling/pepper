@@ -28,7 +28,7 @@ This project includes:
   Aether Transport Wagon under Eclipse Public License, Version 1.0
   Aether Utilities under Eclipse Public License, Version 1.0
   AOP alliance under Public Domain
-  Apache Commons Lang under The Apache Software License, Version 2.0
+  Apache Commons Lang under Apache License, Version 2.0
   Apache Felix Framework under The Apache Software License, Version 2.0
   Apache HttpClient under Apache License
   Apache HttpClient Cache under Apache License
@@ -92,3 +92,4 @@ This project includes:
   Woodstox under The Apache License, Version 2.0
   XMLUnit for Java under BSD License
 
+ascii art by Joan G. Stark (http://www.chris.com/ascii/joan/www.geocities.com/SoHo/7373/)

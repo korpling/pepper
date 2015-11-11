@@ -113,7 +113,7 @@ public class SampleManipulator extends PepperManipulatorImpl {
 	 * @author Florian Zipser
 	 * 
 	 */
-	public class SampleMapper extends PepperMapperImpl implements GraphTraverseHandler {
+	public static  class SampleMapper extends PepperMapperImpl implements GraphTraverseHandler {
 		/**
 		 * Creates meta annotations, if not already exists
 		 */
@@ -169,8 +169,8 @@ public class SampleManipulator extends PepperManipulatorImpl {
 			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "sampleTraversal", this);
 
 			// print out computed frequencies
-			for (String key : frequencies.keySet()) {
-				out.append(String.format(format, key, frequencies.get(key)));
+			for (Map.Entry<String, Integer> entry : frequencies.entrySet()) {
+				out.append(String.format(format, entry.getKey(), entry.getValue()));
 			}
 			addProgress((double) (1 / 7));
 			out.append("+---------------------------------+\n");

@@ -1,200 +1,354 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.corpus-tools</groupId>
-  <artifactId>pepper-doc</artifactId>
-  <packaging>pom</packaging>
-  <parent>
-    <groupId>org.corpus-tools</groupId>
-    <artifactId>pepper</artifactId>
-    <relativePath>../pom.xml</relativePath>
-    <version>3.0.0-SNAPSHOT</version>
-  </parent>
-  <scm>
-    <developerConnection>scm:svn:https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/trunk/pepper-doc/</developerConnection>
-    <url>https://korpling.german.hu-berlin.de/svn/saltnpepper/pepper/pepper-doc/</url>
-  </scm>
-  <build>
-  <plugins>
-	  <!-- start: maven site plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <reportPlugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>2.4</version>
-              <configuration>
-                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-              </configuration>
-              <reports>
-                <report>index</report>
-                <report>summary</report>
-                <report>license</report>
-              </reports>
-            </plugin>
-          </reportPlugins>
-        </configuration>
-      </plugin>
-      <!-- end: maven site plugin -->
-      <!-- start: of docbook plugin -->
-      <plugin>
-        <groupId>com.agilejava.docbkx</groupId>
-        <artifactId>docbkx-maven-plugin</artifactId>
-        <version>2.0.14</version>
-        <executions>
-          <execution>
-            <id>pdf</id>
-            <goals>
-              <goal>generate-pdf</goal>
-            </goals>
-            <configuration>
-              <sourceDirectory>${project.build.directory}/docbkx</sourceDirectory>
-              <targetDirectory>${project.build.directory}/manual</targetDirectory>
-              <targetFileExtension>${project.version}.pdf</targetFileExtension>
-              <includes>pepper_usersGuide/pepper_usersGuide.xml, pepper_modulesDevelopersGuide/pepper_modulesDevelopersGuide.xml, pepper_developersGuide.xml</includes>
-              <foCustomization>${basedir}/src/main/docbkx/custom.xsl</foCustomization>
-              <highlightSource>true</highlightSource>
-              <admonGraphics>true</admonGraphics>
-              <admonGraphicsPath>${basedir}/src/main/docbkx/images/docbook/</admonGraphicsPath>
-              <admonGraphicsExtension>.svg</admonGraphicsExtension>
-              <useSvg>true</useSvg>
-              <useExtensions>true</useExtensions>
-              <sectionAutolabel>true</sectionAutolabel>
-              <!-- font configuration -->
-              <bodyFontFamily>DejaVu Serif</bodyFontFamily>
-              <monospaceFontFamily>DejaVu Sans Mono</monospaceFontFamily>
-              <titleFontFamily>DejaVu Sans</titleFontFamily>
-              <fonts>
-                <font>
-                  <name>DejaVu Sans Mono</name>
-                  <style>normal</style>
-                  <weight>normal</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSansMono.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSansMono-metrics.xml</metricsFile>
-                </font>
-                <font>
-                  <name>DejaVu Serif</name>
-                  <style>normal</style>
-                  <weight>normal</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSerif.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSerif-metrics.xml</metricsFile>
-                </font>
-                <font>
-                  <name>DejaVu Serif</name>
-                  <style>italic</style>
-                  <weight>normal</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSerif-Italic.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSerif-Italic-metrics.xml</metricsFile>
-                </font>
-                <font>
-                  <name>DejaVu Serif</name>
-                  <style>normal</style>
-                  <weight>bold</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSerif-Bold.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSerif-Bold-metrics.xml</metricsFile>
-                </font>
-                <font>
-                  <name>DejaVu Serif</name>
-                  <style>italic</style>
-                  <weight>bold</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSerif-BoldItalic.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSerif-BoldItalic-metrics.xml</metricsFile>
-                </font>
-                <font>
-                  <name>DejaVu Sans</name>
-                  <style>normal</style>
-                  <weight>bold</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSans-Bold.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSans-Bold-metrics.xml</metricsFile>
-                </font>
-                <font>
-                  <name>DejaVu Sans</name>
-                  <style>normal</style>
-                  <weight>normal</weight>
-                  <embedFile>${basedir}/src/main/fonts/DejaVuSans.ttf</embedFile>
-                  <metricsFile>${project.build.directory}/fonts/DejaVuSans-metrics.xml</metricsFile>
-                </font>
-              </fonts>
-            </configuration>
-            <phase>site</phase>
-          </execution>
-          <execution>
-            <id>html</id>
-            <goals>
-              <goal>generate-html</goal>
-            </goals>
-            <configuration>
-              <sourceDirectory>${project.build.directory}/docbkx</sourceDirectory>
-              <targetDirectory>${project.build.directory}/manual</targetDirectory>
-              <targetFileExtension>${project.version}.html</targetFileExtension>
-              <includes>manual.xml</includes>
-              <highlightSource>true</highlightSource>
-              <admonGraphics>true</admonGraphics>
-              <admonGraphicsPath>${basedir}/src/main/docbkx/images/docbook/</admonGraphicsPath>
-              <admonGraphicsExtension>.svg</admonGraphicsExtension>
-              <useSvg>true</useSvg>
-              <useExtensions>true</useExtensions>
-              <preProcess>
-                <copy todir="${project.build.directory}/manual/images">
-                  <fileset dir="${basedir}/src/main/docbkx/images">
-                  </fileset>
-                </copy>
-              </preProcess>
-            </configuration>
-            <phase>site</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <xincludeSupported>true</xincludeSupported>
-        </configuration>
-                
-      </plugin>
-      
-      <plugin>
-        <groupId>com.agilejava.docbkx</groupId>
-        <artifactId>docbkx-fop-support</artifactId>
-        <version>2.0.14</version>
-        <executions>
-          <execution>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <sourceDirectory>${basedir}/src/main/fonts/</sourceDirectory>
-              <ansi>false</ansi>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.5</version>
-        <executions>
-          <execution>
-            <id>copy-filter-docbook</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/docbkx</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/src/main/docbkx/</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>             
-            </configuration>            
-          </execution>
-        </executions>
-      </plugin>
-      <!-- end of docbook plugin -->
-    </plugins>
-  </build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.corpus-tools</groupId>
+	<artifactId>pepper-doc</artifactId>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>org.corpus-tools</groupId>
+		<artifactId>pepper</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<site.path>doc-snapshot</site.path>
+		<!-- override in your settings -->
+		<siteMainDirectory>${user.home}</siteMainDirectory>
+		<scmPubCheckoutDirectory>\${siteMainDirectory}/pepper-content-scm</scmPubCheckoutDirectory>
+	</properties>
+	<build>
+		<plugins>
+			<!-- start: maven site plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>2.4</version>
+							<configuration>
+								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+							</configuration>
+							<reports>
+								<report>index</report>
+								<report>summary</report>
+								<report>license</report>
+							</reports>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
+			<!-- end: maven site plugin -->
+			<!-- start: of docbook plugin -->
+			<plugin>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-maven-plugin</artifactId>
+				<version>2.0.14</version>
+				<executions>
+					<execution>
+						<id>pdf</id>
+						<goals>
+							<goal>generate-pdf</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.build.directory}/docbkx</sourceDirectory>
+							<targetDirectory>${project.build.directory}/manual</targetDirectory>
+							<targetFileExtension>${project.version}.pdf</targetFileExtension>
+							<includes>pepper_usersGuide/pepper_usersGuide.xml,
+								pepper_modulesDevelopersGuide/pepper_modulesDevelopersGuide.xml,
+								pepper_developersGuide.xml</includes>
+							<foCustomization>${basedir}/src/main/docbkx/custom.xsl</foCustomization>
+							<highlightSource>true</highlightSource>
+							<admonGraphics>true</admonGraphics>
+							<admonGraphicsPath>${basedir}/src/main/docbkx/images/docbook/</admonGraphicsPath>
+							<admonGraphicsExtension>.svg</admonGraphicsExtension>
+							<useSvg>true</useSvg>
+							<useExtensions>true</useExtensions>
+							<sectionAutolabel>true</sectionAutolabel>
+							<!-- font configuration -->
+							<bodyFontFamily>DejaVu Serif</bodyFontFamily>
+							<monospaceFontFamily>DejaVu Sans Mono</monospaceFontFamily>
+							<titleFontFamily>DejaVu Sans</titleFontFamily>
+							<fonts>
+								<font>
+									<name>DejaVu Sans Mono</name>
+									<style>normal</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSansMono.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSansMono-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>DejaVu Serif</name>
+									<style>normal</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSerif.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSerif-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>DejaVu Serif</name>
+									<style>italic</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSerif-Italic.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSerif-Italic-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>DejaVu Serif</name>
+									<style>normal</style>
+									<weight>bold</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSerif-Bold.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSerif-Bold-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>DejaVu Serif</name>
+									<style>italic</style>
+									<weight>bold</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSerif-BoldItalic.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSerif-BoldItalic-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>DejaVu Sans</name>
+									<style>normal</style>
+									<weight>bold</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSans-Bold.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSans-Bold-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>DejaVu Sans</name>
+									<style>normal</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/main/fonts/DejaVuSans.ttf</embedFile>
+									<metricsFile>${project.build.directory}/fonts/DejaVuSans-metrics.xml</metricsFile>
+								</font>
+							</fonts>
+						</configuration>
+						<phase>site</phase>
+					</execution>
+					<execution>
+						<id>html</id>
+						<goals>
+							<goal>generate-html</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.build.directory}/docbkx</sourceDirectory>
+							<targetDirectory>${project.build.directory}/manual</targetDirectory>
+							<targetFileExtension>${project.version}.html</targetFileExtension>
+							<includes>manual.xml</includes>
+							<highlightSource>true</highlightSource>
+							<admonGraphics>true</admonGraphics>
+							<admonGraphicsPath>${basedir}/src/main/docbkx/images/docbook/</admonGraphicsPath>
+							<admonGraphicsExtension>.svg</admonGraphicsExtension>
+							<useSvg>true</useSvg>
+							<useExtensions>true</useExtensions>
+							<preProcess>
+								<copy todir="${project.build.directory}/manual/images">
+									<fileset dir="${basedir}/src/main/docbkx/images">
+									</fileset>
+								</copy>
+							</preProcess>
+						</configuration>
+						<phase>site</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<xincludeSupported>true</xincludeSupported>
+				</configuration>
+
+			</plugin>
+
+			<plugin>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-fop-support</artifactId>
+				<version>2.0.14</version>
+				<executions>
+					<execution>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/src/main/fonts/</sourceDirectory>
+							<ansi>false</ansi>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy-filter-docbook</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/docbkx</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/docbkx/</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- end of docbook plugin -->
+		</plugins>
+
+		<!-- start doxygen -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
+					<configuration>
+						<outputDirectory>${basedir}/target/doxygen-generated</outputDirectory>
+						<resources>
+							<resource>
+								<directory>src/doxygen/</directory>
+								<filtering>true</filtering>
+							</resource>
+						</resources>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-publish-plugin</artifactId>
+					<version>1.1</version>
+					<extensions>true</extensions>
+					<configuration>
+						<pubScmUrl>scm:git:ssh://git@github.com:korpling/salt.git</pubScmUrl>
+						<scmBranch>gh-pages</scmBranch>
+						<content>${project.build.directory}/doxygen/</content>
+						<ignorePathsToDelete>
+							<path>doc</path>
+							<path>${site.path}</path>
+							<path>index.html</path>
+							<path>doxygen_sqlite3.db</path>
+							<path>.gitignore</path>
+						</ignorePathsToDelete>
+						<tryUpdate>true</tryUpdate>
+						<checkoutDirectory>${scmPubCheckoutDirectory}</checkoutDirectory>
+						<checkinComment>update documentation for version
+							${project.version} (${site.path})
+							Original revision is
+							${buildNumber}.</checkinComment>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<!-- end doxygen -->
+	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<site.path>doc</site.path>
+			</properties>
+		</profile>
+
+		<!-- preview releases still push their documentation to doc snapshot -->
+		<profile>
+			<id>preview</id>
+			<properties>
+				<site.path>${site.path}</site.path>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>doxygen</id>
+			<build>
+				<plugins>
+					<!-- make sure all paths are correct by replacing the properties -->
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- use the filtered source files to actually generate the doxygen 
+						output -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.4.0</version>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>doxygen</executable>
+							<workingDirectory>${project.build.directory}/doxygen/</workingDirectory>
+							<arguments>
+								<argument>${project.build.directory}/doxygen-generated/Doxyfile</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+
+					<!-- some doxygen versions don't delete the huge doxygen_sqlite3.db 
+						file -->
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>${maven-clean-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>remove-doxygen-sqlitedb</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+									<filesets>
+										<fileset>
+											<directory>${project.build.directory}/doxygen/</directory>
+											<includes>
+												<include>**/doxygen_sqlite3.db</include>
+											</includes>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- upload the generated documentation to GitHub -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-scm-publish-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>scm-publish</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>publish-scm</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

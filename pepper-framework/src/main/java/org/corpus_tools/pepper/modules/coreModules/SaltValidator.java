@@ -70,7 +70,7 @@ public class SaltValidator extends PepperManipulatorImpl {
 	 * {@link SCorpus} object or a {@link SDocument} object.
 	 */
 
-	public class ValidatorMapper extends PepperMapperImpl {
+	public static class ValidatorMapper extends PepperMapperImpl {
 		/**
 		 * <ul>
 		 * <li>Checks whether each {@link SCorpus} object contains either a

@@ -25,6 +25,7 @@ import java.io.File;
 
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.core.PepperParamsReader;
+import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,8 +46,11 @@ public class PepperParamsReaderTest {
 	public void setUp() {
 		setFixture(new PepperParamsReader());
 		File tmpDir = new File(getTmPath());
-		if (!tmpDir.exists())
-			tmpDir.mkdirs();
+		if (!tmpDir.exists()) {
+			if (!tmpDir.mkdirs()) {
+				throw new PepperTestException("Cannot create folder '" + tmpDir + "'. ");
+			}
+		}
 	}
 
 	public String getTmPath() {

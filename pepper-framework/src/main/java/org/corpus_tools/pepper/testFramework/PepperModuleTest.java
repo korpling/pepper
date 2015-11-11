@@ -36,6 +36,8 @@ import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is an abstract helper class to create own test classes for any
@@ -48,6 +50,7 @@ import org.junit.Test;
  *
  */
 public abstract class PepperModuleTest {
+	private static final Logger logger = LoggerFactory.getLogger("Pepper");
 	private URI resourceURI = null;
 
 	protected PepperModule fixture = null;
@@ -159,8 +162,8 @@ public abstract class PepperModuleTest {
 	 * environment. In case of the fixture is {@link PepperImporter}, first the
 	 * method {@link PepperImporter#importCorpusStructure(SCorpusGraph)} is
 	 * called. For all kinds of fixture, the method
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
-	 * is called for each {@link SDocument} object contained in the variable
+	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)} is
+	 * called for each {@link SDocument} object contained in the variable
 	 * {@link PepperModule#getSaltProject()}. This method will wait, until each
 	 * {@link ModuleControllerImpl} return having finished the process. <br/>
 	 * To create a test using this method do the following:<br/>
@@ -207,7 +210,9 @@ public abstract class PepperModuleTest {
 		if (resourceURI != null) {
 			File resourceDir = new File(resourceURI.toFileString());
 			if (!resourceDir.exists()) {
-				resourceDir.mkdirs();
+				if (!resourceDir.mkdirs()) {
+					logger.warn("Cannot create folder {}. ", resourceDir);
+				}
 			}
 			this.resourceURI = resourceURI;
 			if (getFixture() != null) {

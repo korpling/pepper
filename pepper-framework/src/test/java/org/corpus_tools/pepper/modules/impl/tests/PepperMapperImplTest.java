@@ -24,7 +24,6 @@ import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SDocument;
-import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class PepperMapperImplTest {
 	@Test
 	public void testSetGetSDocument() {
 		SDocument sDocument = SaltFactory.createSDocument();
-		Identifier sElementId = SaltFactory.createIdentifier(sDocument, "d1");
+		SaltFactory.createIdentifier(sDocument, "d1");
 		getFixture().setDocument(sDocument);
 
 		assertEquals(sDocument, getFixture().getDocument());
@@ -58,7 +57,7 @@ public class PepperMapperImplTest {
 	@Test
 	public void testSetGetSCorpus() {
 		SCorpus sCorpus = SaltFactory.createSCorpus();
-		Identifier sElementId = SaltFactory.createIdentifier(sCorpus, "c1");
+		SaltFactory.createIdentifier(sCorpus, "c1");
 		getFixture().setCorpus(sCorpus);
 
 		assertEquals(sCorpus, getFixture().getCorpus());

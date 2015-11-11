@@ -149,18 +149,13 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 		xml.writeCData(data);
 	}
 
-	/** states if current element contains textual content **/
-	boolean textualContent = false;
-
 	@Override
 	public void writeCharacters(String text) throws XMLStreamException {
-		textualContent = true;
 		xml.writeCharacters(text);
 	}
 
 	@Override
 	public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
-		textualContent = true;
 		xml.writeCharacters(text, start, len);
 	}
 
@@ -171,7 +166,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent = false;
 		}
 		xml.writeComment(data);
 	}
@@ -193,7 +187,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent = false;
 		}
 		xml.writeEmptyElement(localName);
 	}
@@ -205,7 +198,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent = false;
 		}
 		xml.writeEmptyElement(namespaceURI, localName);
 	}
@@ -217,7 +209,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent = false;
 		}
 		xml.writeEmptyElement(prefix, localName, namespaceURI);
 	}
@@ -235,7 +226,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 			for (int i = 0; i < depth; i++) {
 				writeCharacters(INTEND);
 			}
-			textualContent = false;
 		}
 		xml.writeEndElement();
 	}
@@ -283,7 +273,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 				writeCharacters(INTEND);
 			}
 			depth++;
-			textualContent = false;
 		}
 		xml.writeStartElement(localName);
 	}
@@ -296,7 +285,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 				writeCharacters(INTEND);
 			}
 			depth++;
-			textualContent = false;
 		}
 		xml.writeStartElement(localName, localName);
 	}
@@ -309,7 +297,6 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 				writeCharacters(INTEND);
 			}
 			depth++;
-			textualContent = false;
 		}
 		xml.writeStartElement(prefix, localName, namespaceURI);
 	}

@@ -173,17 +173,17 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		getFixture().updateStatus(moduleControllers.get(3), DOCUMENT_STATUS.IN_PROGRESS);
 		getFixture().updateStatus(moduleControllers.get(4), DOCUMENT_STATUS.IN_PROGRESS);
 		assertEquals(DOCUMENT_STATUS.IN_PROGRESS, getFixture().getGlobalStatus());
-		assertTrue(new Double(0.2).equals(getFixture().getProgress()));
+		assertTrue(Double.valueOf(0.2).equals(getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(1), DOCUMENT_STATUS.COMPLETED);
-		assertTrue(new Double(0.4).equals(getFixture().getProgress()));
+		assertTrue(Double.valueOf(0.4).equals(getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(2), DOCUMENT_STATUS.COMPLETED);
 		// exception because of division problem
-		assertTrue(new Double(0.6) < getFixture().getProgress() && (new Double(0.61) > getFixture().getProgress()));
+		assertTrue(Double.valueOf(0.6) < getFixture().getProgress() && (Double.valueOf(0.61) > getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(3), DOCUMENT_STATUS.COMPLETED);
-		assertTrue(new Double(0.8).equals(getFixture().getProgress()));
+		assertTrue(Double.valueOf(0.8).equals(getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(4), DOCUMENT_STATUS.COMPLETED);
 		assertEquals(DOCUMENT_STATUS.COMPLETED, getFixture().getGlobalStatus());
-		assertTrue(new Double(1).equals(getFixture().getProgress()));
+		assertTrue(Double.valueOf(1).equals(getFixture().getProgress()));
 	}
 
 	/**

@@ -193,12 +193,13 @@ public class PepperOSGiRunner implements Runnable {
 						job.convert();
 					} finally {
 						observer.setStop(true);
+						logger.info(job.getStatusReport());
 					}
 				}// pepper can be started
 			}
 			millis = System.currentTimeMillis() - millis;
 			logger.info("Conversion ended, and needed: " + millis + " ms");
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			logger.info(PepperUtil.breakString("Launching of pepper-osgi-runner ended with errors (the stack trace is printed out to 'System.err'):"));
 			logger.info(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
 			if (e instanceof PepperException) {

@@ -125,7 +125,7 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		return (mapper);
 	}
 
-	private class SaltXMLMapper extends PepperMapperImpl {
+	private static class SaltXMLMapper extends PepperMapperImpl {
 		/**
 		 * {@inheritDoc PepperMapper#setDocument(SDocument)}
 		 * 
