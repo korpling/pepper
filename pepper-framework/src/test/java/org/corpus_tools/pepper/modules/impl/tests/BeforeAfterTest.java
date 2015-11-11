@@ -92,7 +92,7 @@ public class BeforeAfterTest {
 	@Test
 	public void testPropAddSLayer() {
 		SDocument sDoc = SaltFactory.createSDocument();
-		SampleGenerator.createSDocumentStructure(sDoc);
+		SampleGenerator.createDocumentStructure(sDoc);
 		int layersBefore = sDoc.getDocumentGraph().getLayers().size();
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
 		SaltFactory.createIdentifier(sDoc, "doc1");
@@ -145,7 +145,7 @@ public class BeforeAfterTest {
 	@Test
 	public void test_PropAddSLayer() {
 		SDocument sDoc = SaltFactory.createSDocument();
-		SampleGenerator.createSDocumentStructure(sDoc);
+		SampleGenerator.createDocumentStructure(sDoc);
 		int layersBefore = sDoc.getDocumentGraph().getLayers().size();
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
 		SaltFactory.createIdentifier(sDoc, "doc1");

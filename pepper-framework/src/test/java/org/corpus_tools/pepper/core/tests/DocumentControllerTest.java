@@ -253,7 +253,7 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		}
 		SDocument sDocument = SaltFactory.createSDocument();
 		sDocument.setName("myDocument");
-		SampleGenerator.createSDocumentStructure(sDocument);
+		SampleGenerator.createDocumentStructure(sDocument);
 		getFixture().setDocument(sDocument);
 		getFixture().setLocation(URI.createFileURI(File.createTempFile(sDocument.getName(), "." + SaltUtil.FILE_ENDING_SALT_XML).getAbsolutePath()));
 
