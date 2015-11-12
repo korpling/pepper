@@ -83,7 +83,7 @@ public class PepperStarter {
 	 * in and outside of OSGi. This could be removed, when there is a better way
 	 * to detect the current Pepper version automatically.
 	 */
-	public static final String PEPPER_VERSION = "2.1.2";
+	public static final String PEPPER_VERSION = "2.1.3-SNAPSHOT";
 
 	/**
 	 * A logger for logging messages.

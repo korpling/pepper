@@ -34,6 +34,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -47,6 +48,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.launch.Framework;
+import org.osgi.framework.launch.FrameworkFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +79,7 @@ import de.hu_berlin.german.korpling.saltnpepper.pepper.util.XMLStreamWriter;
  * 
  * @author Florian Zipser
  * @author Martin Klotz
+ * @author Stephan Druskat
  * 
  */
 public class PepperOSGiConnector implements Pepper, PepperConnector {
@@ -198,8 +202,21 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		frameworkProperties.put(EclipseStarter.PROP_NOSHUTDOWN, "true");
 		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 
-		EclipseStarter.setInitialProperties(frameworkProperties);
-		bc = EclipseStarter.startup(new String[] {}, null);
+		/* Use implementation-independent OSGi framework launching API* to be
+		 * able to launch more than one framework instance. This might be 
+		 * needed by library consumers which are running Pepper from within
+		 * an OSGi framework (e.g., Atomic).
+		 * 
+		 * The framework launching API uses the Java SPI mechanism to load 
+		 * a “framework factory”. This assumes that there is an R4.1-compliant 
+		 * OSGi framework on the classpath.
+		 * 
+		 * *Instead of EclipseStarter.
+		*/ 
+		FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
+		Framework oSGiframework = frameworkFactory.newFramework(frameworkProperties);
+		oSGiframework.start();
+		bc = oSGiframework.getBundleContext();
 
 		return bc;
 	}
