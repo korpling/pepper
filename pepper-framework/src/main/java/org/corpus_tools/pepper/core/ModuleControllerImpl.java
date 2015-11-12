@@ -564,10 +564,15 @@ public class ModuleControllerImpl implements ModuleController {
 
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
 		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
+		
+		// make sure the document graph is not held in memory any longer
+		documentController.sendToSleep();
+		
 		// if document is not processed any further, release slot
 		if (getJob() != null) {
 			getJob().releaseDocument(documentController);
 		}
+		
 		// removes document controller of list of to be processed document
 		// controllers
 		getControllList().remove(documentController);
