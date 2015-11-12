@@ -55,7 +55,7 @@ public interface DocumentController {
 	 * 
 	 * @return document id
 	 */
-	public Identifier getsDocumentId();
+	public Identifier getDocumentId();
 
 	/**
 	 * Returns a global unique (inside one Salt project) id for the contained

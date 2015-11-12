@@ -61,34 +61,34 @@ public class DocumentControllerImpl implements DocumentController {
 	 * {@link DOCUMENT_STATUS} will be set to
 	 * {@link DOCUMENT_STATUS#NOT_STARTED}.
 	 * 
-	 * @param sDocument
+	 * @param document
 	 *            {@link SDocument} object which is controlled by this object
 	 */
-	public DocumentControllerImpl(SDocument sDocument) {
-		setDocument(sDocument);
+	public DocumentControllerImpl(SDocument document) {
+		setDocument(document);
 		globalStatus = DOCUMENT_STATUS.NOT_STARTED;
 	}
 
 	/**
 	 * The {@link SDocument} object, to which this object belongs to
 	 */
-	private volatile SDocument sDocument = null;
+	private volatile SDocument document = null;
 
 	/** {@inheritDoc} **/
 	@Override
 	public SDocument getDocument() {
-		return sDocument;
+		return document;
 	}
 
 	/** {@inheritDoc} **/
 	@Override
 	public void setDocument(SDocument sDocument) {
-		this.sDocument = sDocument;
+		this.document = sDocument;
 	}
 
 	/** {@inheritDoc} **/
 	@Override
-	public Identifier getsDocumentId() {
+	public Identifier getDocumentId() {
 		if (getDocument() == null)
 			return (null);
 		return getDocument().getIdentifier();
@@ -97,7 +97,7 @@ public class DocumentControllerImpl implements DocumentController {
 	/** {@inheritDoc} **/
 	@Override
 	public String getGlobalId() {
-		String globalId = SaltUtil.getGlobalId(getsDocumentId());
+		String globalId = SaltUtil.getGlobalId(getDocumentId());
 		return (globalId);
 	}
 
@@ -163,10 +163,10 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	protected void sleep() {
 		if (getDocument() == null) {
-			throw new PepperFWException("Cannot send SDocument to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
+			throw new PepperFWException("Cannot send document to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
 		if (getLocation() == null) {
-			throw new PepperFWException("Cannot send SDocument to sleep, since no location to store document '" + getsDocumentId() + "' is set.");
+			throw new PepperFWException("Cannot send document to sleep, since no location to store document '" + getDocumentId() + "' is set.");
 		}
 		sleepLock.lock();
 		try {
@@ -175,7 +175,7 @@ public class DocumentControllerImpl implements DocumentController {
 				numOfNodes = getDocument().getDocumentGraph().getNodes().size();
 				numOfRelations = getDocument().getDocumentGraph().getRelations().size();
 				getDocument().saveDocumentGraph(getLocation());
-				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltUtil.getGlobalId(getsDocumentId()));
+				logger.debug("[Pepper] Sent document '{}' to sleep. ", SaltUtil.getGlobalId(getDocumentId()));
 			}
 		} finally {
 			sleepLock.unlock();
@@ -204,15 +204,15 @@ public class DocumentControllerImpl implements DocumentController {
 	@Override
 	public void awake() {
 		if (getDocument() == null) {
-			throw new PepperFWException("Cannot send SDocument to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
+			throw new PepperFWException("Cannot send document to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
 		sleepLock.lock();
 		try {
 			getDocument().loadDocumentGraph(getLocation());
 			aSleep = false;
-			logger.debug("[Pepper] woke up document '{}'. ", SaltUtil.getGlobalId(getsDocumentId()));
+			logger.debug("[Pepper] woke up document '{}'. ", SaltUtil.getGlobalId(getDocumentId()));
 		} catch (Exception e) {
-			throw new PepperFWException("Cannot awake the document '" + getsDocumentId().getId() + "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
+			throw new PepperFWException("Cannot awake the document '" + getDocumentId().getId() + "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
 		} finally {
 			sleepLock.unlock();
 		}
@@ -379,7 +379,7 @@ public class DocumentControllerImpl implements DocumentController {
 				currentModuleController = null;
 				detailedStatus.setStatus(status);
 			} else {
-				throw new PepperFWException("Cannot update status of sDocument '" + getGlobalId() + "' for module controller '" + moduleController + "', because the level of current status '" + detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
+				throw new PepperFWException("Cannot update status of document '" + getGlobalId() + "' for module controller '" + moduleController + "', because the level of current status '" + detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
 			}
 			this.updateGlobalStatus();
 		}
@@ -510,7 +510,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	public String getStatusReport() {
 		StringBuilder retVal = new StringBuilder();
-		retVal.append(getsDocumentId());
+		retVal.append(getDocumentId());
 		retVal.append("..........");
 		retVal.append("(");
 		retVal.append(getProcessingTime());
