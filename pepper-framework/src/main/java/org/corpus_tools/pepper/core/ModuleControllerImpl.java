@@ -294,7 +294,7 @@ public class ModuleControllerImpl implements ModuleController {
 			return (future);
 		}
 	}
-	
+
 	/**
 	 * A lock determining, whether this object currently is busy with importing
 	 * corpus structure or importing document structure.
@@ -408,17 +408,15 @@ public class ModuleControllerImpl implements ModuleController {
 
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
 		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
-		
+
 		// make sure the document graph is not held in memory any longer
-//		if(documentController.getLocation() != null) {
-			documentController.sendToSleep();
-//		}
-		
+		documentController.sendToSleep();
+
 		// if document is not processed any further, release slot
 		if (getJob() != null) {
 			getJob().releaseDocument(documentController);
 		}
-		
+
 		// removes document controller of list of to be processed document
 		// controllers
 		getControllList().remove(documentController);
