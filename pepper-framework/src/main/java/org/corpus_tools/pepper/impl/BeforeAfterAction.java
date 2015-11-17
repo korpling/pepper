@@ -374,6 +374,13 @@ public class BeforeAfterAction {
 						renameAnnotations(id, (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue());
 					}
 				}
+				if ((Boolean)getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_TOKENIZE).getValue()) {
+					//remove is also done by rename
+					
+					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
+						((SDocument) id.getIdentifiableElement()).getDocumentGraph().tokenize();
+					}
+				}
 			}
 		}
 	}

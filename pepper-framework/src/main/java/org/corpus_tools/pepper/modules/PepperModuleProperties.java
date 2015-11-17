@@ -136,7 +136,10 @@ public class PepperModuleProperties implements Serializable {
 	 * 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value'
 	 */
 	public static final String PROP_AFTER_REMOVE_ANNOTATIONS = PREFIX_PEPPER_AFTER + "removeAnnos";
-
+	/**
+	 * Tokenizes all primary data in the document structrue.
+	 */
+	public static final String PROP_AFTER_TOKENIZE = PREFIX_PEPPER_AFTER + "tokenize";
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
 	 * with a set of customization properties. These properties are:
@@ -152,6 +155,7 @@ public class PepperModuleProperties implements Serializable {
 		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_REPORT_CORPUSGRAPH, Boolean.class, "When set to true, prints the corpus graph to standard out after a module has processed it. This property is mainly used for importers, to visualize the created corpus structure. The default value is 'false'.", false, false));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_RENAME_ANNOTATIONS, String.class, "Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: 'old_namespace::old_name=old_value := new_namespace::new_name=new_value', determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: 'salt::pos:=part-of-speech'. A list of renamings must be separated with ';'.", false));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_REMOVE_ANNOTATIONS, String.class, "Removes all annotations matching the search template. Several templates are separated by a semicolon. To remove annoattions use the following syntax: 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value' ", false));
+		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_TOKENIZE, Boolean.class, "Tokenizes all primary data in the document structrue.", false, false));
 	}
 
 	/**
