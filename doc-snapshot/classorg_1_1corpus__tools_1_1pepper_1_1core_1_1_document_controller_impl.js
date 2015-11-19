@@ -1,11 +1,12 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl =
 [
     [ "DocumentControllerImpl", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a464eff1bad11cfd84d77e3af6be88a0e", null ],
-    [ "DocumentControllerImpl", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#abe2b291a7b8779ccd9577df2ad0c6389", null ],
+    [ "DocumentControllerImpl", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a28986eb4bb03f8a99638ef4a99c9d323", null ],
     [ "addModuleControllers", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a3cf3c74d8ff46bf2df40f6c67fa32040", null ],
     [ "awake", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a49346a16ecae61f91c40085d6d24052c", null ],
     [ "getCurrentModuleController", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a01355459c2831749616b0d60379e196d", null ],
     [ "getDocument", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a10efb5e33ce5bac9d3d9e460aca72df6", null ],
+    [ "getDocumentId", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#aec429a3befa1a86d4a6763d498e8960d", null ],
     [ "getGlobalId", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a1a696d2d6e5d3e48427dc5631c37cb19", null ],
     [ "getGlobalStatus", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a1cd19f75ee52679013d4f6296608e2fe", null ],
     [ "getLocation", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a95c7926a0acbd99d6bb8b99245dde88e", null ],
@@ -13,7 +14,6 @@ var classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl =
     [ "getNumOfProcessingModules", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#aa712510c0ce19898fbd3b54a89e1c806", null ],
     [ "getProcessingTime", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a36c420052e6615e454a901cd13f88257", null ],
     [ "getProgress", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a495190e974227ed05e6faa81734fa708", null ],
-    [ "getsDocumentId", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a03d632198f54b483b005e412f3c0fa45", null ],
     [ "getSize_nodes", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a1738884cd0fe094a8167619c3e50711d", null ],
     [ "getSize_relations", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a3768a85579dee741ba27ce189775c54c", null ],
     [ "getStatusReport", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#ad5d2f05e14cf9a448cd247b1fbf0d83f", null ],

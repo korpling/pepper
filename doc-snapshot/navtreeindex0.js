@@ -248,6 +248,6 @@ var NAVTREEINDEX0 =
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#afccf2589538ec7fbb673535f332ee8da":[2,0,0,0,0,3,0,11],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html":[2,0,0,0,0,3,1],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a01355459c2831749616b0d60379e196d":[2,0,0,0,0,3,1,4],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a03d632198f54b483b005e412f3c0fa45":[2,0,0,0,0,3,1,13],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a0da4e82bc1b94784bdc5fddbab128fd2":[2,0,0,0,0,3,1,24]
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a0da4e82bc1b94784bdc5fddbab128fd2":[2,0,0,0,0,3,1,24],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a10efb5e33ce5bac9d3d9e460aca72df6":[2,0,0,0,0,3,1,5]
 };
