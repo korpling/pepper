@@ -1,0 +1,11 @@
+<container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
+  <component name="ModuleResolverComponent" enabled="true" immediate="true" activate="activate">
+    <implementation class="org.corpus_tools.pepper.core.ModuleResolverImpl"/>
+    <service servicefactory="false">
+      <provide interface="org.corpus_tools.pepper.core.ModuleResolver"/>
+    </service>
+    <reference name="org.osgi.service.component.ComponentFactory/(component.factory=PepperExporterComponentFactory)" interface="org.osgi.service.component.ComponentFactory" cardinality="0..n" policy="dynamic" target="(component.factory=PepperExporterComponentFactory)" bind="addPepperExporterComponentFactory" unbind="removePepperExporterComponentFactory"/>
+    <reference name="org.osgi.service.component.ComponentFactory/(component.factory=PepperImporterComponentFactory)" interface="org.osgi.service.component.ComponentFactory" cardinality="0..n" policy="dynamic" target="(component.factory=PepperImporterComponentFactory)" bind="addPepperImporterComponentFactory" unbind="removePepperImporterComponentFactory"/>
+    <reference name="org.osgi.service.component.ComponentFactory/(component.factory=PepperManipulatorComponentFactory)" interface="org.osgi.service.component.ComponentFactory" cardinality="0..n" policy="dynamic" target="(component.factory=PepperManipulatorComponentFactory)" bind="addPepperManipulatorComponentFactory" unbind="removePepperManipulatorComponentFactory"/>
+  </component>
+</container>

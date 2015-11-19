@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<pepper-job id="myJob" version="1.0">
+	<importer formatName="anyFormat" formatVersion="1.0" path="/somewhere/">
+		<customization>
+			<property key="prop2">5
+			</property>
+			<property key="prop1">val1
+			</property>
+		</customization>
+	</importer>
+	<manipulator name="anyManipulator">
+		<customization>
+			<property key="prop2">5
+			</property>
+			<property key="prop1">val1
+			</property>
+		</customization>
+	</manipulator>
+	<exporter name="anyExporter" path="/somewhere/">
+		<customization>
+			<property key="prop2">5
+			</property>
+			<property key="prop1">val1
+			</property>
+		</customization>
+	</exporter>
+</pepper-job>

@@ -1,0 +1,10 @@
+<container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
+  <component name="SaltXMLImporterComponent" factory="PepperImporterComponentFactory" activate="activate">
+    <implementation class="org.corpus_tools.pepper.modules.coreModules.SaltXMLImporter"/>
+    <service>
+      <provide interface="java.lang.Thread$UncaughtExceptionHandler"/>
+      <provide interface="org.corpus_tools.pepper.modules.PepperImporter"/>
+      <provide interface="org.corpus_tools.pepper.modules.PepperModule"/>
+    </service>
+  </component>
+</container>
