@@ -201,7 +201,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 		if (supportedFormats == null) {
 			supportedFormats = new Vector<FormatDesc>();
 		}		
-		return supportedFormats;
+		return Collections.unmodifiableList(supportedFormats);
 	}
 
 	/**
@@ -226,6 +226,17 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 		retVal.setFormatReference(formatReference);
 		getSupportedFormats().add(retVal);
 		return (retVal);
+	}
+	
+	public FormatDesc removeSupportedFormat(String formatName, String formatVersion) {
+		FormatDesc retVal = null;
+		boolean found = false;
+		for (int i=0; i<supportedFormats.size()&&!found; i++){
+			retVal = supportedFormats.get(i);
+			found = retVal.getFormatName().equals(formatName)&&retVal.getFormatVersion().equals(formatVersion);
+		}
+		if (found){supportedFormats.remove(retVal);}
+		return retVal;
 	}
 
 	/**
