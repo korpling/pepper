@@ -10,6 +10,14 @@ import org.eclipse.emf.common.util.URI;
 @XmlRootElement
 public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 
+	public FormatDescMarshallable() {}
+	
+	public FormatDescMarshallable(FormatDesc formatDesc){
+		this.formatName = formatDesc.getFormatName();
+		this.formatReferenceURI = formatDesc.getFormatReference().toString();
+		this.formatVersion = formatDesc.getFormatVersion();
+	}
+	
 	@Override
 	public FormatDesc getPepperObject() {
 		FormatDesc retVal = new FormatDesc();
@@ -17,7 +25,7 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 		retVal.setFormatReference(URI.createURI(formatReferenceURI));
 		retVal.setFormatVersion(formatVersion);
 		return retVal;
-	}
+	}	
 	
 	private String formatName;
 	

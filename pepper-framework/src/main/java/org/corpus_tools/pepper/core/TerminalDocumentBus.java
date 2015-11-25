@@ -60,6 +60,12 @@ public class TerminalDocumentBus extends DocumentBus {
 		super(inputModuleControllerIds, ID_TERMINAL);
 	}
 
+	@Override
+	public DocumentController pop(String outputControllerId, boolean ignorePermissionForDocument) {
+		// ignore the ignorePermissionForDocument parameter
+		return pop(outputControllerId);
+	}
+
 	/**
 	 * Returns a {@link DocumentController} object, which is on first place of
 	 * the internal queue (regarding the FIFO principle). When all registered
@@ -81,8 +87,8 @@ public class TerminalDocumentBus extends DocumentBus {
 			if (queue == null)
 				throw new PepperFWException("Document bus '" + getId() + "' cannot pop a document controller, because there is no entry for module controller '" + outputControllerId + "'.");
 
-			if ((queue.size() == 0) && (!this.isFinished())) {
-				if ((queue.size() == 0) && (!this.isFinished())) {
+			if ((queue.isEmpty()) && (!this.isFinished())) {
+				if ((queue.isEmpty()) && (!this.isFinished())) {
 					waitUntilAllDocumentsArePut.await();
 				}
 			}

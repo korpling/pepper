@@ -5,3 +5,4 @@
 /target/
 /pepper-lib/plugins/*
 /pepper-lib/lib/*
+rebel.xml

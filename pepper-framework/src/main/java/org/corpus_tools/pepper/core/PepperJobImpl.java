@@ -754,7 +754,7 @@ public class PepperJobImpl extends PepperJob {
 		double progressOverAll = 0;
 		int numOfDocuments = 0;
 
-		if (getDocumentControllers().size() == 0) {
+		if (getDocumentControllers().isEmpty()) {
 			retVal.append("- no documents found to display progress -\n");
 		} else {
 

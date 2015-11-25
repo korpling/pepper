@@ -34,9 +34,11 @@ import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SDocument;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.SampleGenerator;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -260,6 +262,7 @@ public class ModuleControllerTest {
 		List<DocumentController> expectedDocumentControllers = new Vector<DocumentController>();
 		for (SDocument sDocument : saltProject.getCorpusGraphs().get(0).getDocuments()) {
 			DocumentController controller = new DocumentControllerImpl();
+			controller.setLocation(URI.createFileURI(PepperTestUtil.getTempPath_static("moduleController").toString()+"/document.salt"));
 			controller.setDocument(sDocument);
 			controller.addModuleControllers(getFixture());
 			expectedDocumentControllers.add(controller);

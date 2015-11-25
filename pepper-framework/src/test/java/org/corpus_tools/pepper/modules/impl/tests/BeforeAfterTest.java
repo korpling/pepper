@@ -22,8 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.corpus_tools.pepper.common.PepperUtil;
@@ -34,10 +37,12 @@ import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.testFramework.PepperModuleTest;
+import org.corpus_tools.salt.SALT_TYPE;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.common.SSpan;
 import org.corpus_tools.salt.common.STextualDS;
 import org.corpus_tools.salt.common.SToken;
 import org.corpus_tools.salt.core.SLayer;
@@ -92,7 +97,7 @@ public class BeforeAfterTest {
 	@Test
 	public void testPropAddSLayer() {
 		SDocument sDoc = SaltFactory.createSDocument();
-		SampleGenerator.createSDocumentStructure(sDoc);
+		SampleGenerator.createDocumentStructure(sDoc);
 		int layersBefore = sDoc.getDocumentGraph().getLayers().size();
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
 		SaltFactory.createIdentifier(sDoc, "doc1");
@@ -145,7 +150,7 @@ public class BeforeAfterTest {
 	@Test
 	public void test_PropAddSLayer() {
 		SDocument sDoc = SaltFactory.createSDocument();
-		SampleGenerator.createSDocumentStructure(sDoc);
+		SampleGenerator.createDocumentStructure(sDoc);
 		int layersBefore = sDoc.getDocumentGraph().getLayers().size();
 		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
 		SaltFactory.createIdentifier(sDoc, "doc1");
@@ -262,7 +267,7 @@ public class BeforeAfterTest {
 		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName("salt", "pos")).getValue());
 		assertEquals("APOS", tok1.getLabel(SaltUtil.createQName(null, "pos")).getValue());
 	}
-	
+
 	/**
 	 * Tests the renaming of annotations by property
 	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
@@ -285,7 +290,7 @@ public class BeforeAfterTest {
 
 		assertEquals(0, tok1.getAnnotations().size());
 	}
-	
+
 	/**
 	 * Tests the renaming of annotations by property
 	 * {@link PepperModuleProperties#PROP_AFTER_RENAME_ANNOTATIONS}. check
@@ -307,5 +312,45 @@ public class BeforeAfterTest {
 		getFixture().after(doc.getIdentifier());
 
 		assertEquals(0, tok1.getAnnotations().size());
+	}
+
+	/**
+	 * Tests the tokenization after a module did it's job. Just a text without
+	 * former tokenization.
+	 */
+	@Test
+	public void test_PropTokenize() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		SampleGenerator.createPrimaryData(doc);
+		assertEquals(0, doc.getDocumentGraph().getTokens().size());
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_TOKENIZE, true);
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().after(doc.getIdentifier());
+
+		assertEquals(11, doc.getDocumentGraph().getTokens().size());
+	}
+
+	/**
+	 * Tests the tokenization after a module did it's job.
+	 */
+	@Test
+	public void test_PropTokenize_WithTokenization() {
+		SDocument doc = SaltFactory.createSDocument();
+		doc.setDocumentGraph(SaltFactory.createSDocumentGraph());
+		STextualDS text = SampleGenerator.createPrimaryData(doc);
+		SToken tok = doc.getDocumentGraph().createToken(text, 0, text.getText().length());
+		assertEquals(1, doc.getDocumentGraph().getTokens().size());
+		SSpan span = doc.getDocumentGraph().createSpan(tok);
+
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_TOKENIZE, true);
+		SaltFactory.createIdentifier(doc, "doc1");
+
+		getFixture().after(doc.getIdentifier());
+
+		assertEquals(11, doc.getDocumentGraph().getTokens().size());
+		assertEquals(10, doc.getDocumentGraph().getOverlappedTokens(span, SALT_TYPE.STEXT_OVERLAPPING_RELATION).size());
 	}
 }

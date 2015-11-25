@@ -225,7 +225,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 				logger.debug(str.toString());
 			}
 		}
-		if (getIdentifier2ResourceTable().size() == 0) {
+		if (getIdentifier2ResourceTable().isEmpty()) {
 			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName(), this.getCorpusDesc().getCorpusPath());
 		}
 		if (!containsDocuments) {

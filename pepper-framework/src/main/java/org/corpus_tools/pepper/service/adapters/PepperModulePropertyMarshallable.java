@@ -3,7 +3,6 @@ package org.corpus_tools.pepper.service.adapters;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlValue;
 
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
@@ -13,6 +12,14 @@ import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
 public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<PepperModuleProperty<PT>>{
 		
 	public PepperModulePropertyMarshallable(){		
+	}
+	
+	public PepperModulePropertyMarshallable(PepperModuleProperty<PT> pepperModuleProperty){
+		this.description = pepperModuleProperty.getDescription();
+		this.name = pepperModuleProperty.getName();		
+		this.required = pepperModuleProperty.isRequired();
+		this.type = pepperModuleProperty.getType();
+		this.value = pepperModuleProperty.getValue();		
 	}
 	
 	@Override

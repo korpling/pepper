@@ -559,7 +559,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			if (documentController == null) {
 				break;
 			}
-			sElementId = documentController.getsDocumentId();
+			sElementId = documentController.getDocumentId();
 			getDocumentId2DC().put(SaltUtil.getGlobalId(sElementId), documentController);
 			// call for using push-method
 			try {

@@ -9,9 +9,11 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
 import org.eclipse.emf.common.util.URI;
 
@@ -22,6 +24,24 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 	public PepperModuleDescMarshallable() {
 		this.supportedFormats = new ArrayList<FormatDescMarshallable>();
 		this.properties = new ArrayList<PepperModulePropertyMarshallable<?>>();
+	}
+	
+	public PepperModuleDescMarshallable(PepperModuleDesc pepperModuleDesc){
+		this();
+		this.desc = pepperModuleDesc.getDesc();
+		this.homepageURI = pepperModuleDesc.getSupplierHomepage().toString();
+		this.moduleType = pepperModuleDesc.getModuleType();
+		this.name = pepperModuleDesc.getName();
+		this.supplierContactURI = pepperModuleDesc.getSupplierContact().toString();
+		this.version = pepperModuleDesc.getVersion();
+		List<FormatDesc> supportedFormats = pepperModuleDesc.getSupportedFormats();
+		for (FormatDesc fDesc : supportedFormats){
+			this.supportedFormats.add(new FormatDescMarshallable(fDesc));
+		}
+		for (String propertyName : pepperModuleDesc.getProperties().getPropertyNames()){
+			PepperModuleProperty<?> property = pepperModuleDesc.getProperties().getProperty(propertyName);
+			this.properties.add(new PepperModulePropertyMarshallable(property));
+		}
 	}
 	
 	@Override
