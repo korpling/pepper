@@ -19,10 +19,6 @@ package org.corpus_tools.pepper.modules;
 
 import java.io.File;
 
-import org.corpus_tools.pepper.service.adapters.PepperModulePropertyMarshallable;
-import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
-import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
-
 /**
  * The class {@link PepperModuleProperty} offers a possibility to describe a
  * property, which is used by a specific {@link PepperModule}. A list of
@@ -39,7 +35,7 @@ import org.corpus_tools.pepper.service.interfaces.PepperServiceReady;
  * @author Florian Zipser
  * 
  */
-public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>, PepperServiceReady {
+public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>> {
 
 	/**
 	 * Creates a {@link PepperModuleProperty} instance and sets its values to
@@ -109,21 +105,6 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue, final boolean required) {
 		this(name, clazz, description, required);
 		this.value = defaultValue;
-	}
-	
-
-
-	@Override
-	public PepperModulePropertyMarshallable<T> createMarshallableInstance() {
-		PepperModulePropertyMarshallable<T> retVal = new PepperModulePropertyMarshallable<T>();
-
-		retVal.setName(name);
-		retVal.setType(clazz);
-		retVal.setDescription(description);
-		retVal.setRequired(required);
-		retVal.setValue(value);
-		
-		return retVal;		
 	}
 
 	/**
