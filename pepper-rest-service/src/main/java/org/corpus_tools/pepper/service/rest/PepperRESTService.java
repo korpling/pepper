@@ -19,6 +19,8 @@ import org.corpus_tools.pepper.service.osgi.Activator;
 @Path("/resource")
 public class PepperRESTService extends Activator implements PepperService{
 
+	public static final String DATA_FORMAT = "application/xml";
+	
 	@GET
 	@Path("compliment")
 	@Produces(MediaType.TEXT_PLAIN)

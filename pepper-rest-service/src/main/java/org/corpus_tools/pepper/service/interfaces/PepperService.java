@@ -7,10 +7,7 @@ import org.apache.commons.lang3.Conversion;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 
 public interface PepperService{
-	
-	/* PROPERTIES */
-	public static final String DATA_FORMAT = "application/xml"; //TODO switch to json, recommended by Thomas: jackson
-
+		
 	/* GETTERS */
 	
 	/** provides a new job id when user wants to create a new job */

@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.common;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -199,7 +200,7 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 	public List<FormatDesc> getSupportedFormats() {
 		if (supportedFormats == null) {
 			supportedFormats = new Vector<FormatDesc>();
-		}
+		}		
 		return supportedFormats;
 	}
 
