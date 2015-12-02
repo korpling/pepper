@@ -82,6 +82,7 @@ This project includes:
   org.eclipse.sisu.plexus under Eclipse Public License, Version 1.0
   osgi.cmpn under Apache License, Version 2.0
   osgi.core under Apache License, Version 2.0
+  pepper-doc under The Apache Software License, Version 2.0
   pepper-framework under The Apache Software License, Version 2.0
   pepper-lib under The Apache Software License, Version 2.0
   Plexus :: Component Annotations under The Apache Software License, Version 2.0
