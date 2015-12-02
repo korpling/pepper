@@ -16,4 +16,4 @@
 @REM
 @REM
 mode con:cols=121
-java -cp lib/*;plugins/*; -Dfile.encoding=UTF-8 -Dlogback.configurationFile=./conf/logback.xml de.hu_berlin.german.korpling.saltnpepper.pepper.cli.PepperStarter %1 %2
+java -cp lib/*;plugins/*; -Dfile.encoding=UTF-8 -Dlogback.configurationFile=./conf/logback.xml org.corpus_tools.pepper.cli.PepperStarter %1 %2

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- False positive Filter for FindBugs -->
+
+<FindBugsFilter>
+  <Match>
+    <Bug pattern="SE_NO_SERIALVERSIONID" />
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+  </Match>  
+    <Match>
+      <Class name="de.hu_berlin.u.saltnpepper.salt.util.internal.persistence.SaltXML10Writer" />
+      <Method name="writeDocumentGraph" />
+      <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
+    <Match>
+      <Class name="de.hu_berlin.u.saltnpepper.salt.util.SaltUtil" />
+      <Method name="save_DOT" />
+      <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
+</FindBugsFilter>
