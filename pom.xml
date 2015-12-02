@@ -11,6 +11,26 @@
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
 	</modules>
+	<developers>
+		<developer>
+			<name>Florian Zipser</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.hu-berlin.de</organizationUrl>
+		</developer>
+		<developer>
+			<name>Martin Klotz</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.hu-berlin.de</organizationUrl>
+		</developer>
+		<developer>
+			<name>Thomas Krause</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.hu-berlin.de</organizationUrl>
+		</developer>
+	</developers>
 	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>
 	<url>http://corpus-tools.org/pepper/</url>
 	<issueManagement>
