@@ -224,11 +224,21 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 		retVal.setFormatName(formatName);
 		retVal.setFormatVersion(formatVersion);
 		retVal.setFormatReference(formatReference);
-		getSupportedFormats().add(retVal);
+		if (supportedFormats==null){
+			supportedFormats = new Vector<FormatDesc>();
+		}
+		supportedFormats.add(retVal);
 		return (retVal);
 	}
 	
-	public FormatDesc removeSupportedFormat(String formatName, String formatVersion) {
+	/**
+	 * Removes the a supported format defined by the given coordinates. It returns the PepperModuleDesc
+	 * resulting from this operation. 
+	 * @param formatName
+	 * @param formatVersion
+	 * @return
+	 */
+	public PepperModuleDesc removeSupportedFormat(String formatName, String formatVersion) {
 		FormatDesc retVal = null;
 		boolean found = false;
 		for (int i=0; i<supportedFormats.size()&&!found; i++){
@@ -236,7 +246,18 @@ public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 			found = retVal.getFormatName().equals(formatName)&&retVal.getFormatVersion().equals(formatVersion);
 		}
 		if (found){supportedFormats.remove(retVal);}
-		return retVal;
+		return this;
+	}
+	
+	/**
+	 * Removes the provided {@link FormatDesc} from the list of supported formats. It returns the PepperModuleDesc
+	 * resulting from this operation.
+	 * @param formatDesc
+	 * @return
+	 */
+	public PepperModuleDesc removeSupportedFormat(FormatDesc formatDesc){
+		supportedFormats.remove(formatDesc);
+		return this;
 	}
 
 	/**
