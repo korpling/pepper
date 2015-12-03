@@ -771,12 +771,12 @@ public class PepperStarter {
 					itemRepo.setTextContent(repository);
 					changes = true;
 				} else {
-					if (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent())) {
-						itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
-						itemRepo.setTextContent(repository);
-						item.getParentNode().appendChild(itemRepo);
-						changes = true;
-					}
+//					if (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent())) {
+//						itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
+//						itemRepo.setTextContent(repository);
+//						item.getParentNode().appendChild(itemRepo);
+//						changes = true;
+//					}
 				}
 				itemGroupId = null;
 				itemRepo = null;
@@ -851,12 +851,9 @@ public class PepperStarter {
 		private String artifactId;
 		/** this string contains the group id */
 		private String groupId;
-		/** this string contains the repository */
-		@Deprecated
-		private String repo;
-		/***/
+		/** contains the current module's snapshot repository, if null, the default will be used */
 		private String snapshotRepository;
-		/***/
+		/** contains the current module's release repository, if null, the default will be used */
 		private String releaseRepository;
 		/** the name of the tag between the modules are listed */
 		private static final String TAG_LIST = "pepperModulesList";
@@ -882,30 +879,17 @@ public class PepperStarter {
 		@Deprecated
 		private static final String TAG_REPO = "repository";
 		/***/
-		private static final String TAG_REPOS = "repositories";
-		/***/
 		private static final String TAG_SNAPSHOT_REPO = "snapshotRepository";
 		/***/
 		private static final String TAG_RELEASE_REPO = "releaseRepository";
-		/***/
-		private static final String TAG_REPO_URL = "url";
-		/** the name of the attribute for the default repository */
-		@Deprecated
-		private static final String ATT_DEFAULTREPO = "defaultRepository";
-		/***/
+		/** the attribute containing the default maven repository for snapshots */
 		private static final String ATT_DEFAULT_SNAPSHOT_REPO = "defaultSnapshotRepository";
-		/***/
+		/** the attribute containing the default maven repository for releases */
 		private static final String ATT_DEFAULT_RELEASE_REPO = "defaultReleaseRepository";
 		/** the name of the attribute for the default groupId */
 		private static final String ATT_DEFAULTGROUPID = "defaultGroupId";
 		/** contains the default groupId for modules where no groupId is defined */
-		private String defaultGroupId;
-		/**
-		 * contains the default repository for modules where no repository is
-		 * defined
-		 */
-		@Deprecated
-		private String defaultRepository;
+		private String defaultGroupId;		
 		/***/
 		private String defaultSnapshotRepository;
 		/***/
@@ -918,7 +902,6 @@ public class PepperStarter {
 			chars = new StringBuilder();
 			groupId = null;
 			artifactId = null;
-			repo = null;
 			snapshotRepository = null;
 			releaseRepository = null;
 		}
@@ -927,7 +910,6 @@ public class PepperStarter {
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			localName = qName.substring(qName.lastIndexOf(":") + 1);
 			if (TAG_LIST.equals(localName)) {
-				defaultRepository = attributes.getValue(ATT_DEFAULTREPO);
 				defaultReleaseRepository = attributes.getValue(ATT_DEFAULT_RELEASE_REPO);
 				defaultSnapshotRepository = attributes.getValue(ATT_DEFAULT_SNAPSHOT_REPO);
 				defaultGroupId = attributes.getValue(ATT_DEFAULTGROUPID);
@@ -951,9 +933,6 @@ public class PepperStarter {
 			} else if (TAG_GROUPID.equals(localName)) {
 				groupId = chars.toString();
 				chars.delete(0, chars.length());
-			} else if (TAG_REPO.equals(localName)) {
-				repo = chars.toString();
-				chars.delete(0, chars.length());
 			} else if (TAG_SNAPSHOT_REPO.equals(localName)){
 				snapshotRepository = chars.toString();
 				chars.delete(0, chars.length());
@@ -969,7 +948,6 @@ public class PepperStarter {
 				chars.delete(0, chars.length());
 				groupId = null;
 				artifactId = null;
-				repo = null;
 				snapshotRepository = null;
 				releaseRepository = null;
 			}
