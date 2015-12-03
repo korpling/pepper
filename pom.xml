@@ -16,19 +16,19 @@
 			<name>Florian Zipser</name>
 			<email>saltnpepper@lists.hu-berlin.de</email>
 			<organization>Humboldt-Universität zu Berlin</organization>
-			<organizationUrl>https://www.hu-berlin.de</organizationUrl>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
 		</developer>
 		<developer>
 			<name>Martin Klotz</name>
 			<email>saltnpepper@lists.hu-berlin.de</email>
 			<organization>Humboldt-Universität zu Berlin</organization>
-			<organizationUrl>https://www.hu-berlin.de</organizationUrl>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
 		</developer>
 		<developer>
 			<name>Thomas Krause</name>
 			<email>saltnpepper@lists.hu-berlin.de</email>
 			<organization>Humboldt-Universität zu Berlin</organization>
-			<organizationUrl>https://www.hu-berlin.de</organizationUrl>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
 		</developer>
 	</developers>
 	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>
@@ -104,7 +104,7 @@
 		<maven-license-plugin.version>1.4.0</maven-license-plugin.version>
 		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
 		<maven-release-plugin.version>2.1</maven-release-plugin.version>
-		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+		<maven-source-plugin.version>2.4</maven-source-plugin.version>
 		<carrot-maven-scr-plugin.version>3.0.3</carrot-maven-scr-plugin.version>
 		<maven-notice-plugin.version>1.0.4</maven-notice-plugin.version>
 		<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
@@ -411,8 +411,6 @@
 								<excludeFilterFile>${basedir}/src/findbugs/excludeFilter.xml</excludeFilterFile>
 							</configuration>
 						</plugin>
-
-
 					</reportPlugins>
 				</configuration>
 			</plugin>
