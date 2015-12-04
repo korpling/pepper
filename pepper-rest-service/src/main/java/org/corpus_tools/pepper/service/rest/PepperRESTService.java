@@ -1,17 +1,14 @@
 package org.corpus_tools.pepper.service.rest;
 
-import java.net.URI;
-import java.util.HashMap;
-
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.corpus_tools.pepper.service.osgi.Activator;
 
@@ -19,7 +16,7 @@ import org.corpus_tools.pepper.service.osgi.Activator;
 @Path("/resource")
 public class PepperRESTService extends Activator implements PepperService{
 
-	public static final String DATA_FORMAT = "application/xml";
+	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;
 	
 	@GET
 	@Path("compliment")
@@ -31,72 +28,17 @@ public class PepperRESTService extends Activator implements PepperService{
 		}
 		return "You said ".concat(input);
 	}
-	
-	@Override
-	public double getProgress(String runningModuleId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public URI getResultsAsZip(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public URI getResultsAsTAR(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public byte[] getWorkflowXML(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	/**
+	 * This method provides a module description, including supported formats, version,
+	 * properties, etc.
+	 */
+	@HEAD
+	@Path("module")
 	@Produces(DATA_FORMAT)
-	public String getModuleDescription(String moduleName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@Consumes(MediaType.TEXT_PLAIN)
 	@Override
-	@Produces(DATA_FORMAT)
-	public String getModuleProperties(String moduleName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Produces(DATA_FORMAT)
-	public String getModuleType(String moduleName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String createNewJob() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String startConversion(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String killJob(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String cancelConversion(String jobId, String DocumentId) {
+	public String moduleDescription(@QueryParam("name") String moduleName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

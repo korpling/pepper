@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.common.tests;
+package org.corpus_tools.pepper.service.adapters.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,6 +45,7 @@ public class MarshallingTests {
 		PepperModuleProperty<Boolean> propertyB = new PepperModuleProperty<Boolean>("boolProp", Boolean.class, "a boolean property", false, true);
 		properties.addProperty(propertyA);
 		properties.addProperty(propertyB);
+		md.setProperties(properties);
 		
 		/*marshalling*/
 		JAXBContext jc = JAXBContext.newInstance(PepperModuleDescMarshallable.class);
@@ -52,7 +53,7 @@ public class MarshallingTests {
 		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, PepperRESTService.DATA_FORMAT);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PrintStream stream = new PrintStream(out);
-		marshaller.marshal(md, stream);
+		marshaller.marshal(new PepperModuleDescMarshallable(md), stream);
 		
 		/*unmarshalling*/
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -75,8 +76,12 @@ public class MarshallingTests {
 		/*module properties*/
 		assertEquals(md.getProperties().getPropertyNames().size(), ummd.getProperties().getPropertyNames().size());
 		for (String propName : md.getProperties().getPropertyNames()){
-			ummd.getProperties().removePropertyValue(propName);
+			PepperModuleProperty<?> exp = md.getProperties().getProperty(propName);
+			PepperModuleProperty<?> is = ummd.getProperties().getProperty(propName);			
+			assertEquals(exp.getDescription(), is.getDescription());
+			assertEquals(exp.getName(), is.getName());
+			assertEquals(exp.getType(), is.getType());
+			assertEquals(exp.getValue(), is.getValue());
 		}
-		assertEquals(0, ummd.getProperties().getPropertyNames().size());
 	}
 }

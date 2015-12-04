@@ -14,7 +14,7 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 	
 	public FormatDescMarshallable(FormatDesc formatDesc){
 		this.formatName = formatDesc.getFormatName();
-		this.formatReferenceURI = formatDesc.getFormatReference().toString();
+		if (formatDesc.getFormatReference()!=null) {this.formatReferenceURI = formatDesc.getFormatReference().toString();}
 		this.formatVersion = formatDesc.getFormatVersion();
 	}
 	

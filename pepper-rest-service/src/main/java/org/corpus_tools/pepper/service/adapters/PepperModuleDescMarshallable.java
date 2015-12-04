@@ -38,9 +38,11 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		for (FormatDesc fDesc : supportedFormats){
 			this.supportedFormats.add(new FormatDescMarshallable(fDesc));
 		}
-		for (String propertyName : pepperModuleDesc.getProperties().getPropertyNames()){
-			PepperModuleProperty<?> property = pepperModuleDesc.getProperties().getProperty(propertyName);
-			this.properties.add(new PepperModulePropertyMarshallable(property));
+		if (pepperModuleDesc.getProperties()!=null){
+			for (String propertyName : pepperModuleDesc.getProperties().getPropertyNames()){
+				PepperModuleProperty<?> property = pepperModuleDesc.getProperties().getProperty(propertyName);
+				this.properties.add(new PepperModulePropertyMarshallable(property));
+			}
 		}
 	}
 	
@@ -48,7 +50,7 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 	public PepperModuleDesc getPepperObject() {
 		PepperModuleDesc retVal = new PepperModuleDesc();
 		for(FormatDescMarshallable format : supportedFormats){
-			retVal.addSupportedFormat(format.getFormatName(), format.getFormatVersion(), URI.createURI(format.getFormatReferenceURI()));
+			retVal.addSupportedFormat(format.getFormatName(), format.getFormatVersion(), format.getFormatReferenceURI()==null? null : URI.createURI(format.getFormatReferenceURI()));
 		}
 		retVal.setName(name);
 		retVal.setModuleType(moduleType);
