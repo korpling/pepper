@@ -220,7 +220,7 @@
 						<outputDirectory>${basedir}/target/doxygen-generated</outputDirectory>
 						<resources>
 							<resource>
-								<directory>src/doxygen/</directory>
+								<directory>src/main/doxygen/</directory>
 								<filtering>true</filtering>
 							</resource>
 						</resources>
