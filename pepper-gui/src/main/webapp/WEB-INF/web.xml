@@ -7,7 +7,7 @@
 	<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 	<init-param>
 		<param-name>UIProvider</param-name>
-		<param-value>de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIProvider</param-value>
+		<param-value>org.corpus-tools.pepper.gui.controller.PepperGUIProvider</param-value>
 	</init-param>
 	<init-param>
 		<description>Application widgetset</description>

@@ -1,4 +1,4 @@
-package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.tests;
+package org.corpus_tools.pepper.gui.controller.tests;
 
 import org.corpus_tools.pepper.gui.controller.PepperGUIController;
 import org.junit.Before;

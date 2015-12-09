@@ -8,8 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.corpus_tools.pepper.connectors.PepperConnector;
-import org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.corpus_tools.pepper.service.osgi.Activator;
 
@@ -17,19 +15,6 @@ import org.corpus_tools.pepper.service.osgi.Activator;
 @Path("/resource")
 public class PepperRESTService extends Activator implements PepperService{
 
-	private PepperOSGiConnector pepper = null;
-	private boolean isInit = false;
-
-	@Override
-	public void setPepper(PepperConnector pepperConnector) {
-		if (!isInit){
-			this.pepper = (PepperOSGiConnector)pepperConnector;
-			isInit = true;
-		}	
-		//else throw exception?
-	}
-
-	
 	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;
 	
 	@GET
