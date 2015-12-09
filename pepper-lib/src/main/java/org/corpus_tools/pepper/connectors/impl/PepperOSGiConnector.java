@@ -205,8 +205,15 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		frameworkProperties.put(EclipseStarter.PROP_INSTALL_AREA, getConfiguration().getTempPath().getCanonicalPath());
 		
 		if (true /*isServer*/){
-			frameworkProperties.put("jetty.home", "./conf/web/");			
-			frameworkProperties.put("jetty.etc.config.urls", /*"jetty-web.xml, jetty.xml"*/"jetty.xml");
+			String jettyHome = "./conf/web/";			
+			logger.info("Setting jetty.home to ".concat(jettyHome));
+			frameworkProperties.put("jetty.home", jettyHome);			
+			frameworkProperties.put("jetty.etc.config.urls", /*"jetty-web.xml, jetty.xml"*/"jetty.xml");		
+			boolean failed = System.getProperty("jetty.home")==null;
+			if (failed){
+				System.setProperty("jetty.home",jettyHome);
+				System.setProperty("jetty.etc.config.urls", "jetty.xml");
+			}
 		} 
 		
 //		EclipseStarter.setInitialProperties(frameworkProperties);

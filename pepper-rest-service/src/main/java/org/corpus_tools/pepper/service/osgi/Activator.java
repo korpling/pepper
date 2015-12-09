@@ -10,8 +10,8 @@ public class Activator implements BundleActivator{
 	private ServiceRegistration<PepperRESTService> registration;
 	
 	@Override
-	public void start(BundleContext context) throws Exception {		
-		registration = context.registerService(PepperRESTService.class, new PepperRESTService(), null);		
+	public void start(BundleContext context) throws Exception {
+		registration = context.registerService(PepperRESTService.class, new PepperRESTService(), null);
 	}
 
 	@Override

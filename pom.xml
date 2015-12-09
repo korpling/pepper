@@ -10,7 +10,7 @@
 		<module>pepper-parentModule</module>
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
-		<!-- module>pepper-gui</module-->
+		<module>pepper-gui</module>
 		<module>pepper-rest-service</module>
 	</modules>
 	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>

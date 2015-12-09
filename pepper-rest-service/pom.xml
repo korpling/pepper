@@ -16,6 +16,11 @@
   		<version>${project.version}</version>
   	</dependency>
   	<dependency>
+  		<groupId>org.corpus-tools</groupId>
+  		<artifactId>pepper-lib</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
   		<groupId>com.eclipsesource.jaxrs</groupId>
   		<artifactId>jersey-all</artifactId>
   		<version>2.18</version>

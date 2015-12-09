@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>pepper-gui</artifactId>
 	<parent>
-		<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>2.1.1-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+			<groupId>org.corpus-tools</groupId>
 			<artifactId>pepper-framework</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>

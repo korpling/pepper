@@ -1,8 +1,7 @@
 package de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.tests;
 
+import org.corpus_tools.pepper.gui.controller.PepperGUIController;
 import org.junit.Before;
-
-import de.hu_berlin.german.korpling.saltnpepper.pepper.gui.controller.PepperGUIController;
 
 public class PepperGUIControllerTest {
 	private PepperGUIController fixture;

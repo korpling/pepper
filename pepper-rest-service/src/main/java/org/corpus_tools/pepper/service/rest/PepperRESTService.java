@@ -3,12 +3,13 @@ package org.corpus_tools.pepper.service.rest;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.corpus_tools.pepper.connectors.PepperConnector;
+import org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.corpus_tools.pepper.service.osgi.Activator;
 
@@ -16,6 +17,19 @@ import org.corpus_tools.pepper.service.osgi.Activator;
 @Path("/resource")
 public class PepperRESTService extends Activator implements PepperService{
 
+	private PepperOSGiConnector pepper = null;
+	private boolean isInit = false;
+
+	@Override
+	public void setPepper(PepperConnector pepperConnector) {
+		if (!isInit){
+			this.pepper = (PepperOSGiConnector)pepperConnector;
+			isInit = true;
+		}	
+		//else throw exception?
+	}
+
+	
 	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;
 	
 	@GET
@@ -33,7 +47,7 @@ public class PepperRESTService extends Activator implements PepperService{
 	 * This method provides a module description, including supported formats, version,
 	 * properties, etc.
 	 */
-	@HEAD
+	@GET
 	@Path("module")
 	@Produces(DATA_FORMAT)
 	@Consumes(MediaType.TEXT_PLAIN)
