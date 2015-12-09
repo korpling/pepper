@@ -6,19 +6,10 @@
 	<servlet>
 		<servlet-name>pepper-RESTService</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-		<!-- ATTENTION: init param packages cannot be used, since jersey 2.x package scanning does not support osgi bundle uri scheme -->
-		<!--init-param> 
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>de.hu_berlin.german.korpling.saltnpepper.pepper.service</param-value>
-        </init-param-->	
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
 		    <param-value>org.corpus_tools.pepper.service.rest.WebApplication</param-value>
 		</init-param>
-		<!--init-param>
-            <param-name>jersey.config.server.provider.scanning.recursive</param-name>
-            <param-value>false</param-value>
-        </init-param-->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 

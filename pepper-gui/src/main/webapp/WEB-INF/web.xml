@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-  <display-name>Pepper converter framework</display-name>
-  
+  <display-name>Pepper converter framework</display-name>  
   <servlet>
 	<servlet-name>PepperGUI</servlet-name>
 	<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
@@ -15,7 +14,6 @@
 		<param-value>com.vaadin.DefaultWidgetSet</param-value>
 	</init-param>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>PepperGUI</servlet-name>
     <url-pattern>/*</url-pattern>
