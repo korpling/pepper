@@ -119,8 +119,8 @@
             org.corpus_tools.pepper.service.*
             </Export-Package>            
             <Bundle-Activator>org.corpus_tools.pepper.service.osgi.Activator</Bundle-Activator>                        
-            <Web-ContextPath>/</Web-ContextPath>
-            <Webapp-Context></Webapp-Context>
+            <Web-ContextPath>/pepper-rest/</Web-ContextPath>
+            <Webapp-Context>/pepper-rest</Webapp-Context>
             <_wab>src/main/webapp</_wab>
           </instructions>
         </configuration>
