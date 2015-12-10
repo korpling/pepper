@@ -24,6 +24,13 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- TEMPORARY! FIND A BETTER SOLUTION! -->
+		<dependency>
+			<groupId>org.corpus-tools</groupId>
+			<artifactId>pepper-RESTService</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>osgi</artifactId>

@@ -11,8 +11,14 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>org.corpus-tools</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>pepper-framework</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>pepper-RESTService</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>

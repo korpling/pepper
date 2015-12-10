@@ -1,5 +1,7 @@
 package org.corpus_tools.pepper.service.interfaces;
 
+import java.io.OutputStream;
+
 
 
 public interface PepperService{
@@ -8,5 +10,5 @@ public interface PepperService{
 	
 	
 	/* MODULES */
-	public String moduleDescription(String moduleName);
+	public OutputStream moduleDescription(String moduleName);
 }

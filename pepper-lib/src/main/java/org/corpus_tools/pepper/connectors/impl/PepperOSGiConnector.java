@@ -58,6 +58,7 @@ import org.corpus_tools.pepper.exceptions.PepperConfigurationException;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.service.rest.PepperRESTService;
 import org.corpus_tools.pepper.util.XMLStreamWriter;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.osgi.framework.Bundle;
@@ -179,6 +180,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		}
 		maven = new MavenAccessor(this);
 
+		if (true /*isServer*/){
+			PepperRESTService.setPepper(this);
+		}
+		
 		isInit = true;
 	}
 

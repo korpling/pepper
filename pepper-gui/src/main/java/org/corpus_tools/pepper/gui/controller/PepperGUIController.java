@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.gui.client.DemoClient;
 import org.corpus_tools.pepper.gui.components.PathSelectDialogue;
 import org.corpus_tools.pepper.gui.components.PepperGUI;
 import org.corpus_tools.pepper.gui.model.ConversionStepConfiguration;
@@ -88,7 +90,8 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		String id = event.getComponent().getId();
 		debugOut("click event, id="+id);
 		if (ID_BUTTON_ABOUT.equals(id)){
-			
+			PepperModuleDesc moduleDesc = DemoClient.demoGetModuleDesc(null);
+			Notification.show(moduleDesc==null? "ERROR" : moduleDesc.toString(), Notification.TYPE_ERROR_MESSAGE);
 		}
 		else if (ID_BUTTON_NEW.equals(id)){
 		}
