@@ -124,11 +124,8 @@ public class PepperJobImpl extends PepperJob {
 	/** The {@link SaltProject} which is converted by this job. **/
 	protected SaltProject saltProject = null;
 
-	/**
-	 * Returns the {@link SaltProject} which is converted by this job.
-	 * 
-	 * @return {@link SaltProject}
-	 */
+	/** {@inheritDoc} **/
+	@Override
 	public SaltProject getSaltProject() {
 		return saltProject;
 	}

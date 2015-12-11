@@ -118,7 +118,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		}
 		File pluginPath = new File(getPepperStarterConfiguration().getPlugInPath());
 		if (!pluginPath.exists()) {
-			throw new PepperOSGiException("Cannot load any plugins, since the configured path for plugins '" + pluginPath.getAbsolutePath() + "' does not exist. Please check the entry '" + PepperStarterConfiguration.PROP_PLUGIN_PATH + "' in the Pepper configuration file at '" + getConfiguration().getConfFolder().getAbsolutePath() + "'. ");
+			throw new PepperOSGiException("Cannot load any plugins, since the configured path for plugins '" + pluginPath.getAbsolutePath() + "' does not exist. Please check the entry '" + PepperStarterConfiguration.PROP_PLUGIN_PATH + "' in the Pepper configuration file at '" + (getConfiguration().getConfFolder() != null ? getConfiguration().getConfFolder().getAbsolutePath() : "empty") + "'. ");
 		}
 
 		try {
@@ -315,6 +315,34 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		this.bundleContext = bundleContext;
 	}
 
+	private List<String> sharedPackagesList = new LinkedList<>();
+
+	/**
+	 * Adds a package to the list of shared packages. The shared packages are
+	 * necessary to bridge the OSGi container. In OSGi each bundle has its own
+	 * classloader, which is a different one than in a standard Java
+	 * application. In Java classes needs to be load by the same class loader to
+	 * have a unique identification. For instance to share Salt objects between
+	 * Pepper modules and the application outside OSGi they need to be added to
+	 * shared packeges.
+	 * 
+	 * @param packageName
+	 *            name of the package
+	 * @param packageVersion
+	 *            version of the package (normally the bundle's version)
+	 */
+	public void addSharedPackage(String packageName, String packageVersion) {
+		if (packageName != null && !packageName.isEmpty()) {
+			StringBuilder packageId = new StringBuilder();
+			packageId.append(packageName);
+			if (packageVersion != null && !packageVersion.isEmpty()) {
+				packageId.append(";version=");
+				packageId.append(packageVersion.replace("-", "."));
+			}
+			sharedPackagesList.add(packageId.toString());
+		}
+	}
+
 	/**
 	 * Returns a String, containing a formatted list of packages to be shared
 	 * between current classloader and OSGi classloaders. The list is formatted
@@ -328,30 +356,46 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if ((sharedPackages != null) && (!sharedPackages.isEmpty())) {
 			retVal.append(sharedPackages);
 		} else {
-			// pepper.common package
-			retVal.append(Pepper.class.getPackage().getName());
-			retVal.append(";version=");
-			retVal.append(PepperStarter.getVersion().replace("-", "."));
-			retVal.append(", ");
-
-			// pepper.exceptions package
-			retVal.append(PepperException.class.getPackage().getName());
-			retVal.append(";version=");
-			retVal.append(PepperStarter.getVersion().replace("-", "."));
-			retVal.append(", ");
-
-			// pepper.modules package
-			retVal.append(PepperModuleProperties.class.getPackage().getName());
-			retVal.append(";version=");
-			retVal.append(PepperStarter.getVersion().replace("-", "."));
-			retVal.append(", ");
-
-			// pepper.util package
-			retVal.append(XMLStreamWriter.class.getPackage().getName());
-			retVal.append(", ");
-
-			// emf-util
-			retVal.append(org.eclipse.emf.common.util.URI.class.getPackage().getName());
+			
+			addSharedPackage(Pepper.class.getPackage().getName(), PepperStarter.getVersion());
+			addSharedPackage(PepperException.class.getPackage().getName(), PepperStarter.getVersion());
+			addSharedPackage(PepperModuleProperties.class.getPackage().getName(), PepperStarter.getVersion());
+			addSharedPackage(XMLStreamWriter.class.getPackage().getName(), null);
+			addSharedPackage(org.eclipse.emf.common.util.URI.class.getPackage().getName(), null);
+			
+			int i= 0;
+			for (String sharedPackage: sharedPackagesList){
+				if (i > 0){
+					retVal.append(", ");
+				}
+				retVal.append(sharedPackage); 
+				i++;
+			}
+			
+//			// pepper.common package
+//			retVal.append(Pepper.class.getPackage().getName());
+//			retVal.append(";version=");
+//			retVal.append(PepperStarter.getVersion().replace("-", "."));
+//			retVal.append(", ");
+//
+//			// pepper.exceptions package
+//			retVal.append(PepperException.class.getPackage().getName());
+//			retVal.append(";version=");
+//			retVal.append(PepperStarter.getVersion().replace("-", "."));
+//			retVal.append(", ");
+//
+//			// pepper.modules package
+//			retVal.append(PepperModuleProperties.class.getPackage().getName());
+//			retVal.append(";version=");
+//			retVal.append(PepperStarter.getVersion().replace("-", "."));
+//			retVal.append(", ");
+//
+//			// pepper.util package
+//			retVal.append(XMLStreamWriter.class.getPackage().getName());
+//			retVal.append(", ");
+//
+//			// emf-util
+//			retVal.append(org.eclipse.emf.common.util.URI.class.getPackage().getName());
 		}
 		return (retVal.toString());
 	}

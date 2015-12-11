@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.core.Step;
+import org.corpus_tools.pepper.exceptions.PepperInActionException;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.ModuleController;
 import org.corpus_tools.salt.common.SaltProject;
@@ -89,6 +90,15 @@ public abstract class PepperJob {
 		return (status);
 	}
 
+	
+	/**
+	 * Returns the {@link SaltProject} which is converted by this job.
+	 * 
+	 * @return {@link SaltProject}
+	 */
+	public abstract SaltProject getSaltProject();
+
+	
 	/**
 	 * Returns a formated string as a kind of a document centric progress
 	 * status. For each document its overall status and specific statuses in
