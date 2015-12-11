@@ -337,10 +337,10 @@ public class MavenAccessor {
 		DependencyManager depManager = new ClassicDependencyManager();
 		session.setDependencyManager(depManager);
 
-		DependencySelector depFilter = new AndDependencySelector(new ScopeDependencySelector("test", "Test"/*
-																											 * ,
-																											 * "provided"
-																											 */), new OptionalDependencySelector(), new ExclusionDependencySelector());
+		DependencySelector depFilter = new AndDependencySelector(
+				new ScopeDependencySelector("test", "Test"/*
+															 * , "provided"
+															 */), new OptionalDependencySelector(), new ExclusionDependencySelector());
 		session.setDependencySelector(depFilter);
 
 		DependencyGraphTransformer transformer = new ConflictResolver(new NearestVersionSelector(), new JavaScopeSelector(), new SimpleOptionalitySelector(), new JavaScopeDeriver());
@@ -609,9 +609,9 @@ public class MavenAccessor {
 						logger.debug(t.getMessage(), e);
 					} else {
 						logger.warn("Update of " + artifactId + " failed, could not resolve dependencies "/*
-																										 * ,
-																										 * e
-																										 */);// TODO
+																											 * ,
+																											 * e
+																											 */);// TODO
 																												// decide
 					}
 				}
@@ -897,7 +897,8 @@ public class MavenAccessor {
 		// d += depth == 0 ? "" : "+- ";
 		dep.append((depth == 0) ? "" : "+- ");
 		// d +=
-		// startNode.getArtifact().toString().concat(" (").concat(startNode.getDependency().getScope()).concat(")");
+		// startNode.getArtifact().toString().concat("
+		// (").concat(startNode.getDependency().getScope()).concat(")");
 		dep.append(startNode.getArtifact().toString().concat(" (").concat(startNode.getDependency().getScope()).concat(")"));
 		for (DependencyNode node : startNode.getChildren()) {
 			// d += System.lineSeparator().concat(getDependencyPrint(node, depth

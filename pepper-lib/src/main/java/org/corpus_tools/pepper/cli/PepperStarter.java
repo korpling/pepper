@@ -174,7 +174,8 @@ public class PepperStarter {
 		//
 		OSGI("osgi", "o", null, "Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START("install_start", "is", "module path", "Installs the Pepper module located at 'module path' and starts it."),
 		// UPDATE("update", "up", "module path",
-		// "updates a Pepper module with the module located at 'module path' and starts it."),
+		// "updates a Pepper module with the module located at 'module path' and
+		// starts it."),
 		REMOVE("remove", "re", "bundle name", "Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "),
 		//
 		START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."),
@@ -285,7 +286,8 @@ public class PepperStarter {
 	 * 
 	 * @return
 	 */
-	// @Command(description="A table with information about the passed Pepper module.")
+	// @Command(description="A table with information about the passed Pepper
+	// module.")
 	public String list(String moduleName) {
 		StringBuilder retVal = new StringBuilder();
 		PepperModuleDesc moduleDesc = null;
@@ -535,7 +537,8 @@ public class PepperStarter {
 	// return ("Updated Pepper module.");
 	// } else {
 	// return
-	// ("No OSGi console available, since Pepper is not running in OSGi mode. ");
+	// ("No OSGi console available, since Pepper is not running in OSGi mode.
+	// ");
 	// }
 	// }
 
@@ -557,7 +560,9 @@ public class PepperStarter {
 	 * 
 	 * @return
 	 */
-	// @Command(description="Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module.")
+	// @Command(description="Tests if the Pepper framework is in runnable mode
+	// or if any problems are detected, either in Pepper itself or in any
+	// registered Pepper module.")
 	public String selfTest() {
 		StringBuilder retVal = new StringBuilder();
 		Collection<String> problems = getPepper().selfTest();
@@ -629,7 +634,7 @@ public class PepperStarter {
 			if ("all".equalsIgnoreCase(params.get(0)) || (isSnapshot && !ignoreVersion || ignoreVersion && !isSnapshot) && params.size() > 1 && "all".equalsIgnoreCase(params.get(1)) || isSnapshot && ignoreVersion && params.size() > 2 && "all".equalsIgnoreCase(params.get(2))) {
 				List<String> lines = new ArrayList<String>();
 				for (Map.Entry<String, String[]> entry : moduleTable.entrySet()) {
-					if (pepperConnector.update(entry.getValue()[0], entry.getKey(), isSnapshot? entry.getValue()[1] : entry.getValue()[2], isSnapshot, ignoreVersion)) {
+					if (pepperConnector.update(entry.getValue()[0], entry.getKey(), isSnapshot ? entry.getValue()[1] : entry.getValue()[2], isSnapshot, ignoreVersion)) {
 						lines.add(entry.getKey().concat(" successfully updated."));
 					} else {
 						lines.add(entry.getKey().concat(" NOT updated."));
@@ -646,8 +651,8 @@ public class PepperStarter {
 					s = params.get(i);
 					if (moduleTable.keySet().contains(s)) {
 						String[] v = moduleTable.get(s);
-						if (pepperConnector.update(v[0], s, isSnapshot? v[1] : v[2], isSnapshot, ignoreVersion)) {
-							retVal.append("Successfully updated ").append(s).append(" from " + (isSnapshot? moduleTable.get(s)[1] : moduleTable.get(s)[2])).append(newLine);
+						if (pepperConnector.update(v[0], s, isSnapshot ? v[1] : v[2], isSnapshot, ignoreVersion)) {
+							retVal.append("Successfully updated ").append(s).append(" from " + (isSnapshot ? moduleTable.get(s)[1] : moduleTable.get(s)[2])).append(newLine);
 						} else {
 							retVal.append("No update was performed for ").append(s).append(".");
 						}
@@ -662,14 +667,21 @@ public class PepperStarter {
 						retVal.append(indent).append("to add/modify a configuration use the following command (update will be executed, too!):").append(newLine).append(newLine).append(indent).append("update GROUP_ID::ARTIFACT_ID::REPOSITORY_URL").append(newLine);
 						retVal.append(newLine).append(indent).append("GROUP_ID: the groupId of the pepper module");
 						retVal.append(newLine).append(indent).append("ARTIFACT_ID: the artifactId of the pepper module, usually \"pepperModules-___Modules\"");
-						retVal.append(newLine).append(indent).append("REPOSITORY_URL: the url of the maven repository that contains the module").append(newLine);					
+						retVal.append(newLine).append(indent).append("REPOSITORY_URL: the url of the maven repository that contains the module").append(newLine);
 					} else if (s.contains("::")) {
 						String[] args = s.split("::");
 						if (pepperConnector.update(args[0], args[1], args[2], isSnapshot, ignoreVersion)) {
 							retVal.append("Successfully updated ").append(args[0]).append(".").append(args[1]).append(" from maven repository ").append(args[2]).append(".").append(newLine);
-//							TODO
-//							retVal.append(write2ConfigFile(args[0], args[1], args[2]) ? "Configuration written back to modules.xml. Module is now available for direct update calls (e.g. \"update " + args[1] + "\")." : "WARNING: An Error occured while writing groupId, artifactId and repository path to modules.xml.");
-//							moduleTable.put(args[1], Pair.of(args[0], args[2]));
+							// TODO
+							// retVal.append(write2ConfigFile(args[0], args[1],
+							// args[2]) ? "Configuration written back to
+							// modules.xml. Module is now available for direct
+							// update calls (e.g. \"update " + args[1] + "\")."
+							// : "WARNING: An Error occured while writing
+							// groupId, artifactId and repository path to
+							// modules.xml.");
+							// moduleTable.put(args[1], Pair.of(args[0],
+							// args[2]));
 						} else {
 							retVal.append("No update was performed for ").append(args[1]).append(newLine);
 						}
@@ -771,12 +783,14 @@ public class PepperStarter {
 					itemRepo.setTextContent(repository);
 					changes = true;
 				} else {
-//					if (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent())) {
-//						itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
-//						itemRepo.setTextContent(repository);
-//						item.getParentNode().appendChild(itemRepo);
-//						changes = true;
-//					}
+					// if
+					// (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent()))
+					// {
+					// itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
+					// itemRepo.setTextContent(repository);
+					// item.getParentNode().appendChild(itemRepo);
+					// changes = true;
+					// }
 				}
 				itemGroupId = null;
 				itemRepo = null;
@@ -845,15 +859,21 @@ public class PepperStarter {
 		/**
 		 * all read module names are stored here Map: artifactId --> (groupId,
 		 * repository)
-		 * */
+		 */
 		private Map<String, String[]> listedModules;
 		/** this string contains the last occurred artifactId */
 		private String artifactId;
 		/** this string contains the group id */
 		private String groupId;
-		/** contains the current module's snapshot repository, if null, the default will be used */
+		/**
+		 * contains the current module's snapshot repository, if null, the
+		 * default will be used
+		 */
 		private String snapshotRepository;
-		/** contains the current module's release repository, if null, the default will be used */
+		/**
+		 * contains the current module's release repository, if null, the
+		 * default will be used
+		 */
 		private String releaseRepository;
 		/** the name of the tag between the modules are listed */
 		private static final String TAG_LIST = "pepperModulesList";
@@ -882,14 +902,20 @@ public class PepperStarter {
 		private static final String TAG_SNAPSHOT_REPO = "snapshotRepository";
 		/***/
 		private static final String TAG_RELEASE_REPO = "releaseRepository";
-		/** the attribute containing the default maven repository for snapshots */
+		/**
+		 * the attribute containing the default maven repository for snapshots
+		 */
 		private static final String ATT_DEFAULT_SNAPSHOT_REPO = "defaultSnapshotRepository";
-		/** the attribute containing the default maven repository for releases */
+		/**
+		 * the attribute containing the default maven repository for releases
+		 */
 		private static final String ATT_DEFAULT_RELEASE_REPO = "defaultReleaseRepository";
 		/** the name of the attribute for the default groupId */
 		private static final String ATT_DEFAULTGROUPID = "defaultGroupId";
-		/** contains the default groupId for modules where no groupId is defined */
-		private String defaultGroupId;		
+		/**
+		 * contains the default groupId for modules where no groupId is defined
+		 */
+		private String defaultGroupId;
 		/***/
 		private String defaultSnapshotRepository;
 		/***/
@@ -913,7 +939,7 @@ public class PepperStarter {
 				defaultReleaseRepository = attributes.getValue(ATT_DEFAULT_RELEASE_REPO);
 				defaultSnapshotRepository = attributes.getValue(ATT_DEFAULT_SNAPSHOT_REPO);
 				defaultGroupId = attributes.getValue(ATT_DEFAULTGROUPID);
-			}			
+			}
 			chars.delete(0, chars.length());
 		}
 
@@ -933,17 +959,17 @@ public class PepperStarter {
 			} else if (TAG_GROUPID.equals(localName)) {
 				groupId = chars.toString();
 				chars.delete(0, chars.length());
-			} else if (TAG_SNAPSHOT_REPO.equals(localName)){
+			} else if (TAG_SNAPSHOT_REPO.equals(localName)) {
 				snapshotRepository = chars.toString();
 				chars.delete(0, chars.length());
-			} else if (TAG_RELEASE_REPO.equals(localName)){
+			} else if (TAG_RELEASE_REPO.equals(localName)) {
 				releaseRepository = chars.toString();
 				chars.delete(0, chars.length());
 			} else if (TAG_ITEM.equals(localName)) {
 				String[] installVals = new String[3];
-				installVals[0] = groupId==null? defaultGroupId : groupId.trim();
-				installVals[1] = snapshotRepository==null? defaultSnapshotRepository : snapshotRepository.trim();
-				installVals[2] = releaseRepository==null? defaultReleaseRepository : releaseRepository.trim();
+				installVals[0] = groupId == null ? defaultGroupId : groupId.trim();
+				installVals[1] = snapshotRepository == null ? defaultSnapshotRepository : snapshotRepository.trim();
+				installVals[2] = releaseRepository == null ? defaultReleaseRepository : releaseRepository.trim();
 				listedModules.put(artifactId.trim(), installVals);
 				chars.delete(0, chars.length());
 				groupId = null;
@@ -1108,7 +1134,7 @@ public class PepperStarter {
 						logger.info(entry.getKey().concat(" not installed. Collecting dependencies for newest version."));
 					}
 					boolean isSnapshot = version.contains("SNAPSHOT");
-					retVal.append(connector.printDependencies(val[0], entry.getKey(), version, isSnapshot? val[1] : val[2])).append(System.lineSeparator()).append(System.lineSeparator());
+					retVal.append(connector.printDependencies(val[0], entry.getKey(), version, isSnapshot ? val[1] : val[2])).append(System.lineSeparator()).append(System.lineSeparator());
 				}
 				return retVal.toString();
 			} else if (param.contains("::")) {
@@ -1117,14 +1143,14 @@ public class PepperStarter {
 					retVal.append(connector.printDependencies(coords[0], coords[1], coords[2], coords[3])).append(System.lineSeparator());
 				}
 			} else if (moduleTable.keySet().contains(param)) {
-				String[] val = moduleTable.get(param); 
+				String[] val = moduleTable.get(param);
 				groupId = val[0];
 				Bundle bundle = connector.getBundle(groupId, param, null);
 				version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
 				if (version == null) {
 					logger.info(param.concat(" not installed. Collecting dependencies for newest version."));
 				}
-				retVal.append(connector.printDependencies(groupId, param, version, version.contains("SNAPSHOT")? val[1] : val[1])).append(System.lineSeparator());
+				retVal.append(connector.printDependencies(groupId, param, version, version.contains("SNAPSHOT") ? val[1] : val[1])).append(System.lineSeparator());
 			} else if (param.matches("#?[0-9]+")) {
 				retVal.append(connector.printDependencies(param.replace("#", ""))).append(System.lineSeparator());
 			}

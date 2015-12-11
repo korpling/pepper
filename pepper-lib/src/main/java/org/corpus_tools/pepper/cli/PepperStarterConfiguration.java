@@ -48,7 +48,8 @@ import com.google.common.base.Splitter;
  * <ol>
  * <li>You can call the simple constructor {@link #PepperProperties()} having no
  * parameters. This constructor will make use of the pepper home path mechanism
- * and assumes a file named {@value #FILE_PEPPER_PROP} in the pepper home path</li>
+ * and assumes a file named {@value #FILE_PEPPER_PROP} in the pepper home path
+ * </li>
  * 
  * </ol>
  * This class uses a location called pepper home path, where it assumes all
@@ -92,7 +93,9 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	public static final String FILE_PEPPER_CONF = "conf";
 	/** name of the property of where to find the plugin path */
 	public static final String PROP_PLUGIN_PATH = PROP_PREFIX + "plugin.path";
-	/** name of the property of where to find the dropin paths (comma seperated) */
+	/**
+	 * name of the property of where to find the dropin paths (comma seperated)
+	 */
 	public static final String PROP_DROPIN_PATHS = PROP_PREFIX + "dropin.paths";
 	/** name of the property of the location of the osgi profile */
 	public static final String PROP_OSGI_PROFILE = PROP_PREFIX + "osgi.profile";

@@ -101,7 +101,7 @@ public class Greet {
 			retVal.append("                                                       |_ | _|\n");
 			retVal.append("                                                       /-'Y'-\\\n");
 			retVal.append("                                                   jgs(__/ \\__)\n");
-		} else if (((cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 30))||(cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 31 ))) && PepperStarter.CONSOLE_WIDTH_120 == width) {
+		} else if (((cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 30)) || (cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 31))) && PepperStarter.CONSOLE_WIDTH_120 == width) {
 			retVal.append("************************************************************************************************************************");
 			retVal.append("*         .''.                                                                                    .''.                 *");
 			retVal.append("*        :_\\/_:                                                _ __                              :_\\/_:     .          *");
@@ -110,7 +110,7 @@ public class Greet {
 			retVal.append("*    : /\\ : :::::           _|  |(_||_)|_)(_|    _| \\|(/_(_|_) _|   (/_|_)|_)(/_|            .\\'/.'      '.':'.'       *");
 			retVal.append("*     '..'  ':::'          (        |  |  ,_|   (             (        |  |                 -= o =-         '          *");
 			retVal.append("*                                                                                           .'/.\\'.                    *");
-			retVal.append("************************************************************************************************************************");			
+			retVal.append("************************************************************************************************************************");
 			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
 			retVal.append("* For further information, visit: " + fillUpBlanks(hp, 85) + "*\n");
 			retVal.append("* For contact write an eMail to:  " + fillUpBlanks(eMail, 85) + "*\n");
@@ -169,7 +169,7 @@ public class Greet {
 			retVal.append("*     \\  '-'-'  /                         |_|  \\__,_|_|  \\___|   \\_/\\_/ \\___|_|_|                          /     \\_    *\n");
 			retVal.append("*  jgs '--'----'                                                                                        jgs\\_.-.___)    *\n");
 			retVal.append("************************************************************************************************************************\n");
-		}else if ((cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 23 || cal.get(Calendar.DAY_OF_MONTH) == 24 || cal.get(Calendar.DAY_OF_MONTH) == 25 || cal.get(Calendar.DAY_OF_MONTH) == 26)) && PepperStarter.CONSOLE_WIDTH_120 == width) {
+		} else if ((cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 23 || cal.get(Calendar.DAY_OF_MONTH) == 24 || cal.get(Calendar.DAY_OF_MONTH) == 25 || cal.get(Calendar.DAY_OF_MONTH) == 26)) && PepperStarter.CONSOLE_WIDTH_120 == width) {
 			retVal.append("************************************************************************************************************************\n");
 			retVal.append("*         ____                               _                                                   __.  ,--,             *\n");
 			retVal.append("*        | __ )  ___    __ _  ___   ___   __| |       .-/___,-/___,-/___,-/___,           _.-.=,{\\/ _/  /`)            *\n");
@@ -178,7 +178,7 @@ public class Greet {
 			retVal.append("*        |____/ \\___|  \\__, |\\___/ \\___/ \\__,_|       /< <\\ </ /< /< /< </ /<           (_____Y_____Y___,  jgs         *\n");
 			retVal.append("*                      |___/                                                                                           *\n");
 			retVal.append("************************************************************************************************************************\n");
-		} else if (((cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 30))||(cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 31 ))) && PepperStarter.CONSOLE_WIDTH_120 == width) {
+		} else if (((cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 30)) || (cal.get(Calendar.MONTH) + 1 == 12 && (cal.get(Calendar.DAY_OF_MONTH) == 31))) && PepperStarter.CONSOLE_WIDTH_120 == width) {
 			retVal.append("************************************************************************************************************************");
 			retVal.append("*                                             ____ _                                                                   *");
 			retVal.append("*        \\~~~~~/                             / ___| |__   ___  ___ _ __ ___                             \\~~~~~/        *");
@@ -187,7 +187,7 @@ public class Greet {
 			retVal.append("*          _|_                               \\____|_| |_|\\___|\\___|_|  |___/                              _|_          *");
 			retVal.append("*         `\"\"\"`                                                                                          `\"\"\"`         *");
 			retVal.append("************************************************************************************************************************");
-		}else {
+		} else {
 			// return default Pepper footer
 			if (PepperStarter.CONSOLE_WIDTH_80 == width) {
 				retVal.append("********************************************************************************\n");
