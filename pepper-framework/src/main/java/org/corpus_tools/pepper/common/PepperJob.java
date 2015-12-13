@@ -169,16 +169,16 @@ public abstract class PepperJob {
 	/**
 	 * Imports a {@link SaltProject} from any format. For conversion a process
 	 * can be modeled, similar to {@link #convert()} with the difference, that
-	 * no {@link org.corpus_tools.pepper.modules.PepperExporter} could be
-	 * defined. Instead, the processed {@link SaltProject} is the result.
+	 * no {@link PepperExporter} could be defined. The imported Salt model can
+	 * be accessed via {@link #getSaltProject()}.
 	 */
 	public abstract void convertFrom();
 
 	/**
-	 * Exports the SaltProject into any format. For conversion, a normal process
-	 * could be created, except the use of an importer. Here the do-nothing
-	 * importer is used, and it is expected, that the {@link SaltProject} is
-	 * already 'filled'.
+	 * Exports the {@link SaltProject} into any format. For conversion, a normal
+	 * process could be created, except the use of an importer. Here the
+	 * do-nothing importer is used, and it is expected, that the
+	 * {@link #getSaltProject()} is already 'filled'.
 	 */
 	public abstract void convertTo();
 

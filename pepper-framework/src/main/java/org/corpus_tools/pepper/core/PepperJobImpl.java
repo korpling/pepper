@@ -47,6 +47,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.MEMORY_POLICY;
@@ -65,6 +66,8 @@ import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
+import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
+import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleXMLResourceException;
 import org.corpus_tools.pepper.util.XMLStreamWriter;
@@ -143,7 +146,9 @@ public class PepperJobImpl extends PepperJob {
 		this.saltProject = saltProject;
 	}
 
-	/** properties to customize the behavior of conversion for this single job **/
+	/**
+	 * properties to customize the behavior of conversion for this single job
+	 **/
 	private PepperConfiguration props = null;
 
 	/**
@@ -264,7 +269,8 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Returns a of all steps belonging no matter, to which phase they belong. <br/>
+	 * Returns a of all steps belonging no matter, to which phase they belong.
+	 * <br/>
 	 * <strong>This computation could be expensive, when working more than once
 	 * with the list, make a local copy and don't call this method
 	 * twice.</strong>
@@ -335,7 +341,8 @@ public class PepperJobImpl extends PepperJob {
 	/**
 	 * Adds the passed {@link Step} object to the workflow covered by this
 	 * {@link PepperJobImpl} object and tries to resolve the described
-	 * {@link PepperModule}. <h2>Prerequisite</h2>
+	 * {@link PepperModule}.
+	 * <h2>Prerequisite</h2>
 	 * <ul>
 	 * <li>{@link #getModuleResolver()} must be set</li>
 	 * <li>{@link #getSaltProject()} must be set</li>
@@ -982,41 +989,29 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Imports a {@link SaltProject} from any format. For conversion a process
-	 * can be modeled, similar to {@link #convert()} with the difference, that
-	 * no {@link PepperExporter} could be defined. Instead, the processed
-	 * {@link SaltProject} is the result.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void convertFrom() {
-		if (!inProgress.tryLock()) {
-			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
+		if (getExportSteps().size() > 0) {
+			logger.warn("Cannot consider given export steps, any export step is ignored when invoking 'convertFrom()'. To create a conversion process with export steps use 'convert()' instead. ");
+			exportSteps.clear();
 		}
-		inProgress.lock();
-		try {
-			// TODO implement this
-			throw new UnsupportedOperationException("Sorry, this feature is not implemented yet.");
-		} finally {
-			inProgress.unlock();
-		}
+		addStepDesc(new StepDesc().setName(DoNothingExporter.MODULE_NAME).setModuleType(MODULE_TYPE.EXPORTER).setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(PepperUtil.getTempFile().getAbsolutePath()))));
+		convert();
 	}
 
 	/**
-	 * Exports the SaltProject into any format. For conversion, a normal process
-	 * could be created, except the use of an importer. Here the do-nothing
-	 * importer is used, and it is expected, that the {@link SaltProject} is
-	 * already 'filled'.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void convertTo() {
-		if (!inProgress.tryLock()) {
-			throw new PepperInActionException("Cannot run convert() of job '" + getId() + "', since this job was already started.");
+		if (getImportSteps().size() > 0) {
+			logger.warn("Cannot consider given import steps, any import step is ignored when invoking 'convertTo()'. To create a conversion process with import steps use 'convert()' instead. ");
+			importSteps.clear();
 		}
-		inProgress.lock();
-		try {
-			// TODO implement this
-			throw new UnsupportedOperationException("Sorry, this feature is not implemented yet.");
-		} finally {
-			inProgress.unlock();
-		}
+		addStepDesc(new StepDesc().setName(DoNothingImporter.MODULE_NAME).setModuleType(MODULE_TYPE.IMPORTER).setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(PepperUtil.getTempFile().getAbsolutePath()))));
+		convert();
 	}
 
 	// ======================================= start: managing number of active
@@ -1094,7 +1089,8 @@ public class PepperJobImpl extends PepperJob {
 	 * Returns true, if a {@link SDocument} or more precisely spoken a
 	 * {@link SDocumentGraph} could be woken up or imported. This is the case,
 	 * as long as: <br/>
-	 * {@link #getNumOfActiveDocuments()} < {@link #getMaxNumberOfDocuments()}. <br/>
+	 * {@link #getNumOfActiveDocuments()} < {@link #getMaxNumberOfDocuments()}.
+	 * <br/>
 	 * Must be synchronized,
 	 * 
 	 * @return true, when #getCurrNumberOfDocuments()} <
