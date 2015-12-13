@@ -103,7 +103,7 @@ public class Step extends StepDesc {
 	 * {@link CorpusDesc} to the {@link ModuleControllerImpl}, if already set.
 	 */
 	@Override
-	public synchronized void setCorpusDesc(CorpusDesc corpusDesc) {
+	public synchronized Step setCorpusDesc(CorpusDesc corpusDesc) {
 		super.setCorpusDesc(corpusDesc);
 		if ((getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
 			if (getModuleController().getPepperModule() instanceof PepperImporter) {
@@ -112,6 +112,7 @@ public class Step extends StepDesc {
 				((PepperExporter) getModuleController().getPepperModule()).setCorpusDesc(getCorpusDesc());
 			}
 		}
+		return(this);
 	}
 
 	/**
@@ -187,11 +188,12 @@ public class Step extends StepDesc {
 	 * @param props
 	 *            properties to customize processing
 	 */
-	public synchronized void setProps(Properties props) {
+	public synchronized Step setProps(Properties props) {
 		if (getModuleController() != null) {
 			getModuleController().getPepperModule().getProperties().setPropertyValues(props);
 		} else {
 			super.setProps(props);
 		}
+		return(this);
 	}
 }
