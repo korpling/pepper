@@ -1,8 +1,11 @@
 var NAVTREE =
 [
   [ "Pepper", "index.html", [
-    [ "Configuring Pepper", "config.html", null ],
-    [ "Pepper as a library", "library.html", null ],
+    [ "developers", "md__var_lib_jenkins_jobs_pepper__s_n_a_p_s_h_o_t_workspace_pepper-doc_src_main_doxygen_developers.html", [
+      [ "Pepper developers ", "md__var_lib_jenkins_jobs_pepper__s_n_a_p_s_h_o_t_workspace_pepper-doc_src_main_doxygen_developers.html#developers", null ]
+    ] ],
+    [ "Pepper module Developers", "module_developers.html", null ],
+    [ "Pepper users", "users.html", "users" ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
@@ -21,7 +24,7 @@ var NAVTREEINDEX =
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a1738884cd0fe094a8167619c3e50711d",
 "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html#ab67bee1b6b798650bf00b7bb1be3f8e2",
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_internal_exception.html#ae4a09235c42f30cad1f90bb5ef13dc57",
-"interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#accc9d11684dccc5ceb0f402e9be12261"
+"interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#ac96d3eac0081f4e1e50ed5e31024d8a7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

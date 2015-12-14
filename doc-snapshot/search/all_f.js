@@ -1,7 +1,8 @@
 var searchData=
 [
   ['pepper',['Pepper',['../index.html',1,'']]],
-  ['pepper_20as_20a_20library',['Pepper as a library',['../library.html',1,'']]],
+  ['pepper_20as_20a_20library',['Pepper as a library',['../library.html',1,'users']]],
+  ['pepper_20module_20developers',['Pepper module Developers',['../module_developers.html',1,'']]],
   ['pepper',['Pepper',['../interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html',1,'org::corpus_tools::pepper::common']]],
   ['pepperconfiguration',['PepperConfiguration',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html',1,'org::corpus_tools::pepper::common']]],
   ['pepperconfiguration',['PepperConfiguration',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a3913683699d9fec33e85f791de3eeb80',1,'org.corpus_tools.pepper.common.PepperConfiguration.PepperConfiguration()'],['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a593964750f6dd60026166d7b7ca20e7b',1,'org.corpus_tools.pepper.common.PepperConfiguration.PepperConfiguration(Properties properties)']]],
@@ -108,5 +109,6 @@ var searchData=
   ['prop_5fworkspace',['PROP_WORKSPACE',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a21ed946defe9276459193744b818c849',1,'org::corpus_tools::pepper::common::PepperConfiguration']]],
   ['proposeimportorder',['proposeImportOrder',['../classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a322d1dfa70b9168e96e23ea2e73cc968',1,'org.corpus_tools.pepper.impl.PepperModuleImpl.proposeImportOrder()'],['../interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a60f334509e67b7f5b6cc690e6c659d1c',1,'org.corpus_tools.pepper.modules.PepperModule.proposeImportOrder()']]],
   ['props',['props',['../classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_mapper_impl.html#adb760247f2994207c0e660c0bb3458d7',1,'org::corpus_tools::pepper::impl::PepperMapperImpl']]],
-  ['put',['put',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#abaddfa647868285029f0e0a68caa84d8',1,'org.corpus_tools.pepper.core.DocumentBus.put()'],['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_initial_document_bus.html#a6c2d5e39ce620f089cfa5978b0b03418',1,'org.corpus_tools.pepper.core.InitialDocumentBus.put()']]]
+  ['put',['put',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#abaddfa647868285029f0e0a68caa84d8',1,'org.corpus_tools.pepper.core.DocumentBus.put()'],['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_initial_document_bus.html#a6c2d5e39ce620f089cfa5978b0b03418',1,'org.corpus_tools.pepper.core.InitialDocumentBus.put()']]],
+  ['pepper_20users',['Pepper users',['../users.html',1,'']]]
 ];
