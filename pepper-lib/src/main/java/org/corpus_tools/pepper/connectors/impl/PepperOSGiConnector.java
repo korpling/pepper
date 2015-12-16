@@ -219,17 +219,18 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 //		EclipseStarter.setInitialProperties(frameworkProperties);
 //		bc = EclipseStarter.startup(new String[] {}, null);
 
-		/* Use implementation-independent OSGi framework launching API* to be
-		 * able to launch more than one framework instance. This might be 
-		 * needed by library consumers which are running Pepper from within
-		 * an OSGi framework (e.g., Atomic).
+		/*
+		 * Use implementation-independent OSGi framework launching API* to be
+		 * able to launch more than one framework instance. This might be needed
+		 * by library consumers which are running Pepper from within an OSGi
+		 * framework (e.g., Atomic).
 		 * 
-		 * The framework launching API uses the Java SPI mechanism to load 
-		 * a “framework factory”. This assumes that there is an R4.1-compliant 
+		 * The framework launching API uses the Java SPI mechanism to load a
+		 * “framework factory”. This assumes that there is an R4.1-compliant
 		 * OSGi framework on the classpath.
 		 * 
 		 * *Instead of EclipseStarter.
-		*/ 
+		 */
 		FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
 		Framework oSGiframework = frameworkFactory.newFramework(frameworkProperties);
 		oSGiframework.start();
@@ -452,7 +453,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	/**
 	 * Installs the given bundle and copies it to the plugin path, but does not
 	 * start it. <br>
-	 * If the the URI is of scheme http or https, the file will be downloaded. <br/>
+	 * If the the URI is of scheme http or https, the file will be downloaded.
+	 * <br/>
 	 * If the URI points to a zip file, it will be extracted and copied.
 	 * 
 	 * @param bundleURI

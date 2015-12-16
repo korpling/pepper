@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
@@ -10,9 +9,33 @@
 		<module>pepper-parentModule</module>
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
+<<<<<<< HEAD
 		<module>pepper-gui</module>
 		<module>pepper-rest-service</module>
+=======
+		<module>pepper-doc</module>
+>>>>>>> a728ad1c8e48620a265e4518595193b411e11910
 	</modules>
+	<developers>
+		<developer>
+			<name>Florian Zipser</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
+		</developer>
+		<developer>
+			<name>Martin Klotz</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
+		</developer>
+		<developer>
+			<name>Thomas Krause</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
+		</developer>
+	</developers>
 	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>
 	<url>http://corpus-tools.org/pepper/</url>
 	<issueManagement>
@@ -34,29 +57,25 @@
 		<connection>scm:git:git://github.com/korpling/pepper.git</connection>
 		<developerConnection>scm:git:git@github.com:korpling/pepper.git</developerConnection>
 		<url>https://github.com/korpling/pepper</url>
-	</scm>
-	<repositories>
-		<repository>
-			<id>korpling</id>
-			<name>korpling maven repo</name>
-			<url>http://korpling.german.hu-berlin.de/maven2</url>
-		</repository>
-	</repositories>
+	  <tag>HEAD</tag>
+  </scm>
 	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 		<repository>
-			<id>korpling</id>
-			<name>korpling maven repo</name>
-			<url>file:///srv/www/maven2/</url>
-			<!--<url>scpexe://korpling.german.hu-berlin.de/srv/www/maven2/</url> -->
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-
 	<properties>
 		<pepper.mail>saltnpepper@lists.hu-berlin.de</pepper.mail>
 		<pepper.hp>http://corpus-tools.org/pepper/</pepper.hp>
-		<pepper.shortDesc>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products. </pepper.shortDesc>
-		
-		
+		<pepper.shortDesc>A highly extensible plattform for conversion and
+			manipulation of linguistic data between an unbound set of formats.
+			Pepper can be used stand-alone as a command line interface, or be
+			integrated as an API into other software products. </pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
@@ -70,7 +89,7 @@
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
 
 		<!-- versions of dependencies -->
-		<salt.version>3.0.2-SNAPSHOT</salt.version>
+		<salt.version>3.0.2</salt.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.11</junit.version>
@@ -87,24 +106,26 @@
 		<commons.io.version>2.4</commons.io.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
-		<!--<maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version> -->
-		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
 		<maven-assembly-plugin.version>2.5.3</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-license-plugin.version>1.4.0</maven-license-plugin.version>
 		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
-		<maven-release-plugin.version>2.1</maven-release-plugin.version>
-		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+		<maven-source-plugin.version>2.4</maven-source-plugin.version>
 		<carrot-maven-scr-plugin.version>3.0.3</carrot-maven-scr-plugin.version>
 		<maven-notice-plugin.version>1.0.4</maven-notice-plugin.version>
-		<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
-		<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
+		<docbkx-maven-plugin.version>2.0.16</docbkx-maven-plugin.version>
+		<docbkx-fop-support.version>2.0.16</docbkx-fop-support.version>
 		<xmlunit.version>1.5</xmlunit.version>
 		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
 		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
 		<findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
-		<maven-site-plugin.version>3.1</maven-site-plugin.version>
+		<maven-site-plugin.version>3.4</maven-site-plugin.version>
 		<maven-project-info-reports-plugin.version>2.8.1</maven-project-info-reports-plugin.version>
+		<maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
+		<maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- <dependency> <groupId>org.codehaus.janino</groupId> <artifactId>janino</artifactId> 
@@ -279,6 +300,12 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- start: plugin to deploy project to maven repo -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${maven-deploy-plugin.version}</version>
+			</plugin>
 			<!-- creation of OSGi Service components -->
 			<plugin>
 				<groupId>com.carrotgarden.maven</groupId>
@@ -413,8 +440,6 @@
 								<excludeFilterFile>${basedir}/src/findbugs/excludeFilter.xml</excludeFilterFile>
 							</configuration>
 						</plugin>
-
-
 					</reportPlugins>
 				</configuration>
 			</plugin>
@@ -426,5 +451,59 @@
 		</plugins>
 		<finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
 	</build>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<!-- generate a jar for sources -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>${maven-source-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Generates a Javadoc -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven-javadoc-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- The Maven GPG plugin is used to sign the components -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<name>${project.groupId}.${project.artifactId}</name>
 </project>

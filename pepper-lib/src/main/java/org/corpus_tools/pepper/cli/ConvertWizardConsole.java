@@ -82,8 +82,8 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class ConvertWizardConsole {
-	private static final Logger logger= LoggerFactory.getLogger(PepperStarter.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(PepperStarter.class);
+
 	private static final String PROMPT = "wizard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
@@ -310,7 +310,8 @@ public class ConvertWizardConsole {
 	 * A sub wizard to manage the import phase. Asks all importers from the
 	 * user.
 	 * <ol>
-	 * <li>state 0: reads corpus path, empty input leads to exit import phase</li>
+	 * <li>state 0: reads corpus path, empty input leads to exit import phase
+	 * </li>
 	 * <li>state 1: choose importer</li>
 	 * <li>state 2: choose properties, empty input leads to state 0</li>
 	 * </ol>
@@ -426,7 +427,7 @@ public class ConvertWizardConsole {
 					out.println(MSG_IMPORT_CORPUS);
 				}
 			}
-		}// end: while
+		} // end: while
 		return (true);
 	}
 
@@ -516,7 +517,7 @@ public class ConvertWizardConsole {
 					out.println(MSG_MAN);
 				}
 			}
-		}// end while
+		} // end while
 		prompt = promptOld;
 	}
 
@@ -565,7 +566,7 @@ public class ConvertWizardConsole {
 
 					File corpusPath = new File(input);
 					if (!corpusPath.exists()) {
-						if (!corpusPath.mkdirs()){
+						if (!corpusPath.mkdirs()) {
 							logger.warn("Cannot create folder for corpus path '{}'. ", corpusPath.getAbsolutePath());
 						}
 					}
@@ -642,7 +643,7 @@ public class ConvertWizardConsole {
 					out.println(MSG_IMPORT_CORPUS);
 				}
 			}
-		}// end: while
+		} // end: while
 		return (true);
 	}
 
@@ -665,14 +666,15 @@ public class ConvertWizardConsole {
 			}
 			return (Double.compare(this.probability, arg0.probability));
 		}
-		
+
 		/**
 		 * This method is here to satisfy findbugs.
 		 */
 		@Override
 		public boolean equals(Object obj) {
-			return(super.equals(obj));
+			return (super.equals(obj));
 		}
+
 		/**
 		 * This method is here to satisfy findbugs.
 		 */

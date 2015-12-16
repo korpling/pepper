@@ -19,10 +19,10 @@ package org.corpus_tools.pepper.modules.tests;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.junit.Test;
+
+import junit.framework.TestCase;
 
 public class PepperModulePropertyTest extends TestCase {
 	/**

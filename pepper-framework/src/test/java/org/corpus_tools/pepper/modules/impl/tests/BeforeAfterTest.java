@@ -22,11 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.corpus_tools.pepper.common.PepperUtil;

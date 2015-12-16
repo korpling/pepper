@@ -227,28 +227,35 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 	@Override
 	public void map() {
 		DOCUMENT_STATUS mappingResult = null;
+		// preprocessing
+		for (MappingSubject subj : getMappingSubjects()) {
+			new BeforeAfterAction(getPepperModule()).before(subj.getIdentifier());
+			// getPepperModule().before(subj.getIdentifier());
+		}
+		
 		if (this.getPepperMapper().getCorpus() != null) {
+			// corpus mapping
+			
 			progress = 0d;
 			mappingResult = this.getPepperMapper().mapSCorpus();
 			progress = 1d;
 		} else if (this.getPepperMapper().getDocument() != null) {
-			// real document mapping
-			// preprocessing
-			for (MappingSubject subj : getMappingSubjects()) {
-				new BeforeAfterAction(getPepperModule()).before(subj.getIdentifier());
-				// getPepperModule().before(subj.getIdentifier());
-			}
+			// document mapping
+			
 			// real document mapping
 			mappingResult = this.getPepperMapper().mapSDocument();
-			// postprocessing
-			for (MappingSubject subj : getMappingSubjects()) {
-				new BeforeAfterAction(getPepperModule()).after(subj.getIdentifier());
-				// getPepperModule().after(subj.getIdentifier());
-			}
+			
 
 		} else {
 			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		}
+		
+		// postprocessing
+		for (MappingSubject subj : getMappingSubjects()) {
+			new BeforeAfterAction(getPepperModule()).after(subj.getIdentifier());
+			// getPepperModule().after(subj.getIdentifier());
+		}
+		
 		if ((!DOCUMENT_STATUS.FAILED.equals(getPepperMapper().getMappingResult())) && (!DOCUMENT_STATUS.COMPLETED.equals(getPepperMapper().getMappingResult())) && (!DOCUMENT_STATUS.DELETED.equals(getPepperMapper().getMappingResult()))) {
 			this.getPepperMapper().setMappingResult(mappingResult);
 		}

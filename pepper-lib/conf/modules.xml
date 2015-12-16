@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <pepperModulesList defaultGroupId="org.corpus-tools"
-	defaultRepository="http://korpling.german.hu-berlin.de/maven2/">
+	defaultSnapshotRepository="https://oss.sonatype.org/content/repositories/snapshots/" defaultReleaseRepository="http://central.maven.org/maven2/">
 	<pepperModules>
 		<artifactId>pepperModules-TCFModules</artifactId>
+		<repositories>
+			<snapshotRepository>
+				<url>http://korpling.german.hu-berlin.de/maven2/</url>
+			</snapshotRepository>
+			<releaseRepository>
+				<url>http://central.maven.org/maven2/</url>
+			</releaseRepository>
+		</repositories>		
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-CoNLLModules</artifactId>

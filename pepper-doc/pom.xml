@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper-doc</artifactId>
 	<packaging>pom</packaging>
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,6 +15,11 @@
 		<!-- override in your settings -->
 		<siteMainDirectory>${user.home}</siteMainDirectory>
 		<scmPubCheckoutDirectory>\${siteMainDirectory}/pepper-content-scm</scmPubCheckoutDirectory>
+		<exec-maven-plugin.version>1.4.0</exec-maven-plugin.version>
+		<maven-project-info-reports-plugin.version>2.4</maven-project-info-reports-plugin.version>
+		<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
+		<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
+		<maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
 	</properties>
 	<build>
 		<plugins>
@@ -24,13 +27,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven-site-plugin.version}</version>
 				<configuration>
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
+							<version>${maven-project-info-reports-plugin.version}</version>
 							<configuration>
 								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
 							</configuration>
@@ -48,7 +51,7 @@
 			<plugin>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-maven-plugin</artifactId>
-				<version>2.0.14</version>
+				<version>${docbkx-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>pdf</id>
@@ -163,7 +166,7 @@
 			<plugin>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-fop-support</artifactId>
-				<version>2.0.14</version>
+				<version>${docbkx-fop-support.version}</version>
 				<executions>
 					<execution>
 						<phase>pre-site</phase>
@@ -179,8 +182,12 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins </groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
+				<!-- In default version from parent, a failure occures: Failed to execute 
+					goal org.apache.maven.plugins:maven-resources-plugin:2.7:copy-resources (copy-filter-docbook) 
+					on project salt-doc: Mark invalid -->
+				<version>2.6</version>
 				<executions>
 					<execution>
 						<id>copy-filter-docbook</id>
@@ -208,12 +215,12 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.7</version>
+					<version>${maven-resources-plugin.version}</version>
 					<configuration>
 						<outputDirectory>${basedir}/target/doxygen-generated</outputDirectory>
 						<resources>
 							<resource>
-								<directory>src/doxygen/</directory>
+								<directory>src/main/doxygen/</directory>
 								<filtering>true</filtering>
 							</resource>
 						</resources>
@@ -222,7 +229,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-scm-publish-plugin</artifactId>
-					<version>1.1</version>
+					<version>${maven-scm-publish-plugin.version}</version>
 					<extensions>true</extensions>
 					<configuration>
 						<pubScmUrl>scm:git:ssh://git@github.com:korpling/salt.git</pubScmUrl>
@@ -287,7 +294,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.4.0</version>
+						<version>${exec-maven-plugin.version}</version>
 						<executions>
 							<execution>
 								<phase>compile</phase>
@@ -336,6 +343,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-scm-publish-plugin</artifactId>
+						<version>${maven-scm-publish-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>scm-publish</id>

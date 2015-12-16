@@ -247,9 +247,9 @@ public class XMLTagExtractor extends DefaultHandler2 {
 		}
 
 		String dictionaryName = null;
-		try (PrintWriter writer = new PrintWriter(outFile, "UTF-8");){
+		try (PrintWriter writer = new PrintWriter(outFile, "UTF-8");) {
 			// create interface file
-			
+
 			dictionaryName = outFile.getName().replace(".java", "");
 			writer.println("package myPackage;");
 			writer.println("");
@@ -283,10 +283,9 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			e.printStackTrace();
 		}
 		outFile = new File(outFile.getAbsolutePath().replace(".java", "") + "Reader" + ".java");
-		
-		try (PrintWriter writer = new PrintWriter(outFile, "UTF-8");){
+
+		try (PrintWriter writer = new PrintWriter(outFile, "UTF-8");) {
 			// create class file
-			
 
 			writer.println("package myPackage;");
 			writer.println("");

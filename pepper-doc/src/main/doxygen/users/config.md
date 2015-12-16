@@ -37,7 +37,7 @@ pepper.computePerformance=true
 pepper.maxAmountOfProcessedSDocuments=4
 
 ##########
-# Determines if an SDocument-object shall be removed after it was processed by all PepperModules
+# Manually trigger the garbage collection after a document was send to sleep
 ########## 
-pepper.removeSDocumentAfterProcessing=true
+pepper.gcAfterDocumentSleep=false
 </pre>

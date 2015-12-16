@@ -100,11 +100,7 @@ public class PepperConfiguration extends Properties {
 	 * {@link DocumentBus} between to steps.
 	 */
 	public static final String PROP_CALL_GC_AFTER_DOCUMENT = PROP_PREFIX + ".gcAfterDocumentSleep";
-	/**
-	 * the flag if an SDocument-object shall be removed after it was processed
-	 * by all PepperModules
-	 */
-	public static final String PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING = PROP_PREFIX + ".removeSDocumentAfterProcessing";
+
 	/**
 	 * name of the flag to determine whether the temporary created
 	 * document-graph files should be preserved or deleted after Pepper
@@ -133,7 +129,7 @@ public class PepperConfiguration extends Properties {
 	 * This array contains all properties, which with the Pepper framework can
 	 * be configured.
 	 */
-	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS, PROP_REMOVE_SDOCUMENTS_AFTER_PROCESSING };
+	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS};
 	public static final String ENV_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 	public static final String PROP_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 

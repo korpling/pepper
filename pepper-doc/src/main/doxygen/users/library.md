@@ -6,25 +6,12 @@ With the Pepper library, we provide a programmatic access to the Pepper framewor
 \code
 <dependency>
    <artifactId>pepper-lib</artifactId>
-   <groupId>de.hu_berlin.german.korpling.saltnpepper</groupId>
+   <groupId>org.corpus-tools</groupId>
    <version>VERSION</version>
 </dependency>
 \endcode 
 
-Please replace the placeholder VERSION with the version you want to use. Unfortunately, Pepper is not yet included in the maven central repository, therefore you need to include our maven repository into your project's pom:
-
-\code
-    <repositories>
-        <!-- ... -->
-        <repository>
-            <id>korpling</id>
-            <name>korpling maven repo</name>
-            <url>http://korpling.german.hu-berlin.de/maven2</url>
-        </repository>
-    </repositories>
-\endcode    
-
-When Pepper is included in your project, you need to get all necessary plugins and modules, therefore:
+Please replace the placeholder VERSION with the version you want to use. When Pepper is included in your project, you need to get all necessary plugins and modules, therefore:
 <ol>
 <li>Download a Pepper release of your choice from http://corpus-tools.org/pepper/</li>
 <li>Unzip the downloaded zip file</li>
@@ -33,12 +20,11 @@ When Pepper is included in your project, you need to get all necessary plugins a
 Now you can start coding. Here is a template, showing how to initialize a Pepper object.
 
 \code
-    PepperStarterConfiguration pepperConf= new
-    PepperStarterConfiguration();
-    pepperConf.setProperty(PepperStarterConfiguration.
-    PROP_PLUGIN_PATH, "PLUGIN_HOME");
-    PepperConnector pepper= new PepperOSGiConnector();
-    pepper.setProperties(pepperConf);
+    	PepperStarterConfiguration pepperConf = new PepperStarterConfiguration();
+		pepperConf.setProperty(PepperStarterConfiguration.PROP_PLUGIN_PATH, PATH_TO_PLUGINS);
+		PepperConnector pepper = new PepperOSGiConnector();
+		pepper.setConfiguration(pepperConf);
+		pepper.init();
 \endcode  
 
 Let's have some code explanations with that:
