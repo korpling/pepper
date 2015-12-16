@@ -19,8 +19,6 @@
 		<pepper.version>3.0.1-SNAPSHOT</pepper.version>
 		<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
 	</properties>
-
-
 	<description>Provides shared POM-data.</description>
 	<ciManagement>
 		<system>Jenkins</system>

@@ -5,7 +5,7 @@
 		<artifactId>pepperModules-TCFModules</artifactId>
 		<repositories>
 			<snapshotRepository>
-				<url>http://korpling.german.hu-berlin.de/maven2/</url>
+				<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 			</snapshotRepository>
 			<releaseRepository>
 				<url>http://central.maven.org/maven2/</url>
