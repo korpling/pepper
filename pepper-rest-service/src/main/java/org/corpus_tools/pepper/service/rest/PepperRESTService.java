@@ -13,29 +13,35 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.transform.stream.StreamSource;
 
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.corpus_tools.pepper.service.osgi.Activator;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 @WebService
 @Path("/resource")
+@Component(name = "PepperRESTService", immediate = true)
 public class PepperRESTService extends Activator implements PepperService{
-
-	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;
-	public static Pepper pepper = null;
-	public static boolean isInit = false;
 	
-	/* TEMPORARY! FIND A BETTER SOLUTION TODO FIXME */
-	public static void setPepper(Pepper pepperInstance){
-		if (!isInit){
-			pepper = pepperInstance;
-			isInit = true;
-		}		
+	private Pepper pepper = null;
+
+	@Reference(unbind = "unsetPepper", cardinality = ReferenceCardinality.MANDATORY, policy = ReferencePolicy.STATIC)
+	public void setPepper(Pepper pepper) {
+	    this.pepper = pepper;
+	    System.out.println("setPepper called");
 	}
+
+	public void unsetPepper(Pepper pepper) {
+	    this.pepper = null;
+	}	
+
+	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;	
 	
 	@GET
 	@Path("compliment")
@@ -57,7 +63,7 @@ public class PepperRESTService extends Activator implements PepperService{
 	@Produces(DATA_FORMAT)
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Override
-	public OutputStream moduleDescription(@QueryParam("name") String moduleName) {
+	public String moduleDescription(@QueryParam("name") String moduleName) {
 		PepperModuleDesc moduleDesc = null;
 		for (Iterator<PepperModuleDesc> iterator = pepper.getRegisteredModules().iterator(); iterator.hasNext(); moduleDesc = iterator.next()){
 			if (moduleName.equals(moduleDesc.getName())){
@@ -72,12 +78,26 @@ public class PepperRESTService extends Activator implements PepperService{
 			OutputStream out = new ByteArrayOutputStream();
 			try {
 				marshaller.marshal(new PepperModuleDescMarshallable(moduleDesc), out);
-				return out;
+				return out.toString();
 			} catch (JAXBException e) {
 				// TODO LOGGING
-				return null;
+				return "unknown";
 			}
 		}
-		return null;
+		return "unknown";
+	}
+	
+	/**
+	 * TEST METHOD
+	 */
+	public String echo(String param){
+		String response = "Hello";
+		if (!param.isEmpty()){
+			PepperModuleDesc next = null; 
+			for (Iterator<PepperModuleDesc> iterator = pepper.getRegisteredModules().iterator(); iterator.hasNext(); next = iterator.next()){
+				response.concat(System.lineSeparator()).concat(next.getName());	
+			}
+		}
+		return response;
 	}
 }

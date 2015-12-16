@@ -3,14 +3,13 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <dependent-module archiveName="pepper-framework-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-framework/pepper-framework">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="salt-api-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/salt-api/salt-api">
+        <dependent-module archiveName="pepper-RESTService-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-RESTService/pepper-RESTService">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="de.hu_berlin.german.korpling.saltnpepper.pepper-gui_2.0.1-SNAPSHOT"/>
         <property name="java-output-path" value="/pepper-gui/target/classes"/>
+        <property name="context-root" value="org.corpus-tools.pepper-gui_3.0.0-SNAPSHOT"/>
     </wb-module>
 </project-modules>

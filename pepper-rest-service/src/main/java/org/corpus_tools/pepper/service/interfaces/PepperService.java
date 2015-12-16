@@ -10,5 +10,5 @@ public interface PepperService{
 	
 	
 	/* MODULES */
-	public OutputStream moduleDescription(String moduleName);
+	public String moduleDescription(String moduleName);
 }
