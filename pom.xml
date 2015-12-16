@@ -9,12 +9,9 @@
 		<module>pepper-parentModule</module>
 		<module>pepper-sampleModules</module>
 		<module>pepper-lib</module>
-<<<<<<< HEAD
 		<module>pepper-gui</module>
 		<module>pepper-rest-service</module>
-=======
 		<module>pepper-doc</module>
->>>>>>> a728ad1c8e48620a265e4518595193b411e11910
 	</modules>
 	<developers>
 		<developer>
