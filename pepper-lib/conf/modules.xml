@@ -43,7 +43,6 @@
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
 	<pepperModules>
-	    <groupId>edu.eurac.commul</groupId>
 		<artifactId>pepperModules-MMAX2Modules</artifactId>
 	</pepperModules>
 	<pepperModules>
@@ -53,7 +52,6 @@
 		<artifactId>pepperModules-PAULAModules</artifactId>
 	</pepperModules>
 	<pepperModules>
-		<groupId>edu.tufts.perseus</groupId>
 		<artifactId>pepperModules-PerseusModules</artifactId>
 	</pepperModules>
 	<pepperModules>
