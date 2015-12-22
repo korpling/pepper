@@ -1,10 +1,24 @@
 ***********************************************************************************
 ***								CHANGELOG for Pepper							***
 ***********************************************************************************
-*	groupId:		de.hu_berlin.german.korpling.saltnpepper					  *
+*	groupId:		org.corpus_tools                         					  *
 *	artifactId:		pepper												          *
 *													                              *
 ***********************************************************************************
+Version 3.0.0
+=============
+* updated Salt to version 3.0.3
+* allowed to define a maven snapshot repository separate from stable repository 
+* changed all package names to org.corpus_tools.pepper
+* changed group-id org.corpus_tools
+* updated use of commons.lang3 to version 3.4
+* added more tolerancy in wizard for backslaches and relative pathes
+* Fix memory leak when documents are deleted
+
+Version 2.1.2
+=============
+* added an integrated TextExporter
+* removed memeory settings in bat and sh
 
 Version 2.1.1
 =============
