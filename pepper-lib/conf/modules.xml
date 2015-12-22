@@ -53,7 +53,6 @@
 		<artifactId>pepperModules-PAULAModules</artifactId>
 	</pepperModules>
 	<pepperModules>
-		<groupId>edu.tufts.perseus</groupId>
 		<artifactId>pepperModules-PerseusModules</artifactId>
 	</pepperModules>
 	<pepperModules>
