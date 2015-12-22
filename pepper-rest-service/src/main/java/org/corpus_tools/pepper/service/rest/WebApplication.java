@@ -3,9 +3,10 @@ package org.corpus_tools.pepper.service.rest;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.corpus_tools.pepper.common.Pepper;
+import org.corpus_tools.pepper.core.PepperImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ public class WebApplication extends Application {
 		}
 		final Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(PepperRESTService.class);
-		classes.add(ServiceEventListener.class);		
+		classes.add(ServiceEventListener.class);
 		return classes;
 	}
 }

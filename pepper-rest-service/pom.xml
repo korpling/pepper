@@ -113,12 +113,12 @@
           <instructions>
             <Bundle-SymbolicName>pepper-RESTService</Bundle-SymbolicName>    
             <Import-Package>
-             org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
+             !javax.xml.bind*, org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
             </Import-Package>                
             <Export-Package>            
             org.corpus_tools.pepper.service.*
             </Export-Package>            
-            <Bundle-Activator>org.corpus_tools.pepper.service.osgi.Activator</Bundle-Activator>                        
+            <!-- Bundle-Activator>org.corpus_tools.pepper.service.osgi.Activator</Bundle-Activator-->                        
             <Web-ContextPath>/pepper-rest/</Web-ContextPath>
             <Webapp-Context>/pepper-rest</Webapp-Context>
             <_wab>src/main/webapp</_wab>
