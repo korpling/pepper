@@ -8,29 +8,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 @WebService
 @Path("/resource")
 @Component(name = "PepperRESTService", immediate = true)
 public class PepperRESTService implements PepperService{
 		
-	private Pepper pepper = null;
+	private ServiceLib lib;
 
-	@Reference(unbind = "unsetPepper", cardinality = ReferenceCardinality.MANDATORY, policy = ReferencePolicy.STATIC)
-	public void setPepper(Pepper pepperInstance) {
-	    this.pepper = pepperInstance;
-	    System.out.println("setPepper called");
+	public PepperRESTService() {
+		lib = new ServiceLib();
 	}
-
-	public void unsetPepper(Pepper pepperInstance) {
-	    this.pepper = null;
-	}	
+	
+	
 
 	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;	
 	
@@ -42,8 +34,8 @@ public class PepperRESTService implements PepperService{
 		if ("stp".equals(input)){
 			return "Your laces look ironed.";
 		}
-		if ("pepper".equals(input)){
-			return ""+pepper;
+		if ("pepper".equals(input)){			
+			return ""+lib.getPepper();
 		}
 		return "You said "+input;
 	}

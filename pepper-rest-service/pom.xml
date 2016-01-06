@@ -101,15 +101,16 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
         <version>${maven-bundle-plugin.version}</version>
-        <!-- executions>
+        <executions>
           <execution>
             <phase>process-classes</phase>
             <goals>
               <goal>bundle</goal>
             </goals>
           </execution>
-        </executions-->
+        </executions>
         <configuration>
+          <manifestLocation>${META-INF}</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>pepper-RESTService</Bundle-SymbolicName>    
             <Import-Package>
@@ -122,6 +123,7 @@
             <Web-ContextPath>/pepper-rest/</Web-ContextPath>
             <Webapp-Context>/pepper-rest</Webapp-Context>
             <_wab>src/main/webapp</_wab>
+            <Service-Component>${allServiceComponents}</Service-Component>
           </instructions>
         </configuration>
       </plugin>
