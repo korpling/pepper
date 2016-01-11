@@ -5,8 +5,6 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import org.corpus_tools.pepper.common.Pepper;
-import org.corpus_tools.pepper.core.PepperImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

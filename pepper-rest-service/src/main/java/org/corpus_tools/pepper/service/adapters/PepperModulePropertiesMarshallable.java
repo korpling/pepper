@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
-import org.eclipse.persistence.oxm.annotations.XmlElementNillable;
 
 @XmlRootElement
 @XmlSeeAlso({PepperModulePropertyMarshallable.class})

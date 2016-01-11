@@ -7,9 +7,15 @@ import javax.xml.bind.Unmarshaller;
 
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MarshallerFactory {
 	private MarshallerFactory(){}
+	
+	private static final Logger logger = LoggerFactory.getLogger(MarshallerFactory.class);
+	private static final String ERR_MSG_CREATE_MARSHALLER = "An error occured creating marshaller for class ";
+	private static final String ERR_MSG_CREATE_UNMARSHALLER = "An error occured creating marshaller for class ";
 	
 	public static Marshaller getMarshaller(Class<?> clazz){
 		try {
@@ -18,7 +24,7 @@ public class MarshallerFactory {
 			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, PepperRESTService.DATA_FORMAT);	
 			return marshaller;
 		} catch (JAXBException e) {
-			//TODO LOGGING
+			logger.error(ERR_MSG_CREATE_MARSHALLER+clazz);
 		}			
 		return null;
 	}
@@ -30,7 +36,7 @@ public class MarshallerFactory {
 			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, PepperRESTService.DATA_FORMAT);
 			return unmarshaller;
 		} catch (JAXBException e) {
-			// TODO LOGGING
+			logger.error(ERR_MSG_CREATE_UNMARSHALLER+clazz);
 		}		
 		return null;
 	}

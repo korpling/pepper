@@ -111,15 +111,15 @@
         </executions>
         <configuration>
           <manifestLocation>${META-INF}</manifestLocation>
-          <instructions>
+          <instructions>         	
             <Bundle-SymbolicName>pepper-RESTService</Bundle-SymbolicName>    
             <Import-Package>
-             !javax.xml.bind*, org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
+            !com.sun.*, !javax.jms*, !javax.resource*, !javax.mail.internet*, !javax.enterprise*, !oracle.dms*, !oracle.jdbc*, !oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*, !oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, 
+            org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
             </Import-Package>                
             <Export-Package>            
-            org.corpus_tools.pepper.service.*
-            </Export-Package>            
-            <!-- Bundle-Activator>org.corpus_tools.pepper.service.osgi.Activator</Bundle-Activator-->                        
+            org.corpus_tools.pepper.service.*, org.eclipse.persistence.*
+            </Export-Package>                      
             <Web-ContextPath>/pepper-rest/</Web-ContextPath>
             <Webapp-Context>/pepper-rest</Webapp-Context>
             <_wab>src/main/webapp</_wab>
