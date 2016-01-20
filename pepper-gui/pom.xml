@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-RESTService</artifactId>
+			<artifactId>pepper-REST-service</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
@@ -48,7 +48,7 @@
 			<version>${com.google.gwt.version}</version>
 		</dependency>
 	</dependencies>
-	<packaging>war</packaging>	
+	<packaging>war</packaging><!-- used to be war -->	
 	<build>
 		<resources>
 			<resource>

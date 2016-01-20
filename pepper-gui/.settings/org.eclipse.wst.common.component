@@ -6,7 +6,7 @@
         <dependent-module archiveName="pepper-framework-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-framework/pepper-framework">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="pepper-RESTService-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-RESTService/pepper-RESTService">
+        <dependent-module archiveName="pepper-REST-service-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-RESTService/pepper-RESTService">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/pepper-gui/target/classes"/>

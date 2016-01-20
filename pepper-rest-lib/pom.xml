@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>pepper-REST-service</artifactId>
+  <artifactId>pepper-REST-lib</artifactId>
   <packaging>bundle</packaging>
   <parent>
 		<groupId>org.corpus-tools</groupId>
@@ -11,13 +11,8 @@
   </parent>
   <dependencies>
   	<dependency>
-  		<groupId>${project.groupId}</groupId>
+  		<groupId>org.corpus-tools</groupId>
   		<artifactId>pepper-framework</artifactId>
-  		<version>${project.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>${project.groupId}</groupId>
-  		<artifactId>pepper-REST-lib</artifactId>
   		<version>${project.version}</version>
   	</dependency>
   	<dependency>
@@ -123,19 +118,15 @@
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Version>${project.version}</Bundle-Version>
             <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>                
-            <Import-Package>
+            <!--Import-Package>
             !com.sun.*, !javax.jms*, !javax.resource*, !javax.mail.internet*, !javax.enterprise*, !oracle.dms*, !oracle.jdbc*, !oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*, !oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, 
             org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
             </Import-Package>                
             <Export-Package>            
             org.corpus_tools.pepper.service.*, org.eclipse.persistence.*
-            </Export-Package>
+            </Export-Package-->
             <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-            <Include-Resource>{maven-resources}</Include-Resource>                  
-            <Web-ContextPath>/pepper-rest/</Web-ContextPath>
-            <Webapp-Context>/pepper-rest</Webapp-Context>
-            <_wab>src/main/webapp</_wab>
-            <Service-Component>${allServiceComponents}</Service-Component>
+            <Include-Resource>{maven-resources}</Include-Resource>         
           </instructions>
         </configuration>
       </plugin>

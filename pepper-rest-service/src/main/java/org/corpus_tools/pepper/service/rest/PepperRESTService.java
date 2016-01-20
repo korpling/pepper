@@ -17,7 +17,7 @@ import javax.xml.bind.Marshaller;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
-import org.corpus_tools.pepper.service.exeptions.ErrorsExceptions;
+import org.corpus_tools.pepper.service.exceptions.ErrorsExceptions;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.osgi.service.component.annotations.Component;
@@ -81,7 +81,7 @@ public class PepperRESTService implements PepperService{
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			Marshaller m = MarshallerFactory.getMarshaller(PepperModuleDescMarshallable.class);
 			try {
-				m.marshal(moduleDesc, stream);
+				m.marshal(new PepperModuleDescMarshallable(moduleDesc), stream);
 			} catch (JAXBException e) {
 				logger.error(ErrorsExceptions.ERR_MSG_MARSHALLING);
 			}

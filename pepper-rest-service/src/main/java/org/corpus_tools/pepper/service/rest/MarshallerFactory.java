@@ -25,6 +25,7 @@ public class MarshallerFactory {
 			return marshaller;
 		} catch (JAXBException e) {
 			logger.error(ERR_MSG_CREATE_MARSHALLER+clazz);
+			/*DEBUG*/e.printStackTrace();
 		}			
 		return null;
 	}
@@ -37,6 +38,7 @@ public class MarshallerFactory {
 			return unmarshaller;
 		} catch (JAXBException e) {
 			logger.error(ERR_MSG_CREATE_UNMARSHALLER+clazz);
+			/*DEBUG*/e.printStackTrace();
 		}		
 		return null;
 	}
