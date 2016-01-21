@@ -130,8 +130,8 @@
             <Export-Package>            
             org.corpus_tools.pepper.service.*, org.eclipse.persistence.*
             </Export-Package>
-            <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-            <Include-Resource>{maven-resources}</Include-Resource>                  
+            <!--Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+            <Include-Resource>{maven-resources}</Include-Resource-->                  
             <Web-ContextPath>/pepper-rest/</Web-ContextPath>
             <Webapp-Context>/pepper-rest</Webapp-Context>
             <_wab>src/main/webapp</_wab>

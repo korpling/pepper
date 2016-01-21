@@ -118,15 +118,15 @@
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Version>${project.version}</Bundle-Version>
             <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>                
-            <!--Import-Package>
+            <Import-Package>
             !com.sun.*, !javax.jms*, !javax.resource*, !javax.mail.internet*, !javax.enterprise*, !oracle.dms*, !oracle.jdbc*, !oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*, !oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, 
             org.glassfish.jersey.servlet, org.glassfish.jersey.server, *             
             </Import-Package>                
             <Export-Package>            
             org.corpus_tools.pepper.service.*, org.eclipse.persistence.*
-            </Export-Package-->
-            <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-            <Include-Resource>{maven-resources}</Include-Resource>         
+            </Export-Package>
+            <!--Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+            <Include-Resource>{maven-resources}</Include-Resource-->         
           </instructions>
         </configuration>
       </plugin>

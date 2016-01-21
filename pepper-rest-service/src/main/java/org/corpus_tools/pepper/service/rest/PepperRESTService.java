@@ -1,7 +1,6 @@
 package org.corpus_tools.pepper.service.rest;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
@@ -10,16 +9,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.exceptions.ErrorsExceptions;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
-import org.eclipse.persistence.jaxb.MarshallerProperties;
+import org.corpus_tools.pepper.service.util.MarshallerFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -70,7 +69,7 @@ public class PepperRESTService implements PepperService{
 	 * @throws JAXBException 
 	 */
 	@GET
-	@Path("modules")
+	@Path("echo")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String echo(@QueryParam("param") String param){
@@ -90,4 +89,24 @@ public class PepperRESTService implements PepperService{
 		}
 		return response;
 	}
+
+	/* === from here on the "real" stuff === */
+	
+	@GET
+	@Path("modules")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(DATA_FORMAT)
+	@Override
+	public String allModules() {
+		PepperModuleCollectionMarshallable modules = new PepperModuleCollectionMarshallable(pepper.getRegisteredModules());
+		Marshaller m = MarshallerFactory.getMarshaller(PepperModuleCollectionMarshallable.class);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		try {			
+			m.marshal(modules, stream);
+		} catch (JAXBException e) {
+			logger.error(ErrorsExceptions.ERR_MSG_MARSHALLING);
+		}
+		return stream.toString();
+	}	
+	
 }

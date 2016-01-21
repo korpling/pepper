@@ -6,4 +6,6 @@ public interface PepperService{
 	
 	
 	/* MODULES */
+	
+	public String allModules();
 }

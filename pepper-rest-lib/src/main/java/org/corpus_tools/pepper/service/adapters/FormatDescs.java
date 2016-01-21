@@ -13,7 +13,7 @@ public class FormatDescs extends ArrayList<FormatDescMarshallable>{
 		
 	private List<FormatDescMarshallable> formatDescs;
 	
-	@XmlElement(name = "FormatDescss")
+	@XmlElement(name = "FormatDescs")
 	public List<FormatDescMarshallable> getFormatDescs(){
 		return formatDescs;
 	}
