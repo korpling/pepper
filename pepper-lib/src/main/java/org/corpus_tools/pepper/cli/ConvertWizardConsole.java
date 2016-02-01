@@ -297,7 +297,7 @@ public class ConvertWizardConsole {
 		for (StepDesc stepDesc : pepperJob.getStepDescs()) {
 			if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getCorpusPath() != null)) {
 				URI before = stepDesc.getCorpusDesc().getCorpusPath();
-				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
+				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base, true, true, true));
 				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)) {
 					// creates a leading './' if URI is relative
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./" + stepDesc.getCorpusDesc().getCorpusPath()));

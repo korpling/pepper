@@ -54,7 +54,7 @@ public class ConvertWizardConsoleTest {
 	/**
 	 * Checks whether the deresolving of pathes works for pathes: import path:
 	 * HOME/corpus/importFolder export path: HOME/corpus/exportFolder workflow
-	 * file: HOME/corpus/wf.pepper should be deresolved in workflow file to
+	 * file: HOME/corpus/test.pepper should be deresolved in workflow file to
 	 * import path: ./importFolder export path: ./exportFolder
 	 * 
 	 * @throws IOException
