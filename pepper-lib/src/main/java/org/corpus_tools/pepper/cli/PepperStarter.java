@@ -23,13 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +48,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
@@ -467,12 +462,12 @@ public class PepperStarter {
 	/**
 	 * Loads the passed workflow description file and starts the conversion.
 	 * 
-	 * @param workflowFile
+	 * @param workFlowPath
 	 */
-	public void convert(String workFlowFile) {
+	public void convert(String workFlowPath) {
 		PepperJob pepperJob = null;
 		String jobId = null;
-		if ((workFlowFile == null) || (workFlowFile.isEmpty())) {
+		if ((workFlowPath == null) || (workFlowPath.isEmpty())) {
 			// if no parameter is given open convert wizard
 			ConvertWizardConsole console = new ConvertWizardConsole(PROMPT);
 			console.setPepper(getPepper());
@@ -482,11 +477,20 @@ public class PepperStarter {
 				jobId = pepperJob.getId();
 			}
 		} else {
-			if ("water".equalsIgnoreCase(workFlowFile)) {
+			if ("water".equalsIgnoreCase(workFlowPath)) {
 				String msg = "###############___\n##############)===(\n##############)===(\n##############|H##|\n##############|H##|\n##############|H##|\n#############/=====\\\n############/#######\\\n###########/=========\\\n##########:HHHHHHHH##H:\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|HHHHHHHH##H|\n##########|===========|\n##########|###########|\n##########|#\\\\########|\n##########|OOO#In#####|#_________\n##########|#OO#vino###||#########|\n##########|##O#veritas|%#########%\n##########|###########|#\\#######/\n##########|===========|##`.###.'\n##########|HHHHHHHH##H|####\\#/\n##########|HHHHHHHH##H|####(#)\n##########|HHHHHHHH##H|####.|.\n###########~~~~~~~~~~~###~~~^~~~\n Cheers!\n";
 				output.println(msg.replace("#", " "));
 			} else {
-				URI workFlowUri = URI.createFileURI(workFlowFile);
+				File workFlowFile = new File(workFlowPath);
+				// make sure the file is absolute
+				String workFlowCanonicalPath;
+				try {
+					workFlowCanonicalPath = workFlowFile.getCanonicalPath();
+				} catch(IOException ex) {
+					// fallback to absolute path
+					workFlowCanonicalPath = workFlowFile.getAbsolutePath();
+				}
+				URI workFlowUri = URI.createFileURI(workFlowCanonicalPath);
 				jobId = pepper.createJob();
 
 				pepperJob = pepper.getJob(jobId);
