@@ -307,7 +307,8 @@ public class PepperStarter {
 			if (number2module != null) {
 				moduleDesc = number2module.get(numOfModule);
 			}
-		} finally {
+		}
+		catch(NumberFormatException ex) {
 			// try to read module desc by name
 			if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
 				for (PepperModuleDesc desc : moduleDescs) {
@@ -317,55 +318,57 @@ public class PepperStarter {
 					}
 				}
 			}
-			if (moduleDesc != null) {
-
-				Integer[] length = new Integer[2];
-				if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
-					length[0] = 14;
-					length[1] = 60;
-				} else {
-					length[0] = 14;
-					length[1] = 100;
-				}
-
-				int numOfEntries = 5;
-				if (moduleDesc.getProperties() != null) {
-					numOfEntries++;
-					numOfEntries++;
-					numOfEntries++;
-					numOfEntries = numOfEntries + moduleDesc.getProperties().getPropertyDesctriptions().size();
-				}
-
-				String[][] map = new String[numOfEntries][2];
-				map[0][0] = "name:";
-				map[0][1] = moduleDesc.getName();
-				map[1][0] = "version:";
-				map[1][1] = moduleDesc.getVersion();
-				map[2][0] = "supplier:";
-				map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
-				map[3][0] = "website:";
-				map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
-				map[4][0] = "description:";
-				map[4][1] = moduleDesc.getDesc();
-
-				if (moduleDesc.getProperties() != null) {
-					map[5][0] = "--";
-					map[6][1] = "customization properties";
-					map[7][0] = "--";
-					int i = 8;
-					for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
-						map[i][0] = prop.getName();
-						map[i][1] = prop.getDescription();
-						i++;
-					}
-				}
-				retVal.append(PepperUtil.createTable(length, map, false, true, true));
-
-				retVal.append("\n");
-			} else {
-				retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
-			}
 		}
+
+		if (moduleDesc != null) {
+
+			Integer[] length = new Integer[2];
+			if (CONSOLE_WIDTH_80 == getPepperConfiguration().getConsoleWidth()) {
+				length[0] = 14;
+				length[1] = 60;
+			} else {
+				length[0] = 14;
+				length[1] = 100;
+			}
+
+			int numOfEntries = 5;
+			if (moduleDesc.getProperties() != null) {
+				numOfEntries++;
+				numOfEntries++;
+				numOfEntries++;
+				numOfEntries = numOfEntries + moduleDesc.getProperties().getPropertyDesctriptions().size();
+			}
+
+			String[][] map = new String[numOfEntries][2];
+			map[0][0] = "name:";
+			map[0][1] = moduleDesc.getName();
+			map[1][0] = "version:";
+			map[1][1] = moduleDesc.getVersion();
+			map[2][0] = "supplier:";
+			map[2][1] = moduleDesc.getSupplierContact() == null ? "" : moduleDesc.getSupplierContact().toString();
+			map[3][0] = "website:";
+			map[3][1] = moduleDesc.getSupplierHomepage() == null ? "" : moduleDesc.getSupplierHomepage().toString();
+			map[4][0] = "description:";
+			map[4][1] = moduleDesc.getDesc();
+
+			if (moduleDesc.getProperties() != null) {
+				map[5][0] = "--";
+				map[6][1] = "customization properties";
+				map[7][0] = "--";
+				int i = 8;
+				for (PepperModuleProperty<?> prop : moduleDesc.getProperties().getPropertyDesctriptions()) {
+					map[i][0] = prop.getName();
+					map[i][1] = prop.getDescription();
+					i++;
+				}
+			}
+			retVal.append(PepperUtil.createTable(length, map, false, true, true));
+
+			retVal.append("\n");
+		} else {
+			retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
+		}
+
 		return (retVal.toString());
 	}
 
