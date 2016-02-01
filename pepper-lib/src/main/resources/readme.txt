@@ -117,15 +117,15 @@ To start the interactive conversion wizard, which helps you to define a workflow
 * pepper>convert
 
 ============
-Conversion Wizzard
+Conversion Wizard
 ============
  To run a conversion process with Pepper, you need to define, which modules should be used. This is usually done in a 
 workflow. Remember, the Pepper workflow is separated into three different phases: the import phase (mapping data from a 
 given format to Salt), the optional manipulation phase (manipulating or enhancing data in Salt) and the export phase 
 (mapping data from Salt to a given format).
 
- The conversion wizzard should help you to create a Pepper workflow, but you can also create such a workflow in an xml 
-file as described in workflow file. The wizzard will guide you step by step through the creation of a workflow and will 
+ The conversion wizard should help you to create a Pepper workflow, but you can also create such a workflow in an xml 
+file as described in workflow file. The wizard will guide you step by step through the creation of a workflow and will 
 let you store the created workflow to disk when you are done. Enter the path of the corpus to import e.g. 
 'C:\myCorpus\':
 
