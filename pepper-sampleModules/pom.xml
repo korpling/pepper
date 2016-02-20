@@ -8,6 +8,7 @@
 	<artifactId>pepperModules-SampleModules</artifactId>
 	<name>${project.groupId}.${project.artifactId}</name>
 	<packaging>bundle</packaging>
+	<!-- Declares this project to be an extension of the project pepper-parentModule. -->
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper-parentModule</artifactId>
@@ -15,6 +16,7 @@
 		<relativePath>../pepper-parentModule/pom.xml</relativePath>
 	</parent>
 
+	<!-- publishes the Pepper module to maven central. Note, you need an account for maven central.  -->
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -25,10 +27,6 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-	<!-- Declares this project to be an extension of the project pepper-parentModule. 
-		The parent project for instance contains all dependencies necessary for using 
-		the SaltNPepper environment (all Pepper projects and all Salt projects). -->
-	
 	<dependencies>
 		<!-- TODO add all the dependencies you need, which are not 
 			already included in the parent project... -->

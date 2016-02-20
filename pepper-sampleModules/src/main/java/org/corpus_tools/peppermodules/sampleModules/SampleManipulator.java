@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperManipulator;
@@ -70,9 +71,12 @@ public class SampleManipulator extends PepperManipulatorImpl {
 		// TODO change the name of the module, for example use the format name
 		// and the ending Manipulator
 		setName("SampleManipulator");
-		// TODO change the version of your module, we recommend to synchronize
-		// this value with the maven version in your pom.xml
-		setVersion("1.1.0");
+		// TODO change suppliers e-mail address
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		// TODO change suppliers homepage
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
+		// TODO add a description of what your module is supposed to do
+		setDesc("This dummy manipulator prints outsome infos about corpora and docucments to system.out. ");
 	}
 
 	/**
@@ -113,7 +117,7 @@ public class SampleManipulator extends PepperManipulatorImpl {
 	 * @author Florian Zipser
 	 * 
 	 */
-	public static  class SampleMapper extends PepperMapperImpl implements GraphTraverseHandler {
+	public static class SampleMapper extends PepperMapperImpl implements GraphTraverseHandler {
 		/**
 		 * Creates meta annotations, if not already exists
 		 */

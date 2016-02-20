@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -76,14 +77,15 @@ import org.slf4j.LoggerFactory;
  * helpful methods:
  * <ul>
  * <li>the salt model to fill can be accessed via {@link #getSaltProject()}</li>
- * <li>customization properties can be accessed via {@link #getProperties()}</li>
+ * <li>customization properties can be accessed via {@link #getProperties()}
+ * </li>
  * <li>a place where resources of this bundle are, can be accessed via
  * {@link #getResources()}</li>
  * </ul>
  * If this is the first time, you are implementing a Pepper module, we strongly
  * recommend, to take a look into the 'Developer's Guide for Pepper modules',
- * you will find on <a
- * href="https://korpling.german.hu-berlin.de/saltnpepper/">https
+ * you will find on
+ * <a href="https://korpling.german.hu-berlin.de/saltnpepper/">https
  * ://korpling.german.hu-berlin.de/saltnpepper/</a>.
  * 
  * @author Florian Zipser
@@ -114,9 +116,12 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		// TODO change the name of the module, for example use the format name
 		// and the ending Importer (FORMATImporter)
 		setName("SampleImporter");
-		// TODO change the version of your module, we recommend to synchronize
-		// this value with the maven version in your pom.xml
-		setVersion("1.1.0");
+		// TODO change suppliers e-mail address
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		// TODO change suppliers homepage
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
+		//TODO add a description of what your module is supposed to do
+		setDesc("This dummy importer creates a dummy corpus project. ");
 		// TODO change "sample" with format name and 1.0 with format version to
 		// support
 		addSupportedFormat("sample", "1.0", null);
@@ -137,8 +142,8 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 	 * mechanism to map the file-structure to corpus-structure. This default
 	 * mechanism can be configured. To adapt the default behavior to your needs,
 	 * we recommend, to take a look into the 'Developer's Guide for Pepper
-	 * modules', you will find on <a
-	 * href="https://u.hu-berlin.de/saltnpepper/">https
+	 * modules', you will find on
+	 * <a href="https://u.hu-berlin.de/saltnpepper/">https
 	 * ://u.hu-berlin.de/saltnpepper/</a>. <br/>
 	 * Just to show the creation of a corpus-structure for our sample purpose,
 	 * we here create a simple corpus-structure manually. The simple contains a
@@ -259,7 +264,8 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		 * If you need to make any adaptations to the corpora like adding
 		 * further meta-annotation, do it here. When whatever you have done
 		 * successful, return the status {@link DOCUMENT_STATUS#COMPLETED}. If
-		 * anything went wrong return the status {@link DOCUMENT_STATUS#FAILED}. <br/>
+		 * anything went wrong return the status {@link DOCUMENT_STATUS#FAILED}.
+		 * <br/>
 		 * In our dummy implementation, we just add a creation date to each
 		 * corpus.
 		 */

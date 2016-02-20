@@ -20,6 +20,7 @@ package org.corpus_tools.peppermodules.sampleModules;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
+import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
@@ -31,6 +32,7 @@ import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.core.SNode;
 import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.util.SaltUtil;
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -66,10 +68,12 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 		// TODO change the name of the module, for example use the format name
 		// and the ending Exporter (FORMATExporter)
 		setName("SampleExporter");
-		setName(ENDING_XML);
-		// TODO change the version of your module, we recommend to synchronize
-		// this value with the maven version in your pom.xml
-		setVersion("1.1.0");
+		// TODO change suppliers e-mail address
+		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		// TODO change suppliers homepage
+		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
+		// TODO add a description of what your module is supposed to do
+		setDesc("This dummy exporter exports corpora and docucments to dot. ");
 		// TODO change "dot" with format name and 1.0 with format version to
 		// support
 		addSupportedFormat("dot", "1.0", null);
