@@ -87,10 +87,6 @@ import org.slf4j.LoggerFactory;
  * you will find on
  * <a href="https://korpling.german.hu-berlin.de/saltnpepper/">https
  * ://korpling.german.hu-berlin.de/saltnpepper/</a>.
- * 
- * @author Florian Zipser
- * @version 1.0
- *
  */
 // TODO change the name of the component, for example use the format name and
 // the ending Importer (FORMATImporterComponent)

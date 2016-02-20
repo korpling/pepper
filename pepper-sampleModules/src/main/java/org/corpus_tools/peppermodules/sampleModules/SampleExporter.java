@@ -44,10 +44,6 @@ import org.osgi.service.component.annotations.Component;
  * store graph based data for visualizing them. With the tool GraphViz, such a
  * graph could be converted to a png, svg ... file. For more information about
  * dot and GraphViz, see: http://www.graphviz.org/.
- * 
- * @author Florian Zipser
- * @version 1.0
- * 
  */
 // TODO /1/: change the name of the component, for example use the format name
 // and the ending Exporter (FORMATExporterComponent)

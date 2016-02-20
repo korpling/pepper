@@ -48,10 +48,6 @@ import org.osgi.service.component.annotations.Component;
  * of nodes, edges and for instance annotation frequencies. <br/>
  * This class can be used as a template for an own implementation of a
  * {@link PepperManipulator} Take a look at the TODO's and adapt the code.
- * 
- * @author Florian Zipser
- * @version 1.0
- * 
  */
 // TODO /1/: change the name of the component, for example use the format name
 // and the ending manipulator (FORMATManipulatorComponent)
