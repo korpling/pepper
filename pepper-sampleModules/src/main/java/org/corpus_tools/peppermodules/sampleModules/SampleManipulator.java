@@ -72,7 +72,7 @@ public class SampleManipulator extends PepperManipulatorImpl {
 		// TODO change suppliers homepage
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		// TODO add a description of what your module is supposed to do
-		setDesc("This dummy manipulator prints outsome infos about corpora and docucments to system.out. ");
+		setDesc("The manipulator, traverses over the document-structure and prints out some information about it, like the frequencies of annotations, the number of nodes and edges and so on. ");
 	}
 
 	/**

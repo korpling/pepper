@@ -69,7 +69,7 @@ public class SampleExporter extends PepperExporterImpl implements PepperExporter
 		// TODO change suppliers homepage
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		// TODO add a description of what your module is supposed to do
-		setDesc("This dummy exporter exports corpora and docucments to dot. ");
+		setDesc("The exporter exports the corpus into a format named DOT (see: http://www.graphviz.org/), which can be used to visualize the corpus. ");
 		// TODO change "dot" with format name and 1.0 with format version to
 		// support
 		addSupportedFormat("dot", "1.0", null);

@@ -117,7 +117,7 @@ public class SampleImporter extends PepperImporterImpl implements PepperImporter
 		// TODO change suppliers homepage
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		//TODO add a description of what your module is supposed to do
-		setDesc("This dummy importer creates a dummy corpus project. ");
+		setDesc("This is a dummy importer and imports a static corpus containing one super-corpus, two sub-corpora and four documents. Each document contains a primary text, a tokenization, part-of-speech annotations,information structure annotations, syntactic annotations and anaphoric relations.");
 		// TODO change "sample" with format name and 1.0 with format version to
 		// support
 		addSupportedFormat("sample", "1.0", null);
