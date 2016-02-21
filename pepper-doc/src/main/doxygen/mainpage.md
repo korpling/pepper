@@ -6,6 +6,7 @@ A highly extensible plattform for conversion and manipulation of linguistic data
 
 This documentation is divided into three main parts concerning on what you plan to do with Pepper.
 
-- \ref users
-- \ref moduleDevelopers
-- \ref developers
+- If you want to process a corpus, a users documentation can be found under http://corpus-tools.org/pepper/userGuide.html.
+- If you are a developer and want to integrate Pepper into your tool, go to \ref library. 
+- If you want to create your own Pepper module go to \ref moduleDevelopers.
+- And if you want to help to improve Pepper go to \ref developers.
