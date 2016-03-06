@@ -1,7 +1,3 @@
-Foreword
-========
-
-The intention of this document is first to give a guide to the user of how to use the here mentioned pepper modules and how to utilize a mapping performed by them. Second this document shall give a closer view in the details of such a mapping in a declarative way, to give the user a chance to understand how specific data will be mapped by the presented pepper modules.
 
 Subprojects
 ===========

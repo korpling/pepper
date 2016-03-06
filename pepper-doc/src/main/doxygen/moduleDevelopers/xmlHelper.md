@@ -1,17 +1,12 @@
-little helpers
-==============
-
-Pepper provides further little helpers, which have not been discussed yet. Some of them are just method calls, others are tiny programs, which can be used from command line. All of them are developed for special purposes and might be useful for one or another use case.
-
-XML helpers
-===========
+XML handler
+====
 
 To read xml files Pepper provides a simple method, which shortcuts the instantiation of a SAX parser (see <http://www.saxproject.org/quickstart.html>). This method can be used in a derivation of `PepperImporter` as shown in the following snippet:
 
     readXMLResource(contentHandler, documentLocation);
 
 XML extractor
--------------
+====
 
 The `XMLTagExtractor` generates a dictionary of the xml vocabulary. The dictionary consists of xml tag names, xml namespaces and attribute names from a source file and generates a Java interface and a java class as well. The interface contains the xml namespace declarations, the xml element and attribute names as fields (public static final Strings). The generated java class implements that interface and further extends the `DefaultHandler2` class to read an xml file following the generated xml dictionary.
 
