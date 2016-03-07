@@ -27,6 +27,13 @@ import org.osgi.service.component.annotations.Component;
  * store graph based data for visualizing them. With the tool GraphViz, such a
  * graph could be converted to a png, svg ... file. For more information about
  * dot and GraphViz, see: http://www.graphviz.org/.
+ * 
+ * If this is the first time, you are implementing a Pepper module, we strongly
+ * recommend, to take a look into the 'Developer's Guide for Pepper modules',
+ * you will find on
+ * <a href="http://corpus-tools.org/pepper/">http://corpus-tools.org/pepper</a>.
+ * 
+ * @author ${your_name}
  */
 @Component(name = "${artifactId}ExporterComponent", factory = "PepperExporterComponentFactory")
 public class ${artifactId}Exporter extends PepperExporterImpl implements PepperExporter {

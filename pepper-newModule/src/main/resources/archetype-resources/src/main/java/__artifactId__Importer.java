@@ -68,11 +68,13 @@ import org.slf4j.LoggerFactory;
  * If this is the first time, you are implementing a Pepper module, we strongly
  * recommend, to take a look into the 'Developer's Guide for Pepper modules',
  * you will find on
- * <a href="https://korpling.german.hu-berlin.de/saltnpepper/">https
- * ://korpling.german.hu-berlin.de/saltnpepper/</a>.
+ * <a href="http://corpus-tools.org/pepper/">http://corpus-tools.org/pepper</a>.
+ * 
+ * @author ${your_name}
  */
 @Component(name = "${artifactId}ImporterComponent", factory = "PepperImporterComponentFactory")
-public class ${artifactId}Importer extends PepperImporterImpl implements PepperImporter {
+public class $ {
+	artifactId}Importer extends PepperImporterImpl implements PepperImporter{
 	// =================================================== mandatory
 	// ===================================================
 	// this is a logger, for recording messages during program process, like
@@ -86,7 +88,9 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 * supported formats) are a kind of a fingerprint, which should make your
 	 * module unique.
 	 */
-	public ${artifactId}Importer() {
+	public ${artifactId}
+
+	Importer() {
 		super();
 		setName("${artifactId}Importer");
 		// TODO change suppliers e-mail address

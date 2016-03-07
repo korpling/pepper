@@ -31,6 +31,12 @@ import org.osgi.service.component.annotations.Component;
  * of nodes, edges and for instance annotation frequencies. <br/>
  * This class can be used as a template for an own implementation of a
  * {@link PepperManipulator} Take a look at the TODO's and adapt the code.
+ * If this is the first time, you are implementing a Pepper module, we strongly
+ * recommend, to take a look into the 'Developer's Guide for Pepper modules',
+ * you will find on
+ * <a href="http://corpus-tools.org/pepper/">http://corpus-tools.org/pepper</a>.
+ * 
+ * @author ${your_name}
  */
 @Component(name = "${artifactId}ManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class ${artifactId}Manipulator extends PepperManipulatorImpl {

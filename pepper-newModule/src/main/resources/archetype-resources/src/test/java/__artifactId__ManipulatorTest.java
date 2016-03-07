@@ -22,6 +22,8 @@ import org.junit.Test;
  * {@link PepperManipulatorTest}. The usage of this class should simplfy your
  * work and allows you to test only your single manipulator in the Pepper
  * environment.
+ * 
+ * @author ${your_name}
  */
 public class ${artifactId}ManipulatorTest extends PepperManipulatorTest {
 	/**
