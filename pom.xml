@@ -8,7 +8,6 @@
 	<modules>
 		<module>pepper-framework</module>
 		<module>pepper-parentModule</module>
-		<module>pepper-sampleModules</module>
 		<module>pepper-newModule</module>
 		<module>pepper-lib</module>
 		<module>pepper-doc</module>
