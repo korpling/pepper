@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
@@ -8,6 +9,7 @@
 		<module>pepper-framework</module>
 		<module>pepper-parentModule</module>
 		<module>pepper-sampleModules</module>
+		<module>pepper-newModule</module>
 		<module>pepper-lib</module>
 		<module>pepper-doc</module>
 	</modules>
@@ -52,8 +54,8 @@
 		<connection>scm:git:git://github.com/korpling/pepper.git</connection>
 		<developerConnection>scm:git:git@github.com:korpling/pepper.git</developerConnection>
 		<url>https://github.com/korpling/pepper</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -70,7 +72,8 @@
 		<pepper.shortDesc>A highly extensible plattform for conversion and
 			manipulation of linguistic data between an unbound set of formats.
 			Pepper can be used stand-alone as a command line interface, or be
-			integrated as an API into other software products. </pepper.shortDesc>
+			integrated as an API into other software products.
+		</pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
