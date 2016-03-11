@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Collection;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.gui.client.ServiceConnector;
 import org.corpus_tools.pepper.gui.components.PathSelectDialogue;
@@ -47,8 +49,11 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	private IdProvider idProvider = null;
 	private Window debugWindow = null;
+	private ServiceConnector serviceConnector = null;
+	private static final String SERVICE_URL = "http://localhost:8080/";
 	
-	protected void init(VaadinRequest request){		
+	protected void init(VaadinRequest request){
+		serviceConnector = new ServiceConnector(SERVICE_URL);
 		gui = new PepperGUI(this);
 		setErrorHandler(this);
 		setImmediate(true);
@@ -89,9 +94,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	public void buttonClick(ClickEvent event) {
 		String id = event.getComponent().getId();
 		debugOut("click event, id="+id);
-		if (ID_BUTTON_ABOUT.equals(id)){
-			PepperModuleDesc moduleDesc = ServiceConnector.demoGetModuleDesc(null);
-			Notification.show(moduleDesc==null? "ERROR" : moduleDesc.toString(), Notification.TYPE_ERROR_MESSAGE);
+		if (ID_BUTTON_ABOUT.equals(id)){	
+			Collection<PepperModuleDesc> modules = serviceConnector.getAllModules(MODULE_TYPE.EXPORTER);
+			gui.debugOut(modules.toString());
 		}
 		else if (ID_BUTTON_NEW.equals(id)){
 		}
@@ -226,7 +231,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			if (config==null){
 				gui.setConfig(new ConversionStepConfiguration(null, null, txt.replace("file://", ""), gui.getModuleType()));
 			} else {
-				config.setPath(txt.replace("file://", ""));
+				config.setPath(txt.replace("file://", ""));				
 				gui.update();
 			}
 			c.addTextChangeListener(this);

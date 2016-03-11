@@ -18,7 +18,7 @@ import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallab
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.exceptions.ErrorsExceptions;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
-import org.corpus_tools.pepper.service.util.MarshallerFactory;
+import org.corpus_tools.pepper.service.util.PepperSerializer;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -45,10 +45,6 @@ public class PepperRESTService implements PepperService{
 	    pepper = null;
 	    logger.info("unset pepper");
 	}	
-	
-	
-
-	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;	
 	
 	@GET
 	@Path("compliment")
@@ -78,7 +74,7 @@ public class PepperRESTService implements PepperService{
 			//dummy-code
 			PepperModuleDesc moduleDesc = pepper.getRegisteredModules().iterator().next();
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			Marshaller m = MarshallerFactory.getMarshaller(PepperModuleDescMarshallable.class);
+			Marshaller m = PepperSerializer.getMarshaller(PepperModuleDescMarshallable.class);
 			try {
 				m.marshal(new PepperModuleDescMarshallable(moduleDesc), stream);
 			} catch (JAXBException e) {
@@ -89,17 +85,17 @@ public class PepperRESTService implements PepperService{
 		}
 		return response;
 	}
-
+	
 	/* === from here on the "real" stuff === */
 	
 	@GET
-	@Path("modules")
+	@Path(PATH_ALL_MODULES)
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(DATA_FORMAT)
 	@Override
 	public String allModules() {
 		PepperModuleCollectionMarshallable modules = new PepperModuleCollectionMarshallable(pepper.getRegisteredModules());
-		Marshaller m = MarshallerFactory.getMarshaller(PepperModuleCollectionMarshallable.class);
+		Marshaller m = PepperSerializer.getMarshaller(PepperModuleCollectionMarshallable.class);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		try {			
 			m.marshal(modules, stream);

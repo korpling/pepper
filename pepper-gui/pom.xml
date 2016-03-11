@@ -18,37 +18,11 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-REST-service</artifactId>
+			<artifactId>pepper-gui-lib</artifactId>
 			<version>${project.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-themes</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client-compiled</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${com.google.gwt.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>${com.google.gwt.version}</version>
 		</dependency>
 	</dependencies>
-	<packaging>war</packaging><!-- used to be war -->	
+	<packaging>bundle</packaging><!-- used to be war -->	
 	<build>
 		<resources>
 			<resource>
@@ -73,6 +47,37 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.2.3.v20140905</version>
 			</plugin>
+			
+			<!-- bundle plugin -->
+			<plugin>
+		        <groupId>org.apache.felix</groupId>
+		        <artifactId>maven-bundle-plugin</artifactId>
+		        <extensions>true</extensions>
+		        <version>${maven-bundle-plugin.version}</version>
+		        <executions>
+		          <execution>
+		            <phase>process-classes</phase>
+		            <goals>
+		              <goal>bundle</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		        <configuration>
+		          <manifestLocation>${META-INF}</manifestLocation>
+		          <instructions>         	
+		            <Bundle-Name>${project.artifactId}</Bundle-Name>
+		            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+		            <Bundle-Version>${project.version}</Bundle-Version> 
+		            <Import-Package> 
+					org.glassfish.jersey.servlet, org.glassfish.jersey.server, com.vaadin*, com.google*, <!-- packages to make gui run -->
+		            org.corpus_tools.pepper*, *
+		            </Import-Package>   
+		            <Web-ContextPath>/pepper-gui/</Web-ContextPath>
+					<Webapp-Context>/pepper-gui</Webapp-Context>
+					<_wab>src/main/webapp</_wab> 
+		          </instructions>
+		        </configuration>
+		   </plugin>			
 		</plugins>
 	</build>
 </project>
