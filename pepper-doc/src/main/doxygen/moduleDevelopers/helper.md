@@ -1,25 +1,26 @@
-XML handler {#helper}
+Pepper module developers helper {#helper}
 ====
 
-To read xml files Pepper provides a simple method, which shortcuts the instantiation of a SAX parser (see <http://www.saxproject.org/quickstart.html>). This method can be used in a derivation of `PepperImporter` as shown in the following snippet:
-
+To read xml files Pepper provides a simple method, which shortcuts the instantiation of a SAX parser (see <http://www.saxproject.org/quickstart.html>). This method can be used in a derivation of @ref org.corpus_tools.pepper.modules.PepperImporter as shown in the following snippet:
+\code
     readXMLResource(contentHandler, documentLocation);
+\endcode
 
 XML extractor
 ====
 
 The `XMLTagExtractor` generates a dictionary of the xml vocabulary. The dictionary consists of xml tag names, xml namespaces and attribute names from a source file and generates a Java interface and a java class as well. The interface contains the xml namespace declarations, the xml element and attribute names as fields (public static final Strings). The generated java class implements that interface and further extends the `DefaultHandler2` class to read an xml file following the generated xml dictionary.
 
-This class can be very helpful, when creating `PepperImporter` or `PepperExporter` classes consuming or producing xml formats. In that case, a sample xml file (containing most or better all of the elements) can be used to extract all element names as keys for the implementation.
+This class can be very helpful, when creating importer or exporter classes consuming or producing xml formats. In that case, a sample xml file (containing most or better all of the elements) can be used to extract all element names as keys for the implementation.
 
 For instance, the following xml file:
-
+\code
      <sentence xml:lang="en">
        <token pos="VBZ">Is</token>
        <token pos="DT" lemma="this">this</token>
        <token>example</token>
      </sentence>
-     
+\endcode
 
 results in the following interface, where INTERFACE\_NAME is the name of the xml file:
 
