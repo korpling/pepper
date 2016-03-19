@@ -73,8 +73,9 @@ import org.slf4j.LoggerFactory;
  * @author ${your_name}
  */
 @Component(name = "${artifactId}ImporterComponent", factory = "PepperImporterComponentFactory")
-public class $ {
-	artifactId}Importer extends PepperImporterImpl implements PepperImporter{
+//@formatter:off
+public class ${artifactId}Importer extends PepperImporterImpl implements PepperImporter{
+//@formatter:on
 	// =================================================== mandatory
 	// ===================================================
 	// this is a logger, for recording messages during program process, like

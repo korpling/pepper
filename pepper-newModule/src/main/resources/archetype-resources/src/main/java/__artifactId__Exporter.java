@@ -35,7 +35,9 @@ import org.osgi.service.component.annotations.Component;
  * 
  * @author ${your_name}
  */
+//@formatter:off
 @Component(name = "${artifactId}ExporterComponent", factory = "PepperExporterComponentFactory")
+//@formatter:on
 public class ${artifactId}Exporter extends PepperExporterImpl implements PepperExporter {
 	// =================================================== mandatory
 	// ===================================================

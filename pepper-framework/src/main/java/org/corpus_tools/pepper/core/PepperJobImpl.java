@@ -894,7 +894,7 @@ public class PepperJobImpl extends PepperJob {
 						str.append(problems.getRight());
 						str.append("], ");
 					}
-					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved job is not ready to run: '" + str.toString() + "'. ");
+					throw new PepperException("Cannot run Pepper job '" + getId() + "', because at least one of the involved jobs is not ready to run: '" + str.toString() + "'. ");
 				}
 			}
 			status = JOB_STATUS.IMPORTING_CORPUS_STRUCTURE;
