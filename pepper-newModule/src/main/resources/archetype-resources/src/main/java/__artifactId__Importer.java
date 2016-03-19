@@ -73,13 +73,8 @@ import org.slf4j.LoggerFactory;
  * @author ${your_name}
  */
 @Component(name = "${artifactId}ImporterComponent", factory = "PepperImporterComponentFactory")
-//@formatter:off
 public class ${artifactId}Importer extends PepperImporterImpl implements PepperImporter{
-//@formatter:on
-	// =================================================== mandatory
-	// ===================================================
-	// this is a logger, for recording messages during program process, like
-	// debug messages
+	/** this is a logger, for recording messages during program process, like debug messages**/
 	private static final Logger logger = LoggerFactory.getLogger(${artifactId}Importer.class);
 
 	/**
@@ -89,9 +84,7 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 * supported formats) are a kind of a fingerprint, which should make your
 	 * module unique.
 	 */
-	public ${artifactId}
-
-	Importer() {
+	public ${artifactId}Importer() {
 		super();
 		setName("${artifactId}Importer");
 		// TODO change suppliers e-mail address
@@ -107,6 +100,7 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 		// also predefined endings beginning with 'ENDING_'
 		getDocumentEndings().add("ENDING OF FILES TO IMPORT");
 	}
+	
 
 	/**
 	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
