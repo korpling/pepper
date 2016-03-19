@@ -78,7 +78,7 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 	 *         connected to given {@link Identifier}
 	 */
 	public PepperMapper createPepperMapper(Identifier Identifier) {
-		SampleMapper mapper = new SampleMapper();
+		${artifactId}Mapper mapper = new ${artifactId}Mapper();
 		return (mapper);
 	}
 
@@ -95,7 +95,7 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 	 * corpus to system.out. This is not very useful, but might be a good
 	 * starting point to explain how access the several objects in Salt model.
 	 */
-	public static class SampleMapper extends PepperMapperImpl implements GraphTraverseHandler {
+	public static class ${artifactId}Mapper extends PepperMapperImpl implements GraphTraverseHandler {
 		/**
 		 * Creates meta annotations, if not already exists
 		 */
@@ -144,11 +144,11 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 			// create alist of all root nodes of the current document-structure
 			List<SNode> roots = getDocument().getDocumentGraph().getRoots();
 			// traverse the document-structure beginning at the roots in
-			// depth-first order top down. The id 'sampleTraversal' is used for
+			// depth-first order top down. The id '${artifactId}Traversal' is used for
 			// uniqueness, in case of one class uses multiple traversals. This
 			// object then takes the call-backs implemented with methods
 			// checkConstraint, nodeReached and nodeLeft
-			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "sampleTraversal", this);
+			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "${artifactId}Traversal", this);
 
 			// print out computed frequencies
 			for (Map.Entry<String, Integer> entry : frequencies.entrySet()) {

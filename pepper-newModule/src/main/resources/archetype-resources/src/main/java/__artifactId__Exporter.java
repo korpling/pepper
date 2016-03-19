@@ -71,18 +71,18 @@ public class ${artifactId}Exporter extends PepperExporterImpl implements PepperE
 
 	/**
 	 * This method creates a {@link PepperMapper}. <br/>
-	 * In this dummy implementation an instance of {@link SampleMapper} is
+	 * In this dummy implementation an instance of {@link ${artifactId}Mapper} is
 	 * created and its location to where the document-structure should be
 	 * exported to is set.
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier Identifier) {
-		PepperMapper mapper = new SampleMapper();
+		PepperMapper mapper = new ${artifactId}Mapper();
 		mapper.setResourceURI(getIdentifier2ResourceTable().get(Identifier));
 		return (mapper);
 	}
 
-	public static class SampleMapper extends PepperMapperImpl {
+	public static class ${artifactId}Mapper extends PepperMapperImpl {
 		/**
 		 * Stores each document-structure to location given by
 		 * {@link #getResourceURI()}.

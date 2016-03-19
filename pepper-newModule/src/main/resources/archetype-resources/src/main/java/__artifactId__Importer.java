@@ -194,10 +194,10 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 * {@link SDocument} object or an {@link SCorpus} object of the mapper
 	 * should be initialized differently. <br/>
 	 * Just to show how the creation of such a mapper works, we here create a
-	 * sample mapper of type {@link SampleMapper}, which only produces a fixed
-	 * document-structure in method {@link SampleMapper#mapSDocument()} and
+	 * sample mapper of type {@link ${artifactId}Mapper}, which only produces a fixed
+	 * document-structure in method {@link ${artifactId}Mapper#mapSDocument()} and
 	 * enhances the corpora for further meta-annotations in the method
-	 * {@link SampleMapper#mapSCorpus()}. <br/>
+	 * {@link ${artifactId}Mapper#mapSCorpus()}. <br/>
 	 * If your mapper needs to have set variables, this is the place to do it.
 	 * 
 	 * @param Identifier
@@ -207,7 +207,7 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 *         connected to given {@link Identifier}
 	 */
 	public PepperMapper createPepperMapper(Identifier Identifier) {
-		SampleMapper mapper = new SampleMapper();
+		${artifactId}Mapper mapper = new ${artifactId}Mapper();
 		/**
 		 * TODO Set the exact resource, which should be processed by the created
 		 * mapper object, if the default mechanism of importCorpusStructure()
@@ -222,15 +222,15 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	/**
 	 * This class is a dummy implementation for a mapper, to show how it works.
 	 * This sample mapper only produces a fixed document-structure in method
-	 * {@link SampleMapper#mapSDocument()} and enhances the corpora for further
-	 * meta-annotations in the method {@link SampleMapper#mapSCorpus()}. <br/>
+	 * {@link ${artifactId}Mapper#mapSDocument()} and enhances the corpora for further
+	 * meta-annotations in the method {@link ${artifactId}Mapper#mapSCorpus()}. <br/>
 	 * In production, it might be better to implement the mapper in its own
 	 * file, we just did it here for compactness of the code.
 	 * 
 	 * @author Florian Zipser
 	 *
 	 */
-	public static class SampleMapper extends PepperMapperImpl {
+	public static class ${artifactId}Mapper extends PepperMapperImpl {
 		/**
 		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
 		 * If you need to make any adaptations to the corpora like adding
