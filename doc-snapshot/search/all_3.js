@@ -23,5 +23,5 @@ var searchData=
   ['dotexporter',['DOTExporter',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_exporter.html',1,'org::corpus_tools::pepper::modules::coreModules']]],
   ['dotmanipulator',['DOTManipulator',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html',1,'org::corpus_tools::pepper::modules::coreModules']]],
   ['dotmanipulatorproperties',['DOTManipulatorProperties',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator_properties.html',1,'org::corpus_tools::pepper::modules::coreModules']]],
-  ['developers',['developers',['../md__var_lib_jenkins_jobs_pepper__s_n_a_p_s_h_o_t_workspace_pepper-doc_src_main_doxygen_developers.html',1,'']]]
+  ['develop_20with_20eclipse',['Develop with Eclipse',['../use_eclipse.html',1,'tutorial']]]
 ];

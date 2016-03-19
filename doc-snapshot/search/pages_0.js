@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['commands_20in_20pepper_20console',['Commands in Pepper console',['../commands.html',1,'users']]],
-  ['configuring_20pepper',['Configuring Pepper',['../config.html',1,'users']]]
+  ['analyzing_20an_20unknown_20corpus',['Analyzing an unknown corpus',['../analyze.html',1,'moduleDevelopers']]]
 ];

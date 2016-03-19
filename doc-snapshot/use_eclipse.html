@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Pepper: Configuring Pepper</title>
+<title>Pepper: Develop with Eclipse</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -78,7 +78,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('config.html','');});
+$(document).ready(function(){initNavTree('use_eclipse.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -97,50 +97,28 @@ $(document).ready(function(){initNavTree('config.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Configuring Pepper </div>  </div>
+<div class="title">Develop with Eclipse </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>The Pepper home folder contains a folder named 'conf/', here you find two files to adapt the behavior of Pepper. First you can change the logging behavior by adapting the file logback.xml. The default configuration is configured using the INFO log level:</p>
-<div class="fragment"><div class="line">&lt;root level=<span class="stringliteral">&quot;info&quot;</span>&gt;</div>
-<div class="line">   ...</div>
-<div class="line">&lt;/root&gt;</div>
-</div><!-- fragment --><p>A log level determines which types of log messages are printed. The hierarchy is the following (ascending): trace, debug, info, warn, error. That means, when setting the log level to info, warn and error messages are printed, but no trace and debug messages.</p>
-<p>Secondly, by adapting the file 'pepper.properties' you can change the processing behavior of Pepper. This file has a key-value notation, which mean an entry has a key, followed by the equal sign and the corresponding value. Here is an excerpt of that file:</p>
-<pre>
-<h6></h6>
-</pre><pre>
-<h1>Determines where to find the plugins for Pepper $PEPPER_HOME points to the pepper home folder (this is not an</h1>
-</pre><pre>
-<h1>environment variable)</h1>
-</pre><pre>
-<h6></h6>
-</pre><pre>
-pepper.plugin.path=./plugins/</pre><pre><h6></h6>
-</pre><pre>
-<h1>Determines if Pepper shall measure and display the performance of the used PepperModules</h1>
-</pre><pre>
-<h6></h6>
-</pre><pre>
-pepper.computePerformance=true</pre><pre><h6></h6>
-</pre><pre>
-<h1>The maximal number of currently processed SDocument-objects</h1>
-</pre><pre>
-<h6></h6>
-</pre><pre>
-pepper.maxAmountOfProcessedSDocuments=4</pre><pre><h6></h6>
-</pre><pre>
-<h1>Manually trigger the garbage collection after a document was send to sleep</h1>
-</pre><pre>
-<h6></h6>
-</pre><pre>
-pepper.gcAfterDocumentSleep=false
-</pre> </div></div><!-- contents -->
+<div class="textblock"><h1>Import and run your module in Eclipse </h1>
+<p><b>Step 1</b> Open the Import dialog via: File -&gt; Import...</p>
+<p><b>Step 2</b> Choose the type, how to import your project: Maven -&gt; Existing Maven Projects</p>
+<p><b>Step 3</b> Select Directory MY_MODULE_HOME (the pom.xml should now be automatically selected)</p>
+<p><b>Step 4</b> Click: Finish</p>
+<p>Your module should now be imported into Eclipse.</p>
+<p><b>Step 5</b> Right click on your project and choose Run As -&gt; Maven install</p>
+<h1>Running Pepper from Eclipse </h1>
+<p>You can also import the Pepper project into Eclipse. This allows better debugging possibilities.</p>
+<ol type="1">
+<li>import Pepper in Eclipse </li>
+</ol>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="users.html">Pepper users</a></li>
-    <li class="footer">Generated on Mon Feb 1 2016 14:40:16 for Pepper by
+    <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li><li class="navelem"><a class="el" href="tutorial.html">Tutorial: Getting started</a></li>
+    <li class="footer">Generated on Sun Mar 20 2016 00:32:46 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

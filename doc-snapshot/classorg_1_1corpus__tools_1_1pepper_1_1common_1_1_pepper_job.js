@@ -8,6 +8,7 @@ var classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job =
     [ "createStepDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a7d2d59929e1b0286bd817d4f95d6cdb6", null ],
     [ "getBaseDir", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a9c3f34a6337880a420be0ba21a0b2cc8", null ],
     [ "getId", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a3e4619b8361ee9a6cc7b14711cb64247", null ],
+    [ "getSaltProject", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#af3d4256969c3cb56fb118859600327c2", null ],
     [ "getStatus", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#ace1c28ee76799d167b17b60b51ef1c89", null ],
     [ "getStatusReport", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a37642b34c8157315bee7989ef2f27ebf", null ],
     [ "getStepDescs", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a4464c1fe9ad1d36307a6e2ff97011bf9", null ],

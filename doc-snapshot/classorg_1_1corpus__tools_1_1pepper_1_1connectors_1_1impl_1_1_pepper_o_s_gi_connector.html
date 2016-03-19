@@ -144,6 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0630a0f30161772c844124bbc0e266ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a0630a0f30161772c844124bbc0e266ce">setBundleContext</a> (BundleContext bundleContext)</td></tr>
 <tr class="memdesc:a0630a0f30161772c844124bbc0e266ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the <a class="el" href="">BundleContext</a> object used for this connector.  <a href="#a0630a0f30161772c844124bbc0e266ce">More...</a><br/></td></tr>
 <tr class="separator:a0630a0f30161772c844124bbc0e266ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7e7a566bb675b49fd8eea3012302c6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ac7e7a566bb675b49fd8eea3012302c6f">addSharedPackage</a> (String packageName, String packageVersion)</td></tr>
+<tr class="memdesc:ac7e7a566bb675b49fd8eea3012302c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a package to the list of shared packages.  <a href="#ac7e7a566bb675b49fd8eea3012302c6f">More...</a><br/></td></tr>
+<tr class="separator:ac7e7a566bb675b49fd8eea3012302c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39887356963c74b064207c4322800cbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39887356963c74b064207c4322800cbf"></a>
 Long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a39887356963c74b064207c4322800cbf">getBundleId</a> (URI location)</td></tr>
 <tr class="memdesc:a39887356963c74b064207c4322800cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bundle id to an already installed bundle from the passed location. <br/></td></tr>
@@ -251,6 +254,42 @@ Martin Klotz </dd>
 <dd>
 Stephan Druskat </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ac7e7a566bb675b49fd8eea3012302c6f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector.addSharedPackage </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>packageName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>packageVersion</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a package to the list of shared packages. </p>
+<p>The shared packages are necessary to bridge the OSGi container. In OSGi each bundle has its own classloader, which is a different one than in a standard Java application. In Java classes needs to be load by the same class loader to have a unique identification. For instance to share Salt objects between Pepper modules and the application outside OSGi they need to be added to shared packeges.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packageName</td><td>name of the package </td></tr>
+    <tr><td class="paramname">packageVersion</td><td>version of the package (normally the bundle's version) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a8f18af820ef0c4858ec53d31c3a25718"></a>
 <div class="memitem">
 <div class="memproto">
@@ -955,7 +994,7 @@ Stephan Druskat </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1connectors.html">connectors</a></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl.html">impl</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html">PepperOSGiConnector</a></li>
-    <li class="footer">Generated on Mon Feb 1 2016 14:40:16 for Pepper by
+    <li class="footer">Generated on Sun Mar 20 2016 00:32:46 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
