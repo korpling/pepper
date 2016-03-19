@@ -1,4 +1,4 @@
-Analyzing an unknown corpus (#analyze)
+Analyzing an unknown corpus {#analyze}
 ===========================
 
 According to our experience a lot of users, do not care a lot about formats and don't want to. Unfortunately, in most cases it is not possible to not annoy the users with the details of a mapping. But we want to reduce the complexity for the user as much as possible. Most users are not very interested in the source format of a corpus, they just want to bring the corpus into any kind of tool to make further annotations or analyses. Therefore Pepper provides a possibility to automatically detect the source format of a corpus. Unfortunately this task highly depends on the format and the module processing the format. That makes the detection a task of the modules implementor. We are sorry. The mechanism of automatic detection is not a mandatory task, but it is very useful, what makes it recommended.

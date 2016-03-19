@@ -1,4 +1,4 @@
-XML handler
+XML handler {#helper}
 ====
 
 To read xml files Pepper provides a simple method, which shortcuts the instantiation of a SAX parser (see <http://www.saxproject.org/quickstart.html>). This method can be used in a derivation of `PepperImporter` as shown in the following snippet:

@@ -1,4 +1,4 @@
-Monitoring the progress (#feedback)
+Monitoring the progress {#feedback}
 =======================
 
 What could be more annoying than a not responding program and you do not know if it is still working or not? A conversion job could take some time, which is already frustrating enough for the user. Therefore we want to keep the frustration of users as small as possible and give them a precise response about the progress of the conversion job.

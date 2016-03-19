@@ -1,0 +1,29 @@
+#https://www.websequencediagrams.com
+Pepper framework->PepperModule: instantiation
+PepperModule->PepperModule:setName()
+PepperModule->PepperModule:setVersion()
+PepperModule->PepperModule:setProperties()
+Pepper framework->PepperModule:setResources()
+Pepper framework->PepperModule:setCorpusDesc(CorpusDesc)
+Pepper framework->PepperModule:isReadyToStart()
+PepperModule-->Pepper framework:{true | false}
+Pepper framework->PepperModule:isReadyToStart()
+PepperModule-->Pepper framework:{0 <= X <= 1}
+Pepper framework->PepperModule:importCorpusStructure(SCorpusGraph)
+Pepper framework->PepperModule:start()
+PepperModule->PepperModule:exportCorpusStructure()
+PepperModule->PepperModule:start(SElementId)
+PepperModule->PepperModule:createPepperMapper(SElementId)
+PepperModule->PepperMapper:instantiation
+PepperMapper->PepperMapper:initialize()
+Pepper framework->PepperModule:getProgress(SElementId) //async
+PepperModule->PepperMapper:getProgress()
+PepperMapper-->PepperModule:{0<=X<=1}
+PepperModule-->Pepper framework:{0<=X<=1}
+PepperModule->PepperModule:start(SElementId)
+PepperModule->PepperMapper:mapSDocument():
+PepperMapper->PepperModule:{DOCUMENT_STATUS}
+PepperModule->PepperMapper:mapSCorpus()
+PepperModule->PepperMapper:mapSDocument()
+PepperMapper->PepperModule:{DOCUMENT_STATUS}
+PepperModule->PepperMapper:end()

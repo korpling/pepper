@@ -1,5 +1,5 @@
-Mapping document-structure and corpus-structure (#mapping)
-===============================================
+Map documents and corpora {#mapping}
+====================================
 
 Remember Salt differentiates between the corpus-structure and the document-structure. The document-structure contains the primary data (data sources) and the linguistic annotations. A bunch of such information is grouped to a document (`SDocument` in Salt). The corpus-structure now is a grouping mechanism to group several documents to a corpus or sub-corpus (`SCorpus` in Salt). Therefore, mapping the document-structure and corpus-structure is the main task of a Pepper module. Normally the conceptual mapping of elements between a model or format *X* and Salt is the most tricky part. Not necessarily in a technical sense, but in a semantical. For getting a clue how the mapping can technically be realized, we strongly recommend, to read the Salt model guide and the quick user guide on [u.hu-berlin.de/saltnpepper/](u.hu-berlin.de/saltnpepper/). We here primarily focus on the technical part of the Pepper workflow and especially on the Pepper modules. But in our Sample module, a lot of templates exist of how to deal with a Salt model. Especially the `SampleImporter` is full of instructions to create a Salt model.
 

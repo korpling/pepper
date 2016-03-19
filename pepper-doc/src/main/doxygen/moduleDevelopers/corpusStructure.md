@@ -1,4 +1,4 @@
-Im- and exporting corpus-structure (#corpusStructure)
+Im- and exporting corpus-structure {#corpusStructure}
 ==================================
 
 The classes `PepperImporter` and `PepperExporter` provide an automatic mechanism to im- or export the corpus-structure. This mechanism is adaptable step by step, according to your specific purpose. Since many formats do not care about the corpus-structure and they only encode the document-structure, the corpus-structure is simultaneous to the file structure of a corpus.

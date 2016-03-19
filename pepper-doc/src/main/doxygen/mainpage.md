@@ -10,3 +10,4 @@ This documentation is divided into three main parts concerning on what you plan 
 - If you are a developer and want to integrate Pepper into your tool, go to \ref library. 
 - If you want to create your own Pepper module go to \ref moduleDevelopers.
 - And if you want to help to improve Pepper go to \ref developers.
+- \subpage moduleDevelopers
