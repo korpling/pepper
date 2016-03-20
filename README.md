@@ -22,5 +22,5 @@
 * Code: https://github.com/korpling/pepper
 * Bug and issue tracking: https://github.com/korpling/pepper/issues
 * Code documentation for people who want to use Pepper as a library, who want create their own Pepper module or who want to take part in the Pepper development 
-** stable version: https://korpling.github.io/pepper/doc/
-** snapshot version: https://korpling.github.io/pepper/doc-snapshot/
+ * stable version: https://korpling.github.io/pepper/doc/
+ * snapshot version: https://korpling.github.io/pepper/doc-snapshot/
