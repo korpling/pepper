@@ -1,6 +1,6 @@
 package ${package};
 
-import ${package}.${artifactId}Manipulator;
+import ${package}.${class_prefix}Manipulator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
- * {@link ${artifactId}Manipulator} class. Feel free to adapt and enhance this test
+ * {@link ${class_prefix}Manipulator} class. Feel free to adapt and enhance this test
  * class for real tests to check the work of your manipulator. If you are not
  * confirm with JUnit, please have a look at <a
  * href="http://www.vogella.com/tutorials/JUnit/article.html">
@@ -25,7 +25,7 @@ import org.junit.Test;
  * 
  * @author ${your_name}
  */
-public class ${artifactId}ManipulatorTest extends PepperManipulatorTest {
+public class ${class_prefix}ManipulatorTest extends PepperManipulatorTest {
 	/**
 	 * This method is called by the JUnit environment each time before a test
 	 * case starts. So each time a method annotated with @Test is called. This
@@ -34,7 +34,7 @@ public class ${artifactId}ManipulatorTest extends PepperManipulatorTest {
 	 */
 	@Before
 	public void setUp() {
-		setFixture(new ${artifactId}Manipulator());
+		setFixture(new ${class_prefix}Manipulator());
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ${artifactId}ManipulatorTest extends PepperManipulatorTest {
 		// checks that each corpus contains a date annotation and that its value
 		// is 1989-12-17 just to show how tests work, for more tests, please
 		// take a look
-		// into ${artifactId}Manipulator
+		// into ${class_prefix}Manipulator
 		for (SCorpus sCorpus : getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora()) {
 			assertNotNull(sCorpus.getMetaAnnotation("date"));
 			assertEquals("1989-12-17", sCorpus.getMetaAnnotation("date").getValue());

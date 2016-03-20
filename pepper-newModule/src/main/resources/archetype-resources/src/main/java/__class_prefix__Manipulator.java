@@ -38,8 +38,8 @@ import org.osgi.service.component.annotations.Component;
  * 
  * @author ${your_name}
  */
-@Component(name = "${artifactId}ManipulatorComponent", factory = "PepperManipulatorComponentFactory")
-public class ${artifactId}Manipulator extends PepperManipulatorImpl {
+@Component(name = "${class_prefix}ManipulatorComponent", factory = "PepperManipulatorComponentFactory")
+public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 	// =================================================== mandatory
 	// ===================================================
 	/**
@@ -49,9 +49,9 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 	 * supported formats) are a kind of a fingerprint, which should make your
 	 * module unique.
 	 */
-	public ${artifactId}Manipulator() {
+	public ${class_prefix}Manipulator() {
 		super();
-		setName("${artifactId}Manipulator");
+		setName("${class_prefix}Manipulator");
 		// TODO change suppliers e-mail address
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		// TODO change suppliers homepage
@@ -78,7 +78,7 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 	 *         connected to given {@link Identifier}
 	 */
 	public PepperMapper createPepperMapper(Identifier Identifier) {
-		${artifactId}Mapper mapper = new ${artifactId}Mapper();
+		${class_prefix}Mapper mapper = new ${class_prefix}Mapper();
 		return (mapper);
 	}
 
@@ -95,7 +95,7 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 	 * corpus to system.out. This is not very useful, but might be a good
 	 * starting point to explain how access the several objects in Salt model.
 	 */
-	public static class ${artifactId}Mapper extends PepperMapperImpl implements GraphTraverseHandler {
+	public static class ${class_prefix}Mapper extends PepperMapperImpl implements GraphTraverseHandler {
 		/**
 		 * Creates meta annotations, if not already exists
 		 */
@@ -144,11 +144,11 @@ public class ${artifactId}Manipulator extends PepperManipulatorImpl {
 			// create alist of all root nodes of the current document-structure
 			List<SNode> roots = getDocument().getDocumentGraph().getRoots();
 			// traverse the document-structure beginning at the roots in
-			// depth-first order top down. The id '${artifactId}Traversal' is used for
+			// depth-first order top down. The id '${class_prefix}Traversal' is used for
 			// uniqueness, in case of one class uses multiple traversals. This
 			// object then takes the call-backs implemented with methods
 			// checkConstraint, nodeReached and nodeLeft
-			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "${artifactId}Traversal", this);
+			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "${class_prefix}Traversal", this);
 
 			// print out computed frequencies
 			for (Map.Entry<String, Integer> entry : frequencies.entrySet()) {

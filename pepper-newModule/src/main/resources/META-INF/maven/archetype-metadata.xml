@@ -12,6 +12,7 @@
 		<requiredProperty key="package">
 			<defaultValue>${groupId}.${artifactId}</defaultValue>
 		</requiredProperty>
+		<requiredProperty key="class_prefix"/>
 		<requiredProperty key="your_name" />
 		<requiredProperty key="organisation" />
 	</requiredProperties>

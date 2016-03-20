@@ -36,9 +36,9 @@ import org.osgi.service.component.annotations.Component;
  * @author ${your_name}
  */
 //@formatter:off
-@Component(name = "${artifactId}ExporterComponent", factory = "PepperExporterComponentFactory")
+@Component(name = "${class_prefix}ExporterComponent", factory = "PepperExporterComponentFactory")
 //@formatter:on
-public class ${artifactId}Exporter extends PepperExporterImpl implements PepperExporter {
+public class ${class_prefix}Exporter extends PepperExporterImpl implements PepperExporter {
 	// =================================================== mandatory
 	// ===================================================
 	/**
@@ -49,9 +49,9 @@ public class ${artifactId}Exporter extends PepperExporterImpl implements PepperE
 	 * supported formats) are a kind of a fingerprint, which should make your
 	 * module unique.
 	 */
-	public ${artifactId}Exporter() {
+	public ${class_prefix}Exporter() {
 		super();
-		setName("${artifactId}Exporter");
+		setName("${class_prefix}Exporter");
 		// TODO change suppliers e-mail address
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		// TODO change suppliers homepage
@@ -71,18 +71,18 @@ public class ${artifactId}Exporter extends PepperExporterImpl implements PepperE
 
 	/**
 	 * This method creates a {@link PepperMapper}. <br/>
-	 * In this dummy implementation an instance of {@link ${artifactId}Mapper} is
+	 * In this dummy implementation an instance of {@link ${class_prefix}Mapper} is
 	 * created and its location to where the document-structure should be
 	 * exported to is set.
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier Identifier) {
-		PepperMapper mapper = new ${artifactId}Mapper();
+		PepperMapper mapper = new ${class_prefix}Mapper();
 		mapper.setResourceURI(getIdentifier2ResourceTable().get(Identifier));
 		return (mapper);
 	}
 
-	public static class ${artifactId}Mapper extends PepperMapperImpl {
+	public static class ${class_prefix}Mapper extends PepperMapperImpl {
 		/**
 		 * Stores each document-structure to location given by
 		 * {@link #getResourceURI()}.

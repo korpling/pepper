@@ -72,10 +72,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author ${your_name}
  */
-@Component(name = "${artifactId}ImporterComponent", factory = "PepperImporterComponentFactory")
-public class ${artifactId}Importer extends PepperImporterImpl implements PepperImporter{
+@Component(name = "${class_prefix}ImporterComponent", factory = "PepperImporterComponentFactory")
+public class ${class_prefix}Importer extends PepperImporterImpl implements PepperImporter{
 	/** this is a logger, for recording messages during program process, like debug messages**/
-	private static final Logger logger = LoggerFactory.getLogger(${artifactId}Importer.class);
+	private static final Logger logger = LoggerFactory.getLogger(${class_prefix}Importer.class);
 
 	/**
 	 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
@@ -84,9 +84,9 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 * supported formats) are a kind of a fingerprint, which should make your
 	 * module unique.
 	 */
-	public ${artifactId}Importer() {
+	public ${class_prefix}Importer() {
 		super();
-		setName("${artifactId}Importer");
+		setName("${class_prefix}Importer");
 		// TODO change suppliers e-mail address
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		// TODO change suppliers homepage
@@ -194,10 +194,10 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 * {@link SDocument} object or an {@link SCorpus} object of the mapper
 	 * should be initialized differently. <br/>
 	 * Just to show how the creation of such a mapper works, we here create a
-	 * sample mapper of type {@link ${artifactId}Mapper}, which only produces a fixed
-	 * document-structure in method {@link ${artifactId}Mapper#mapSDocument()} and
+	 * sample mapper of type {@link ${class_prefix}Mapper}, which only produces a fixed
+	 * document-structure in method {@link ${class_prefix}Mapper#mapSDocument()} and
 	 * enhances the corpora for further meta-annotations in the method
-	 * {@link ${artifactId}Mapper#mapSCorpus()}. <br/>
+	 * {@link ${class_prefix}Mapper#mapSCorpus()}. <br/>
 	 * If your mapper needs to have set variables, this is the place to do it.
 	 * 
 	 * @param Identifier
@@ -207,7 +207,7 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	 *         connected to given {@link Identifier}
 	 */
 	public PepperMapper createPepperMapper(Identifier Identifier) {
-		${artifactId}Mapper mapper = new ${artifactId}Mapper();
+		${class_prefix}Mapper mapper = new ${class_prefix}Mapper();
 		/**
 		 * TODO Set the exact resource, which should be processed by the created
 		 * mapper object, if the default mechanism of importCorpusStructure()
@@ -222,15 +222,15 @@ public class ${artifactId}Importer extends PepperImporterImpl implements PepperI
 	/**
 	 * This class is a dummy implementation for a mapper, to show how it works.
 	 * This sample mapper only produces a fixed document-structure in method
-	 * {@link ${artifactId}Mapper#mapSDocument()} and enhances the corpora for further
-	 * meta-annotations in the method {@link ${artifactId}Mapper#mapSCorpus()}. <br/>
+	 * {@link ${class_prefix}Mapper#mapSDocument()} and enhances the corpora for further
+	 * meta-annotations in the method {@link ${class_prefix}Mapper#mapSCorpus()}. <br/>
 	 * In production, it might be better to implement the mapper in its own
 	 * file, we just did it here for compactness of the code.
 	 * 
 	 * @author Florian Zipser
 	 *
 	 */
-	public static class ${artifactId}Mapper extends PepperMapperImpl {
+	public static class ${class_prefix}Mapper extends PepperMapperImpl {
 		/**
 		 * <strong>OVERRIDE THIS METHOD FOR CUSTOMIZATION</strong> <br/>
 		 * If you need to make any adaptations to the corpora like adding

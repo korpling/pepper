@@ -1,6 +1,6 @@
 package ${package};
 
-import ${package}.${artifactId}Importer;
+import ${package}.${class_prefix}Importer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,7 +14,7 @@ import org.junit.Test;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
- * {@link ${artifactId}Importer} class. Feel free to adapt and enhance this test class
+ * {@link ${class_prefix}Importer} class. Feel free to adapt and enhance this test class
  * for real tests to check the work of your importer. If you are not confirm
  * with JUnit, please have a look at <a
  * href="http://www.vogella.com/tutorials/JUnit/article.html">
@@ -25,7 +25,7 @@ import org.junit.Test;
  * 
  * @author ${your_name}
  */
-public class ${artifactId}ImporterTest extends PepperImporterTest {
+public class ${class_prefix}ImporterTest extends PepperImporterTest {
 	/**
 	 * This method is called by the JUnit environment each time before a test
 	 * case starts. So each time a method annotated with @Test is called. This
@@ -34,7 +34,7 @@ public class ${artifactId}ImporterTest extends PepperImporterTest {
 	 */
 	@Before
 	public void setUp() {
-		setFixture(new ${artifactId}Importer());
+		setFixture(new ${class_prefix}Importer());
 
 		// TODO set the formats to be supported by your importer, so that they
 		// can be checked
@@ -63,7 +63,7 @@ public class ${artifactId}ImporterTest extends PepperImporterTest {
 	public void test_DummyImplementation() {
 		// set the path, from where to import the corpus, in our dummy
 		// implementation, the location is also just a dummy
-		getFixture().getCorpusDesc().setCorpusPath(getTempURI("${artifactId}Importer"));
+		getFixture().getCorpusDesc().setCorpusPath(getTempURI("${class_prefix}Importer"));
 		// starts the Pepper framework and the conversion process
 		start();
 

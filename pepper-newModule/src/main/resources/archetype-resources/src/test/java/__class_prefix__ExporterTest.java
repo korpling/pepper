@@ -1,6 +1,6 @@
 package ${package};
 
-import ${package}.${artifactId}Exporter;
+import ${package}.${class_prefix}Exporter;
 
 import static org.junit.Assert.assertTrue;
 
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
- * {@link ${artifactId}Exporter} class. Feel free to adapt and enhance this test class
+ * {@link ${class_prefix}Exporter} class. Feel free to adapt and enhance this test class
  * for real tests to check the work of your importer. If you are not confirm
  * with JUnit, please have a look at <a
  * href="http://www.vogella.com/tutorials/JUnit/article.html">
@@ -27,7 +27,7 @@ import org.junit.Test;
  * 
  * @author ${your_name}
  */
-public class ${artifactId}ExporterTest extends PepperExporterTest {
+public class ${class_prefix}ExporterTest extends PepperExporterTest {
 	/**
 	 * This method is called by the JUnit environment each time before a test
 	 * case starts. So each time a method annotated with @Test is called. This
@@ -36,7 +36,7 @@ public class ${artifactId}ExporterTest extends PepperExporterTest {
 	 */
 	@Before
 	public void setUp() {
-		setFixture(new ${artifactId}Exporter());
+		setFixture(new ${class_prefix}Exporter());
 
 		FormatDesc formatDef = new FormatDesc();
 		formatDef.setFormatName("dot");
@@ -64,12 +64,12 @@ public class ${artifactId}ExporterTest extends PepperExporterTest {
 		getFixture().setSaltProject(SampleGenerator.createSaltProject());
 
 		// determine location, to where the corpus should be exported
-		getFixture().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(getTempPath("${artifactId}Exporter").getAbsolutePath())));
+		getFixture().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(getTempPath("${class_prefix}Exporter").getAbsolutePath())));
 
 		// starts the Pepper framework and the conversion process
 		start();
 
-		File superCorpus = new File(getTempPath("${artifactId}Exporter").getAbsolutePath() + "/rootCorpus");
+		File superCorpus = new File(getTempPath("${class_prefix}Exporter").getAbsolutePath() + "/rootCorpus");
 		assertTrue(superCorpus.exists());
 		File subCorpus1 = new File(superCorpus.getAbsolutePath() + "/subCorpus1");
 		assertTrue(subCorpus1.exists());
