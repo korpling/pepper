@@ -1,13 +1,15 @@
 var module_developers =
 [
-    [ "Tutorial: Getting started", "tutorial.html", "tutorial" ],
+    [ "Tutorial: Getting started in 10 minutes", "tutorial.html", "tutorial" ],
+    [ "Pepper module's architecture", "module_architecture.html", null ],
     [ "Initialization", "init.html", null ],
-    [ "Map documents and corpora", "mapping.html", null ],
     [ "Analyzing an unknown corpus", "analyze.html", null ],
     [ "Im- and exporting corpus-structure", "corpus_structure.html", null ],
-    [ "Customizing the mapping", "customization.html", null ],
+    [ "Map documents and corpora", "mapping.html", null ],
     [ "Monitoring the progress", "feedback.html", null ],
-    [ "Testing", "testing.html", null ],
     [ "Clean up", "clean_up.html", null ],
-    [ "Pepper module developers helper", "helper.html", null ]
+    [ "Customizing the mapping", "customization.html", null ],
+    [ "Pepper module developers helper", "helper.html", null ],
+    [ "Testing", "testing.html", null ],
+    [ "Bundle and deliver", "bundle.html", null ]
 ];

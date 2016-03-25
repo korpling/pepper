@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_internal_exception.html#a372f0475cc5ae5f80358d221d7364519":[3,0,0,0,0,6,1,2,2],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_internal_exception.html#a88c6127bd63ddd2398ec4c99de430330":[3,0,0,0,0,6,1,2,3],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_internal_exception.html#ad068887b0dcc59c1f6ce1bb5e7e4785e":[3,0,0,0,0,6,1,2,1],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_internal_exception.html#adf37cb0156e9e3e334cf28be4220e223":[3,0,0,0,0,6,1,2,0],
@@ -91,9 +92,9 @@ var NAVTREEINDEX3 =
 "classorg_1_1corpus__tools_1_1pepper_1_1util_1_1_x_m_l_stream_writer.html#af33036431cb549ad83ac016caaa99b84":[3,0,0,0,0,8,1,5],
 "classorg_1_1corpus__tools_1_1pepper_1_1util_1_1_x_m_l_stream_writer.html#af7aa497b80605c2b56ef5eb5c7f462f1":[3,0,0,0,0,8,1,22],
 "classorg_1_1corpus__tools_1_1pepper_1_1util_1_1_x_m_l_stream_writer.html#afd250641dc217f5aaa1ef3d3f22ece3e":[3,0,0,0,0,8,1,25],
-"clean_up.html":[1,8],
+"clean_up.html":[1,7],
 "corpus_structure.html":[1,4],
-"customization.html":[1,5],
+"customization.html":[1,8],
 "developers.html":[0],
 "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html":[3,0,0,0,0,0,1,0],
 "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html#a7d92eb20a1066d5136509d0b8c26c8f4":[3,0,0,0,0,0,1,0,3],
@@ -206,7 +207,7 @@ var NAVTREEINDEX3 =
 "helper.html":[1,9],
 "hierarchy.html":[3,1],
 "index.html":[],
-"init.html":[1,1],
+"init.html":[1,2],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html":[3,0,0,0,0,1,6],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a0fa81b53925878bc9b2cbf7df1410bca":[3,0,0,0,0,1,6,8],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a3a01014ceddb5ab4e825d09cee75cd89":[3,0,0,0,0,1,6,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a13bdce06b38f380dbb2fde701981865a":[3,0,0,0,0,6,2,7],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a185abd6a0561aa0d9300f2059392d32b":[3,0,0,0,0,6,2,16],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a1abe4f4777cf14552148bfd9f25138ec":[3,0,0,0,0,6,2,11],
-"interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a1d359a85ae7e668de6a5dd1d7b9859cc":[3,0,0,0,0,6,2,3],
-"interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a23912c9c84d6778d47710a3c798577c3":[3,0,0,0,0,6,2,8]
+"interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a1d359a85ae7e668de6a5dd1d7b9859cc":[3,0,0,0,0,6,2,3]
 };

@@ -5,6 +5,7 @@ var NAVTREEINDEX0 =
 ".html":[3,0,0,0,0],
 "analyze.html":[1,3],
 "annotated.html":[3,0],
+"bundle.html":[1,11],
 "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html":[3,0,0,0,0,0,1],
 "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html#a034d405d93527d5ed2e2b445d9a5b8f0":[3,0,0,0,0,0,1,5],
 "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html#a1993947b9de82150096f37601a3f9686":[3,0,0,0,0,0,1,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#adf29bd2aefdc7aa662d6edaef6f338df":[3,0,0,0,0,3,0,13],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#aebc2a15f920f863d84fda7d364d58c00":[3,0,0,0,0,3,0,20],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#af976da3ccc53becf69a683ec353c68c7":[3,0,0,0,0,3,0,15],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#afccf2589538ec7fbb673535f332ee8da":[3,0,0,0,0,3,0,11],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html":[3,0,0,0,0,3,1]
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#afccf2589538ec7fbb673535f332ee8da":[3,0,0,0,0,3,0,11]
 };

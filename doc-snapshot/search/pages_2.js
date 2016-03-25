@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['develop_20with_20eclipse',['Develop with Eclipse',['../use_eclipse.html',1,'tutorial']]]
+  ['clean_20up',['Clean up',['../clean_up.html',1,'moduleDevelopers']]],
+  ['customizing_20the_20mapping',['Customizing the mapping',['../customization.html',1,'moduleDevelopers']]]
 ];

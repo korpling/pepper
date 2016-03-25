@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['im_2d_20and_20exporting_20corpus_2dstructure',['Im- and exporting corpus-structure',['../corpus_structure.html',1,'moduleDevelopers']]],
-  ['initialization',['Initialization',['../init.html',1,'moduleDevelopers']]]
+  ['develop_20with_20eclipse',['Develop with Eclipse',['../use_eclipse.html',1,'tutorial']]]
 ];

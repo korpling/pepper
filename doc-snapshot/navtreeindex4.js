@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a23912c9c84d6778d47710a3c798577c3":[3,0,0,0,0,6,2,8],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a46e7f9459125a7837ffb5c48bf72ccf3":[3,0,0,0,0,6,2,4],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a77ea4903b3d6991725e4715745f0a1ab":[3,0,0,0,0,6,2,5],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a817ae6c5bd0e6331840e8587e54f47a3":[3,0,0,0,0,6,2,1],
@@ -138,7 +139,8 @@ var NAVTREEINDEX4 =
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#afece3bc5ce302e442bdf1be6f953a4c0":[3,0,0,0,0,6,10,2],
 "library.html":[2,0],
 "library.html#bridgeOSGi":[2,0,0],
-"mapping.html":[1,2],
+"mapping.html":[1,5],
+"module_architecture.html":[1,1],
 "module_developers.html":[1],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1cli.html":[3,0,0,0,0,0],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions.html":[3,0,0,0,0,0,0],
@@ -162,7 +164,7 @@ var NAVTREEINDEX4 =
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1test_framework.html":[3,0,0,0,0,7],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1util.html":[3,0,0,0,0,8],
 "pages.html":[],
-"testing.html":[1,7],
+"testing.html":[1,10],
 "tutorial.html":[1,0],
 "use_eclipse.html":[1,0,0],
 "users.html":[2]
