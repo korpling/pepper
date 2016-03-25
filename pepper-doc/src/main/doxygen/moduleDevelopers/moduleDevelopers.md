@@ -2,60 +2,35 @@ Pepper module developers {#moduleDevelopers}
 ============================
 
 This guide aims to help you to develop your own Pepper module.
-The following tutorial helps you to create the skeleton of your module and to generate a sample implementation in round about 10 minutes. 
+
+The easiest way to start developing an module is along an example, therefore the following tutorial provides the easy generation of a Pepper module's skeleton. The skeleton contains dummy implementations for an importer, a manipulator and an exporter.  
 
 * \subpage tutorial
 
-Pepper module's architecture 
-============
+After setting up the skeleton for your own module it might be helpful to take a closer look into the architecture of a Pepper module project and how the data- and communication flow between Pepper and it's modules work. Read the following sections in the given order to get a comprehensive overview.
 
-There is a specific interface for each type of module in Pepper. An importer must implement the interface @ref org.corpus_tools.pepper.modules.PepperImporter, a manipulator must implement @ref org.corpus_tools.pepper.modules.PepperManipulator and an exporter must implement @ref org.corpus_tools.pepper.modules.PepperExporter. There is also a specific class to each module type implementing the corresponding interface:
-* @ref org.corpus_tools.pepper.impl.PepperImporterImpl,
-* @ref org.corpus_tools.pepper.impl.PepperManipulatorImpl and
-* @ref org.corpus_tools.pepper.impl.PepperExporterImpl.
-
-Each module in your project implements one of the interfaces and extends one of these classes.
-The importer, manipulator and exporter classes implement the supertype @ref org.corpus_tools.pepper.PepperModule and extend the class @ref org.corpus_tools.pepper.impl.PepperModuleImpl. ![class diagram showing the inheritance of Pepper module types](./moduleDevelopers/images/pepperModule_classDiagram.png "Image title")
-
-A mapping process can be relatively time consuming, to increase the speed of mapping an entire corpus, if we are able to process mapping tasks simultaneously. Therefore we added mechanisms to run the process multi-threaded. Unfortunately in Java multi-threading is not that trivial and the easiest way to do it is to separate each thread in an own class. Therefore there is another class, the @ref org.corpus_tools.pepper.modules.PepperMapper. This class does the main mapping task. As you will find in your project, each module contains a nested class extending @ref org.corpus_tools.pepper.impl.PepperMapperImpl. For each corpus and document an instance of that class is initialized which handles the mapping. Therefore we have 1:n relationship between @ref org.corpus_tools.pepper.modules.PepperModule and @ref org.corpus_tools.pepper.modules.PepperMapper.
-
-The class @ref org.corpus_tools.pepper.modules.ModuleController is a mediator between the concrete Pepper module and the Pepper framework. It initializes, starts and ends the modules processing.  
-
-![sequence diagram of communication between Pepper and Pepper module](./moduleDevelopers/images/pepper_workflow.png)
-
-
-
-A mapping can be divided into several acts. Some of these acts correspond to the module's type, for instance a manipulator does not need to im- or export the corpus structure. Some of the acts are mandatory, some are recommended and some are optional, depending on your usecase. The following sections will explain the acts in detail.
-
-* \subpage init [mandatory]
-* \subpage mapping [mandatory]
-* \subpage analyze [recommended, if module is an importer]
-* \subpage corpusStructure  [mandatory, if module is an im- or exporter]
-* \subpage customization [recommended]
-* \subpage feedback  [recommended]
-* \subpage testing [recommended]
-* \subpage cleanUp [optional]
+* \subpage moduleArchitecture
+* \subpage init
+* \subpage analyze
+* \subpage corpusStructure
+* \subpage mapping
+* \subpage feedback
+* \subpage cleanUp
+* \subpage customization
 
 A helper to extract the tags and attributes from an xml file is described here.
-
 * \subpage helper
 
-Bundle the module
-====
+For testing Pepper makes use of the JUnit framework (http://junit.org) and provides a test environment which makes it rather easy to test your module without running the Pepper platform on your own.
 
-Pepper modules use to have a fixed structure containing the Java code and some resources, which may be needed for running the module. Such resources could be some XSLT files in case the conversion process makes use of an XSLT conversion. A module normally is packed into a zip file having the following structure:
+* \subpage testing
 
-\code
-company.myModule.zip
- |--company.myModule/
- |  |--LICENSE
- |  |--NOTICE
- |  |--...
- |--company.myModule.jar
-\endcode
+When you are done with the implementation work of your module you should deliver it in a way which Pepper can easily plug in into the platform. Therefore Pepper provides a Maven assembly goal to do so.  
 
-To create this structure, you can run Maven assembly:
+* \subpage bundle
 
-\code
-mvn clean install assembly:single
-\endcode
+Last but not least, when you have done all the great work to implement a module for Pepper, let the world benefit from your work. Publish your module that people can use it. But don't forget to think about licensing your module. Since Pepper is an open-source software, we plead to think about open-source too. Pepper is under the Apache 2.0 license, which does not force you to go open-source, but there are a lot good reasons to go open source (https://opensource.org).
+ 
+You are convinced of open-source? Then don't forget to publish your sources on a portal like github (https://github.com/), source forge (https://sourceforge.net/), bitbucket (https://bitbucket.org/) and so on.
+
+If you would be so kind to let us know about your great module, we will publish it on Pepper's homepage (http://corpus-tools.org/pepper/knownModules.html) and can include it into the official Pepper releases if you want.
