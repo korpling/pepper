@@ -57,4 +57,4 @@ For generating the class and interface you can either run the extractor as a lib
 
 or from the command line with the following call:
 
-    java XMLTagExtractor.class -i XML_FILE -o OUTPUT_PATH             
+    java -cp lib/org.corpus-tools.pepper*.jar:plugins/* org.corpus_tools.pepper.cli.XMLTagExtractor -i XML_FILE -o OUTPUT_PATH             
