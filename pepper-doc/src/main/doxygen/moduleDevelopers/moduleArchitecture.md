@@ -6,12 +6,14 @@ There is a specific interface for each type of module in Pepper. An importer mus
 * @ref org.corpus_tools.pepper.impl.PepperManipulatorImpl and
 * @ref org.corpus_tools.pepper.impl.PepperExporterImpl.
 
-Each module in your project implements one of the interfaces and extends one of these classes.
-The importer, manipulator and exporter classes implement the supertype @ref org.corpus_tools.pepper.PepperModule and extend the class @ref org.corpus_tools.pepper.impl.PepperModuleImpl. ![class diagram showing the inheritance of Pepper module types](./moduleDevelopers/images/pepperModule_classDiagram.png "Image title")
+Each module in your project must implements one of the interfaces and can extends one of these classes.
+The importer, manipulator and exporter classes implement the supertype @ref org.corpus_tools.pepper.PepperModule and extend the class @ref org.corpus_tools.pepper.impl.PepperModuleImpl. The following figure shows the inheritance model of Pepper modules and its connection to the Pepper framework.
 
-A mapping process can be relatively time consuming, to increase the speed of mapping an entire corpus, if we are able to process mapping tasks simultaneously. Therefore we added mechanisms to run the process multi-threaded. Unfortunately in Java multi-threading is not that trivial and the easiest way to do it is to separate each thread in an own class. Therefore there is another class, the @ref org.corpus_tools.pepper.modules.PepperMapper. This class does the main mapping task. As you will find in your project, each module contains a nested class extending @ref org.corpus_tools.pepper.impl.PepperMapperImpl. For each corpus and document an instance of that class is initialized which handles the mapping. Therefore we have 1:n relationship between @ref org.corpus_tools.pepper.modules.PepperModule and @ref org.corpus_tools.pepper.modules.PepperMapper.
+![class diagram showing the inheritance of Pepper module types](./moduleDevelopers/images/pepperModule_classDiagram.png "Image title")
 
-The class @ref org.corpus_tools.pepper.modules.ModuleController is a mediator between the concrete Pepper module and the Pepper framework. It initializes, starts and ends the modules processing.  
+A mapping process can be relatively time consuming, therefore the processing of documents is parallelized. This is possible since in Salt documents are independent from another. Each document is a partition and elements inside  one documents have no references to the elements of another document. The parallelization in Java is realized via multi-threaded. Unfortunately in Java multi-threading is not that trivial and the easiest way to do is to separate each thread in an own class. Therefore a @ref org.corpus_tools.pepper.modules.PepperModule object can instantiate an unbound number of @ref org.corpus_tools.pepper.modules.PepperMapper objects. These objects contain the logic of a mapping and do the main work, while the rest regulates the workflow. Keep in mind, that when documents are partitions you must treat them as independent units and cannot assume the documents to come in a specific or fixed order. When you do not implement an importer, the order in which the documents reach your module depends on all the previous modules and is not deterministic.    
+
+The class @ref org.corpus_tools.pepper.modules.ModuleController is a mediator between the concrete Pepper module and the Pepper framework. It initializes, starts and ends the modules processing.
 
 ![sequence diagram of communication between Pepper and Pepper module](./moduleDevelopers/images/pepper_workflow.png)
 
