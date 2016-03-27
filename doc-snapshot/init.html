@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Pepper: Initialization</title>
+<title>Pepper: Module initialization</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -97,24 +97,22 @@ $(document).ready(function(){initNavTree('init.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Initialization </div>  </div>
+<div class="title">Module initialization </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>The aspect of initialization is spread over two methods in a Pepper module. First the constructor of a module and second the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#acf9de2e7613aa063c809d6f1f7ce1b68">org.corpus_tools.pepper.modules.PepperModule.isReadyToStart()</a>. Both methods have been touched already in other sections above, but here we want to give a bundled overview about things concerning the initialization. Let us start with an explanation why there are two methods. Sometimes, it might be necessary, to read some configuration files for the initialization, but their location is passed by the Pepper framework. Such locations can be accessed with the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a15e28b31d76d956690cd9587b7aa9a8d">org.corpus_tools.pepper.modules.PepperModule.getResources()</a>. Unfortunately, this information can only be set after a Pepper module was created, so after the constructor was called. Therefore we need a possibility for initialization at a later point. The method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#acf9de2e7613aa063c809d6f1f7ce1b68">org.corpus_tools.pepper.modules.PepperModule.isReadyToStart()</a> fulfills two tasks, first the initialization task and second, it returns a boolean value to determine, if the module can be started or if things went wrong. If you now wonder where the best location should be, to do your initialization, we recommend an early-as-possible approach. The following snippet shows a sample initialization: </p>
+<div class="textblock"><p>The initialization is spread over two methods in a Pepper module. First the constructor of a module and second the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#acf9de2e7613aa063c809d6f1f7ce1b68">org.corpus_tools.pepper.modules.PepperModule.isReadyToStart()</a>. The separation is caused for reasons concerning the point of time of passing information to the module. For instance, sometimes it might be necessary, to read some configuration files from disk for the initialization. But the location of the configuration files is passed by the Pepper framework. Unfortunately, this information can only be set after a Pepper module was created, so after the constructor was called. Therefore we need a possibility for initialization at a later point. The method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#acf9de2e7613aa063c809d6f1f7ce1b68">org.corpus_tools.pepper.modules.PepperModule.isReadyToStart()</a> fulfills two tasks, first the initialization task and second, it returns a boolean value to determine, if the module can be started or if things went wrong. If you now wonder where the best location should be, to do your initialization, we recommend an early-as-possible approach. The following snippet shows a sample initialization: </p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> MyImporter() {</div>
 <div class="line">            super();</div>
 <div class="line">            setName(<span class="stringliteral">&quot;MyImporter&quot;</span>);</div>
-<div class="line">            <span class="comment">// TODO change suppliers e-mail address</span></div>
+<div class="line">            <span class="comment">// suppliers e-mail address</span></div>
 <div class="line">            setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));</div>
-<div class="line">            <span class="comment">// TODO change suppliers homepage</span></div>
+<div class="line">            <span class="comment">// suppliers homepage</span></div>
 <div class="line">            setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));</div>
-<div class="line">            <span class="comment">//TODO add a description of what your module is supposed to do</span></div>
+<div class="line">            <span class="comment">//description of what your module is supposed to do</span></div>
 <div class="line">            setDesc(<span class="stringliteral">&quot;...&quot;</span>);</div>
-<div class="line">            <span class="comment">// TODO change &quot;sample&quot; with format name and 1.0 with format version to</span></div>
-<div class="line">            <span class="comment">// support</span></div>
-<div class="line">            addSupportedFormat(<span class="stringliteral">&quot;sample&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>, null);</div>
-<div class="line">            <span class="comment">// TODO change the endings in endings of files you want to import, see</span></div>
-<div class="line">            <span class="comment">// also predefined endings beginning with &#39;ENDING_&#39;</span></div>
+<div class="line">            <span class="comment">// the format name and and version to support to im- or export</span></div>
+<div class="line">            addSupportedFormat(<span class="stringliteral">&quot;myFormat&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>, null);</div>
+<div class="line">            <span class="comment">// the file ending of files to import in case your module is an importer</span></div>
 <div class="line">            getDocumentEndings().add(<span class="stringliteral">&quot;ENDING OF FILES TO IMPORT&quot;</span>);</div>
 <div class="line">    }</div>
 <div class="line"></div>
@@ -129,7 +127,7 @@ $(document).ready(function(){initNavTree('init.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Fri Mar 25 2016 14:02:50 for Pepper by
+    <li class="footer">Generated on Mon Mar 28 2016 00:32:04 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

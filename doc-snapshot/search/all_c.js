@@ -1,6 +1,7 @@
 var searchData=
 [
   ['monitoring_20the_20progress',['Monitoring the progress',['../feedback.html',1,'moduleDevelopers']]],
+  ['module_20initialization',['Module initialization',['../init.html',1,'moduleDevelopers']]],
   ['main',['main',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter.html#ab750c4c2ed4d5c06fbb0d77868411e5a',1,'org.corpus_tools.pepper.cli.PepperStarter.main()'],['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_x_m_l_tag_extractor.html#a2e37f46dc63aa9854f195deb6c84aca6',1,'org.corpus_tools.pepper.cli.XMLTagExtractor.main()']]],
   ['manipulationphase',['manipulationPhase',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html#a034d405d93527d5ed2e2b445d9a5b8f0',1,'org::corpus_tools::pepper::cli::ConvertWizardConsole']]],
   ['map',['map',['../classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_mapper_controller_impl.html#a895732d430f34c87c4f3ae1b44020245',1,'org.corpus_tools.pepper.impl.PepperMapperControllerImpl.map()'],['../interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#a20cd3dce1de3abad524e8a6fa9bc7ab7',1,'org.corpus_tools.pepper.modules.PepperMapperController.map()']]],

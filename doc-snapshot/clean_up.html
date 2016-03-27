@@ -106,19 +106,14 @@ public void end(){
     super.end();
     //do some clean up like closing of streams etc.
 }
-</pre><p>To run your clean up, just override it and you're done.</p>
-<p>[1] This mechanism enables to map several document-structures and corpus-structures at once.</p>
-<p>[2] If not and your module is catching the exception, you have to think about what to do in error case. If you want the document to be processed further by other modules than return <code>DOCUMENT_STATUS.COMPLETED</code>. If the document now might be corrupt, than return the <code>DOCUMENT_STATUS.FAILED</code></p>
-<p>[3] In case you are wondering, yes this sounds a bit strange, since each file ending which is not contained in the second list won't be imported by default. But there is an option to set this to import each file, no matter what's the ending.</p>
-<p>[4] Normally one logger is instantiated for exactly one class.</p>
-<p>[5] All files in the folder 'SAMPLE_HOME/src/main/resources' will be copied to the resource location in a modules distribution. </p>
+</pre><p>To run your clean up, just override it and you're done. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Fri Mar 25 2016 14:02:50 for Pepper by
+    <li class="footer">Generated on Mon Mar 28 2016 00:32:04 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -106,12 +106,12 @@ $(document).ready(function(){initNavTree('module_architecture.html','');});
 <li><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_manipulator_impl.html">org.corpus_tools.pepper.impl.PepperManipulatorImpl</a> and</li>
 <li><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_exporter_impl.html">org.corpus_tools.pepper.impl.PepperExporterImpl</a>.</li>
 </ul>
-<p>Each module in your project implements one of the interfaces and extends one of these classes. The importer, manipulator and exporter classes implement the supertype org.corpus_tools.pepper.PepperModule and extend the class <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html">org.corpus_tools.pepper.impl.PepperModuleImpl</a>. </p>
+<p>Each module in your project must implements one of the interfaces and can extends one of these classes. The importer, manipulator and exporter classes implement the supertype org.corpus_tools.pepper.PepperModule and extend the class <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html">org.corpus_tools.pepper.impl.PepperModuleImpl</a>. The following figure shows the inheritance model of Pepper modules and its connection to the Pepper framework.</p>
 <div class="image">
 <img src="pepperModule_classDiagram.png" alt="pepperModule_classDiagram.png"/>
 <div class="caption">
 class diagram showing the inheritance of Pepper module types</div></div>
-<p> A mapping process can be relatively time consuming, to increase the speed of mapping an entire corpus, if we are able to process mapping tasks simultaneously. Therefore we added mechanisms to run the process multi-threaded. Unfortunately in Java multi-threading is not that trivial and the easiest way to do it is to separate each thread in an own class. Therefore there is another class, the <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html">org.corpus_tools.pepper.modules.PepperMapper</a>. This class does the main mapping task. As you will find in your project, each module contains a nested class extending <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_mapper_impl.html">org.corpus_tools.pepper.impl.PepperMapperImpl</a>. For each corpus and document an instance of that class is initialized which handles the mapping. Therefore we have 1:n relationship between <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">org.corpus_tools.pepper.modules.PepperModule</a> and <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html">org.corpus_tools.pepper.modules.PepperMapper</a>.</p>
+<p> A mapping process can be relatively time consuming, therefore the processing of documents is parallelized. This is possible since in Salt documents are independent from another. Each document is a partition and elements inside one documents have no references to the elements of another document. The parallelization in Java is realized via multi-threaded. Unfortunately in Java multi-threading is not that trivial and the easiest way to do is to separate each thread in an own class. Therefore a <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">org.corpus_tools.pepper.modules.PepperModule</a> object can instantiate an unbound number of <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html">org.corpus_tools.pepper.modules.PepperMapper</a> objects. These objects contain the logic of a mapping and do the main work, while the rest regulates the workflow. Keep in mind, that when documents are partitions you must treat them as independent units and cannot assume the documents to come in a specific or fixed order. When you do not implement an importer, the order in which the documents reach your module depends on all the previous modules and is not deterministic.</p>
 <p>The class <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_module_controller.html">org.corpus_tools.pepper.modules.ModuleController</a> is a mediator between the concrete Pepper module and the Pepper framework. It initializes, starts and ends the modules processing.</p>
 <div class="image">
 <img src="pepper_workflow.png" alt="pepper_workflow.png"/>
@@ -119,10 +119,10 @@ class diagram showing the inheritance of Pepper module types</div></div>
 sequence diagram of communication between Pepper and Pepper module</div></div>
 <p> A mapping can be divided into several acts. Some of these acts correspond to the module's type, for instance a manipulator does not need to im- or export the corpus structure. Some of the acts are mandatory, some are recommended and some are optional, depending on your usecase. The following sections will explain the acts in detail.</p>
 <ul>
-<li><a class="el" href="init.html">Initialization</a> [mandatory]</li>
+<li><a class="el" href="init.html">Module initialization</a> [mandatory]</li>
 <li><a class="el" href="mapping.html">Map documents and corpora</a> [mandatory]</li>
-<li><a class="el" href="analyze.html">Analyzing an unknown corpus</a> [recommended, if module is an importer]</li>
-<li><a class="el" href="corpus_structure.html">Im- and exporting corpus-structure</a> [mandatory, if module is an im- or exporter]</li>
+<li><a class="el" href="analyze.html">Analyzing corpus format (only importers)</a> [recommended, if module is an importer]</li>
+<li><a class="el" href="corpus_structure.html">Im- and exporting corpus structure (only im- and exporters)</a> [mandatory, if module is an im- or exporter]</li>
 <li><a class="el" href="customization.html">Customizing the mapping</a> [recommended]</li>
 <li><a class="el" href="feedback.html">Monitoring the progress</a> [recommended]</li>
 <li><a class="el" href="testing.html">Testing</a> [recommended]</li>
@@ -134,7 +134,7 @@ sequence diagram of communication between Pepper and Pepper module</div></div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Fri Mar 25 2016 14:02:50 for Pepper by
+    <li class="footer">Generated on Mon Mar 28 2016 00:32:04 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

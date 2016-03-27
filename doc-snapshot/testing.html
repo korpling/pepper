@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('testing.html','');});
 <div class="title">Testing </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Pepper helps you to write test code faster by providing a test suite skeleton (the three classes <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_manipulator_test.html">org.corpus_tools.pepper.testFramework.PepperManipulatorTest</a>, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_importer_test.html">org.corpus_tools.pepper.testFramework.PepperImporterTest</a> and <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_exporter_test.html">org.corpus_tools.pepper.testFramework.PepperExporterTest</a>). These classes use the JUnit test framework (see: <a href="junit.org">junit.org</a>) and implement some very basic tests for checking the consistency of a Pepper module. Just benefit from these classes by creating an own test class derived from one of the provided ones and your tests will be ran during the Maven build cycle. For getting an immediate feedback, you can also run them directly in your development environment by running a JUnit task. On the one hand the test classes provide tests which can be adopted to your need and check if your module can be plugged into the Pepper framework (by checking if necessary values are set like the supported format for an im- or exporter). And on the other hand, they provide some helper classes and functions, which can be used when adding further test methods for checking the functionality of your module.</p>
+<div class="textblock"><p>Pepper helps you to write test code faster by providing a test suite skeleton (the three classes <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_manipulator_test.html">org.corpus_tools.pepper.testFramework.PepperManipulatorTest</a>, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_importer_test.html">org.corpus_tools.pepper.testFramework.PepperImporterTest</a> and <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_exporter_test.html">org.corpus_tools.pepper.testFramework.PepperExporterTest</a>). These classes use the JUnit test framework (see: <a href="junit.org">junit.org</a>) and implement some very basic tests for checking the consistency of a Pepper module. Just benefit from these classes by creating an own test class derived from one of them and your tests will be ran during the Maven build cycle. For getting an immediate feedback, you can also run them directly in your development environment by running a JUnit task. On the one hand the test classes provide tests which can be adapted to your needs and check if your module can be plugged into the Pepper framework (by checking if necessary values are set like the supported format for an im- or exporter). And on the other hand, they provide some helper classes and functions, which can be used when adding further test methods for checking the functionality of your module.</p>
 <blockquote class="doxtable">
 <p><b>Note</b></p>
 <p>We strongly recommend to add some module specific test methods, to increase the quality of your code and even to make it easier changing things and still having a correctly running module.</p>
@@ -113,12 +113,12 @@ protected void setUp() throws Exception {
     this.setFixture(new MyImporterTest);
     //2: adding format information
     this.supportedFormatsCheck.add(new FormatDesc()
-        .setFormatName("sample")
+        .setFormatName("myFormat")
         .setFormatVersion("1.0"));
 }                
 </pre><p>Since the JUnit framework can not know about the classes to test, you need to set and initialize it as shown on position 1. In case you are implementing an im- or exporter, you need to set the supported formats and versions in your test case. Pepper will check them automatically, but the test environment needs to know the correct pairs of format name and version. Replace FORMAT_NAME and FORMAT_VERSION with your specific ones. You can even add more than one <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_format_desc.html">org.corpus_tools.pepper.common.FormatDesc</a> object.</p>
 <p>The provided test classes emulate the Pepper environment, so that you can run your entire module and just check the in- or output.</p>
-<p>In case that you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a defined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model: </p>
+<p>In case that you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a predefined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model: </p>
 <pre class="fragment">    public void someTest(){
     getFixture().setCorpusDesc(new CorpusDesc().
         setCorpusPath(URI
@@ -132,11 +132,11 @@ protected void setUp() throws Exception {
     //create an empty corpus graph, which is filled by your module 
     SCorpusGraph importedSCorpusGraph= SaltFactory.createSCorpusGraph();
     // add the corpus graph to your module
-    this.getFixture().getSaltProject().getCorpusGraphs()
+    getFixture().getSaltProject().getCorpusGraphs()
             .add(importedSCorpusGraph);
 
     //run your Pepper module
-    this.start();
+    start();
 
     //checks that the corpus graph object 
     //is not empty any more
@@ -147,17 +147,17 @@ protected void setUp() throws Exception {
     assertEquals(X, getFixture().getSaltProject()
         .getCorpusGraphs().get(0).getCorpora().size());
 }
-</pre><p>More samples for tests can be found in the sample project in the classes <code>SampleImporterTest</code>, <code>SampleManipulatorTest</code> and <code>SampleExporterTest</code>.</p>
-<p>For testing an exporter, you may want to use Salt's sample generator (de.hu_berlin.german.korpling.saltnpepper.salt.samples.SampleGenerator). Here you will find a lot of methods creating a sample Salt model with the possibility to just create the layers, you want to use. For more information, take a look into the Salt quick user's guide (see <a href="http://corpus-tools.org/salt/#documentation">http://corpus-tools.org/salt/#documentation</a>).</p>
-<p>The class <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html">org.corpus_tools.pepper.testFramework.PepperTestUtil</a> Class Reference provides some very helpful methods like <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html">org.corpus_tools.pepper.testFramework.PepperTestUtil</a> Class Reference.getSrcResources() to get a reference to the resources folder (.../src/main/resources) or the method getTestResources to get a reference to the test resource folder (.../src/test/resources).</p>
-<p>When you are implementing an importer and an exporter you may want to make sure that no data is lost, you can orchestrate the im- and the exporter and compare the input files with the output files. In that case implementing the classes PepperImporterTest and PepperExporterTest want do the job, because they assume that you are testing a single module. To load multiple modules in the Pepper test environment, use the method <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#a8459160fba73f5684dcc7d170f80d39a">org.corpus_tools.pepper.testFramework.PepperTestUtil.start</a>(Collection&lt;PepperModule&gt; fixtures) instead and pass your im- and your exporter. </p>
+</pre><p>More samples for testing can be found in the automatically generated test classes when using Pepper's archetype for Maven, see <a class="el" href="tutorial.html">Tutorial: Getting started in 10 minutes</a>.</p>
+<p>For testing an exporter, you may want to use Salt's sample generator (org.corpus_tools.salt.samples.SampleGenerator). Here you will find a lot of methods creating a sample Salt model with the possibility to just create the layers, you want to use. For more information, take a look into <a href="https://korpling.github.io/salt/doc/classorg_1_1corpus__tools_1_1salt_1_1samples_1_1_sample_generator.html">Salt's api</a>.</p>
+<p>The class <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html">org.corpus_tools.pepper.testFramework.PepperTestUtil</a> provides some very helpful methods like <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#afd42b52230e9b86df7d14628d1ae7efd">org.corpus_tools.pepper.testFramework.PepperTestUtil.getSrcResources()</a> to get a reference to the resources folder (./src/main/resources) or the method getTestResources to get a reference to the test resource folder (./src/test/resources).</p>
+<p>When you are implementing an importer and an exporter you may want to make sure that no data is lost, you can orchestrate the im- and the exporter and compare the input files with the output files. In that case implementing the classes <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_importer_test.html">org.corpus_tools.pepper.testFramework.PepperImporterTest</a> and <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_exporter_test.html">org.corpus_tools.pepper.testFramework.PepperExporterTest</a> won't do the job, because they assume that you are testing a single module. To load multiple modules in the Pepper test environment, use the method <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#a8459160fba73f5684dcc7d170f80d39a">org.corpus_tools.pepper.testFramework.PepperTestUtil.start</a>(Collection&lt;PepperModule&gt; fixtures) instead and pass your im- and your exporter. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Fri Mar 25 2016 14:02:50 for Pepper by
+    <li class="footer">Generated on Mon Mar 28 2016 00:32:04 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

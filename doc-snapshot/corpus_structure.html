@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Pepper: Im- and exporting corpus-structure</title>
+<title>Pepper: Im- and exporting corpus structure (only im- and exporters)</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -97,11 +97,11 @@ $(document).ready(function(){initNavTree('corpus_structure.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Im- and exporting corpus-structure </div>  </div>
+<div class="title">Im- and exporting corpus structure (only im- and exporters) </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>The classes org.corpus_tools.pepper.modules.impl.PepperImporterImpl and org.corpus_tools.pepper.modules.impl.PepperExporterImpl provide an automatic mechanism to im- or export the corpus-structure. This mechanism is adaptable step by step, according to your specific purpose. Since many formats do not care about the corpus-structure and they only encode the document-structure, the corpus-structure is simultaneous to the file structure of a corpus.</p>
-<p>Pepper's default mapping maps the root-folder to a root-corpus (<code>SCorpus</code> object). A sub-folder then corresponds to a sub-corpus (<code>SCorpus</code> object). The relation between super- and sub-corpus, is represented as a <code>SCorpusRelation</code> object. Following the assumption, that files contain the document-structure, there is one <code>SDocument</code> corresponding to each file in a sub-folder. The <code>SCorpus</code> and the <code>SDocument</code> objects are linked with a <code>SCorpusDocumentRelation</code>. To get an impression of the described mapping, the next two figures show the file structure and the corresponding corpus structure.</p>
+<div class="textblock"><p>The classes org.corpus_tools.pepper.modules.impl.PepperImporterImpl and org.corpus_tools.pepper.modules.impl.PepperExporterImpl provide an automatic mechanism to im- or export the corpus structure. This mechanism is adaptable step by step, according to your specific purpose. A lot of formats do not care about the corpus structure and they only encode the document structure. In this case the corpus often simulate a corpus structure encoded in the file structure of the corpus.</p>
+<p>Pepper's default mapping maps the root folder to a root corpus (<code>SCorpus</code> object). A sub folder then corresponds to a sub corpus (<code>SCorpus</code> object). The relation between super and sub corpus, is represented as a <code>SCorpusRelation</code> object. Following the assumption, that files contain the document structure, there is one <code>SDocument</code> corresponding to each file in a sub folder. The <code>SCorpus</code> and the <code>SDocument</code> objects are linked with a <code>SCorpusDocumentRelation</code>. To get an impression of the described mapping, the next two figures show the file structure and the corresponding corpus structure.</p>
 <div class="image">
 <img src="importCorpusStructure.png" alt="importCorpusStructure.png"/>
 <div class="caption">
@@ -110,26 +110,38 @@ file structure</div></div>
 <img src="corpus-structure.png" alt="corpus-structure.png"/>
 <div class="caption">
 corpus structure</div></div>
-<p> For keeping the correspondance between the corpus-structure and the file structure, both the im- and the exporter make use of a map, which can be accessed via org.corpus_tools.pepper.modules.impl.PepperImporterImpl.getSElementId2ResourceTable().</p>
-<p>|----------------------------&mdash;|-------------------------------&mdash;| | salt://corp1 | /superCorpus | | salt://corp1/subCorpus1 | /superCorpus/subCorpus1 | | salt://corp1/subCorpus1#doc1 | /superCorpus/subCorpus1/doc1.xml | | salt://corp1/subCorpus1#doc2 | /superCorpus/subCorpus1/doc2.xml | | salt://corp1/subCorpus2 | /superCorpus/subCorpus2 | | salt://corp1/subCorpus2#doc3 | /superCorpus/subCorpus2/doc3.xml | | salt://corp1/subCorpus2#doc4 | /superCorpus/subCorpus2/doc4.xml |</p>
-<p>Other formats do not encode the document-structure in just one file, they use a bunch of files instead. In that case the folder containing all the files (let's call it leaf-folder) corresponds to a <code>SDocument</code> object.</p>
+<p> For keeping the correspondence between the corpus structure and the file structure, both the im- and the exporter make use of a map, which can be accessed via <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#a00375b4561c4b22d5805962c1a663b0b">org.corpus_tools.pepper.modules.PepperImporter.getIdentifier2ResourceTable()</a> or <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_exporter.html#a4270de1b8dca4951a03cdb7dcd540861">org.corpus_tools.pepper.modules.PepperExporter.getIdentifier2ResourceTable()</a>.</p>
+<table class="doxtable">
+<tr>
+<td>salt://superCorpus</td><td>/superCorpus </td></tr>
+<tr>
+<td>salt://superCorpus/subCorpus1/doc1 </td><td><a href="file://superCorpus/subCorpus1/doc1.xml">file://superCorpus/subCorpus1/doc1.xml</a> </td></tr>
+<tr>
+<td>salt://superCorpus/subCorpus1/doc2 </td><td><a href="file://superCorpus/subCorpus1/doc2.xml">file://superCorpus/subCorpus1/doc2.xml</a> </td></tr>
+<tr>
+<td>salt://superCorpus/ </td><td><a href="file://superCorpus/subCorpus2">file://superCorpus/subCorpus2</a> </td></tr>
+<tr>
+<td>salt://superCorpus/subCorpus2 </td><td><a href="file://superCorpus/subCorpus2">file://superCorpus/subCorpus2</a> </td></tr>
+<tr>
+<td>salt://superCorpus/subCorpus2/doc3 </td><td><a href="file://superCorpus/subCorpus2/doc3.xml">file://superCorpus/subCorpus2/doc3.xml</a> </td></tr>
+<tr>
+<td>salt://superCorpus/subCorpus2/doc4 </td><td><a href="file://superCorpus/subCorpus2/doc4.xml">file://superCorpus/subCorpus2/doc4.xml</a> </td></tr>
+</table>
+<p>Whereas other formats do not encode the document structure in just one file, they use a bunch of files instead. In that case the folder containing all the files (let's call it leaf-folder: ./doc1, ./doc2, ./doc3 and ./doc4) corresponds to a <code>SDocument</code> object.</p>
 <div class="image">
 <img src="importCorpusStructure2.png" alt="importCorpusStructure2.png"/>
 <div class="caption">
 file structure, where one document is encoded in multiple files</div></div>
 <p> In the following two sections, we are going to describe the import and the export mechanism separately.</p>
-<h2>Importing the corpus-structure </h2>
-<p>The default mechanism for importing a corpus-structure is implemented in the method: </p>
-<pre class="fragment">importCorpusStructure(SCorpusGraph corpusGraph)
-</pre><p>For totally changing the default behavior just override this method. To adapt the behavior as described in the following, this has to be done before the method '<em>importCorpusStructure()</em>' was called, so for instance in the constructor or in method: </p>
-<pre class="fragment">isReadyToStart()
-</pre><p>Back to figure ?, the import mechanism traverses the file structure beginning at the super-folder via the sub-folders to the files and creates a <code>SElementId</code> object corresponding to each folder or file and puts them into the map of table ?. This map is necessary for instance to retrieve the physical location of a document-structure during the mapping and can be set as shown in the following snippet: </p>
-<pre class="fragment">public PepperMapper createPepperMapper(SElementId sElementId){
+<h2>Importing the corpus structure </h2>
+<p>The default mechanism for importing a corpus structure is implemented in the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#ae4be39c510bcbb96cee936821e431ca7">org.corpus_tools.pepper.modules.PepperImporter.importCorpusStructure()</a></p>
+<p>The import mechanism traverses the file structure beginning at the super folder via the sub folders to the files and creates a <code>Identifier</code> object corresponding to each folder or file and puts them into the map. This map is necessary for instance to retrieve the physical location of a document structure during the mapping and can be set as shown in the following snippet: </p>
+<pre class="fragment">public PepperMapper createPepperMapper(Identifier identifier){
     ...
-    mapper.setResourceURI(getSElementId2ResourceTable().get(sElementId));
+    mapper.setResourceURI(getIdentifier2ResourceTable().get(identifier));
     ...
 }
-</pre><p>The import mechanism can be adapted by two parameters (or more precisly two lists). An ignore list containing file endings, which are supposed to be ignored during the import and a list of file endings which are supposed to be used for the import.[3] Now let's show some code for adapting. The following snippet is placed into the method 'isReadyToStart()', but even could be located inside the constructor: </p>
+</pre><p>The import mechanism can be adapted by two parameters (or more precisely two lists). An ignore list containing file endings, which are supposed to be ignored during the import and a list of file endings which are supposed to be used for the import. The following snippet is placed into the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#acf9de2e7613aa063c809d6f1f7ce1b68">org.corpus_tools.pepper.modules.PepperModule.isReadyToStart()</a>, but even could be located inside the constructor: </p>
 <pre class="fragment">public boolean isReadyToStart(){
     ...
     //option 1
@@ -142,17 +154,19 @@ file structure, where one document is encoded in multiple files</div></div>
     getSDocumentEndings().add(ENDING_LEAF_FOLDER);
     ...
 }
-</pre><p>In general the parameter of the method '<em>getSDocumentEndings()</em>' is just a String, but there are some predefined endings you can use. The two lines marked as option 1, will add the endings 'xml' and 'tab' to the list of file endings to be imported. That means, that all files having one of these endings will be read and mapped to a document-structure. The first line of option 2 means to read each file, no matter what's its ending. But the following line excludes all files having the ending 'txt'. Last but not least we look at option 3, which is supposed to treat leaf-folders as document-structures and to create one <code>SDocument</code> object for each leaf-folder and not for each file, as mentioned in figure ?.</p>
-<h2>Exporting the corpus-structure </h2>
-<p>Similar to the corpus-structure import, we provide a default behavior for the export and possibilities for adaption. The corpus-structure export is handled in the method: </p>
-<pre class="fragment">exportCorpusStructure()
-</pre><p>It is invoked on top of the method '<em>start()</em>' of the <code>PepperExporter</code>. For totally changing the default behavior just override this method. The aim of this method is to fill the map of corresponding corpus-structure and file structure (see table ?).</p>
+</pre><p>In general the parameter of the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#a2edb688459662418c7c62c8d57cceaa5">org.corpus_tools.pepper.modules.PepperImporter.getDocumentEndings()</a> is just a String, but there are some predefined endings you can use.</p>
+<p>The two lines marked as <b>option 1</b>, will add the endings 'xml' and 'tab' to the list of file endings to be imported. That means, that all files having one of these endings will be read and mapped to a document structure.</p>
+<p>The first line of <b>option 2</b> means to read each file, no matter what is its ending. But the following line excludes all files having the ending 'txt'.</p>
+<p>Last but not least we look at <b>option 3</b>, which is supposed to treat leaf folders as document structures and to create one <code>SDocument</code> object for each leaf folder and not for each file.</p>
+<p>For entirely changing the default behavior just override the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#ae4be39c510bcbb96cee936821e431ca7">org.corpus_tools.pepper.modules.PepperImporter.importCorpusStructure()</a>.</p>
+<h2>Exporting the corpus structure </h2>
+<p>Similar to the import of the corpus structure, Pepper provides a default behavior for the export and possibilities for adaption. The corpus structure export is handled in the method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_exporter.html#a3831d6b0575ac4cac87494f0388ffb37">org.corpus_tools.pepper.modules.PepperExporter.exportCorpusStructure()</a>. It is invoked on top of the method <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_exporter_impl.html#a7160b225489d4aa104f77270fca94466">org.corpus_tools.pepper.impl.PepperExporterImpl.start()</a>. For entirely changing the default behavior just override this method. The aim of this method is to fill the map of corpus structure and corresponding file structure.</p>
 <blockquote class="doxtable">
 <p><b>Note</b></p>
-<p>The file structure is automatically created, there are just <code>URI</code>s pointing to the virtual file or folder. The creation of the file or folder has to be done by the Pepper module itself in method 'mapSCorpus()' or 'mapSDocument()'.</p>
+<p>The file structure is automatically created, there are just <code>URI</code>s pointing to the virtual file or folder. The creation of the file or folder has to be done by the Pepper module itself in method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a330f96c1f6e15c64857bedbf536a20fe">org.corpus_tools.pepper.modules.PepperMapper.mapSCorpus()</a> or <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a438e0e6ad09a8ed506f84ea9cb909bd6">org.corpus_tools.pepper.modules.PepperMapper.mapSDocument()</a>.</p>
 <p></p>
 </blockquote>
-<p>To adapt the creation of this 'virtual' file structure, you first have to choose the mode of export. You can do this for instance in method 'readyToStart()', as shown in the following snippet. But even in the constructor as well. </p>
+<p>To adapt the creation of this 'virtual' file structure, you first have to choose the mode of export. You can do this for instance in method org.corpus_tools.pepper.modules.PepperModule.readyToStart(), as shown in the following snippet. But also in the constructor as well. </p>
 <pre class="fragment">public boolean isReadyToStart(){
     ...
     //option 1
@@ -164,14 +178,14 @@ file structure, where one document is encoded in multiple files</div></div>
     setSDocumentEnding(ENDING_TAB);
     ..
 }
-</pre><p>In this snippet, option 1 means that nothing will be mapped. Option 2 means that only <code>SCorpus</code> objects are mapped to a folder and <code>SDocument</code> objects will be ignored. And option 3 means that <code>SCorpus</code> objects are mapped to a folder and <code>SDocument</code> objects are mapped to a file. The ending of that file can be determined by passing the ending with method '<em>setSDocumentEnding(String)</em>'. In the given snippet a <code>URI</code> having the ending '<em>tab</em>' is created for each <code>SDocument</code>. </p>
+</pre><p>In this snippet, <b>option 1</b> means that nothing will be mapped. <b>Option 2</b> means that only <code>SCorpus</code> objects are mapped to a folder and <code>SDocument</code> objects will be ignored. And <b>option 3</b> means that <code>SCorpus</code> objects are mapped to a folder and <code>SDocument</code> objects are mapped to a file. The ending of that file can be determined by passing the ending with method <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_exporter.html#a2acf8b3db93281c04a505f8cd12a672d">org.corpus_tools.pepper.modules.PepperExporter.setDocumentEnding()</a>. In the given snippet a <code>URI</code> having the ending '<em>tab</em>' is created for each <code>SDocument</code>. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Fri Mar 25 2016 14:02:50 for Pepper by
+    <li class="footer">Generated on Mon Mar 28 2016 00:32:04 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

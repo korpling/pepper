@@ -101,26 +101,26 @@ $(document).ready(function(){initNavTree('module_developers.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This guide aims to help you to develop your own Pepper module.</p>
-<p>The easiest way to start developing an module is along an example, therefore the following tutorial provides the easy generation of a Pepper module's skeleton. The skeleton contains dummy implementations for an importer, a manipulator and an exporter.</p>
+<p>The easiest way to start developing a module is along an example, therefore the following tutorial provides the easy generation of a Pepper module's skeleton. The skeleton contains dummy implementations for an importer, a manipulator and an exporter.</p>
 <ul>
 <li><a class="el" href="tutorial.html">Tutorial: Getting started in 10 minutes</a></li>
 </ul>
-<p>After setting up the skeleton for your own module it might be helpful to take a closer look into the architecture of a Pepper module project and how the data- and communication flow between Pepper and it's modules work. Read the following sections in the given order to get a comprehensive overview.</p>
+<p>After setting up the skeleton for your own module it might be helpful to take a closer look into the architecture of a Pepper module project and how does the data- and communication flow work between Pepper and it's modules. If you do not have the time to read all the following articles, just pick the ones you are interested in. But we recommend to read them all in the given order to get a comprehensive overview.</p>
 <ul>
 <li><a class="el" href="module_architecture.html">Pepper module's architecture</a></li>
-<li><a class="el" href="init.html">Initialization</a></li>
-<li><a class="el" href="analyze.html">Analyzing an unknown corpus</a></li>
-<li><a class="el" href="corpus_structure.html">Im- and exporting corpus-structure</a></li>
+<li><a class="el" href="init.html">Module initialization</a></li>
+<li><a class="el" href="analyze.html">Analyzing corpus format (only importers)</a></li>
+<li><a class="el" href="corpus_structure.html">Im- and exporting corpus structure (only im- and exporters)</a></li>
 <li><a class="el" href="mapping.html">Map documents and corpora</a></li>
 <li><a class="el" href="feedback.html">Monitoring the progress</a></li>
 <li><a class="el" href="clean_up.html">Clean up</a></li>
 <li><a class="el" href="customization.html">Customizing the mapping</a></li>
 </ul>
-<p>A helper to extract the tags and attributes from an xml file is described here.</p>
+<p>A helper to extract tags and attributes from an xml file is described here. This tool can help you improve the implementation speed when creating an importer for a xml format.</p>
 <ul>
 <li><a class="el" href="helper.html">Pepper module developers helper</a></li>
 </ul>
-<p>For testing Pepper makes use of the JUnit framework (<a href="http://junit.org">http://junit.org</a>) and provides a test environment which makes it rather easy to test your module without running the Pepper platform on your own.</p>
+<p>For testing, Pepper uses the JUnit framework (<a href="http://junit.org">http://junit.org</a>) and provides a test environment which makes it rather easy to test your module without setting up the Pepper platform.</p>
 <ul>
 <li><a class="el" href="testing.html">Testing</a></li>
 </ul>
@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('module_developers.html','');});
 <ul>
 <li><a class="el" href="bundle.html">Bundle and deliver</a></li>
 </ul>
-<p>Last but not least, when you have done all the great work to implement a module for Pepper, let the world benefit from your work. Publish your module that people can use it. But don't forget to think about licensing your module. Since Pepper is an open-source software, we plead to think about open-source too. Pepper is under the Apache 2.0 license, which does not force you to go open-source, but there are a lot good reasons to go open source (<a href="https://opensource.org">https://opensource.org</a>).</p>
+<p>Last but not least, when you have done all the great work to implement a module for Pepper, let the world benefit from your work. Publish your module that people can use it. But don't forget to think about licensing. Since Pepper is an open-source software, we plead to think about open-source too. Pepper is under the Apache 2.0 license, which does not force you to go open-source, but there are a lot of good reasons to go open source, see <a href="https://opensource.org">https://opensource.org</a>.</p>
 <p>You are convinced of open-source? Then don't forget to publish your sources on a portal like github (<a href="https://github.com/">https://github.com/</a>), source forge (<a href="https://sourceforge.net/">https://sourceforge.net/</a>), bitbucket (<a href="https://bitbucket.org/">https://bitbucket.org/</a>) and so on.</p>
 <p>If you would be so kind to let us know about your great module, we will publish it on Pepper's homepage (<a href="http://corpus-tools.org/pepper/knownModules.html">http://corpus-tools.org/pepper/knownModules.html</a>) and can include it into the official Pepper releases if you want. </p>
 </div></div><!-- contents -->
@@ -136,7 +136,7 @@ $(document).ready(function(){initNavTree('module_developers.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 25 2016 14:02:50 for Pepper by
+    <li class="footer">Generated on Mon Mar 28 2016 00:32:04 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

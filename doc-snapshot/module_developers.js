@@ -2,9 +2,9 @@ var module_developers =
 [
     [ "Tutorial: Getting started in 10 minutes", "tutorial.html", "tutorial" ],
     [ "Pepper module's architecture", "module_architecture.html", null ],
-    [ "Initialization", "init.html", null ],
-    [ "Analyzing an unknown corpus", "analyze.html", null ],
-    [ "Im- and exporting corpus-structure", "corpus_structure.html", null ],
+    [ "Module initialization", "init.html", null ],
+    [ "Analyzing corpus format (only importers)", "analyze.html", null ],
+    [ "Im- and exporting corpus structure (only im- and exporters)", "corpus_structure.html", null ],
     [ "Map documents and corpora", "mapping.html", null ],
     [ "Monitoring the progress", "feedback.html", null ],
     [ "Clean up", "clean_up.html", null ],
