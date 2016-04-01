@@ -20,5 +20,5 @@ CLASS_PATH='-classpath lib/*:plugins/*'
 EXEC_CLASS='org.corpus_tools.pepper.cli.PepperStarter'
 VM_PARAMS='-Xmx1024m -XX:-UseGCOverheadLimit'
 JAVA_PARAMS=$CLASS_PATH' -Dlogback.configurationFile=./conf/logback.xml '$EXEC_CLASS' '$*
-DEBUG_PARAMS='-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=4711,suspend=y'
+DEBUG_PARAMS='-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=2010,suspend=y'
 java $DEBUG_PARAMS $JAVA_PARAMS

@@ -16,4 +16,4 @@
 @REM
 @REM
 mode con:cols=121
-java -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=4711,suspend=y -cp lib/*;plugins/*; -Dfile.encoding=UTF-8 -Dlogback.configurationFile=./conf/logback.xml org.corpus_tools.pepper.cli.PepperStarter %1 %2
+java -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=2010,suspend=y -cp lib/*;plugins/*; -Dfile.encoding=UTF-8 -Dlogback.configurationFile=./conf/logback.xml org.corpus_tools.pepper.cli.PepperStarter %1 %2
