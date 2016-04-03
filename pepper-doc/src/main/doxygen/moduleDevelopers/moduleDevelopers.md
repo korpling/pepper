@@ -6,6 +6,7 @@ This guide aims to help you to develop your own Pepper module.
 The easiest way to start developing a module is along an example, therefore the following tutorial provides the easy generation of a Pepper module's skeleton. The skeleton contains dummy implementations for an importer, a manipulator and an exporter.  
 
 * \subpage tutorial
+* \subpage useEclipse
 
 After setting up the skeleton for your own module it might be helpful to take a closer look into the architecture of a Pepper module project and how does the data- and communication flow work between Pepper and it's modules. If you do not have the time to read all the following articles, just pick the ones you are interested in. But we recommend to read them all in the given order to get a comprehensive overview. 
 

@@ -61,8 +61,8 @@ Now the module is ready to be started in Pepper. To check whether your module is
 
 **Step 9** Go to _PEPPER_HOME_ and run 
 \code
-	pepperStart.bat	  (for Windows)
-	./pepperStart.sh  (for Linux)
+	pepper.bat	  (for Windows)
+	./pepper.sh  (for Linux)
 \endcode
 
 **Step 10** Type in 'list'
@@ -77,7 +77,7 @@ pepper> list MyImporter
 
 Now you can run the three modules in Pepper. You can use them as part of your conversion workflow.
 
-To develop a Pepper module you only need a text editor and a command line, but it probably is more comfortable to use an IDE like Eclipse (https://eclipse.org/) or Netbeans (https://netbeans.org/) etc. You can easily develop a Pepper module with Eclipse \subpage useEclipse.
+To develop a Pepper module you only need a text editor and a command line, but it probably is more comfortable to use an IDE like Eclipse (https://eclipse.org/) or Netbeans (https://netbeans.org/) etc. You can easily develop a Pepper module with Eclipse @ref useEclipse.
 
 
 ## What does my own module do?
