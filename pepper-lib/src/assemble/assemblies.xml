@@ -26,6 +26,7 @@
 				<include>${basedir}/lib/</include>
                 <!-- copies the bat start script -->
                 <include>${basedir}/pepperStart.bat</include>
+                <include>${basedir}/pepper.bat</include>
                 <include>${basedir}/pepper-debug.bat</include>
 				<!-- copies the license stuff -->
 				<include>LICENSE</include>
@@ -41,6 +42,7 @@
 			<includes>
 				<!-- copies the sh start script -->
 				<include>${basedir}/pepperStart.sh</include>
+				<include>${basedir}/pepper.sh</include>
 				<include>${basedir}/pepper-debug.sh</include>
 			</includes>
             <fileMode>0755</fileMode>
