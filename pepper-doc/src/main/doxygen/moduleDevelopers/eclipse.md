@@ -4,9 +4,9 @@ Download Eclipse from https://eclipse.org/
 
 ## Import and run your module in Eclipse
 
-**Step 1** Open the Import dialog via: File -> Import... 
+**Step 1** Open the Import dialog via: 'File' -> 'Import...'
 
-**Step 2** Choose the type, how to import your project: Maven -> Existing Maven Projects
+**Step 2** Choose the type, how to import your project: 'Maven' -> 'Existing Maven Projects'
 
 **Step 3** Select Directory MY_MODULE_HOME (the pom.xml should now be automatically selected)
 
@@ -16,8 +16,7 @@ Your module should now be imported into Eclipse.
 
 **Step 5** Right click on your project and choose Run As -> Maven install 
 
-Debugging your module with Eclipse
----
+## Debugging your module with Eclipse
 
 Debugging in Eclipse is quit easy, Eclipse provides a debug mode, where it is possible to proceed your module step by step, analyze specific variables or methods and so on. With breakpoints you can stop the processing of your module at any line of code and go on step by step. To debug your module in Eclipse which is running in Pepper, you need to link Eclipse to a different VM (the VM which was started by Pepper).  How to do this is explained in the following: 
 
@@ -56,3 +55,21 @@ Debugging in Eclipse is quit easy, Eclipse provides a debug mode, where it is po
 ![](./moduleDevelopers/images/eclipse_debug_panel.png)
 
 If you are not family with Debugging in Eclipse, take a look at this tutorial: http://www.vogella.com/tutorials/EclipseDebugging/
+
+
+### Debugging your module with Eclipse
+
+When debugging your module it might be helpful to step into Pepper's source code. Therefore you need to import it into your Eclipse instance and to link the code with your debugging. Afterwards you can step through Pepper's code in the same manner as through your module's code.  
+
+**Step 1 ** Checkout Pepper's source code from https://github.com/korpling/pepper to PEPPER_SOURCE. Make sure to checkout the very same version of Pepper as your Pepper instance in PEPPER_HOME. 
+\code
+	git clone https://github.com/korpling/pepper
+\endcode
+
+**Step 2 ** Import Pepper in Eclipse via Open the Import dialog via: 'File' -> 'Import...'.
+
+**Step 3 ** Choose the type, how to import your project: 'Maven' -> 'Existing Maven Projects'.
+
+**Step 4 ** When stepping through the code and Eclipse does not automatically find Pepper's sources, click on 'Attach Source...', choose 'Java Project'and select the Pepper project.
+
+Now you can also debug through Pepper and the interaction between Pepper and your module.. 
