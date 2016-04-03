@@ -5,13 +5,13 @@
 	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
 	<version>${version}</version>
+	<packaging>bundle</packaging>
 	<name>${groupId}.${artifactId}</name>
 	<!-- Declares this project to be an extension of the project pepper-parentModule. -->
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper-parentModule</artifactId>
 		<version>3.0.1-SNAPSHOT</version>
-		<relativePath>../pepper-parentModule/pom.xml</relativePath>
 	</parent>
 	<distributionManagement>
 		<snapshotRepository>
