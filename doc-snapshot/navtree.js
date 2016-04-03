@@ -2,6 +2,7 @@ var NAVTREE =
 [
   [ "Pepper", "index.html", [
     [ "Pepper developers", "developers.html", null ],
+    [ "Tutorial: Develop with Eclipse", "md__var_lib_jenkins_jobs_pepper__s_n_a_p_s_h_o_t_workspace_pepper-doc_src_main_doxygen_module_developers_eclipse.html", null ],
     [ "Pepper module developers", "module_developers.html", "module_developers" ],
     [ "Pepper users", "users.html", "users" ],
     [ "Classes", null, [

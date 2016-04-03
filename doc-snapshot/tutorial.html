@@ -134,14 +134,14 @@ $(document).ready(function(){initNavTree('tutorial.html','');});
 <div class="fragment"><div class="line">pepper.dropin.paths= MY_MODULE_HOME/target</div>
 </div><!-- fragment --><p>Now the module is ready to be started in Pepper. To check whether your module is registered in Pepper check if it is listed there.</p>
 <p><b>Step 9</b> Go to <em>PEPPER_HOME</em> and run </p>
-<div class="fragment"><div class="line">pepperStart.bat   (<span class="keywordflow">for</span> Windows)</div>
-<div class="line">./pepperStart.sh  (<span class="keywordflow">for</span> Linux)</div>
+<div class="fragment"><div class="line">pepper.bat        (<span class="keywordflow">for</span> Windows)</div>
+<div class="line">./pepper.sh  (<span class="keywordflow">for</span> Linux)</div>
 </div><!-- fragment --><p><b>Step 10</b> Type in 'list' </p>
 <div class="fragment"><div class="line">pepper&gt;list</div>
 </div><!-- fragment --><p> Pepper will print a list of all registered modules, search for your importer, manipulator and exporter. <b>Step 10</b> To get more information on one of the modules type in 'list' followed by the module's name </p>
 <div class="fragment"><div class="line">pepper&gt; list MyImporter</div>
 </div><!-- fragment --><p>Now you can run the three modules in Pepper. You can use them as part of your conversion workflow.</p>
-<p>To develop a Pepper module you only need a text editor and a command line, but it probably is more comfortable to use an IDE like Eclipse (<a href="https://eclipse.org/">https://eclipse.org/</a>) or Netbeans (<a href="https://netbeans.org/">https://netbeans.org/</a>) etc. You can easily develop a Pepper module with Eclipse <a class="el" href="use_eclipse.html">Develop with Eclipse</a>.</p>
+<p>To develop a Pepper module you only need a text editor and a command line, but it probably is more comfortable to use an IDE like Eclipse (<a href="https://eclipse.org/">https://eclipse.org/</a>) or Netbeans (<a href="https://netbeans.org/">https://netbeans.org/</a>) etc. You can easily develop a Pepper module with Eclipse useEclipse.</p>
 <h2>What does my own module do?</h2>
 <p>Your new project now contains three modules: an importer, a manipulator and an exporter.</p>
 <p>The <b>importer</b> just imports a static corpus containing one super-corpus, two sub-corpora and four documents. Here you can see how to create a corpus structure and a document structure. Salt differentiates between the corpus structure and the document structure. The document structure contains the primary data (data sources) and the linguistic annotations. A bunch of such information is grouped to a document (<code>SDocument</code> in Salt). The corpus structure now is a grouping mechanism to group several documents to a corpus or sub corpus (<code>SCorpus</code> in Salt). The dummy importer creates token annotations (lemma and pos), span annotations (information structure), hierarchical annotations (syntax tree) and a pointing relation (anaphoric annotation). What you can see here is how to create the several model elements of Salt and how does the import process in Pepper works.</p>
@@ -155,7 +155,7 @@ $(document).ready(function(){initNavTree('tutorial.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="module_developers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Sun Apr 3 2016 22:42:45 for Pepper by
+    <li class="footer">Generated on Sun Apr 3 2016 23:08:27 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
