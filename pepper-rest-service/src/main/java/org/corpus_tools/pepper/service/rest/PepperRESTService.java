@@ -2,13 +2,13 @@ package org.corpus_tools.pepper.service.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
@@ -24,15 +24,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.io.output.XmlStreamWriter;
+import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.core.PepperJobImpl;
 import org.corpus_tools.pepper.core.WorkflowDescriptionReader;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.exceptions.ErrorsExceptions;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
+import org.corpus_tools.pepper.util.XMLStreamWriter;
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -46,11 +52,15 @@ import org.xml.sax.SAXException;
 @Path("/resource")
 @Component(name = "PepperRESTService", immediate = true)
 public class PepperRESTService implements PepperService, PepperRESTServicePathDictionary{
-		
-	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;
 	
+	/* constants */
+	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;	
+	
+	/* statics */
 	private static Pepper pepper;
 	private static PepperSerializer serializer = PepperSerializer.getInstance(DATA_FORMAT);
+	
+	
 	private static final Logger logger = LoggerFactory.getLogger(PepperRESTService.class);
 	
 	@Reference(unbind = "unsetPepper", cardinality = ReferenceCardinality.MANDATORY, policy = ReferencePolicy.STATIC)
@@ -173,22 +183,77 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 	@Path(PATH_DATA)
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@Override
-	public void setData(@QueryParam("id") String jobId, byte[] data) {
+	public void setData(@QueryParam("id") String jobId, byte[] data){
 		PepperJob job = pepper.getJob(jobId);		
 		if (job!=null){
 			String jobDirName = jobId+File.separator;
 			File jobDir = new File(jobDirName);
-			String dataDir = job.getStepDescs().get(0).getCorpusDesc().getCorpusPath().lastSegment();
-			jobDir.mkdir();			
+			String dataDir = job.getStepDescs().get(0).getCorpusDesc().getCorpusPath().lastSegment();//FIXME
+			jobDir.mkdir();	
+			String zipFileName = jobDirName+dataDir+".zip";
 			try {
-				FileOutputStream outstream = new FileOutputStream(jobDirName+dataDir+".zip");
+				FileOutputStream outstream = new FileOutputStream(zipFileName);
 				outstream.write(data);				
-				logger.info("DATA DIR="+dataDir);
+				logger.info("DATA for job "+jobId+" transferred to "+dataDir+".");
 				outstream.close();
 			} catch (IOException e) {
-				logger.error("Writing data failed");
+				logger.error("Writing data failed.");
 				e.printStackTrace();
-			}			
+			}
+			File stepDir = null;
+			String newTarget = null;
+			for (StepDesc stepDesc : job.getStepDescs()){
+				if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())){
+					newTarget = jobDirName+TARGET_ROOT_DIR+stepDesc.getCorpusDesc().getCorpusPath().lastSegment();
+					stepDir = new File(newTarget);
+					stepDir.mkdirs();
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createURI(newTarget));
+				}
+				else if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())){
+					newTarget = jobDirName+stepDesc.getCorpusDesc().getCorpusPath().lastSegment();
+					stepDesc.getCorpusDesc().setCorpusPath(URI.createURI(newTarget));
+				}
+			}
+			
+			/* unzip */
+			try {
+				ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFileName));
+				File file = null;
+				FileOutputStream outstream = null;
+				ZipEntry entry = zip.getNextEntry();
+				byte[] bytes = new byte[1024];
+				if (logger.isDebugEnabled()){
+					logger.debug("Extracting transferred data ...");
+				}
+				while (entry!=null){
+					if (logger.isDebugEnabled()){
+						logger.debug("\t"+entry.getName());
+					}
+					if (entry.isDirectory()){
+						file = new File(jobDirName+entry.getName());
+						file.mkdir();
+					} else {
+						file = new File(entry.getName());
+						outstream = new FileOutputStream(jobDirName+file);	
+						while (zip.read(bytes) > 0){
+							outstream.write(bytes);
+						}
+						outstream.close();						
+					}
+					entry = zip.getNextEntry();
+				}
+				//DEBUG				
+				
+				for (StepDesc stepDesc : job.getStepDescs()){//FIXME corpus path of importers is wrong
+					System.out.println(stepDesc);
+					System.out.println(stepDesc.getCorpusDesc().getCorpusPath());
+				}
+				
+				//END OF DEBUG
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}		
 	}
 
