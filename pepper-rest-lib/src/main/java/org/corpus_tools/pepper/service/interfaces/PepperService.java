@@ -1,8 +1,6 @@
 package org.corpus_tools.pepper.service.interfaces;
 
-import java.io.File;
-
-import javax.ws.rs.core.MediaType;
+import java.io.FileOutputStream;
 
 public interface PepperService{
 		
@@ -18,8 +16,8 @@ public interface PepperService{
 	
 	/* DATA */
 	
-	public void setData(String jobId, byte[] data);
-	public byte[] getConvertedDocuments(String jobId);
+	public void setData(String jobId, String importPath, byte[] data);
+	public byte[] getConvertedDocuments(String jobId, String formatPath);
 	
 	/* ABOUT PEPPER */
 	

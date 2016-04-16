@@ -1,20 +1,24 @@
 package org.corpus_tools.pepper.service.rest;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -24,20 +28,23 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.io.output.XmlStreamWriter;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.lang3.ArrayUtils;
+import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.common.StepDesc;
-import org.corpus_tools.pepper.core.PepperJobImpl;
 import org.corpus_tools.pepper.core.WorkflowDescriptionReader;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.exceptions.ErrorsExceptions;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
-import org.corpus_tools.pepper.util.XMLStreamWriter;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,6 +55,8 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.google.common.io.Files;
+
 @WebService
 @Path("/resource")
 @Component(name = "PepperRESTService", immediate = true)
@@ -55,6 +64,7 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 	
 	/* constants */
 	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;	
+	public static final String LOCAL_JOB_DIR = "jobs"+File.separator;
 	
 	/* statics */
 	private static Pepper pepper;
@@ -67,6 +77,7 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 	public static void setPepper(Pepper pepperInstance) {
 	    pepper = pepperInstance;
 	    logger.info("pepper set to:"+pepper);
+	    (new File(LOCAL_JOB_DIR)).mkdir();
 	}
 
 	public void unsetPepper(Pepper pepperInstance) {
@@ -154,19 +165,25 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//START JOB
+		job.setBaseDir(job.getBaseDir().appendSegment(id));
 		return id;
 	}
 
 	@GET
 	@Path(PATH_JOB)
 	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN) //TODO XML
 	@Override
 	public String getStatusReport(@QueryParam("id") String jobId) {
 		PepperJob job = pepper.getJob(jobId);
-		return job==null? "no such job" : job.getStatusReport();
-		//TODO we need to implement a method that creates an xml report OR an report object that will be made marshallable
+		if (job==null){
+			return "No such job"; //TODO XML
+		}
+		if (JOB_STATUS.NOT_STARTED.equals(job.getStatus())){
+			logger.info("Job "+jobId+" started.");
+			job.convert();
+		}
+		return job.getStatusReport(); //TODO XML
 	}
 
 	@GET
@@ -180,16 +197,18 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 	}
 	
 	@POST
-	@Path(PATH_DATA)
+	@Path(PATH_DATA+"/{id}/{path}")
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@Override
-	public void setData(@QueryParam("id") String jobId, byte[] data){
+	public void setData(@PathParam("id") String jobId, @PathParam("path") String importDirName, byte[] data){
+		if (importDirName.endsWith("/")){
+			importDirName = importDirName.substring(0, importDirName.length()-1);
+		}
 		PepperJob job = pepper.getJob(jobId);		
 		if (job!=null){
-			String jobDirName = jobId+File.separator;
-			File jobDir = new File(jobDirName);
-			String dataDir = job.getStepDescs().get(0).getCorpusDesc().getCorpusPath().lastSegment();//FIXME
-			jobDir.mkdir();	
+			String jobDirName = LOCAL_JOB_DIR+jobId+File.separator;
+			(new File(jobDirName)).mkdir();
+			String dataDir = importDirName;
 			String zipFileName = jobDirName+dataDir+".zip";
 			try {
 				FileOutputStream outstream = new FileOutputStream(zipFileName);
@@ -204,13 +223,9 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 			String newTarget = null;
 			for (StepDesc stepDesc : job.getStepDescs()){
 				if (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType())){
-					newTarget = jobDirName+TARGET_ROOT_DIR+stepDesc.getCorpusDesc().getCorpusPath().lastSegment();
+					newTarget = TARGET_ROOT_DIR+stepDesc.getCorpusDesc().getCorpusPath().lastSegment();
 					stepDir = new File(newTarget);
 					stepDir.mkdirs();
-					stepDesc.getCorpusDesc().setCorpusPath(URI.createURI(newTarget));
-				}
-				else if (MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())){
-					newTarget = jobDirName+stepDesc.getCorpusDesc().getCorpusPath().lastSegment();
 					stepDesc.getCorpusDesc().setCorpusPath(URI.createURI(newTarget));
 				}
 			}
@@ -230,10 +245,10 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 						logger.debug("\t"+entry.getName());
 					}
 					if (entry.isDirectory()){
-						file = new File(jobDirName+entry.getName());
-						file.mkdir();
+						file = new File(jobDirName+importDirName+"/"+entry.getName());
+						file.mkdirs();
 					} else {
-						file = new File(entry.getName());
+						file = new File(importDirName+"/"+entry.getName());
 						outstream = new FileOutputStream(jobDirName+file);	
 						while (zip.read(bytes) > 0){
 							outstream.write(bytes);
@@ -257,14 +272,50 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 		}		
 	}
 
+	/**
+	 * @return The converted data, iff conversion has finished, else null.
+	 */
 	@GET
-	@Path(PATH_DATA)
-	@Consumes(MediaType.TEXT_PLAIN)
+	@Path(PATH_DATA+"/{id}/{path}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@Override
-	public byte[] getConvertedDocuments(@QueryParam("id") String jobId) {
-		// TODO Auto-generated method stub
-		return null;
+	public byte[] getConvertedDocuments(@PathParam("id") String jobId, @PathParam("path") String exportPath) {
+		if (exportPath.endsWith("/")){
+			exportPath = exportPath.substring(0, exportPath.length()-1);
+		}
+		PepperJob job = pepper.getJob(jobId);
+		File dataDir = new File(LOCAL_JOB_DIR+jobId+File.separator+exportPath);
+		File zipFile = new File(LOCAL_JOB_DIR+jobId+File.separator+exportPath+".zip");
+		if (/*JOB_STATUS.ENDED.equals(job.getStatus()) &&*/ dataDir.exists()){ //TODO what to do in case ENDED_WITH_ERRORS?			
+			try{
+				logger.info("Providing requested files: "+jobId+File.separator+exportPath);
+				if (!zipFile.exists()){				
+					FileOutputStream fos = new FileOutputStream(zipFile);
+					ZipOutputStream zipout = new ZipOutputStream(fos);
+					ZipEntry entry = null;
+					for (File file : FileUtils.listFilesAndDirs(dataDir, TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY)){
+						entry = new ZipEntry(file.getName());					
+						zipout.putNextEntry(entry);
+						if (!file.isDirectory()){
+							Files.copy(file, zipout);
+						}
+						System.out.println(entry.getName());
+						zipout.closeEntry();
+					}
+					zipout.close();				
+				}
+				FileInputStream fis = new FileInputStream(zipFile);
+				BufferedInputStream input = new BufferedInputStream(fis);
+				byte[] data = new byte[(int) zipFile.length()];
+				input.read(data);
+				input.close();
+				return data;
+			} catch (IOException e) {
+				logger.error("Could not zip files.");//TODO
+				e.printStackTrace();
+			}
+		}
+		return ArrayUtils.EMPTY_BYTE_ARRAY;
 	}
 
 	
