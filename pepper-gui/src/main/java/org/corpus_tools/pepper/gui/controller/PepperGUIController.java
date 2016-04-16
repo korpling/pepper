@@ -95,8 +95,8 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		String id = event.getComponent().getId();
 		debugOut("click event, id="+id);
 		if (ID_BUTTON_ABOUT.equals(id)){	
-			Collection<PepperModuleDesc> modules = serviceConnector.getAllModules(MODULE_TYPE.EXPORTER);
-			gui.debugOut(modules.toString());
+//			Collection<PepperModuleDesc> modules = serviceConnector.getAllModules(MODULE_TYPE.EXPORTER);
+//			gui.debugOut(modules.toString());
 		}
 		else if (ID_BUTTON_NEW.equals(id)){
 		}

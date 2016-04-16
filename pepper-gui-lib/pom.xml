@@ -16,12 +16,12 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>pepper-REST-service</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
@@ -87,7 +87,7 @@
 		            !com.google.appengine.api.*,!com.google.apphosting*,!com.google.gson*, !com.google.gwt.thirdparty* *
 		            </Import-Package>
 		            <Export-Package>
-		            com.vaadin*, com.google*, com.gargoylesoftware*, javax.servlet.http, javax.servlet, org.corpus_tools.pepper.gui.client
+		            com.vaadin*, com.google*, com.gargoylesoftware*, javax.servlet.http, javax.servlet*, org.corpus_tools.pepper.gui.client
 		            </Export-Package>      
 		          </instructions>
 		        </configuration>

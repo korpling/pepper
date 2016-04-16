@@ -4,9 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.zip.ZipEntry;
@@ -30,7 +28,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.corpus_tools.pepper.common.JOB_STATUS;
@@ -44,6 +41,8 @@ import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallab
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.exceptions.ErrorsExceptions;
 import org.corpus_tools.pepper.service.interfaces.PepperService;
+import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
+import org.corpus_tools.pepper.service.internal.DataManager;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
@@ -60,16 +59,11 @@ import com.google.common.io.Files;
 @WebService
 @Path("/resource")
 @Component(name = "PepperRESTService", immediate = true)
-public class PepperRESTService implements PepperService, PepperRESTServicePathDictionary{
-	
-	/* constants */
-	public static final String DATA_FORMAT = MediaType.APPLICATION_XML;	
-	public static final String LOCAL_JOB_DIR = "jobs"+File.separator;
-	
+public class PepperRESTService implements PepperService, PepperServiceImplConstants{
+		
 	/* statics */
 	private static Pepper pepper;
 	private static PepperSerializer serializer = PepperSerializer.getInstance(DATA_FORMAT);
-	
 	
 	private static final Logger logger = LoggerFactory.getLogger(PepperRESTService.class);
 	
@@ -166,6 +160,7 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 			e.printStackTrace();
 		}
 		job.setBaseDir(job.getBaseDir().appendSegment(id));
+		DataManager.getInstance().put(id);//FIXME THIS IS JUST DEBUG ! move to getStatusReport() where job is started and put it on the dataManager as soon as the job is finished.  
 		return id;
 	}
 
@@ -257,14 +252,7 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 					}
 					entry = zip.getNextEntry();
 				}
-				//DEBUG				
-				
-				for (StepDesc stepDesc : job.getStepDescs()){//FIXME corpus path of importers is wrong
-					System.out.println(stepDesc);
-					System.out.println(stepDesc.getCorpusDesc().getCorpusPath());
-				}
-				
-				//END OF DEBUG
+				zip.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -299,7 +287,7 @@ public class PepperRESTService implements PepperService, PepperRESTServicePathDi
 						if (!file.isDirectory()){
 							Files.copy(file, zipout);
 						}
-						System.out.println(entry.getName());
+						logger.info("\tZipping "+entry.getName());
 						zipout.closeEntry();
 					}
 					zipout.close();				
