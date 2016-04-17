@@ -261,7 +261,7 @@ public class PepperRESTService implements PepperService, PepperServiceImplConsta
 	}
 
 	/**
-	 * @return The converted data, iff conversion has finished, else null.
+	 * @return The converted data, iff conversion has finished, else no bytes.
 	 */
 	@GET
 	@Path(PATH_DATA+"/{id}/{path}")
