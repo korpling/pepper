@@ -27,7 +27,6 @@ This project includes:
   Aether Transport HTTP under Eclipse Public License, Version 1.0
   Aether Transport Wagon under Eclipse Public License, Version 1.0
   Aether Utilities under Eclipse Public License, Version 1.0
-  AOP alliance under Public Domain
   Apache Commons Lang under Apache License, Version 2.0
   Apache Felix Framework under The Apache Software License, Version 2.0
   Apache HttpClient under Apache License
@@ -37,10 +36,8 @@ This project includes:
   Apache HttpCore under Apache License
   Apache HttpCore NIO under Apache License
   Apache HttpCore OSGi bundle under Apache License
-  ASM Core under BSD
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
-  CDI APIs under Apache License, Version 2.0
   Common Eclipse Runtime under Eclipse Public License - v 1.0
   Commons Codec under The Apache Software License, Version 2.0
   Commons Compiler under New BSD License
@@ -57,16 +54,15 @@ This project includes:
   Hamcrest Core under New BSD License
   Janino under New BSD License
   Java Text Categorizing Library under GNU Lesser General Public License
-  javax.inject under The Apache Software License, Version 2.0
   JCL 1.1.1 implemented over SLF4J under MIT License
-  JSR-250 Common Annotations for the JavaTM Platform under COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0
   JUnit under Common Public License Version 1.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
-  Maven Aether Provider under The Apache Software License, Version 2.0
-  Maven Model under The Apache Software License, Version 2.0
-  Maven Model Builder under The Apache Software License, Version 2.0
-  Maven Repository Metadata Model under The Apache Software License, Version 2.0
+  Maven Aether Provider under Apache License, Version 2.0
+  Maven Builder Support under Apache License, Version 2.0
+  Maven Model under Apache License, Version 2.0
+  Maven Model Builder under Apache License, Version 2.0
+  Maven Repository Metadata Model under Apache License, Version 2.0
   Maven Wagon API under The Apache Software License, Version 2.0
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
   org.corpus-tools.pepper under The Apache Software License, Version 2.0
@@ -78,19 +74,15 @@ This project includes:
   org.eclipse.equinox:ds under Eclipse Public License - v 1.0
   org.eclipse.equinox:util under Eclipse Public License - v 1.0
   org.eclipse.osgi.services_3.4.0.v20140312-2051.jar under Eclipse Public License - v 1.0
-  org.eclipse.sisu.inject under Eclipse Public License, Version 1.0
-  org.eclipse.sisu.plexus under Eclipse Public License, Version 1.0
   osgi.cmpn under Apache License, Version 2.0
   osgi.core under Apache License, Version 2.0
   pepper-doc under The Apache Software License, Version 2.0
   pepper-framework under The Apache Software License, Version 2.0
   pepper-lib under The Apache Software License, Version 2.0
   Plexus :: Component Annotations under The Apache Software License, Version 2.0
-  Plexus Classworlds under The Apache Software License, Version 2.0
   Plexus Common Utilities under The Apache Software License, Version 2.0
   Plexus Interpolation API under The Apache Software License, Version 2.0
   salt-api under The Apache Software License, Version 2.0
-  Sisu Guice - Core Library under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   Stax2 API under The BSD License
   Woodstox under The Apache License, Version 2.0
