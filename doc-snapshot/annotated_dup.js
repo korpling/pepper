@@ -1,4 +1,4 @@
-var annotated =
+var annotated_dup =
 [
     [ "org", null, [
       [ "corpus_tools", null, [

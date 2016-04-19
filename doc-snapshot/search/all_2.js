@@ -6,7 +6,7 @@ var searchData=
   ['checkproperty',['checkProperty',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#ab50acc83907b3b56c1f9bb4765b1121d',1,'org::corpus_tools::pepper::modules::PepperModuleProperties']]],
   ['checkreadytostart',['checkReadyToStart',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a7144a71e6e2303e0ea6fcb3bdeb2cc1d',1,'org::corpus_tools::pepper::core::PepperJobImpl']]],
   ['clean',['clean',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter.html#a18eabc4af2962f3a9dd77a29120739d7',1,'org::corpus_tools::pepper::cli::PepperStarter']]],
-  ['cleanup',['cleanUp',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a045f7b6267c19b6bef8e6973b09b9a16',1,'org.corpus_tools.pepper.core.PepperImpl.cleanUp()'],['../clean_up.html',1,'moduleDevelopers']]],
+  ['cleanup',['cleanUp',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a045f7b6267c19b6bef8e6973b09b9a16',1,'org.corpus_tools.pepper.core.PepperImpl.cleanUp()'],['../cleanUp.html',1,'moduleDevelopers']]],
   ['clear',['clear',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a35e8f1d9383e4acb7a47db41703430b6',1,'org.corpus_tools.pepper.common.PepperJob.clear()'],['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a430021619967fe9cb46fd519e53db257',1,'org.corpus_tools.pepper.core.PepperJobImpl.clear()']]],
   ['command',['COMMAND',['../enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html',1,'org::corpus_tools::pepper::cli::PepperStarter']]],
   ['command',['COMMAND',['../enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_o_s_gi_console_1_1_c_o_m_m_a_n_d.html',1,'org::corpus_tools::pepper::cli::OSGiConsole']]],
