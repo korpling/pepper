@@ -32,7 +32,7 @@ var searchData=
   ['peppermoduleinternalexception',['PepperModuleInternalException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_internal_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],
   ['peppermodulenotreadyexception',['PepperModuleNotReadyException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_not_ready_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],
   ['peppermoduleproperties',['PepperModuleProperties',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html',1,'org::corpus_tools::pepper::modules']]],
-  ['peppermoduleproperty',['PepperModuleProperty',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property.html',1,'org::corpus_tools::pepper::modules']]],
+  ['peppermoduleproperty_3c_20t_20_3e',['PepperModuleProperty&lt; T &gt;',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property_3_01_t_01_4.html',1,'org::corpus_tools::pepper::modules']]],
   ['peppermodulepropertyexception',['PepperModulePropertyException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_property_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],
   ['peppermoduletest',['PepperModuleTest',['../classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test.html',1,'org::corpus_tools::pepper::testFramework']]],
   ['peppermoduletestexception',['PepperModuleTestException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_test_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],

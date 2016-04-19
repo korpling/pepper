@@ -1,7 +1,6 @@
 var module_developers =
 [
     [ "Tutorial: Getting started in 10 minutes", "tutorial.html", null ],
-    [ "Tutorial: Develop with Eclipse", "use_eclipse.html", null ],
     [ "Pepper module's architecture", "module_architecture.html", null ],
     [ "Module initialization", "init.html", null ],
     [ "Analyzing corpus format (only importers)", "analyze.html", null ],

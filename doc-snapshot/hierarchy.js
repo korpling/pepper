@@ -6,7 +6,7 @@ var hierarchy =
     [ "org.corpus_tools.pepper.cli.OSGiConsole.COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_o_s_gi_console_1_1_c_o_m_m_a_n_d.html", null ],
     [ "Comparable", null, [
       [ "org.corpus_tools.pepper.common.PepperModuleDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_module_desc.html", null ],
-      [ "org.corpus_tools.pepper.modules.PepperModuleProperty< T >", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property.html", null ]
+      [ "org.corpus_tools.pepper.modules.PepperModuleProperty< T >", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property_3_01_t_01_4.html", null ]
     ] ],
     [ "org.corpus_tools.pepper.cli.ConvertWizardConsole", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html", null ],
     [ "org.corpus_tools.pepper.common.CorpusDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_corpus_desc.html", null ],
