@@ -65,6 +65,14 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>oss-snapshot</id>
+			<url>//oss.sonatype.org/content/repositories/snapshots/</url>
+			<releases><enabled>false</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
 	<properties>
 		<pepper.mail>saltnpepper@lists.hu-berlin.de</pepper.mail>
 		<pepper.hp>http://corpus-tools.org/pepper/</pepper.hp>
