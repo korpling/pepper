@@ -39,7 +39,7 @@ Version 2.1.1
 * fixed #60: Properties in workflow description are not passed to Pepper, when there are characters like linebraks in the value.
 * fixed #59: sort Pepper modules in list view
 * fixed #57: Catch exceptions throwed by SAX (org.xml.sax.SAXParseException) and create a user friendly output, informing the user, that there are problems like encoding issues in the source files.
-* fixed #55: Problems with path deresolving in Pepper wizzard at least in Windows
+* fixed #55: Problems with path deresolving in Pepper wizard at least in Windows
 * fixed #56: problems with file encoding in Windows
 
 Version 2.1.1

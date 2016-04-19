@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.core.PepperJobImpl;
+import org.corpus_tools.salt.common.SaltProject;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,6 +83,11 @@ public class PepperJobTest extends PepperJob {
 
 	@Override
 	public void clear() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public SaltProject getSaltProject() {
 		throw new UnsupportedOperationException();
 	}
 }

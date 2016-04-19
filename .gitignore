@@ -6,3 +6,6 @@
 /pepper-lib/plugins/*
 /pepper-lib/lib/*
 rebel.xml
+pepper-newModule/.classpath
+pepper-newModule/.project
+pepper-newModule/.settings/*
