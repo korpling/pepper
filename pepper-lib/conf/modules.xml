@@ -87,7 +87,4 @@
 	<pepperModules>
 		<artifactId>pepperModules-GrAFModules</artifactId>
 	</pepperModules>
-	<pepperModules>
-		<artifactId>pepperModules-PAULAModules</artifactId>
-	</pepperModules>
 </pepperModulesList>

@@ -5,6 +5,13 @@
 *	artifactId:		pepper												          *
 *													                              *
 ***********************************************************************************
+
+Version 3.0.1
+=============
+* make sure Pepper is using the latest bugfix version of Salt (currently 3.0.6)
+* update Maven Aether dependency to enhance the update process
+* fix some Eclipse build warnings
+
 Version 3.0.0
 =============
 * updated Salt to version 3.0.3
