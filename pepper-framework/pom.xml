@@ -41,14 +41,6 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>${maven-bundle-plugin.version}</version>
 				<extensions>true</extensions>
-				<executions>
-					<execution>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<manifestLocation>${META-INF}</manifestLocation>
 					<source>${java.version}</source>
