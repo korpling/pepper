@@ -20,6 +20,15 @@ For testing your Maven instance open a command line and type in:
 mvn -version
 \endcode 
 
+Finally, you have to have the current version of Pepper checked out from the [git repository at GitHub](https://github.com/korpling/pepper) and installed locally. To do this, you can either `clone` it directly, as follows below, or create a fork (you need an account on [github.com](http://github.com)) so that you work on your own Pepper repository and can also contribute changes to the original Pepper by issuing [pull requests](https://help.github.com/articles/using-pull-requests/). If you decide to fork you need to replace the git URL in the below example with that of your own for repository of course.
+
+Go to the directory you want to clone the Pepper source code into -- the cloning process will create a new subdirectory called *pepper*. From the command line, run
+\code
+git clone https://github.com/korpling/pepper.git
+cd pepper
+mvn clean install
+\endcode
+
 ## Set up
 
 
