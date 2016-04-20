@@ -35,11 +35,11 @@ mvn archetype:generate \
 **Step 3**  Follow the instructions and enter 
 - the **groupId** which will identify your project uniquely across all projects, 
 - the **artifactId** an identifier for your project, 
-- the **version** the module's version, 
+- the **package**, which is by default a combination of groupId and artifactId
 - the **class prefix**, which is used as a prefix and name for your modules for instance the prefix 'My' will result in an importer named 'MyImporter' 
-- the **package name**, which is by default a combination of groupId and artifactId
+- **organisation** which is the license owner and set to the organisation in pom.xml 
 - **your name** which is used as developers name in Javadoc and pom.xml and your 
-- **companies name** which is the license owner and set to the organisation in pom.xml   
+  
 
 **Step 4** Go to _MY_MODULE_HOME_ and run 
 \code
