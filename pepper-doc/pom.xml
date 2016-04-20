@@ -19,8 +19,6 @@
 		<scmPubCheckoutDirectory>\${siteMainDirectory}/pepper-content-scm</scmPubCheckoutDirectory>
 		<exec-maven-plugin.version>1.4.0</exec-maven-plugin.version>
 		<maven-project-info-reports-plugin.version>2.4</maven-project-info-reports-plugin.version>
-		<docbkx-maven-plugin.version>2.0.14</docbkx-maven-plugin.version>
-		<docbkx-fop-support.version>2.0.14</docbkx-fop-support.version>
 		<maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
 	</properties>
 	<build>
@@ -49,6 +47,15 @@
 				</configuration>
 			</plugin>
 			<!-- end: maven site plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins </groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<!-- In default version from parent, a failure occures: Failed to execute 
+					goal org.apache.maven.plugins:maven-resources-plugin:2.7:copy-resources (copy-filter-docbook) 
+					on project salt-doc: Mark invalid -->
+				<version>2.6</version>
+			</plugin>
+			<!-- end of docbook plugin -->
 		</plugins>
 
 		<!-- start doxygen -->
