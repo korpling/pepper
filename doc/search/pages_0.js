@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['commands_20in_20pepper_20console',['Commands in Pepper console',['../commands.html',1,'users']]],
-  ['configuring_20pepper',['Configuring Pepper',['../config.html',1,'users']]]
+  ['analyzing_20corpus_20format_20_28only_20importers_29',['Analyzing corpus format (only importers)',['../analyze.html',1,'moduleDevelopers']]]
 ];

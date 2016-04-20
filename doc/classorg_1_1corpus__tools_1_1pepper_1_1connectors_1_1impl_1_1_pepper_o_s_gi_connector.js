@@ -1,5 +1,6 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector =
 [
+    [ "addSharedPackage", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ac7e7a566bb675b49fd8eea3012302c6f", null ],
     [ "createJob", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a01ca86ba684f452add29605e49193cff", null ],
     [ "getBlacklist", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a8f18af820ef0c4858ec53d31c3a25718", null ],
     [ "getBundle", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#aeb584aefdc72859c20940dc312ca3aed", null ],

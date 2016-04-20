@@ -12,5 +12,5 @@ var namespaceorg_1_1corpus__tools_1_1pepper_1_1modules =
     [ "PepperMapperController", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller" ],
     [ "PepperModule", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module" ],
     [ "PepperModuleProperties", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties" ],
-    [ "PepperModuleProperty< T >", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property_3_01_t_01_4.html", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property_3_01_t_01_4" ]
+    [ "PepperModuleProperty", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property.html", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property" ]
 ];
