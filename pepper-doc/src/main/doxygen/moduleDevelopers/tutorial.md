@@ -32,9 +32,9 @@ mvn clean install
 ## Set up
 
 
-**Step 1** Go to a folder where to create your module let's call it _MY_MODULE_HOME_
+**Step 1** Go to the folder in which you want to create a new folder containing your module (let's call the latter _MY_MODULE_HOME_).
 
-**Step 2**  Create your module with Maven
+**Step 2**  Create your module with Maven. *Note* that the below is a one-line command (`\`s signify a line break, used for readability).
 \code
 mvn archetype:generate \
     -DarchetypeGroupId=org.corpus-tools \
@@ -44,10 +44,11 @@ mvn archetype:generate \
 **Step 3**  Follow the instructions and enter 
 - the **groupId** which will identify your project uniquely across all projects, 
 - the **artifactId** an identifier for your project, 
-- the **package**, which is by default a combination of groupId and artifactId
+- the **package**, which is by default a combination of groupId and artifactId. ***Note:*** If your *groupId* or *artifactId* contain slashes (`-`), you need to remove them or replace them with, e.g., underscores (`_`), otherwise the build will break.
 - the **class prefix**, which is used as a prefix and name for your modules for instance the prefix 'My' will result in an importer named 'MyImporter' 
 - **organisation** which is the license owner and set to the organisation in pom.xml 
 - **your_name** which is used as developers name in Javadoc and pom.xml and your 
+- **Y**: Confirm the above settings by entering `y`, alternatively enter `n` to re-start the process, or press `CTRL+C` to abort the generation altogether.
   
 
 **Step 4** Go to _MY_MODULE_HOME_ and run 
@@ -79,9 +80,9 @@ Now the module is ready to be started in Pepper. To check whether your module is
 	pepper>list
 \endcode
   Pepper will print a list of all registered modules, search for your importer, manipulator and exporter.
-**Step 10** To get more information on one of the modules type in 'list' followed by the module's name
+**Step 10** To get more information on one of the modules, type in 'list' followed by the module's number, e.g.
 \code
-pepper> list MyImporter
+pepper> list 47
 \endcode 
 
 Now you can run the three modules in Pepper. You can use them as part of your conversion workflow.
