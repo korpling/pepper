@@ -23,7 +23,7 @@ mvn -version
 ## Set up
 
 
-** Step 1 ** Go to a folder where to create your module let's call it _MY_MODULE_HOME_
+**Step 1** Go to a folder where to create your module let's call it _MY_MODULE_HOME_
 
 **Step 2**  Create your module with Maven
 \code

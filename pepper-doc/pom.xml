@@ -222,6 +222,20 @@
 							<resource>
 								<directory>src/main/doxygen/</directory>
 								<filtering>true</filtering>
+								<includes>
+									<include>**/*.md</include>
+									<include>**/*.html</include>
+									<include>**/*.xml</include>
+									<include>Doxyfile</include>
+								</includes>
+							</resource>
+							<resource>
+								<directory>src/main/doxygen/</directory>
+								<filtering>false</filtering>
+								<includes>
+									<include>**/*.svg</include>
+									<include>**/*.png</include>
+								</includes>
 							</resource>
 						</resources>
 					</configuration>
