@@ -9,6 +9,7 @@
 		<relativePath>../pom.xml</relativePath>
 		<version>3.0.2-SNAPSHOT</version>
 	</parent>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<site.path>doc-snapshot</site.path>
@@ -227,14 +228,6 @@
 									<include>**/*.html</include>
 									<include>**/*.xml</include>
 									<include>Doxyfile</include>
-								</includes>
-							</resource>
-							<resource>
-								<directory>src/main/doxygen/</directory>
-								<filtering>false</filtering>
-								<includes>
-									<include>**/*.svg</include>
-									<include>**/*.png</include>
 								</includes>
 							</resource>
 						</resources>
