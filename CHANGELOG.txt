@@ -6,6 +6,12 @@
 *													                              *
 ***********************************************************************************
 
+Version 3.0.2
+=============
+* fix Salt dependency
+* enhance module tutorial
+* correct pepper parent module version in newModule archetype
+
 Version 3.0.1
 =============
 * make sure Pepper is using the latest bugfix version of Salt (currently 3.0.6)
