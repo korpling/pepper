@@ -47,6 +47,7 @@ import org.apache.maven.repository.internal.SnapshotMetadataGeneratorFactory;
 import org.apache.maven.repository.internal.VersionsMetadataGeneratorFactory;
 import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.aether.AbstractRepositoryListener;
+import org.eclipse.aether.ConfigurationProperties;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositoryEvent;
 import org.eclipse.aether.RepositorySystem;
@@ -93,9 +94,7 @@ import org.eclipse.aether.util.graph.selector.AndDependencySelector;
 import org.eclipse.aether.util.graph.selector.ExclusionDependencySelector;
 import org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
 import org.eclipse.aether.util.graph.selector.ScopeDependencySelector;
-import org.eclipse.aether.util.graph.transformer.ChainedDependencyGraphTransformer;
 import org.eclipse.aether.util.graph.transformer.ConflictResolver;
-import org.eclipse.aether.util.graph.transformer.JavaDependencyContextRefiner;
 import org.eclipse.aether.util.graph.transformer.JavaScopeDeriver;
 import org.eclipse.aether.util.graph.transformer.JavaScopeSelector;
 import org.eclipse.aether.util.graph.transformer.NearestVersionSelector;
@@ -371,6 +370,7 @@ public class MavenAccessor {
 		Properties sysProps = System.getProperties();
 		session.setSystemProperties(sysProps);
 		session.setConfigProperties(sysProps);
+		session.setConfigProperty(ConfigurationProperties.REQUEST_TIMEOUT, 60000);
 
 		return session;
 	}
