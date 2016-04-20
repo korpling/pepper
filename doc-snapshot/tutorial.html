@@ -113,11 +113,10 @@ $(document).ready(function(){initNavTree('tutorial.html','');});
 <p><b>Step 2</b> Create your module with Maven </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;mvn archetype:generate \</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;    -DarchetypeGroupId=org.corpus-tools \</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;    -DarchetypeArtifactId=pepper-newModule \</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    -DarchetypeVersion=3.0.2-SNAPSHOT </div></div><!-- fragment --><p> <b>Step 3</b> Follow the instructions and enter</p><ul>
 <li>the <b>groupId</b> which will identify your project uniquely across all projects,</li>
 <li>the <b>artifactId</b> an identifier for your project,</li>
-<li>the <b>version</b> the module's version,</li>
+<li>the <b>package</b>, which is by default a combination of groupId and artifactId</li>
 <li>the <b>class prefix</b>, which is used as a prefix and name for your modules for instance the prefix 'My' will result in an importer named 'MyImporter'</li>
-<li>the <b>package name</b>, which is by default a combination of groupId and artifactId</li>
+<li><b>organisation</b> which is the license owner and set to the organisation in pom.xml</li>
 <li><b>your name</b> which is used as developers name in Javadoc and pom.xml and your</li>
-<li><b>companies name</b> which is the license owner and set to the organisation in pom.xml</li>
 </ul>
 <p><b>Step 4</b> Go to <em>MY_MODULE_HOME</em> and run </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;mvn clean install</div></div><!-- fragment --><p><b>Step 5</b> Download the latest stable version of Pepper plattform from <a href="http://corpus-tools.org/pepper/#download">http://corpus-tools.org/pepper/#download</a></p>
 <p><b>Step 6</b> Unzip Pepper to <em>PEPPER_HOME</em></p>
@@ -138,7 +137,7 @@ $(document).ready(function(){initNavTree('tutorial.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="moduleDevelopers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Wed Apr 20 2016 14:29:18 for Pepper by
+    <li class="footer">Generated on Wed Apr 20 2016 14:34:53 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
