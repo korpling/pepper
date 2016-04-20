@@ -67,6 +67,9 @@
 		<artifactId>pepperModules-SaltInfoModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-SpreadsheetModules</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-TEIModules</artifactId>
 	</pepperModules>
 	<pepperModules>
