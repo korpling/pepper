@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['im_2d_20and_20exporting_20corpus_20structure_20_28only_20im_2d_20and_20exporters_29',['Im- and exporting corpus structure (only im- and exporters)',['../corpusStructure.html',1,'moduleDevelopers']]],
+  ['im_2d_20and_20exporting_20corpus_20structure_20_28only_20im_2d_20and_20exporters_29',['Im- and exporting corpus structure (only im- and exporters)',['../corpus_structure.html',1,'moduleDevelopers']]],
   ['id',['id',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a0498dd9dee7248abfa925275a067e6f8',1,'org.corpus_tools.pepper.common.PepperJob.id()'],['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#a440586af461b8e85d1e9450a00292ee5',1,'org.corpus_tools.pepper.core.DocumentBus.id()'],['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_controller_impl.html#a0b9d51e02df1db1ca9c2b410c96c3d60',1,'org.corpus_tools.pepper.core.ModuleControllerImpl.id()']]],
   ['id_5fintitial',['ID_INTITIAL',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_initial_document_bus.html#a7feaa4f47f4c9981525c96ac4a707f6d',1,'org::corpus_tools::pepper::core::InitialDocumentBus']]],
   ['id_5fterminal',['ID_TERMINAL',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_terminal_document_bus.html#aeb1e0290ab7d7fc7a81bddff691e8f93',1,'org::corpus_tools::pepper::core::TerminalDocumentBus']]],

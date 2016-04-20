@@ -2,10 +2,10 @@ var NAVTREE =
 [
   [ "Pepper", "index.html", [
     [ "Pepper developers", "developers.html", null ],
-    [ "Pepper module developers", "moduleDevelopers.html", "moduleDevelopers" ],
+    [ "Pepper module developers", "module_developers.html", "module_developers" ],
     [ "Pepper users", "users.html", "users" ],
-    [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
+    [ "Classes", null, [
+      [ "Class List", "annotated.html", "annotated" ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
