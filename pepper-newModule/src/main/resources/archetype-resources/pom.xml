@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>${groupId}</groupId>
-	<artifactId>${artifactId}</artifactId>
-	<version>${version}</version>
+	<groupId>\${groupId}</groupId>
+	<artifactId>\${artifactId}</artifactId>
+	<version>\${version}</version>
 	<packaging>bundle</packaging>
-	<name>${groupId}.${artifactId}</name>
+	<name>\${groupId}.\${artifactId}</name>
 	<!-- Declares this project to be an extension of the project pepper-parentModule. -->
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper-parentModule</artifactId>
-		<version>3.0.1-SNAPSHOT</version>
+		<version>${project.version}</version>
 	</parent>
 	<distributionManagement>
 		<snapshotRepository>
@@ -24,12 +24,12 @@
 		</repository>
 	</distributionManagement>
 	<organization>
-		<name>${organisation}</name>
+		<name>\${organisation}</name>
 	</organization>
 	<developers>
 		<developer>
-			<name>${your_name}</name>
-			<organization>${organisation}</organization>
+			<name>\${your_name}</name>
+			<organization>\${organisation}</organization>
 		</developer>
 	</developers>
 </project>
