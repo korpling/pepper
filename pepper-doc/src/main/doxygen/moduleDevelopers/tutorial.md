@@ -20,12 +20,21 @@ For testing your Maven instance open a command line and type in:
 mvn -version
 \endcode 
 
+Finally, you have to have the current version of Pepper checked out from the [git repository at GitHub](https://github.com/korpling/pepper) and installed locally. To do this, you can either `clone` it directly, as follows below, or create a fork (you need an account on [github.com](http://github.com)) so that you work on your own Pepper repository and can also contribute changes to the original Pepper by issuing [pull requests](https://help.github.com/articles/using-pull-requests/). If you decide to fork you need to replace the git URL in the below example with that of your own for repository of course.
+
+Go to the directory you want to clone the Pepper source code into -- the cloning process will create a new subdirectory called *pepper*. From the command line, run
+\code
+git clone https://github.com/korpling/pepper.git
+cd pepper
+mvn clean install
+\endcode
+
 ## Set up
 
 
-**Step 1** Go to a folder where to create your module let's call it _MY_MODULE_HOME_
+**Step 1** Go to the folder in which you want to create a new folder containing your module (let's call the latter _MY_MODULE_HOME_).
 
-**Step 2**  Create your module with Maven
+**Step 2**  Create your module with Maven. *Note* that the below is a one-line command (`\`s signify a line break, used for readability).
 \code
 mvn archetype:generate \
     -DarchetypeGroupId=org.corpus-tools \
@@ -35,10 +44,11 @@ mvn archetype:generate \
 **Step 3**  Follow the instructions and enter 
 - the **groupId** which will identify your project uniquely across all projects, 
 - the **artifactId** an identifier for your project, 
-- the **package**, which is by default a combination of groupId and artifactId
+- the **package**, which is by default a combination of groupId and artifactId. ***Note:*** If your *groupId* or *artifactId* contain slashes (`-`), you need to remove them or replace them with, e.g., underscores (`_`), otherwise the build will break.
 - the **class prefix**, which is used as a prefix and name for your modules for instance the prefix 'My' will result in an importer named 'MyImporter' 
 - **organisation** which is the license owner and set to the organisation in pom.xml 
 - **your_name** which is used as developers name in Javadoc and pom.xml and your 
+- **Y**: Confirm the above settings by entering `y`, alternatively enter `n` to re-start the process, or press `CTRL+C` to abort the generation altogether.
   
 
 **Step 4** Go to _MY_MODULE_HOME_ and run 
