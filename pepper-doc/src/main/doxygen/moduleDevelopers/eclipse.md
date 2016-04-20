@@ -70,6 +70,8 @@ When debugging your module it might be helpful to step into Pepper's source code
 
 **Step 3** Choose the type, how to import your project: 'Maven' -> 'Existing Maven Projects'.
 
-**Step 4** When stepping through the code and Eclipse does not automatically find Pepper's sources, click on 'Attach Source...', choose 'Java Project'and select the Pepper project.
+**Step 4** Right click on your project and choose Run As -> Maven install 
+
+**Step 5** When stepping through the code and Eclipse does not automatically find Pepper's sources, click on 'Attach Source...', choose 'Java Project'and select the Pepper project.
 
 Now you can also debug through Pepper and the interaction between Pepper and your module.. 
