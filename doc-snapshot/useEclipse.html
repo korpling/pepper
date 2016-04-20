@@ -140,7 +140,8 @@ $(document).ready(function(){initNavTree('useEclipse.html','');});
 <p>When debugging your module it might be helpful to step into Pepper's source code. Therefore you need to import it into your Eclipse instance and to link the code with your debugging. Afterwards you can step through Pepper's code in the same manner as through your module's code.</p>
 <p><b>Step 1</b> Checkout Pepper's source code from <a href="https://github.com/korpling/pepper">https://github.com/korpling/pepper</a> to PEPPER_SOURCE. Make sure to checkout the very same version of Pepper as your Pepper instance in PEPPER_HOME. </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;git clone https://github.com/korpling/pepper</div></div><!-- fragment --><p><b>Step 2</b> Import Pepper in Eclipse via Open the Import dialog via: 'File' -&gt; 'Import...'.</p>
 <p><b>Step 3</b> Choose the type, how to import your project: 'Maven' -&gt; 'Existing Maven Projects'.</p>
-<p><b>Step 4</b> When stepping through the code and Eclipse does not automatically find Pepper's sources, click on 'Attach Source...', choose 'Java Project'and select the Pepper project.</p>
+<p><b>Step 4</b> Right click on your project and choose Run As -&gt; Maven install</p>
+<p><b>Step 5</b> When stepping through the code and Eclipse does not automatically find Pepper's sources, click on 'Attach Source...', choose 'Java Project'and select the Pepper project.</p>
 <p>Now you can also debug through Pepper and the interaction between Pepper and your module.. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
@@ -148,7 +149,7 @@ $(document).ready(function(){initNavTree('useEclipse.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="moduleDevelopers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Wed Apr 20 2016 16:34:33 for Pepper by
+    <li class="footer">Generated on Wed Apr 20 2016 21:22:54 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
