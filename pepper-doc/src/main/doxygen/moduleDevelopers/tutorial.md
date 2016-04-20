@@ -80,9 +80,9 @@ Now the module is ready to be started in Pepper. To check whether your module is
 	pepper>list
 \endcode
   Pepper will print a list of all registered modules, search for your importer, manipulator and exporter.
-**Step 10** To get more information on one of the modules, type in 'list' followed by the module's number, e.g.
+**Step 10** To get more information on one of the modules type in 'list' followed by the module's name
 \code
-pepper> list 47
+pepper> list MyImporter
 \endcode 
 
 Now you can run the three modules in Pepper. You can use them as part of your conversion workflow.
