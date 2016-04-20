@@ -38,7 +38,7 @@ mvn archetype:generate \
 - the **package**, which is by default a combination of groupId and artifactId
 - the **class prefix**, which is used as a prefix and name for your modules for instance the prefix 'My' will result in an importer named 'MyImporter' 
 - **organisation** which is the license owner and set to the organisation in pom.xml 
-- **your name** which is used as developers name in Javadoc and pom.xml and your 
+- **your_name** which is used as developers name in Javadoc and pom.xml and your 
   
 
 **Step 4** Go to _MY_MODULE_HOME_ and run 
