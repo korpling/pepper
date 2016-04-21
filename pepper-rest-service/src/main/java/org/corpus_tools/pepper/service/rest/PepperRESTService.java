@@ -165,11 +165,11 @@ public class PepperRESTService implements PepperService, PepperServiceImplConsta
 	}
 
 	@GET
-	@Path(PATH_JOB)
+	@Path(PATH_JOB+"/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN) //TODO XML
 	@Override
-	public String getStatusReport(@QueryParam("id") String jobId) {
+	public String getStatusReport(@PathParam("id") String jobId) {
 		PepperJob job = pepper.getJob(jobId);
 		if (job==null){
 			return "No such job"; //TODO XML
