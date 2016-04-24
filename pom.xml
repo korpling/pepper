@@ -11,8 +11,11 @@
 		<module>pepper-lib</module>
 		<module>pepper-gui</module>
 		<module>pepper-gui-lib</module>
+		<module>pepper-rest</module>
+		<!-- 
 		<module>pepper-rest-service</module>
 		<module>pepper-rest-lib</module>
+		 -->
 		<module>pepper-doc</module>
 	</modules>
 	<developers>
