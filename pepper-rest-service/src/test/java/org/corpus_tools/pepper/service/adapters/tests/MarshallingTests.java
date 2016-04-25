@@ -18,7 +18,7 @@ import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
-import org.corpus_tools.pepper.service.rest.PepperRESTService;
+import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
@@ -50,14 +50,14 @@ public class MarshallingTests {
 		/*marshalling*/
 		JAXBContext jc = JAXBContext.newInstance(PepperModuleDescMarshallable.class);
 		Marshaller marshaller = jc.createMarshaller();
-		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, PepperRESTService.DATA_FORMAT);
+		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, PepperServiceImplConstants.DATA_FORMAT);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PrintStream stream = new PrintStream(out);
 		marshaller.marshal(new PepperModuleDescMarshallable(md), stream);
 		
 		/*unmarshalling*/
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
-		unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, PepperRESTService.DATA_FORMAT);
+		unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, PepperServiceImplConstants.DATA_FORMAT);
 		StreamSource xml = new StreamSource(new StringReader(out.toString()));
 		PepperModuleDesc ummd = unmarshaller.unmarshal(xml, PepperModuleDescMarshallable.class).getValue().getPepperObject();
 		

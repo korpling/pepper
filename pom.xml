@@ -11,8 +11,11 @@
 		<module>pepper-lib</module>
 		<module>pepper-gui</module>
 		<module>pepper-gui-lib</module>
+		<module>pepper-rest</module>
+		<!-- 
 		<module>pepper-rest-service</module>
 		<module>pepper-rest-lib</module>
+		 -->
 		<module>pepper-doc</module>
 	</modules>
 	<developers>
@@ -204,12 +207,16 @@
 			<version>2.6.1</version>
 			<scope>compile</scope>
 		</dependency>
+		
+		<!-- this dependency will maybe be removed later, it's here for testing if a newer jaxb works better than the incorporated-->
+		<!-- 
 		<dependency>
-			<groupId>javax.xml.bind</groupId><!-- this dependency will maybe be removed later, it's here for testing if a newer jaxb works better than the incorporated-->
+			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api-osgi</artifactId>
 			<version>2.2.7</version>
 			<scope>compile</scope>
 		</dependency>
+		 -->
 		<!-- end: dependencies for pepper service models -->
 	</dependencies>
 	<organization>

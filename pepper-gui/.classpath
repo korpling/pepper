@@ -25,6 +25,6 @@
 	<classpathentry exported="true" kind="lib" path="src/main/java/de/hu_berlin/german/korpling/saltnpepper/pepper/gui/components/gui.xml"/>
 	<classpathentry exported="true" kind="lib" path="src/main/java/de/hu_berlin/german/korpling/saltnpepper/pepper/gui/components/importers.xml"/>
 	<classpathentry kind="src" path="/pepper-REST-lib"/>
-	<classpathentry kind="src" path="/pepper-REST-service"/>
+	<classpathentry kind="src" path="/pepper-rest"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
