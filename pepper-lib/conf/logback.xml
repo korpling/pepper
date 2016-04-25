@@ -14,9 +14,20 @@
             </pattern>
         </encoder>
     </appender> 
+    <appender name="WARN_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>pepper_warning_out.txt</file>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
+            </pattern>
+        </encoder>
+    </appender> 
     <root level="info">
-                <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
+    <root level="WARN">
+    	<appender-ref ref="WARN_FILE" />
+    </root>
 	<logger name="org.corpus_tools.pepper" level="INFO" />
+	<logger name="org.corpus_tools.pepper" level="WARN"/>
 </configuration>
