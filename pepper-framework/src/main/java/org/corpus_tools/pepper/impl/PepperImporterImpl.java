@@ -19,14 +19,20 @@ package org.corpus_tools.pepper.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import org.apache.commons.io.FileUtils;
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
@@ -464,5 +470,43 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public Double isImportable(URI corpusPath) {
 		return null;
+	}
+	
+	protected Collection<File> sampleFiles(File dir, int numberOfSampledFiles, String... fileEndings) {
+		Collection<File> files = FileUtils.listFiles(dir, fileEndings, true);
+		File[] allFiles = new File[files.size()];
+		allFiles = files.toArray(allFiles);
+		Collection<File> sampledFiles = new ArrayList<>(numberOfSampledFiles);
+		Random randomGenerator = new Random();
+		int maxFiles= (numberOfSampledFiles > allFiles.length)? allFiles.length: numberOfSampledFiles; 
+		for (int i = 0; i < maxFiles; i++) {
+			sampledFiles.add(allFiles[randomGenerator.nextInt(allFiles.length)]);
+		}
+		return sampledFiles;
+	}
+
+	protected String readLines(File file, int numOfLinesToRead) {
+		StringBuilder fileContent = new StringBuilder();
+		try (LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+			String line;
+			while (((line = reader.readLine()) != null) && reader.getLineNumber() <= numOfLinesToRead) {
+				fileContent.append(line);
+				fileContent.append(System.lineSeparator());
+			}
+		} catch (IOException e) {
+
+		}
+
+		return fileContent.toString();
+	}
+
+	protected Collection<String> readFileContents(URI corpusPath, int numberOfSampledFiles, int numberOfLines, String... fileEndings){
+		File dir = new File(corpusPath.toFileString());
+		Collection<File> sampledFiles = sampleFiles(dir, numberOfSampledFiles);
+		Collection<String> fileContents= new ArrayList<>(sampledFiles.size());
+		for (File sampleFile: sampledFiles){
+			fileContents.add(readLines(sampleFile, numberOfLines));
+		}
+		return fileContents;
 	}
 }
