@@ -441,6 +441,19 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		return null;
 	}
 
+	/**
+	 * Creates a sampled set of <code>numberOfSampledFiles</code> files
+	 * recursively from directory <code>dir</code> with specified endings.
+	 * 
+	 * @param dir
+	 *            the directory to be traversed recursively
+	 * @param numberOfSampledFiles
+	 *            number of files to be sampled
+	 * @param fileEndings
+	 *            endings of files to be sampled
+	 * @return a collection of files having on of the endings in
+	 *         <code>endings</code> in directory <code>dir</code>
+	 */
 	protected Collection<File> sampleFiles(File dir, int numberOfSampledFiles, String... fileEndings) {
 		if (dir == null || !dir.exists()) {
 			throw new PepperModuleException("Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
@@ -464,38 +477,28 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	}
 
 	/**
-	 * {@inheritDoc PepperImporter#readFirstLines(URI, int)}
+	 * Reads the first X lines of the passed file and returns them as a String
+	 * 
+	 * @param corpusPath
+	 *            path to file
+	 * @param lines
+	 *            number of lines
+	 * @return first X lines
 	 */
-	@Override
-	public String readFirstLines(final URI corpusPath, final int lines) {
-		return (readLines(new File(corpusPath.toFileString()), lines));
-
-		// String retVal = null;
-		// if (corpusPath != null) {
-		// File importPath = new File(corpusPath.toFileString());
-		// try (BufferedReader br = new BufferedReader(new
-		// FileReader(importPath))) {
-		// StringBuilder sb = new StringBuilder();
-		// String line = br.readLine();
-		// int i = 0;
-		// while (line != null) {
-		// sb.append(line);
-		// sb.append(System.lineSeparator());
-		// line = br.readLine();
-		// i++;
-		// if (i >= lines) {
-		// break;
-		// }
-		// }
-		// retVal = sb.toString();
-		// } catch (IOException e) {
-		// return (null);
-		// }
-		// }
-		// return (retVal);
+	protected String readFirstLines(final URI corpusPath, final int lines) {
+		return (readFirstLines(new File(corpusPath.toFileString()), lines));
 	}
 
-	protected String readLines(File file, int numOfLinesToRead) {
+	/**
+	 * Reads the first X lines of the passed file and returns them as a String
+	 * 
+	 * @param corpusPath
+	 *            path to file
+	 * @param lines
+	 *            number of lines
+	 * @return first X lines
+	 */
+	protected String readFirstLines(final File file, final int numOfLinesToRead) {
 		if (file == null || !file.exists()) {
 			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '" + file.getAbsolutePath() + "', because it was null or does not exist. ");
 		}
@@ -521,12 +524,23 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		return fileContent.toString();
 	}
 
+	/**
+	 * Returns <code>numberOfLines</code> lines of a sampled set of
+	 * <code>numberOfSampledFiles</code> files having the ending specified by
+	 * <code>fileEndings</code> recursively from specified corpus path.
+	 * 
+	 * @param corpusPath directory to be searched in 
+	 * @param numberOfSampledFiles number of files to be read
+	 * @param numberOfLines number of lines to be read the numberOfSampledFiles files 
+	 * @param fileEndings endings to be considered. If no endings specified, all files are considered
+	 * @return <code>numberOfLines</code> lines of <code>numberOfSampledFiles</code> files
+	 */
 	protected Collection<String> readFileContents(URI corpusPath, int numberOfSampledFiles, int numberOfLines, String... fileEndings) {
 		File dir = new File(corpusPath.toFileString());
 		Collection<File> sampledFiles = sampleFiles(dir, numberOfSampledFiles, fileEndings);
 		Collection<String> fileContents = new ArrayList<>(sampledFiles.size());
 		for (File sampleFile : sampledFiles) {
-			fileContents.add(readLines(sampleFile, numberOfLines));
+			fileContents.add(readFirstLines(sampleFile, numberOfLines));
 		}
 		return fileContents;
 	}
