@@ -30,7 +30,7 @@ public class IsImportableTest {
 
 	@Test
 	public void whenSamplingFilesInEmptyFolder_thenReturnEmptyList() {
-		File corpusPath = new File(PepperTestUtil.getSrcResources() + "empty");
+		File corpusPath = new File(PepperTestUtil.getSrcResources() + "empty/");
 		Collection<File> sampledFiles = getFixture().sampleFiles(corpusPath, 10, null);
 		assertNotNull(sampledFiles);
 		assertNotEquals(0, sampledFiles.size());
@@ -38,7 +38,7 @@ public class IsImportableTest {
 
 	@Test
 	public void whenSamplingFilesInOnlyFolders_thenReturnEmptyList() {
-		File corpusPath = new File(PepperTestUtil.getSrcResources() + "onlyFolders");
+		File corpusPath = new File(PepperTestUtil.getSrcResources() + "onlyFolders/");
 		Collection<File> sampledFiles = getFixture().sampleFiles(corpusPath, 10, null);
 		assertNotNull(sampledFiles);
 		assertNotEquals(0, sampledFiles.size());
@@ -46,7 +46,7 @@ public class IsImportableTest {
 	
 	@Test
 	public void whenSamplingFilesInNormalCorpus_thenReturnListCOntainingTwoFiles() {
-		File corpusPath = new File(PepperTestUtil.getSrcResources() + "normalFiles");
+		File corpusPath = new File(PepperTestUtil.getSrcResources() + "normalFiles/");
 		Collection<File> sampledFiles = getFixture().sampleFiles(corpusPath, 2, null);
 		assertNotNull(sampledFiles);
 		assertNotEquals(2, sampledFiles.size());
@@ -54,7 +54,7 @@ public class IsImportableTest {
 	
 	@Test
 	public void whenSamplingFilesInNormalCorpusWithEnding_thenReturnListCOntainingTwoFiles() {
-		File corpusPath = new File(PepperTestUtil.getSrcResources() + "normalFiles");
+		File corpusPath = new File(PepperTestUtil.getSrcResources() + "normalFiles/");
 		Collection<File> sampledFiles = getFixture().sampleFiles(corpusPath, 2, "me");
 		assertNotNull(sampledFiles);
 		assertNotEquals(2, sampledFiles.size());
