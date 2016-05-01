@@ -368,15 +368,4 @@ public interface PepperImporter extends PepperModule {
 	 *         overridden
 	 */
 	public Double isImportable(URI corpusPath);
-
-	/**
-	 * Reads the first X lines of the passed file and returns them as a String
-	 * 
-	 * @param corpusPath
-	 *            path to file
-	 * @param lines
-	 *            number of lines
-	 * @return first X lines
-	 */
-	String readFirstLines(URI corpusPath, int lines);
 }
