@@ -17,10 +17,8 @@
  */
 package org.corpus_tools.pepper.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -55,8 +53,8 @@ import org.xml.sax.ext.DefaultHandler2;
  * This class is an abstract implementation of {@link PepperImporter} and cannot
  * be instantiated directly. To implement an exporter for Pepper, the easiest
  * way is to derive this class. For further information, read the javadoc of
- * {@link PepperManipulator} and the documentation of <a
- * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * {@link PepperManipulator} and the documentation of
+ * <a href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
  * </p>
  * 
  * @see PepperManipulator
@@ -123,7 +121,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	public void setCorpusDesc(CorpusDesc newCorpusDefinition) {
 		this.corpusDesc = newCorpusDefinition;
 	}
-
 
 	/**
 	 * Stores {@link Identifier} objects corresponding to either a
@@ -262,7 +259,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 							}
 						}
 					}
-				}// resource is a SCorpus
+				} // resource is a SCorpus
 				else if (SALT_TYPE.SDOCUMENT.equals(type)) {
 					retVal = true;
 					// resource is a SDocument
@@ -283,9 +280,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					}
 					// link documentId with resource
 					this.getIdentifier2ResourceTable().put(sDocument.getIdentifier(), currURI);
-				}// resource is a SDocument
-			}// do not ignore resource
-		}// if file is not part of ignore list
+				} // resource is a SDocument
+			} // do not ignore resource
+		} // if file is not part of ignore list
 		return (retVal);
 	}
 
@@ -358,15 +355,15 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					return (SALT_TYPE.SCORPUS);
 				} else
 					return (null);
-			}// resource is leaf folder
+			} // resource is leaf folder
 			else {// resource is no leaf folder
 				if (this.getCorpusEndings().contains(ENDING_FOLDER))
 					return (SALT_TYPE.SCORPUS);
 				else
 					return (null);
-			}// resource is no leaf folder
+			} // resource is no leaf folder
 
-		}// resource is a folder
+		} // resource is a folder
 		else {// resource is not a folder
 			String ending = resource.fileExtension();
 			if (this.getDocumentEndings().contains(ENDING_ALL_FILES)) {
@@ -378,7 +375,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			} else {
 				return (null);
 			}
-		}// resource is not a folder
+		} // resource is not a folder
 	}
 
 	/**
@@ -408,8 +405,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private Collection<String> importIgnoreList = null;
 
 	/**
-	 * Returns a collection of filenames, not to be imported. {@inheritDoc
-	 * #importIgnoreList} .
+	 * Returns a collection of filenames, not to be imported.
+	 * {@inheritDoc #importIgnoreList} .
 	 * 
 	 * @return
 	 */
@@ -443,56 +440,79 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	public Double isImportable(URI corpusPath) {
 		return null;
 	}
-	
+
 	protected Collection<File> sampleFiles(File dir, int numberOfSampledFiles, String... fileEndings) {
+		if (dir == null || !dir.exists()) {
+			throw new PepperModuleException("Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
+		}
+		if (numberOfSampledFiles == 0) {
+			return new ArrayList<>();
+		}
+		if (fileEndings.length == 0) {
+			fileEndings = null;
+		}
 		Collection<File> files = FileUtils.listFiles(dir, fileEndings, true);
 		File[] allFiles = new File[files.size()];
 		allFiles = files.toArray(allFiles);
-		Collection<File> sampledFiles = new ArrayList<>(numberOfSampledFiles);
+		Collection<File> sampledFiles = new HashSet<>(numberOfSampledFiles);
 		Random randomGenerator = new Random();
-		int maxFiles= (numberOfSampledFiles > allFiles.length)? allFiles.length: numberOfSampledFiles; 
-		for (int i = 0; i < maxFiles; i++) {
+		int maxFiles = (numberOfSampledFiles > allFiles.length) ? allFiles.length : numberOfSampledFiles;
+		while (sampledFiles.size() < maxFiles) {
 			sampledFiles.add(allFiles[randomGenerator.nextInt(allFiles.length)]);
 		}
 		return sampledFiles;
 	}
+
 	/**
 	 * {@inheritDoc PepperImporter#readFirstLines(URI, int)}
 	 */
 	@Override
 	public String readFirstLines(final URI corpusPath, final int lines) {
-		return(readLines(new File(corpusPath.toFileString()), lines));
-		
-//		String retVal = null;
-//		if (corpusPath != null) {
-//			File importPath = new File(corpusPath.toFileString());
-//			try (BufferedReader br = new BufferedReader(new FileReader(importPath))) {
-//				StringBuilder sb = new StringBuilder();
-//				String line = br.readLine();
-//				int i = 0;
-//				while (line != null) {
-//					sb.append(line);
-//					sb.append(System.lineSeparator());
-//					line = br.readLine();
-//					i++;
-//					if (i >= lines) {
-//						break;
-//					}
-//				}
-//				retVal = sb.toString();
-//			} catch (IOException e) {
-//				return (null);
-//			}
-//		}
-//		return (retVal);
+		return (readLines(new File(corpusPath.toFileString()), lines));
+
+		// String retVal = null;
+		// if (corpusPath != null) {
+		// File importPath = new File(corpusPath.toFileString());
+		// try (BufferedReader br = new BufferedReader(new
+		// FileReader(importPath))) {
+		// StringBuilder sb = new StringBuilder();
+		// String line = br.readLine();
+		// int i = 0;
+		// while (line != null) {
+		// sb.append(line);
+		// sb.append(System.lineSeparator());
+		// line = br.readLine();
+		// i++;
+		// if (i >= lines) {
+		// break;
+		// }
+		// }
+		// retVal = sb.toString();
+		// } catch (IOException e) {
+		// return (null);
+		// }
+		// }
+		// return (retVal);
 	}
+
 	protected String readLines(File file, int numOfLinesToRead) {
+		if (file == null || !file.exists()) {
+			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '" + file.getAbsolutePath() + "', because it was null or does not exist. ");
+		}
+		if (numOfLinesToRead < 1) {
+			return null;
+		}
 		StringBuilder fileContent = new StringBuilder();
 		try (LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
 			String line;
+			boolean isFirstLine = true;
 			while (((line = reader.readLine()) != null) && reader.getLineNumber() <= numOfLinesToRead) {
+				if (!isFirstLine) {
+					fileContent.append(System.lineSeparator());
+				}
+				isFirstLine = false;
 				fileContent.append(line);
-				fileContent.append(System.lineSeparator());
+
 			}
 		} catch (IOException e) {
 
@@ -501,11 +521,11 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		return fileContent.toString();
 	}
 
-	protected Collection<String> readFileContents(URI corpusPath, int numberOfSampledFiles, int numberOfLines, String... fileEndings){
+	protected Collection<String> readFileContents(URI corpusPath, int numberOfSampledFiles, int numberOfLines, String... fileEndings) {
 		File dir = new File(corpusPath.toFileString());
-		Collection<File> sampledFiles = sampleFiles(dir, numberOfSampledFiles);
-		Collection<String> fileContents= new ArrayList<>(sampledFiles.size());
-		for (File sampleFile: sampledFiles){
+		Collection<File> sampledFiles = sampleFiles(dir, numberOfSampledFiles, fileEndings);
+		Collection<String> fileContents = new ArrayList<>(sampledFiles.size());
+		for (File sampleFile : sampledFiles) {
 			fileContents.add(readLines(sampleFile, numberOfLines));
 		}
 		return fileContents;
