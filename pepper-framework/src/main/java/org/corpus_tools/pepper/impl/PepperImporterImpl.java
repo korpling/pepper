@@ -391,14 +391,22 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		}// resource is a folder
 		else {// resource is not a folder
 			String ending = resource.fileExtension();
-			if (this.getDocumentEndings().contains(ENDING_ALL_FILES)) {
-				return (SALT_TYPE.SDOCUMENT);
-			} else if (this.getDocumentEndings().contains(ending)) {
-				return (SALT_TYPE.SDOCUMENT);
-			} else if (this.getCorpusEndings().contains(ending)) {
-				return (SALT_TYPE.SCORPUS);
-			} else {
+			File resourceAsFile = new File(resource.toFileString());
+			
+			if(resourceAsFile.isHidden()) {
+				// explicitly ignore hidden files as document
 				return (null);
+			} else {
+				
+				if (this.getDocumentEndings().contains(ENDING_ALL_FILES)) {
+					return (SALT_TYPE.SDOCUMENT);
+				} else if (this.getDocumentEndings().contains(ending)) {
+					return (SALT_TYPE.SDOCUMENT);
+				} else if (this.getCorpusEndings().contains(ending)) {
+					return (SALT_TYPE.SCORPUS);
+				} else {
+					return (null);
+				}
 			}
 		}// resource is not a folder
 	}
