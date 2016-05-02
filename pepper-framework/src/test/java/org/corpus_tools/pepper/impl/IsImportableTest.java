@@ -93,7 +93,7 @@ public class IsImportableTest {
 	@Test
 	public void whenReadingContentOfSoecificFiles_thenReturnOnlyTheirContent(){
 		File corpusPath = new File(getTestResources() + "normalFiles");
-		Collection<String> contents = getFixture().readFileContents(URI.createFileURI(corpusPath.getAbsolutePath()), 2, 3, "me");
+		Collection<String> contents = getFixture().sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), 2, 3, "me");
 		assertNotNull(contents);
 		assertEquals(2, contents.size());
 		for(String content: contents){

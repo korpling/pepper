@@ -535,7 +535,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @param fileEndings endings to be considered. If no endings specified, all files are considered
 	 * @return <code>numberOfLines</code> lines of <code>numberOfSampledFiles</code> files
 	 */
-	protected Collection<String> readFileContents(URI corpusPath, int numberOfSampledFiles, int numberOfLines, String... fileEndings) {
+	protected Collection<String> sampleFileContent(URI corpusPath, int numberOfSampledFiles, int numberOfLines, String... fileEndings) {
 		File dir = new File(corpusPath.toFileString());
 		Collection<File> sampledFiles = sampleFiles(dir, numberOfSampledFiles, fileEndings);
 		Collection<String> fileContents = new ArrayList<>(sampledFiles.size());
