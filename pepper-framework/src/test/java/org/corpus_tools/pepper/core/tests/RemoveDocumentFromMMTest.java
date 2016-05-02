@@ -35,6 +35,7 @@ import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
 import org.corpus_tools.salt.common.SDocumentGraph;
 import org.corpus_tools.salt.graph.Identifier;
@@ -42,8 +43,8 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
-	public PepperJobImplTest_removeDocumentFromMM() {
+public class RemoveDocumentFromMMTest extends PepperJobImpl {
+	public RemoveDocumentFromMMTest() {
 		super("myJob");
 	}
 
@@ -72,6 +73,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 	 */
 	@Test
 	public void testDocumentRemoveFromMM() {
+		
 		List<SDocument> expectedSDocuments = new Vector<SDocument>();
 		for (int i = 0; i < 30; i++) {
 			SDocument sDoc = SaltFactory.createSDocument();
@@ -84,6 +86,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		myImporter1.setResources(dummyResourceURI);
 		myImporter1.expectedSDocuments = expectedSDocuments;
 		importStep1.setPepperModule(myImporter1);
+		importStep1.getCorpusDesc().setCorpusPath(dummyResourceURI);
 		getFixture().addStep(importStep1);
 
 		Step exportStep1 = new Step("ex1");
@@ -97,7 +100,7 @@ public class PepperJobImplTest_removeDocumentFromMM extends PepperJobImpl {
 		}
 		PepperConfiguration conf = new PepperConfiguration();
 		conf.setProperty(PepperConfiguration.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
-
+		
 		getFixture().convert();
 
 		for (SDocument sDoc : expectedSDocuments) {
