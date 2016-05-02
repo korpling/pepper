@@ -13,8 +13,8 @@
             </pattern>
         </encoder>
     </appender> 
-    <appender name="WARN_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>pepper_warning_out.txt</file>
+    <appender name="PROBLEMS_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>pepper_problems.txt</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       		<level>WARN</level>
     	</filter>
@@ -26,7 +26,7 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
-    	<appender-ref ref="WARN_FILE" />
+    	<appender-ref ref="PROBLEMS_FILE" />
     </root>
 	<logger name="org.corpus_tools.pepper" level="INFO" />
 </configuration>
