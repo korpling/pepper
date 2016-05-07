@@ -76,25 +76,21 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	 */
 	@Override
 	public Double isImportable(URI corpusPath) {
-		Double retVal = null;
-		File file = new File(corpusPath.toFileString());
-		File[] allFiles = null;
-		boolean abort = false;
-		while ((!abort) && (file.isDirectory())) {
-			allFiles = file.listFiles();
-			if ((allFiles != null) && (allFiles.length != 0)) {
-				file = allFiles[0];
-			} else {
-				abort = true;
-			}
+		Double retValue = 0.0;
+
+		if (corpusPath == null) {
+			return retValue;
 		}
-		if (!abort) {
-			String content = readFirstLines(URI.createFileURI(file.getAbsolutePath()), 20);
+		int numberOfSampledFiles = 10;
+		int numberOfLines = 10;
+
+		for (String content : sampleFileContent(corpusPath, numberOfSampledFiles, numberOfLines, SaltUtil.FILE_ENDING_SALT_XML, ENDING_XML)) {
 			if ((content.contains("<?xml")) && (content.contains("xmi:version=\"2.0\"")) && (content.contains("salt"))) {
-				retVal = 1.0;
+				retValue = 1.0;
+				break;
 			}
 		}
-		return (retVal);
+		return retValue;
 	}
 
 	/**
@@ -113,10 +109,10 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	 * PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
-	public PepperMapper createPepperMapper(Identifier sElementId) {
+	public PepperMapper createPepperMapper(Identifier id) {
 		SaltXMLMapper mapper = new SaltXMLMapper();
-		if (sElementId.getIdentifiableElement() instanceof SDocument) {
-			SDocument sDocument = (SDocument) sElementId.getIdentifiableElement();
+		if (id.getIdentifiableElement() instanceof SDocument) {
+			SDocument sDocument = (SDocument) id.getIdentifiableElement();
 			URI location = getCorpusDesc().getCorpusPath();
 			location = location.appendSegments(sDocument.getPath().segments());
 			location = location.appendFileExtension(SaltUtil.FILE_ENDING_SALT_XML);
