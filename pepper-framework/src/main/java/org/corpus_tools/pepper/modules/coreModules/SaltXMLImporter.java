@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
@@ -77,14 +78,7 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	@Override
 	public Double isImportable(URI corpusPath) {
 		Double retValue = 0.0;
-
-		if (corpusPath == null) {
-			return retValue;
-		}
-		int numberOfSampledFiles = 10;
-		int numberOfLines = 10;
-
-		for (String content : sampleFileContent(corpusPath, numberOfSampledFiles, numberOfLines, SaltUtil.FILE_ENDING_SALT_XML, ENDING_XML)) {
+		for (String content : sampleFileContent(corpusPath, SaltUtil.FILE_ENDING_SALT_XML, ENDING_XML)) {
 			if ((content.contains("<?xml")) && (content.contains("xmi:version=\"2.0\"")) && (content.contains("salt"))) {
 				retValue = 1.0;
 				break;
@@ -105,8 +99,8 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	}
 
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(Identifier)}
+	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
+	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier id) {
