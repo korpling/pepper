@@ -1225,7 +1225,7 @@ public class PepperJobImpl extends PepperJob {
 	 * 
 	 * @throws XMLStreamException
 	 **/
-	private void save_module(XMLStreamWriter xml, StepDesc step) throws XMLStreamException {
+	private static void save_module(XMLStreamWriter xml, StepDesc step) throws XMLStreamException {
 		if (step.getName() != null) {
 			xml.writeAttribute(WorkflowDescriptionReader.ATT_NAME, step.getName());
 		}

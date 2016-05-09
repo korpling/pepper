@@ -17,9 +17,7 @@
  */
 package org.corpus_tools.pepper.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,8 +47,8 @@ import org.xml.sax.ext.DefaultHandler2;
  * This class is an abstract implementation of {@link PepperImporter} and cannot
  * be instantiated directly. To implement an exporter for Pepper, the easiest
  * way is to derive this class. For further information, read the javadoc of
- * {@link PepperManipulator} and the documentation of <a
- * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * {@link PepperManipulator} and the documentation of
+ * <a href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
  * </p>
  * 
  * @see PepperManipulator
@@ -116,35 +114,6 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void setCorpusDesc(CorpusDesc newCorpusDefinition) {
 		this.corpusDesc = newCorpusDefinition;
-	}
-
-	/**
-	 * {@inheritDoc PepperImporter#readFirstLines(URI, int)}
-	 */
-	@Override
-	public String readFirstLines(final URI corpusPath, final int lines) {
-		String retVal = null;
-		if (corpusPath != null) {
-			File importPath = new File(corpusPath.toFileString());
-			try (BufferedReader br = new BufferedReader(new FileReader(importPath))) {
-				StringBuilder sb = new StringBuilder();
-				String line = br.readLine();
-				int i = 0;
-				while (line != null) {
-					sb.append(line);
-					sb.append(System.lineSeparator());
-					line = br.readLine();
-					i++;
-					if (i >= lines) {
-						break;
-					}
-				}
-				retVal = sb.toString();
-			} catch (IOException e) {
-				return (null);
-			}
-		}
-		return (retVal);
 	}
 
 	/**
@@ -284,7 +253,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 							}
 						}
 					}
-				}// resource is a SCorpus
+				} // resource is a SCorpus
 				else if (SALT_TYPE.SDOCUMENT.equals(type)) {
 					retVal = true;
 					// resource is a SDocument
@@ -305,9 +274,9 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					}
 					// link documentId with resource
 					this.getIdentifier2ResourceTable().put(sDocument.getIdentifier(), currURI);
-				}// resource is a SDocument
-			}// do not ignore resource
-		}// if file is not part of ignore list
+				} // resource is a SDocument
+			} // do not ignore resource
+		} // if file is not part of ignore list
 		return (retVal);
 	}
 
@@ -380,15 +349,15 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					return (SALT_TYPE.SCORPUS);
 				} else
 					return (null);
-			}// resource is leaf folder
+			} // resource is leaf folder
 			else {// resource is no leaf folder
 				if (this.getCorpusEndings().contains(ENDING_FOLDER))
 					return (SALT_TYPE.SCORPUS);
 				else
 					return (null);
-			}// resource is no leaf folder
+			} // resource is no leaf folder
 
-		}// resource is a folder
+		} // resource is a folder
 		else {// resource is not a folder
 			String ending = resource.fileExtension();
 			File resourceAsFile = new File(resource.toFileString());
@@ -408,7 +377,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					return (null);
 				}
 			}
-		}// resource is not a folder
+		} // resource is not a folder
 	}
 
 	/**
@@ -438,8 +407,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	private Collection<String> importIgnoreList = null;
 
 	/**
-	 * Returns a collection of filenames, not to be imported. {@inheritDoc
-	 * #importIgnoreList} .
+	 * Returns a collection of filenames, not to be imported.
+	 * {@inheritDoc #importIgnoreList} .
 	 * 
 	 * @return
 	 */
@@ -472,5 +441,29 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public Double isImportable(URI corpusPath) {
 		return null;
+	}
+
+	/**
+	 * Returns {@value IsImportableUtil#NUMBER_OF_SAMPLED_LINES} lines of a sampled
+	 * set of {@value IsImportableUtil#NUMBER_OF_SAMPLED_FILES} files having the
+	 * ending specified by <code>fileEndings</code> recursively from specified
+	 * corpus path.
+	 * <p>
+	 * This method only delegates to
+	 * {@link IsImportableUtil#sampleFileContent(URI, int, int, String...)}. The
+	 * class {@link IsImportableUtil} also contains further helper methods, in case
+	 * this method is too unprecise.
+	 * </p>
+	 * 
+	 * @param corpusPath
+	 *            directory to be searched in
+	 * @param fileEndings
+	 *            endings to be considered. If no endings specified, all files
+	 *            are considered
+	 * @return <code>numberOfLines</code> lines of
+	 *         <code>numberOfSampledFiles</code> files
+	 */
+	protected Collection<String> sampleFileContent(URI corpusPath, String... fileEndings) {
+		return IsImportableUtil.sampleFileContent(corpusPath, IsImportableUtil.NUMBER_OF_SAMPLED_FILES, IsImportableUtil.NUMBER_OF_SAMPLED_LINES, fileEndings);
 	}
 }
