@@ -435,16 +435,31 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		return null;
 	}
 
+	private CorpusPathResolver corpusPathResolver = null;
+
 	/**
-	 * Returns {@value IsImportableUtil#NUMBER_OF_SAMPLED_LINES} lines of a sampled
-	 * set of {@value IsImportableUtil#NUMBER_OF_SAMPLED_FILES} files having the
-	 * ending specified by <code>fileEndings</code> recursively from specified
-	 * corpus path.
+	 * Sets a {@link CorpusPathResolver} which is used by
+	 * {@link #isImportable(URI)}. With a {@link CorpusPathResolver} it is
+	 * possible, to share read lines of files between multiple importers. Doing
+	 * this saves time for retrieving the content of the corpus path and the
+	 * reading of the first x lines of the files.
+	 * 
+	 * @param corpusPathResolver 
+	 */
+	public void setCorpusPathResolver(CorpusPathResolver corpusPathResolver) {
+		this.corpusPathResolver = corpusPathResolver;
+	}
+
+	/**
+	 * Returns {@value IsImportableUtil#NUMBER_OF_SAMPLED_LINES} lines of a
+	 * sampled set of {@value IsImportableUtil#NUMBER_OF_SAMPLED_FILES} files
+	 * having the ending specified by <code>fileEndings</code> recursively from
+	 * specified corpus path.
 	 * <p>
 	 * This method only delegates to
 	 * {@link IsImportableUtil#sampleFileContent(URI, int, int, String...)}. The
-	 * class {@link IsImportableUtil} also contains further helper methods, in case
-	 * this method is too unprecise.
+	 * class {@link IsImportableUtil} also contains further helper methods, in
+	 * case this method is too unprecise.
 	 * </p>
 	 * 
 	 * @param corpusPath
@@ -455,7 +470,11 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * @return <code>numberOfLines</code> lines of
 	 *         <code>numberOfSampledFiles</code> files
 	 */
-	protected Collection<String> sampleFileContent(URI corpusPath, String... fileEndings) {
-		return IsImportableUtil.sampleFileContent(corpusPath, IsImportableUtil.NUMBER_OF_SAMPLED_FILES, IsImportableUtil.NUMBER_OF_SAMPLED_LINES, fileEndings);
+	protected Collection<String> sampleFileContent(final URI corpusPath, final String... fileEndings) {
+		CorpusPathResolver localPathResolver= corpusPathResolver; 
+		if (localPathResolver == null){
+			localPathResolver= new CorpusPathResolver(corpusPath);
+		}
+		return localPathResolver.sampleFileContent(fileEndings);
 	}
 }

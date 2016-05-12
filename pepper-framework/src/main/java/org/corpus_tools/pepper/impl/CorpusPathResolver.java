@@ -34,7 +34,14 @@ public class CorpusPathResolver {
 	private Multimap<String, File> unreadFilesGroupedByExtension;
 	private Multimap<String, FileContent> readFilesGroupedByExtension;
 
+	protected CorpusPathResolver() {
+	}
+	
 	public CorpusPathResolver(URI corpusPath) {
+		setCorpusPath(corpusPath);
+	}
+	
+	protected void setCorpusPath(URI corpusPath){
 		unreadFilesGroupedByExtension = groupFilesByEnding(corpusPath);
 	}
 
@@ -49,8 +56,8 @@ public class CorpusPathResolver {
 	 * @return the first {@value #NUMBER_OF_SAMPLED_LINES} lines of
 	 *         {@value #NUMBER_OF_SAMPLED_FILES} files
 	 */
-	public Collection<String> sampleFileContent(String fileEnding) {
-		return sampleFileContent(NUMBER_OF_SAMPLED_FILES, NUMBER_OF_SAMPLED_LINES, fileEnding);
+	public Collection<String> sampleFileContent(String... fileEndings) {
+		return sampleFileContent(NUMBER_OF_SAMPLED_FILES, NUMBER_OF_SAMPLED_LINES, fileEndings);
 	}
 
 	/**
@@ -68,10 +75,10 @@ public class CorpusPathResolver {
 	 * @return the first {@value #NUMBER_OF_SAMPLED_LINES} lines of
 	 *         <code>numberOfSampledLines</code> files
 	 */
-	public Collection<String> sampleFileContent(int numberOfSampledFiles, int numberOfSampledLines, String fileEnding) {
-		Collection<FileContent> fileContents = getXFilesWithExtension(numberOfSampledFiles, numberOfSampledLines, fileEnding);
-		if (fileContents == null) {
-			return new ArrayList<>();
+	public Collection<String> sampleFileContent(int numberOfSampledFiles, int numberOfSampledLines, String... fileEndings) {
+		Collection<FileContent> fileContents = new ArrayList<>();
+		for (String fileEnding : fileEndings) {
+			fileContents.addAll(getXFilesWithExtension(numberOfSampledFiles, numberOfSampledLines, fileEnding));
 		}
 		Collection<String> contents = new ArrayList<>();
 		for (FileContent content : fileContents) {
@@ -103,11 +110,13 @@ public class CorpusPathResolver {
 	}
 
 	/**
-	 * Groups files for their file ending into a multimap. The key is the ending. 
+	 * Groups files for their file ending into a multimap. The key is the
+	 * ending.
+	 * 
 	 * @param corpusPath
 	 * @return
 	 */
-	private Multimap<String, File> groupFilesByEnding(final URI corpusPath) {
+	protected Multimap<String, File> groupFilesByEnding(final URI corpusPath) {
 		Multimap<String, File> files = HashMultimap.create();
 		if (corpusPath == null) {
 			return files;
@@ -126,7 +135,7 @@ public class CorpusPathResolver {
 		return files;
 	}
 
-	private Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead, String extension) {
+	protected Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead, String extension) {
 		Collection<FileContent> readFiles = readFilesGroupedByExtension.get(extension);
 		if (readFiles != null && readFiles.size() >= numOfFiles) {
 			return readFiles;
@@ -164,7 +173,7 @@ public class CorpusPathResolver {
 	 * @return a collection of files having on of the endings in
 	 *         <code>endings</code> in directory <code>dir</code>
 	 */
-	private Collection<File> sampleFiles(Collection<File> files, int numberOfSampledFiles) {
+	protected Collection<File> sampleFiles(Collection<File> files, int numberOfSampledFiles) {
 		File[] allFiles = new File[files.size()];
 		allFiles = files.toArray(allFiles);
 		Collection<File> sampledFiles = new HashSet<>(numberOfSampledFiles);
@@ -185,7 +194,7 @@ public class CorpusPathResolver {
 	 *            number of lines
 	 * @return first X lines
 	 */
-	private String readFirstLines(final File file, final int numOfLinesToRead) {
+	protected String readFirstLines(final File file, final int numOfLinesToRead) {
 		if (file == null || !file.exists()) {
 			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '" + file.getAbsolutePath() + "', because it was null or does not exist. ");
 		}
