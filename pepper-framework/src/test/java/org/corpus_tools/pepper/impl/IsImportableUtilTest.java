@@ -12,30 +12,14 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
 public class IsImportableUtilTest {
-
-	// IsImportable fixture = null;
-	//
-	// public IsImportable getFixture() {
-	// return fixture;
-	// }
-	//
-	// public void setFixture(PepperImporterImpl fixture) {
-	// this.fixture = fixture;
-	// }
-	//
-	// @Before
-	// public void beforeEach() {
-	// setFixture(new PepperImporterImpl() {
-	// });
-	// }
-
 	private String getTestResources() {
 		return PepperTestUtil.getTestResources() + "isImportable/";
 	}
 
 	@Test
 	public void whenSamplingFilesInEmptyFolder_thenReturnEmptyList() {
-		File corpusPath = new File(getTestResources() + "empty/");
+		File corpusPath= PepperTestUtil.getTempPath_static("isImportable/onlyFolders");
+		corpusPath.mkdirs();
 		Collection<File> sampledFiles = IsImportableUtil.sampleFiles(corpusPath, 10);
 		assertNotNull(sampledFiles);
 		assertEquals(0, sampledFiles.size());
@@ -43,7 +27,9 @@ public class IsImportableUtilTest {
 
 	@Test
 	public void whenSamplingFilesInOnlyFolders_thenReturnEmptyList() {
-		File corpusPath = new File(getTestResources() + "onlyFolders/");
+		File corpusPath= PepperTestUtil.getTempPath_static("isImportable/onlyFolders");
+		new File(corpusPath.getAbsolutePath()+"corpus/doc1").mkdirs();
+		new File(corpusPath.getAbsolutePath()+"corpus/doc2").mkdirs();
 		Collection<File> sampledFiles = IsImportableUtil.sampleFiles(corpusPath, 10);
 		assertNotNull(sampledFiles);
 		assertEquals(0, sampledFiles.size());
