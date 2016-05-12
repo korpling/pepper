@@ -20,8 +20,10 @@ package org.corpus_tools.pepper.core;
 import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -71,6 +73,28 @@ public class PepperImpl implements Pepper {
 		}
 	}
 
+	public static class ImportRate{
+		Double rate;
+		String importerName;
+		public ImportRate(Double rate, String importerName){
+			this.rate= rate;
+			this.importerName= importerName;
+		}
+	}
+	
+	public List<ImportRate> isImportable(URI corpusPath){
+		List<ImportRate> retVal= new ArrayList<>();
+		
+		for (PepperImporter importer: getModuleResolver().getPepperImporters()){
+			Double rate= importer.isImportable(corpusPath);
+			if (rate>=0){
+				retVal.add(new ImportRate(rate, importer.getName()));
+			}
+		}
+		
+		return retVal;
+	}
+	
 	/** {@inheritDoc Pepper#isImportable(URI, PepperModuleDesc)} **/
 	public Double isImportable(URI corpusPath, PepperModuleDesc description) {
 		for (PepperImporter importer : getModuleResolver().getPepperImporters()) {

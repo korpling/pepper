@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
@@ -68,14 +69,19 @@
 		<repository>
 			<id>oss-snapshot</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-			<releases><enabled>false</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<properties>
 		<pepper.mail>saltnpepper@lists.hu-berlin.de</pepper.mail>
 		<pepper.hp>http://corpus-tools.org/pepper/</pepper.hp>
-		<pepper.shortDesc>A highly extensible plattform for conversion and manipulation of linguistic data.</pepper.shortDesc>
+		<pepper.shortDesc>A highly extensible plattform for conversion and
+			manipulation of linguistic data.</pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
@@ -102,6 +108,7 @@
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
 		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
 		<commons.io.version>2.4</commons.io.version>
+		<guava.version>14.0.1</guava.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
@@ -176,6 +183,13 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<!-- start: OSGi declaractive services -->
 		<dependency>
