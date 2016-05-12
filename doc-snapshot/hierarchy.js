@@ -22,6 +22,7 @@ var hierarchy =
     [ "org.corpus_tools.pepper.util.FileComparator", "classorg_1_1corpus__tools_1_1pepper_1_1util_1_1_file_comparator.html", null ],
     [ "org.corpus_tools.pepper.common.FormatDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_format_desc.html", null ],
     [ "org.corpus_tools.pepper.cli.Greet", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_greet.html", null ],
+    [ "org.corpus_tools.pepper.impl.IsImportableUtil", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_is_importable_util.html", null ],
     [ "org.corpus_tools.pepper.common.JOB_STATUS", "enumorg_1_1corpus__tools_1_1pepper_1_1common_1_1_j_o_b___s_t_a_t_u_s.html", null ],
     [ "org.corpus_tools.pepper.modules.MappingSubject", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_mapping_subject.html", null ],
     [ "org.corpus_tools.pepper.connectors.impl.MavenAccessor", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_maven_accessor.html", null ],

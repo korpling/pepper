@@ -9,7 +9,6 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer =
     [ "getSupportedFormats", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#a18f564ab24f5b290e0c67e99237b721a", null ],
     [ "importCorpusStructure", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#ae4be39c510bcbb96cee936821e431ca7", null ],
     [ "isImportable", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#ae86a64dfb7f433623d53fdea7128a2d0", null ],
-    [ "readFirstLines", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#a972f375ea805d901fca3af7770c5d382", null ],
     [ "setCorpusDesc", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#adb9999076bde715578279ba4e0d2be84", null ],
     [ "setTypeOfResource", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_importer.html#ab896a4d34fd8b7e6d54a79f20060758e", null ]
 ];
