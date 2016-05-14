@@ -132,6 +132,13 @@ public class CorpusPathResolverTest {
 		assertThat(content.size()).isEqualTo(3);
 	}
 
+	@Test
+	public void whenFileContentIsSampledWithoutEnding_thenShouldContainContentForAllFiles() {
+		File corpusPath = new File(getTestResources() + "sampleFiles");
+		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
+		Collection<String> content = fixture.sampleFileContent(new String[0]);
+		assertThat(content.size()).isEqualTo(15);
+	}
 
 	@Test
 	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents() {
