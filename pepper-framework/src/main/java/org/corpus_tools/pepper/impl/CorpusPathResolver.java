@@ -35,13 +35,15 @@ public class CorpusPathResolver {
 	protected Multimap<String, FileContent> readFilesGroupedByExtension;
 
 	protected CorpusPathResolver() {
+		readFilesGroupedByExtension = HashMultimap.create();
 	}
-	
+
 	public CorpusPathResolver(final URI corpusPath) {
+		this();
 		setCorpusPath(corpusPath);
 	}
-	
-	protected void setCorpusPath(final URI corpusPath){
+
+	protected void setCorpusPath(final URI corpusPath) {
 		unreadFilesGroupedByExtension = groupFilesByEnding(corpusPath);
 	}
 
@@ -76,14 +78,15 @@ public class CorpusPathResolver {
 	 *         <code>numberOfSampledLines</code> files
 	 */
 	public Collection<String> sampleFileContent(int numberOfSampledFiles, int numberOfSampledLines, final String... fileEndings) {
-		if (numberOfSampledFiles< 0 || numberOfSampledLines < 0){
+		if (numberOfSampledFiles < 0 || numberOfSampledLines < 0) {
 			return new ArrayList<>();
 		}
-		
+
 		Collection<FileContent> fileContents = new ArrayList<>();
 		for (String fileEnding : fileEndings) {
 			fileContents.addAll(getXFilesWithExtension(numberOfSampledFiles, numberOfSampledLines, fileEnding));
 		}
+		//check that content of already read files is larger or equal to numberOfSampledLines, if not read more lines 
 		Collection<String> contents = new ArrayList<>();
 		for (FileContent content : fileContents) {
 			if (content.numberOfLines < numberOfSampledLines) {
@@ -129,9 +132,9 @@ public class CorpusPathResolver {
 		if (dir == null || !dir.exists()) {
 			throw new PepperModuleException("Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
 		}
-		
+
 		final Collection<File> allFiles = FileUtils.listFiles(dir, null, true);
-		String ext =null;
+		String ext = null;
 		for (File file : allFiles) {
 			ext = FilenameUtils.getExtension(file.getName());
 			if (!Strings.isNullOrEmpty(ext)) {
@@ -141,8 +144,8 @@ public class CorpusPathResolver {
 		return files;
 	}
 
-	protected Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead, final String extension) {
-		Collection<FileContent> readFiles = readFilesGroupedByExtension.get(extension);
+	protected Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead, final String fileEnding) {
+		Collection<FileContent> readFiles = readFilesGroupedByExtension.get(fileEnding);
 		if (readFiles != null && readFiles.size() >= numOfFiles) {
 			return readFiles;
 		}
@@ -151,19 +154,19 @@ public class CorpusPathResolver {
 			numOfReadFiles = readFiles.size();
 		}
 
-		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(extension);
+		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(fileEnding);
 		// read files as long as there are files to be read
 		if (unreadFiles != null) {
 			final Collection<File> newFiles = sampleFiles(unreadFiles, numOfFiles - numOfReadFiles);
 			String firstLines;
 			FileContent content;
 			for (File newFile : newFiles) {
-				unreadFilesGroupedByExtension.remove(extension, newFile);
+				unreadFilesGroupedByExtension.remove(fileEnding, newFile);
 				firstLines = readFirstLines(newFile, numOfLinesToRead);
 				content = new FileContent(newFile, firstLines, numOfLinesToRead);
-				readFilesGroupedByExtension.put(extension, content);
+				readFilesGroupedByExtension.put(fileEnding, content);
 			}
-			readFiles = readFilesGroupedByExtension.get(extension);
+			readFiles = readFilesGroupedByExtension.get(fileEnding);
 		}
 		return readFiles;
 	}

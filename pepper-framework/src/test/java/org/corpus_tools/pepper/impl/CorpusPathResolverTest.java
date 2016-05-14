@@ -23,27 +23,27 @@ import com.google.common.collect.Multimap;
 public class CorpusPathResolverTest {
 
 	private CorpusPathResolver fixture;
-	
+
 	@Before
-	public void beforeEach(){
-		fixture= new CorpusPathResolver();
+	public void beforeEach() {
+		fixture = new CorpusPathResolver();
 	}
-	
+
 	private String getTestResources() {
 		return PepperTestUtil.getTestResources() + "isImportable/";
 	}
 
 	@Test
-	public void whenSettingCorpusPath_thenCorpusPathResolverShouldBeUnEmpty(){
+	public void whenSettingCorpusPath_thenCorpusPathResolverShouldBeUnEmpty() {
 		File corpusPath = new File(getTestResources() + "differentFileEndings");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		assertThat(fixture.unreadFilesGroupedByExtension.size()).isGreaterThan(0);
 	}
-	
+
 	@Test
-	public void whenGroupingFilesByEndingFor5DifferentEndings_thenReturnMapWith5Entries(){
+	public void whenGroupingFilesByEndingFor5DifferentEndings_thenReturnMapWith5Entries() {
 		File corpusPath = new File(getTestResources() + "differentFileEndings");
-		Multimap<String, File> map= fixture.groupFilesByEnding(URI.createFileURI(corpusPath.getAbsolutePath()));
+		Multimap<String, File> map = fixture.groupFilesByEnding(URI.createFileURI(corpusPath.getAbsolutePath()));
 		assertThat(map.keySet().size()).isEqualTo(5);
 		assertThat(map.get("xml").size()).isEqualTo(5);
 		assertThat(map.get("txt").size()).isEqualTo(3);
@@ -51,40 +51,40 @@ public class CorpusPathResolverTest {
 		assertThat(map.get("tab").size()).isEqualTo(1);
 		assertThat(map.get("doc").size()).isEqualTo(4);
 	}
-	
+
 	@Test
-	public void whenSamplingSetOfFiles_thenReturnSampledFiles(){
+	public void whenSamplingSetOfFiles_thenReturnSampledFiles() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
-		Collection<File> allFiles= FileUtils.listFiles(corpusPath,null, true);
-		
+		Collection<File> allFiles = FileUtils.listFiles(corpusPath, null, true);
+
 		assertThat(fixture.sampleFiles(allFiles, 5).size()).isEqualTo(5);
 	}
-	
+
 	@Test
-	public void whenSamplingFiles_thenReturnNoDuplicates(){
+	public void whenSamplingFiles_thenReturnNoDuplicates() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
-		Collection<File> allFiles= FileUtils.listFiles(corpusPath,null, true);
-		Collection<File> sampledFiles=fixture.sampleFiles(allFiles, 20);
-		
+		Collection<File> allFiles = FileUtils.listFiles(corpusPath, null, true);
+		Collection<File> sampledFiles = fixture.sampleFiles(allFiles, 20);
+
 		assertThat(sampledFiles.size()).isEqualTo(15);
-		
-		//no duplicates
-		Set<File> noDuplicates= new HashSet<>();
-		for (File sampledFile: sampledFiles){
+
+		// no duplicates
+		Set<File> noDuplicates = new HashSet<>();
+		for (File sampledFile : sampledFiles) {
 			noDuplicates.add(sampledFile);
 		}
 		assertThat(noDuplicates.size()).isEqualTo(15);
 	}
-	
+
 	@Test
-	public void whenSamplingFilesTwice_thenResultsShouldBeDifferent(){
+	public void whenSamplingFilesTwice_thenResultsShouldBeDifferent() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
-		Collection<File> allFiles= FileUtils.listFiles(corpusPath,null, true);
-		
+		Collection<File> allFiles = FileUtils.listFiles(corpusPath, null, true);
+
 		assertThat(fixture.sampleFiles(allFiles, 5).size()).isEqualTo(5);
 		assertThat(fixture.sampleFiles(allFiles, 3)).isNotEqualTo(fixture.sampleFiles(allFiles, 3));
 	}
-	
+
 	@Test
 	public void whenReadingFirst10LinesOfFile_thenReturn10FirstLines() {
 		File corpusFile = new File(getTestResources() + "10lineFile.txt");
@@ -98,21 +98,24 @@ public class CorpusPathResolverTest {
 		String content = fixture.readFirstLines(corpusFile, 10);
 		assertEquals("1\n2\n3\n4\n5", content);
 	}
-	
+
 	@Test
 	public void whenFileContentIsSampledTwice_thenItShouldBeReadOnlyOnce() {
 		File corpusPath = new File(getTestResources() + "normalFiles/");
 		CorpusPathResolver fixture = Mockito.spy(CorpusPathResolver.class);
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
-		verify(fixture, Mockito.times(1)).readFirstLines(any(File.class), anyInt());
+		fixture.sampleFileContent("me");
+		int numberOfFilesWithExtensionMe= 2;
 
+		verify(fixture, Mockito.times(numberOfFilesWithExtensionMe)).readFirstLines(any(File.class), anyInt());
 		Collection<String> fileContents = fixture.sampleFileContent("me");
-
-		assertThat(fileContents.size()).isEqualTo(2);
+		//verify that files was not read twice
+		verify(fixture, Mockito.times(numberOfFilesWithExtensionMe)).readFirstLines(any(File.class), anyInt());
+		assertThat(fileContents.size()).isEqualTo(numberOfFilesWithExtensionMe);
 	}
-	
+
 	@Test
-	public void whenFileContentIsSampledForEnding1AndThenSampledForEnding2_thenShouldContainBothFileContents(){
+	public void whenFileContentIsSampledForEnding1AndThenSampledForEnding2_thenShouldContainBothFileContents() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		fixture.sampleFileContent("xml");
@@ -120,29 +123,30 @@ public class CorpusPathResolverTest {
 		fixture.sampleFileContent("doc");
 		assertThat(fixture.readFilesGroupedByExtension.keySet().size()).isEqualTo(2);
 	}
-	
+
 	@Test
-	public void whenFileContentIsSampledForEndingXml_thenShouldContain5SampledContents(){
+	public void whenFileContentIsSampledForEndingXml_thenShouldContain5SampledContents() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
-		Collection<String> content=fixture.sampleFileContent("xml");
-		assertThat(content.size()).isEqualTo(5);
+		Collection<String> content = fixture.sampleFileContent("xml");
+		assertThat(content.size()).isEqualTo(3);
 	}
-	
+
+
 	@Test
-	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents(){
+	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
-		Collection<String> content=fixture.sampleFileContent("xml", "csv");
-		assertThat(content.size()).isEqualTo(9);
+		Collection<String> content = fixture.sampleFileContent("xml", "csv");
+		assertThat(content.size()).isEqualTo(6);
 	}
-	
+
 	@Test
-	public void whenSamplingDocFiles_thenReturnContentWithWord(){
+	public void whenSamplingDocFiles_thenReturnContentWithWord() {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
-		Collection<String> content=fixture.sampleFileContent("doc");
-		assertThat(content.size()).isEqualTo(4);
-		assertThat(content).containsExactlyInAnyOrder("word", "word", "word", "This\nis\ns\nsample\ntext\nto\ncheck\nwhether\nit\nwas\nread\nentirely\n");
+		Collection<String> content = fixture.sampleFileContent("doc");
+		assertThat(content.size()).isEqualTo(3);
+		assertThat(content).containsExactlyInAnyOrder("word", "word", "This\nis\na\nsample\ntext\nto\ncheck\nwhether\nit\nwas");
 	}
 }
