@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -444,7 +445,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 * this saves time for retrieving the content of the corpus path and the
 	 * reading of the first x lines of the files.
 	 * 
-	 * @param corpusPathResolver 
+	 * @param corpusPathResolver
 	 */
 	public void setCorpusPathResolver(CorpusPathResolver corpusPathResolver) {
 		this.corpusPathResolver = corpusPathResolver;
@@ -471,9 +472,13 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	 *         <code>numberOfSampledFiles</code> files
 	 */
 	protected Collection<String> sampleFileContent(final URI corpusPath, final String... fileEndings) {
-		CorpusPathResolver localPathResolver= corpusPathResolver; 
-		if (localPathResolver == null){
-			localPathResolver= new CorpusPathResolver(corpusPath);
+		CorpusPathResolver localPathResolver = corpusPathResolver;
+		if (localPathResolver == null) {
+			try {
+				localPathResolver = new CorpusPathResolver(corpusPath);
+			} catch (FileNotFoundException e) {
+				new PepperModuleException("Cannot sample files for isImportable. ", e);
+			}
 		}
 		return localPathResolver.sampleFileContent(fileEndings);
 	}

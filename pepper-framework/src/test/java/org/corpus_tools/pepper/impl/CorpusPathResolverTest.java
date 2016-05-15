@@ -1,17 +1,19 @@
 package org.corpus_tools.pepper.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.verify;
-import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.corpus_tools.pepper.exceptions.NotInitializedException;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
@@ -34,22 +36,23 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenSettingCorpusPath_thenCorpusPathResolverShouldBeUnEmpty() {
+	public void whenSettingCorpusPath_thenCorpusPathResolverShouldBeUnEmpty() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "differentFileEndings");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		assertThat(fixture.unreadFilesGroupedByExtension.size()).isGreaterThan(0);
 	}
 
 	@Test
-	public void whenGroupingFilesByEndingFor5DifferentEndings_thenReturnMapWith5Entries() {
+	public void whenGroupingFilesByEndingFor5DifferentEndings_thenReturnMapWith5Entries() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "differentFileEndings");
 		Multimap<String, File> map = fixture.groupFilesByEnding(URI.createFileURI(corpusPath.getAbsolutePath()));
-		assertThat(map.keySet().size()).isEqualTo(5);
+		assertThat(map.keySet().size()).isEqualTo(6);
 		assertThat(map.get("xml").size()).isEqualTo(5);
 		assertThat(map.get("txt").size()).isEqualTo(3);
 		assertThat(map.get("csv").size()).isEqualTo(4);
 		assertThat(map.get("tab").size()).isEqualTo(1);
 		assertThat(map.get("doc").size()).isEqualTo(4);
+		assertThat(map.get("all").size()).isEqualTo(17);
 	}
 
 	@Test
@@ -100,22 +103,22 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenFileContentIsSampledTwice_thenItShouldBeReadOnlyOnce() {
+	public void whenFileContentIsSampledTwice_thenItShouldBeReadOnlyOnce() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "normalFiles/");
 		CorpusPathResolver fixture = Mockito.spy(CorpusPathResolver.class);
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		fixture.sampleFileContent("me");
-		int numberOfFilesWithExtensionMe= 2;
+		int numberOfFilesWithExtensionMe = 2;
 
 		verify(fixture, Mockito.times(numberOfFilesWithExtensionMe)).readFirstLines(any(File.class), anyInt());
 		Collection<String> fileContents = fixture.sampleFileContent("me");
-		//verify that files was not read twice
+		// verify that files was not read twice
 		verify(fixture, Mockito.times(numberOfFilesWithExtensionMe)).readFirstLines(any(File.class), anyInt());
 		assertThat(fileContents.size()).isEqualTo(numberOfFilesWithExtensionMe);
 	}
 
 	@Test
-	public void whenFileContentIsSampledForEnding1AndThenSampledForEnding2_thenShouldContainBothFileContents() {
+	public void whenFileContentIsSampledForEnding1AndThenSampledForEnding2_thenShouldContainBothFileContents() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		fixture.sampleFileContent("xml");
@@ -125,7 +128,7 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenFileContentIsSampledForEndingXml_thenShouldContain5SampledContents() {
+	public void whenFileContentIsSampledForEndingXml_thenShouldContain3SampledContents() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent("xml");
@@ -133,15 +136,17 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenFileContentIsSampledWithoutEnding_thenShouldContainContentForAllFiles() {
+	public void whenFileContentIsSampledWithoutEnding_thenShouldContainContentForAllFiles() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent(new String[0]);
 		assertThat(content.size()).isEqualTo(15);
+		content = fixture.sampleFileContent((String[]) null);
+		assertThat(content.size()).isEqualTo(15);
 	}
 
 	@Test
-	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents() {
+	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent("xml", "csv");
@@ -149,11 +154,41 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenSamplingDocFiles_thenReturnContentWithWord() {
+	public void whenSamplingDocFiles_thenReturnContentWithWord() throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent("doc");
 		assertThat(content.size()).isEqualTo(3);
 		assertThat(content).containsExactlyInAnyOrder("word", "word", "This\nis\na\nsample\ntext\nto\ncheck\nwhether\nit\nwas");
+	}
+
+	@Test
+	public void whenSamplingFileContentAndNumberOfFilesIs0_thenReturnEmptyContent() {
+		assertThat(fixture.sampleFileContent(0, 10, "doc")).isEmpty();
+	}
+
+	@Test
+	public void whenSamplingFileContentAndNumberOfLinesIs0_thenReturnEmptyContent() {
+		assertThat(fixture.sampleFileContent(10, 0, "doc")).isEmpty();
+	}
+
+	@Test
+	public void whenSamplingMoreFilesInTheSecondRun_thenSampleMoreFiles() throws FileNotFoundException {
+		File corpusPath = new File(getTestResources() + "sampleMoreFilesin2ndRun");
+		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
+		Collection<String> content = fixture.sampleFileContent(3, 10, "xml");
+		assertThat(content.size()).isEqualTo(3);
+		content = fixture.sampleFileContent(10, 10, "xml");
+		assertThat(content.size()).isEqualTo(10);
+	}
+
+	@Test(expected = NotInitializedException.class)
+	public void whenSamplingFileContentWithOutInitializing_thenThrowException() {
+		fixture.sampleFileContent("xml");
+	}
+
+	@Test(expected = FileNotFoundException.class)
+	public void whenSettingUpWithInvalidURI_thenThrowException() throws FileNotFoundException {
+		fixture.setCorpusPath(URI.createFileURI("/fakeFolder"));
 	}
 }

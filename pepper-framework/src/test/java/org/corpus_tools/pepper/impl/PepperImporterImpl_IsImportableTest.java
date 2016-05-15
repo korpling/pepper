@@ -3,6 +3,7 @@ package org.corpus_tools.pepper.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
@@ -32,7 +33,7 @@ public class PepperImporterImpl_IsImportableTest {
 	}
 
 	@Test
-	public void whenTwoImportersSampleSameFiles_thenReturnXLinesOfFiles() {
+	public void whenTwoImportersSampleSameFiles_thenReturnXLinesOfFiles() throws FileNotFoundException {
 		PepperImporterImpl secondImporter = new PepperImporterImpl() {
 		};
 		File corpusPath = new File(getTestResources() + "normalFiles/");

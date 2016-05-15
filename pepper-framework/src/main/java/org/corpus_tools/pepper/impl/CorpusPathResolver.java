@@ -2,6 +2,7 @@ package org.corpus_tools.pepper.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.corpus_tools.pepper.exceptions.NotInitializedException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.eclipse.emf.common.util.URI;
 
@@ -30,7 +32,11 @@ public class CorpusPathResolver {
 	 * {@link #isImportable(URI)}.
 	 **/
 	public static final int NUMBER_OF_SAMPLED_LINES = 10;
-
+	/**
+	 * String for {@link #unreadFilesGroupedByExtension} to identify the
+	 * collection od files when no fileEnding was specified.
+	 **/
+	private static final String NO_FILE_ENDING = "all";
 	protected Multimap<String, File> unreadFilesGroupedByExtension;
 	protected Multimap<String, FileContent> readFilesGroupedByExtension;
 
@@ -38,12 +44,12 @@ public class CorpusPathResolver {
 		readFilesGroupedByExtension = HashMultimap.create();
 	}
 
-	public CorpusPathResolver(final URI corpusPath) {
+	public CorpusPathResolver(final URI corpusPath) throws FileNotFoundException {
 		this();
 		setCorpusPath(corpusPath);
 	}
 
-	protected void setCorpusPath(final URI corpusPath) {
+	protected void setCorpusPath(final URI corpusPath) throws FileNotFoundException {
 		unreadFilesGroupedByExtension = groupFilesByEnding(corpusPath);
 	}
 
@@ -78,15 +84,20 @@ public class CorpusPathResolver {
 	 *         <code>numberOfSampledLines</code> files
 	 */
 	public Collection<String> sampleFileContent(int numberOfSampledFiles, int numberOfSampledLines, final String... fileEndings) {
-		if (numberOfSampledFiles < 0 || numberOfSampledLines < 0) {
+		if (numberOfSampledFiles < 1 || numberOfSampledLines < 1) {
 			return new ArrayList<>();
 		}
 
 		Collection<FileContent> fileContents = new ArrayList<>();
-		for (String fileEnding : fileEndings) {
-			fileContents.addAll(getXFilesWithExtension(numberOfSampledFiles, numberOfSampledLines, fileEnding));
+		if (fileEndings == null || fileEndings.length == 0) {
+			fileContents.addAll(getXFilesWithExtension(numberOfSampledFiles, numberOfSampledLines, NO_FILE_ENDING));
+		} else {
+			for (String fileEnding : fileEndings) {
+				fileContents.addAll(getXFilesWithExtension(numberOfSampledFiles, numberOfSampledLines, fileEnding));
+			}
 		}
-		//check that content of already read files is larger or equal to numberOfSampledLines, if not read more lines 
+		// check that content of already read files is larger or equal to
+		// numberOfSampledLines, if not read more lines
 		Collection<String> contents = new ArrayList<>();
 		for (FileContent content : fileContents) {
 			if (content.numberOfLines < numberOfSampledLines) {
@@ -122,15 +133,16 @@ public class CorpusPathResolver {
 	 * 
 	 * @param corpusPath
 	 * @return
+	 * @throws FileNotFoundException 
 	 */
-	protected Multimap<String, File> groupFilesByEnding(final URI corpusPath) {
+	protected Multimap<String, File> groupFilesByEnding(final URI corpusPath) throws FileNotFoundException {
 		final Multimap<String, File> files = HashMultimap.create();
 		if (corpusPath == null) {
 			return files;
 		}
 		final File dir = new File(corpusPath.toFileString());
 		if (dir == null || !dir.exists()) {
-			throw new PepperModuleException("Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
+			throw new FileNotFoundException("Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
 		}
 
 		final Collection<File> allFiles = FileUtils.listFiles(dir, null, true);
@@ -140,20 +152,24 @@ public class CorpusPathResolver {
 			if (!Strings.isNullOrEmpty(ext)) {
 				files.put(ext, file);
 			}
+			files.put(NO_FILE_ENDING, file);
 		}
 		return files;
 	}
 
 	protected Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead, final String fileEnding) {
 		Collection<FileContent> readFiles = readFilesGroupedByExtension.get(fileEnding);
-		if (readFiles != null && readFiles.size() >= numOfFiles) {
+		if (readFiles.size() >= numOfFiles) {
 			return readFiles;
 		}
 		int numOfReadFiles = 0;
 		if (readFiles != null) {
 			numOfReadFiles = readFiles.size();
 		}
-
+		if (unreadFilesGroupedByExtension== null){
+			throw new NotInitializedException("Please call setCorpusPath(URI) first or use other constructor new CorpusPathResolver(URI). ");
+		}
+		
 		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(fileEnding);
 		// read files as long as there are files to be read
 		if (unreadFiles != null) {
