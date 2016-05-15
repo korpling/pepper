@@ -19,18 +19,21 @@ package org.corpus_tools.pepper.cli;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
@@ -647,45 +650,42 @@ public class ConvertWizardConsole {
 		return (true);
 	}
 
-	public static class ImporterModuleDesc implements Comparable<ImporterModuleDesc> {
-		public Double probability = null;
-		public PepperModuleDesc moduleDesc = null;
-
-		public ImporterModuleDesc(PepperModuleDesc moduleDesc, Double probability) {
-			this.probability = probability;
-			this.moduleDesc = moduleDesc;
-		}
-
-		@Override
-		public int compareTo(ImporterModuleDesc arg0) {
-			if (this.probability == null) {
-				this.probability = 0.0;
+	/**
+	 * Returns all module descriptions and if the module type was
+	 * {@link MODULE_TYPE#IMPORTER}, even the number of recommended importers.
+	 * 
+	 * @param corpusPath
+	 * @param moduleType
+	 * @return
+	 */
+	private Pair<List<PepperModuleDesc>, Integer> getModuleDescriptions(final URI corpusPath, final MODULE_TYPE moduleType) {
+		final List<PepperModuleDesc> modules = new ArrayList<>();
+		Integer numOfRecommended = 0;
+		// if module is importer, call isImportable
+		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
+			Set<String> possibleImporters = null;
+			try {
+				possibleImporters = getPepper().isImportable(corpusPath);
+			} catch (FileNotFoundException e) {
+				out.println("Cannot read corpus path '" + corpusPath + "'. " + e.getMessage());
+				return new ImmutablePair<>(modules, numOfRecommended);
 			}
-			if (arg0.probability == null) {
-				arg0.probability = 0.0;
+			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredImporters()) {
+				if (possibleImporters.contains(moduleDesc.getName())) {
+					numOfRecommended++;
+					modules.add(0, moduleDesc);
+				} else {
+					modules.add(moduleDesc);
+				}
 			}
-			return (Double.compare(this.probability, arg0.probability));
+		} else {
+			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
+				if (moduleType.equals(moduleDesc.getModuleType())) {
+					modules.add(moduleDesc);
+				}
+			}
 		}
-
-		/**
-		 * This method is here to satisfy findbugs.
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			return (super.equals(obj));
-		}
-
-		/**
-		 * This method is here to satisfy findbugs.
-		 */
-		@Override
-		public int hashCode() {
-			return super.hashCode();
-		}
-
-		public String toString() {
-			return (probability + " " + moduleDesc.getName());
-		}
+		return new ImmutablePair<>(modules, numOfRecommended);
 	}
 
 	/**
@@ -699,31 +699,9 @@ public class ConvertWizardConsole {
 	 * @return legend for the map to be printed
 	 */
 	private String createModuleLegend(URI corpusPath, Map<Integer, PepperModuleDesc> number2Module, Map<String, PepperModuleDesc> name2Module, MODULE_TYPE moduleType) {
-		ArrayList<PepperModuleDesc> modules = new ArrayList<PepperModuleDesc>();
-		int numOfRecommended = 0;
-		// if module is importer, call isImportable
-		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
-			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizardConsole.ImporterModuleDesc>();
-			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
-				if (MODULE_TYPE.IMPORTER.equals(moduleDesc.getModuleType())) {
-					Double isImportable = getPepper().isImportable(corpusPath, moduleDesc);
-					if ((isImportable != null) && (isImportable > 0.0)) {
-						numOfRecommended++;
-					}
-					importerModuleDescs.add(new ImporterModuleDesc(moduleDesc, isImportable));
-				}
-			}
-			Collections.reverse(importerModuleDescs);
-			for (ImporterModuleDesc moduleDesc : importerModuleDescs) {
-				modules.add(moduleDesc.moduleDesc);
-			}
-		} else {
-			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
-				if (moduleType.equals(moduleDesc.getModuleType())) {
-					modules.add(moduleDesc);
-				}
-			}
-		}
+		Pair<List<PepperModuleDesc>, Integer> moduleDescs = getModuleDescriptions(corpusPath, moduleType);
+		List<PepperModuleDesc> modules = moduleDescs.getLeft();
+		int numOfRecommended = moduleDescs.getRight();
 
 		String retStr = null;
 		String[][] map = new String[modules.size() + 1][3];

@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.connectors.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -356,46 +358,46 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if ((sharedPackages != null) && (!sharedPackages.isEmpty())) {
 			retVal.append(sharedPackages);
 		} else {
-			
+
 			addSharedPackage(Pepper.class.getPackage().getName(), PepperStarter.getVersion());
 			addSharedPackage(PepperException.class.getPackage().getName(), PepperStarter.getVersion());
 			addSharedPackage(PepperModuleProperties.class.getPackage().getName(), PepperStarter.getVersion());
 			addSharedPackage(XMLStreamWriter.class.getPackage().getName(), null);
 			addSharedPackage(org.eclipse.emf.common.util.URI.class.getPackage().getName(), null);
-			
-			int i= 0;
-			for (String sharedPackage: sharedPackagesList){
-				if (i > 0){
+
+			int i = 0;
+			for (String sharedPackage : sharedPackagesList) {
+				if (i > 0) {
 					retVal.append(", ");
 				}
-				retVal.append(sharedPackage); 
+				retVal.append(sharedPackage);
 				i++;
 			}
-			
-//			// pepper.common package
-//			retVal.append(Pepper.class.getPackage().getName());
-//			retVal.append(";version=");
-//			retVal.append(PepperStarter.getVersion().replace("-", "."));
-//			retVal.append(", ");
-//
-//			// pepper.exceptions package
-//			retVal.append(PepperException.class.getPackage().getName());
-//			retVal.append(";version=");
-//			retVal.append(PepperStarter.getVersion().replace("-", "."));
-//			retVal.append(", ");
-//
-//			// pepper.modules package
-//			retVal.append(PepperModuleProperties.class.getPackage().getName());
-//			retVal.append(";version=");
-//			retVal.append(PepperStarter.getVersion().replace("-", "."));
-//			retVal.append(", ");
-//
-//			// pepper.util package
-//			retVal.append(XMLStreamWriter.class.getPackage().getName());
-//			retVal.append(", ");
-//
-//			// emf-util
-//			retVal.append(org.eclipse.emf.common.util.URI.class.getPackage().getName());
+
+			// // pepper.common package
+			// retVal.append(Pepper.class.getPackage().getName());
+			// retVal.append(";version=");
+			// retVal.append(PepperStarter.getVersion().replace("-", "."));
+			// retVal.append(", ");
+			//
+			// // pepper.exceptions package
+			// retVal.append(PepperException.class.getPackage().getName());
+			// retVal.append(";version=");
+			// retVal.append(PepperStarter.getVersion().replace("-", "."));
+			// retVal.append(", ");
+			//
+			// // pepper.modules package
+			// retVal.append(PepperModuleProperties.class.getPackage().getName());
+			// retVal.append(";version=");
+			// retVal.append(PepperStarter.getVersion().replace("-", "."));
+			// retVal.append(", ");
+			//
+			// // pepper.util package
+			// retVal.append(XMLStreamWriter.class.getPackage().getName());
+			// retVal.append(", ");
+			//
+			// // emf-util
+			// retVal.append(org.eclipse.emf.common.util.URI.class.getPackage().getName());
 		}
 		return (retVal.toString());
 	}
@@ -854,11 +856,18 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 
 	@Override
-	public Double isImportable(org.eclipse.emf.common.util.URI corpusPath, PepperModuleDesc description) {
+	public Set<String> isImportable(org.eclipse.emf.common.util.URI corpusPath) throws FileNotFoundException {
 		if (getPepper() == null) {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}
-		return (getPepper().isImportable(corpusPath, description));
+		return (getPepper().isImportable(corpusPath));
+	}
 
+	@Override
+	public Collection<PepperModuleDesc> getRegisteredImporters() {
+		if (getPepper() == null) {
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
+		return (getPepper().getRegisteredImporters());
 	}
 }
