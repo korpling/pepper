@@ -199,7 +199,7 @@ public class BeforeAfterAction {
 		retStr.append(prefix);
 		retStr.append(((isTail ? "└── " : "├── ") + node.getName()));
 		retStr.append("\n");
-		List<SRelation<SNode, SNode>> outRelations = corpusGraph.getOutRelations(node.getId());
+		List<SRelation<?, ?>> outRelations = corpusGraph.getOutRelations(node.getId());
 		int i = 0;
 		for (Relation out : outRelations) {
 			if (i < outRelations.size() - 1) {
@@ -414,11 +414,11 @@ public class BeforeAfterAction {
 					}
 					// add all nodes to new layer
 					for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
-						sNode.addLayer(sLayer);
+						sLayer.addNode(sNode);
 					}
 					// add all relations to new layer
 					for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
-						sRel.addLayer(sLayer);
+						sLayer.addRelation(sRel);
 					}
 				}
 			}
