@@ -201,7 +201,7 @@ public class BeforeAfterAction {
 		retStr.append("\n");
 		List<SRelation<?, ?>> outRelations = corpusGraph.getOutRelations(node.getId());
 		int i = 0;
-		for (Relation out : outRelations) {
+		for (SRelation<?,?> out : outRelations) {
 			if (i < outRelations.size() - 1) {
 				retStr.append(prefix);
 				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), false));
@@ -417,7 +417,7 @@ public class BeforeAfterAction {
 						sLayer.addNode(sNode);
 					}
 					// add all relations to new layer
-					for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
+					for (SRelation<?,?> sRel : sDoc.getDocumentGraph().getRelations()) {
 						sLayer.addRelation(sRel);
 					}
 				}
