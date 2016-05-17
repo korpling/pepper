@@ -525,11 +525,11 @@ public class BeforeAfterAction {
 				SDocument document = (SDocument) id.getIdentifiableElement();
 
 				// rename all annotations of nodes
-				Iterator<SAnnotationContainer> it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getNodes().iterator();
+				Iterator<? extends SAnnotationContainer> it = document.getDocumentGraph().getNodes().iterator();
 				rename(it, renamingMap);
 
 				// rename all annotations of relations
-				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getRelations().iterator();
+				it = document.getDocumentGraph().getRelations().iterator();
 				rename(it, renamingMap);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -538,7 +538,7 @@ public class BeforeAfterAction {
 		}
 	}
 
-	private void rename(Iterator<SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
+	private void rename(Iterator<? extends SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
 		while (it.hasNext()) {
 			SAnnotationContainer node = it.next();
 			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {
