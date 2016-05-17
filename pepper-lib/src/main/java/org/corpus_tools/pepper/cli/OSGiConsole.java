@@ -209,7 +209,7 @@ public class OSGiConsole {
 		if (getConnector().getBundleContext().getBundles() != null) {
 			for (Bundle bundle : getConnector().getBundleContext().getBundles()) {
 				if (bundle.getRegisteredServices() != null) {
-					for (ServiceReference ref : bundle.getRegisteredServices()) {
+					for (ServiceReference<?> ref : bundle.getRegisteredServices()) {
 						out.print(String.format(format, bundle.getBundleId(), transformState(bundle.getState()), getConnector().getBundleContext().getService(ref), bundle.getSymbolicName()));
 					}
 				}

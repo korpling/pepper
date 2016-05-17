@@ -32,19 +32,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -63,9 +53,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
@@ -740,119 +727,120 @@ public class PepperStarter {
 		return table;
 	}
 
-	/**
-	 * This method writes a module configuration of GroupId, ArtifactId and
-	 * Maven repository back to the modules.xml file
-	 */
-	private boolean write2ConfigFile(String groupId, String artifactId, String repository) {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		try {
-			boolean changes = false;
-			File configFile = new File(MODULES_XML_PATH);
-			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse(configFile);
-			NodeList configuredModules = doc.getElementsByTagName(ModuleTableReader.TAG_ARTIFACTID);
-			if (configuredModules.getLength() == 0) {
-				return false;
-			}
-			/* check, if the module is already in the modules.xml file */
-			Node item = configuredModules.item(0);
-			int j = 0;
-			while (j + 1 < configuredModules.getLength() && !artifactId.equals(item.getTextContent())) {
-				item = configuredModules.item(++j);
-			}
-			if (artifactId.equals(item.getTextContent())) {// already contained
-															// -> edit
-				Node itemGroupId = null;
-				Node itemRepo = null;
-				Node node = null;
-				for (int i = 0; i < item.getParentNode().getChildNodes().getLength() && (itemGroupId == null || itemRepo == null); i++) {
-					node = item.getParentNode().getChildNodes().item(i);
-					if (ModuleTableReader.TAG_GROUPID.equals(node.getLocalName())) {
-						itemGroupId = node;
-					}
-					if (ModuleTableReader.TAG_REPO.equals(node.getLocalName())) {
-						itemRepo = node;
-					}
-				}
-				if (itemGroupId != null) {
-					itemGroupId.setTextContent(groupId);
-					changes = true;
-				} else {
-					if (!groupId.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTGROUPID).item(0).getTextContent())) {
-						itemGroupId = doc.createElement(ModuleTableReader.TAG_GROUPID);
-						itemGroupId.setTextContent(groupId);
-						item.getParentNode().appendChild(itemGroupId);
-						changes = true;
-					}
-				}
-				if (itemRepo != null) {
-					itemRepo.setTextContent(repository);
-					changes = true;
-				} else {
-					// if
-					// (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent()))
-					// {
-					// itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
-					// itemRepo.setTextContent(repository);
-					// item.getParentNode().appendChild(itemRepo);
-					// changes = true;
-					// }
-				}
-				itemGroupId = null;
-				itemRepo = null;
-				node = null;
-			} else {// not contained yet -> insert
-				changes = true;
-				Node listNode = doc.getElementsByTagName(ModuleTableReader.TAG_LIST).item(0);
-				Node newModule = doc.createElement(ModuleTableReader.TAG_ITEM);
-				Node groupIdNode = doc.createElement(ModuleTableReader.TAG_GROUPID);
-				groupIdNode.appendChild(doc.createTextNode(groupId));
-				Node artifactIdNode = doc.createElement(ModuleTableReader.TAG_ARTIFACTID);
-				artifactIdNode.appendChild(doc.createTextNode(artifactId));
-				Node repositoryNode = doc.createElement(ModuleTableReader.TAG_REPO);
-				repositoryNode.appendChild(doc.createTextNode(repository));
-				newModule.appendChild(groupIdNode);
-				newModule.appendChild(artifactIdNode);
-				newModule.appendChild(repositoryNode);
-				listNode.appendChild(newModule);
-
-				listNode = null;
-				newModule = null;
-				groupIdNode = null;
-				artifactIdNode = null;
-				repository = null;
-			}
-
-			if (changes) {
-				// write back to file
-				TransformerFactory trFactory = TransformerFactory.newInstance();
-				// trFactory.setAttribute("indent-number", 2);
-				Transformer transformer = trFactory.newTransformer();
-				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-				DOMSource src = new DOMSource(doc);
-				StreamResult result = new StreamResult(configFile);
-				transformer.transform(src, result);
-
-				trFactory = null;
-				transformer = null;
-				src = null;
-				result = null;
-			}
-
-			docBuilder = null;
-			doc = null;
-			configuredModules = null;
-			item = null;
-
-		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
-			logger.error("Could not read module table.");
-			logger.trace(" ", e);
-			return false;
-		}
-		return true;
-	}
+	// TODO: do we still need this function?
+//	/**
+//	 * This method writes a module configuration of GroupId, ArtifactId and
+//	 * Maven repository back to the modules.xml file
+//	 */
+//	private boolean write2ConfigFile(String groupId, String artifactId, String repository) {
+//		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//		try {
+//			boolean changes = false;
+//			File configFile = new File(MODULES_XML_PATH);
+//			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+//			Document doc = docBuilder.parse(configFile);
+//			NodeList configuredModules = doc.getElementsByTagName(ModuleTableReader.TAG_ARTIFACTID);
+//			if (configuredModules.getLength() == 0) {
+//				return false;
+//			}
+//			/* check, if the module is already in the modules.xml file */
+//			Node item = configuredModules.item(0);
+//			int j = 0;
+//			while (j + 1 < configuredModules.getLength() && !artifactId.equals(item.getTextContent())) {
+//				item = configuredModules.item(++j);
+//			}
+//			if (artifactId.equals(item.getTextContent())) {// already contained
+//															// -> edit
+//				Node itemGroupId = null;
+//				Node itemRepo = null;
+//				Node node = null;
+//				for (int i = 0; i < item.getParentNode().getChildNodes().getLength() && (itemGroupId == null || itemRepo == null); i++) {
+//					node = item.getParentNode().getChildNodes().item(i);
+//					if (ModuleTableReader.TAG_GROUPID.equals(node.getLocalName())) {
+//						itemGroupId = node;
+//					}
+//					if (ModuleTableReader.TAG_REPO.equals(node.getLocalName())) {
+//						itemRepo = node;
+//					}
+//				}
+//				if (itemGroupId != null) {
+//					itemGroupId.setTextContent(groupId);
+//					changes = true;
+//				} else {
+//					if (!groupId.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTGROUPID).item(0).getTextContent())) {
+//						itemGroupId = doc.createElement(ModuleTableReader.TAG_GROUPID);
+//						itemGroupId.setTextContent(groupId);
+//						item.getParentNode().appendChild(itemGroupId);
+//						changes = true;
+//					}
+//				}
+//				if (itemRepo != null) {
+//					itemRepo.setTextContent(repository);
+//					changes = true;
+//				} else {
+//					// if
+//					// (!repository.equals(doc.getElementsByTagName(ModuleTableReader.ATT_DEFAULTREPO).item(0).getTextContent()))
+//					// {
+//					// itemRepo = doc.createElement(ModuleTableReader.TAG_REPO);
+//					// itemRepo.setTextContent(repository);
+//					// item.getParentNode().appendChild(itemRepo);
+//					// changes = true;
+//					// }
+//				}
+//				itemGroupId = null;
+//				itemRepo = null;
+//				node = null;
+//			} else {// not contained yet -> insert
+//				changes = true;
+//				Node listNode = doc.getElementsByTagName(ModuleTableReader.TAG_LIST).item(0);
+//				Node newModule = doc.createElement(ModuleTableReader.TAG_ITEM);
+//				Node groupIdNode = doc.createElement(ModuleTableReader.TAG_GROUPID);
+//				groupIdNode.appendChild(doc.createTextNode(groupId));
+//				Node artifactIdNode = doc.createElement(ModuleTableReader.TAG_ARTIFACTID);
+//				artifactIdNode.appendChild(doc.createTextNode(artifactId));
+//				Node repositoryNode = doc.createElement(ModuleTableReader.TAG_REPO);
+//				repositoryNode.appendChild(doc.createTextNode(repository));
+//				newModule.appendChild(groupIdNode);
+//				newModule.appendChild(artifactIdNode);
+//				newModule.appendChild(repositoryNode);
+//				listNode.appendChild(newModule);
+//
+//				listNode = null;
+//				newModule = null;
+//				groupIdNode = null;
+//				artifactIdNode = null;
+//				repository = null;
+//			}
+//
+//			if (changes) {
+//				// write back to file
+//				TransformerFactory trFactory = TransformerFactory.newInstance();
+//				// trFactory.setAttribute("indent-number", 2);
+//				Transformer transformer = trFactory.newTransformer();
+//				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+//				DOMSource src = new DOMSource(doc);
+//				StreamResult result = new StreamResult(configFile);
+//				transformer.transform(src, result);
+//
+//				trFactory = null;
+//				transformer = null;
+//				src = null;
+//				result = null;
+//			}
+//
+//			docBuilder = null;
+//			doc = null;
+//			configuredModules = null;
+//			item = null;
+//
+//		} catch (ParserConfigurationException | SAXException | IOException | FactoryConfigurationError | TransformerFactoryConfigurationError | TransformerException e) {
+//			logger.error("Could not read module table.");
+//			logger.trace(" ", e);
+//			return false;
+//		}
+//		return true;
+//	}
 
 	/**
 	 * This class is the call back handler for reading the modules.xml file,
@@ -899,12 +887,12 @@ public class PepperStarter {
 		 * modules' name is written
 		 */
 		private static final String TAG_ARTIFACTID = "artifactId";
-		/**
-		 * the name of the tag in the modules.xml file, between which the
-		 * modules' source is written
-		 */
-		@Deprecated
-		private static final String TAG_REPO = "repository";
+//		/**
+//		 * the name of the tag in the modules.xml file, between which the
+//		 * modules' source is written
+//		 */
+//		@Deprecated
+//		private static final String TAG_REPO = "repository";
 		/***/
 		private static final String TAG_SNAPSHOT_REPO = "snapshotRepository";
 		/***/

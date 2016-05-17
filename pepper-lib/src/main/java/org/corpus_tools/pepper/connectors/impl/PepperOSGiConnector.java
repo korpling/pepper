@@ -272,7 +272,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	protected Pepper getPepper() {
 		if (pepper == null) {
 			try {
-				ServiceReference serviceReference = getBundleContext().getServiceReference(Pepper.class.getName());
+				ServiceReference<?> serviceReference = getBundleContext().getServiceReference(Pepper.class.getName());
 				Pepper pepperOSGi = null;
 				if (serviceReference != null) {
 					try {

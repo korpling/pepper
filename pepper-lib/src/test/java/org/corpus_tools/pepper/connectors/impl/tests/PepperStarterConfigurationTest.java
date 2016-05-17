@@ -25,12 +25,9 @@ import java.io.File;
 import org.corpus_tools.pepper.cli.PepperStarterConfiguration;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PepperStarterConfigurationTest {
 	private PepperStarterConfiguration fixture = null;
-	private static final Logger logger = LoggerFactory.getLogger(PepperStarterConfigurationTest.class);
 
 	@Before
 	public void setUp() {
