@@ -92,7 +92,7 @@
 		<salt.version>[4.0.0-SNAPSHOT,4.1.0-SNAPSHOT)</salt.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<org.osgi.core.version>4.3.1</org.osgi.core.version>
 		<org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
 		<org.eclipse.osgi.version>3.9.1-v20130814-1242</org.eclipse.osgi.version>
