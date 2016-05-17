@@ -62,7 +62,6 @@ import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.exceptions.PepperInActionException;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.DocumentController;
-import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
@@ -838,11 +837,6 @@ public class PepperJobImpl extends PepperJob {
 
 	/** Stores the time when this job was started **/
 	private Long startTime = 0l;
-
-	/** Returns the time when this job was started **/
-	private Long getStartTime() {
-		return startTime;
-	}
 
 	/**
 	 * Returns the amount of time the job already took.

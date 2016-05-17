@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.core.Step;
-import org.corpus_tools.pepper.exceptions.PepperInActionException;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.ModuleController;
+import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.salt.common.SaltProject;
 import org.eclipse.emf.common.util.URI;
 

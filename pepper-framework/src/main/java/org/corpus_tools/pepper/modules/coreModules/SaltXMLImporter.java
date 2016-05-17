@@ -17,9 +17,6 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import java.io.File;
-import java.util.Collection;
-
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
