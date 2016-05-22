@@ -661,11 +661,11 @@ public class ConvertWizardConsole {
 	private Pair<List<PepperModuleDesc>, Integer> getModuleDescriptions(final URI corpusPath, final MODULE_TYPE moduleType) {
 		final List<PepperModuleDesc> modules = new ArrayList<>();
 		Integer numOfRecommended = 0;
-		// if module is importer, call isImportable
+		// if module is importer, find appropriate importers
 		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
 			Set<String> possibleImporters = null;
 			try {
-				possibleImporters = getPepper().isImportable(corpusPath);
+				possibleImporters = getPepper().findAppropriateImporters(corpusPath);
 			} catch (FileNotFoundException e) {
 				out.println("Cannot read corpus path '" + corpusPath + "'. " + e.getMessage());
 				return new ImmutablePair<>(modules, numOfRecommended);

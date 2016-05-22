@@ -24,12 +24,12 @@ import com.google.common.collect.Multimap;
 public class CorpusPathResolver {
 	/**
 	 * The number of files which are read for sampling when invoking
-	 * {@link #isImportable(URI)}.
+	 * {@link #findAppropriateImporters(URI)}.
 	 **/
 	public static final int NUMBER_OF_SAMPLED_FILES = 20;
 	/**
 	 * The number of lines in a file which are read for sampling when invoking
-	 * {@link #isImportable(URI)}.
+	 * {@link #findAppropriateImporters(URI)}.
 	 **/
 	public static final int NUMBER_OF_SAMPLED_LINES = 10;
 	/**

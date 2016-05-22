@@ -54,7 +54,7 @@ public interface Pepper {
 	 * @return names of importers how can import the data located at
 	 *         <code>corpusPath</code>
 	 */
-	public Set<String> isImportable(final URI corpusPath) throws FileNotFoundException;
+	public Set<String> findAppropriateImporters(final URI corpusPath) throws FileNotFoundException;
 
 	/**
 	 * Creates a new {@link PepperJob} object for a new conversion process.

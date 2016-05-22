@@ -856,11 +856,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 
 	@Override
-	public Set<String> isImportable(org.eclipse.emf.common.util.URI corpusPath) throws FileNotFoundException {
+	public Set<String> findAppropriateImporters(org.eclipse.emf.common.util.URI corpusPath) throws FileNotFoundException {
 		if (getPepper() == null) {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}
-		return (getPepper().isImportable(corpusPath));
+		return (getPepper().findAppropriateImporters(corpusPath));
 	}
 
 	@Override
