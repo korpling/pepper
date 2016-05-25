@@ -373,31 +373,6 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 				retVal.append(sharedPackage);
 				i++;
 			}
-
-			// // pepper.common package
-			// retVal.append(Pepper.class.getPackage().getName());
-			// retVal.append(";version=");
-			// retVal.append(PepperStarter.getVersion().replace("-", "."));
-			// retVal.append(", ");
-			//
-			// // pepper.exceptions package
-			// retVal.append(PepperException.class.getPackage().getName());
-			// retVal.append(";version=");
-			// retVal.append(PepperStarter.getVersion().replace("-", "."));
-			// retVal.append(", ");
-			//
-			// // pepper.modules package
-			// retVal.append(PepperModuleProperties.class.getPackage().getName());
-			// retVal.append(";version=");
-			// retVal.append(PepperStarter.getVersion().replace("-", "."));
-			// retVal.append(", ");
-			//
-			// // pepper.util package
-			// retVal.append(XMLStreamWriter.class.getPackage().getName());
-			// retVal.append(", ");
-			//
-			// // emf-util
-			// retVal.append(org.eclipse.emf.common.util.URI.class.getPackage().getName());
 		}
 		return (retVal.toString());
 	}
