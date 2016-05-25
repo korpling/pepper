@@ -718,7 +718,7 @@ public class ConvertWizardConsole {
 			number2Module.put(num, moduleDesc);
 			name2Module.put(moduleDesc.getName(), moduleDesc);
 			String prefix = "";
-			if (numOfRecommended > num) {
+			if (numOfRecommended >= num) {
 				prefix = "* ";
 			} else {
 				prefix = "  ";
