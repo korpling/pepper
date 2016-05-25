@@ -35,7 +35,7 @@
    <div id="projectname">Pepper
    &#160;<span id="projectnumber">3.1.0-SNAPSHOT</span>
    </div>
-   <div id="projectbrief">A highly extensible plattform for conversion and manipulation of linguistic data.</div>
+   <div id="projectbrief">A highly extensible plattform for conversion and manipulationoflinguisticdata.</div>
   </td>
  </tr>
  </tbody>
@@ -541,7 +541,7 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 , <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_controller_impl.html#ae965e0c4600f0bb71b7a99e916b3a412">org.corpus_tools.pepper.core.ModuleControllerImpl</a>
 , <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_mapper_controller_impl.html#a522ebcbf89b0d6b6710840b53cdfa9d7">org.corpus_tools.pepper.impl.PepperMapperControllerImpl</a>
 , <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_mapper_impl.html#ab9f5344999e798d9ab71e16d3aa223e0">org.corpus_tools.pepper.impl.PepperMapperImpl</a>
-, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a783b684bd936cb882822eeba54701a76">org.corpus_tools.pepper.impl.PepperModuleImpl</a>
+, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a8865c0358e9c0470186ef692b8cfebfe">org.corpus_tools.pepper.impl.PepperModuleImpl</a>
 , <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a1abe4f4777cf14552148bfd9f25138ec">org.corpus_tools.pepper.modules.DocumentController</a>
 , <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_module_controller.html#a6b90104ecea19d36c5295ff4285d6ec4">org.corpus_tools.pepper.modules.ModuleController</a>
 , <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#abf0d14220f36ea623237ce5b05c446e4">org.corpus_tools.pepper.modules.PepperMapper</a>
@@ -567,6 +567,11 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 </li>
 <li>getProps()
 : <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#ab731887b5fcceac2e801988faa3e44ed">org.corpus_tools.pepper.common.StepDesc</a>
+</li>
+<li>getRegisteredImporters()
+: <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a4daef4cca78c723e8115be82f0f9b3d3">org.corpus_tools.pepper.common.Pepper</a>
+, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ad608ae8d43dd12aebba07cfd564ebae2">org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector</a>
+, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a014fab04a92c4b49f94c7af7165fdef8">org.corpus_tools.pepper.core.PepperImpl</a>
 </li>
 <li>getRegisteredModules()
 : <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#af2e34e599eb26da51575621b38fb40d0">org.corpus_tools.pepper.common.Pepper</a>
@@ -651,7 +656,7 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 , <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a35859104e9db023f1987bf1ce80b3ce8">org.corpus_tools.pepper.modules.PepperModule</a>
 </li>
 <li>getTempFile()
-: <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_util.html#a35369b3ca4884b37cced900a0fc35454">org.corpus_tools.pepper.common.PepperUtil</a>
+: <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_util.html#ac87453026aecd7f30c2781107c276dfc">org.corpus_tools.pepper.common.PepperUtil</a>
 </li>
 <li>getTempPath()
 : <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a421821ab8226d44897e49725a3d98958">org.corpus_tools.pepper.common.PepperConfiguration</a>
@@ -698,13 +703,16 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <li>GROUP_ID_PEPPER
 : <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_maven_accessor.html#aa728fecab7fd86f00da0a6e3b0216498">org.corpus_tools.pepper.connectors.impl.MavenAccessor</a>
 </li>
+<li>groupFilesByEnding()
+: <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_corpus_path_resolver.html#acef918d237e79270bc6cfae9e3ef6d5e">org.corpus_tools.pepper.impl.CorpusPathResolver</a>
+</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 25 2016 10:39:12 for Pepper by
+    <li class="footer">Generated on Wed May 25 2016 22:37:02 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

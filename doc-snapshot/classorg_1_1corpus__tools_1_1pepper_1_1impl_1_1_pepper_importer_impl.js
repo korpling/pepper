@@ -13,8 +13,9 @@ var classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl =
     [ "importCorpusStructureRec", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#a1533106ca0e682be3f32e343b5a234f3", null ],
     [ "isImportable", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#aef5229e642a983dd9ce8556e494adc19", null ],
     [ "readXMLResource", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#aa36b762cb155e179b49bf18a4f9848c9", null ],
-    [ "sampleFileContent", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#a86ee8369de674fb0c5e281645f8c6565", null ],
+    [ "sampleFileContent", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#a0bb3efd4ba2330c154c10552ffb53d26", null ],
     [ "setCorpusDesc", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#a02ef34b4a5310029526a0abd404c11de", null ],
+    [ "setCorpusPathResolver", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#ac3f676f5608102eefb8677329e3d11c9", null ],
     [ "setTypeOfResource", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#af867febb6792981b49aabce9d455bd05", null ],
     [ "start", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#ac2177293fc33c036ec0e69d806431624", null ],
     [ "corpusDesc", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#a911a897b13de482d88b8340091f7af9a", null ]

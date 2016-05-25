@@ -2,6 +2,7 @@ var classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_
 [
     [ "addSharedPackage", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ac7e7a566bb675b49fd8eea3012302c6f", null ],
     [ "createJob", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a01ca86ba684f452add29605e49193cff", null ],
+    [ "findAppropriateImporters", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#af4e5384e282737a00763d6b2bcb60e99", null ],
     [ "getBlacklist", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a8f18af820ef0c4858ec53d31c3a25718", null ],
     [ "getBundle", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#aeb584aefdc72859c20940dc312ca3aed", null ],
     [ "getBundleContext", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a666d56578b25f3a60c298afc92d151a1", null ],
@@ -11,6 +12,7 @@ var classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_
     [ "getJob", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a3ec95fd7e59b2004eac839bf74979ca7", null ],
     [ "getPepper", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a18f95632ba385604bf88f50d65953722", null ],
     [ "getPepperStarterConfiguration", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#af53889d8a1cd7c9446ab7bc5159d6d60", null ],
+    [ "getRegisteredImporters", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ad608ae8d43dd12aebba07cfd564ebae2", null ],
     [ "getRegisteredModules", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a33413024a1f52de6a9200a5c6c69050a", null ],
     [ "getRegisteredModulesAsString", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a0f032113b6a65db80377f900bf18d5a2", null ],
     [ "getSharedPackages", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a25d043e504db000ffcf5f58698d49066", null ],
@@ -18,7 +20,6 @@ var classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_
     [ "install", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ae915e0167ee1368844736d7b53a9c95e", null ],
     [ "installAndCopy", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#aecd4479449ff159370ba0e303f12fdb8", null ],
     [ "installBundles", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a6021aeb87da087c23a818b32c6ba5c93", null ],
-    [ "isImportable", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a0fe160b6b86f040b9de17abb25459bba", null ],
     [ "isInitialized", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#a199e0db02ec1f91e790e25a248a685d8", null ],
     [ "isSingleton", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ae83988508996e250fcca9bcd175580ee", null ],
     [ "printDependencies", "classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#aa6581b669ec19745b00d6ef9d9d99157", null ],

@@ -1,7 +1,7 @@
 var namespaceorg_1_1corpus__tools_1_1pepper_1_1impl =
 [
     [ "BeforeAfterAction", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action" ],
-    [ "IsImportableUtil", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_is_importable_util.html", null ],
+    [ "CorpusPathResolver", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_corpus_path_resolver.html", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_corpus_path_resolver" ],
     [ "PepperExporterImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_exporter_impl.html", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_exporter_impl" ],
     [ "PepperImporterImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl" ],
     [ "PepperManipulatorImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_manipulator_impl.html", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_manipulator_impl" ],
