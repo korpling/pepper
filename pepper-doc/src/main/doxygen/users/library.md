@@ -7,11 +7,11 @@ With the Pepper library, we provide a programmatic access to the Pepper framewor
 <dependency>
    <artifactId>pepper-lib</artifactId>
    <groupId>org.corpus-tools</groupId>
-   <version>VERSION</version>
+   <version>${project.version}</version>
 </dependency>
 \endcode 
 
-Please replace the placeholder VERSION with the version you want to use. When Pepper is included in your project, you need to get all necessary plugins and modules, therefore:
+When Pepper is included in your project, you need to get all necessary plugins and modules, therefore:
 <ol>
 <li>Download a Pepper release of your choice from http://corpus-tools.org/pepper/</li>
 <li>Unzip the downloaded zip file</li>
