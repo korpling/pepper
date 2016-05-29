@@ -597,16 +597,21 @@ public class PepperStarter {
 			retVal.append(moduleFitness.getModuleName());
 			retVal.append("\t\t");
 			retVal.append(overallFitness);
+			retVal.append("\n");
 			if (!Fitness.FIT.equals(overallFitness)){
 				for (FitnessFeature importantFeature:  FitnessFeature.getImportantFitnessFeatures()){
+					retVal.append("\t");
 					retVal.append(importantFeature);
 					retVal.append("\t\t");
-					retVal.append(moduleFitness.getFitness(importantFeature));
+					retVal.append(moduleFitness.getFitness(importantFeature));					
+					retVal.append("\n");
 				}
 				for (FitnessFeature optionalFeature:  FitnessFeature.getOptionalFitnessFeatures()){
+					retVal.append("\t");
 					retVal.append(optionalFeature);
 					retVal.append("\t\t");
 					retVal.append(moduleFitness.getFitness(optionalFeature));
+					retVal.append("\n");
 				}
 			}
 		}

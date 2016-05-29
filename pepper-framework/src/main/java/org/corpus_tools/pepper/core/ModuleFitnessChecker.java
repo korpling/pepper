@@ -1,8 +1,10 @@
-package org.corpus_tools.pepper.common;
+package org.corpus_tools.pepper.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -43,12 +45,12 @@ public class ModuleFitnessChecker {
 		fitness.addFitnessFeature(FitnessFeature.IS_READY_TO_RUN, module.isReadyToStart()? Fitness.FIT: Fitness.CRITICAL);
 		
 		//check optional features
-		fitness.addFitnessFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, module.getSupplierHomepage()!= null? Fitness.FIT: Fitness.CRITICAL);
-		fitness.addFitnessFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, module.getSupplierContact()!= null? Fitness.FIT: Fitness.CRITICAL);
+		fitness.addFitnessFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, module.getSupplierHomepage()!= null? Fitness.FIT: Fitness.UNFIT);
+		fitness.addFitnessFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, module.getSupplierContact()!= null? Fitness.FIT: Fitness.UNFIT);
 		
 		if (module instanceof PepperImporter){
 			Double isImportableRate= ((PepperImporter)module).isImportable(corpusPath);
-			fitness.addFitnessFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, isImportableRate!= null? Fitness.FIT: Fitness.CRITICAL);
+			fitness.addFitnessFeature(FitnessFeature.IS_IMPORTABLE, isImportableRate!= null? Fitness.FIT: Fitness.UNFIT);
 		}
 		return fitness;
 	}

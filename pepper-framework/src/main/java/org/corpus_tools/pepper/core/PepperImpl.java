@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.ModuleFitness;
-import org.corpus_tools.pepper.common.ModuleFitnessChecker;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;

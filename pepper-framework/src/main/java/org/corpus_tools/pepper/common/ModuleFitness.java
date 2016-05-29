@@ -1,11 +1,11 @@
 package org.corpus_tools.pepper.common;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 
@@ -59,6 +59,10 @@ public class ModuleFitness {
 		 * ran in Pepper.
 		 */
 		IS_READY_TO_RUN;
+
+		private static final Set<FitnessFeature> OPTIONAL_FITNESS_FEATURES = new HashSet<>();
+		private static final Set<FitnessFeature> IMPORTANT_FITNESS_FEATURES = new HashSet<>();
+
 		/**
 		 * Returns the names of the important fitness feature. These are the
 		 * features which makes a module able to be ran.
@@ -66,7 +70,10 @@ public class ModuleFitness {
 		 * @return
 		 */
 		public static Collection<FitnessFeature> getImportantFitnessFeatures() {
-			return Arrays.asList(IS_READY_TO_RUN);
+			if (IMPORTANT_FITNESS_FEATURES.size() < 1) {
+				IMPORTANT_FITNESS_FEATURES.add(IS_READY_TO_RUN);
+			}
+			return IMPORTANT_FITNESS_FEATURES;
 		}
 
 		/**
@@ -75,15 +82,18 @@ public class ModuleFitness {
 		 * @return
 		 */
 		public static Collection<FitnessFeature> getOptionalFitnessFeatures() {
-			return Arrays.asList(IS_IMPORTABLE, SUPPORTS_SUPPLIER_CONTACT, SUPPORTS_SUPPLIER_HP);
+			if (OPTIONAL_FITNESS_FEATURES.size() < 1) {
+				OPTIONAL_FITNESS_FEATURES.add(IS_IMPORTABLE);
+				OPTIONAL_FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_CONTACT);
+				OPTIONAL_FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_HP);
+			}
+			return OPTIONAL_FITNESS_FEATURES;
 		}
 	}
 
 	public ModuleFitness(final String moduleName) {
 		this.moduleName = moduleName;
 	}
-	
-	
 
 	private String moduleName;
 
@@ -94,13 +104,19 @@ public class ModuleFitness {
 	private final Map<FitnessFeature, Fitness> fitnessMap = new HashMap<>();
 
 	/**
-	 * Adds a {@link FitnessFeature} value.
+	 * Adds a {@link FitnessFeature} value. An optional {@link FitnessFeature}
+	 * can not be set to {@link Fitness#CRITICAL}. If it was set to
+	 * {@link Fitness#CRITICAL}, its fitness value is changed to
+	 * {@link Fitness#UNFIT}.
 	 * 
 	 * @param feature
 	 * @param fitness
 	 */
-	public void addFitnessFeature(final FitnessFeature feature, final Fitness fitness) {
+	public void addFitnessFeature(final FitnessFeature feature, Fitness fitness) {
 		if (feature != null) {
+			if (FitnessFeature.getOptionalFitnessFeatures().contains(feature) && Fitness.CRITICAL.equals(fitness)) {
+				fitness = Fitness.UNFIT;
+			}
 			this.fitnessMap.put(feature, fitness);
 		}
 	}
@@ -131,7 +147,7 @@ public class ModuleFitness {
 		Fitness lowestFitness = Fitness.FIT;
 		for (FitnessFeature feature : FitnessFeature.getOptionalFitnessFeatures()) {
 			Fitness currentFitness = fitnessMap.get(feature);
-			if (currentFitness!= null && lowestFitness.compareTo(currentFitness) > 0) {
+			if (currentFitness != null && lowestFitness.compareTo(currentFitness) < 0) {
 				lowestFitness = fitnessMap.get(feature);
 			}
 		}
@@ -139,17 +155,17 @@ public class ModuleFitness {
 	}
 
 	@Override
-	public String toString(){
-		final StringBuilder retVal= new StringBuilder();
+	public String toString() {
+		final StringBuilder retVal = new StringBuilder();
 		retVal.append(moduleName);
 		retVal.append(":");
-		for (FitnessFeature importantFeature:  FitnessFeature.getImportantFitnessFeatures()){
+		for (FitnessFeature importantFeature : FitnessFeature.getImportantFitnessFeatures()) {
 			retVal.append(importantFeature);
 			retVal.append("=");
 			retVal.append(getFitness(importantFeature));
 			retVal.append(", ");
 		}
-		for (FitnessFeature optionalFeature:  FitnessFeature.getOptionalFitnessFeatures()){
+		for (FitnessFeature optionalFeature : FitnessFeature.getOptionalFitnessFeatures()) {
 			retVal.append(optionalFeature);
 			retVal.append("=");
 			retVal.append(getFitness(optionalFeature));
@@ -157,7 +173,7 @@ public class ModuleFitness {
 		}
 		return retVal.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -187,5 +203,28 @@ public class ModuleFitness {
 		} else if (!moduleName.equals(other.moduleName))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Asimple builder to create {@link ModuleFitness} objects.
+	 * 
+	 * @author florian
+	 *
+	 */
+	public static class ModuleFitnessBuilder {
+		private ModuleFitness moduleFitness;
+
+		public ModuleFitnessBuilder(String moduleName) {
+			moduleFitness = new ModuleFitness(moduleName);
+		}
+
+		public ModuleFitnessBuilder addFitnessFeature(final FitnessFeature feature, final Fitness fitness) {
+			moduleFitness.addFitnessFeature(feature, fitness);
+			return this;
+		}
+
+		public ModuleFitness build() {
+			return moduleFitness;
+		}
 	}
 }
