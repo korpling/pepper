@@ -25,10 +25,10 @@ public class ModuleFitness {
 		FIT,
 		/**
 		 * Only used for overall fitness of a module rather than for a single
-		 * value and means, the important features are fit, but optional ones
+		 * value and means, the health features are ok, but fitness features
 		 * aren't
 		 **/
-		UNFIT,
+		HEALTHY,
 		/**
 		 * An entire module or single feature is absolutely unfit, so some
 		 * problems are detected, when a module is critical, than it is not
@@ -60,34 +60,34 @@ public class ModuleFitness {
 		 */
 		IS_READY_TO_RUN;
 
-		private static final Set<FitnessFeature> OPTIONAL_FITNESS_FEATURES = new HashSet<>();
-		private static final Set<FitnessFeature> IMPORTANT_FITNESS_FEATURES = new HashSet<>();
+		private static final Set<FitnessFeature> FITNESS_FEATURES = new HashSet<>();
+		private static final Set<FitnessFeature> HEALTH_FEATURES = new HashSet<>();
 
 		/**
-		 * Returns the names of the important fitness feature. These are the
-		 * features which makes a module able to be ran.
+		 * Returns the names of the fitness features taking part at health test.
+		 * These are the features which makes a module able to be ran.
 		 * 
 		 * @return
 		 */
-		public static Collection<FitnessFeature> getImportantFitnessFeatures() {
-			if (IMPORTANT_FITNESS_FEATURES.size() < 1) {
-				IMPORTANT_FITNESS_FEATURES.add(IS_READY_TO_RUN);
+		public static Collection<FitnessFeature> getHealthFeatures() {
+			if (HEALTH_FEATURES.size() < 1) {
+				HEALTH_FEATURES.add(IS_READY_TO_RUN);
 			}
-			return IMPORTANT_FITNESS_FEATURES;
+			return HEALTH_FEATURES;
 		}
 
 		/**
-		 * Returns the names of the optional fitness feature.
+		 * Returns the names of the fitness feature.
 		 * 
 		 * @return
 		 */
-		public static Collection<FitnessFeature> getOptionalFitnessFeatures() {
-			if (OPTIONAL_FITNESS_FEATURES.size() < 1) {
-				OPTIONAL_FITNESS_FEATURES.add(IS_IMPORTABLE);
-				OPTIONAL_FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_CONTACT);
-				OPTIONAL_FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_HP);
+		public static Collection<FitnessFeature> getFitnessFeatures() {
+			if (FITNESS_FEATURES.size() < 1) {
+				FITNESS_FEATURES.add(IS_IMPORTABLE);
+				FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_CONTACT);
+				FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_HP);
 			}
-			return OPTIONAL_FITNESS_FEATURES;
+			return FITNESS_FEATURES;
 		}
 	}
 
@@ -104,20 +104,52 @@ public class ModuleFitness {
 	private final Map<FitnessFeature, Fitness> fitnessMap = new HashMap<>();
 
 	/**
-	 * Adds a {@link FitnessFeature} value. An optional {@link FitnessFeature}
-	 * can not be set to {@link Fitness#CRITICAL}. If it was set to
-	 * {@link Fitness#CRITICAL}, its fitness value is changed to
-	 * {@link Fitness#UNFIT}.
+	 * Adds a {@link FitnessFeature} value. A health {@link FitnessFeature} can
+	 * not be set to {@link Fitness#CRITICAL}. If it was set to
+	 * {@link Fitness#CRITICAL}, its value is changed to {@link Fitness#HEALTHY}
+	 * . Parallel a fitness feature cannot be set to {@link Fitness#CRITICAL}.
+	 * If it was set to {@link Fitness#CRITICAL}, its value is changed to
+	 * {@link Fitness#HEALTHY}.
 	 * 
 	 * @param feature
 	 * @param fitness
 	 */
-	public void addFitnessFeature(final FitnessFeature feature, Fitness fitness) {
+	public void setFeature(final FitnessFeature feature, Fitness fitness) {
 		if (feature != null) {
-			if (FitnessFeature.getOptionalFitnessFeatures().contains(feature) && Fitness.CRITICAL.equals(fitness)) {
-				fitness = Fitness.UNFIT;
+			if (FitnessFeature.getFitnessFeatures().contains(feature) && Fitness.CRITICAL.equals(fitness)) {
+				fitness = Fitness.HEALTHY;
 			}
 			this.fitnessMap.put(feature, fitness);
+		}
+	}
+
+	/**
+	 * Sets the value to the specified feature. If the {@link FitnessFeature} is
+	 * a health feature, true means {@link Fitness#FIT} and false means
+	 * {@link Fitness#HEALTHY}. If the {@link FitnessFeature} is a fitness
+	 * feature, true means {@link Fitness#HEALTHY} and false means
+	 * {@link Fitness#CRITICAL}.
+	 * 
+	 * @param feature
+	 * @param value
+	 */
+	public void setFeature(final FitnessFeature feature, boolean value) {
+		if (feature != null) {
+			Fitness fitness= null;
+			if (FitnessFeature.getHealthFeatures().contains(feature)) {
+				if(value){
+					fitness = Fitness.HEALTHY;
+				}else{
+					fitness = Fitness.CRITICAL;
+				}
+			}else{
+				if(value){
+					fitness = Fitness.FIT;
+				}else{
+					fitness = Fitness.HEALTHY;
+				}
+			}
+			setFeature(feature, fitness);
 		}
 	}
 
@@ -130,22 +162,21 @@ public class ModuleFitness {
 	 * is: {@link Fitness#FIT}
 	 * <ul>
 	 * <li>{@link Fitness#FIT}, when all single fitness feature are fit</li>
-	 * <li>{@link Fitness#UNFIT}, when all important fitness feature are fit,
-	 * but at least one of the optional ones isn't</li>
-	 * <li>{@link Fitness#CRITICAL}, at least one important fitness feature is
-	 * not fit</li>
+	 * <li>{@link Fitness#HEALTHY}, when all health feature are fit, but at
+	 * least one of the fitness ones isn't</li>
+	 * <li>{@link Fitness#CRITICAL}, at least one health feature is not fit</li>
 	 * </ul>
 	 * 
 	 * @return the overall fitness value
 	 */
 	public Fitness getOverallFitness() {
-		for (FitnessFeature feature : FitnessFeature.getImportantFitnessFeatures()) {
+		for (FitnessFeature feature : FitnessFeature.getHealthFeatures()) {
 			if (Fitness.CRITICAL.equals(fitnessMap.get(feature))) {
 				return Fitness.CRITICAL;
 			}
 		}
 		Fitness lowestFitness = Fitness.FIT;
-		for (FitnessFeature feature : FitnessFeature.getOptionalFitnessFeatures()) {
+		for (FitnessFeature feature : FitnessFeature.getFitnessFeatures()) {
 			Fitness currentFitness = fitnessMap.get(feature);
 			if (currentFitness != null && lowestFitness.compareTo(currentFitness) < 0) {
 				lowestFitness = fitnessMap.get(feature);
@@ -159,16 +190,16 @@ public class ModuleFitness {
 		final StringBuilder retVal = new StringBuilder();
 		retVal.append(moduleName);
 		retVal.append(":");
-		for (FitnessFeature importantFeature : FitnessFeature.getImportantFitnessFeatures()) {
-			retVal.append(importantFeature);
+		for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
+			retVal.append(healthFeature);
 			retVal.append("=");
-			retVal.append(getFitness(importantFeature));
+			retVal.append(getFitness(healthFeature));
 			retVal.append(", ");
 		}
-		for (FitnessFeature optionalFeature : FitnessFeature.getOptionalFitnessFeatures()) {
-			retVal.append(optionalFeature);
+		for (FitnessFeature fitnessFeature : FitnessFeature.getFitnessFeatures()) {
+			retVal.append(fitnessFeature);
 			retVal.append("=");
-			retVal.append(getFitness(optionalFeature));
+			retVal.append(getFitness(fitnessFeature));
 			retVal.append(", ");
 		}
 		return retVal.toString();
@@ -219,7 +250,7 @@ public class ModuleFitness {
 		}
 
 		public ModuleFitnessBuilder addFitnessFeature(final FitnessFeature feature, final Fitness fitness) {
-			moduleFitness.addFitnessFeature(feature, fitness);
+			moduleFitness.setFeature(feature, fitness);
 			return this;
 		}
 
