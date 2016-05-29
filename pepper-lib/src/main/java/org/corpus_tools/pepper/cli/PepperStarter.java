@@ -48,6 +48,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
+import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
@@ -162,6 +165,8 @@ public class PepperStarter {
 		HELP("help", "h", null, "Prints this help."),
 		//
 		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
+		//
+		FITNESS("fitness", "f", null, "Checks the fitness of each registered Pepper module. The fitness check is a more detailed than a health check and also contains compliance issues."),
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
@@ -579,6 +584,30 @@ public class PepperStarter {
 			retVal.append("following problems have been found:");
 			for (String problem : problems) {
 				retVal.append("\t" + problem);
+			}
+		}
+		return (retVal.toString());
+	}
+	
+	public String fitness() {
+		final StringBuilder retVal = new StringBuilder();
+		final Collection<ModuleFitness> moduleFitnisses = getPepper().checkFitness();
+		for (ModuleFitness moduleFitness: moduleFitnisses){
+			final Fitness overallFitness= moduleFitness.getOverallFitness();
+			retVal.append(moduleFitness.getModuleName());
+			retVal.append("\t\t");
+			retVal.append(overallFitness);
+			if (!Fitness.FIT.equals(overallFitness)){
+				for (FitnessFeature importantFeature:  FitnessFeature.getImportantFitnessFeatures()){
+					retVal.append(importantFeature);
+					retVal.append("\t\t");
+					retVal.append(moduleFitness.getFitness(importantFeature));
+				}
+				for (FitnessFeature optionalFeature:  FitnessFeature.getOptionalFitnessFeatures()){
+					retVal.append(optionalFeature);
+					retVal.append("\t\t");
+					retVal.append(moduleFitness.getFitness(optionalFeature));
+				}
 			}
 		}
 		return (retVal.toString());
@@ -1060,7 +1089,9 @@ public class PepperStarter {
 				output.println(conf());
 			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command)) || (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(selfTest());
-			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+			} else if ((COMMAND.FITNESS.getName().equalsIgnoreCase(command)) || (COMMAND.FITNESS.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(fitness());
+			}else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
 				if (params.size() == 1) {
 					convert(params.get(0));
 				} else {

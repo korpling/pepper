@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.common.JOB_STATUS;
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitnessChecker;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
@@ -95,7 +97,7 @@ public class PepperImpl implements Pepper {
 				((PepperImporterImpl) importer).setCorpusPathResolver(corpusPathResolver);
 			}
 			final Double rate = importer.isImportable(corpusPath);
-			if (rate!= null && rate > 0) {
+			if (rate != null && rate > 0) {
 				retVal.add(importer.getName());
 			}
 		}
@@ -314,6 +316,32 @@ public class PepperImpl implements Pepper {
 
 	// ===================================== end: wirering module resolver via
 	// OSGi
+	@Override
+	public Collection<String> checkHealth() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Returns all registered {@link PepperModule}s. If no moodule is
+	 * registered, returns an empty list.
+	 * 
+	 * @return
+	 */
+	private Collection<PepperModule> getAllRegisteredModules() {
+		Collection<PepperModule> modules = new ArrayList<>();
+		if (getModuleResolver() != null) {
+			modules.addAll(getModuleResolver().getPepperImporters());
+			modules.addAll(getModuleResolver().getPepperManipulators());
+			modules.addAll(getModuleResolver().getPepperExporters());
+		}
+		return modules;
+	}
+
+	@Override
+	public Collection<ModuleFitness> checkFitness() {
+		return ModuleFitnessChecker.checkFitness(getAllRegisteredModules());
+	}
 
 	@Override
 	public Collection<String> selfTest() {
