@@ -71,6 +71,12 @@ public class ModuleFitnessTest {
 		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, true);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 	}
+	
+	@Test
+	public void whenFitnessFeatureIsSetToTrue_thenOverallFitnessIsFIT() {
+		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
+		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.FIT);
+	}
 
 	@Test
 	public void whenTwoModuleFitnessObjectsAreEmpty_thenTheyShouldBeEqual() {
@@ -109,5 +115,12 @@ public class ModuleFitnessTest {
 	@Test
 	public void whenGettingOptionalFeatures_thenReturnOptionalFeatures() {
 		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE, FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, FitnessFeature.SUPPORTS_SUPPLIER_HP);
+	}
+	
+	@Test
+	public void whenToString_thenReturnNonEmptyString(){
+		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, true);
+		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, true);
+		assertThat(fixture.toString()).isNotEmpty();
 	}
 }

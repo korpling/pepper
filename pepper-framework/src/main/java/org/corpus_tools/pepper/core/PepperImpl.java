@@ -37,7 +37,6 @@ import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
-import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.impl.CorpusPathResolver;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;

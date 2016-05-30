@@ -29,6 +29,9 @@ public class ModuleFitnessChecker {
 	 */
 	public static Collection<ModuleFitness> checkFitness(final Collection<PepperModule> modules) {
 		final Collection<ModuleFitness> moduleFitness = new ArrayList<>();
+		if (modules == null) {
+			return moduleFitness;
+		}
 		for (PepperModule module : modules) {
 			if (module != null) {
 				moduleFitness.add(checkFitness(module));
@@ -68,6 +71,9 @@ public class ModuleFitnessChecker {
 	 */
 	public static Collection<ModuleFitness> checkHealth(final Collection<PepperModule> modules) {
 		final Collection<ModuleFitness> moduleFitness = new ArrayList<>();
+		if (modules == null) {
+			return moduleFitness;
+		}
 		for (PepperModule module : modules) {
 			if (module != null) {
 				moduleFitness.add(checkHealth(module));

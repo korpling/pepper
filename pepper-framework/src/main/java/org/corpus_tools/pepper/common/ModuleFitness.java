@@ -119,7 +119,7 @@ public class ModuleFitness {
 		}
 	}
 
-	public boolean getFitness(final FitnessFeature feature) {
+	public Boolean getFitness(final FitnessFeature feature) {
 		return fitnessMap.get(feature);
 	}
 
