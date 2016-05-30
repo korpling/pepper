@@ -315,12 +315,6 @@ public class PepperImpl implements Pepper {
 
 	// ===================================== end: wirering module resolver via
 	// OSGi
-	@Override
-	public Collection<String> checkHealth() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * Returns all registered {@link PepperModule}s. If no moodule is
 	 * registered, returns an empty list.
@@ -336,10 +330,15 @@ public class PepperImpl implements Pepper {
 		}
 		return modules;
 	}
-
+	
 	@Override
 	public Collection<ModuleFitness> checkFitness() {
 		return ModuleFitnessChecker.checkFitness(getAllRegisteredModules());
+	}
+	
+	@Override
+	public Collection<ModuleFitness> checkHealth() {
+		return ModuleFitnessChecker.checkHealth(getAllRegisteredModules());
 	}
 
 	@Override

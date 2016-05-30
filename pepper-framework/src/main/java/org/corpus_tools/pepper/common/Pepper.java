@@ -123,26 +123,26 @@ public interface Pepper {
 	 */
 	@Deprecated
 	public Collection<String> selfTest();
-	
+
 	/**
-	 * Checks if the Pepper framework is ready to run. This means, it checks whether
-	 * everything necessary is set up and whether all registered modules could be ran.
+	 * Checks the health of each registered Pepper module. When a module is not
+	 * healthy, it could not be started.
 	 * 
-	 * @return returns an empty list, if check was positive; if list is not
-	 *         empty, each entry describes a single problem.
+	 * @return a list of health entries, one per module, if no module is
+	 *         registered an empty list is returned
 	 */
-	public Collection<String> checkHealth();
-	
+	public Collection<ModuleFitness> checkHealth();
+
 	/**
 	 * Checks the fitness of each registered Pepper module. The fitness of a
 	 * module indicates in what way a module is docking to the Pepper interface.
 	 * For instance it checks whether a module provides a contact address of the
 	 * module'supplier. Or when the module is an importer whether it supports
-	 * the {@link PepperImporterImpl#isImportable(URI)} method.
-	 * <br/>
+	 * the {@link PepperImporterImpl#isImportable(URI)} method. <br/>
 	 * Further the fitness says whether a module is ready to start.
 	 * 
-	 * @return a list of fitness entries, one per module
+	 * @return a list of fitness entries, one per module, if no module is
+	 *         registered an empty list is returned
 	 */
 	public Collection<ModuleFitness> checkFitness();
 }

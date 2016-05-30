@@ -101,27 +101,7 @@ public class ModuleFitness {
 		return moduleName;
 	}
 
-	private final Map<FitnessFeature, Fitness> fitnessMap = new HashMap<>();
-
-	/**
-	 * Adds a {@link FitnessFeature} value. A health {@link FitnessFeature} can
-	 * not be set to {@link Fitness#CRITICAL}. If it was set to
-	 * {@link Fitness#CRITICAL}, its value is changed to {@link Fitness#HEALTHY}
-	 * . Parallel a fitness feature cannot be set to {@link Fitness#CRITICAL}.
-	 * If it was set to {@link Fitness#CRITICAL}, its value is changed to
-	 * {@link Fitness#HEALTHY}.
-	 * 
-	 * @param feature
-	 * @param fitness
-	 */
-	public void setFeature(final FitnessFeature feature, Fitness fitness) {
-		if (feature != null) {
-			if (FitnessFeature.getFitnessFeatures().contains(feature) && Fitness.CRITICAL.equals(fitness)) {
-				fitness = Fitness.HEALTHY;
-			}
-			this.fitnessMap.put(feature, fitness);
-		}
-	}
+	private final Map<FitnessFeature, Boolean> fitnessMap = new HashMap<>();
 
 	/**
 	 * Sets the value to the specified feature. If the {@link FitnessFeature} is
@@ -135,25 +115,11 @@ public class ModuleFitness {
 	 */
 	public void setFeature(final FitnessFeature feature, boolean value) {
 		if (feature != null) {
-			Fitness fitness= null;
-			if (FitnessFeature.getHealthFeatures().contains(feature)) {
-				if(value){
-					fitness = Fitness.HEALTHY;
-				}else{
-					fitness = Fitness.CRITICAL;
-				}
-			}else{
-				if(value){
-					fitness = Fitness.FIT;
-				}else{
-					fitness = Fitness.HEALTHY;
-				}
-			}
-			setFeature(feature, fitness);
+			fitnessMap.put(feature, Boolean.valueOf(value));
 		}
 	}
 
-	public Fitness getFitness(final FitnessFeature feature) {
+	public boolean getFitness(final FitnessFeature feature) {
 		return fitnessMap.get(feature);
 	}
 
@@ -170,19 +136,30 @@ public class ModuleFitness {
 	 * @return the overall fitness value
 	 */
 	public Fitness getOverallFitness() {
-		for (FitnessFeature feature : FitnessFeature.getHealthFeatures()) {
-			if (Fitness.CRITICAL.equals(fitnessMap.get(feature))) {
-				return Fitness.CRITICAL;
+		if (fitnessMap.size() == 0) {
+			return Fitness.FIT;
+		}
+		Fitness overallFitness = Fitness.CRITICAL;
+		for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
+			Boolean fitness = fitnessMap.get(healthFeature);
+			if (Boolean.FALSE.equals(fitness)) {
+				return overallFitness;
 			}
 		}
-		Fitness lowestFitness = Fitness.FIT;
-		for (FitnessFeature feature : FitnessFeature.getFitnessFeatures()) {
-			Fitness currentFitness = fitnessMap.get(feature);
-			if (currentFitness != null && lowestFitness.compareTo(currentFitness) < 0) {
-				lowestFitness = fitnessMap.get(feature);
+		overallFitness = Fitness.HEALTHY;
+		boolean hasFitnessValue = false;
+		for (FitnessFeature fitnessFeature : FitnessFeature.getFitnessFeatures()) {
+			Boolean fitness = fitnessMap.get(fitnessFeature);
+			if (Boolean.FALSE.equals(fitness)) {
+				return overallFitness;
+			} else if (Boolean.TRUE.equals(fitness)) {
+				hasFitnessValue = true;
 			}
 		}
-		return lowestFitness;
+		if (hasFitnessValue) {
+			overallFitness = Fitness.FIT;
+		}
+		return (overallFitness);
 	}
 
 	@Override
@@ -249,7 +226,7 @@ public class ModuleFitness {
 			moduleFitness = new ModuleFitness(moduleName);
 		}
 
-		public ModuleFitnessBuilder addFitnessFeature(final FitnessFeature feature, final Fitness fitness) {
+		public ModuleFitnessBuilder addFitnessFeature(final FitnessFeature feature, final boolean fitness) {
 			moduleFitness.setFeature(feature, fitness);
 			return this;
 		}

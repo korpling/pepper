@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
-import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -50,12 +49,12 @@ public class ModuleFitnessChecker {
 		}
 		final ModuleFitness fitness = checkHealth(module);
 
-		fitness.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, module.getSupplierHomepage() != null ? Fitness.FIT : Fitness.HEALTHY);
-		fitness.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, module.getSupplierContact() != null ? Fitness.FIT : Fitness.HEALTHY);
+		fitness.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, module.getSupplierHomepage() != null ? true : false);
+		fitness.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, module.getSupplierContact() != null ? true : false);
 
 		if (module instanceof PepperImporter) {
 			Double isImportableRate = ((PepperImporter) module).isImportable(corpusPath);
-			fitness.setFeature(FitnessFeature.IS_IMPORTABLE, isImportableRate != null ? Fitness.FIT : Fitness.HEALTHY);
+			fitness.setFeature(FitnessFeature.IS_IMPORTABLE, isImportableRate != null ? true : false);
 		}
 		return fitness;
 	}
@@ -89,7 +88,7 @@ public class ModuleFitnessChecker {
 			return null;
 		}
 		final ModuleFitness fitness = new ModuleFitness(module.getName());
-		fitness.setFeature(FitnessFeature.IS_READY_TO_RUN, module.isReadyToStart() ? Fitness.FIT : Fitness.CRITICAL);
+		fitness.setFeature(FitnessFeature.IS_READY_TO_RUN, module.isReadyToStart() ? true : false);
 
 		return fitness;
 	}

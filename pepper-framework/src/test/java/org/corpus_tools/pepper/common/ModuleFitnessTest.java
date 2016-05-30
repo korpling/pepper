@@ -23,49 +23,27 @@ public class ModuleFitnessTest {
 	}
 
 	@Test
-	public void whenSetingAFeature_thenTheFeatureMustExist() {
-		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, Fitness.FIT);
-		assertThat(fixture.getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(Fitness.FIT);
-	}
-
-	@Test
-	public void whenSetingNullFeature_thenNothingShouldHappen() {
-		fixture.setFeature(null, Fitness.FIT);
-	}
-
-	@Test
-	public void whenSetingAnOptionalFeatureWithCritical_thenFeatureShouldBeUnfit() {
-		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, Fitness.CRITICAL);
-		assertThat(fixture.getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(Fitness.HEALTHY);
-	}
-
-	@Test
-	public void whenSetingAFeatureTwice_thenTheFeatureMustHaveLastFitnessValue() {
-		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, Fitness.FIT);
-		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, Fitness.HEALTHY);
-		assertThat(fixture.getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(Fitness.HEALTHY);
+	public void whenSetingEmptyFeature_thenNothingShouldHappen() {
+		fixture.setFeature(null, true);
 	}
 	
 	@Test
-	public void whenSettingFitnessFeatureToTrue_thenItMustBeFit(){
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
-		assertThat(fixture.getFitness(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT)).isEqualTo(Fitness.FIT);
+	public void whenSettingFitnessFeatureToTrue_thenFeatureShouldBeTrue() {
+		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, true);
+		assertThat(fixture.getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(true);
 	}
+
 	@Test
-	public void whenSettingFitnessFeatureToFalse_thenItMustBeHealthy(){
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, false);
-		assertThat(fixture.getFitness(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT)).isEqualTo(Fitness.HEALTHY);
+	public void whenSetingFitnessFeatureToFalse_thenFeatureShouldBeFalse() {
+		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, false);
+		assertThat(fixture.getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(false);
 	}
+
 	@Test
-	public void whenSettingHealthFeatureTotrue_thenItMustBeHealthy(){
-		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, true);
-		assertThat(fixture.getFitness(FitnessFeature.IS_READY_TO_RUN)).isEqualTo(Fitness.HEALTHY);
-	}
-	
-	@Test
-	public void whenSettingHealthFeatureToFalse_thenItMustBeCritical(){
-		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, false);
-		assertThat(fixture.getFitness(FitnessFeature.IS_READY_TO_RUN)).isEqualTo(Fitness.CRITICAL);
+	public void whenSetingAFeatureTwice_thenTheFeatureMustHaveLastValue() {
+		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, true);
+		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, false);
+		assertThat(fixture.getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(false);
 	}
 
 	@Test
@@ -74,17 +52,23 @@ public class ModuleFitnessTest {
 	}
 
 	@Test
-	public void whenImportantFeatureFitnessIsCritical_thenOverallFitnessIsCritical() {
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, Fitness.FIT);
-		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, Fitness.CRITICAL);
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, Fitness.HEALTHY);
+	public void whenHealthFeatureFitnessIsFalse_thenOverallFitnessIsCritical() {
+		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
+		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, false);
+		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, false);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.CRITICAL);
 	}
 
 	@Test
-	public void whenLowestOptionalFeatureFitnessIsUnfit_thenOverallFitnessIsUnfit() {
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, Fitness.FIT);
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, Fitness.HEALTHY);
+	public void whenAtLeastOneFitnessFeatureIsFalse_thenOverallFitnessIsHealthy() {
+		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
+		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, false);
+		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.HEALTHY);
+	}
+	
+	@Test
+	public void whenOnlyHealthFeaturesExistAndTheyAreTrue_thenReturnHealthy(){
+		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, true);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 	}
 
@@ -104,15 +88,15 @@ public class ModuleFitnessTest {
 
 	@Test
 	public void whenTwoModuleFitnessObjectsDifferInFeatures_thenTheyShouldBeUnEqual() {
-		ModuleFitness template = new ModuleFitnessBuilder("myModule").addFitnessFeature(FitnessFeature.IS_IMPORTABLE, Fitness.FIT).build();
+		ModuleFitness template = new ModuleFitnessBuilder("myModule").addFitnessFeature(FitnessFeature.IS_IMPORTABLE, true).build();
 		assertThat(fixture).isNotEqualTo(template);
 		assertThat(fixture.hashCode()).isNotEqualTo(template.hashCode());
 	}
 
 	@Test
 	public void whenTwoModuleFitnessObjectsDifferInFeatureFitness_thenTheyShouldBeUnEqual() {
-		ModuleFitness template = new ModuleFitnessBuilder("myModule").addFitnessFeature(FitnessFeature.IS_IMPORTABLE, Fitness.FIT).build();
-		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, Fitness.HEALTHY);
+		ModuleFitness template = new ModuleFitnessBuilder("myModule").addFitnessFeature(FitnessFeature.IS_IMPORTABLE, true).build();
+		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, false);
 		assertThat(fixture).isNotEqualTo(template);
 		assertThat(fixture.hashCode()).isNotEqualTo(template.hashCode());
 	}

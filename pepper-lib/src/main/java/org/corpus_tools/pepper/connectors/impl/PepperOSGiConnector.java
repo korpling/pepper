@@ -848,7 +848,7 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	}
 
 	@Override
-	public Collection<String> checkHealth() {
+	public Collection<ModuleFitness> checkHealth() {
 		if (getPepper() == null) {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}

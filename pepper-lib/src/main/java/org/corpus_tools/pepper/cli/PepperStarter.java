@@ -606,7 +606,7 @@ public class PepperStarter {
 	 */
 	public String health() {
 		final StringBuilder retVal = new StringBuilder();
-		final Collection<ModuleFitness> moduleFitnisses = getPepper().checkFitness();
+		final Collection<ModuleFitness> moduleFitnisses = getPepper().checkHealth();
 		for (ModuleFitness moduleFitness : moduleFitnisses) {
 			final Fitness overallFitness = moduleFitness.getOverallFitness();
 			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
