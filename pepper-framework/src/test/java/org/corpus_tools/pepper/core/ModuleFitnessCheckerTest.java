@@ -5,6 +5,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Collection;
+
 import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -35,6 +37,12 @@ public class ModuleFitnessCheckerTest {
 		PepperModule module = mock(PepperModule.class);
 		when(module.isReadyToStart()).thenReturn(false);
 		assertThat(ModuleFitnessChecker.checkHealth(module).getFitness(FitnessFeature.IS_READY_TO_RUN)).isEqualTo(false);
+	}
+
+	@Test
+	public void whenCheckingHealthForNullSet_thenReturnEmptyList() {
+		Collection<PepperModule> modules = null;
+		ModuleFitnessChecker.checkHealth(modules).isEmpty();
 	}
 
 	@Test
@@ -83,6 +91,12 @@ public class ModuleFitnessCheckerTest {
 		PepperImporter module = mock(PepperImporter.class);
 		when(module.isImportable(any(URI.class))).thenReturn(null);
 		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(false);
+	}
+
+	@Test
+	public void whenCheckingFitnessForNullSet_thenReturnEmptyList() {
+		Collection<PepperModule> modules = null;
+		ModuleFitnessChecker.checkFitness(modules).isEmpty();
 	}
 
 	@Test
