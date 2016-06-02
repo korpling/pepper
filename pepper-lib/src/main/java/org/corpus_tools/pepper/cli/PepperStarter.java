@@ -587,10 +587,10 @@ public class PepperStarter {
 			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
 			if (!Fitness.FIT.equals(overallFitness)) {
 				for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
-					retVal.append(printFitnessDetails(healthFeature + "", moduleFitness.getFitness(healthFeature) + "", 80, 4));
+					retVal.append(printFitnessDetails(healthFeature + "", moduleFitness.getFitness(healthFeature) ? "YES" : "NO" + "", 80, 4));
 				}
 				for (FitnessFeature fitnessFeature : FitnessFeature.getFitnessFeatures()) {
-					retVal.append(printFitnessDetails(fitnessFeature + "", moduleFitness.getFitness(fitnessFeature) + "", 80, 4));
+					retVal.append(printFitnessDetails(fitnessFeature + "", moduleFitness.getFitness(fitnessFeature) ? "YES" : "NO" + "", 80, 4));
 				}
 			}
 		}
@@ -612,7 +612,7 @@ public class PepperStarter {
 			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
 			if (Fitness.HEALTHY.compareTo(overallFitness) < 0) {
 				for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
-					retVal.append(printFitnessDetails(healthFeature + "", moduleFitness.getFitness(healthFeature) + "", 80, 4));
+					retVal.append(printFitnessDetails(healthFeature + "", moduleFitness.getFitness(healthFeature) ? "YES" : "NO" + "", 80, 4));
 				}
 			}
 		}

@@ -31,3 +31,7 @@
 2016-05-30 21:52:03,846 WARN [main] o.e.j.o.b.i.s.DefaultJettyAtJettyHomeHelper [DefaultJettyAtJettyHomeHelper.java:149] No default jetty created.
 2016-05-30 22:06:46,114 WARN [main] o.e.j.o.b.i.s.DefaultJettyAtJettyHomeHelper [DefaultJettyAtJettyHomeHelper.java:149] No default jetty created.
 2016-05-30 22:06:48,339 WARN [main] o.c.p.c.ModuleResolverImpl [ModuleResolverImpl.java:404] Resource folder '/home/florian/work/SaltNPepper/workspace/pepper/pepper-lib/./plugins/pepper-framework-3.1.0-SNAPSHOT' for pepper module 'org.corpus-tools.pepper-framework' does not exist and will be created. 
+2016-06-02 22:49:06,313 WARN [main] o.e.j.o.b.i.s.DefaultJettyAtJettyHomeHelper [DefaultJettyAtJettyHomeHelper.java:149] No default jetty created.
+2016-06-02 22:49:12,503 WARN [main] o.c.p.c.ModuleResolverImpl [ModuleResolverImpl.java:404] Resource folder '/home/florian/work/SaltNPepper/workspace/pepper/pepper-lib/./plugins/pepper-framework-3.1.0-SNAPSHOT' for pepper module 'org.corpus-tools.pepper-framework' does not exist and will be created. 
+2016-06-02 22:57:59,937 WARN [main] o.e.j.o.b.i.s.DefaultJettyAtJettyHomeHelper [DefaultJettyAtJettyHomeHelper.java:149] No default jetty created.
+2016-06-02 22:58:01,573 WARN [main] o.c.p.c.ModuleResolverImpl [ModuleResolverImpl.java:404] Resource folder '/home/florian/work/SaltNPepper/workspace/pepper/pepper-lib/./plugins/pepper-framework-3.1.0-SNAPSHOT' for pepper module 'org.corpus-tools.pepper-framework' does not exist and will be created. 
