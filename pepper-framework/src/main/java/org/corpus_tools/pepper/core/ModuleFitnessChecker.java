@@ -2,6 +2,7 @@ package org.corpus_tools.pepper.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
@@ -27,8 +28,8 @@ public class ModuleFitnessChecker {
 	 * @param modules
 	 * @return
 	 */
-	public static Collection<ModuleFitness> checkFitness(final Collection<PepperModule> modules) {
-		final Collection<ModuleFitness> moduleFitness = new ArrayList<>();
+	public static List<ModuleFitness> checkFitness(final Collection<PepperModule> modules) {
+		final List<ModuleFitness> moduleFitness = new ArrayList<>();
 		if (modules == null) {
 			return moduleFitness;
 		}
@@ -69,8 +70,8 @@ public class ModuleFitnessChecker {
 	 * @param modules
 	 * @return
 	 */
-	public static Collection<ModuleFitness> checkHealth(final Collection<PepperModule> modules) {
-		final Collection<ModuleFitness> moduleFitness = new ArrayList<>();
+	public static List<ModuleFitness> checkHealth(final Collection<PepperModule> modules) {
+		final List<ModuleFitness> moduleFitness = new ArrayList<>();
 		if (modules == null) {
 			return moduleFitness;
 		}
