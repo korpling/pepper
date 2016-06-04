@@ -25,21 +25,21 @@ import org.corpus_tools.salt.common.SDocument;
  * A mapping task in the Pepper workflow is not a monolithic block. It consists
  * of several smaller steps.
  * <ul>
- * <li>Declare the fingerprint of the module. This is part of the constructor.</li>
+ * <li>Declare the fingerprint of the module. This is part of the constructor.
+ * </li>
  * <li>Check readyness of the module.</li>
  * <li>Map the document structure and create a mapper for each corpus and
  * document.</li>
  * <li>clean-up</li>
  * </ul>
  * The following describes the single steps in short. To get a more detailed
- * explanation, take a look to the documentations found at <a
- * href="http://u.hu-berlin.de/saltnpepper"
- * >http://u.hu-berlin.de/saltnpepper</a>.
+ * explanation, take a look to the documentations found at
+ * <a href="http://u.hu-berlin.de/saltnpepper" >http://u.hu-berlin.de/
+ * saltnpepper</a>.
  * </p>
  * <p>
- * <h3>Declare the fingerprint</h3>
- * Initialize the module and set the modules name and description. This is part
- * of the constructor:
+ * <h3>Declare the fingerprint</h3> Initialize the module and set the modules
+ * name and description. This is part of the constructor:
  * 
  * <pre>
  * public MyModule() {
@@ -52,12 +52,12 @@ import org.corpus_tools.salt.common.SDocument;
  * 
  * </p>
  * <p>
- * <h3>Check readyness of the module</h3>
- * This method is invoked by the Pepper framework before the mapping process is
- * started. This method must return true, otherwise, this Pepper module could
- * not be used in a Pepper workflow. At this point problems which prevent the
- * module from being used you can report all problems to the user, for instance
- * a database connection could not be established.
+ * <h3>Check readyness of the module</h3> This method is invoked by the Pepper
+ * framework before the mapping process is started. This method must return
+ * true, otherwise, this Pepper module could not be used in a Pepper workflow.
+ * At this point problems which prevent the module from being used you can
+ * report all problems to the user, for instance a database connection could not
+ * be established.
  * 
  * <pre>
  * public boolean isReadyToStart() {
@@ -67,10 +67,10 @@ import org.corpus_tools.salt.common.SDocument;
  * 
  * </p>
  * <p>
- * <h3>Map the document structure</h3>
- * In the method {@link #createPepperMapper(SElementId)} a {@link PepperMapper}
- * object needs to be initialized and returned. The {@link PepperMapper} is the
- * major part major part doing the mapping. It provides the methods
+ * <h3>Map the document structure</h3> In the method
+ * {@link #createPepperMapper(SElementId)} a {@link PepperMapper} object needs
+ * to be initialized and returned. The {@link PepperMapper} is the major part
+ * major part doing the mapping. It provides the methods
  * {@link PepperMapper#mapSCorpus()} to handle the mapping of a single
  * {@link SCorpus} object and {@link PepperMapper#mapSDocument()} to handle a
  * single {@link SDocument} object. Both methods are invoked by the Pepper
@@ -107,11 +107,11 @@ import org.corpus_tools.salt.common.SDocument;
  * 
  * </p>
  * <p>
- * <h3>clean-up</h3>
- * Sometimes it might be necessary to clean up after the module did the job. For
- * instance when writing an im- or an exporter it might be necessary to close
- * file streams, a db connection etc. Therefore, after the processing is done,
- * the Pepper framework calls the method described in the following snippet:
+ * <h3>clean-up</h3> Sometimes it might be necessary to clean up after the
+ * module did the job. For instance when writing an im- or an exporter it might
+ * be necessary to close file streams, a db connection etc. Therefore, after the
+ * processing is done, the Pepper framework calls the method described in the
+ * following snippet:
  * 
  * <pre>
  * public void end() {

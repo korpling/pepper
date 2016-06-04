@@ -62,7 +62,6 @@ import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.exceptions.PepperInActionException;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.DocumentController;
-import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;

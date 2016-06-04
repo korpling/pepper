@@ -412,8 +412,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
-	 * {@inheritDoc
-	 * PepperModule#setPepperModuleController_basic(ModuleController)}
+	 * {@inheritDoc PepperModule#setPepperModuleController_basic(ModuleController)}
 	 */
 	@Override
 	public void setPepperModuleController_basic(ModuleController newModuleController) {
@@ -1038,7 +1037,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		// < pepper 1.1.6
 		// if (controller== null)
 		// throw new
-		// PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
+		// PepperFWException("Cannot return the progress for sDocumentId
+		// '"+sDocumentId+"', because no mapper controller exists. This might be
+		// a bug.");
 		if (controller != null) {
 			return (controller.getProgress());
 		} else {

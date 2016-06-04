@@ -40,11 +40,12 @@ import org.slf4j.LoggerFactory;
  * this class is derived from the general {@link Properties} class. It is
  * enhanced for methods to have an easier access to fields to configure the
  * Pepper framework, but you can also find anything necessary when treating this
- * object as a normal {@link Properties} object. <h1>Loading and resolving
- * configuration</h1> Next to the the mechanisms of loading a prop file or an
- * xml file, this object can also resolve the configuration file by checking the
- * location of the Pepper bundle. It is assumed, that the configuration file is
- * contained in one of two possible locations.
+ * object as a normal {@link Properties} object.
+ * <h1>Loading and resolving configuration</h1> Next to the the mechanisms of
+ * loading a prop file or an xml file, this object can also resolve the
+ * configuration file by checking the location of the Pepper bundle. It is
+ * assumed, that the configuration file is contained in one of two possible
+ * locations.
  * <ol>
  * <li>development phase: it is assumed, that the configuration file is stored
  * in PEPPER_SOURCE_HOME/src/main/resoruces</li>
@@ -129,7 +130,7 @@ public class PepperConfiguration extends Properties {
 	 * This array contains all properties, which with the Pepper framework can
 	 * be configured.
 	 */
-	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS};
+	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS };
 	public static final String ENV_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 	public static final String PROP_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 

@@ -195,7 +195,7 @@ public class PepperOSGiRunner implements Runnable {
 						observer.setStop(true);
 						logger.info(job.getStatusReport());
 					}
-				}// pepper can be started
+				} // pepper can be started
 			}
 			millis = System.currentTimeMillis() - millis;
 			logger.info("Conversion ended, and needed: " + millis + " ms");

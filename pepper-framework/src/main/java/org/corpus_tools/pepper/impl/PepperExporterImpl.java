@@ -46,8 +46,8 @@ import org.eclipse.emf.common.util.URI;
  * This class is an abstract implementation of {@link PepperExporter} and cannot
  * be instantiated directly. To implement an exporter for Pepper, the easiest
  * way is to derive this class. For further information, read the javadoc of
- * {@link PepperManipulator} and the documentation of <a
- * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * {@link PepperManipulator} and the documentation of
+ * <a href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
  * </p>
  * 
  * @see PepperManipulator
@@ -147,8 +147,7 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	}
 
 	/**
-	 * {@inheritDoc
-	 * PepperExporter#setExportMode(org.corpus_tools.pepper.modules.
+	 * {@inheritDoc PepperExporter#setExportMode(org.corpus_tools.pepper.modules.
 	 * PepperExporter.EXPORT_MODE)}
 	 */
 	public void setExportMode(EXPORT_MODE exportMode) {

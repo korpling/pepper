@@ -132,14 +132,15 @@ public class PepperModuleProperties implements Serializable {
 	/**
 	 * Removes all annotations matching the search template. Several templates
 	 * are separated by a semicolon. To remove annoattions use the following
-	 * syntax:
-	 * 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value'
+	 * syntax: 'namespace::name=value (;namespace::name=value) :=
+	 * new_namespace::new_name=new_value'
 	 */
 	public static final String PROP_AFTER_REMOVE_ANNOTATIONS = PREFIX_PEPPER_AFTER + "removeAnnos";
 	/**
 	 * Tokenizes all primary data in the document structrue.
 	 */
 	public static final String PROP_AFTER_TOKENIZE = PREFIX_PEPPER_AFTER + "tokenize";
+
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
 	 * with a set of customization properties. These properties are:

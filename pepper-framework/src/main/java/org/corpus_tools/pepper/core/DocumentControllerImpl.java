@@ -428,19 +428,19 @@ public class DocumentControllerImpl implements DocumentController {
 				// if one PepperModuleController says deleted, status is deleted
 				newGlobalStatus = DOCUMENT_STATUS.DELETED;
 				break;
-			}// if one PepperMOduleController says deleted, status is deleted
+			} // if one PepperMOduleController says deleted, status is deleted
 			else if (DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) {
 				// if one PepperModuleController says IN_PROCESS, status is
 				// IN_PROCESS
 				newGlobalStatus = DOCUMENT_STATUS.IN_PROGRESS;
 				break;
-			}// if one PepperModuleController says IN_PROCESS, status is
+			} // if one PepperModuleController says IN_PROCESS, status is
 				// IN_PROCESS
 			else if (DOCUMENT_STATUS.FAILED.equals(detailedStatus.getStatus())) {
 				// if one PepperModuleController says FAILED, status is FAILED
 				newGlobalStatus = DOCUMENT_STATUS.FAILED;
 				break;
-			}// if one PepperModuleController says FAILED, status is FAILED
+			} // if one PepperModuleController says FAILED, status is FAILED
 			else if (DOCUMENT_STATUS.COMPLETED.equals(detailedStatus.getStatus())) {
 				completedExists = true;
 			} else if (DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus())) {

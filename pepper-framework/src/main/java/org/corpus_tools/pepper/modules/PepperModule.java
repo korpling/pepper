@@ -390,7 +390,8 @@ public interface PepperModule {
 	 * Default initializations are done there (for more details, please take a
 	 * look into the doc of that method). Further this method links the created
 	 * {@link PepperMapper} object to a {@link PepperMapperController} object
-	 * and makes sure, that the process runs in a by Pepper controlled manner. <br/>
+	 * and makes sure, that the process runs in a by Pepper controlled manner.
+	 * <br/>
 	 * <strong>Note: When your module should not run in multithreaded mode, call
 	 * {@link #setIsMultithreaded(boolean)}.</strong> <br/>
 	 * <strong>Note: In case of you override this method, please make sure to

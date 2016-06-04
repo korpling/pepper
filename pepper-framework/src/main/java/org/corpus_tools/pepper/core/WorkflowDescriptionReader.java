@@ -81,7 +81,9 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 
 	/** current property object for either a module or the entire Pepper job **/
 	private Properties props = null;
-	/** the name of a property to be added to either a Pepper module or a job **/
+	/**
+	 * the name of a property to be added to either a Pepper module or a job
+	 **/
 	private String propName = null;
 	/** the value for the property **/
 	private StringBuilder propValue = null;

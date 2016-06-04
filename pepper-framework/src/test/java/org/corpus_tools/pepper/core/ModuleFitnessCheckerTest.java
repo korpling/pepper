@@ -24,11 +24,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ModuleFitnessCheckerTest {
 
-	private PepperImporter createFitImporter(){
+	private PepperImporter createFitImporter() {
 		PepperImporter fitModule = mock(PepperImporter.class);
 		when(fitModule.isReadyToStart()).thenReturn(true);
 		when(fitModule.getName()).thenReturn("MyImporter");
-		
+
 		when(fitModule.getSupplierContact()).thenReturn(URI.createURI(""));
 		when(fitModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
 		when(fitModule.getDesc()).thenReturn("any description");
@@ -36,8 +36,8 @@ public class ModuleFitnessCheckerTest {
 		when(fitModule.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("format")));
 		return fitModule;
 	}
-	
-	private PepperModule createHealthyModule(){
+
+	private PepperModule createHealthyModule() {
 		PepperModule healthyModule = mock(PepperImporter.class);
 		when(healthyModule.getName()).thenReturn("MyModule");
 		when(healthyModule.getDesc()).thenReturn("any description");
@@ -46,7 +46,7 @@ public class ModuleFitnessCheckerTest {
 		when(healthyModule.isReadyToStart()).thenReturn(true);
 		return healthyModule;
 	}
-	
+
 	@Test
 	public void whenCheckingHealthForNull_thenReturnNull() {
 		PepperModule module = null;
@@ -200,7 +200,7 @@ public class ModuleFitnessCheckerTest {
 		when(exporter.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc()));
 		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
 	}
-	
+
 	@Test
 	public void whenCheckingFitnessForNullSet_thenReturnEmptyList() {
 		Collection<PepperModule> modules = null;
@@ -218,7 +218,7 @@ public class ModuleFitnessCheckerTest {
 		PepperModule module = createFitImporter();
 		assertThat(ModuleFitnessChecker.checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
 	}
-	
+
 	@Test
 	public void whenCheckingFitnessForMultipleModules_thenReturnListOfFitnessValues() {
 		PepperModule fitModule = createFitImporter();

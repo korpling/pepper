@@ -41,7 +41,8 @@ import org.eclipse.emf.common.util.URI;
  * A mapping task in the Pepper workflow is not a monolithic block. It consists
  * of several smaller steps.
  * <ul>
- * <li>Declare the fingerprint of the module. This is part of the constructor.</li>
+ * <li>Declare the fingerprint of the module. This is part of the constructor.
+ * </li>
  * <li>Check readyness of the module.</li>
  * <li>Analyze whether the files in the passed corpus path is importable by this
  * importer.</li>
@@ -51,15 +52,14 @@ import org.eclipse.emf.common.util.URI;
  * <li>clean-up</li>
  * </ul>
  * The following describes the single steps in short. To get a more detailed
- * explanation, take a look to the documentations found at <a
- * href="http://u.hu-berlin.de/saltnpepper"
- * >http://u.hu-berlin.de/saltnpepper</a>.
+ * explanation, take a look to the documentations found at
+ * <a href="http://u.hu-berlin.de/saltnpepper" >http://u.hu-berlin.de/
+ * saltnpepper</a>.
  * </p>
  * <p>
- * <h3>Declare the fingerprint</h3>
- * Initialize the module and set the modules name, its description and the
- * format description of data which are importable. This is part of the
- * constructor:
+ * <h3>Declare the fingerprint</h3> Initialize the module and set the modules
+ * name, its description and the format description of data which are
+ * importable. This is part of the constructor:
  * 
  * <pre>
  * public MyModule() {
@@ -73,12 +73,12 @@ import org.eclipse.emf.common.util.URI;
  * 
  * </p>
  * <p>
- * <h3>Check readyness of the module</h3>
- * This method is invoked by the Pepper framework before the mapping process is
- * started. This method must return true, otherwise, this Pepper module could
- * not be used in a Pepper workflow. At this point problems which prevent the
- * module from being used you can report all problems to the user, for instance
- * a database connection could not be established.
+ * <h3>Check readyness of the module</h3> This method is invoked by the Pepper
+ * framework before the mapping process is started. This method must return
+ * true, otherwise, this Pepper module could not be used in a Pepper workflow.
+ * At this point problems which prevent the module from being used you can
+ * report all problems to the user, for instance a database connection could not
+ * be established.
  * 
  * <pre>
  * public boolean isReadyToStart() {
@@ -88,15 +88,14 @@ import org.eclipse.emf.common.util.URI;
  * 
  * </p>
  * <p>
- * <h3>Analyze data</h3>
- * Depending on the formats you want to support with your importer the detection
- * can be very different. In the simplest case, it only is necessary, to search
- * through the files at the given location (or to recursively traverse through
- * directories, in case the location points to a directory), and to read their
- * header section. For instance some formats like the xml formats PAULA (see:
- * http:// www.sfb632.uni-potsdam.de/en/paula.html ) or TEI (see:
- * http://www.tei-c.org/Guidelines/P5/). The method should return a value
- * between 0 and 1, where 0 means not importable and 1 means definitely
+ * <h3>Analyze data</h3> Depending on the formats you want to support with your
+ * importer the detection can be very different. In the simplest case, it only
+ * is necessary, to search through the files at the given location (or to
+ * recursively traverse through directories, in case the location points to a
+ * directory), and to read their header section. For instance some formats like
+ * the xml formats PAULA (see: http:// www.sfb632.uni-potsdam.de/en/paula.html )
+ * or TEI (see: http://www.tei-c.org/Guidelines/P5/). The method should return a
+ * value between 0 and 1, where 0 means not importable and 1 means definitely
  * importable. If null is returned, Pepper interprets this as unknown and will
  * never suggest this module to the user.
  * 
@@ -137,10 +136,10 @@ import org.eclipse.emf.common.util.URI;
  * no matter their ending.
  * </p>
  * <p>
- * <h3>Import the document structure</h3>
- * In the method {@link #createPepperMapper(Identifier)} a {@link PepperMapper}
- * object needs to be initialized and returned. The {@link PepperMapper} is the
- * major part major part doing the mapping. It provides the methods
+ * <h3>Import the document structure</h3> In the method
+ * {@link #createPepperMapper(Identifier)} a {@link PepperMapper} object needs
+ * to be initialized and returned. The {@link PepperMapper} is the major part
+ * major part doing the mapping. It provides the methods
  * {@link PepperMapper#mapSCorpus()} to handle the mapping of a single
  * {@link SCorpus} object and {@link PepperMapper#mapSDocument()} to handle a
  * single {@link SDocument} object. Both methods are invoked by the Pepper
@@ -177,7 +176,8 @@ import org.eclipse.emf.common.util.URI;
  * 	};
  * 	// pass current file or folder to mapper. When using
  * 	// PepperImporter.importCorpusStructure or
- * 	// PepperExporter.exportCorpusStructure, the mapping between file or folder
+ * 	// PepperExporter.exportCorpusStructure, the mapping between file or
+ * 	// folder
  * 	// and SCorpus or SDocument was stored here
  * 	mapper.setResourceURI(getIdentifier2ResourceTable().get(sElementId));
  * 	return (mapper);
@@ -186,11 +186,11 @@ import org.eclipse.emf.common.util.URI;
  * 
  * </p>
  * <p>
- * <h3>clean-up</h3>
- * Sometimes it might be necessary to clean up after the module did the job. For
- * instance when writing an im- or an exporter it might be necessary to close
- * file streams, a db connection etc. Therefore, after the processing is done,
- * the Pepper framework calls the method described in the following snippet:
+ * <h3>clean-up</h3> Sometimes it might be necessary to clean up after the
+ * module did the job. For instance when writing an im- or an exporter it might
+ * be necessary to close file streams, a db connection etc. Therefore, after the
+ * processing is done, the Pepper framework calls the method described in the
+ * following snippet:
  * 
  * <pre>
  * public void end() {
@@ -284,8 +284,8 @@ public interface PepperImporter extends PepperModule {
 	public Collection<String> getCorpusEndings();
 
 	/**
-	 * Returns a collection of filenames, not to be imported. {@inheritDoc
-	 * #importIgnoreList} . To add endings to the collection, call
+	 * Returns a collection of filenames, not to be imported.
+	 * {@inheritDoc #importIgnoreList} . To add endings to the collection, call
 	 * {@link Collection#add(Ending)} and to remove endings from the collection,
 	 * call {@link Collection#remove(Ending)}.
 	 * 
@@ -304,7 +304,8 @@ public interface PepperImporter extends PepperModule {
 	 * If this method is not overridden, the default behavior is:
 	 * <ul>
 	 * <li>For each file having an ending, which is contained in
-	 * {@link #getDocumentEndings()} {@link SALT_TYPE#SDOCUMENT} is returned</li>
+	 * {@link #getDocumentEndings()} {@link SALT_TYPE#SDOCUMENT} is returned
+	 * </li>
 	 * <li>For each file having an ending, which is contained in
 	 * {@link #getCorpusEndings()} {@link SALT_TYPE#SCorpus} is returned</li>
 	 * <li>If {@link #getDocumentEndings()} contains {@link #ENDING_ALL_FILES},

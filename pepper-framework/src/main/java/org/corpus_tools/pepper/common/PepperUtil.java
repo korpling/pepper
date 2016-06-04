@@ -628,8 +628,8 @@ public abstract class PepperUtil {
 	}
 
 	/**
-	 * Prints the status of the passed {@link PepperJob} object, until {@link
-	 * #setStop(Boolean#TRUE)} was called.
+	 * Prints the status of the passed {@link PepperJob} object, until
+	 * {@link #setStop(Boolean#TRUE)} was called.
 	 * 
 	 * @author florian
 	 * 

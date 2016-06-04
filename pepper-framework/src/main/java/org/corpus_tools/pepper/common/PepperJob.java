@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.core.Step;
-import org.corpus_tools.pepper.exceptions.PepperInActionException;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.ModuleController;
+import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.salt.common.SaltProject;
 import org.eclipse.emf.common.util.URI;
 
@@ -90,7 +90,6 @@ public abstract class PepperJob {
 		return (status);
 	}
 
-	
 	/**
 	 * Returns the {@link SaltProject} which is converted by this job.
 	 * 
@@ -98,7 +97,6 @@ public abstract class PepperJob {
 	 */
 	public abstract SaltProject getSaltProject();
 
-	
 	/**
 	 * Returns a formated string as a kind of a document centric progress
 	 * status. For each document its overall status and specific statuses in
@@ -142,10 +140,12 @@ public abstract class PepperJob {
 		getStepDescs().add(stepDesc);
 	}
 
-/**
-	 * Creates a {@link StepDesc} object an returns it, without adding the created {@link StepDesc} object
-	 * to this {@link PepperJob} object. For adding that object, call {@link #addStepDesc(StepDesc)}. Or if you
-	 * want to do that at once call {@link #createStepDesc(MODULE_TYPE)
+	/**
+	 * Creates a {@link StepDesc} object an returns it, without adding the
+	 * created {@link StepDesc} object to this {@link PepperJob} object. For
+	 * adding that object, call {@link #addStepDesc(StepDesc)}. Or if you want
+	 * to do that at once call {@link #createStepDesc(MODULE_TYPE)
+	 * 
 	 * @return created {@link StepDesc} object
 	 */
 	public StepDesc createStepDesc() {

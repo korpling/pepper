@@ -26,8 +26,8 @@ import org.corpus_tools.pepper.modules.PepperModule;
  * This class is an abstract implementation of {@link PepperManipulator} and
  * cannot be instantiated directly. To implement an exporter for Pepper, the
  * easiest way is to derive this class. For further information, read the
- * javadoc of {@link PepperManipulator} and the documentation of <a
- * href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * javadoc of {@link PepperManipulator} and the documentation of
+ * <a href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
  * </p>
  * 
  * @see PepperManipulator

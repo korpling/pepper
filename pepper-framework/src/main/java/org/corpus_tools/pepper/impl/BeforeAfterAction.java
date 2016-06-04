@@ -368,15 +368,15 @@ public class BeforeAfterAction {
 					}
 				}
 				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue() != null) {
-					//remove is also done by rename
-					
+					// remove is also done by rename
+
 					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
 						renameAnnotations(id, (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue());
 					}
 				}
-				if ((Boolean)getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_TOKENIZE).getValue()) {
-					//remove is also done by rename
-					
+				if ((Boolean) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_TOKENIZE).getValue()) {
+					// remove is also done by rename
+
 					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
 						((SDocument) id.getIdentifiableElement()).getDocumentGraph().tokenize();
 					}
@@ -521,7 +521,7 @@ public class BeforeAfterAction {
 						renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), null);
 					}
 				}
-				
+
 				SDocument document = (SDocument) id.getIdentifiableElement();
 
 				// rename all annotations of nodes
@@ -544,11 +544,10 @@ public class BeforeAfterAction {
 			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {
 				Label label = node.getLabel(entry.getKey()[0], entry.getKey()[1]);
 				if (label != null) {
-					if (entry.getValue()== null){
-						//remove label
+					if (entry.getValue() == null) {
+						// remove label
 						node.removeLabel(label.getQName());
-					}
-					else if (label.getQName().equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
+					} else if (label.getQName().equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
 						// if only value is different
 						label.setValue(entry.getValue()[2]);
 					} else {

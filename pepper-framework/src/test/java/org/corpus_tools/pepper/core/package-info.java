@@ -1,5 +1,6 @@
 /**
- * This package is a test package for org.corpus_tools.pepper.core 
+ * This package is a test package for org.corpus_tools.pepper.core
+ * 
  * @author florian
  *
  */

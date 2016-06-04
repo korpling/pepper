@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.eclipse.emf.common.util.URI;
 
 /**

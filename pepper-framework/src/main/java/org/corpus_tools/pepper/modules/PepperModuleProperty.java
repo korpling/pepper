@@ -237,7 +237,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 			// File
 			else if (File.class.isAssignableFrom(clazz))
 				this.value = (T) new File(value);
-		}// end: checks type of value
+		} // end: checks type of value
 	}
 
 	/**

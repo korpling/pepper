@@ -82,7 +82,8 @@ public class CorpusDesc {
 	 * 
 	 * @param corpusPath
 	 *            location of corpus
-	 * @param this object
+	 * @param this
+	 *            object
 	 */
 	public CorpusDesc setCorpusPath(URI corpusPath) {
 		this.corpusPath = corpusPath;

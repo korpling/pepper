@@ -471,7 +471,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 		return (resourcePathStr);
 	}
 
-	/** Configuration object to configure behaviour of {@link ModuleResolverImpl} **/
+	/**
+	 * Configuration object to configure behaviour of {@link ModuleResolverImpl}
+	 **/
 	private volatile PepperConfiguration pepperConfiguration = null;
 
 	/** {@inheritDoc} **/

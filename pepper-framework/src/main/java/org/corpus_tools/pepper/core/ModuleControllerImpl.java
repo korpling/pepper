@@ -76,7 +76,9 @@ public class ModuleControllerImpl implements ModuleController {
 		return (id);
 	}
 
-	/** The {@link PepperModule} object, this controller object is observing. **/
+	/**
+	 * The {@link PepperModule} object, this controller object is observing.
+	 **/
 	protected PepperModule pepperModule;
 
 	/** {@inheritDoc} **/
@@ -388,7 +390,9 @@ public class ModuleControllerImpl implements ModuleController {
 
 		// if (!this.started)
 		// throw new
-		// PepperConvertException("Cannot finish the given element-id, because the module-controller was not started (please call sytart() first).");
+		// PepperConvertException("Cannot finish the given element-id, because
+		// the module-controller was not started (please call sytart()
+		// first).");
 		getOutputDocumentBus().put(documentController);
 		// removes document controller of list of to be processed document
 		// controllers

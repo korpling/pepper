@@ -133,7 +133,7 @@ public class CorpusPathResolver {
 	 * 
 	 * @param corpusPath
 	 * @return
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
 	 */
 	protected Multimap<String, File> groupFilesByEnding(final URI corpusPath) throws FileNotFoundException {
 		final Multimap<String, File> files = HashMultimap.create();
@@ -166,10 +166,10 @@ public class CorpusPathResolver {
 		if (readFiles != null) {
 			numOfReadFiles = readFiles.size();
 		}
-		if (unreadFilesGroupedByExtension== null){
+		if (unreadFilesGroupedByExtension == null) {
 			throw new NotInitializedException("Please call setCorpusPath(URI) first or use other constructor new CorpusPathResolver(URI). ");
 		}
-		
+
 		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(fileEnding);
 		// read files as long as there are files to be read
 		if (unreadFiles != null) {

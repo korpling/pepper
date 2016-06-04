@@ -9,9 +9,7 @@ import java.util.Arrays;
 
 import org.corpus_tools.pepper.core.ModuleResolver;
 import org.corpus_tools.pepper.core.PepperImpl;
-import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
-import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
@@ -20,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,7 +56,7 @@ public class Pepper_findAppropriateImportersTest {
 
 		assertThat(fixture.findAppropriateImporters(sampleURI)).containsExactlyInAnyOrder(importer1.getName(), importer2.getName());
 	}
-	
+
 	@Test
 	public void whenFindAppropriateImportersAndNoImporterIsRegistered_thenReturnEmptySet() throws FileNotFoundException {
 		URI sampleURI = URI.createFileURI(PepperTestUtil.getTempPath_static("findAppropriateImporters").getAbsolutePath());

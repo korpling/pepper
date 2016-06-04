@@ -83,7 +83,7 @@ public class StepDesc {
 	 */
 	public synchronized StepDesc setModuleType(MODULE_TYPE moduleType) {
 		this.moduleType = moduleType;
-		return(this);
+		return (this);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class StepDesc {
 	 */
 	public synchronized StepDesc setName(String name) {
 		this.name = name;
-		return(this);
+		return (this);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class StepDesc {
 	 */
 	public synchronized StepDesc setVersion(String version) {
 		this.version = version;
-		return(this);
+		return (this);
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class StepDesc {
 	 */
 	public synchronized StepDesc setCorpusDesc(CorpusDesc corpusDesc) {
 		this.corpusDesc = corpusDesc;
-		return(this);
+		return (this);
 	}
 
 	/** object for temporary storage of customization properties **/
@@ -221,7 +221,7 @@ public class StepDesc {
 	 */
 	public synchronized StepDesc setProps(Properties props) {
 		this.props = props;
-		return(this);
+		return (this);
 	}
 
 	public void toXML(XMLStreamWriter writer) {

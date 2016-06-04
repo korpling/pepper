@@ -329,12 +329,12 @@ public class PepperImpl implements Pepper {
 		}
 		return modules;
 	}
-	
+
 	@Override
 	public Collection<ModuleFitness> checkFitness() {
 		return ModuleFitnessChecker.checkFitness(getAllRegisteredModules());
 	}
-	
+
 	@Override
 	public Collection<ModuleFitness> checkHealth() {
 		return ModuleFitnessChecker.checkHealth(getAllRegisteredModules());

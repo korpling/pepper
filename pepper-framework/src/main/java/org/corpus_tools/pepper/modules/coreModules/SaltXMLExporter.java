@@ -40,15 +40,14 @@ import org.osgi.service.component.annotations.Component;
  * got by method getSaltFileEnding(). <br/>
  * <br/>
  * When method start() is called, the saltProject will be attached to a resource
- * with the uri
- * "this.getCorpusDefinition().getCorpusPath().toFileString() +"/"+ "
- * saltProject"+ SALT_ENDING". Before it can be stored, all documents have to be
- * processed. <br/>
+ * with the uri "this.getCorpusDefinition().getCorpusPath().toFileString() +"/
+ * "+ " saltProject"+ SALT_ENDING". Before it can be stored, all documents have
+ * to be processed. <br/>
  * The module now waits for documents which can be exported. When a document
  * finished all previous modules, it can be exported. This means, that 1) every
  * document will also get a resource with the uri
- * "this.getCorpusDefinition().getCorpusPath().toFileString() + "
- * /" sElementId.getSElementPath()+ SALT_FILE_ENDING". And 2) the document
+ * "this.getCorpusDefinition().getCorpusPath().toFileString() + " /
+ * " sElementId.getSElementPath()+ SALT_FILE_ENDING". And 2) the document
  * structure will be stored to file. <br/>
  * After all was done, the saltProject will be exported.
  * 
@@ -113,15 +112,18 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	// private void createSaltProjectResource() {
 	// if (this.getSaltProject() == null) {
 	// throw new
-	// PepperModuleException("Cannot export the SaltProject, because the saltProject is null.");
+	// PepperModuleException("Cannot export the SaltProject, because the
+	// saltProject is null.");
 	// }
 	// if (this.getCorpusDesc() == null) {
 	// throw new
-	// PepperModuleException("Cannot export the SaltProject, because no corpus definition is given for export.");
+	// PepperModuleException("Cannot export the SaltProject, because no corpus
+	// definition is given for export.");
 	// }
 	// if (this.getCorpusDesc().getCorpusPath() == null) {
 	// throw new
-	// PepperModuleException("Cannot export the SaltProject, because no corpus path is given for export.");
+	// PepperModuleException("Cannot export the SaltProject, because no corpus
+	// path is given for export.");
 	// }
 	//
 	// // create export URI
@@ -165,8 +167,8 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	}
 
 	/**
-	 * Creates a mapper of type {@link SaltXMLExporterMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(Identifier)}
+	 * Creates a mapper of type {@link SaltXMLExporterMapper}.
+	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {
@@ -203,7 +205,8 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		// saltProjectResource.save(null);
 		// } catch (IOException e) {
 		// throw new
-		// PepperModuleException("Cannot export saltProject, nested exception is: ",
+		// PepperModuleException("Cannot export saltProject, nested exception
+		// is: ",
 		// e);
 		// }
 		// exporting corpus structure

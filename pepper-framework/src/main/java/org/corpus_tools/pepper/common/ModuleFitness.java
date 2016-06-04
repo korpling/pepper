@@ -66,16 +66,14 @@ public class ModuleFitness {
 		/**
 		 * Name of fitness feature determining whether
 		 * {@link PepperImporter#getSupportedFormats()}
-		 * {@link PepperExporter#getSupportedFormats()} is supported.
-		 * <br/>
+		 * {@link PepperExporter#getSupportedFormats()} is supported. <br/>
 		 * Only for {@link PepperImporter} and {@link PepperExporter}.
 		 */
 		HAS_SUPPORTED_FORMATS,
 		/**
 		 * Name of fitness feature determining whether
 		 * {@link PepperImporter#isImportable(org.eclipse.emf.common.util.URI)}
-		 * is implemented.
-		 * <br/>
+		 * is implemented. <br/>
 		 * Only for {@link PepperImporter}.
 		 **/
 		IS_IMPORTABLE;
@@ -104,7 +102,7 @@ public class ModuleFitness {
 		 */
 		public static Collection<FitnessFeature> getFitnessFeatures() {
 			if (FITNESS_FEATURES.size() < 1) {
-				
+
 				FITNESS_FEATURES.add(HAS_SUPPLIER_CONTACT);
 				FITNESS_FEATURES.add(HAS_SUPPLIER_HP);
 				FITNESS_FEATURES.add(HAS_DESCRIPTION);

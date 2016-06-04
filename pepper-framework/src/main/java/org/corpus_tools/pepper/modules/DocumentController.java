@@ -152,7 +152,7 @@ public interface DocumentController {
 	 * contained {@link SDocument} object has to pass.
 	 * 
 	 * @return a list of all {@link ModuleControllerImpl} objects
-	 * **/
+	 **/
 	public List<ModuleControllerImpl> getModuleControllers();
 
 	/**
@@ -160,7 +160,7 @@ public interface DocumentController {
 	 * document.
 	 * 
 	 * @return the currently active {@link ModuleController}
-	 * **/
+	 **/
 	public ModuleController getCurrentModuleController();
 
 	/**
@@ -174,7 +174,7 @@ public interface DocumentController {
 	 * @param moduleController
 	 *            {@link ModuleControllerImpl} the {@link SDocument} also has to
 	 *            pass
-	 * **/
+	 **/
 	public void addModuleControllers(ModuleControllerImpl moduleController);
 
 	/**
