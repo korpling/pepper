@@ -104,6 +104,13 @@ public class ModuleFitnessCheckerTest {
 	}
 
 	@Test
+	public void whenCheckingFitnessFeatureThrowsException_thenCorrespondingFitnessFeatureShouldBeFalse() {
+		PepperModule module = mock(PepperModule.class);
+		when(module.getDesc()).thenThrow(new RuntimeException());
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(false);
+	}
+	
+	@Test
 	public void whenModuleHasName_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getName()).thenReturn("MyModule");
