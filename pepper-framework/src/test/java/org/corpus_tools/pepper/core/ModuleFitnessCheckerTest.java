@@ -29,8 +29,8 @@ public class ModuleFitnessCheckerTest {
 		when(fitModule.isReadyToStart()).thenReturn(true);
 		when(fitModule.getName()).thenReturn("MyImporter");
 
-		when(fitModule.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(fitModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
+		when(fitModule.getSupplierContact()).thenReturn(URI.createURI("me@mail.com"));
+		when(fitModule.getSupplierHomepage()).thenReturn(URI.createURI("http//me.com"));
 		when(fitModule.getDesc()).thenReturn("any description");
 		when(fitModule.isImportable(any(URI.class))).thenReturn(1.0);
 		when(fitModule.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("format")));
@@ -42,9 +42,17 @@ public class ModuleFitnessCheckerTest {
 		when(healthyModule.getName()).thenReturn("MyModule");
 		when(healthyModule.getDesc()).thenReturn("any description");
 		when(healthyModule.getSupplierHomepage()).thenReturn(null);
-		when(healthyModule.getSupplierContact()).thenReturn(URI.createURI(""));
+		when(healthyModule.getSupplierContact()).thenReturn(URI.createURI("me@mail.com"));
 		when(healthyModule.isReadyToStart()).thenReturn(true);
 		return healthyModule;
+	}
+	
+	private PepperModule createCriticalModule(){
+		PepperModule criticalModule = mock(PepperImporter.class);
+		when(criticalModule.getSupplierHomepage()).thenReturn(URI.createURI("http://me.com"));
+		when(criticalModule.getSupplierContact()).thenReturn(URI.createURI("me@mail.com"));
+		when(criticalModule.isReadyToStart()).thenReturn(false);
+		return criticalModule;
 	}
 
 	@Test
@@ -76,11 +84,7 @@ public class ModuleFitnessCheckerTest {
 	@Test
 	public void whenCheckingHealthForMultipleModules_thenReturnListOfFitnessValues() {
 		PepperModule healthyModule = createHealthyModule();
-
-		PepperModule criticalModule = mock(PepperImporter.class);
-		when(criticalModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
-		when(criticalModule.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(criticalModule.isReadyToStart()).thenReturn(false);
+		PepperModule criticalModule = createCriticalModule();
 
 		List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkHealth(Arrays.asList(healthyModule, criticalModule));
 		assertThat(fitnesses.get(0).getOverallFitness()).isEqualTo(Fitness.HEALTHY);
@@ -130,7 +134,7 @@ public class ModuleFitnessCheckerTest {
 	@Test
 	public void whenModuleHasSupplierContact_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
-		when(module.getSupplierContact()).thenReturn(URI.createURI(""));
+		when(module.getSupplierContact()).thenReturn(URI.createURI("me@mail.com"));
 		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT)).isEqualTo(true);
 	}
 
@@ -144,7 +148,7 @@ public class ModuleFitnessCheckerTest {
 	@Test
 	public void whenModuleHasSupplierHomepage_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
-		when(module.getSupplierHomepage()).thenReturn(URI.createURI(""));
+		when(module.getSupplierHomepage()).thenReturn(URI.createURI("http://me.com"));
 		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP)).isEqualTo(true);
 	}
 
@@ -222,13 +226,8 @@ public class ModuleFitnessCheckerTest {
 	@Test
 	public void whenCheckingFitnessForMultipleModules_thenReturnListOfFitnessValues() {
 		PepperModule fitModule = createFitImporter();
-
 		PepperModule healthyModule = createHealthyModule();
-
-		PepperModule criticalModule = mock(PepperImporter.class);
-		when(criticalModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
-		when(criticalModule.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(criticalModule.isReadyToStart()).thenReturn(false);
+		PepperModule criticalModule = createCriticalModule();
 
 		List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(fitModule, healthyModule, criticalModule));
 		assertThat(fitnesses.get(0).getOverallFitness()).isEqualTo(Fitness.FIT);

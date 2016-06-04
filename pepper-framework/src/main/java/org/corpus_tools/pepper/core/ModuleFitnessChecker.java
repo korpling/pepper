@@ -57,25 +57,59 @@ public class ModuleFitnessChecker {
 		}
 		final ModuleFitness fitness = checkHealth(module);
 
-		fitness.setFeature(FitnessFeature.HAS_DESCRIPTION, module.getDesc() != null ? true : false);
-		fitness.setFeature(FitnessFeature.HAS_SUPPLIER_HP, module.getSupplierHomepage() != null ? true : false);
-		fitness.setFeature(FitnessFeature.HAS_SUPPLIER_CONTACT, module.getSupplierContact() != null ? true : false);
+		new AddFeature(fitness, FitnessFeature.HAS_DESCRIPTION) {
+			@Override
+			public boolean condition() {
+				return Strings.isNullOrEmpty(module.getDesc()) ? false : true;
+			}
+		};
+
+		new AddFeature(fitness, FitnessFeature.HAS_SUPPLIER_HP) {
+			@Override
+			public boolean condition() {
+				return module.getSupplierHomepage() == null ? false : true;
+			}
+		};
+
+		new AddFeature(fitness, FitnessFeature.HAS_SUPPLIER_CONTACT) {
+			@Override
+			public boolean condition() {
+				return module.getSupplierContact() == null ? false : true;
+			}
+		};
 
 		if (module instanceof PepperImporter) {
-			PepperImporter importer = (PepperImporter) module;
-			Double isImportableRate = importer.isImportable(corpusPath);
-			fitness.setFeature(FitnessFeature.IS_IMPORTABLE, isImportableRate != null ? true : false);
-			fitness.setFeature(FitnessFeature.HAS_SUPPORTED_FORMATS, hasSupportedFormats(importer.getSupportedFormats()));
+			final PepperImporter importer = (PepperImporter) module;
+
+			new AddFeature(fitness, FitnessFeature.IS_IMPORTABLE) {
+				@Override
+				public boolean condition() {
+					return importer.isImportable(corpusPath) != null ? true : false;
+				}
+			};
+
+			new AddFeature(fitness, FitnessFeature.HAS_SUPPORTED_FORMATS) {
+				@Override
+				public boolean condition() {
+					return hasSupportedFormats(importer.getSupportedFormats());
+				}
+			};
 		}
 
 		if (module instanceof PepperExporter) {
-			PepperExporter exporter = (PepperExporter) module;
-			fitness.setFeature(FitnessFeature.HAS_SUPPORTED_FORMATS, hasSupportedFormats(exporter.getSupportedFormats()));
+			final PepperExporter exporter = (PepperExporter) module;
+
+			new AddFeature(fitness, FitnessFeature.HAS_SUPPORTED_FORMATS) {
+				@Override
+				public boolean condition() {
+					return hasSupportedFormats(exporter.getSupportedFormats());
+				}
+			};
 		}
 		return fitness;
 	}
 
-	private static boolean hasSupportedFormats(List<FormatDesc> formatDescs) {
+	private static boolean hasSupportedFormats(final List<FormatDesc> formatDescs) {
 		boolean hasFormats = false;
 		if (formatDescs != null && formatDescs.size() > 0) {
 			hasFormats = true;
@@ -120,8 +154,43 @@ public class ModuleFitnessChecker {
 			return null;
 		}
 		final ModuleFitness fitness = new ModuleFitness(module.getName());
-		fitness.setFeature(FitnessFeature.HAS_NAME, Strings.isNullOrEmpty(module.getName()) ? false : true);
-		fitness.setFeature(FitnessFeature.IS_READY_TO_RUN, module.isReadyToStart() ? true : false);
+
+		new AddFeature(fitness, FitnessFeature.HAS_NAME) {
+			@Override
+			public boolean condition() {
+				return Strings.isNullOrEmpty(module.getName()) ? false : true;
+			}
+		};
+
+		new AddFeature(fitness, FitnessFeature.IS_READY_TO_RUN) {
+			@Override
+			public boolean condition() {
+				return module.isReadyToStart() ? true : false;
+			}
+		};
 		return fitness;
 	}
+
+	/**
+	 * helper class to check the feature's condition in an error prone manner.
+	 * When an exception occurs, the feature's fitness is automatically set to
+	 * false.
+	 * 
+	 * @author florian
+	 *
+	 */
+	public static abstract class AddFeature {
+		public AddFeature(final ModuleFitness fitness, final FitnessFeature feature) {
+			boolean val;
+			try {
+				val = condition();
+			} catch (RuntimeException e) {
+				val = false;
+			}
+			fitness.setFeature(feature, val);
+		}
+
+		public abstract boolean condition();
+	}
+
 }
