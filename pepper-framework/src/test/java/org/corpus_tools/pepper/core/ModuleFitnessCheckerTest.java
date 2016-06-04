@@ -9,9 +9,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
+import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.eclipse.emf.common.util.URI;
@@ -22,6 +24,29 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ModuleFitnessCheckerTest {
 
+	private PepperImporter createFitImporter(){
+		PepperImporter fitModule = mock(PepperImporter.class);
+		when(fitModule.isReadyToStart()).thenReturn(true);
+		when(fitModule.getName()).thenReturn("MyImporter");
+		
+		when(fitModule.getSupplierContact()).thenReturn(URI.createURI(""));
+		when(fitModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
+		when(fitModule.getDesc()).thenReturn("any description");
+		when(fitModule.isImportable(any(URI.class))).thenReturn(1.0);
+		when(fitModule.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("format")));
+		return fitModule;
+	}
+	
+	private PepperModule createHealthyModule(){
+		PepperModule healthyModule = mock(PepperImporter.class);
+		when(healthyModule.getName()).thenReturn("MyModule");
+		when(healthyModule.getDesc()).thenReturn("any description");
+		when(healthyModule.getSupplierHomepage()).thenReturn(null);
+		when(healthyModule.getSupplierContact()).thenReturn(URI.createURI(""));
+		when(healthyModule.isReadyToStart()).thenReturn(true);
+		return healthyModule;
+	}
+	
 	@Test
 	public void whenCheckingHealthForNull_thenReturnNull() {
 		PepperModule module = null;
@@ -50,10 +75,7 @@ public class ModuleFitnessCheckerTest {
 
 	@Test
 	public void whenCheckingHealthForMultipleModules_thenReturnListOfFitnessValues() {
-		PepperModule healthyModule = mock(PepperImporter.class);
-		when(healthyModule.getSupplierHomepage()).thenReturn(null);
-		when(healthyModule.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(healthyModule.isReadyToStart()).thenReturn(true);
+		PepperModule healthyModule = createHealthyModule();
 
 		PepperModule criticalModule = mock(PepperImporter.class);
 		when(criticalModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
@@ -78,31 +100,59 @@ public class ModuleFitnessCheckerTest {
 	}
 
 	@Test
+	public void whenModuleHasName_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperModule module = mock(PepperModule.class);
+		when(module.getName()).thenReturn("MyModule");
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(true);
+	}
+
+	@Test
+	public void whenModuleHasNoName_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperModule module = mock(PepperModule.class);
+		when(module.getName()).thenReturn(null);
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(false);
+	}
+
+	@Test
+	public void whenModuleHasDescription_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperModule module = mock(PepperModule.class);
+		when(module.getDesc()).thenReturn("any description");
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_DESCRIPTION)).isEqualTo(true);
+	}
+
+	@Test
+	public void whenModuleHasNoDescription_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperModule module = mock(PepperModule.class);
+		when(module.getDesc()).thenReturn(null);
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_DESCRIPTION)).isEqualTo(false);
+	}
+
+	@Test
 	public void whenModuleHasSupplierContact_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierContact()).thenReturn(URI.createURI(""));
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT)).isEqualTo(true);
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT)).isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleHasNoSupplierContact_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierContact()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT)).isEqualTo(false);
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT)).isEqualTo(false);
 	}
 
 	@Test
 	public void whenModuleHasSupplierHomepage_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierHomepage()).thenReturn(URI.createURI(""));
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.SUPPORTS_SUPPLIER_HP)).isEqualTo(true);
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP)).isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleHasNoSupplierHomepage_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierHomepage()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.SUPPORTS_SUPPLIER_HP)).isEqualTo(false);
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP)).isEqualTo(false);
 	}
 
 	@Test
@@ -114,11 +164,43 @@ public class ModuleFitnessCheckerTest {
 
 	@Test
 	public void whenImporterDoesNotSupportIsImportable_thenCorrespondingFitnessFeatureShouldBeTrue() {
-		PepperImporter module = mock(PepperImporter.class);
-		when(module.isImportable(any(URI.class))).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(false);
+		PepperImporter importer = mock(PepperImporter.class);
+		when(importer.isImportable(any(URI.class))).thenReturn(null);
+		assertThat(ModuleFitnessChecker.checkFitness(importer).getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(false);
 	}
 
+	@Test
+	public void whenImportereHasFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperImporter importer = mock(PepperImporter.class);
+		when(importer.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("anyFormat").setFormatVersion("any Version")));
+		assertThat(ModuleFitnessChecker.checkFitness(importer).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(true);
+	}
+
+	@Test
+	public void whenImporterHasNoFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperImporter exporter = mock(PepperImporter.class);
+		when(exporter.getSupportedFormats()).thenReturn(null);
+		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+		when(exporter.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc()));
+		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+	}
+
+	@Test
+	public void whenExportereHasFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperExporter module = mock(PepperExporter.class);
+		when(module.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("anyFormat").setFormatVersion("any Version")));
+		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(true);
+	}
+
+	@Test
+	public void whenExporterHasNoFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
+		PepperExporter exporter = mock(PepperExporter.class);
+		when(exporter.getSupportedFormats()).thenReturn(null);
+		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+		when(exporter.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc()));
+		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+	}
+	
 	@Test
 	public void whenCheckingFitnessForNullSet_thenReturnEmptyList() {
 		Collection<PepperModule> modules = null;
@@ -127,34 +209,21 @@ public class ModuleFitnessCheckerTest {
 
 	@Test
 	public void whenCheckingFitnessForFitModule_thenReturnFit() {
-		PepperModule module = mock(PepperModule.class);
-		when(module.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(module.getSupplierHomepage()).thenReturn(URI.createURI(""));
-		when(module.isReadyToStart()).thenReturn(true);
+		PepperModule module = createFitImporter();
 		assertThat(ModuleFitnessChecker.checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
 	}
 
 	@Test
 	public void whenCheckingFitnessForFitImporter_thenReturnFit() {
-		PepperImporter module = mock(PepperImporter.class);
-		when(module.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(module.getSupplierHomepage()).thenReturn(URI.createURI(""));
-		when(module.isReadyToStart()).thenReturn(true);
-		when(module.isImportable(any(URI.class))).thenReturn(1.0);
+		PepperModule module = createFitImporter();
 		assertThat(ModuleFitnessChecker.checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
 	}
-
+	
 	@Test
 	public void whenCheckingFitnessForMultipleModules_thenReturnListOfFitnessValues() {
-		PepperModule fitModule = mock(PepperImporter.class);
-		when(fitModule.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(fitModule.getSupplierHomepage()).thenReturn(URI.createURI(""));
-		when(fitModule.isReadyToStart()).thenReturn(true);
+		PepperModule fitModule = createFitImporter();
 
-		PepperModule healthyModule = mock(PepperImporter.class);
-		when(healthyModule.getSupplierHomepage()).thenReturn(null);
-		when(healthyModule.getSupplierContact()).thenReturn(URI.createURI(""));
-		when(healthyModule.isReadyToStart()).thenReturn(true);
+		PepperModule healthyModule = createHealthyModule();
 
 		PepperModule criticalModule = mock(PepperImporter.class);
 		when(criticalModule.getSupplierHomepage()).thenReturn(URI.createURI(""));

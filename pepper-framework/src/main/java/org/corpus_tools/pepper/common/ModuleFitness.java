@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 
@@ -39,26 +40,45 @@ public class ModuleFitness {
 
 	public static enum FitnessFeature {
 		/**
-		 * Name of fitness feature determining whether
-		 * {@link PepperImporter#isImportable(org.eclipse.emf.common.util.URI)}
-		 * is implemented.
-		 **/
-		IS_IMPORTABLE,
+		 * Name of health feature determining whether a module's name is set.
+		 */
+		HAS_NAME,
+		/**
+		 * Name of health feature determining whether the module is ready to be
+		 * ran in Pepper.
+		 */
+		IS_READY_TO_RUN,
 		/**
 		 * Name of fitness feature determining whether
 		 * {@link PepperModule#getSupplierContact()} is supported.
 		 */
-		SUPPORTS_SUPPLIER_CONTACT,
+		HAS_SUPPLIER_CONTACT,
 		/**
 		 * Name of fitness feature determining whether
 		 * {@link PepperModule#getSupplierHomepage()} is supported.
 		 */
-		SUPPORTS_SUPPLIER_HP,
+		HAS_SUPPLIER_HP,
 		/**
-		 * Name of fitness feature determining whether the module is ready to be
-		 * ran in Pepper.
+		 * Name of fitness feature determining whether
+		 * {@link PepperModule#getDesc()} is supported
 		 */
-		IS_READY_TO_RUN;
+		HAS_DESCRIPTION,
+		/**
+		 * Name of fitness feature determining whether
+		 * {@link PepperImporter#getSupportedFormats()}
+		 * {@link PepperExporter#getSupportedFormats()} is supported.
+		 * <br/>
+		 * Only for {@link PepperImporter} and {@link PepperExporter}.
+		 */
+		HAS_SUPPORTED_FORMATS,
+		/**
+		 * Name of fitness feature determining whether
+		 * {@link PepperImporter#isImportable(org.eclipse.emf.common.util.URI)}
+		 * is implemented.
+		 * <br/>
+		 * Only for {@link PepperImporter}.
+		 **/
+		IS_IMPORTABLE;
 
 		private static final Set<FitnessFeature> FITNESS_FEATURES = new HashSet<>();
 		private static final Set<FitnessFeature> HEALTH_FEATURES = new HashSet<>();
@@ -72,6 +92,7 @@ public class ModuleFitness {
 		public static Collection<FitnessFeature> getHealthFeatures() {
 			if (HEALTH_FEATURES.size() < 1) {
 				HEALTH_FEATURES.add(IS_READY_TO_RUN);
+				HEALTH_FEATURES.add(HAS_NAME);
 			}
 			return HEALTH_FEATURES;
 		}
@@ -83,9 +104,12 @@ public class ModuleFitness {
 		 */
 		public static Collection<FitnessFeature> getFitnessFeatures() {
 			if (FITNESS_FEATURES.size() < 1) {
+				
+				FITNESS_FEATURES.add(HAS_SUPPLIER_CONTACT);
+				FITNESS_FEATURES.add(HAS_SUPPLIER_HP);
+				FITNESS_FEATURES.add(HAS_DESCRIPTION);
+				FITNESS_FEATURES.add(HAS_SUPPORTED_FORMATS);
 				FITNESS_FEATURES.add(IS_IMPORTABLE);
-				FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_CONTACT);
-				FITNESS_FEATURES.add(SUPPORTS_SUPPLIER_HP);
 			}
 			return FITNESS_FEATURES;
 		}

@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.eclipse.emf.common.util.URI;
+
+import com.google.common.base.Strings;
 
 /**
  * A helper class for checking health and fitness of a module or a set of
@@ -53,14 +57,35 @@ public class ModuleFitnessChecker {
 		}
 		final ModuleFitness fitness = checkHealth(module);
 
-		fitness.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, module.getSupplierHomepage() != null ? true : false);
-		fitness.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, module.getSupplierContact() != null ? true : false);
+		fitness.setFeature(FitnessFeature.HAS_DESCRIPTION, module.getDesc() != null ? true : false);
+		fitness.setFeature(FitnessFeature.HAS_SUPPLIER_HP, module.getSupplierHomepage() != null ? true : false);
+		fitness.setFeature(FitnessFeature.HAS_SUPPLIER_CONTACT, module.getSupplierContact() != null ? true : false);
 
 		if (module instanceof PepperImporter) {
-			Double isImportableRate = ((PepperImporter) module).isImportable(corpusPath);
+			PepperImporter importer = (PepperImporter) module;
+			Double isImportableRate = importer.isImportable(corpusPath);
 			fitness.setFeature(FitnessFeature.IS_IMPORTABLE, isImportableRate != null ? true : false);
+			fitness.setFeature(FitnessFeature.HAS_SUPPORTED_FORMATS, hasSupportedFormats(importer.getSupportedFormats()));
+		}
+
+		if (module instanceof PepperExporter) {
+			PepperExporter exporter = (PepperExporter) module;
+			fitness.setFeature(FitnessFeature.HAS_SUPPORTED_FORMATS, hasSupportedFormats(exporter.getSupportedFormats()));
 		}
 		return fitness;
+	}
+
+	private static boolean hasSupportedFormats(List<FormatDesc> formatDescs) {
+		boolean hasFormats = false;
+		if (formatDescs != null && formatDescs.size() > 0) {
+			hasFormats = true;
+			for (FormatDesc formatDesc : formatDescs) {
+				if (Strings.isNullOrEmpty(formatDesc.getFormatName())) {
+					hasFormats = false;
+				}
+			}
+		}
+		return hasFormats;
 	}
 
 	/**
@@ -95,8 +120,8 @@ public class ModuleFitnessChecker {
 			return null;
 		}
 		final ModuleFitness fitness = new ModuleFitness(module.getName());
+		fitness.setFeature(FitnessFeature.HAS_NAME, Strings.isNullOrEmpty(module.getName()) ? false : true);
 		fitness.setFeature(FitnessFeature.IS_READY_TO_RUN, module.isReadyToStart() ? true : false);
-
 		return fitness;
 	}
 }

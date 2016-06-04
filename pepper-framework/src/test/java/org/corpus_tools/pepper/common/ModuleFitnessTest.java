@@ -1,12 +1,12 @@
 package org.corpus_tools.pepper.common;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.ModuleFitness.ModuleFitnessBuilder;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ModuleFitnessTest {
 
@@ -26,7 +26,7 @@ public class ModuleFitnessTest {
 	public void whenSetingEmptyFeature_thenNothingShouldHappen() {
 		fixture.setFeature(null, true);
 	}
-	
+
 	@Test
 	public void whenSettingFitnessFeatureToTrue_thenFeatureShouldBeTrue() {
 		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, true);
@@ -53,28 +53,28 @@ public class ModuleFitnessTest {
 
 	@Test
 	public void whenHealthFeatureFitnessIsFalse_thenOverallFitnessIsCritical() {
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
+		fixture.setFeature(FitnessFeature.HAS_SUPPLIER_CONTACT, true);
 		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, false);
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, false);
+		fixture.setFeature(FitnessFeature.HAS_SUPPLIER_HP, false);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.CRITICAL);
 	}
 
 	@Test
 	public void whenAtLeastOneFitnessFeatureIsFalse_thenOverallFitnessIsHealthy() {
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_HP, false);
+		fixture.setFeature(FitnessFeature.HAS_SUPPLIER_CONTACT, true);
+		fixture.setFeature(FitnessFeature.HAS_SUPPLIER_HP, false);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 	}
-	
+
 	@Test
-	public void whenOnlyHealthFeaturesExistAndTheyAreTrue_thenReturnHealthy(){
+	public void whenOnlyHealthFeaturesExistAndTheyAreTrue_thenReturnHealthy() {
 		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, true);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 	}
-	
+
 	@Test
 	public void whenFitnessFeatureIsSetToTrue_thenOverallFitnessIsFIT() {
-		fixture.setFeature(FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, true);
+		fixture.setFeature(FitnessFeature.HAS_SUPPLIER_CONTACT, true);
 		assertThat(fixture.getOverallFitness()).isEqualTo(Fitness.FIT);
 	}
 
@@ -109,16 +109,16 @@ public class ModuleFitnessTest {
 
 	@Test
 	public void whenGettingImportantFeatures_thenReturnImportantFeatures() {
-		assertThat(FitnessFeature.getHealthFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_READY_TO_RUN);
+		assertThat(FitnessFeature.getHealthFeatures()).containsExactlyInAnyOrder(FitnessFeature.HAS_NAME, FitnessFeature.IS_READY_TO_RUN);
 	}
 
 	@Test
 	public void whenGettingOptionalFeatures_thenReturnOptionalFeatures() {
-		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE, FitnessFeature.SUPPORTS_SUPPLIER_CONTACT, FitnessFeature.SUPPORTS_SUPPLIER_HP);
+		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE, FitnessFeature.HAS_SUPPLIER_CONTACT, FitnessFeature.HAS_SUPPLIER_HP, FitnessFeature.HAS_DESCRIPTION, FitnessFeature.HAS_SUPPORTED_FORMATS);
 	}
-	
+
 	@Test
-	public void whenToString_thenReturnNonEmptyString(){
+	public void whenToString_thenReturnNonEmptyString() {
 		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, true);
 		fixture.setFeature(FitnessFeature.IS_READY_TO_RUN, true);
 		assertThat(fixture.toString()).isNotEmpty();
