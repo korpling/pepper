@@ -59,6 +59,7 @@ import org.corpus_tools.pepper.common.PepperUtil.PepperJobReporter;
 import org.corpus_tools.pepper.connectors.PepperConnector;
 import org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector;
 import org.corpus_tools.pepper.exceptions.PepperException;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.eclipse.emf.common.util.URI;
@@ -286,11 +287,12 @@ public class PepperStarter {
 	 * Returns a String containing a table with information about the passed
 	 * Pepper module.
 	 * 
+	 * @param moduleSelector
+	 *            either the name of a module or the number of a module
+	 * 
 	 * @return
 	 */
-	// @Command(description="A table with information about the passed Pepper
-	// module.")
-	public String list(String moduleName) {
+	public String list(String moduleSelector) {
 		StringBuilder retVal = new StringBuilder();
 		PepperModuleDesc moduleDesc = null;
 		Collection<PepperModuleDesc> moduleDescs = null;
@@ -305,15 +307,15 @@ public class PepperStarter {
 		}
 		Integer numOfModule = null;
 		try {
-			numOfModule = Integer.parseInt(moduleName);
+			numOfModule = Integer.parseInt(moduleSelector);
 			if (number2module != null) {
 				moduleDesc = number2module.get(numOfModule);
 			}
 		} catch (NumberFormatException ex) {
 			// try to read module desc by name
-			if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
+			if ((moduleDesc == null) && (moduleSelector != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
 				for (PepperModuleDesc desc : moduleDescs) {
-					if (moduleName.equalsIgnoreCase(desc.getName())) {
+					if (moduleSelector.equalsIgnoreCase(desc.getName())) {
 						moduleDesc = desc;
 						break;
 					}
@@ -367,7 +369,7 @@ public class PepperStarter {
 
 			retVal.append("\n");
 		} else {
-			retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
+			retVal.append("- no Pepper module was found for given name '" + moduleSelector + "' -");
 		}
 
 		return (retVal.toString());
@@ -587,10 +589,16 @@ public class PepperStarter {
 			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
 			if (!Fitness.FIT.equals(overallFitness)) {
 				for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
-					retVal.append(printFitnessDetails(healthFeature + "", moduleFitness.getFitness(healthFeature) ? "YES" : "NO" + "", 80, 4));
+					final Boolean featureHealth = moduleFitness.getFitness(healthFeature);
+					if (featureHealth != null) {
+						retVal.append(printFitnessDetails(healthFeature + "", featureHealth ? "YES" : "NO" + "", 80, 4));
+					}
 				}
 				for (FitnessFeature fitnessFeature : FitnessFeature.getFitnessFeatures()) {
-					retVal.append(printFitnessDetails(fitnessFeature + "", moduleFitness.getFitness(fitnessFeature) ? "YES" : "NO" + "", 80, 4));
+					final Boolean featureFitness = moduleFitness.getFitness(fitnessFeature);
+					if (featureFitness != null) {
+						retVal.append(printFitnessDetails(fitnessFeature + "", featureFitness ? "YES" : "NO" + "", 80, 4));
+					}
 				}
 			}
 		}
@@ -612,7 +620,10 @@ public class PepperStarter {
 			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
 			if (Fitness.HEALTHY.compareTo(overallFitness) < 0) {
 				for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
-					retVal.append(printFitnessDetails(healthFeature + "", moduleFitness.getFitness(healthFeature) ? "YES" : "NO" + "", 80, 4));
+					final Boolean featureHealth = moduleFitness.getFitness(healthFeature);
+					if (featureHealth != null) {
+						retVal.append(printFitnessDetails(healthFeature + "", featureHealth ? "YES" : "NO" + "", 80, 4));
+					}
 				}
 			}
 		}

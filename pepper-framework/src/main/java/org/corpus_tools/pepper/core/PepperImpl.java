@@ -315,7 +315,7 @@ public class PepperImpl implements Pepper {
 	// ===================================== end: wirering module resolver via
 	// OSGi
 	/**
-	 * Returns all registered {@link PepperModule}s. If no moodule is
+	 * Returns all registered {@link PepperModule}s. If no module is
 	 * registered, returns an empty list.
 	 * 
 	 * @return
