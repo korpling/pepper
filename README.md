@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/korpling/pepper.svg?branch=develop)](https://travis-ci.org/korpling/pepper)
+
 ![](http://korpling.github.io/pepper/images/SaltNPepper_logo2010.png)
 
 # About Pepper
