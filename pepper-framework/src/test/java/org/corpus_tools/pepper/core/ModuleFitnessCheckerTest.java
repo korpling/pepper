@@ -15,13 +15,13 @@ import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.impl.IntegrationTestDesc;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -262,12 +262,21 @@ public class ModuleFitnessCheckerTest {
 		final Pepper pepper = mock(Pepper.class);
 		assertThat(ModuleFitnessChecker.runITest(null, pepper)).isNull();
 	}
-	
+
 	@Test
 	public void whenPepperModuleReturnsEmptyTestDesc_thenReturnNull() {
 		final Pepper pepper = mock(Pepper.class);
 		final PepperImporter importer = mock(PepperImporter.class);
 		when(importer.getIntegrationTestDesc()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.runITest(null, pepper)).isNull();
+		assertThat(ModuleFitnessChecker.runITest(importer, pepper)).isNull();
+	}
+
+	@Test
+	public void whenTestDescIsNotValid_thenReturnFalse() {
+		final Pepper pepper = mock(Pepper.class);
+		final PepperImporter importer = mock(PepperImporter.class);
+		final IntegrationTestDesc desc = mock(IntegrationTestDesc.class);
+		when(importer.getIntegrationTestDesc()).thenReturn(desc);
+		assertThat(ModuleFitnessChecker.runITest(importer, pepper)).isFalse();
 	}
 }
