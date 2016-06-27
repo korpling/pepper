@@ -44,7 +44,7 @@ public class TextExporterTest extends PepperExporterTest {
 	FormatDesc formatDesc = new FormatDesc().setFormatName(TextExporter.FORMAT_NAME).setFormatVersion(TextExporter.FORMAT_VERSION);
 
 	@Before
-	public void setUp() {
+	public void beforeEach() {
 		setFixture(new TextExporter());
 		addSupportedFormat(formatDesc);
 	}
@@ -56,7 +56,7 @@ public class TextExporterTest extends PepperExporterTest {
 	 */
 	@Test
 	public void test1Doc1Text() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1")).get(0);
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1")).get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
 		getFixture().setCorpusDesc(new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test1")));
@@ -75,7 +75,7 @@ public class TextExporterTest extends PepperExporterTest {
 	 */
 	@Test
 	public void test3Doc1Text() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1")).get(0);
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1")).get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
 
@@ -98,14 +98,10 @@ public class TextExporterTest extends PepperExporterTest {
 		assertTrue(compareFiles(new File(parent + "/corp1/doc3.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
 	}
 
-	/**
-	 * Tests the export of multiple documents with multiple texts.
-	 * 
-	 * @throws IOException
-	 */
+
 	@Test
-	public void test3DocMultiText() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1")).get(0);
+	public void whenExporting3DocumentsWithMultipleTexts_thenExport4Texts() throws IOException {
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1")).get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
 

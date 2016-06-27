@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
 
 @Component(name = "PepperImpl", immediate = true)
 public class PepperImpl implements Pepper {
-	private static final Logger logger = LoggerFactory.getLogger(PepperImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/** Configuration object for Pepper **/
 	private PepperConfiguration configuration = null;

@@ -208,7 +208,7 @@ public interface PepperImporter extends PepperModule {
 	 * A character or character sequence to mark a file extension as not to be
 	 * one of the imported ones.
 	 */
-	public static final String NEGATIVE_FILE_EXTENSION_MARKER = "-";
+	static final String NEGATIVE_FILE_EXTENSION_MARKER = "-";
 
 	/**
 	 * Returns a list of formats, which are importable by this
@@ -259,7 +259,7 @@ public interface PepperImporter extends PepperModule {
 	 * </table>
 	 * 
 	 */
-	public Map<Identifier, URI> getIdentifier2ResourceTable();
+	Map<Identifier, URI> getIdentifier2ResourceTable();
 
 	/**
 	 * Returns list containing all format endings for files, which are
@@ -268,7 +268,7 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings
 	 */
-	public Collection<String> getDocumentEndings();
+	Collection<String> getDocumentEndings();
 
 	/**
 	 * Returns a collection of all file endings for a {@link SCorpus} object.
@@ -281,7 +281,7 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings
 	 */
-	public Collection<String> getCorpusEndings();
+	Collection<String> getCorpusEndings();
 
 	/**
 	 * Returns a collection of filenames, not to be imported.
@@ -291,7 +291,7 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings to be ignored
 	 */
-	public Collection<String> getIgnoreEndings();
+	Collection<String> getIgnoreEndings();
 
 	/**
 	 * This method is a callback and can be overridden by derived importers.
@@ -325,7 +325,7 @@ public interface PepperImporter extends PepperModule {
 	 *         represents a {@link SDocument} object or null, if it shall be
 	 *         igrnored.
 	 */
-	public SALT_TYPE setTypeOfResource(URI resource);
+	SALT_TYPE setTypeOfResource(URI resource);
 
 	/**
 	 * This method is called by Pepper at the start of a conversion process to
@@ -368,5 +368,5 @@ public interface PepperImporter extends PepperModule {
 	 *         1, if no definitiv answer is possible, null if method is not
 	 *         overridden
 	 */
-	public Double isImportable(URI corpusPath);
+	Double isImportable(URI corpusPath);
 }

@@ -193,7 +193,9 @@ public class BeforeAfterAction {
 	 * @param prefix
 	 * @param isTail
 	 * @return
+	 * @deprecated use {@link SCorpusGraph#toTreeString() instead}
 	 */
+	@Deprecated()
 	protected String reportCorpusStructure(SCorpusGraph corpusGraph, SNode node, String prefix, boolean isTail) {
 		StringBuilder retStr = new StringBuilder();
 		retStr.append(prefix);

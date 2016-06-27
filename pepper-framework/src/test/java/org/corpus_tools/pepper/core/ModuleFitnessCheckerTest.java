@@ -13,12 +13,15 @@ import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
+import org.corpus_tools.pepper.common.Pepper;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,8 +49,8 @@ public class ModuleFitnessCheckerTest {
 		when(healthyModule.isReadyToStart()).thenReturn(true);
 		return healthyModule;
 	}
-	
-	private PepperModule createCriticalModule(){
+
+	private PepperModule createCriticalModule() {
 		PepperModule criticalModule = mock(PepperImporter.class);
 		when(criticalModule.getSupplierHomepage()).thenReturn(URI.createURI("http://me.com"));
 		when(criticalModule.getSupplierContact()).thenReturn(URI.createURI("me@mail.com"));
@@ -109,7 +112,7 @@ public class ModuleFitnessCheckerTest {
 		when(module.getDesc()).thenThrow(new RuntimeException());
 		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(false);
 	}
-	
+
 	@Test
 	public void whenModuleHasName_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
@@ -236,7 +239,7 @@ public class ModuleFitnessCheckerTest {
 		PepperModule healthyModule = createHealthyModule();
 		PepperModule criticalModule = createCriticalModule();
 
-		List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(fitModule, healthyModule, criticalModule));
+		final List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(fitModule, healthyModule, criticalModule));
 		assertThat(fitnesses.get(0).getOverallFitness()).isEqualTo(Fitness.FIT);
 		assertThat(fitnesses.get(1).getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 		assertThat(fitnesses.get(2).getOverallFitness()).isEqualTo(Fitness.CRITICAL);
@@ -244,7 +247,27 @@ public class ModuleFitnessCheckerTest {
 
 	@Test
 	public void whenCheckinFitnessForModuleListWithNullEntries_thenIgnoreNullEntries() {
-		List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(mock(PepperModule.class), null, mock(PepperModule.class)));
+		final List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(mock(PepperModule.class), null, mock(PepperModule.class)));
 		assertThat(fitnesses.size()).isEqualTo(2);
+	}
+
+	@Test(expected = PepperFWException.class)
+	public void whenNoPepperWasSpecified_thenRunITestShouldFail() {
+		final PepperImporter importer = mock(PepperImporter.class);
+		ModuleFitnessChecker.runITest(importer, null);
+	}
+
+	@Test
+	public void whenNoPepperModuleWasSpecified_thenReturnNull() {
+		final Pepper pepper = mock(Pepper.class);
+		assertThat(ModuleFitnessChecker.runITest(null, pepper)).isNull();
+	}
+	
+	@Test
+	public void whenPepperModuleReturnsEmptyTestDesc_thenReturnNull() {
+		final Pepper pepper = mock(Pepper.class);
+		final PepperImporter importer = mock(PepperImporter.class);
+		when(importer.getIntegrationTestDesc()).thenReturn(null);
+		assertThat(ModuleFitnessChecker.runITest(null, pepper)).isNull();
 	}
 }

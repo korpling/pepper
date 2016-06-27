@@ -18,10 +18,13 @@
 package org.corpus_tools.pepper.common.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.junit.Before;
@@ -152,5 +155,27 @@ public class PepperUtilTest {
 		assertTrue(file.toString().contains("pepper-test"));
 		assertTrue(file.toString().contains("test/sub"));
 		assertTrue(file.exists());
+	}
+
+	@Test
+	public void whenListIsNullOrEmpty_isNullOrEmptyShouldReturnTrue() {
+		assertThat(PepperUtil.isNullOrEmpty(null)).isTrue();
+		assertThat(PepperUtil.isNullOrEmpty(new ArrayList<>())).isTrue();
+	}
+
+	@Test
+	public void whenListIsNotNullOrEmpty_isNullOrEmptyShouldReturnFalse() {
+		assertThat(PepperUtil.isNullOrEmpty(Arrays.asList("Bla"))).isFalse();
+	}
+
+	@Test
+	public void whenListIsNullOrEmpty_isNotNullOrEmptyShouldReturnFalse() {
+		assertThat(PepperUtil.isNotNullOrEmpty(null)).isFalse();
+		assertThat(PepperUtil.isNotNullOrEmpty(new ArrayList<>())).isFalse();
+	}
+
+	@Test
+	public void whenListIsNotNullOrEmpty_isNotNullOrEmptyShouldReturnTrue() {
+		assertThat(PepperUtil.isNotNullOrEmpty(Arrays.asList("Bla"))).isTrue();
 	}
 }
