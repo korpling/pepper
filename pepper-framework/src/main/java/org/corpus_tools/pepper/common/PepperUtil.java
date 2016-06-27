@@ -45,7 +45,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
 public abstract class PepperUtil {
-	private static final Logger logger = LoggerFactory.getLogger("Pepepr");
+	private static final Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/** This is the default ending of a Pepper workflow description file. **/
 	public static final String FILE_ENDING_PEPPER = "pepper";
@@ -727,5 +727,26 @@ public abstract class PepperUtil {
 				}
 			}
 		}
+	}
+	
+	public static CorpusDesc.Builder createCorpusDesc(){
+		return new CorpusDesc.Builder();
+	}
+	
+	/**
+	 * Checks whether a collection is null or empty
+	 * @param list
+	 * @return
+	 */
+	public static <T> boolean isNullOrEmpty(final Collection<T> collection) {
+	    return collection == null || collection.isEmpty();
+	}
+	/**
+	 * Checks whether a collection is not null nor empty
+	 * @param list
+	 * @return
+	 */
+	public static <T> boolean isNotNullOrEmpty(final Collection<T> collection) {
+	    return !isNullOrEmpty(collection);
 	}
 }

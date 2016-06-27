@@ -25,6 +25,7 @@ import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.MEMORY_POLICY;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
+import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperUtil;
@@ -170,13 +171,30 @@ public class PepperTestUtil {
 	 * 
 	 * </li>
 	 * </ul>
+	 * 
+	 * @param fixtures
+	 *            the fixture modules
 	 */
-	public static void start(Collection<PepperModule> fixtures) {
+	public static void start(final Collection<PepperModule> fixtures) {
+		// Create a Pepper object
+		final PepperImpl pepper = new PepperImpl();
+		final PepperConfiguration conf = new PepperConfiguration();
+		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
+		start(pepper, fixtures);
+	}
+
+	/**
+	 * {@inheritDoc #start(Collection)}
+	 * 
+	 * @param pepper
+	 *            a pepper instance to be used
+	 */
+	public static void start(final Pepper pepper, final Collection<? extends PepperModule> fixtures) {
 		if (fixtures == null) {
 			throw new PepperModuleTestException("Cannot start Pepper modules, because the list of fixtures is not set.");
 		}
-		Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
-		Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
+		final Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
+		final Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
 
 		/**
 		 * set the salt project for all modules, if it is already set, check
@@ -210,35 +228,15 @@ public class PepperTestUtil {
 			}
 		}
 
-		// Create a Pepper object
-		PepperImpl pepper = new PepperImpl();
-		PepperConfiguration conf = new PepperConfiguration();
-		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
-		pepper.setConfiguration(conf);
-
 		// create a Pepper job object
-		PepperJob job = pepper.getJob(pepper.createJob());
+		final PepperJob job = pepper.getJob(pepper.createJob());
 		if (!(job instanceof PepperJobImpl)) {
 			throw new PepperModuleTestException("Cannot start Pepper module test, because '" + PepperJob.class + "' is not of type '" + PepperJobImpl.class + "'. ");
 		} else {
 			((PepperJobImpl) job).setSaltProject(saltProject);
 		}
 
-		/** Create a step for each fixture. **/
-		for (PepperModule fixture : fixtures) {
-			Step fixtureStep = null;
-			fixtureStep = new Step("fixture_step");
-			fixtureStep.setModuleType(fixture.getModuleType());
-			fixtureStep.setName(fixture.getName());
-			fixtureStep.setVersion(fixture.getVersion());
-			if (fixture instanceof PepperImporter) {
-				fixtureStep.setCorpusDesc(((PepperImporter) fixture).getCorpusDesc());
-			} else if (fixture instanceof PepperExporter) {
-				fixtureStep.setCorpusDesc(((PepperExporter) fixture).getCorpusDesc());
-			}
-			fixtureStep.setPepperModule(fixture);
-			((PepperJobImpl) job).addStep(fixtureStep);
-		}
+		createStepForFixtures(fixtures, job);
 
 		/** Create and add alibi steps **/
 		if ((importers.size() == 0) || (importers.size() != saltProject.getCorpusGraphs().size())) {
@@ -266,6 +264,23 @@ public class PepperTestUtil {
 
 		for (DocumentController controller : ((PepperJobImpl) job).getDocumentControllers()) {
 			controller.awake();
+		}
+	}
+	
+	private static void createStepForFixtures(final Collection<? extends PepperModule> fixtures, PepperJob job){
+		/** Create a step for each fixture. **/
+		for (PepperModule fixture : fixtures) {
+			final Step fixtureStep = new Step("fixture_step");
+			fixtureStep.setModuleType(fixture.getModuleType());
+			fixtureStep.setName(fixture.getName());
+			fixtureStep.setVersion(fixture.getVersion());
+			if (fixture instanceof PepperImporter) {
+				fixtureStep.setCorpusDesc(((PepperImporter) fixture).getCorpusDesc());
+			} else if (fixture instanceof PepperExporter) {
+				fixtureStep.setCorpusDesc(((PepperExporter) fixture).getCorpusDesc());
+			}
+			fixtureStep.setPepperModule(fixture);
+			((PepperJobImpl) job).addStep(fixtureStep);
 		}
 	}
 }
