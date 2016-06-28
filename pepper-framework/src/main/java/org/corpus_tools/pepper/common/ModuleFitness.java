@@ -49,6 +49,23 @@ public class ModuleFitness {
 		 */
 		IS_READY_TO_RUN,
 		/**
+		 * Name of health feature determining whether the module passes the self
+		 * test, if a self test is implemented.
+		 */
+		HAS_PASSED_SELFTEST,
+		/**
+		 * Name of health feature determining whether the module is able to
+		 * import the self test data, if a self test is implemented and module
+		 * is an importer.
+		 */
+		IS_IMPORTABLE_SEFTEST_DATA,
+		/**
+		 * Name of health feature determining whether the module the self test
+		 * data are valid, if a self test is implemented and module is an
+		 * importer or a manipulator.
+		 */
+		IS_VALID_SELFTEST_DATA,
+		/**
 		 * Name of fitness feature determining whether
 		 * {@link PepperModule#getSupplierContact()} is supported.
 		 */
@@ -71,6 +88,11 @@ public class ModuleFitness {
 		 */
 		HAS_SUPPORTED_FORMATS,
 		/**
+		 * Name of fitness feature determining whether the module provides a
+		 * self test.
+		 **/
+		HAS_SELFTEST,
+		/**
 		 * Name of fitness feature determining whether
 		 * {@link PepperImporter#isImportable(org.eclipse.emf.common.util.URI)}
 		 * is implemented. <br/>
@@ -91,6 +113,9 @@ public class ModuleFitness {
 			if (HEALTH_FEATURES.size() < 1) {
 				HEALTH_FEATURES.add(IS_READY_TO_RUN);
 				HEALTH_FEATURES.add(HAS_NAME);
+				HEALTH_FEATURES.add(HAS_PASSED_SELFTEST);
+				HEALTH_FEATURES.add(IS_IMPORTABLE_SEFTEST_DATA);
+				HEALTH_FEATURES.add(IS_VALID_SELFTEST_DATA);
 			}
 			return HEALTH_FEATURES;
 		}
@@ -108,6 +133,7 @@ public class ModuleFitness {
 				FITNESS_FEATURES.add(HAS_DESCRIPTION);
 				FITNESS_FEATURES.add(HAS_SUPPORTED_FORMATS);
 				FITNESS_FEATURES.add(IS_IMPORTABLE);
+				FITNESS_FEATURES.add(HAS_SELFTEST);
 			}
 			return FITNESS_FEATURES;
 		}

@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
-import org.corpus_tools.pepper.impl.IntegrationTestDesc;
+import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -69,8 +69,8 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	}
 
 	@Override
-	public IntegrationTestDesc getIntegrationTestDesc() {
-		return new IntegrationTestDesc(getResources().appendSegment("modules").appendSegment("iTests").appendSegment("txtImporter").appendSegment("in").appendSegment("txtCorpus"), getResources().appendSegment("modules").appendSegment("iTests").appendSegment("txtImporter").appendSegment("out").appendSegment("txtCorpus"));
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(getResources().appendSegment("modules").appendSegment("iTests").appendSegment("txtImporter").appendSegment("in").appendSegment("txtCorpus"), getResources().appendSegment("modules").appendSegment("iTests").appendSegment("txtImporter").appendSegment("out").appendSegment("txtCorpus"));
 	}
 
 	/**

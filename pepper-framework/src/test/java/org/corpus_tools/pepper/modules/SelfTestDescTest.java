@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.PepperUtil;
-import org.corpus_tools.pepper.impl.IntegrationTestDesc;
+import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
-public class IntegrationTestDescTest {
+public class SelfTestDescTest {
 
-	private IntegrationTestDesc fixture;
+	private SelfTestDesc fixture;
 
 	@Test
 	public void whenTestContainsNoInputOrOutputCorpusPath_thenValidShouldHaveTwoProblems() {
-		fixture = new IntegrationTestDesc(null, null);
+		fixture = new SelfTestDesc(null, null);
 		final List<String> problems = new ArrayList<>();
 		assertThat(fixture.isValid(problems)).isFalse();
 		assertThat(problems).hasSize(2);
@@ -26,7 +26,7 @@ public class IntegrationTestDescTest {
 
 	@Test
 	public void whenTestContainsNonExistingPathes_thenValidShouldHaveTwoProblems() {
-		fixture = new IntegrationTestDesc(URI.createFileURI("not existing"), URI.createFileURI("not existing"));
+		fixture = new SelfTestDesc(URI.createFileURI("not existing"), URI.createFileURI("not existing"));
 		final List<String> problems = new ArrayList<>();
 		assertThat(fixture.isValid(problems)).isFalse();
 		assertThat(problems).hasSize(2);
@@ -36,7 +36,7 @@ public class IntegrationTestDescTest {
 	public void whenTestContainsExistingPathes_thenValidShouldHaveNoProblems() throws IOException {
 		final File testInFile = File.createTempFile("integrationTest", "xml", PepperUtil.getTempTestFile());
 		final File testOutFile = File.createTempFile("integrationTest", "xml", PepperUtil.getTempTestFile());
-		fixture = new IntegrationTestDesc(URI.createFileURI(testInFile.getAbsolutePath()), URI.createFileURI(testOutFile.getAbsolutePath()));
+		fixture = new SelfTestDesc(URI.createFileURI(testInFile.getAbsolutePath()), URI.createFileURI(testOutFile.getAbsolutePath()));
 		final List<String> problems = new ArrayList<>();
 		assertThat(fixture.isValid(problems)).isTrue();
 		assertThat(problems).isEmpty();

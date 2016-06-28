@@ -126,15 +126,6 @@ public interface Pepper {
 	public Collection<String> selfTest();
 
 	/**
-	 * Checks the health of each registered Pepper module. When a module is not
-	 * healthy, it could not be started.
-	 * 
-	 * @return a list of health entries, one per module, if no module is
-	 *         registered an empty list is returned
-	 */
-	public Collection<ModuleFitness> checkHealth();
-
-	/**
 	 * Checks the fitness of each registered Pepper module. The fitness of a
 	 * module indicates in what way a module is docking to the Pepper interface.
 	 * For instance it checks whether a module provides a contact address of the

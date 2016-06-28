@@ -108,13 +108,13 @@ public class ModuleFitnessTest {
 	}
 
 	@Test
-	public void whenGettingImportantFeatures_thenReturnImportantFeatures() {
-		assertThat(FitnessFeature.getHealthFeatures()).containsExactlyInAnyOrder(FitnessFeature.HAS_NAME, FitnessFeature.IS_READY_TO_RUN);
+	public void whenGettingHealthFeatures_thenReturnHeatlthFeatures() {
+		assertThat(FitnessFeature.getHealthFeatures()).containsExactlyInAnyOrder(FitnessFeature.HAS_NAME, FitnessFeature.IS_READY_TO_RUN, FitnessFeature.HAS_PASSED_SELFTEST, FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, FitnessFeature.IS_VALID_SELFTEST_DATA);
 	}
 
 	@Test
-	public void whenGettingOptionalFeatures_thenReturnOptionalFeatures() {
-		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE, FitnessFeature.HAS_SUPPLIER_CONTACT, FitnessFeature.HAS_SUPPLIER_HP, FitnessFeature.HAS_DESCRIPTION, FitnessFeature.HAS_SUPPORTED_FORMATS);
+	public void whenGettingFitnessFeatures_thenReturnFitnessFeatures() {
+		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE, FitnessFeature.HAS_SUPPLIER_CONTACT, FitnessFeature.HAS_SUPPLIER_HP, FitnessFeature.HAS_DESCRIPTION, FitnessFeature.HAS_SUPPORTED_FORMATS, FitnessFeature.HAS_SELFTEST);
 	}
 
 	@Test

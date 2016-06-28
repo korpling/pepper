@@ -9,11 +9,11 @@ import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 
-public class IntegrationTestDesc {
+public class SelfTestDesc {
 	private URI inputCorpusPath = null;
 	private URI outputCorpusPath = null;
 
-	public IntegrationTestDesc(URI inputCorpusPath, URI outputCorpusPath) {
+	public SelfTestDesc(URI inputCorpusPath, URI outputCorpusPath) {
 		this.inputCorpusPath = inputCorpusPath;
 		this.outputCorpusPath = outputCorpusPath;
 	}

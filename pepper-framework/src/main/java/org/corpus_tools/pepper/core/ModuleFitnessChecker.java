@@ -12,7 +12,7 @@ import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
-import org.corpus_tools.pepper.impl.IntegrationTestDesc;
+import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperManipulator;
@@ -184,6 +184,122 @@ public class ModuleFitnessChecker {
 	}
 
 	/**
+	 * When the specified module provides a self test, the fitness feature
+	 * {@link FitnessFeature#HAS_SELFTEST} is set to true and self test is ran.
+	 * Depending on success, the following health features are set:
+	 * <ul>
+	 * <li>{@link FitnessFeature#HAS_PASSED_SELFTEST}</li>
+	 * <li>{@link FitnessFeature#IS_IMPORTABLE_SEFTEST_DATA}</li>
+	 * <li>{@link FitnessFeature#IS_VALID_SELFTEST_DATA}</li>
+	 * </ul>
+	 * 
+	 * @param pepperModule
+	 *            module to test
+	 * @param pepper
+	 *            Pepper environment to test
+	 * @param moduleFitness
+	 *            the {@link ModuleFitness} to be filled.
+	 */
+	protected static ModuleFitness selfTest(final PepperModule pepperModule, final Pepper pepper, ModuleFitness moduleFitness) {
+		if (pepperModule == null) {
+			return moduleFitness;
+		}
+		if (moduleFitness == null) {
+			moduleFitness = new ModuleFitness(pepperModule.getName());
+		}
+		if (pepper == null) {
+			throw new PepperFWException("Cannot run integration test for module '" + pepperModule + "', because Pepper framework is not specified. ");
+		}
+
+		final SelfTestDesc testDesc = pepperModule.getSelfTestDesc();
+		if (testDesc == null) {
+			moduleFitness.setFeature(FitnessFeature.HAS_SELFTEST, false);
+			return moduleFitness;
+		} else {
+			moduleFitness.setFeature(FitnessFeature.HAS_SELFTEST, true);
+		}
+
+		boolean isImportable = false;
+		boolean hasPassed = false;
+		boolean isValid = false;
+		moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
+		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
+		moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
+
+		final List<String> problems = new ArrayList<>();
+		if (!testDesc.isValid(problems)) {
+			if (PepperUtil.isNotNullOrEmpty(problems)) {
+				for (String problem : problems) {
+					logger.warn(warn(pepperModule, problem));
+				}
+			}
+			return moduleFitness;
+		}
+
+		if (pepperModule instanceof PepperImporter) {
+			final PepperImporter importer = (PepperImporter) pepperModule;
+			final CorpusDesc corpusDesc = PepperUtil.createCorpusDesc().withCorpusPath(testDesc.getInputCorpusPath()).build();
+			importer.setCorpusDesc(corpusDesc);
+			final Double importRate = importer.isImportable(corpusDesc.getCorpusPath());
+			isImportable = (importRate == null || importRate < 1.0) ? false : true;
+		} else if (pepperModule instanceof PepperManipulator || pepperModule instanceof PepperExporter) {
+			// load Salt from in corpus path
+			SaltProject saltProject = null;
+			try {
+				SaltUtil.loadSaltProject(testDesc.getInputCorpusPath());
+			} catch (RuntimeException e) {
+				logger.warn(warn(pepperModule, "The input salt project was could bot have been loaded from path '" + testDesc.getInputCorpusPath() + "'. May be the path does not contain a salt project. "));
+				return moduleFitness;
+			}
+			pepperModule.setSaltProject(saltProject);
+		}
+
+		PepperTestUtil.start(pepper, Arrays.asList(pepperModule));
+
+		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
+			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule);
+			isValid = SaltUtil.validate(pepperModule.getSaltProject()).andGetResult();
+		} else if (pepperModule instanceof PepperExporter) {
+			hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule);
+		}
+
+		moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
+		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
+		moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
+		return moduleFitness;
+	}
+
+	private static boolean whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(PepperModule pepperModule) {
+		final SaltProject outputProject = pepperModule.getSaltProject();
+		if (SaltUtil.isNullOrEmpty(outputProject.getCorpusGraphs()) || outputProject.getCorpusGraphs().size() != 1) {
+			logger.warn(warn(pepperModule, "The salt project contained no corpus structures or it contains more than one corpus structure. "));
+			return false;
+		}
+		final URI out = pepperModule.getSelfTestDesc().getInputCorpusPath();
+		final SaltProject expectedProject = SaltUtil.loadSaltProject(out);
+		try {
+			return pepperModule.getSelfTestDesc().compare(pepperModule.getSaltProject(), expectedProject);
+		} catch (RuntimeException e) {
+			logger.warn(warn(pepperModule, "An error occured while comparing actual salt project with expected salt project. "));
+			return false;
+		}
+	}
+
+	private static boolean whenModuleIsExpoterThenCallSelftestDescCompare(PepperModule pepperModule) {
+		try {
+			final PepperExporter exporter = (PepperExporter) pepperModule;
+			return pepperModule.getSelfTestDesc().compare(exporter.getCorpusDesc().getCorpusPath(), pepperModule.getSelfTestDesc().getOutputCorpusPath());
+		} catch (RuntimeException e) {
+			logger.warn(warn(pepperModule, "An error occured while comparing actual salt project with expected salt project. "));
+			return false;
+		}
+	}
+
+	private static String warn(PepperModule pepperModule, String msg) {
+		return "Failure in test of module '" + pepperModule.getName() + "': " + msg;
+	}
+
+	/**
 	 * helper class to check the feature's condition in an error prone manner.
 	 * When an exception occurs, the feature's fitness is automatically set to
 	 * false.
@@ -203,83 +319,5 @@ public class ModuleFitnessChecker {
 		}
 
 		public abstract boolean condition();
-	}
-
-	/**
-	 * when true is returned: tests ran well; false: tests did not pass; null:
-	 * no test is provided.
-	 * 
-	 * @param pepperModule
-	 * @return
-	 */
-	protected static Boolean runITest(PepperModule pepperModule, Pepper pepper) {
-		if (pepperModule == null) {
-			return null;
-		}
-		if (pepper == null) {
-			throw new PepperFWException("Cannot run integration test for module '" + pepperModule + "', because Pepper framework is not specified. ");
-		}
-		final IntegrationTestDesc testDesc = pepperModule.getIntegrationTestDesc();
-		if (testDesc == null) {
-			return null;
-		}
-		final List<String> problems = new ArrayList<>();
-		if (!testDesc.isValid(problems)) {
-			if (PepperUtil.isNotNullOrEmpty(problems)) {
-				for (String problem : problems) {
-					logger.warn(warn(pepperModule, problem));
-				}
-			}
-			return false;
-		}
-
-
-		if (pepperModule instanceof PepperImporter) {
-			final PepperImporter importer = (PepperImporter) pepperModule;
-			CorpusDesc corpusDesc = PepperUtil.createCorpusDesc().withCorpusPath(testDesc.getInputCorpusPath()).build();
-			importer.setCorpusDesc(corpusDesc);
-		} else if (pepperModule instanceof PepperManipulator || pepperModule instanceof PepperExporter) {
-			// load Salt from in corpus path
-			SaltProject saltProject = null;
-			try {
-				SaltUtil.loadSaltProject(testDesc.getInputCorpusPath());
-			} catch (RuntimeException e) {
-				logger.warn(warn(pepperModule, "The input salt project was could bot have been loaded from path '" + testDesc.getInputCorpusPath() + "'. May be the path does not contain a salt project. "));
-				return false;
-			}
-			pepperModule.setSaltProject(saltProject);
-		}
-
-		PepperTestUtil.start(pepper, Arrays.asList(pepperModule));
-
-		boolean retVal = true;
-		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
-			final SaltProject outputProject = pepperModule.getSaltProject();
-			if (SaltUtil.isNullOrEmpty(outputProject.getCorpusGraphs()) || outputProject.getCorpusGraphs().size() != 1) {
-				logger.warn(warn(pepperModule, "The salt project contained no corpus structures or it contains more than one corpus structure. "));
-				return false;
-			}
-			final URI out = testDesc.getInputCorpusPath();
-			final SaltProject expectedProject = SaltUtil.loadSaltProject(out);
-			try {
-				retVal = testDesc.compare(pepperModule.getSaltProject(), expectedProject);
-			} catch (RuntimeException e) {
-				logger.warn(warn(pepperModule, "An error occured while comparing actual salt project with expected salt project. "));
-				return false;
-			}
-		} else if (pepperModule instanceof PepperExporter) {
-			try {
-				final PepperExporter exporter = (PepperExporter) pepperModule;
-				retVal = testDesc.compare(exporter.getCorpusDesc().getCorpusPath(), testDesc.getOutputCorpusPath());
-			} catch (RuntimeException e) {
-				logger.warn(warn(pepperModule, "An error occured while comparing actual salt project with expected salt project. "));
-				return false;
-			}
-		}
-		return retVal;
-	}
-
-	private static String warn(PepperModule pepperModule, String msg) {
-		return "Failure in test of module '" + pepperModule.getName() + "': " + msg;
 	}
 }

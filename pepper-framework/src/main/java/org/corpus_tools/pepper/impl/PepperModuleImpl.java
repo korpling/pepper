@@ -886,7 +886,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	@Override
-	public IntegrationTestDesc getIntegrationTestDesc() {
+	public SelfTestDesc getSelfTestDesc() {
 		return null;
 	}
 } // PepperModuleImpl

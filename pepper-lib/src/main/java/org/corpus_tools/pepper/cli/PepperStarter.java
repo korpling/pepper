@@ -167,9 +167,7 @@ public class PepperStarter {
 		//
 		SELFTEST("self-test", "st", null, "Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
 		//
-		FITNESS("fitness", "f", null, "Checks the fitness of each registered Pepper module. The fitness check is a more detailed than a health check and also contains compliance issues."),
-		//
-		HEALTH("health", "h", null, "Checks the health of each registered Pepper module. The health check gives an overview whether the registered modules are runnable."),
+		FITNESS("fitness", "f", null, "Checks the fitness of each registered Pepper module. The fitness check also checks features, that are necessary to run a module and features which should be implemented."),
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
@@ -598,31 +596,6 @@ public class PepperStarter {
 					final Boolean featureFitness = moduleFitness.getFitness(fitnessFeature);
 					if (featureFitness != null) {
 						retVal.append(printFitnessDetails(fitnessFeature + "", featureFitness ? "YES" : "NO" + "", 80, 4));
-					}
-				}
-			}
-		}
-		return (retVal.toString());
-	}
-
-	/**
-	 * Returns a health report as a String. This report contains a health value
-	 * for each module and if a module is not healthy, the report is expanded
-	 * for a detailed report containing one value for each health feature.
-	 * 
-	 * @return health report
-	 */
-	public String health() {
-		final StringBuilder retVal = new StringBuilder();
-		final Collection<ModuleFitness> moduleFitnisses = getPepper().checkHealth();
-		for (ModuleFitness moduleFitness : moduleFitnisses) {
-			final Fitness overallFitness = moduleFitness.getOverallFitness();
-			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
-			if (Fitness.HEALTHY.compareTo(overallFitness) < 0) {
-				for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
-					final Boolean featureHealth = moduleFitness.getFitness(healthFeature);
-					if (featureHealth != null) {
-						retVal.append(printFitnessDetails(healthFeature + "", featureHealth ? "YES" : "NO" + "", 80, 4));
 					}
 				}
 			}
@@ -1137,8 +1110,6 @@ public class PepperStarter {
 				output.println(selfTest());
 			} else if ((COMMAND.FITNESS.getName().equalsIgnoreCase(command)) || (COMMAND.FITNESS.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(fitness());
-			} else if ((COMMAND.HEALTH.getName().equalsIgnoreCase(command)) || (COMMAND.HEALTH.getAbbreviation().equalsIgnoreCase(command))) {
-				output.println(health());
 			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
 				if (params.size() == 1) {
 					convert(params.get(0));

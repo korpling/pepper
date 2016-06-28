@@ -23,7 +23,7 @@ import java.util.List;
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
-import org.corpus_tools.pepper.impl.IntegrationTestDesc;
+import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleNotReadyException;
@@ -500,22 +500,22 @@ public interface PepperModule {
 	/**
 	 * This method is called by the Pepper framework to run an integration test
 	 * for module. When the method returns null, it means that no integration
-	 * test is supported. Otherwise, the {@link IntegrationTestDesc} object
+	 * test is supported. Otherwise, the {@link SelfTestDesc} object
 	 * needs to provide an input corpus path and an output corpus path.
 	 * 
 	 * When this module is:
 	 * <ul>
-	 * <li>an importer: {@link IntegrationTestDesc#getInputCorpusPath()} should
+	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should
 	 * contain the format to be imported.
-	 * {@link IntegrationTestDesc#getOutputCorpusPath()} should contain the
+	 * {@link SelfTestDesc#getOutputCorpusPath()} should contain the
 	 * expected salt project (for control).</li>
-	 * <li>a manipulator: {@link IntegrationTestDesc#getInputCorpusPath()}
+	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()}
 	 * should contain a salt project which is the module's input.
-	 * {@link IntegrationTestDesc#getOutputCorpusPath()} should contain the
+	 * {@link SelfTestDesc#getOutputCorpusPath()} should contain the
 	 * expected salt project (for control).</li>
-	 * <li>an exporter: {@link IntegrationTestDesc#getInputCorpusPath()} should
+	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should
 	 * contain a salt project which is the module's input.
-	 * {@link IntegrationTestDesc#getOutputCorpusPath()} should contain the
+	 * {@link SelfTestDesc#getOutputCorpusPath()} should contain the
 	 * expected corpus in output format.</li>
 	 * </ul>
 	 * The simplest way to create a test description is:
@@ -525,14 +525,14 @@ public interface PepperModule {
 	 * </pre>
 	 * 
 	 * When this module is an importer or a manipulator the method
-	 * {@link IntegrationTestDesc#compare(SaltProject, SaltProject)} is called
+	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called
 	 * to compare output salt project with expected salt project. When the
 	 * module is an exporter the method
-	 * {@link IntegrationTestDesc#compare(URI, URI)} is called to compare the
+	 * {@link SelfTestDesc#compare(URI, URI)} is called to compare the
 	 * created output folder with an expected one. By default this method checks
 	 * whether the file structure and each file is equal.
 	 * 
 	 * @return test description
 	 */
-	IntegrationTestDesc getIntegrationTestDesc();
+	SelfTestDesc getSelfTestDesc();
 }

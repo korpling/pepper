@@ -336,11 +336,6 @@ public class PepperImpl implements Pepper {
 	}
 
 	@Override
-	public Collection<ModuleFitness> checkHealth() {
-		return ModuleFitnessChecker.checkHealth(getAllRegisteredModules());
-	}
-
-	@Override
 	public Collection<String> selfTest() {
 		Collection<String> retVal = new Vector<String>();
 		if (getModuleResolver() == null)
