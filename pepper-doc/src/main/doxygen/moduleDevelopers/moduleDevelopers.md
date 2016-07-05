@@ -27,6 +27,10 @@ For testing, Pepper uses the JUnit framework (http://junit.org) and provides a t
 
 * \subpage testing
 
+Pepper provides a mechanism to check whether your module runs on the Pepper platform and fulfills a set of features which should be implemented. The mechanism is called fitness check and is similar to an integration test. 
+
+* \subpage fitness 
+
 When you are done with the implementation work of your module you should deliver it in a way which Pepper can easily plug in into the platform. Therefore Pepper provides a Maven assembly goal to do so.  
 
 * \subpage bundle

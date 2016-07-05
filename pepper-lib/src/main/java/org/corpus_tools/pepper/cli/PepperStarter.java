@@ -52,6 +52,7 @@ import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
 import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
+import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.common.PepperUtil;
@@ -600,6 +601,7 @@ public class PepperStarter {
 				}
 			}
 		}
+		retVal.append("For more information on particular fitness features see: " + PepperConfiguration.FITNESS_FEATURE_DESC + ". ");
 		return (retVal.toString());
 	}
 
