@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.spy;
 
 import java.awt.image.SampleModel;
 import java.util.Arrays;
@@ -17,14 +18,18 @@ import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.tests.PepperUtilTest;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.*;
@@ -291,14 +296,16 @@ public class ModuleFitnessCheckerTest {
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 	}
 
+	@SuppressWarnings("restriction")
 	@Test
 	public void whenSelfTestAndModuleIsImporterAndEverythingIsOk_thenAllFeaturesShouldBeTrue() {
-		final Pepper pepper = mock(Pepper.class);
-		final PepperImporter importer = mock(PepperImporter.class);
+		final Pepper pepper = PepperTestUtil.createDefaultPepper();
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
 		when(desc.getInputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
 		when(desc.getOutputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
+		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(true);
+		final PepperImporter importer = spy(DoNothingImporter.class);
 		when(importer.getSelfTestDesc()).thenReturn(desc);
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());

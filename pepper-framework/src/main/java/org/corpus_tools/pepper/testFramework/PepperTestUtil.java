@@ -145,6 +145,14 @@ public class PepperTestUtil {
 		return (step);
 	}
 
+	public static Pepper createDefaultPepper() {
+		// Create a Pepper object
+		final PepperImpl pepper = new PepperImpl();
+		final PepperConfiguration conf = new PepperConfiguration();
+		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
+		return pepper;
+	}
+
 	/**
 	 * This methods starts the processing of Pepper in the development
 	 * environment for a set of Pepper modules. This enables the test of
@@ -176,11 +184,7 @@ public class PepperTestUtil {
 	 *            the fixture modules
 	 */
 	public static void start(final Collection<PepperModule> fixtures) {
-		// Create a Pepper object
-		final PepperImpl pepper = new PepperImpl();
-		final PepperConfiguration conf = new PepperConfiguration();
-		conf.setProperty(PepperConfiguration.PROP_MEMORY_POLICY, MEMORY_POLICY.MODERATE.toString());
-		start(pepper, fixtures);
+		start(createDefaultPepper(), fixtures);
 	}
 
 	/**
@@ -266,8 +270,8 @@ public class PepperTestUtil {
 			controller.awake();
 		}
 	}
-	
-	private static void createStepForFixtures(final Collection<? extends PepperModule> fixtures, PepperJob job){
+
+	private static void createStepForFixtures(final Collection<? extends PepperModule> fixtures, PepperJob job) {
 		/** Create a step for each fixture. **/
 		for (PepperModule fixture : fixtures) {
 			final Step fixtureStep = new Step("fixture_step");

@@ -110,7 +110,7 @@ public class CorpusDesc {
 	}
 	
 	public static class Builder{
-		private CorpusDesc corpusDesc;
+		final private CorpusDesc corpusDesc= new CorpusDesc();
 		
 		public Builder withCorpusPath(URI corpusPath){
 			corpusDesc.setCorpusPath(corpusPath);
