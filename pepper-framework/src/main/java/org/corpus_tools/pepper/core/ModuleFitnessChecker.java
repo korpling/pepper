@@ -258,7 +258,7 @@ public class ModuleFitnessChecker {
 
 		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
 			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule);
-			isValid = SaltUtil.validate(pepperModule.getSaltProject()).andGetResult();
+			isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
 		} else if (pepperModule instanceof PepperExporter) {
 			hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule);
 		}

@@ -338,7 +338,7 @@ public class ModuleFitnessCheckerTest {
 	}
 	
 	@Test
-	public void whenSelfTestAndModuleIsManipulatorAndEverythingIsOk_thenfeaturesShouldBeTrue() {
+	public void whenSelfTestAndModuleIsManipulatorAndEverythingIsOk_thenFeaturesShouldBeTrue() {
 		final Pepper pepper = PepperTestUtil.createDefaultPepper();
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
 		when(desc.getInputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
@@ -353,7 +353,6 @@ public class ModuleFitnessCheckerTest {
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();
-		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}
 }
