@@ -1,13 +1,27 @@
 package org.corpus_tools.pepper.modules;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.util.SaltUtil;
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.ElementNameQualifier;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.URI;
+import org.xml.sax.SAXException;
+
+import com.google.common.base.Strings;
 
 /**
  * This class is a container for a module selftest. A Pepper module provides an
@@ -69,7 +83,7 @@ public class SelfTestDesc {
 	 *            corpus path.
 	 * @return true, when both models are equal, false otherwise
 	 */
-	public boolean compare(SaltProject actualProject, SaltProject expectedProject) {
+	public boolean compare(final SaltProject actualProject, final SaltProject expectedProject) {
 		if (actualProject == null || expectedProject == null) {
 			return false;
 		}
@@ -98,23 +112,115 @@ public class SelfTestDesc {
 	 * <strong> You are free to overwrite this method with your own comparison.
 	 * </strong>
 	 * 
-	 * @param actualProject
-	 *            is the corpus produced by the module itself (which was
+	 * @param actualCorpusPath
+	 *            is the corpus path produced by the module itself (which was
 	 *            generated from the files from the input corpus path)
-	 * @param expectedProject
-	 *            is the expected corpus, which is created from the output
-	 *            corpus path.
-	 * @return true, when both models are equal, false otherwise
+	 * @param expectedCorpusPath
+	 *            is the expected corpus path
+	 * @return true, when the content of both pathes is equal, false otherwise
 	 */
-	public boolean compare(URI actualCorpusPath, URI expectedCorpusPath) {
+	public boolean compare(final URI actualCorpusPath, final URI expectedCorpusPath) {
 		if (actualCorpusPath == null || expectedCorpusPath == null) {
 			return false;
 		}
 		final File actualDir = new File(actualCorpusPath.toFileString());
 		final File expectedDir = new File(expectedCorpusPath.toFileString());
 
-		return new HashSet<File>(FileUtils.listFiles(actualDir, null, true))
-				.containsAll(FileUtils.listFiles(expectedDir, null, true));
+		final Collection<File> actualFiles = FileUtils.listFiles(actualDir, null, true);
+		final Collection<File> expectedFiles = FileUtils.listFiles(expectedDir, null, true);
+		if (actualFiles == null || expectedFiles == null) {
+			return false;
+		}
+		if (actualFiles.size() != expectedFiles.size()) {
+			return false;
+		}
+
+		final String expectedFilePrefix = expectedCorpusPath.toFileString();
+		final String actualFilePrefix = actualCorpusPath.toFileString();
+		final Map<String, File> expectedFileMap = new Hashtable<>();
+		for (File expectedFile : expectedFiles) {
+			expectedFileMap.put(expectedFile.getAbsolutePath().replace(expectedFilePrefix, ""), expectedDir);
+		}
+		for (File actualFile : actualFiles) {
+			final File expectedFile = expectedFileMap.get(actualFile.getAbsolutePath().replace(actualFilePrefix, ""));
+			if (!compare(actualFile, expectedFile)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * This method is called by {@link #compare(URI, URI)} to compare two files
+	 * with each other.
+	 * 
+	 * <strong> You are free to overwrite this method with your own comparison.
+	 * </strong>
+	 * 
+	 * @param actualFile
+	 *            the file produced by the module itself (which was generated
+	 *            from the files from the input corpus path)
+	 * @param expectedFile
+	 *            the file, which is contained in expected corpus path.
+	 * @return true, when both files are equal, false otherwise
+	 */
+	protected boolean compare(final File actualFile, final File expectedFile) {
+		if (actualFile == null || !actualFile.exists() || expectedFile == null || !expectedFile.exists()) {
+			return false;
+		}
+
+		try (BufferedReader brTest = new BufferedReader(new FileReader(expectedFile))) {
+			final String firstLine = brTest.readLine();
+			if (!Strings.isNullOrEmpty(firstLine)) {
+				if (firstLine.contains("<?xml")) {
+					return compareXML(actualFile, expectedFile);
+				}
+			}
+		} catch (IOException e1) {
+			// do nothing
+		}
+
+		try {
+			return FileUtils.contentEquals(actualFile, expectedFile);
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+	protected final DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+
+	/**
+	 * This method is called by {@link #compare(URI, URI)} to compare two
+	 * xmlfiles with each other.
+	 * 
+	 * <strong> You are free to overwrite this method with your own comparison.
+	 * </strong>
+	 * 
+	 * @param actualXmlFile
+	 *            the xml file produced by the module itself (which was
+	 *            generated from the files from the input corpus path)
+	 * @param expectedXmlFile
+	 *            the xml file, which is contained in expected corpus path.
+	 * @return true, when both files are equal, false otherwise
+	 */
+	protected boolean compareXML(final File actualXmlFile, final File expectedXmlFile) {
+		if (actualXmlFile == null || expectedXmlFile == null) {
+			return false;
+		}
+		final DocumentBuilder docBuilder;
+		final Diff diff;
+		try {
+			docBuilder = docBuilderFactory.newDocumentBuilder();
+			XMLUnit.setIgnoreWhitespace(true);
+		    XMLUnit.setIgnoreComments(true);
+		    XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
+			diff = XMLUnit.compareXML(docBuilder.parse(expectedXmlFile), docBuilder.parse(actualXmlFile));
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			return false;
+		}
+
+		diff.overrideElementQualifier(new ElementNameQualifier());
+		return diff.identical();
 	}
 
 	/**
