@@ -2,6 +2,7 @@ package org.corpus_tools.pepper.impl;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
+import org.corpus_tools.pepper.modules.SelfTestDesc;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.*;
 import static org.assertj.core.api.Assertions.*;

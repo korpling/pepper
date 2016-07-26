@@ -12,11 +12,11 @@ import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
-import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.modules.SelfTestDesc;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.util.SaltUtil;
@@ -288,7 +288,7 @@ public class ModuleFitnessChecker {
 	private static boolean whenModuleIsExpoterThenCallSelftestDescCompare(PepperModule pepperModule) {
 		try {
 			final PepperExporter exporter = (PepperExporter) pepperModule;
-			return pepperModule.getSelfTestDesc().compare(exporter.getCorpusDesc().getCorpusPath(), pepperModule.getSelfTestDesc().getOutputCorpusPath());
+			return pepperModule.getSelfTestDesc().compare(exporter.getCorpusDesc().getCorpusPath(), pepperModule.getSelfTestDesc().getExpectedCorpusPath());
 		} catch (RuntimeException e) {
 			logger.warn(warn(pepperModule, "An error occured while comparing actual salt project with expected salt project. "));
 			return false;

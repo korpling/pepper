@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.PepperUtil;
-import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 

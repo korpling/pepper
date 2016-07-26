@@ -23,7 +23,6 @@ import java.util.List;
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
-import org.corpus_tools.pepper.impl.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleNotReadyException;
@@ -507,15 +506,15 @@ public interface PepperModule {
 	 * <ul>
 	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should
 	 * contain the format to be imported.
-	 * {@link SelfTestDesc#getOutputCorpusPath()} should contain the
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the
 	 * expected salt project (for control).</li>
 	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()}
 	 * should contain a salt project which is the module's input.
-	 * {@link SelfTestDesc#getOutputCorpusPath()} should contain the
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the
 	 * expected salt project (for control).</li>
 	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should
 	 * contain a salt project which is the module's input.
-	 * {@link SelfTestDesc#getOutputCorpusPath()} should contain the
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the
 	 * expected corpus in output format.</li>
 	 * </ul>
 	 * The simplest way to create a test description is:
