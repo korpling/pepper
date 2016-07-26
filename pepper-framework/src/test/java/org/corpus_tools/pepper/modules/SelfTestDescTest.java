@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
+import org.corpus_tools.salt.common.SaltProject;
+import org.corpus_tools.salt.samples.SampleGenerator;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,67 @@ public class SelfTestDescTest {
 
 	private File resourcePath(String subPath){
 		return new File("./"+ PepperTestUtil.getTestResources()+subPath).getAbsoluteFile();
+	}
+	
+	@Test
+	public void whenComparingTwoNullModels_thenReturnFalse(){
+		assertThat(fixture.compare((SaltProject)null, null)).isFalse();
+	}
+	
+	@Test
+	public void whenComparingIdenticalModels_thenReturnTrue(){
+		final SelfTestDesc selfTestDesc= new SelfTestDesc(URI.createURI(""), URI.createURI(""));
+		
+		final SaltProject actual= SampleGenerator.createSaltProject();
+		final SaltProject expected= SampleGenerator.createSaltProject();
+		
+		assertThat(selfTestDesc.compare(actual, expected)).isTrue();
+	}
+	
+	@Test
+	public void whenComparingDifferentModels_thenReturnFalse(){
+		final SelfTestDesc selfTestDesc= new SelfTestDesc(URI.createURI(""), URI.createURI(""));
+		
+		final SaltProject actual= SampleGenerator.createSaltProject();
+		final SaltProject expected= SampleGenerator.createSaltProject();
+		expected.getCorpusGraphs().get(0).removeNode(expected.getCorpusGraphs().get(0).getCorpora().get(0));
+		
+		assertThat(selfTestDesc.compare(actual, expected)).isFalse();
+	}
+	
+	@Test
+	public void whenComparingTwoNullCorpusPathes_thenReturnFalse(){
+		assertThat(fixture.compare((URI)null, null)).isFalse();
+	}
+	
+	@Test
+	public void whenComparingTwoCorpusPathesWithDifferentNumbersOfFiles_thenReturnFalse(){
+		final File actualFile= resourcePath("/selfTest/comparisonTests/whenComparingTwoCorpusPathesWithDifferentNumbersOfSubFolders/actual/");
+		final File expectedFile= resourcePath("/selfTest/comparisonTests/whenComparingTwoCorpusPathesWithDifferentNumbersOfSubFolders/expected/");
+		final URI actual= URI.createFileURI(actualFile.getAbsolutePath());
+		final URI expected= URI.createFileURI(expectedFile.getAbsolutePath());
+		
+		assertThat(fixture.compare(actual, expected)).isFalse();
+	}
+	
+	@Test
+	public void whenComparingTwoCorpusPathesWithDifferentNumbersOfSubFolders_thenReturnFalse(){
+		final File actualFile= resourcePath("/selfTest/comparisonTests/whenComparingTwoCorpusPathesWithDifferentNumbersOfSubFolders/actual/");
+		final File expectedFile= resourcePath("/selfTest/comparisonTests/whenComparingTwoCorpusPathesWithDifferentNumbersOfSubFolders/expected/");
+		final URI actual= URI.createFileURI(actualFile.getAbsolutePath());
+		final URI expected= URI.createFileURI(expectedFile.getAbsolutePath());
+		
+		assertThat(fixture.compare(actual, expected)).isFalse();
+	}
+	
+	@Test
+	public void whenComparingTwoCorpusPathesWithEqualFiles_thenReturnTrue(){
+		final File actualFile= resourcePath("/selfTest/comparisonTests/whenComparingTwoCorpusPathesWithEqualFiles/actual/");
+		final File expectedFile= resourcePath("/selfTest/comparisonTests/whenComparingTwoCorpusPathesWithEqualFiles/expected/");
+		final URI actual= URI.createFileURI(actualFile.getAbsolutePath());
+		final URI expected= URI.createFileURI(expectedFile.getAbsolutePath());
+		
+		assertThat(fixture.compare(actual, expected)).isTrue();
 	}
 	
 	@Test

@@ -125,6 +125,9 @@ public class SelfTestDesc {
 		}
 		final File actualDir = new File(actualCorpusPath.toFileString());
 		final File expectedDir = new File(expectedCorpusPath.toFileString());
+		if (!actualDir.exists() || !expectedDir.exists()){
+			return false;
+		}
 
 		final Collection<File> actualFiles = FileUtils.listFiles(actualDir, null, true);
 		final Collection<File> expectedFiles = FileUtils.listFiles(expectedDir, null, true);
@@ -139,7 +142,7 @@ public class SelfTestDesc {
 		final String actualFilePrefix = actualCorpusPath.toFileString();
 		final Map<String, File> expectedFileMap = new Hashtable<>();
 		for (File expectedFile : expectedFiles) {
-			expectedFileMap.put(expectedFile.getAbsolutePath().replace(expectedFilePrefix, ""), expectedDir);
+			expectedFileMap.put(expectedFile.getAbsolutePath().replace(expectedFilePrefix, ""), expectedFile);
 		}
 		for (File actualFile : actualFiles) {
 			final File expectedFile = expectedFileMap.get(actualFile.getAbsolutePath().replace(actualFilePrefix, ""));
@@ -212,8 +215,8 @@ public class SelfTestDesc {
 		try {
 			docBuilder = docBuilderFactory.newDocumentBuilder();
 			XMLUnit.setIgnoreWhitespace(true);
-		    XMLUnit.setIgnoreComments(true);
-		    XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
+			XMLUnit.setIgnoreComments(true);
+			XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
 			diff = XMLUnit.compareXML(docBuilder.parse(expectedXmlFile), docBuilder.parse(actualXmlFile));
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			return false;
