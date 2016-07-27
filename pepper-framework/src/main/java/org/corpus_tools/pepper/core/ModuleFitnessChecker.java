@@ -219,13 +219,10 @@ public class ModuleFitnessChecker {
 			moduleFitness.setFeature(FitnessFeature.HAS_SELFTEST, true);
 		}
 
-		boolean isImportable = false;
 		boolean hasPassed = false;
-		boolean isValid = false;
-		moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
+		
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
-		moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
-
+		
 		final List<String> problems = new ArrayList<>();
 		if (!testDesc.isValid(problems)) {
 			if (PepperUtil.isNotNullOrEmpty(problems)) {
@@ -241,7 +238,8 @@ public class ModuleFitnessChecker {
 			final CorpusDesc corpusDesc = PepperUtil.createCorpusDesc().withCorpusPath(testDesc.getInputCorpusPath()).build();
 			importer.setCorpusDesc(corpusDesc);
 			final Double importRate = importer.isImportable(corpusDesc.getCorpusPath());
-			isImportable = (importRate == null || importRate < 1.0) ? false : true;
+			final boolean isImportable = (importRate == null || importRate < 1.0) ? false : true;
+			moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
 		} else if (pepperModule instanceof PepperManipulator || pepperModule instanceof PepperExporter) {
 			// load Salt from in corpus path
 			SaltProject saltProject = null;
@@ -258,14 +256,13 @@ public class ModuleFitnessChecker {
 
 		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
 			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule);
-			isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
+			final boolean isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
+			moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
 		} else if (pepperModule instanceof PepperExporter) {
 			hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule);
 		}
 
-		moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
-		moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
 		return moduleFitness;
 	}
 
