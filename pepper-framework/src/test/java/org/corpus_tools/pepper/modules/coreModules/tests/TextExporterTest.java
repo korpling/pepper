@@ -135,7 +135,7 @@ public class TextExporterTest extends PepperExporterTest {
 		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).describedAs(""+SaltUtil.compare(SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath()).getCorpusGraphs().get(0)).with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs()).isTrue();
+		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}

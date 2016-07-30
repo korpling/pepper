@@ -1,5 +1,6 @@
 package org.corpus_tools.pepper.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -273,12 +274,17 @@ public class ModuleFitnessChecker {
 			// load Salt from in corpus path
 			SaltProject saltProject = null;
 			try {
-				SaltUtil.loadSaltProject(testDesc.getInputCorpusPath());
+				saltProject= SaltUtil.loadCompleteSaltProject(testDesc.getInputCorpusPath());
 			} catch (RuntimeException e) {
-				logger.warn(warn(pepperModule, "The input salt project was could bot have been loaded from path '"
-						+ testDesc.getInputCorpusPath() + "'. May be the path does not contain a salt project. "));
+				logger.warn(warn(pepperModule, "The input salt project was could not have been loaded from path '"
+						+ testDesc.getInputCorpusPath() + "'. The path might not contain a salt project. "));
 				return moduleFitness;
 			}
+			if (pepperModule instanceof PepperExporter){
+				final PepperExporter exporter = (PepperExporter) pepperModule;	
+				exporter.setCorpusDesc(new CorpusDesc.Builder().withCorpusPath(URI.createFileURI(PepperUtil.getTempFile("self-test").getAbsolutePath())).build());
+			}
+			
 			pepperModule.setSaltProject(saltProject);
 		}
 

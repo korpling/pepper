@@ -28,6 +28,7 @@ import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperMapper;
+import org.corpus_tools.pepper.modules.SelfTestDesc;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.common.STextualDS;
 import org.corpus_tools.salt.graph.Identifier;
@@ -62,6 +63,15 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 
 	}
 
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
+						.appendSegment("expected"));
+	}
+	
 	/**
 	 * Creates a mapper to export primary texts.
 	 */
