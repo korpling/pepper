@@ -165,7 +165,7 @@ public class TextImporterTest extends PepperImporterTest {
 
 	@Test
 	public void whenSelfTestingModule_thenResultShouldBeTrue() {
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(fixture, PepperTestUtil.createDefaultPepper());
+		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).describedAs(""+SaltUtil.compare(SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath()).getCorpusGraphs().get(0)).with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs()).isTrue();

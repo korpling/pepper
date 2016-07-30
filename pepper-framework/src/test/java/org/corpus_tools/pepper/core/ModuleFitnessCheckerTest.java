@@ -294,13 +294,13 @@ public class ModuleFitnessCheckerTest {
 	@Test(expected = PepperFWException.class)
 	public void whenSelfTestAndNoPepperWasSpecified_thenFail() {
 		final PepperImporter importer = mock(PepperImporter.class);
-		new ModuleFitnessChecker(null).selfTest(importer, null, null);
+		new ModuleFitnessChecker(null).selfTest(importer, null);
 	}
 
 	@Test
 	public void whenSelfTestAndNoPepperModuleWasSpecified_thenHasSelfTestIsFalse() {
 		final Pepper pepper = mock(Pepper.class);
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(null, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(null, null);
 
 		assertThat(fitness).isNull();
 	}
@@ -310,7 +310,7 @@ public class ModuleFitnessCheckerTest {
 		final Pepper pepper = mock(Pepper.class);
 		final PepperImporter importer = mock(PepperImporter.class);
 		when(importer.getSelfTestDesc()).thenReturn(null);
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(importer, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isFalse();
 	}
@@ -321,7 +321,7 @@ public class ModuleFitnessCheckerTest {
 		final PepperImporter importer = mock(PepperImporter.class);
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
 		when(importer.getSelfTestDesc()).thenReturn(desc);
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(importer, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 	}
@@ -341,7 +341,7 @@ public class ModuleFitnessCheckerTest {
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(importer, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
@@ -364,7 +364,7 @@ public class ModuleFitnessCheckerTest {
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(importer, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();
@@ -386,7 +386,7 @@ public class ModuleFitnessCheckerTest {
 		when(manipulator.getSelfTestDesc()).thenReturn(desc);
 		when(manipulator.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(manipulator, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(manipulator, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();
@@ -407,7 +407,7 @@ public class ModuleFitnessCheckerTest {
 		when(exporter.getSelfTestDesc()).thenReturn(desc);
 		when(exporter.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(exporter, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(exporter, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();

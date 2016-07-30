@@ -124,7 +124,7 @@ public class ModuleFitnessChecker {
 			};
 		}
 		if (pepper != null) {
-			fitness = selfTest(module, pepper, fitness);
+			fitness = selfTest(module, fitness);
 		}
 		return fitness;
 	}
@@ -206,10 +206,10 @@ public class ModuleFitnessChecker {
 	 * @param pepper
 	 *            Pepper environment to test
 	 */
-	public static ModuleFitness selfTest(final PepperModule pepperModule, final Pepper pepper) {
-		return selfTest(pepperModule, pepper, null);
+	public ModuleFitness selfTest(final PepperModule pepperModule) {
+		return selfTest(pepperModule, null);
 	}
-	
+
 	/**
 	 * When the specified module provides a self test, the fitness feature
 	 * {@link FitnessFeature#HAS_SELFTEST} is set to true and self test is ran.
@@ -227,8 +227,7 @@ public class ModuleFitnessChecker {
 	 * @param moduleFitness
 	 *            the {@link ModuleFitness} to be filled.
 	 */
-	protected static ModuleFitness selfTest(final PepperModule pepperModule, final Pepper pepper,
-			ModuleFitness moduleFitness) {
+	protected ModuleFitness selfTest(final PepperModule pepperModule, ModuleFitness moduleFitness) {
 		if (pepperModule == null) {
 			return moduleFitness;
 		}
