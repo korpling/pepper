@@ -71,27 +71,29 @@ public class ModuleFitnessCheckerTest {
 	@Test
 	public void whenCheckingHealthForNull_thenReturnNull() {
 		PepperModule module = null;
-		assertThat(ModuleFitnessChecker.checkHealth(module)).isNull();
+		assertThat(new ModuleFitnessChecker(null).checkHealth(module)).isNull();
 	}
 
 	@Test
 	public void whenModuleIsReadyToRun_thenCorrespondingHealthFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.isReadyToStart()).thenReturn(true);
-		assertThat(ModuleFitnessChecker.checkHealth(module).getFitness(FitnessFeature.IS_READY_TO_RUN)).isEqualTo(true);
+		assertThat(new ModuleFitnessChecker(null).checkHealth(module).getFitness(FitnessFeature.IS_READY_TO_RUN))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleIsNotReadyToRun_thenCorrespondingHealthFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.isReadyToStart()).thenReturn(false);
-		assertThat(ModuleFitnessChecker.checkHealth(module).getFitness(FitnessFeature.IS_READY_TO_RUN)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkHealth(module).getFitness(FitnessFeature.IS_READY_TO_RUN))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenCheckingHealthForNullSet_thenReturnEmptyList() {
 		Collection<PepperModule> modules = null;
-		ModuleFitnessChecker.checkHealth(modules).isEmpty();
+		new ModuleFitnessChecker(null).checkHealth(modules).isEmpty();
 	}
 
 	@Test
@@ -99,148 +101,174 @@ public class ModuleFitnessCheckerTest {
 		PepperModule healthyModule = createHealthyModule();
 		PepperModule criticalModule = createCriticalModule();
 
-		List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkHealth(Arrays.asList(healthyModule, criticalModule));
+		List<ModuleFitness> fitnesses = new ModuleFitnessChecker(null)
+				.checkHealth(Arrays.asList(healthyModule, criticalModule));
 		assertThat(fitnesses.get(0).getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 		assertThat(fitnesses.get(1).getOverallFitness()).isEqualTo(Fitness.CRITICAL);
 	}
 
 	@Test
 	public void whenCheckinHealthForModuleListWithNullEntries_thenIgnoreNullEntries() {
-		List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkHealth(Arrays.asList(mock(PepperModule.class), null, mock(PepperModule.class)));
+		List<ModuleFitness> fitnesses = new ModuleFitnessChecker(null)
+				.checkHealth(Arrays.asList(mock(PepperModule.class), null, mock(PepperModule.class)));
 		assertThat(fitnesses.size()).isEqualTo(2);
 	}
 
 	@Test
 	public void whenCheckingFitnessForNull_thenReturnNull() {
 		PepperModule module = null;
-		assertThat(ModuleFitnessChecker.checkFitness(module)).isNull();
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module)).isNull();
 	}
 
 	@Test
 	public void whenCheckingFitnessFeatureThrowsException_thenCorrespondingFitnessFeatureShouldBeFalse() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getDesc()).thenThrow(new RuntimeException());
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_NAME))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenModuleHasName_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getName()).thenReturn("MyModule");
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(true);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_NAME))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleHasNoName_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getName()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_NAME)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_NAME))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenModuleHasDescription_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getDesc()).thenReturn("any description");
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_DESCRIPTION)).isEqualTo(true);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_DESCRIPTION))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleHasNoDescription_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getDesc()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_DESCRIPTION)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_DESCRIPTION))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenModuleHasSupplierContact_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierContact()).thenReturn(URI.createURI("me@mail.com"));
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT)).isEqualTo(true);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleHasNoSupplierContact_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierContact()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenModuleHasSupplierHomepage_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierHomepage()).thenReturn(URI.createURI("http://me.com"));
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP)).isEqualTo(true);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenModuleHasNoSupplierHomepage_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperModule module = mock(PepperModule.class);
 		when(module.getSupplierHomepage()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_SUPPLIER_HP))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenImporterSupportsIsImportable_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperImporter module = mock(PepperImporter.class);
 		when(module.isImportable(any(URI.class))).thenReturn(1.0);
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(true);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.IS_IMPORTABLE))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenImporterDoesNotSupportIsImportable_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperImporter importer = mock(PepperImporter.class);
 		when(importer.isImportable(any(URI.class))).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(importer).getFitness(FitnessFeature.IS_IMPORTABLE)).isEqualTo(false);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(importer).getFitness(FitnessFeature.IS_IMPORTABLE))
+				.isEqualTo(false);
 	}
 
 	@Test
 	public void whenImportereHasFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperImporter importer = mock(PepperImporter.class);
-		when(importer.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("anyFormat").setFormatVersion("any Version")));
-		assertThat(ModuleFitnessChecker.checkFitness(importer).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(true);
+		when(importer.getSupportedFormats())
+				.thenReturn(Arrays.asList(new FormatDesc().setFormatName("anyFormat").setFormatVersion("any Version")));
+		assertThat(
+				new ModuleFitnessChecker(null).checkFitness(importer).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS))
+						.isEqualTo(true);
 	}
 
 	@Test
 	public void whenImporterHasNoFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperImporter exporter = mock(PepperImporter.class);
 		when(exporter.getSupportedFormats()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+		assertThat(
+				new ModuleFitnessChecker(null).checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS))
+						.isEqualTo(false);
 		when(exporter.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc()));
-		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+		assertThat(
+				new ModuleFitnessChecker(null).checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS))
+						.isEqualTo(false);
 	}
 
 	@Test
 	public void whenExportereHasFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperExporter module = mock(PepperExporter.class);
-		when(module.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc().setFormatName("anyFormat").setFormatVersion("any Version")));
-		assertThat(ModuleFitnessChecker.checkFitness(module).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(true);
+		when(module.getSupportedFormats())
+				.thenReturn(Arrays.asList(new FormatDesc().setFormatName("anyFormat").setFormatVersion("any Version")));
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS))
+				.isEqualTo(true);
 	}
 
 	@Test
 	public void whenExporterHasNoFormats_thenCorrespondingFitnessFeatureShouldBeTrue() {
 		PepperExporter exporter = mock(PepperExporter.class);
 		when(exporter.getSupportedFormats()).thenReturn(null);
-		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+		assertThat(
+				new ModuleFitnessChecker(null).checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS))
+						.isEqualTo(false);
 		when(exporter.getSupportedFormats()).thenReturn(Arrays.asList(new FormatDesc()));
-		assertThat(ModuleFitnessChecker.checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS)).isEqualTo(false);
+		assertThat(
+				new ModuleFitnessChecker(null).checkFitness(exporter).getFitness(FitnessFeature.HAS_SUPPORTED_FORMATS))
+						.isEqualTo(false);
 	}
 
 	@Test
 	public void whenCheckingFitnessForNullSet_thenReturnEmptyList() {
 		Collection<PepperModule> modules = null;
-		ModuleFitnessChecker.checkFitness(modules).isEmpty();
+		new ModuleFitnessChecker(null).checkFitness(modules).isEmpty();
 	}
 
 	@Test
 	public void whenCheckingFitnessForFitModule_thenReturnFit() {
 		PepperModule module = createFitImporter();
-		assertThat(ModuleFitnessChecker.checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
 	}
 
 	@Test
 	public void whenCheckingFitnessForFitImporter_thenReturnFit() {
 		PepperModule module = createFitImporter();
-		assertThat(ModuleFitnessChecker.checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
+		assertThat(new ModuleFitnessChecker(null).checkFitness(module).getOverallFitness()).isEqualTo(Fitness.FIT);
 	}
 
 	@Test
@@ -249,7 +277,8 @@ public class ModuleFitnessCheckerTest {
 		final PepperModule healthyModule = createHealthyModule();
 		final PepperModule criticalModule = createCriticalModule();
 
-		final List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(fitModule, healthyModule, criticalModule));
+		final List<ModuleFitness> fitnesses = new ModuleFitnessChecker(null)
+				.checkFitness(Arrays.asList(fitModule, healthyModule, criticalModule));
 		assertThat(fitnesses.get(0).getOverallFitness()).isEqualTo(Fitness.FIT);
 		assertThat(fitnesses.get(1).getOverallFitness()).isEqualTo(Fitness.HEALTHY);
 		assertThat(fitnesses.get(2).getOverallFitness()).isEqualTo(Fitness.CRITICAL);
@@ -257,20 +286,21 @@ public class ModuleFitnessCheckerTest {
 
 	@Test
 	public void whenCheckinFitnessForModuleListWithNullEntries_thenIgnoreNullEntries() {
-		final List<ModuleFitness> fitnesses = ModuleFitnessChecker.checkFitness(Arrays.asList(mock(PepperModule.class), null, mock(PepperModule.class)));
+		final List<ModuleFitness> fitnesses = new ModuleFitnessChecker(null)
+				.checkFitness(Arrays.asList(mock(PepperModule.class), null, mock(PepperModule.class)));
 		assertThat(fitnesses.size()).isEqualTo(2);
 	}
 
 	@Test(expected = PepperFWException.class)
 	public void whenSelfTestAndNoPepperWasSpecified_thenFail() {
 		final PepperImporter importer = mock(PepperImporter.class);
-		ModuleFitnessChecker.selfTest(importer, null, null);
+		new ModuleFitnessChecker(null).selfTest(importer, null, null);
 	}
 
 	@Test
 	public void whenSelfTestAndNoPepperModuleWasSpecified_thenHasSelfTestIsFalse() {
 		final Pepper pepper = mock(Pepper.class);
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(null, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(null, pepper, null);
 
 		assertThat(fitness).isNull();
 	}
@@ -280,7 +310,7 @@ public class ModuleFitnessCheckerTest {
 		final Pepper pepper = mock(Pepper.class);
 		final PepperImporter importer = mock(PepperImporter.class);
 		when(importer.getSelfTestDesc()).thenReturn(null);
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isFalse();
 	}
@@ -291,7 +321,7 @@ public class ModuleFitnessCheckerTest {
 		final PepperImporter importer = mock(PepperImporter.class);
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
 		when(importer.getSelfTestDesc()).thenReturn(desc);
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 	}
@@ -300,8 +330,10 @@ public class ModuleFitnessCheckerTest {
 	public void whenSelfTestAndModuleIsImporterAndEverythingIsOk_thenAllFeaturesShouldBeTrue() {
 		final Pepper pepper = PepperTestUtil.createDefaultPepper();
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
-		when(desc.getInputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
-		when(desc.getExpectedCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
+		when(desc.getInputCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
+		when(desc.getExpectedCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(true);
 		final PepperImporter importer = spy(DoNothingImporter.class);
@@ -309,20 +341,22 @@ public class ModuleFitnessCheckerTest {
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}
-	
+
 	@Test
 	public void whenSelfTestAndModuleIsImporterAndImportedCorpusIsNotEqualToExpectedOne_thenPassedSelfTestShouldBeFalse() {
 		final Pepper pepper = PepperTestUtil.createDefaultPepper();
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
-		when(desc.getInputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
-		when(desc.getExpectedCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
+		when(desc.getInputCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
+		when(desc.getExpectedCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(false);
 		final PepperImporter importer = spy(DoNothingImporter.class);
@@ -330,46 +364,50 @@ public class ModuleFitnessCheckerTest {
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(importer, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(importer, pepper, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();
 		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}
-	
+
 	@Test
 	public void whenSelfTestAndModuleIsManipulatorAndEverythingIsOk_thenFeaturesShouldBeTrue() {
 		final Pepper pepper = PepperTestUtil.createDefaultPepper();
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
-		when(desc.getInputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
-		when(desc.getExpectedCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
+		when(desc.getInputCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
+		when(desc.getExpectedCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(false);
 		final PepperManipulator manipulator = spy(DoNothingManipulator.class);
 		when(manipulator.getSelfTestDesc()).thenReturn(desc);
 		when(manipulator.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(manipulator, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(manipulator, pepper, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();
 		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}
-	
+
 	@Test
 	public void whenSelfTestAndModuleIsExporterAndEverythingIsOk_thenFeaturesShouldBeTrue() {
 		final Pepper pepper = PepperTestUtil.createDefaultPepper();
 		final SelfTestDesc desc = mock(SelfTestDesc.class);
-		when(desc.getInputCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
-		when(desc.getExpectedCorpusPath()).thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
+		when(desc.getInputCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/in/"));
+		when(desc.getExpectedCorpusPath())
+				.thenReturn(URI.createFileURI(PepperTestUtil.getTestResources() + "selfTest/sampleCorpus/out/"));
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(false);
 		final PepperExporter exporter = spy(DoNothingExporter.class);
 		when(exporter.getSelfTestDesc()).thenReturn(desc);
 		when(exporter.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
-		final ModuleFitness fitness = ModuleFitnessChecker.selfTest(exporter, pepper, null);
+		final ModuleFitness fitness = new ModuleFitnessChecker(null).selfTest(exporter, pepper, null);
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isFalse();

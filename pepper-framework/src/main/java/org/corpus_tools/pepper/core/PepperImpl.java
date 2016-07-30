@@ -332,7 +332,7 @@ public class PepperImpl implements Pepper {
 
 	@Override
 	public Collection<ModuleFitness> checkFitness() {
-		return ModuleFitnessChecker.checkFitness(getAllRegisteredModules());
+		return new ModuleFitnessChecker(this).checkFitness(getAllRegisteredModules());
 	}
 
 	@Override

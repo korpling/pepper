@@ -125,7 +125,7 @@ public class SelfTestDesc {
 		}
 		final File actualDir = new File(actualCorpusPath.toFileString());
 		final File expectedDir = new File(expectedCorpusPath.toFileString());
-		if (!actualDir.exists() || !expectedDir.exists()){
+		if (!actualDir.exists() || !expectedDir.exists()) {
 			return false;
 		}
 
@@ -245,26 +245,62 @@ public class SelfTestDesc {
 			final File inFile = new File(in.toFileString());
 			if (!inFile.exists()) {
 				if (problems != null) {
-					problems.add("The input corpus path was null. ");
+					problems.add("The input corpus path '"+inFile.getAbsolutePath()+"' does not exist. ");
 				}
 				retVal = false;
 			}
 		}
-		final URI out = this.getInputCorpusPath();
-		if (out == null) {
+		final URI expected = this.getExpectedCorpusPath();
+		if (expected == null) {
 			if (problems != null) {
-				problems.add("The output corpus path was null. ");
+				problems.add("The expected corpus path was null. ");
 			}
 			retVal = false;
 		} else {
-			final File inFile = new File(in.toFileString());
-			if (!inFile.exists()) {
+			final File expectedFile = new File(expected.toFileString());
+			if (!expectedFile.exists()) {
 				if (problems != null) {
-					problems.add("The input corpus path was null. ");
+					problems.add("The expected corpus path '"+expectedFile.getAbsolutePath()+"' does not exist. ");
 				}
 				retVal = false;
 			}
 		}
 		return retVal;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((expectedCorpusPath == null) ? 0 : expectedCorpusPath.hashCode());
+		result = prime * result + ((inputCorpusPath == null) ? 0 : inputCorpusPath.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SelfTestDesc other = (SelfTestDesc) obj;
+		if (expectedCorpusPath == null) {
+			if (other.expectedCorpusPath != null)
+				return false;
+		} else if (!expectedCorpusPath.equals(other.expectedCorpusPath))
+			return false;
+		if (inputCorpusPath == null) {
+			if (other.inputCorpusPath != null)
+				return false;
+		} else if (!inputCorpusPath.equals(other.inputCorpusPath))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "SelfTestDesc [inputCorpusPath=" + inputCorpusPath + ", expectedCorpusPath=" + expectedCorpusPath + "]";
 	}
 }

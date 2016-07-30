@@ -53,9 +53,9 @@
 						<Import-Package>org.corpus_tools.pepper.common,org.corpus_tools.pepper.core,org.corpus_tools.pepper.exceptions,org.corpus_tools.pepper.modules,org.corpus_tools.pepper.testFramework,*</Import-Package>
 						<Export-Package>org.corpus_tools.pepper.*</Export-Package>
 						<Service-Component>${allServiceComponents}</Service-Component>
-						<Bundle-ClassPath>.,{maven-dependencies},lib/commons-lang3-3.0.jar</Bundle-ClassPath>
+						<Bundle-ClassPath>.,{maven-dependencies},lib/commons-lang3-3.0.jar,lib/xmlunit-1.5.jar</Bundle-ClassPath>
 						<Include-Resource>{maven-resources}, LICENSE, NOTICE,
-							lib/commons-lang3-3.0.jar=lib/commons-lang3-3.0.jar</Include-Resource>
+							lib/commons-lang3-3.0.jar=lib/commons-lang3-3.0.jar, lib/xmlunit-1.5.jar=lib/xmlunit-1.5.jar</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>

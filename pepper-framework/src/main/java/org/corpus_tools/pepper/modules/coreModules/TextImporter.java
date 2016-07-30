@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -70,11 +71,15 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-		return new SelfTestDesc(getResources().appendSegment("modules").appendSegment("iTests").appendSegment("txtImporter").appendSegment("in").appendSegment("txtCorpus"), getResources().appendSegment("modules").appendSegment("iTests").appendSegment("txtImporter").appendSegment("out").appendSegment("txtCorpus"));
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtImporter")
+						.appendSegment("in").appendSegment("txtCorpus"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtImporter")
+						.appendSegment("expected"));
 	}
 
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
+	 * Creates a mapper 
 	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
@@ -119,15 +124,18 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 					line = br.readLine();
 				}
 			} catch (FileNotFoundException e) {
-				throw new PepperModuleException(this, "Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
+				throw new PepperModuleException(this,
+						"Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
 			} catch (IOException e) {
-				throw new PepperModuleException(this, "Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
+				throw new PepperModuleException(this,
+						"Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
 			} finally {
 				if (br != null) {
 					try {
 						br.close();
 					} catch (IOException e) {
-						throw new PepperModuleException(this, "Cannot close file '" + getResourceURI() + "', because of nested exception: ", e);
+						throw new PepperModuleException(this,
+								"Cannot close file '" + getResourceURI() + "', because of nested exception: ", e);
 					}
 				}
 			}
