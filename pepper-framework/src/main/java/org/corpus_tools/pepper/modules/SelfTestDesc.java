@@ -102,7 +102,7 @@ public class SelfTestDesc {
 	 *            generated from the files from the input corpus path)
 	 * @param expectedCorpusPath
 	 *            is the expected corpus path
-	 * @return true, when the content of both pathes is equal, false otherwise
+	 * @return true, when the content of both paths is equal, false otherwise
 	 */
 	public boolean compare(final URI actualCorpusPath, final URI expectedCorpusPath) {
 		if (actualCorpusPath == null || expectedCorpusPath == null) {

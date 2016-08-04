@@ -1,6 +1,5 @@
 package org.corpus_tools.pepper.core;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -240,8 +239,8 @@ public class ModuleFitnessChecker {
 					+ "', because Pepper framework is not specified. ");
 		}
 
-		final SelfTestDesc testDesc = pepperModule.getSelfTestDesc();
-		if (testDesc == null) {
+		final SelfTestDesc selfTestDesc = pepperModule.getSelfTestDesc();
+		if (selfTestDesc == null) {
 			moduleFitness.setFeature(FitnessFeature.HAS_SELFTEST, false);
 			return moduleFitness;
 		} else {
@@ -252,7 +251,7 @@ public class ModuleFitnessChecker {
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
 
 		final List<String> problems = new ArrayList<>();
-		if (!testDesc.isValid(problems)) {
+		if (!selfTestDesc.isValid(problems)) {
 			if (PepperUtil.isNotNullOrEmpty(problems)) {
 				for (String problem : problems) {
 					logger.warn(warn(pepperModule, problem));
@@ -263,8 +262,8 @@ public class ModuleFitnessChecker {
 
 		if (pepperModule instanceof PepperImporter) {
 			final PepperImporter importer = (PepperImporter) pepperModule;
-			final CorpusDesc corpusDesc = PepperUtil.createCorpusDesc().withCorpusPath(testDesc.getInputCorpusPath())
-					.build();
+			final CorpusDesc corpusDesc = PepperUtil.createCorpusDesc()
+					.withCorpusPath(cleanURI(selfTestDesc.getInputCorpusPath())).build();
 			importer.setCorpusDesc(corpusDesc);
 			final Double importRate = importer.isImportable(corpusDesc.getCorpusPath());
 			final boolean isImportable = (importRate == null || importRate < 1.0) ? false : true;
@@ -273,45 +272,67 @@ public class ModuleFitnessChecker {
 			// load Salt from in corpus path
 			SaltProject saltProject = null;
 			try {
-				saltProject= SaltUtil.loadCompleteSaltProject(testDesc.getInputCorpusPath());
+				saltProject = SaltUtil.loadCompleteSaltProject(cleanURI(selfTestDesc.getInputCorpusPath()));
 			} catch (RuntimeException e) {
 				logger.warn(warn(pepperModule, "The input salt project was could not have been loaded from path '"
-						+ testDesc.getInputCorpusPath() + "'. The path might not contain a salt project. "));
+						+ selfTestDesc.getInputCorpusPath() + "'. The path might not contain a salt project. "));
 				return moduleFitness;
 			}
-			if (pepperModule instanceof PepperExporter){
-				final PepperExporter exporter = (PepperExporter) pepperModule;	
-				exporter.setCorpusDesc(new CorpusDesc.Builder().withCorpusPath(URI.createFileURI(PepperUtil.getTempFile("self-test").getAbsolutePath()).appendSegment(""+System.currentTimeMillis())).build());
+			if (pepperModule instanceof PepperExporter) {
+				final PepperExporter exporter = (PepperExporter) pepperModule;
+				exporter.setCorpusDesc(new CorpusDesc.Builder()
+						.withCorpusPath(URI.createFileURI(PepperUtil.getTempFile("self-test").getAbsolutePath())
+								.appendSegment("" + System.currentTimeMillis()))
+						.build());
 			}
-			
+
 			pepperModule.setSaltProject(saltProject);
 		}
 
 		PepperTestUtil.start(pepper, Arrays.asList(pepperModule));
 
 		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
-			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule);
+			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule, selfTestDesc);
 			final boolean isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
 			moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
 		} else if (pepperModule instanceof PepperExporter) {
-			hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule);
+			hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule, selfTestDesc);
 		}
 
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
 		return moduleFitness;
 	}
 
-	private static boolean whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(PepperModule pepperModule) {
+	/**
+	 * Creating a uri from file with appending of further fragments can cause
+	 * invalid uris. For instance
+	 * <code> URI.createFileURI("/home/me/a/").append("b");</code> will lead to
+	 * a uri <code>/home/me/a//b</code>.
+	 * 
+	 * @param input
+	 *            a potentially invalid uri
+	 * @return cleaned uri
+	 */
+	private URI cleanURI(URI input) {
+		URI cleanedURI = input;
+		if (cleanedURI.toFileString().contains("//")) {
+			cleanedURI = URI.createFileURI(cleanedURI.toFileString().replace("//", "/"));
+		}
+		return cleanedURI;
+	}
+
+	private static boolean whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(PepperModule pepperModule,
+			SelfTestDesc selfTestDesc) {
 		final SaltProject outputProject = pepperModule.getSaltProject();
 		if (SaltUtil.isNullOrEmpty(outputProject.getCorpusGraphs()) || outputProject.getCorpusGraphs().size() != 1) {
 			logger.warn(warn(pepperModule,
 					"The salt project contained no corpus structures or it contains more than one corpus structure. "));
 			return false;
 		}
-		final URI expected = pepperModule.getSelfTestDesc().getExpectedCorpusPath();
+		final URI expected = selfTestDesc.getExpectedCorpusPath();
 		final SaltProject expectedProject = SaltUtil.loadSaltProject(expected);
 		try {
-			return pepperModule.getSelfTestDesc().compare(pepperModule.getSaltProject(), expectedProject);
+			return selfTestDesc.compare(pepperModule.getSaltProject(), expectedProject);
 		} catch (RuntimeException e) {
 			logger.warn(warn(pepperModule,
 					"An error occured while comparing actual salt project with expected salt project. "));
@@ -319,11 +340,11 @@ public class ModuleFitnessChecker {
 		}
 	}
 
-	private static boolean whenModuleIsExpoterThenCallSelftestDescCompare(PepperModule pepperModule) {
+	private static boolean whenModuleIsExpoterThenCallSelftestDescCompare(PepperModule pepperModule,
+			SelfTestDesc selfTestDesc) {
 		try {
 			final PepperExporter exporter = (PepperExporter) pepperModule;
-			return pepperModule.getSelfTestDesc().compare(exporter.getCorpusDesc().getCorpusPath(),
-					pepperModule.getSelfTestDesc().getExpectedCorpusPath());
+			return selfTestDesc.compare(exporter.getCorpusDesc().getCorpusPath(), selfTestDesc.getExpectedCorpusPath());
 		} catch (RuntimeException e) {
 			logger.warn(warn(pepperModule,
 					"An error occured while comparing actual salt project with expected salt project. "));

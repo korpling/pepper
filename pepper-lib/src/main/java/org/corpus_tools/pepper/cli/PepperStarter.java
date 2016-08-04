@@ -1152,7 +1152,7 @@ public class PepperStarter {
 			} else {
 				String msg = e.getMessage();
 				if ((msg != null) && (!msg.isEmpty())) {
-					logger.error(" ", e.getMessage());
+					logger.error(" ", e);
 				} else {
 					e.printStackTrace();
 				}
