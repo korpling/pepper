@@ -281,7 +281,7 @@ public class ModuleFitnessChecker {
 			}
 			if (pepperModule instanceof PepperExporter){
 				final PepperExporter exporter = (PepperExporter) pepperModule;	
-				exporter.setCorpusDesc(new CorpusDesc.Builder().withCorpusPath(URI.createFileURI(PepperUtil.getTempFile("self-test").getAbsolutePath())).build());
+				exporter.setCorpusDesc(new CorpusDesc.Builder().withCorpusPath(URI.createFileURI(PepperUtil.getTempFile("self-test").getAbsolutePath()).appendSegment(""+System.currentTimeMillis())).build());
 			}
 			
 			pepperModule.setSaltProject(saltProject);

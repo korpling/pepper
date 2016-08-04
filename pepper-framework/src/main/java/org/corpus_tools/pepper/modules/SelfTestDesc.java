@@ -39,7 +39,7 @@ import com.google.common.base.Strings;
  *
  */
 public class SelfTestDesc {
-	private static final Logger logger= LoggerFactory.getLogger("Pepper"); 
+	private static final Logger logger = LoggerFactory.getLogger("Pepper");
 	private URI inputCorpusPath = null;
 	private URI expectedCorpusPath = null;
 
@@ -87,25 +87,7 @@ public class SelfTestDesc {
 	 * @return true, when both models are equal, false otherwise
 	 */
 	public boolean compare(final SaltProject actualProject, final SaltProject expectedProject) {
-		if (actualProject == null || expectedProject == null) {
-			return false;
-		}
-		if (actualProject.getName() != null) {
-			if (!actualProject.getName().equals(expectedProject.getName())) {
-				return false;
-			}
-		} else if (expectedProject.getName() != null) {
-			return false;
-		}
-		if (expectedProject.getCorpusGraphs().size() != actualProject.getCorpusGraphs().size()) {
-			return false;
-		}
-		boolean retVal = true;
-		for (int i = 0; i < expectedProject.getCorpusGraphs().size(); i++) {
-			retVal = retVal && SaltUtil.compare(actualProject.getCorpusGraphs().get(0))
-					.with(expectedProject.getCorpusGraphs().get(0)).andCheckIsomorphie();
-		}
-		return retVal;
+		return SaltUtil.compare(actualProject).with(expectedProject).andCheckIsomorphie();
 	}
 
 	/**
@@ -141,15 +123,17 @@ public class SelfTestDesc {
 			return false;
 		}
 
-		final String expectedFilePrefix= getCannonicalPathWithoutException(expectedDir);
-		final String actualFilePrefix= getCannonicalPathWithoutException(actualDir);
+		final String expectedFilePrefix = getCannonicalPathWithoutException(expectedDir);
+		final String actualFilePrefix = getCannonicalPathWithoutException(actualDir);
 
 		final Map<String, File> expectedFileMap = new Hashtable<>();
 		for (File expectedFile : expectedFiles) {
-			expectedFileMap.put(getCannonicalPathWithoutException(expectedFile).replace(expectedFilePrefix, ""), expectedFile);
+			expectedFileMap.put(getCannonicalPathWithoutException(expectedFile).replace(expectedFilePrefix, ""),
+					expectedFile);
 		}
 		for (File actualFile : actualFiles) {
-			final File expectedFile = expectedFileMap.get(getCannonicalPathWithoutException(actualFile).replace(actualFilePrefix, ""));
+			final File expectedFile = expectedFileMap
+					.get(getCannonicalPathWithoutException(actualFile).replace(actualFilePrefix, ""));
 			if (!compare(actualFile, expectedFile)) {
 				return false;
 			}
@@ -157,24 +141,15 @@ public class SelfTestDesc {
 		return true;
 	}
 
-	private String getCannonicalPathWithoutException(File input){
+	private String getCannonicalPathWithoutException(File input) {
 		try {
 			return input.getCanonicalPath();
 		} catch (IOException e) {
-			logger.warn("Cannot create cannonical path for '"+input+"'.", e);
+			logger.warn("Cannot create cannonical path for '" + input + "'.", e);
 		}
 		return "";
 	}
-	
-	private File getCannonicalFileWithoutException(File input){
-		try {
-			return input.getCanonicalFile();
-		} catch (IOException e) {
-			logger.warn("Cannot create cannonical path for '"+input+"'.", e);
-		}
-		return input;
-	}
-	
+
 	/**
 	 * This method is called by {@link #compare(URI, URI)} to compare two files
 	 * with each other.
@@ -267,7 +242,7 @@ public class SelfTestDesc {
 			final File inFile = new File(in.toFileString());
 			if (!inFile.exists()) {
 				if (problems != null) {
-					problems.add("The input corpus path '"+inFile.getAbsolutePath()+"' does not exist. ");
+					problems.add("The input corpus path '" + inFile.getAbsolutePath() + "' does not exist. ");
 				}
 				retVal = false;
 			}
@@ -282,7 +257,7 @@ public class SelfTestDesc {
 			final File expectedFile = new File(expected.toFileString());
 			if (!expectedFile.exists()) {
 				if (problems != null) {
-					problems.add("The expected corpus path '"+expectedFile.getAbsolutePath()+"' does not exist. ");
+					problems.add("The expected corpus path '" + expectedFile.getAbsolutePath() + "' does not exist. ");
 				}
 				retVal = false;
 			}
