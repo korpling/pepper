@@ -136,7 +136,5 @@ public class TextExporterTest extends PepperExporterTest {
 
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
-		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
-		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}
 }

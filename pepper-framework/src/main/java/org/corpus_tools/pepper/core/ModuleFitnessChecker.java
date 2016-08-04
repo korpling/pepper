@@ -249,7 +249,6 @@ public class ModuleFitnessChecker {
 		}
 
 		boolean hasPassed = false;
-
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
 
 		final List<String> problems = new ArrayList<>();

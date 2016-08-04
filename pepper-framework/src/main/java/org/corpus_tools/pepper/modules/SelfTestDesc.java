@@ -19,6 +19,8 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.ElementNameQualifier;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.google.common.base.Strings;
@@ -37,6 +39,7 @@ import com.google.common.base.Strings;
  *
  */
 public class SelfTestDesc {
+	private static final Logger logger= LoggerFactory.getLogger("Pepper"); 
 	private URI inputCorpusPath = null;
 	private URI expectedCorpusPath = null;
 
@@ -138,14 +141,15 @@ public class SelfTestDesc {
 			return false;
 		}
 
-		final String expectedFilePrefix = expectedCorpusPath.toFileString();
-		final String actualFilePrefix = actualCorpusPath.toFileString();
+		final String expectedFilePrefix= getCannonicalPathWithoutException(expectedDir);
+		final String actualFilePrefix= getCannonicalPathWithoutException(actualDir);
+
 		final Map<String, File> expectedFileMap = new Hashtable<>();
 		for (File expectedFile : expectedFiles) {
-			expectedFileMap.put(expectedFile.getAbsolutePath().replace(expectedFilePrefix, ""), expectedFile);
+			expectedFileMap.put(getCannonicalPathWithoutException(expectedFile).replace(expectedFilePrefix, ""), expectedFile);
 		}
 		for (File actualFile : actualFiles) {
-			final File expectedFile = expectedFileMap.get(actualFile.getAbsolutePath().replace(actualFilePrefix, ""));
+			final File expectedFile = expectedFileMap.get(getCannonicalPathWithoutException(actualFile).replace(actualFilePrefix, ""));
 			if (!compare(actualFile, expectedFile)) {
 				return false;
 			}
@@ -153,6 +157,24 @@ public class SelfTestDesc {
 		return true;
 	}
 
+	private String getCannonicalPathWithoutException(File input){
+		try {
+			return input.getCanonicalPath();
+		} catch (IOException e) {
+			logger.warn("Cannot create cannonical path for '"+input+"'.", e);
+		}
+		return "";
+	}
+	
+	private File getCannonicalFileWithoutException(File input){
+		try {
+			return input.getCanonicalFile();
+		} catch (IOException e) {
+			logger.warn("Cannot create cannonical path for '"+input+"'.", e);
+		}
+		return input;
+	}
+	
 	/**
 	 * This method is called by {@link #compare(URI, URI)} to compare two files
 	 * with each other.
