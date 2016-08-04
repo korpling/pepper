@@ -17,13 +17,20 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
+import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.modules.coreModules.SaltXMLImporter;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
+import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
+import org.corpus_tools.salt.common.SaltProject;
+import org.corpus_tools.salt.samples.*;
 
 public class SaltXMLImporterIsImportableTest {
 
@@ -47,25 +54,25 @@ public class SaltXMLImporterIsImportableTest {
 	}
 
 	@Test
-	public void whenCorpusPathContainsNoPAULAFiles_thenReturn0() {
+	public void whenCorpusPathContainsNoSaltFiles_thenReturn0() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "noSalt/");
 		assertEquals(Double.valueOf(0.0), getFixture().isImportable(corpusPath));
 	}
 
 	@Test
-	public void whenCorpusPathContainsNoFilesWithPaulaEnding_thenReturn0() {
+	public void whenCorpusPathContainsNoFilesWithSaltEnding_thenReturn0() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "fakeSalt/");
 		assertEquals(Double.valueOf(0.0), getFixture().isImportable(corpusPath));
 	}
 
 	@Test
-	public void whenCorpusPathContainsOnlyPaulaFiles_thenReturn1() {
+	public void whenCorpusPathContainsOnlySaltFiles_thenReturn1() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "onlySalt/");
 		assertEquals(Double.valueOf(1.0), getFixture().isImportable(corpusPath));
 	}
 
 	@Test
-	public void whenCorpusPathContainsPaulaAndNonePaulaFiles_thenReturn1() {
+	public void whenCorpusPathContainsSaltAndNoneSaltFiles_thenReturn1() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "mixedContent/");
 		assertEquals(Double.valueOf(1.0), getFixture().isImportable(corpusPath));
 	}

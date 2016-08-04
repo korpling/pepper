@@ -24,6 +24,7 @@ import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.modules.SelfTestDesc;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -50,8 +51,8 @@ import org.osgi.service.component.annotations.Component;
 @Component(name = "SaltXMLImporterComponent", factory = "PepperImporterComponentFactory")
 public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter {
 	public static final String MODULE_NAME = "SaltXMLImporter";
-	public static final String FORMAT_NAME_SALTXML = "SaltXML";
-	public static final String FORMAT_VERSION_SALTXML = "1.0";
+	public static final String FORMAT_NAME = "SaltXML";
+	public static final String FORMAT_VERSION = "1.0";
 
 	public SaltXMLImporter() {
 		// setting name of module
@@ -60,7 +61,7 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This importer imports a Salt model from a SaltXML representation. SaltXML is the native format to persist Salt. ");
 		// set list of formats supported by this module
-		this.addSupportedFormat(FORMAT_NAME_SALTXML, FORMAT_VERSION_SALTXML, null);
+		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
 		setProperties(new PepperModuleProperties());
 	}
 
@@ -84,6 +85,15 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 		return retValue;
 	}
 
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlImporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlImporter")
+						.appendSegment("expected"));
+	}
+	
 	/**
 	 * Imports the corpus-structure by a call of
 	 * {@link SaltProject#loadSCorpusStructure(URI)}
