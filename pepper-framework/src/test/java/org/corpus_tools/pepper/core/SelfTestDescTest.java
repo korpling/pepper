@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.modules;
+package org.corpus_tools.pepper.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.PepperUtil;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.SampleGenerator;

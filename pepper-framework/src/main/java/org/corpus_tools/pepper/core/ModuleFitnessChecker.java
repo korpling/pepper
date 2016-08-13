@@ -16,7 +16,6 @@ import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.modules.SelfTestDesc;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.util.SaltUtil;
