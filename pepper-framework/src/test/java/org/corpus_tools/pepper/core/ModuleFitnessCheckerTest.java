@@ -5,6 +5,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -336,7 +337,8 @@ public class ModuleFitnessCheckerTest {
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(true);
 		final PepperImporter importer = spy(DoNothingImporter.class);
-		when(importer.getSelfTestDesc()).thenReturn(desc);
+		
+		doReturn(desc).when(importer).getSelfTestDesc();
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
@@ -359,7 +361,7 @@ public class ModuleFitnessCheckerTest {
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(false);
 		final PepperImporter importer = spy(DoNothingImporter.class);
-		when(importer.getSelfTestDesc()).thenReturn(desc);
+		doReturn(desc).when(importer).getSelfTestDesc();
 		when(importer.isImportable(any(URI.class))).thenReturn(1.0);
 		when(importer.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 

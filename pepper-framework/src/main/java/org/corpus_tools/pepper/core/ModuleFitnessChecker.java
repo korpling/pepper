@@ -265,7 +265,7 @@ public class ModuleFitnessChecker {
 					.withCorpusPath(cleanURI(selfTestDesc.getInputCorpusPath())).build();
 			importer.setCorpusDesc(corpusDesc);
 			final Double importRate = importer.isImportable(corpusDesc.getCorpusPath());
-			final boolean isImportable = (importRate == null || importRate < 1.0) ? false : true;
+			final boolean isImportable = (importRate != null && importRate > 0.0) ? true : false;
 			moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
 		} else if (pepperModule instanceof PepperManipulator || pepperModule instanceof PepperExporter) {
 			// load Salt from in corpus path
@@ -325,7 +325,7 @@ public class ModuleFitnessChecker {
 		final SaltProject outputProject = pepperModule.getSaltProject();
 		if (SaltUtil.isNullOrEmpty(outputProject.getCorpusGraphs()) || outputProject.getCorpusGraphs().size() != 1) {
 			logger.warn(warn(pepperModule,
-					"The salt project contained no corpus structures or it contains more than one corpus structure. "));
+					"The salt project contains no corpus structures or it contains more than one corpus structure. "));
 			return false;
 		}
 		final URI expected = selfTestDesc.getExpectedCorpusPath();
