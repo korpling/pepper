@@ -47,13 +47,7 @@ public class DoNothingImporterTest extends PepperImporterTest {
 
 	@Test
 	public void whenSelfTestingModule_thenResultShouldBeTrue() {
-//		SaltProject project = SaltFactory.createSaltProject();
-//		project.addCorpusGraph(SaltFactory.createSCorpusGraph());
-//		SaltUtil.saveSaltProject(project, URI.createFileURI("/home/florian/work/snp/workspace/pepper/pepper-framework/src/main/resources/modules/selfTests/doNothingImporter/expected/"));
-		
 		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
-//		SaltUtil.saveSaltProject(fixture.getSaltProject(), URI.createFileURI("/home/florian/test/bla/"));
-//		System.out.println(SaltUtil.compare(fixture.getSaltProject()).with(SaltUtil.loadCompleteSaltProject(URI.createFileURI("/home/florian/test/bla/saltProject.salt"))).andFindDiffs());	
 		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
