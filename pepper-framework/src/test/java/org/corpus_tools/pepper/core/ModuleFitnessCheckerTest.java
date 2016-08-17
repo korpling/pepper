@@ -384,7 +384,7 @@ public class ModuleFitnessCheckerTest {
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(false);
 		final PepperManipulator manipulator = spy(DoNothingManipulator.class);
-		when(manipulator.getSelfTestDesc()).thenReturn(desc);
+		doReturn(desc).when(manipulator).getSelfTestDesc();
 		when(manipulator.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
 		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(manipulator, null);
@@ -405,7 +405,7 @@ public class ModuleFitnessCheckerTest {
 		when(desc.isValid(Matchers.anyListOf(String.class))).thenReturn(true);
 		when(desc.compare(any(SaltProject.class), any(SaltProject.class))).thenReturn(false);
 		final PepperExporter exporter = spy(DoNothingExporter.class);
-		when(exporter.getSelfTestDesc()).thenReturn(desc);
+		doReturn(desc).when(exporter).getSelfTestDesc();
 		when(exporter.getSaltProject()).thenReturn(SampleGenerator.createSaltProject());
 
 		final ModuleFitness fitness = new ModuleFitnessChecker(pepper).selfTest(exporter, null);

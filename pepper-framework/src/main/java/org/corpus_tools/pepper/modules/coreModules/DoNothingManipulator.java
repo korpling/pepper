@@ -19,6 +19,7 @@ package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperManipulator;
@@ -31,12 +32,13 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * A dummy manipulator, which waves through all documents and corpora.
+ * 
  * @author florian
  *
  */
 @Component(name = "DoNothingManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class DoNothingManipulator extends PepperManipulatorImpl implements PepperManipulator {
-	public static final String MODULE_NAME = "DoNothingExporter";
+	public static final String MODULE_NAME = "DoNothingManipulator";
 	public static final String FORMAT_NAME = "doNothing";
 	public static final String FORMAT_VERSION = "0.0";
 
@@ -51,6 +53,15 @@ public class DoNothingManipulator extends PepperManipulatorImpl implements Peppe
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This is a dummy exporter which exports nothing. This exporter can be used to check if a corpus is importable. ");
+	}
+
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingManipulator")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingManipulator")
+						.appendSegment("expected"));
 	}
 
 	/**
