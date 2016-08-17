@@ -17,12 +17,16 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
+import java.io.File;
+
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperMapper;
+import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.ComponentContext;
@@ -46,16 +50,33 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This is a dummy exporter which exports nothing. This exporter can be used to check if a corpus is importable. ");
-		this.addSupportedFormat("doNothing", "0.0", null);
+		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
 	}
 
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingExporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingExporter")
+						.appendSegment("expected"));
+	}
+
+	@Override
+	public void start() throws PepperModuleException {
+		final URI corpusPath= getCorpusDesc().getCorpusPath();
+		if (corpusPath!= null){
+			new File(corpusPath.toFileString()).mkdirs();
+		}
+		super.start();
+	}
+	
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
-	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
+	 * Creates a mapper which does nothing.
 	 */
 	@Override
-	public PepperMapper createPepperMapper(Identifier sElementId) {
-		PepperMapper mapper = new PepperMapperImpl() {
+	public PepperMapper createPepperMapper(Identifier id) {
+		final PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				return (DOCUMENT_STATUS.COMPLETED);
