@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperMapper;
@@ -65,6 +66,15 @@ public class SaltValidator extends PepperManipulatorImpl {
 		return (mapper);
 	}
 
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltValidator")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltValidator")
+						.appendSegment("expected"));
+	}
+	
 	/**
 	 * Checks whether each {@link SCorpus} object contains either a
 	 * {@link SCorpus} object or a {@link SDocument} object.
