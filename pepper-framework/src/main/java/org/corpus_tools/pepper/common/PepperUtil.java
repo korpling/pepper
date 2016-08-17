@@ -92,19 +92,32 @@ public abstract class PepperUtil {
 			retVal.append("********************************************************************************\n");
 			retVal.append("\n");
 		} else {
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("*                                         ____                                                                         *\n");
-			retVal.append("*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
-			retVal.append("*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
-			retVal.append("*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
-			retVal.append("*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
-			retVal.append("*                                                  |_|   |_|                                                           *\n");
-			retVal.append("*                                                                                                                      *\n");
-			retVal.append("************************************************************************************************************************\n");
-			retVal.append("* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
-			retVal.append("* For further information, visit: " + hp + "                                                    *\n");
-			retVal.append("* For contact write an eMail to:  " + eMail + "                                                       *\n");
-			retVal.append("************************************************************************************************************************\n");
+			retVal.append(
+					"************************************************************************************************************************\n");
+			retVal.append(
+					"*                                         ____                                                                         *\n");
+			retVal.append(
+					"*                                        |  _ \\ ___ _ __  _ __   ___ _ __                                              *\n");
+			retVal.append(
+					"*                                        | |_) / _ \\ '_ \\| '_ \\ / _ \\ '__|                                             *\n");
+			retVal.append(
+					"*                                        |  __/  __/ |_) | |_) |  __/ |                                                *\n");
+			retVal.append(
+					"*                                        |_|   \\___| .__/| .__/ \\___|_|                                                *\n");
+			retVal.append(
+					"*                                                  |_|   |_|                                                           *\n");
+			retVal.append(
+					"*                                                                                                                      *\n");
+			retVal.append(
+					"************************************************************************************************************************\n");
+			retVal.append(
+					"* Pepper is a Salt model based converter for a variety of linguistic formats.                                          *\n");
+			retVal.append("* For further information, visit: " + hp
+					+ "                                                    *\n");
+			retVal.append("* For contact write an eMail to:  " + eMail
+					+ "                                                       *\n");
+			retVal.append(
+					"************************************************************************************************************************\n");
 			retVal.append("\n");
 		}
 
@@ -265,7 +278,8 @@ public abstract class PepperUtil {
 	 *            has to be drawn e.g. "|cell1 | cell2|" or "|cell1 cell2|"
 	 * @return
 	 */
-	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks, boolean drawInnerVerticalLine) {
+	public static String createTable(Integer[] length, String[][] map, boolean hasHeader, boolean hasBlanks,
+			boolean drawInnerVerticalLine) {
 		if (length == null) {
 			throw new PepperException("Cannot create a table with empty length. ");
 		}
@@ -431,7 +445,8 @@ public abstract class PepperUtil {
 					path = path + "/";
 				}
 			} catch (IOException e) {
-				throw new PepperException("Cannot create temporary folder at " + System.getProperty("java.io.tmpdir") + ". ");
+				throw new PepperException(
+						"Cannot create temporary folder at " + System.getProperty("java.io.tmpdir") + ". ");
 			}
 		}
 
@@ -487,7 +502,8 @@ public abstract class PepperUtil {
 	 * @return a table displaying all passed modules and a corresponding
 	 *         description
 	 */
-	public static String reportModuleList(final int width, final Collection<PepperModuleDesc> moduleDescs, Map<Integer, PepperModuleDesc> number2module) {
+	public static String reportModuleList(final int width, final Collection<PepperModuleDesc> moduleDescs,
+			Map<Integer, PepperModuleDesc> number2module) {
 		String retVal = "- no modules registered -\n";
 		if ((moduleDescs != null) && (moduleDescs.size() != 0)) {
 			String[][] map = new String[moduleDescs.size() + 1][6];
@@ -580,14 +596,17 @@ public abstract class PepperUtil {
 	 */
 	public static void readXMLResource(DefaultHandler2 contentHandler, URI documentLocation) {
 		if (documentLocation == null)
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the given uri to locate file is null.");
+			throw new PepperModuleXMLResourceException(
+					"Cannot load a xml-resource, because the given uri to locate file is null.");
 
 		File resourceFile = new File(documentLocation.toFileString());
 		if (!resourceFile.exists())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file does not exist: " + resourceFile);
+			throw new PepperModuleXMLResourceException(
+					"Cannot load a xml-resource, because the file does not exist: " + resourceFile);
 
 		if (!resourceFile.canRead())
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource, because the file can not be read: " + resourceFile);
+			throw new PepperModuleXMLResourceException(
+					"Cannot load a xml-resource, because the file can not be read: " + resourceFile);
 
 		SAXParser parser;
 		XMLReader xmlReader;
@@ -599,9 +618,11 @@ public abstract class PepperUtil {
 			xmlReader = parser.getXMLReader();
 			xmlReader.setContentHandler(contentHandler);
 		} catch (ParserConfigurationException e) {
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + resourceFile.getAbsolutePath() + "'.", e);
+			throw new PepperModuleXMLResourceException(
+					"Cannot load a xml-resource '" + resourceFile.getAbsolutePath() + "'.", e);
 		} catch (Exception e) {
-			throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + resourceFile.getAbsolutePath() + "'.", e);
+			throw new PepperModuleXMLResourceException(
+					"Cannot load a xml-resource '" + resourceFile.getAbsolutePath() + "'.", e);
 		}
 		try {
 			InputStream inputStream = new FileInputStream(resourceFile);
@@ -616,13 +637,15 @@ public abstract class PepperUtil {
 				xmlReader.setContentHandler(contentHandler);
 				xmlReader.parse(resourceFile.getAbsolutePath());
 			} catch (Exception e1) {
-				throw new PepperModuleXMLResourceException("Cannot load a xml-resource '" + resourceFile.getAbsolutePath() + "'.", e1);
+				throw new PepperModuleXMLResourceException(
+						"Cannot load a xml-resource '" + resourceFile.getAbsolutePath() + "'.", e1);
 			}
 		} catch (Exception e) {
 			if (e instanceof PepperModuleException) {
 				throw (PepperModuleException) e;
 			} else {
-				throw new PepperModuleXMLResourceException("Cannot read xml-file'" + documentLocation + "', because of a nested exception. ", e);
+				throw new PepperModuleXMLResourceException(
+						"Cannot read xml-file'" + documentLocation + "', because of a nested exception. ", e);
 			}
 		}
 	}
@@ -728,25 +751,28 @@ public abstract class PepperUtil {
 			}
 		}
 	}
-	
-	public static CorpusDesc.Builder createCorpusDesc(){
+
+	public static CorpusDesc.Builder createCorpusDesc() {
 		return new CorpusDesc.Builder();
 	}
-	
+
 	/**
 	 * Checks whether a collection is null or empty
+	 * 
 	 * @param list
 	 * @return
 	 */
 	public static <T> boolean isNullOrEmpty(final Collection<T> collection) {
-	    return collection == null || collection.isEmpty();
+		return collection == null || collection.isEmpty();
 	}
+
 	/**
 	 * Checks whether a collection is not null nor empty
+	 * 
 	 * @param list
 	 * @return
 	 */
 	public static <T> boolean isNotNullOrEmpty(final Collection<T> collection) {
-	    return !isNullOrEmpty(collection);
+		return !isNullOrEmpty(collection);
 	}
 }

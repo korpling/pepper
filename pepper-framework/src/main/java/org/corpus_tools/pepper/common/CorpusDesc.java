@@ -108,31 +108,31 @@ public class CorpusDesc {
 		}
 		return (str.toString());
 	}
-	
-	public static class Builder{
-		final private CorpusDesc corpusDesc= new CorpusDesc();
-		
-		public Builder withCorpusPath(URI corpusPath){
+
+	public static class Builder {
+		final private CorpusDesc corpusDesc = new CorpusDesc();
+
+		public Builder withCorpusPath(URI corpusPath) {
 			corpusDesc.setCorpusPath(corpusPath);
 			return this;
 		}
-		
-		public Builder withFormatName(String formatName){
+
+		public Builder withFormatName(String formatName) {
 			corpusDesc.getFormatDesc().setFormatName(formatName);
 			return this;
 		}
-		
-		public Builder withFormatVersion(String formatVersion){
+
+		public Builder withFormatVersion(String formatVersion) {
 			corpusDesc.getFormatDesc().setFormatVersion(formatVersion);
 			return this;
 		}
-		
-		public Builder withFormatReference(URI formatReference){
+
+		public Builder withFormatReference(URI formatReference) {
 			corpusDesc.getFormatDesc().setFormatReference(formatReference);
 			return this;
 		}
-		
-		public CorpusDesc build(){
+
+		public CorpusDesc build() {
 			return corpusDesc;
 		}
 	}

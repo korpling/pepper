@@ -9,10 +9,7 @@ import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.modules.coreModules.SaltXMLImporter;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
-import org.corpus_tools.salt.common.SaltProject;
-import org.corpus_tools.salt.samples.SampleGenerator;
 import org.corpus_tools.salt.util.SaltUtil;
-import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 

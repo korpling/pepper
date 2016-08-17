@@ -170,9 +170,11 @@ public class Step extends StepDesc {
 	 * @return module type
 	 */
 	public MODULE_TYPE getModuleType() {
-		if ((super.getModuleType() == null) && (getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
+		if ((super.getModuleType() == null) && (getModuleController() != null)
+				&& (getModuleController().getPepperModule() != null)) {
 			synchronized (this) {
-				if ((super.getModuleType() == null) && (getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
+				if ((super.getModuleType() == null) && (getModuleController() != null)
+						&& (getModuleController().getPepperModule() != null)) {
 					setModuleType(getModuleController().getPepperModule().getModuleType());
 				}
 			}

@@ -59,7 +59,7 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 	public Double isImportable(URI corpusPath) {
 		return 0.1;
 	}
-	
+
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
 		return new SelfTestDesc(
@@ -68,7 +68,7 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingImporter")
 						.appendSegment("expected"));
 	}
-	
+
 	/**
 	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
 	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}

@@ -94,14 +94,16 @@ public class ModuleFitnessTest {
 
 	@Test
 	public void whenTwoModuleFitnessObjectsDifferInFeatures_thenTheyShouldBeUnEqual() {
-		ModuleFitness template = new ModuleFitnessBuilder("myModule").addFitnessFeature(FitnessFeature.IS_IMPORTABLE, true).build();
+		ModuleFitness template = new ModuleFitnessBuilder("myModule")
+				.addFitnessFeature(FitnessFeature.IS_IMPORTABLE, true).build();
 		assertThat(fixture).isNotEqualTo(template);
 		assertThat(fixture.hashCode()).isNotEqualTo(template.hashCode());
 	}
 
 	@Test
 	public void whenTwoModuleFitnessObjectsDifferInFeatureFitness_thenTheyShouldBeUnEqual() {
-		ModuleFitness template = new ModuleFitnessBuilder("myModule").addFitnessFeature(FitnessFeature.IS_IMPORTABLE, true).build();
+		ModuleFitness template = new ModuleFitnessBuilder("myModule")
+				.addFitnessFeature(FitnessFeature.IS_IMPORTABLE, true).build();
 		fixture.setFeature(FitnessFeature.IS_IMPORTABLE, false);
 		assertThat(fixture).isNotEqualTo(template);
 		assertThat(fixture.hashCode()).isNotEqualTo(template.hashCode());
@@ -109,12 +111,16 @@ public class ModuleFitnessTest {
 
 	@Test
 	public void whenGettingHealthFeatures_thenReturnHeatlthFeatures() {
-		assertThat(FitnessFeature.getHealthFeatures()).containsExactlyInAnyOrder(FitnessFeature.HAS_NAME, FitnessFeature.IS_READY_TO_RUN, FitnessFeature.HAS_PASSED_SELFTEST, FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, FitnessFeature.IS_VALID_SELFTEST_DATA);
+		assertThat(FitnessFeature.getHealthFeatures()).containsExactlyInAnyOrder(FitnessFeature.HAS_NAME,
+				FitnessFeature.IS_READY_TO_RUN, FitnessFeature.HAS_PASSED_SELFTEST,
+				FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, FitnessFeature.IS_VALID_SELFTEST_DATA);
 	}
 
 	@Test
 	public void whenGettingFitnessFeatures_thenReturnFitnessFeatures() {
-		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE, FitnessFeature.HAS_SUPPLIER_CONTACT, FitnessFeature.HAS_SUPPLIER_HP, FitnessFeature.HAS_DESCRIPTION, FitnessFeature.HAS_SUPPORTED_FORMATS, FitnessFeature.HAS_SELFTEST);
+		assertThat(FitnessFeature.getFitnessFeatures()).containsExactlyInAnyOrder(FitnessFeature.IS_IMPORTABLE,
+				FitnessFeature.HAS_SUPPLIER_CONTACT, FitnessFeature.HAS_SUPPLIER_HP, FitnessFeature.HAS_DESCRIPTION,
+				FitnessFeature.HAS_SUPPORTED_FORMATS, FitnessFeature.HAS_SELFTEST);
 	}
 
 	@Test

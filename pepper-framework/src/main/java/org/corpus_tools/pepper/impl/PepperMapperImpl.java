@@ -97,7 +97,9 @@ public class PepperMapperImpl implements PepperMapper {
 	public SDocument getDocument() {
 		SDocument retVal = null;
 		if (getMappingSubjects().size() > 0) {
-			if ((getMappingSubjects().get(0).getIdentifier() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() instanceof SDocument)) {
+			if ((getMappingSubjects().get(0).getIdentifier() != null)
+					&& (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() != null)
+					&& (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() instanceof SDocument)) {
 				retVal = (SDocument) getMappingSubjects().get(0).getIdentifier().getIdentifiableElement();
 			}
 		}
@@ -130,7 +132,9 @@ public class PepperMapperImpl implements PepperMapper {
 	public SCorpus getCorpus() {
 		SCorpus retVal = null;
 		if (getMappingSubjects().size() > 0) {
-			if ((getMappingSubjects().get(0).getIdentifier() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() != null) && (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() instanceof SCorpus)) {
+			if ((getMappingSubjects().get(0).getIdentifier() != null)
+					&& (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() != null)
+					&& (getMappingSubjects().get(0).getIdentifier().getIdentifiableElement() instanceof SCorpus)) {
 				retVal = (SCorpus) getMappingSubjects().get(0).getIdentifier().getIdentifiableElement();
 			}
 		}
@@ -212,7 +216,8 @@ public class PepperMapperImpl implements PepperMapper {
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSDocument() {
-		throw new UnsupportedOperationException("OVERRIDE THE METHOD 'public DOCUMENT_STATUS mapSDocument()' IN '" + getClass().getName() + "' FOR CUSTOMIZED MAPPING.");
+		throw new UnsupportedOperationException("OVERRIDE THE METHOD 'public DOCUMENT_STATUS mapSDocument()' IN '"
+				+ getClass().getName() + "' FOR CUSTOMIZED MAPPING.");
 	}
 
 	/**

@@ -96,7 +96,9 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		if ((PepperParamsReader.ELEMENT_PEPPERPARAMS.equals(qName)) || ((PepperParamsReader.PREFIX_PEPPERPARAMS + ":" + PepperParamsReader.ELEMENT_PEPPERPARAMS).equals(qName))) {
+		if ((PepperParamsReader.ELEMENT_PEPPERPARAMS.equals(qName))
+				|| ((PepperParamsReader.PREFIX_PEPPERPARAMS + ":" + PepperParamsReader.ELEMENT_PEPPERPARAMS)
+						.equals(qName))) {
 			delegatee = new PepperParamsReader();
 			delegatee.setJob(getPepperJob());
 			delegatee.setLocation(getLocation());
@@ -186,7 +188,8 @@ public class WorkflowDescriptionReader extends DefaultHandler2 {
 		if (attributes.getValue(ATT_VERSION) != null) {
 			stepDesc.setVersion(attributes.getValue(ATT_VERSION));
 		}
-		if ((MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType())) || (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType()))) {
+		if ((MODULE_TYPE.IMPORTER.equals(stepDesc.getModuleType()))
+				|| (MODULE_TYPE.EXPORTER.equals(stepDesc.getModuleType()))) {
 			if (attributes.getValue(ATT_FORMAT_NAME) != null) {
 				stepDesc.getCorpusDesc().getFormatDesc().setFormatName(attributes.getValue(ATT_FORMAT_NAME));
 			}

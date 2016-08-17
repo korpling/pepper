@@ -64,7 +64,8 @@ public enum JOB_STATUS {
 	 *         {@link IMPORTING_DOCUMENT_STRUCTURE}
 	 */
 	public boolean isInProgress() {
-		if (INITIALIZING.equals(this) || IMPORTING_CORPUS_STRUCTURE.equals(this) || IMPORTING_DOCUMENT_STRUCTURE.equals(this)) {
+		if (INITIALIZING.equals(this) || IMPORTING_CORPUS_STRUCTURE.equals(this)
+				|| IMPORTING_DOCUMENT_STRUCTURE.equals(this)) {
 			return (true);
 		} else {
 			return (false);

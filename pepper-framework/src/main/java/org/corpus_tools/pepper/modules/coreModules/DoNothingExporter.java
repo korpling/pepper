@@ -64,13 +64,13 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 
 	@Override
 	public void start() throws PepperModuleException {
-		final URI corpusPath= getCorpusDesc().getCorpusPath();
-		if (corpusPath!= null){
+		final URI corpusPath = getCorpusDesc().getCorpusPath();
+		if (corpusPath != null) {
 			new File(corpusPath.toFileString()).mkdirs();
 		}
 		super.start();
 	}
-	
+
 	/**
 	 * Creates a mapper which does nothing.
 	 */

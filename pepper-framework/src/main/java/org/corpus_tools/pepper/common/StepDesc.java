@@ -281,9 +281,11 @@ public class StepDesc {
 			str.append((getVersion() != null) ? ", " + getVersion() : "");
 		} else if (getCorpusDesc().getFormatDesc() != null) {
 			str.append("format: ");
-			str.append((getCorpusDesc().getFormatDesc().getFormatName() != null) ? getCorpusDesc().getFormatDesc().getFormatName() : "");
+			str.append((getCorpusDesc().getFormatDesc().getFormatName() != null)
+					? getCorpusDesc().getFormatDesc().getFormatName() : "");
 			str.append(",");
-			str.append((getCorpusDesc().getFormatDesc().getFormatVersion() != null) ? getCorpusDesc().getFormatDesc().getFormatVersion() : "");
+			str.append((getCorpusDesc().getFormatDesc().getFormatVersion() != null)
+					? getCorpusDesc().getFormatDesc().getFormatVersion() : "");
 		}
 		str.append(")");
 		return (str.toString());

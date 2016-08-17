@@ -67,7 +67,8 @@ import org.eclipse.emf.common.util.URI;
  * 	setSupplierContact(URI.createURI(&quot;Contact address of the module's supplier&quot;));
  * 	setSupplierHomepage(URI.createURI(&quot;homepage of the module&quot;));
  * 	setDesc(&quot;A short description of what is the intention of this module, for instance which formats are importable. &quot;);
- * 	this.addSupportedFormat(&quot;The name of a format which is importable e.g. txt&quot;, &quot;The version corresponding to the format name&quot;, null);
+ * 	this.addSupportedFormat(&quot;The name of a format which is importable e.g. txt&quot;,
+ * 			&quot;The version corresponding to the format name&quot;, null);
  * }
  * </pre>
  * 

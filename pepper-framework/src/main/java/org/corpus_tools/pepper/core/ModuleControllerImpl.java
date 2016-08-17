@@ -61,9 +61,11 @@ public class ModuleControllerImpl implements ModuleController {
 	 */
 	public ModuleControllerImpl(String id) {
 		if (id == null)
-			throw new PepperFWException("Cannot create an instance of PepperModuleController, because the passed identifier is null.");
+			throw new PepperFWException(
+					"Cannot create an instance of PepperModuleController, because the passed identifier is null.");
 		if (id.isEmpty())
-			throw new PepperFWException("Cannot create an instance of PepperModuleController, because the passed identifier is empty.");
+			throw new PepperFWException(
+					"Cannot create an instance of PepperModuleController, because the passed identifier is empty.");
 		this.id = id;
 	}
 
@@ -213,31 +215,39 @@ public class ModuleControllerImpl implements ModuleController {
 	@Override
 	public synchronized Future<?> importCorpusStructure(SCorpusGraph sCorpusGraph) {
 		if (sCorpusGraph == null) {
-			throw new PepperFWException("Cannot import corpus structure, because the passed SCorpusGraph object was null.");
+			throw new PepperFWException(
+					"Cannot import corpus structure, because the passed SCorpusGraph object was null.");
 		}
 		if (getPepperModule() == null) {
-			throw new PepperFWException("Cannot start import of corpus structure, because the contained Pepper module is null.");
+			throw new PepperFWException(
+					"Cannot start import of corpus structure, because the contained Pepper module is null.");
 		}
 		if (!(getPepperModule() instanceof PepperImporter)) {
-			throw new PepperFWException("Cannot start import of corpus structure, because the contained Pepper module '" + getId() + "' is not of type '" + MODULE_TYPE.IMPORTER + "'.");
+			throw new PepperFWException("Cannot start import of corpus structure, because the contained Pepper module '"
+					+ getId() + "' is not of type '" + MODULE_TYPE.IMPORTER + "'.");
 		}
 		if (((PepperImporter) getPepperModule()).getCorpusDesc() == null) {
-			throw new PepperFWException("Cannot start import of corpus structure, because the corpus description of Pepper module '" + getId() + "' is not set. ");
+			throw new PepperFWException(
+					"Cannot start import of corpus structure, because the corpus description of Pepper module '"
+							+ getId() + "' is not set. ");
 		}
 		if (!getBusyLock().tryLock()) {
-			throw new PepperInActionException("Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
+			throw new PepperInActionException(
+					"Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
 		} else {
 			this.sCorpusGraph = sCorpusGraph;
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			Runnable task = new Runnable() {
 				public void run() {
 					((PepperImporter) getPepperModule()).importCorpusStructure(getCorpusGraph());
-					mLogger.debug("[{}] corpus structure imported. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
+					mLogger.debug("[{}] corpus structure imported. ",
+							((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
 				}
 			};
 
 			if (!getBusyLock().tryLock()) {
-				throw new PepperInActionException("cannot import corpus structure, because module controller '" + getId() + "' currently is busy with another process.");
+				throw new PepperInActionException("cannot import corpus structure, because module controller '"
+						+ getId() + "' currently is busy with another process.");
 			}
 			getBusyLock().lock();
 			Future<?> future = null;
@@ -258,10 +268,12 @@ public class ModuleControllerImpl implements ModuleController {
 	 */
 	public synchronized Future<?> processDocumentStructures() {
 		if (getPepperModule() == null) {
-			throw new PepperFWException("Cannot start imort corpus structure, because the contained Pepper module is null.");
+			throw new PepperFWException(
+					"Cannot start imort corpus structure, because the contained Pepper module is null.");
 		}
 		if (!getBusyLock().tryLock()) {
-			throw new PepperInActionException("Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
+			throw new PepperInActionException(
+					"Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
 		} else {
 
 			ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -273,10 +285,15 @@ public class ModuleControllerImpl implements ModuleController {
 					action.before(getCorpusGraph());
 					getPepperModule().start();
 					if (getControllList().size() != 0) {
-						throw new PepperModuleException(getPepperModule(), "Some documents are still in the processing queue by module '" + getPepperModule().getName() + "' and neither set to '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.DELETED + "' or '" + DOCUMENT_STATUS.FAILED + "'. Remaining documents are: " + getControllList());
+						throw new PepperModuleException(getPepperModule(),
+								"Some documents are still in the processing queue by module '"
+										+ getPepperModule().getName() + "' and neither set to '"
+										+ DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.DELETED + "' or '"
+										+ DOCUMENT_STATUS.FAILED + "'. Remaining documents are: " + getControllList());
 					}
 					getOutputDocumentBus().finish(getPepperModule().getModuleController().getId());
-					mLogger.debug("[{}] completed processing of documents and corpora. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
+					mLogger.debug("[{}] completed processing of documents and corpora. ",
+							((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
 					// calls after() to do some work after everything was
 					// processed when set in customization property
 					action.after(getCorpusGraph());
@@ -284,7 +301,8 @@ public class ModuleControllerImpl implements ModuleController {
 			};
 
 			if (!getBusyLock().tryLock()) {
-				throw new PepperInActionException("cannot import document structure, because module controller '" + getId() + "' currently is busy with another process.");
+				throw new PepperInActionException("cannot import document structure, because module controller '"
+						+ getId() + "' currently is busy with another process.");
 			}
 			getBusyLock().lock();
 			Future<?> future = null;
@@ -356,13 +374,16 @@ public class ModuleControllerImpl implements ModuleController {
 		}
 		DocumentController documentController = getInputDocumentBus().pop(getId(), ignorePermissionForDocument);
 		if (documentController != null) {
-			logger.debug("[{}] started processing of document '{}'. ", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
+			logger.debug("[{}] started processing of document '{}'. ",
+					((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "),
+					documentController.getGlobalId());
 			// notify documentController, that SDocument now is in progress
 			documentController.updateStatus(this, DOCUMENT_STATUS.IN_PROGRESS);
 			// puts the current element in list of not pipelined orders
 			getControllList().add(documentController);
 			if (documentController.getDocument() == null)
-				throw new PepperFWException("The current documentController to '" + documentController.getGlobalId() + "' contains no document.");
+				throw new PepperFWException("The current documentController to '" + documentController.getGlobalId()
+						+ "' contains no document.");
 		}
 		return (documentController);
 	}
@@ -370,7 +391,8 @@ public class ModuleControllerImpl implements ModuleController {
 	/** {@inheritDoc} **/
 	@Override
 	public DocumentController next() {
-		logger.debug("[{}] is waiting for further documents in pipeline.", (getPepperModule() != null) ? getPepperModule().getName() : "NO_NAME");
+		logger.debug("[{}] is waiting for further documents in pipeline.",
+				(getPepperModule() != null) ? getPepperModule().getName() : "NO_NAME");
 		return (next(false));
 	}
 
@@ -378,13 +400,18 @@ public class ModuleControllerImpl implements ModuleController {
 	@Override
 	public void complete(DocumentController documentController) {
 		if (documentController == null) {
-			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because it is null.");
+			throw new PepperFWException(
+					"Cannot add the passed document controller to following Pepper modules, because it is null.");
 		}
 		if (!getControllList().contains(documentController)) {
-			throw new PepperFWException("Cannot add the passed document controller to following Pepper modules, because the passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
+			throw new PepperFWException(
+					"Cannot add the passed document controller to following Pepper modules, because the passed document controller '"
+							+ documentController.getGlobalId() + "' has never been add to internal controll list.");
 		}
 		if (documentController.getDocument() == null) {
-			throw new PepperFWException("Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '" + documentController.getGlobalId() + "' has never been add to internal controll list.");
+			throw new PepperFWException(
+					"Cannot complete the passed document controller to following Pepper modules, because there is no SDocument contained in passed document controller '"
+							+ documentController.getGlobalId() + "' has never been add to internal controll list.");
 		}
 		documentController.updateStatus(this, DOCUMENT_STATUS.COMPLETED);
 
@@ -397,21 +424,29 @@ public class ModuleControllerImpl implements ModuleController {
 		// removes document controller of list of to be processed document
 		// controllers
 		getControllList().remove(documentController);
-		mLogger.debug("[{}] completed document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
+		mLogger.debug("[{}] completed document '{}'",
+				((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "),
+				documentController.getGlobalId());
 	}
 
 	/** {@inheritDoc} **/
 	@Override
 	public void delete(DocumentController documentController) {
 		if (documentController == null) {
-			throw new PepperFWException("Cannot notify Pepper, that the passed document controller shall not be processed any further, because it is null.");
+			throw new PepperFWException(
+					"Cannot notify Pepper, that the passed document controller shall not be processed any further, because it is null.");
 		}
 		if (!getControllList().contains(documentController)) {
-			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '" + documentController.getGlobalId() + "' shall not be processed any further by Pepper module '" + getId() + "', because it is not part of internal controll list '" + getControllList() + "'. The reason could be, that it never has been added or it was already removed. ");
+			throw new PepperFWException("Cannot notify Pepper, that the passed document controller '"
+					+ documentController.getGlobalId() + "' shall not be processed any further by Pepper module '"
+					+ getId() + "', because it is not part of internal controll list '" + getControllList()
+					+ "'. The reason could be, that it never has been added or it was already removed. ");
 		}
 
 		documentController.updateStatus(this, DOCUMENT_STATUS.DELETED);
-		mLogger.debug("[{}] deleted document '{}'", ((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "), documentController.getGlobalId());
+		mLogger.debug("[{}] deleted document '{}'",
+				((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "),
+				documentController.getGlobalId());
 
 		// make sure the document graph is not held in memory any longer
 		documentController.sendToSleep();
@@ -430,13 +465,15 @@ public class ModuleControllerImpl implements ModuleController {
 	@Override
 	public Double getProgress(String globalId) {
 		if (globalId == null)
-			throw new PepperFWException("Cannot notify Pepper framework about progress for '" + getId() + "', because given sDocumentId was null.");
+			throw new PepperFWException("Cannot notify Pepper framework about progress for '" + getId()
+					+ "', because given sDocumentId was null.");
 		Double retVal = null;
 		if (getPepperModule() != null) {
 			retVal = getPepperModule().getProgress(globalId);
 			if (retVal != null) {
 				if ((retVal < 0) || (retVal > 1))
-					throw new PepperFWException("Cannot notify Pepper framework about progress for '" + getId() + "', because the percentage of progress is out of range (0..1). It is '" + retVal + "'.");
+					throw new PepperFWException("Cannot notify Pepper framework about progress for '" + getId()
+							+ "', because the percentage of progress is out of range (0..1). It is '" + retVal + "'.");
 			}
 		}
 		return (retVal);

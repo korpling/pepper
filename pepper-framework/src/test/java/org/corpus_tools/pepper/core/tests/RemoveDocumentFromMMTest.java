@@ -116,7 +116,8 @@ public class RemoveDocumentFromMMTest extends PepperJobImpl {
 		public PepperMapper createPepperMapper(Identifier sElementId) {
 			if (sElementId.getIdentifiableElement() instanceof SDocument) {
 				if (((SDocument) sElementId.getIdentifiableElement()).getDocumentGraph() == null) {
-					throw new PepperModuleException(this, "An error in test occured, because the SDocumentGraph was null.");
+					throw new PepperModuleException(this,
+							"An error in test occured, because the SDocumentGraph was null.");
 				}
 			}
 			return (new PepperMapperImpl() {

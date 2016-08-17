@@ -500,23 +500,22 @@ public interface PepperModule {
 	/**
 	 * This method is called by the Pepper framework to run an integration test
 	 * for module. When the method returns null, it means that no integration
-	 * test is supported. Otherwise, the {@link SelfTestDesc} object
-	 * needs to provide an input corpus path and an output corpus path.
+	 * test is supported. Otherwise, the {@link SelfTestDesc} object needs to
+	 * provide an input corpus path and an output corpus path.
 	 * 
 	 * When this module is:
 	 * <ul>
-	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should
-	 * contain the format to be imported.
-	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the
-	 * expected salt project (for control).</li>
-	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()}
-	 * should contain a salt project which is the module's input.
-	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the
-	 * expected salt project (for control).</li>
-	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should
+	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * the format to be imported. {@link SelfTestDesc#getExpectedCorpusPath()}
+	 * should contain the expected salt project (for control).</li>
+	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()} should
 	 * contain a salt project which is the module's input.
-	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the
-	 * expected corpus in output format.</li>
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * salt project (for control).</li>
+	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * corpus in output format.</li>
 	 * </ul>
 	 * The simplest way to create a test description is:
 	 * 
@@ -525,12 +524,12 @@ public interface PepperModule {
 	 * </pre>
 	 * 
 	 * When this module is an importer or a manipulator the method
-	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called
-	 * to compare output salt project with expected salt project. When the
-	 * module is an exporter the method
-	 * {@link SelfTestDesc#compare(URI, URI)} is called to compare the
-	 * created output folder with an expected one. By default this method checks
-	 * whether the file structure and each file is equal.
+	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called to
+	 * compare output salt project with expected salt project. When the module
+	 * is an exporter the method {@link SelfTestDesc#compare(URI, URI)} is
+	 * called to compare the created output folder with an expected one. By
+	 * default this method checks whether the file structure and each file is
+	 * equal.
 	 * 
 	 * @return test description
 	 */

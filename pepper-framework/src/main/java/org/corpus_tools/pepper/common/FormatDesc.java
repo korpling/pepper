@@ -136,7 +136,9 @@ public class FormatDesc {
 		}
 		if (obj != null) {
 			if (obj instanceof FormatDesc) {
-				if ((getFormatName() != null) && (getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName())) && (getFormatVersion() != null) && (getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))) {
+				if ((getFormatName() != null) && (getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName()))
+						&& (getFormatVersion() != null)
+						&& (getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))) {
 					return (true);
 				} else {
 					return (false);

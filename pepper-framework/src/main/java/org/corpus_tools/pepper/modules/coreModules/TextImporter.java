@@ -78,7 +78,7 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	}
 
 	/**
-	 * Creates a mapper 
+	 * Creates a mapper
 	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override

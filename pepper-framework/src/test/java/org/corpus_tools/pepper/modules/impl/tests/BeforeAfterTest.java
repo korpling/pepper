@@ -78,8 +78,10 @@ public class BeforeAfterTest {
 		FileUtils.deleteDirectory(toPath);
 		getFixture().getPepperModule().setPepperModuleController(new ModuleControllerImpl("1"));
 		getFixture().getPepperModule().getModuleController().setJob(new PepperJobImpl("1"));
-		getFixture().getPepperModule().getModuleController().getJob().setBaseDir(URI.createFileURI(fromPath.getCanonicalPath()));
-		String prop = "file1.txt    ->   " + toPath + ";  file2.txt-> " + toPath.getAbsolutePath() + "; ./folder-> " + toPath;
+		getFixture().getPepperModule().getModuleController().getJob()
+				.setBaseDir(URI.createFileURI(fromPath.getCanonicalPath()));
+		String prop = "file1.txt    ->   " + toPath + ";  file2.txt-> " + toPath.getAbsolutePath() + "; ./folder-> "
+				+ toPath;
 		getFixture().copyResources(prop);
 
 		File file1 = new File(toPath.getCanonicalPath() + "/file1.txt");
@@ -96,7 +98,8 @@ public class BeforeAfterTest {
 		SDocument sDoc = SaltFactory.createSDocument();
 		SampleGenerator.createDocumentStructure(sDoc);
 		int layersBefore = sDoc.getDocumentGraph().getLayers().size();
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER,
+				"layer1; layer2");
 		SaltFactory.createIdentifier(sDoc, "doc1");
 		getFixture().after(sDoc.getIdentifier());
 
@@ -122,11 +125,15 @@ public class BeforeAfterTest {
 		SCorpus subCorpus = graph.createCorpus(corpus, "subcorpus");
 		SDocument document = graph.createDocument(subCorpus, "document");
 
-		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(corpus.getIdentifier(), corpusURI.appendSegment("corpus"));
-		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(subCorpus.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus"));
-		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(document.getIdentifier(), corpusURI.appendSegment("corpus").appendSegment("subcorpus").appendSegment("document.txt"));
+		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(corpus.getIdentifier(),
+				corpusURI.appendSegment("corpus"));
+		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(subCorpus.getIdentifier(),
+				corpusURI.appendSegment("corpus").appendSegment("subcorpus"));
+		((PepperImporter) getFixture().getPepperModule()).getIdentifier2ResourceTable().put(document.getIdentifier(),
+				corpusURI.appendSegment("corpus").appendSegment("subcorpus").appendSegment("document.txt"));
 
-		getFixture().getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).setValueString("meta");
+		getFixture().getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META)
+				.setValueString("meta");
 
 		getFixture().readMeta(corpus.getIdentifier());
 		assertEquals(2, corpus.getMetaAnnotations().size());
@@ -149,7 +156,8 @@ public class BeforeAfterTest {
 		SDocument sDoc = SaltFactory.createSDocument();
 		SampleGenerator.createDocumentStructure(sDoc);
 		int layersBefore = sDoc.getDocumentGraph().getLayers().size();
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER, "layer1; layer2");
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_ADD_SLAYER,
+				"layer1; layer2");
 		SaltFactory.createIdentifier(sDoc, "doc1");
 
 		getFixture().after(sDoc.getIdentifier());
@@ -181,7 +189,8 @@ public class BeforeAfterTest {
 		tok1.createAnnotation(null, "pos", "NN");
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "pos:= part-of-speech");
+		getFixture().getPepperModule().getProperties()
+				.setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "pos:= part-of-speech");
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -205,7 +214,8 @@ public class BeforeAfterTest {
 		tok1.createAnnotation(null, "pos", "NN");
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos:= salt::part-of-speech");
+		getFixture().getPepperModule().getProperties().setPropertyValue(
+				PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos:= salt::part-of-speech");
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -230,7 +240,8 @@ public class BeforeAfterTest {
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS");
+		getFixture().getPepperModule().getProperties().setPropertyValue(
+				PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS");
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -255,7 +266,9 @@ public class BeforeAfterTest {
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos=NN:= salt::pos=APOS; pos=NN:= pos=APOS");
+		getFixture().getPepperModule().getProperties().setPropertyValue(
+				PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS,
+				"salt::pos=NN:= salt::pos=APOS; pos=NN:= pos=APOS");
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -280,7 +293,8 @@ public class BeforeAfterTest {
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos; pos=NN");
+		getFixture().getPepperModule().getProperties()
+				.setPropertyValue(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS, "salt::pos; pos=NN");
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -303,7 +317,8 @@ public class BeforeAfterTest {
 		tok1.createAnnotation("salt", "pos", "VVFIN");
 		assertNotNull(tok1.getAnnotation(SaltUtil.createQName("salt", "pos")));
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS, "salt::pos; pos=NN");
+		getFixture().getPepperModule().getProperties()
+				.setPropertyValue(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS, "salt::pos; pos=NN");
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -322,7 +337,8 @@ public class BeforeAfterTest {
 		SampleGenerator.createPrimaryData(doc);
 		assertEquals(0, doc.getDocumentGraph().getTokens().size());
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_TOKENIZE, true);
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_TOKENIZE,
+				true);
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());
@@ -342,7 +358,8 @@ public class BeforeAfterTest {
 		assertEquals(1, doc.getDocumentGraph().getTokens().size());
 		SSpan span = doc.getDocumentGraph().createSpan(tok);
 
-		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_TOKENIZE, true);
+		getFixture().getPepperModule().getProperties().setPropertyValue(PepperModuleProperties.PROP_AFTER_TOKENIZE,
+				true);
 		SaltFactory.createIdentifier(doc, "doc1");
 
 		getFixture().after(doc.getIdentifier());

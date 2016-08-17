@@ -39,7 +39,7 @@ public class DOTManipulatorTest extends PepperManipulatorTest {
 		super.setFixture(new DOTManipulator());
 		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
 	}
-	
+
 	@Test
 	public void whenSelfTestingModule_thenResultShouldBeTrue() {
 		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);

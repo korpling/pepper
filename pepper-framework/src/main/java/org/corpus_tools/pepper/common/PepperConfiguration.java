@@ -64,7 +64,7 @@ public class PepperConfiguration extends Properties {
 	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
 	/** pepper-homepage */
 	public static final String HOMEPAGE = "http://corpus-tools.org/pepper/";
-	/** link to Pepper developers homepage for fitness features**/
+	/** link to Pepper developers homepage for fitness features **/
 	public static final String FITNESS_FEATURE_DESC = "https://korpling.github.io/pepper/doc/fitness.html";
 	/**
 	 * A sub folder in Pepper directory to be used as workspace (to store jobs
@@ -187,12 +187,15 @@ public class PepperConfiguration extends Properties {
 	 */
 	public void load(File configurationFile) {
 		confFolder = configurationFile.getParentFile();
-		try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(configurationFile.getAbsolutePath()));) {
+		try (BufferedInputStream in = new BufferedInputStream(
+				new FileInputStream(configurationFile.getAbsolutePath()));) {
 			load(in);
 		} catch (FileNotFoundException e2) {
-			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e2);
+			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '"
+					+ configurationFile.getAbsolutePath() + "', because of nested exception: ", e2);
 		} catch (IOException e) {
-			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
+			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '"
+					+ configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
 		}
 	}
 
@@ -211,12 +214,14 @@ public class PepperConfiguration extends Properties {
 	 */
 	public void load(ComponentContext componentContext) {
 		if (componentContext == null) {
-			throw new PepperConfigurationException("Cannot resolve configuration file for Pepper, because the given component context is null.");
+			throw new PepperConfigurationException(
+					"Cannot resolve configuration file for Pepper, because the given component context is null.");
 		}
 
 		String configFileStr = null;
 
-		if ((componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null) && (componentContext.getBundleContext().getBundle().getLocation() != null)) {
+		if ((componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null)
+				&& (componentContext.getBundleContext().getBundle().getLocation() != null)) {
 			String[] bundleNames = System.getProperty("osgi.bundles").split(",");
 			if (bundleNames.length > 0) {
 				String currLocation = componentContext.getBundleContext().getBundle().getLocation();

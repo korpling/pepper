@@ -112,7 +112,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		if (getMappingSubjects().size() > 0) {
 			retVal = getMappingSubjects().get(0).getMappingResult();
 		} else {
-			throw new PepperModuleException(getPepperMapper(), "This might be a bug. No mapping result is given in mapper controller.");
+			throw new PepperModuleException(getPepperMapper(),
+					"This might be a bug. No mapping result is given in mapper controller.");
 		}
 		return (retVal);
 	}
@@ -126,7 +127,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		if (getMappingSubjects().size() > 0) {
 			retVal = getMappingSubjects().get(0).getIdentifier();
 		} else {
-			throw new PepperModuleException(getPepperMapper(), "This might be a bug. No mapping result is given in mapper controller.");
+			throw new PepperModuleException(getPepperMapper(),
+					"This might be a bug. No mapping result is given in mapper controller.");
 		}
 		return (retVal);
 	}
@@ -165,7 +167,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 		else if (progress != null)
 			return (progress);
 		else
-			throw new PepperModuleException("Cannot return progress, because no PepperMapper '" + getName() + "' is given. This might be a bug of the Pepper module, please make sure, that method PepperModule.createPepperMapper() is implemented.");
+			throw new PepperModuleException("Cannot return progress, because no PepperMapper '" + getName()
+					+ "' is given. This might be a bug of the Pepper module, please make sure, that method PepperModule.createPepperMapper() is implemented.");
 	}
 
 	/**
@@ -199,7 +202,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			}
 			if (getMappingSubjects().size() > 0) {
 				for (MappingSubject subj : getMappingSubjects()) {
-					if ((subj.getMappingResult() == null) || (DOCUMENT_STATUS.IN_PROGRESS.equals(subj.getMappingResult()))) {
+					if ((subj.getMappingResult() == null)
+							|| (DOCUMENT_STATUS.IN_PROGRESS.equals(subj.getMappingResult()))) {
 						subj.setMappingResult(DOCUMENT_STATUS.FAILED);
 					}
 				}
@@ -247,7 +251,8 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			mappingResult = this.getPepperMapper().mapSDocument();
 
 		} else {
-			throw new NotInitializedException("Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
+			throw new NotInitializedException(
+					"Cannot start mapper, because neither the SDocument nor the SCorpus value is set.");
 		}
 
 		// postprocessing
@@ -256,7 +261,9 @@ public class PepperMapperControllerImpl extends Thread implements PepperMapperCo
 			// getPepperModule().after(subj.getIdentifier());
 		}
 
-		if ((!DOCUMENT_STATUS.FAILED.equals(getPepperMapper().getMappingResult())) && (!DOCUMENT_STATUS.COMPLETED.equals(getPepperMapper().getMappingResult())) && (!DOCUMENT_STATUS.DELETED.equals(getPepperMapper().getMappingResult()))) {
+		if ((!DOCUMENT_STATUS.FAILED.equals(getPepperMapper().getMappingResult()))
+				&& (!DOCUMENT_STATUS.COMPLETED.equals(getPepperMapper().getMappingResult()))
+				&& (!DOCUMENT_STATUS.DELETED.equals(getPepperMapper().getMappingResult()))) {
 			this.getPepperMapper().setMappingResult(mappingResult);
 		}
 	}

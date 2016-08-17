@@ -118,7 +118,8 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenFileContentIsSampledForEnding1AndThenSampledForEnding2_thenShouldContainBothFileContents() throws FileNotFoundException {
+	public void whenFileContentIsSampledForEnding1AndThenSampledForEnding2_thenShouldContainBothFileContents()
+			throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		fixture.sampleFileContent("xml");
@@ -136,7 +137,8 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenFileContentIsSampledWithoutEnding_thenShouldContainContentForAllFiles() throws FileNotFoundException {
+	public void whenFileContentIsSampledWithoutEnding_thenShouldContainContentForAllFiles()
+			throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent(new String[0]);
@@ -146,7 +148,8 @@ public class CorpusPathResolverTest {
 	}
 
 	@Test
-	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents() throws FileNotFoundException {
+	public void whenFileContentIsSampledForEndingXmlAndCsv_thenShouldContain9SampledContents()
+			throws FileNotFoundException {
 		File corpusPath = new File(getTestResources() + "sampleFiles");
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent("xml", "csv");
@@ -159,7 +162,8 @@ public class CorpusPathResolverTest {
 		fixture.setCorpusPath(URI.createFileURI(corpusPath.getAbsolutePath()));
 		Collection<String> content = fixture.sampleFileContent("doc");
 		assertThat(content.size()).isEqualTo(3);
-		assertThat(content).containsExactlyInAnyOrder("word", "word", "This\nis\na\nsample\ntext\nto\ncheck\nwhether\nit\nwas");
+		assertThat(content).containsExactlyInAnyOrder("word", "word",
+				"This\nis\na\nsample\ntext\nto\ncheck\nwhether\nit\nwas");
 	}
 
 	@Test

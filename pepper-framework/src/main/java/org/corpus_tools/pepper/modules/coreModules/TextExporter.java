@@ -71,7 +71,7 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
 						.appendSegment("expected"));
 	}
-	
+
 	/**
 	 * Creates a mapper to export primary texts.
 	 */
@@ -100,7 +100,8 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 						try {
 							out = new PrintWriter(outFile);
 						} catch (FileNotFoundException e) {
-							throw new PepperModuleException(this, "Cannot write primary text '" + text.getIdentifier() + "' to file '" + outFile.getAbsolutePath() + "'. ", e);
+							throw new PepperModuleException(this, "Cannot write primary text '" + text.getIdentifier()
+									+ "' to file '" + outFile.getAbsolutePath() + "'. ", e);
 						}
 						if (out != null) {
 							out.print(text.getText());

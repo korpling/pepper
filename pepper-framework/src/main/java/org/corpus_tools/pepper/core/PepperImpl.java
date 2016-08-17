@@ -84,7 +84,8 @@ public class PepperImpl implements Pepper {
 			throw new FileNotFoundException("Cannot find importers for corpus path, because corpus path is null.  ");
 		}
 		if (getModuleResolver() == null) {
-			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath + "', because the module resolver is null. ");
+			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath
+					+ "', because the module resolver is null. ");
 		}
 
 		final Set<String> retVal = new HashSet<>();
@@ -315,8 +316,8 @@ public class PepperImpl implements Pepper {
 	// ===================================== end: wirering module resolver via
 	// OSGi
 	/**
-	 * Returns all registered {@link PepperModule}s. If no module is
-	 * registered, returns an empty list.
+	 * Returns all registered {@link PepperModule}s. If no module is registered,
+	 * returns an empty list.
 	 * 
 	 * @return
 	 */

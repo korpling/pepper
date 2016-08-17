@@ -201,13 +201,17 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 				Collection<SCorpusGraph> corpGraphs = new LinkedList<>(this.getSaltProject().getCorpusGraphs());
 				for (SCorpusGraph sCorpusGraph : corpGraphs) {
 					if (sCorpusGraph == null) {
-						logger.warn("An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
+						logger.warn(
+								"An empty SDocumentGraph is in list of SaltProject. This might be a bug of pepper framework.");
 					} else {
 						if (getCorpusDesc() == null) {
-							throw new PepperFWException("Cannot export the corpus-structure to file structure, because no corpus description was given. ");
+							throw new PepperFWException(
+									"Cannot export the corpus-structure to file structure, because no corpus description was given. ");
 						}
 						if (getCorpusDesc().getCorpusPath() == null) {
-							throw new PepperFWException("Cannot export the corpus-structure to file structure, because the corpus path for module '" + getName() + "' is empty. ");
+							throw new PepperFWException(
+									"Cannot export the corpus-structure to file structure, because the corpus path for module '"
+											+ getName() + "' is empty. ");
 						}
 						for (SCorpus sCorpus : sCorpusGraph.getCorpora()) {
 							URI resourceURI = getCorpusDesc().getCorpusPath();
@@ -256,19 +260,27 @@ public abstract class PepperExporterImpl extends PepperModuleImpl implements Pep
 	@Deprecated
 	public URI createFolderStructure(Identifier id) {
 		if (id == null)
-			throw new PepperConvertException("Cannot export the given sElementID, because given Identifier-object is null.");
+			throw new PepperConvertException(
+					"Cannot export the given sElementID, because given Identifier-object is null.");
 		if (id.getIdentifiableElement() == null)
-			throw new PepperConvertException("Cannot export the given sElementID, because the SIdentifiableElement-object of given Identifier-object is null.");
-		if ((!(id.getIdentifiableElement() instanceof SDocument)) && ((!(id.getIdentifiableElement() instanceof SCorpus))))
-			throw new PepperConvertException("Cannot export the given sElementID, because the element corresponding to it, isn't of type SDocument or SCorpus.");
+			throw new PepperConvertException(
+					"Cannot export the given sElementID, because the SIdentifiableElement-object of given Identifier-object is null.");
+		if ((!(id.getIdentifiableElement() instanceof SDocument))
+				&& ((!(id.getIdentifiableElement() instanceof SCorpus))))
+			throw new PepperConvertException(
+					"Cannot export the given sElementID, because the element corresponding to it, isn't of type SDocument or SCorpus.");
 		if (getCorpusDesc() == null)
-			throw new PepperFWException("Cannot export the corpus-structure to file structure, because no corpus description was given. ");
+			throw new PepperFWException(
+					"Cannot export the corpus-structure to file structure, because no corpus description was given. ");
 		if (getCorpusDesc().getCorpusPath() == null)
-			throw new PepperFWException("Cannot export the corpus-structure to file structure, because the corpus path for module '" + getName() + "' is empty. ");
+			throw new PepperFWException(
+					"Cannot export the corpus-structure to file structure, because the corpus path for module '"
+							+ getName() + "' is empty. ");
 
 		try {
 			File folder = new File(getCorpusDesc().getCorpusPath().toFileString());
-			File newFolder = new File(folder.getCanonicalPath() + "/" + ((SNode) id.getIdentifiableElement()).getPath().toString());
+			File newFolder = new File(
+					folder.getCanonicalPath() + "/" + ((SNode) id.getIdentifiableElement()).getPath().toString());
 			if (!newFolder.mkdirs()) {
 				logger.warn("Cannot create folder {}. ", newFolder);
 			}

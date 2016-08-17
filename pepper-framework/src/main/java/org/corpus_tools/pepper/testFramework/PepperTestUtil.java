@@ -74,7 +74,8 @@ public class PepperTestUtil {
 	 */
 	public static File getTempPath_static(String testDirectory) {
 		if ((testDirectory == null) || (testDirectory.isEmpty())) {
-			throw new PepperModuleTestException("Cannot return a temporary directory, since the given last part is empty.");
+			throw new PepperModuleTestException(
+					"Cannot return a temporary directory, since the given last part is empty.");
 		}
 		File retVal = null;
 		retVal = PepperUtil.getTempTestFile(TMP_TEST_DIR + "/" + testDirectory);
@@ -195,7 +196,8 @@ public class PepperTestUtil {
 	 */
 	public static void start(final Pepper pepper, final Collection<? extends PepperModule> fixtures) {
 		if (fixtures == null) {
-			throw new PepperModuleTestException("Cannot start Pepper modules, because the list of fixtures is not set.");
+			throw new PepperModuleTestException(
+					"Cannot start Pepper modules, because the list of fixtures is not set.");
 		}
 		final Collection<PepperImporter> importers = new ArrayList<PepperImporter>();
 		final Collection<PepperExporter> exporters = new ArrayList<PepperExporter>();
@@ -211,7 +213,8 @@ public class PepperTestUtil {
 			if (i == 1) {
 				saltProject = fixture.getSaltProject();
 			} else if (saltProject != fixture.getSaltProject()) {
-				throw new PepperModuleTestException("Cannot run test because the SaltProject objects are not equal for all Pepper modules. ");
+				throw new PepperModuleTestException(
+						"Cannot run test because the SaltProject objects are not equal for all Pepper modules. ");
 			}
 			i++;
 
@@ -235,7 +238,8 @@ public class PepperTestUtil {
 		// create a Pepper job object
 		final PepperJob job = pepper.getJob(pepper.createJob());
 		if (!(job instanceof PepperJobImpl)) {
-			throw new PepperModuleTestException("Cannot start Pepper module test, because '" + PepperJob.class + "' is not of type '" + PepperJobImpl.class + "'. ");
+			throw new PepperModuleTestException("Cannot start Pepper module test, because '" + PepperJob.class
+					+ "' is not of type '" + PepperJobImpl.class + "'. ");
 		} else {
 			((PepperJobImpl) job).setSaltProject(saltProject);
 		}

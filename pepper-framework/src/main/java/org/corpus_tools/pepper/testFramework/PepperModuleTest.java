@@ -227,7 +227,9 @@ public abstract class PepperModuleTest {
 	 */
 	@Test
 	public void testSetGetResources() {
-		assertNotNull("Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing.", resourceURI);
+		assertNotNull(
+				"Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing.",
+				resourceURI);
 		getFixture().setResources(resourceURI);
 		assertEquals(resourceURI, getFixture().getResources());
 	}

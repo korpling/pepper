@@ -366,7 +366,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 */
 	protected void setResources(PepperModule module) {
 		if ((module.getSymbolicName() == null) || (module.getSymbolicName().isEmpty())) {
-			throw new PepperModuleException("Cannot set resources to module '" + module.getName() + "', because its symbolic name is empty.");
+			throw new PepperModuleException(
+					"Cannot set resources to module '" + module.getName() + "', because its symbolic name is empty.");
 		}
 		// check case 1 (specific module resource property)
 		String propName = module.getSymbolicName() + RESOURCES;
@@ -401,7 +402,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 			File resourcePathFile = new File(resourcePathURI.toFileString());
 
 			if (!resourcePathFile.exists()) {
-				logger.warn("Resource folder '" + resourcePathFile.getAbsolutePath() + "' for pepper module '" + module.getSymbolicName() + "' does not exist and will be created. ");
+				logger.warn("Resource folder '" + resourcePathFile.getAbsolutePath() + "' for pepper module '"
+						+ module.getSymbolicName() + "' does not exist and will be created. ");
 				if (!resourcePathFile.mkdirs()) {
 					logger.warn("Cannot create folder {}. ", resourcePathFile);
 				}
@@ -422,7 +424,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 	protected String retrieveResourcePathFromBundle(PepperModule module) {
 		String resourcePathStr = null;
 
-		if ((module.getComponentContext() != null) && (module.getComponentContext().getBundleContext() != null) && (module.getComponentContext().getBundleContext().getBundle() != null) && (module.getComponentContext().getBundleContext().getBundle().getLocation() != null)) {
+		if ((module.getComponentContext() != null) && (module.getComponentContext().getBundleContext() != null)
+				&& (module.getComponentContext().getBundleContext().getBundle() != null)
+				&& (module.getComponentContext().getBundleContext().getBundle().getLocation() != null)) {
 			if (module.getComponentContext() != null) {
 				Collection<String> bundleLocations = new Vector<String>();
 				String[] bundleNames = System.getProperty(PROP_OSGI_BUNDLES).split(",");
@@ -450,7 +454,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 					}
 				}
 				if (location == null) {
-					logger.warn("Cannot find location of resource folder for Pepper module '" + module.getName() + "'. This could cause problems running the module. Tried to detect the location via system property '" + PROP_OSGI_BUNDLES + "' which was '" + System.getProperty(PROP_OSGI_BUNDLES) + "'. ");
+					logger.warn("Cannot find location of resource folder for Pepper module '" + module.getName()
+							+ "'. This could cause problems running the module. Tried to detect the location via system property '"
+							+ PROP_OSGI_BUNDLES + "' which was '" + System.getProperty(PROP_OSGI_BUNDLES) + "'. ");
 				} else {
 					if (location.endsWith(".jar")) {
 						location = location.replace(".jar", "/");
@@ -505,11 +511,13 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 */
 	protected void setTemporaries(PepperModule module, int number) {
 		if ((module.getSymbolicName() == null) || (module.getSymbolicName().isEmpty()))
-			throw new PepperModuleException("Cannot set temporaries to module '" + module.getName() + "', because its symbolic name is empty.");
+			throw new PepperModuleException(
+					"Cannot set temporaries to module '" + module.getName() + "', because its symbolic name is empty.");
 
 		File genTmpPath = getConfiguration().getTempPath();
 		if (genTmpPath == null)
-			throw new PepperFWException("Cannot start converting, because the system property '" + PepperConfiguration.PROP_TEMP_FOLDER + "' isn't set. This might be an internal failure.");
+			throw new PepperFWException("Cannot start converting, because the system property '"
+					+ PepperConfiguration.PROP_TEMP_FOLDER + "' isn't set. This might be an internal failure.");
 
 		File tmpPath = new File(genTmpPath.getAbsolutePath() + "/" + module.getSymbolicName() + "/" + number);
 
@@ -535,7 +543,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 			throw new PepperFWException("Cannot increase number of modules, because module is empty. ");
 		String moduleSymbolicName = module.getSymbolicName();
 		if ((moduleSymbolicName == null) || (moduleSymbolicName.isEmpty()))
-			throw new PepperFWException("Cannot increase number of module '" + module.getName() + "', because the symbolic name of module is empty.");
+			throw new PepperFWException("Cannot increase number of module '" + module.getName()
+					+ "', because the symbolic name of module is empty.");
 		synchronized (this) {
 			if (this.numberOfModuleInstances.containsKey(moduleSymbolicName)) {
 				Integer number = this.numberOfModuleInstances.get(moduleSymbolicName);
@@ -570,7 +579,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 						pepperImporters = new Vector<PepperImporter>();
 					PepperImporter importer = (PepperImporter) instance;
 					if ((importer.getSymbolicName() == null) || (importer.getSymbolicName().isEmpty()))
-						throw new PepperModuleException("Cannot register PepperModule, because the symbolic name of module '" + importer.getName() + "' is empty.");
+						throw new PepperModuleException(
+								"Cannot register PepperModule, because the symbolic name of module '"
+										+ importer.getName() + "' is empty.");
 
 					this.setTemporaries(importer, increaseNumberOfModules(importer));
 					this.setResources(importer);
@@ -589,7 +600,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 			// run through all pepperManipulatorComponentFactories and search
 			// for mapping PepperManipulator
 			try {
-				List<ComponentFactory> factories = new ArrayList<ComponentFactory>(getPepperManipulatorComponentFactories());
+				List<ComponentFactory> factories = new ArrayList<ComponentFactory>(
+						getPepperManipulatorComponentFactories());
 				for (ComponentFactory componentFactory : factories) {
 					Object instance = null;
 					try {
@@ -662,7 +674,8 @@ public class ModuleResolverImpl implements ModuleResolver {
 				modules = (List<PepperModule>) (List<? extends PepperModule>) getPepperExporters();
 			}
 			if (modules == null) {
-				throw new PepperException("Cannot resolve a module for step description '" + stepDesc + "', since no Pepper modules are registered.");
+				throw new PepperException("Cannot resolve a module for step description '" + stepDesc
+						+ "', since no Pepper modules are registered.");
 			}
 			for (PepperModule module : modules) {
 				if (stepDesc.getName() != null) {// emit by name
@@ -673,12 +686,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 				} else if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getFormatDesc() != null)) {
 					// emit by format name and version
 					if (module instanceof PepperImporter) {
-						if (((PepperImporter) module).getSupportedFormats().contains(stepDesc.getCorpusDesc().getFormatDesc())) {
+						if (((PepperImporter) module).getSupportedFormats()
+								.contains(stepDesc.getCorpusDesc().getFormatDesc())) {
 							pepperModule = module;
 							break;
 						}
 					} else if (module instanceof PepperExporter) {
-						if (((PepperExporter) module).getSupportedFormats().contains(stepDesc.getCorpusDesc().getFormatDesc())) {
+						if (((PepperExporter) module).getSupportedFormats()
+								.contains(stepDesc.getCorpusDesc().getFormatDesc())) {
 							pepperModule = module;
 							break;
 						}

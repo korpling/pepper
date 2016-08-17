@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(name = "DOTExporterComponent", factory = "PepperExporterComponentFactory", enabled = true)
 public class DOTExporter extends PepperExporterImpl {
 	public static final String FORMAT_NAME = "dot";
-	public static final String FORMAT_VERSION= "1.0";
+	public static final String FORMAT_VERSION = "1.0";
 
 	public DOTExporter() {
 		super("DOTExporter");
@@ -54,7 +54,7 @@ public class DOTExporter extends PepperExporterImpl {
 				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotExporter")
 						.appendSegment("expected"));
 	}
-	
+
 	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new PepperMapperImpl() {

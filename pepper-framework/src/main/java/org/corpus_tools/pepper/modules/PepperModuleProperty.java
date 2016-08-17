@@ -102,7 +102,8 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 *            determines if the property is required (true means property is
 	 *            required)
 	 */
-	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue, final boolean required) {
+	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue,
+			final boolean required) {
 		this(name, clazz, description, required);
 		this.value = defaultValue;
 	}

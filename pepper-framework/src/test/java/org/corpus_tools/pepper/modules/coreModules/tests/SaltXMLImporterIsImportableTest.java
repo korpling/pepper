@@ -17,20 +17,13 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-import org.corpus_tools.pepper.common.ModuleFitness;
-import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
-import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.modules.coreModules.SaltXMLImporter;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
-import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
-import org.corpus_tools.salt.common.SaltProject;
-import org.corpus_tools.salt.samples.*;
 
 public class SaltXMLImporterIsImportableTest {
 

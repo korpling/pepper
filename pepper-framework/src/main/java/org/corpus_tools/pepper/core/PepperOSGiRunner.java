@@ -113,12 +113,18 @@ public class PepperOSGiRunner implements Runnable {
 
 	private static File getWorkflowDescriptionFile() {
 		if (System.getenv(ENV_PEPPER_WORKFLOW_FILE) == null)
-			throw new PepperOSGiRunnerException("Cannot start pepper-osgi-runner, please set environment variable '" + ENV_PEPPER_WORKFLOW_FILE + "' to workflow description file which is supposed to be used for conversion.");
+			throw new PepperOSGiRunnerException(
+					"Cannot start pepper-osgi-runner, please set environment variable '" + ENV_PEPPER_WORKFLOW_FILE
+							+ "' to workflow description file which is supposed to be used for conversion.");
 		if (System.getenv(ENV_PEPPER_WORKFLOW_FILE).isEmpty())
-			throw new PepperOSGiRunnerException("Cannot start pepper-osgi-runner, please set environment variable '" + ENV_PEPPER_WORKFLOW_FILE + "' to workflow description file which is supposed to be used for conversion. Currently it is empty.");
+			throw new PepperOSGiRunnerException("Cannot start pepper-osgi-runner, please set environment variable '"
+					+ ENV_PEPPER_WORKFLOW_FILE
+					+ "' to workflow description file which is supposed to be used for conversion. Currently it is empty.");
 		File workflowDescFile = new File(System.getenv(ENV_PEPPER_WORKFLOW_FILE));
 		if (!workflowDescFile.exists())
-			throw new PepperOSGiRunnerException("Cannot start pepper-osgi-runner, because environment variable '" + ENV_PEPPER_WORKFLOW_FILE + "' points to a non  existing file '" + workflowDescFile.getAbsolutePath() + "'.");
+			throw new PepperOSGiRunnerException(
+					"Cannot start pepper-osgi-runner, because environment variable '" + ENV_PEPPER_WORKFLOW_FILE
+							+ "' points to a non  existing file '" + workflowDescFile.getAbsolutePath() + "'.");
 		return (workflowDescFile);
 	}
 
@@ -153,7 +159,8 @@ public class PepperOSGiRunner implements Runnable {
 				throw new PepperException("No PepperConverter-object is given for pepper-osgi-runner.");
 
 			if (pepper.getModuleResolver() == null)
-				throw new PepperException("No '" + ModuleResolverImpl.class + "' is given for passed '" + Pepper.class + "' object.");
+				throw new PepperException(
+						"No '" + ModuleResolverImpl.class + "' is given for passed '" + Pepper.class + "' object.");
 			PepperConfiguration conf = new PepperConfiguration();
 			conf.load(componentContext);
 			pepper.setConfiguration(conf);
@@ -200,15 +207,18 @@ public class PepperOSGiRunner implements Runnable {
 			millis = System.currentTimeMillis() - millis;
 			logger.info("Conversion ended, and needed: " + millis + " ms");
 		} catch (RuntimeException e) {
-			logger.info(PepperUtil.breakString("Launching of pepper-osgi-runner ended with errors (the stack trace is printed out to 'System.err'):"));
+			logger.info(PepperUtil.breakString(
+					"Launching of pepper-osgi-runner ended with errors (the stack trace is printed out to 'System.err'):"));
 			logger.info(PepperUtil.breakString("   ", e.getMessage() + " (" + e.getClass().getSimpleName() + ")"));
 			if (e instanceof PepperException) {
 				throw (PepperException) e;
 			} else {
-				throw new PepperOSGiRunnerException("An error occured while running pepper-osgi-runner, because of nested exception.", e);
+				throw new PepperOSGiRunnerException(
+						"An error occured while running pepper-osgi-runner, because of nested exception.", e);
 			}
 		} finally {
-			logger.info("************************************************************************************************************************");
+			logger.info(
+					"************************************************************************************************************************");
 		}
 	}
 
@@ -229,7 +239,8 @@ public class PepperOSGiRunner implements Runnable {
 	protected void activate(ComponentContext componentContext) {
 		this.componentContext = componentContext;
 
-		if ((System.getProperty(PROP_TEST_DISABLED) == null) || (!Boolean.valueOf(System.getProperty(PROP_TEST_DISABLED)))) {
+		if ((System.getProperty(PROP_TEST_DISABLED) == null)
+				|| (!Boolean.valueOf(System.getProperty(PROP_TEST_DISABLED)))) {
 			this.isDisabled = false;
 		} else
 			this.isDisabled = true;
