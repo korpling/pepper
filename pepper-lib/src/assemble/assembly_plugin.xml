@@ -2,7 +2,7 @@
 	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
-	<!-- The aim of this assambly is to create a /plugin and /lib folder containing 
+	<!-- The aim of this assembly is to create a /plugin and /lib folder containing 
 		all dependencies which are necessary to start Pepper in pepper-lib. -->
 	<id>plugin-assambly</id>
 	<formats>
@@ -45,7 +45,18 @@
 				<exclude>*:sisu-guice</exclude>
 				<exclude>*:org.eclipse.sisu.inject</exclude>
 				<exclude>*:org.eclipse.sisu.plexus</exclude>
+				<exclude>org.corpus-tools:pepper-framework:zip</exclude>
 			</excludes>
+		</dependencySet>
+		<dependencySet>
+			<!-- copy pepper-framework resources folder to plugin path -->
+			<outputDirectory>plugins/</outputDirectory>
+			<unpack>true</unpack>
+			<scope>runtime</scope>
+			<fileMode>0644</fileMode>
+			<includes>
+				<include>org.corpus-tools:pepper-framework:zip</include>
+			</includes>
 		</dependencySet>
 	</dependencySets>
 </assembly>

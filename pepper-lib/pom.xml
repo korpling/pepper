@@ -22,6 +22,14 @@
 			<artifactId>pepper-framework</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.corpus-tools</groupId>
+			<artifactId>pepper-framework</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
