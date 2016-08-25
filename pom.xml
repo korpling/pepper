@@ -84,7 +84,7 @@
 			manipulation of linguistic data.</pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
-		<bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
+		<bundle.file>${project.artifactId}-${project.version}.jar</bundle.file>
 		<assemblies.name>src/assemble/assemblies.xml</assemblies.name>
 		<license.file>${basedir}/LICENSE</license.file>
 		<notice.file>${basedir}/NOTICE</notice.file>
@@ -374,7 +374,7 @@
 						<descriptor>${assemblies.name}</descriptor>
 					</descriptors>
 					<appendAssemblyId>false</appendAssemblyId>
-					<finalName>${project.groupId}.pepper.${project.artifactId}_${project.version}</finalName>
+					<finalName>${project.artifactId}-${project.version}</finalName>
 					<outputDirectory>target/distribution</outputDirectory>
 					<workDirectory>target/assembly/work</workDirectory>
 				</configuration>
@@ -462,7 +462,7 @@
 				<version>${maven-surefire-plugin.version}</version>
 			</plugin>
 		</plugins>
-		<finalName>${project.groupId}.${project.artifactId}_${project.version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 	</build>
 	<profiles>
 		<profile>

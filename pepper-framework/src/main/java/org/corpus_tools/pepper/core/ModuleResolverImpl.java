@@ -445,8 +445,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 				String currLocation = module.getComponentContext().getBundleContext().getBundle().getLocation();
 				currLocation = currLocation.replace("initial@reference:file:", "");
 				currLocation = currLocation.replace("../", "");
-				if (currLocation.endsWith("/"))
+				if (currLocation.endsWith("/")){
 					currLocation = currLocation.substring(0, currLocation.length() - 1);
+				}
 				String location = null;
 				for (String bundleLocation : bundleLocations) {
 					if (bundleLocation.contains(currLocation)) {
