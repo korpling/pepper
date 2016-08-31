@@ -146,7 +146,8 @@ var hierarchy =
       [ "org.corpus_tools.pepper.modules.PepperModuleProperties", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html", [
         [ "org.corpus_tools.pepper.modules.coreModules.DOTManipulatorProperties", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator_properties.html", null ],
         [ "org.corpus_tools.pepper.modules.coreModules.SaltValidatorProperties", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_salt_validator_properties.html", null ]
-      ] ]
+      ] ],
+      [ "org.corpus_tools.pepper.modules.PepperModuleProperty< T >", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property.html", null ]
     ] ],
     [ "UncaughtExceptionHandler", null, [
       [ "org.corpus_tools.pepper.impl.PepperModuleImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html", null ]
