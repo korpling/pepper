@@ -100,7 +100,8 @@ public class CorpusPathResolver {
 	 * @return the first {@value #NUMBER_OF_SAMPLED_LINES} lines of
 	 *         <code>numberOfSampledLines</code> files
 	 */
-	public Collection<String> sampleFileContent(int numberOfSampledFiles, int numberOfSampledLines, final String... fileEndings) {
+	public Collection<String> sampleFileContent(int numberOfSampledFiles, int numberOfSampledLines,
+			final String... fileEndings) {
 		if (numberOfSampledFiles < 1 || numberOfSampledLines < 1) {
 			return new ArrayList<>();
 		}
@@ -150,7 +151,7 @@ public class CorpusPathResolver {
 	 * 
 	 * @param corpusPath
 	 * @return
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
 	 */
 	protected Multimap<String, File> groupFilesByEnding(final URI corpusPath) throws FileNotFoundException {
 		final Multimap<String, File> files = HashMultimap.create();
@@ -159,7 +160,8 @@ public class CorpusPathResolver {
 		}
 		final File dir = new File(corpusPath.toFileString());
 		if (dir == null || !dir.exists()) {
-			throw new FileNotFoundException("Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
+			throw new FileNotFoundException(
+					"Cannot sample files in folder, since folder '" + dir + "' is empty or does not exist. ");
 		}
 
 		final Collection<File> allFiles = FileUtils.listFiles(dir, null, true);
@@ -174,19 +176,18 @@ public class CorpusPathResolver {
 		return files;
 	}
 
-	protected Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead, final String fileEnding) {
+	protected Collection<FileContent> getXFilesWithExtension(int numOfFiles, int numOfLinesToRead,
+			final String fileEnding) {
 		Collection<FileContent> readFiles = readFilesGroupedByExtension.get(fileEnding);
 		if (readFiles.size() >= numOfFiles) {
 			return readFiles;
 		}
-		int numOfReadFiles = 0;
-		if (readFiles != null) {
-			numOfReadFiles = readFiles.size();
+		int numOfReadFiles = readFiles.size();
+		if (unreadFilesGroupedByExtension == null) {
+			throw new NotInitializedException(
+					"Please call setCorpusPath(URI) first or use other constructor new CorpusPathResolver(URI). ");
 		}
-		if (unreadFilesGroupedByExtension== null){
-			throw new NotInitializedException("Please call setCorpusPath(URI) first or use other constructor new CorpusPathResolver(URI). ");
-		}
-		
+
 		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(fileEnding);
 		// read files as long as there are files to be read
 		if (unreadFiles != null) {
@@ -240,13 +241,15 @@ public class CorpusPathResolver {
 	 */
 	protected String readFirstLines(final File file, final int numOfLinesToRead) {
 		if (file == null || !file.exists()) {
-			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '" + file.getAbsolutePath() + "', because it was null or does not exist. ");
+			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '"
+					+ (file == null ? file : file.getAbsolutePath()) + "', because it was null or does not exist. ");
 		}
 		if (numOfLinesToRead < 1) {
 			return null;
 		}
 		final StringBuilder fileContent = new StringBuilder();
-		try (LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+		try (LineNumberReader reader = new LineNumberReader(
+				new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
 			String line;
 			boolean isFirstLine = true;
 			while (((line = reader.readLine()) != null) && reader.getLineNumber() <= numOfLinesToRead) {
