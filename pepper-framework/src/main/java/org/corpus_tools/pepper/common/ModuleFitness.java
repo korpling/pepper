@@ -262,7 +262,7 @@ public class ModuleFitness {
 	}
 
 	/**
-	 * Asimple builder to create {@link ModuleFitness} objects.
+	 * A simple builder to create {@link ModuleFitness} objects.
 	 * 
 	 * @author florian
 	 *

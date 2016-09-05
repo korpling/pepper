@@ -165,26 +165,42 @@ public class SelfTestDesc {
 	 * @return true, when both files are equal, false otherwise
 	 */
 	protected boolean compare(final File actualFile, final File expectedFile) {
-		if (actualFile == null || !actualFile.exists() || expectedFile == null || !expectedFile.exists()) {
+		if (!filesDoExist(actualFile, expectedFile)) {
 			return false;
 		}
+		if (isXmlFile(expectedFile)) {
+			return compareXML(actualFile, expectedFile);
+		}
+		return filesAreEqual(actualFile, expectedFile);
+	}
 
-		try (BufferedReader brTest = new BufferedReader(new FileReader(expectedFile))) {
+	private boolean isXmlFile(File pobablyXMlFile) {
+		try (BufferedReader brTest = new BufferedReader(new FileReader(pobablyXMlFile))) {
 			final String firstLine = brTest.readLine();
 			if (!Strings.isNullOrEmpty(firstLine)) {
 				if (firstLine.contains("<?xml")) {
-					return compareXML(actualFile, expectedFile);
+					return true;
 				}
 			}
 		} catch (IOException e1) {
-			// do nothing
+			return false;
 		}
+		return false;
+	}
 
+	private boolean filesAreEqual(final File actualFile, final File expectedFile) {
 		try {
 			return FileUtils.contentEquals(actualFile, expectedFile);
 		} catch (IOException e) {
 			return false;
 		}
+	}
+
+	private boolean filesDoExist(final File actualFile, final File expectedFile) {
+		if (actualFile == null || !actualFile.exists() || expectedFile == null || !expectedFile.exists()) {
+			return false;
+		}
+		return true;
 	}
 
 	protected final DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -204,8 +220,11 @@ public class SelfTestDesc {
 	 * @return true, when both files are equal, false otherwise
 	 */
 	protected boolean compareXML(final File actualXmlFile, final File expectedXmlFile) {
-		if (actualXmlFile == null || expectedXmlFile == null) {
+		if (!filesDoExist(actualXmlFile, expectedXmlFile)) {
 			return false;
+		}
+		if (filesAreEqual(actualXmlFile, expectedXmlFile)) {
+			return true;
 		}
 		final DocumentBuilder docBuilder;
 		final Diff diff;
@@ -218,7 +237,6 @@ public class SelfTestDesc {
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			return false;
 		}
-
 		diff.overrideElementQualifier(new ElementNameQualifier());
 		return diff.identical();
 	}
