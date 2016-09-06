@@ -110,6 +110,7 @@ var NAVTREEINDEX3 =
 "cleanUp.html":[1,8],
 "corpusStructure.html":[1,5],
 "customization.html":[1,9],
+"dependencies.html":[1,12],
 "developers.html":[0],
 "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html":[3,0,0,0,0,0,1,0],
 "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html#a7d92eb20a1066d5136509d0b8c26c8f4":[3,0,0,0,0,0,1,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a5420988ed280fcc0c6f701ec3a4df0e6":[3,0,0,0,0,3,4,19],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a555d296736561cf089ebd9f09f7b12ab":[3,0,0,0,0,3,4,3],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a55db8ce0a0940d3106cdfd20b6e92ba6":[3,0,0,0,0,3,4,0],
-"interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a5c63f359f5b2efdc18e1483336feffb9":[3,0,0,0,0,3,4,9],
-"interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a622d16f74b43d2f716139dace011bb16":[3,0,0,0,0,3,4,10]
+"interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a5c63f359f5b2efdc18e1483336feffb9":[3,0,0,0,0,3,4,9]
 };

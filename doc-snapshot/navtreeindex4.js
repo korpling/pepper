@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a622d16f74b43d2f716139dace011bb16":[3,0,0,0,0,3,4,10],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a86868c08dc8bb366ba6a688cf6157b48":[3,0,0,0,0,3,4,7],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a92250212e2cebeb62f14f6b54f4b1e34":[3,0,0,0,0,3,4,16],
 "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a948ab4a2cdf690a739269efa271ccc7f":[3,0,0,0,0,3,4,13],
@@ -174,5 +175,6 @@ var NAVTREEINDEX4 =
 "testing.html":[1,11],
 "tutorial.html":[1,0],
 "useEclipse.html":[1,1],
+"useEclipse.html":[1,12,0],
 "users.html":[2]
 };

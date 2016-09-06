@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['using_20third_2dparty_20dependencies',['Using third-party dependencies',['../dependencies.html',1,'moduleDevelopers']]],
   ['uncaughtexception',['uncaughtException',['../classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a8c6a3d92759a1dd22ee57b497eb7bfba',1,'org::corpus_tools::pepper::impl::PepperModuleImpl']]],
   ['unifyproposedimportorders',['unifyProposedImportOrders',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#ad8db96b50ae3d09a77427badf048c128',1,'org::corpus_tools::pepper::core::PepperJobImpl']]],
   ['uninstall',['uninstall',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_o_s_gi_console.html#a25f42ac222cd200e4759ad0ff3ef7f0d',1,'org.corpus_tools.pepper.cli.OSGiConsole.uninstall()'],['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#aba781cc79d4887a410c313fd06ce371f',1,'org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector.uninstall(Long bundleId)'],['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#af76fe5c46659e0def601e0859a79b433',1,'org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector.uninstall(URI location)']]],
