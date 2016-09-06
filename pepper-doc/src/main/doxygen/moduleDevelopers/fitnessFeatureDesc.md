@@ -108,7 +108,7 @@ public MyModule(){
 
 \endcode
  
-### HAS_SELFTEST
+### HAS_SELFTEST {#selftest}
 
 This fitness feature indicates whether the module provides a self test. A self test is a test setup to check whether the module is runnable within a Pepper instance (similar to a system integration test). Therefore the module needs to provide a corpus as an input and an expected corpus. The output corpus then is compared to the expected corpus.
 When your module fails thus check, provide an input corpus, an expected corpus and override the following method:
@@ -131,12 +131,10 @@ When the expected and the output corpora ar in any other format, Pepper will com
 
 To have more control on the comparison check the documentation in @ref org.corpus_tools.pepper.core.SelfTestDesc and override one of the following methods (which depends on your particular case):
 
- \code
- public boolean compare(final SaltProject actualProject, final SaltProject expectedProject);
- public boolean compare(final URI actualCorpusPath, final URI expectedCorpusPath);
- protected boolean compare(final File actualFile, final File expectedFile);
- protected boolean compareXML(final File actualXmlFile, final File expectedXmlFile);
-\endcode 		
+* @ref org.corpus_tools.pepper.core.SelfTestDesc.compare(final SaltProject actualProject, final SaltProject expectedProject)
+* @ref org.corpus_tools.pepper.core.SelfTestDesc.compare(final URI actualCorpusPath, final URI expectedCorpusPath)
+* @ref org.corpus_tools.pepper.core.SelfTestDesc.compare(final File actualFile, final File expectedFile)
+* @ref org.corpus_tools.pepper.core.SelfTestDesc.compareXML(final File actualXmlFile, final File expectedXmlFile) 		
 
 ### IS_IMPORTABLE
 
