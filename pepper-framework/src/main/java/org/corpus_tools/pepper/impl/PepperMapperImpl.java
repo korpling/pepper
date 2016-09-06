@@ -210,9 +210,13 @@ public class PepperMapperImpl implements PepperMapper {
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setDocument(SDocument)}
+	 * {@inheritDoc PepperMapper#mapSDocument()}
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+	 * 
+	 * <emph>NOTE: This method is only called if the element
+	 * to be mapped is of type {@link SDocument}, i.e.,
+	 * if this.getDocument() != null!</emph>
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSDocument() {
@@ -221,9 +225,13 @@ public class PepperMapperImpl implements PepperMapper {
 	}
 
 	/**
-	 * {@inheritDoc PepperMapper#setCorpus(SCorpus)}
+	 * {@inheritDoc PepperMapper#mapSCorpus()}
 	 * 
 	 * OVERRIDE THIS METHOD FOR CUSTOMIZED MAPPING.
+	 * 
+	 * <emph>NOTE: This method is only called if the element
+	 * to be mapped is of type {@link SCorpus}, i.e.,
+	 * if this.getCorpus() != null!</emph>
 	 */
 	@Override
 	public DOCUMENT_STATUS mapSCorpus() {

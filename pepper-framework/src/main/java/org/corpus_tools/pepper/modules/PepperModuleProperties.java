@@ -290,9 +290,10 @@ public class PepperModuleProperties implements Serializable {
 	 * is not set.
 	 */
 	public boolean checkProperty(PepperModuleProperty<?> prop) {
-		if ((prop.isRequired()) && (prop.getValue() == null))
+		if ((prop.isRequired()) && (prop.getValue() == null)) {
 			throw new PepperModulePropertyException(
 					"The following property is required, but its value was not set: " + prop);
+		}
 		return (true);
 	}
 
@@ -308,8 +309,9 @@ public class PepperModuleProperties implements Serializable {
 	 * @param property
 	 */
 	public void addProperty(PepperModuleProperty<?> property) {
-		if ((property.getName() == null) || (property.getName().isEmpty()))
+		if ((property.getName() == null) || (property.getName().isEmpty())) {
 			throw new PepperException("Cannot add a property description without a name.");
+		}
 		if (pepperModuleProperties == null) {
 			pepperModuleProperties = new HashMap<String, PepperModuleProperty<?>>();
 		}
@@ -412,6 +414,7 @@ public class PepperModuleProperties implements Serializable {
 		return simpleTokSeparators;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("[");

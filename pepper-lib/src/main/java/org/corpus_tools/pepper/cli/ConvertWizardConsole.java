@@ -90,14 +90,14 @@ public class ConvertWizardConsole {
 	private static final String PROMPT = "wizard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
-	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to a corpus you want to import or press enter to skip. When you use a relative path make it relative to:'" + new File("").getAbsolutePath() + "/'. ";
+	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customization, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
+	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make it relative to:'" + new File("").getAbsolutePath() + "/'. ";
 
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
 
@@ -400,9 +400,9 @@ public class ConvertWizardConsole {
 					out.println(legend);
 					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed importer: '" + moduleDesc + "'. \n");
+					out.println("\tchosen importer: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+//					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 
@@ -414,7 +414,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
 						propLegend = null;
@@ -424,10 +424,12 @@ public class ConvertWizardConsole {
 			} else if (state == 2) {
 				// choose properties
 
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
@@ -491,9 +493,9 @@ public class ConvertWizardConsole {
 					out.println(legend);
 					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed manipulator: '" + moduleDesc + "'. \n");
+					out.println("\tchosen manipulator: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+//					pepperJob.addStepDesc(stepDesc);
 
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
@@ -505,7 +507,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
 						propLegend = null;
@@ -513,11 +515,13 @@ public class ConvertWizardConsole {
 					}
 				}
 			} else if (state == 2) {
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 1;
 					prompt = promptOld;
 					out.println(legend);
 					out.println(MSG_MAN);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end while
@@ -616,9 +620,9 @@ public class ConvertWizardConsole {
 					out.println(legend);
 					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed exporter: '" + moduleDesc + "'. \n");
+					out.println("\tchosen exporter: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+//					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 
@@ -630,7 +634,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_EX_CORPUS);
 						propLegend = null;
@@ -640,10 +644,12 @@ public class ConvertWizardConsole {
 			} else if (state == 2) {
 				// choose properties
 
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
@@ -821,7 +827,7 @@ public class ConvertWizardConsole {
 	}
 
 	/**
-	 * Reads a property from the given inpu and returns true, if the input was
+	 * Reads a property from the given input and returns true, if the input was
 	 * not empty and false otherwise.
 	 * 
 	 * @param input
@@ -831,7 +837,7 @@ public class ConvertWizardConsole {
 	 *            added
 	 * @return true if input was not empty
 	 */
-	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc) {
+	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc, PepperJob pepperJob) {
 		if ((input != null) && (!input.isEmpty())) {
 			int eqPosition = StringUtils.indexOf(input, "=");
 			if (eqPosition > 0) {

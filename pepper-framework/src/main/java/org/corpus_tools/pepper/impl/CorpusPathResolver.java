@@ -1,3 +1,20 @@
+/**
+ * Copyright 2009 Humboldt-Universität zu Berlin, INRIA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *
+ */
 package org.corpus_tools.pepper.impl;
 
 import java.io.File;
@@ -165,15 +182,11 @@ public class CorpusPathResolver {
 		if (readFiles.size() >= numOfFiles) {
 			return readFiles;
 		}
-		int numOfReadFiles = 0;
-		if (readFiles != null) {
-			numOfReadFiles = readFiles.size();
-		}
+		int numOfReadFiles = readFiles.size();
 		if (unreadFilesGroupedByExtension == null) {
 			throw new NotInitializedException(
 					"Please call setCorpusPath(URI) first or use other constructor new CorpusPathResolver(URI). ");
 		}
-
 		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(fileEnding);
 		// read files as long as there are files to be read
 		if (unreadFiles != null) {

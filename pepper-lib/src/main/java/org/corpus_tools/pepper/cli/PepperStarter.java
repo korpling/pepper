@@ -1191,6 +1191,7 @@ public class PepperStarter {
 					version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
 					if (version == null) {
 						logger.info(entry.getKey().concat(" not installed. Collecting dependencies for newest version."));
+						break;
 					}
 					boolean isSnapshot = version.contains("SNAPSHOT");
 					retVal.append(connector.printDependencies(val[0], entry.getKey(), version, isSnapshot ? val[1] : val[2])).append(System.lineSeparator()).append(System.lineSeparator());
@@ -1208,6 +1209,7 @@ public class PepperStarter {
 				version = bundle == null ? null : bundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
 				if (version == null) {
 					logger.info(param.concat(" not installed. Collecting dependencies for newest version."));
+					break;
 				}
 				retVal.append(connector.printDependencies(groupId, param, version, version.contains("SNAPSHOT") ? val[1] : val[1])).append(System.lineSeparator());
 			} else if (param.matches("#?[0-9]+")) {

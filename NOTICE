@@ -36,6 +36,7 @@ This project includes:
   Apache HttpCore under Apache License
   Apache HttpCore NIO under Apache License
   Apache HttpCore OSGi bundle under Apache License
+  AssertJ fluent assertions under Apache License, Version 2.0
   carrot-osgi-anno-scr-core under The BSD License
   carrot-osgi-anno-scr-make under The BSD License
   Common Eclipse Runtime under Eclipse Public License - v 1.0
@@ -55,6 +56,7 @@ This project includes:
   Janino under New BSD License
   Java Text Categorizing Library under GNU Lesser General Public License
   JCL 1.1.1 implemented over SLF4J under MIT License
+  JSON in Java under The JSON License
   JUnit under Common Public License Version 1.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
@@ -64,6 +66,7 @@ This project includes:
   Maven Model Builder under Apache License, Version 2.0
   Maven Repository Metadata Model under Apache License, Version 2.0
   Maven Wagon API under The Apache Software License, Version 2.0
+  Mockito under The MIT License
   Neo Visionaries Internationalization Package under The Apache Software License, Version 2.0
   newPepperModule under The Apache Software License, Version 2.0
   org.corpus-tools.pepper under The Apache Software License, Version 2.0
