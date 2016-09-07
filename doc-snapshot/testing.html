@@ -119,7 +119,7 @@ protected void setUp() throws Exception {
 }                
 </pre><p>Since the JUnit framework can not know about the classes to test, you need to set and initialize it as shown on position 1. In case you are implementing an im- or exporter, you need to set the supported formats and versions in your test case. Pepper will check them automatically, but the test environment needs to know the correct pairs of format name and version. Replace FORMAT_NAME and FORMAT_VERSION with your specific ones. You can even add more than one <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_format_desc.html">org.corpus_tools.pepper.common.FormatDesc</a> object.</p>
 <p>The provided test classes emulate the Pepper environment, so that you can run your entire module and just check the in- or output.</p>
-<p>In case that you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a predefined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model: </p><pre class="fragment">    public void someTest(){
+<p>If you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a predefined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model: </p><pre class="fragment">    public void someTest(){
     getFixture().setCorpusDesc(new CorpusDesc().
         setCorpusPath(URI
             .createFileURI(PATH_TO_SAMPLE_CORPUS)));
@@ -128,11 +128,6 @@ protected void setUp() throws Exception {
         .setFormatVersion(FORMAT_VERSION);
 
     //...
-
-    //create an empty corpus graph, which is filled by your module 
-    SCorpusGraph importedSCorpusGraph= SaltFactory.createSCorpusGraph();
-    // add the corpus graph to your module
-    getFixture().getSaltProject().addCorpusGraph(importedSCorpusGraph);
 
     //run your Pepper module
     start();
@@ -146,6 +141,10 @@ protected void setUp() throws Exception {
     assertEquals(X, getFixture().getSaltProject()
         .getCorpusGraphs().get(0).getCorpora().size());
 }
+</pre><p>If your test does <b>not</b> extend <code>PepperModuleTest</code> or either of its sub-classes, you will also have to add an <code>SCorpusGraph</code> to the module's <code>SaltProject</code>: </p><pre class="fragment">//create an empty corpus graph, which is filled by your module 
+SCorpusGraph importedSCorpusGraph= SaltFactory.createSCorpusGraph();
+// add the corpus graph to your module
+getFixture().getSaltProject().addCorpusGraph(importedSCorpusGraph);
 </pre><p>More samples for testing can be found in the automatically generated test classes when using Pepper's archetype for Maven, see <a class="el" href="tutorial.html">Tutorial: Getting started in 10 minutes</a>.</p>
 <p>For testing an exporter, you may want to use Salt's sample generator (org.corpus_tools.salt.samples.SampleGenerator). Here you will find a lot of methods creating a sample Salt model with the possibility to just create the layers, you want to use. For more information, take a look into <a href="https://korpling.github.io/salt/doc/classorg_1_1corpus__tools_1_1salt_1_1samples_1_1_sample_generator.html">Salt's api</a>.</p>
 <p>The class <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html">org.corpus_tools.pepper.testFramework.PepperTestUtil</a> provides some very helpful methods like <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#afd42b52230e9b86df7d14628d1ae7efd">org.corpus_tools.pepper.testFramework.PepperTestUtil.getSrcResources()</a> to get a reference to the resources folder (./src/main/resources) or the method getTestResources to get a reference to the test resource folder (./src/test/resources).</p>
@@ -156,7 +155,7 @@ protected void setUp() throws Exception {
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="moduleDevelopers.html">Pepper module developers</a></li>
-    <li class="footer">Generated on Wed Sep 7 2016 22:20:30 for Pepper by
+    <li class="footer">Generated on Wed Sep 7 2016 22:57:20 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
