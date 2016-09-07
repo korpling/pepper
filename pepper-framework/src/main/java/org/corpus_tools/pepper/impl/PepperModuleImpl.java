@@ -103,6 +103,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public PepperModuleDesc getFingerprint() {
 		if (fingerprint == null) {
 			fingerprint = new PepperModuleDesc();
@@ -324,6 +325,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * 
 	 * @return
 	 */
+	@Override
 	public ComponentContext getComponentContext() {
 		return (this.componentContext);
 	}
@@ -429,6 +431,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public SCorpusGraph getCorpusGraph() {
 		return sCorpusGraph;
 	}
@@ -436,6 +439,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setCorpusGraph(SCorpusGraph newSCorpusGraph) {
 		sCorpusGraph = newSCorpusGraph;
 	}
@@ -477,6 +481,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setIsMultithreaded(boolean isMultithreaded) {
 		this.isMultithreaded = isMultithreaded;
 	}
@@ -484,6 +489,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isMultithreaded() {
 		return (isMultithreaded);
 	}
@@ -632,6 +638,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void done(Identifier id, DOCUMENT_STATUS result) {
 		if (id.getIdentifiableElement() instanceof SDocument) {
 			DocumentController docController = getDocumentId2DC().get(SaltUtil.getGlobalId(id));
@@ -782,6 +789,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {
 		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '"
 				+ this.getName() + "' has not been overridden. Please check that first.");

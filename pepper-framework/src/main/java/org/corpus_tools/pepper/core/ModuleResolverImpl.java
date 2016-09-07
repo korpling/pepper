@@ -730,6 +730,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 	/**
 	 * TODO make docu
 	 */
+	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (pepperImporterComponentFactories: ");

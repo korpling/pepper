@@ -76,6 +76,7 @@ public class Step extends StepDesc {
 	 * If a {@link PepperModule} is set, overrides the set name with the name of
 	 * the {@link PepperModule}.
 	 */
+	@Override
 	public String getName() {
 		if ((getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
 			return (getModuleController().getPepperModule().getName());
@@ -169,6 +170,7 @@ public class Step extends StepDesc {
 	 * 
 	 * @return module type
 	 */
+	@Override
 	public MODULE_TYPE getModuleType() {
 		if ((super.getModuleType() == null) && (getModuleController() != null)
 				&& (getModuleController().getPepperModule() != null)) {
@@ -191,6 +193,7 @@ public class Step extends StepDesc {
 	 * @param props
 	 *            properties to customize processing
 	 */
+	@Override
 	public synchronized Step setProps(Properties props) {
 		if (getModuleController() != null) {
 			getModuleController().getPepperModule().getProperties().setPropertyValues(props);

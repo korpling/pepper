@@ -13,7 +13,7 @@ To set up the tests for the JUnit framework override the method setUp() as shown
     @Before
     protected void setUp() throws Exception {
         //1: setting and initializing of class to test
-        this.setFixture(new MyImporterTest);
+        this.setFixture(new MyImporter());
         //2: adding format information
         this.supportedFormatsCheck.add(new FormatDesc()
             .setFormatName("myFormat")
@@ -41,8 +41,7 @@ In case that you write an importer, you can create an input file containing a co
         //create an empty corpus graph, which is filled by your module 
         SCorpusGraph importedSCorpusGraph= SaltFactory.createSCorpusGraph();
         // add the corpus graph to your module
-        getFixture().getSaltProject().getCorpusGraphs()
-                .add(importedSCorpusGraph);
+        getFixture().getSaltProject().addCorpusGraph(importedSCorpusGraph);
         
         //run your Pepper module
         start();

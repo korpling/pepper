@@ -85,7 +85,6 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 				final SaltProject expected = SaltUtil.loadCompleteSaltProject(expectedCorpusPath);
 				return (SaltUtil.compare(actual).with(expected).andCheckIsomorphie());
 			}
-
 		};
 	}
 

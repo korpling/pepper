@@ -39,6 +39,7 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 	public static final String FORMAT_NAME = "doNothing";
 	public static final String FORMAT_VERSION = "0.0";
 
+	@Override
 	@Activate
 	public void activate(ComponentContext componentContext) {
 		super.activate(componentContext);
