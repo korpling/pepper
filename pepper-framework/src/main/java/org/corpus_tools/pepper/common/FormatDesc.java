@@ -178,7 +178,7 @@ public class FormatDesc {
 	}
 
 	public static class FormatDescBuilder {
-		private FormatDesc formatDesc= new FormatDesc();
+		private FormatDesc formatDesc = new FormatDesc();
 
 		public FormatDescBuilder withName(String formatName) {
 			formatDesc.setFormatName(formatName);
@@ -194,8 +194,8 @@ public class FormatDesc {
 			formatDesc.setFormatReference(formatReference);
 			return this;
 		}
-		
-		public FormatDesc build(){
+
+		public FormatDesc build() {
 			return formatDesc;
 		}
 	}

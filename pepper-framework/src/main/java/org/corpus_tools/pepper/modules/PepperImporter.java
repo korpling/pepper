@@ -359,11 +359,11 @@ public interface PepperImporter extends PepperModule {
 	FormatDesc addSupportedFormat(String formatName, String formatVersion, URI formatReference);
 
 	/**
-	 * This method is called by Pepper and returns if a corpus
-	 * located at the given {@link URI} is importable by this importer. If yes,
-	 * 1 must be returned, if no 0 must be returned. If it is not quite sure, if
-	 * the given corpus is importable by this importer any value between 0 and 1
-	 * can be returned. If this method is not overridden, null is returned.
+	 * This method is called by Pepper and returns if a corpus located at the
+	 * given {@link URI} is importable by this importer. If yes, 1 must be
+	 * returned, if no 0 must be returned. If it is not quite sure, if the given
+	 * corpus is importable by this importer any value between 0 and 1 can be
+	 * returned. If this method is not overridden, null is returned.
 	 * 
 	 * @return 1 if corpus is importable, 0 if corpus is not importable, 0 < X <
 	 *         1, if no definitiv answer is possible, null if method is not

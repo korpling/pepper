@@ -95,7 +95,7 @@ public abstract class PepperImporterTest extends PepperModuleTest {
 		if (formatDesc == null) {
 			fail("Cannot add an empty format description.");
 		}
-		if (supportedFormatsCheck== null){
+		if (supportedFormatsCheck == null) {
 			fail("The internal list supportedFormatsCheck is null.");
 		}
 		supportedFormatsCheck.add(formatDesc);

@@ -49,6 +49,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Strings;
 
 /**
@@ -445,7 +446,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 				String currLocation = module.getComponentContext().getBundleContext().getBundle().getLocation();
 				currLocation = currLocation.replace("initial@reference:file:", "");
 				currLocation = currLocation.replace("../", "");
-				if (currLocation.endsWith("/")){
+				if (currLocation.endsWith("/")) {
 					currLocation = currLocation.substring(0, currLocation.length() - 1);
 				}
 				String location = null;
