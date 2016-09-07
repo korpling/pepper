@@ -75,7 +75,8 @@ public class PepperModulePropertyTest extends TestCase {
 	@Test
 	public void testSetUsingDefault() {
 		String defaultValue = "hello world";
-		PepperModuleProperty<String> prop = new PepperModuleProperty<String>("prop1", String.class, "desc", defaultValue);
+		PepperModuleProperty<String> prop = new PepperModuleProperty<String>("prop1", String.class, "desc",
+				defaultValue);
 		assertEquals(defaultValue, prop.getValue());
 	}
 }

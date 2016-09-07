@@ -85,7 +85,9 @@ public class TerminalDocumentBus extends DocumentBus {
 			ConcurrentLinkedQueue<DocumentController> queue = getDocumentBus().get(outputControllerId);
 
 			if (queue == null)
-				throw new PepperFWException("Document bus '" + getId() + "' cannot pop a document controller, because there is no entry for module controller '" + outputControllerId + "'.");
+				throw new PepperFWException("Document bus '" + getId()
+						+ "' cannot pop a document controller, because there is no entry for module controller '"
+						+ outputControllerId + "'.");
 
 			if ((queue.isEmpty()) && (!this.isFinished())) {
 				if ((queue.isEmpty()) && (!this.isFinished())) {
@@ -98,7 +100,8 @@ public class TerminalDocumentBus extends DocumentBus {
 			documentController = queue.poll();
 			documentController.sendToSleep();
 		} catch (InterruptedException e) {
-			throw new PepperFWException("Something went wrong, when waiting for lock 'waitUntilAllDocumentsArePut'.", e);
+			throw new PepperFWException("Something went wrong, when waiting for lock 'waitUntilAllDocumentsArePut'.",
+					e);
 		} finally {
 			lock.unlock();
 		}

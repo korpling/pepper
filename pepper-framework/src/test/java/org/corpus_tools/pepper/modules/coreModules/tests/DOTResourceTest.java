@@ -273,7 +273,8 @@ public class DOTResourceTest extends TestCase {
 		}
 		StringBuilder contentFile1 = new StringBuilder();
 		StringBuilder contentFile2 = new StringBuilder();
-		try (BufferedReader brFile1 = new BufferedReader(new FileReader(file1)); BufferedReader brFile2 = new BufferedReader(new FileReader(file2));) {
+		try (BufferedReader brFile1 = new BufferedReader(new FileReader(file1));
+				BufferedReader brFile2 = new BufferedReader(new FileReader(file2));) {
 			String line = null;
 			while ((line = brFile1.readLine()) != null) {
 				contentFile1.append(line);

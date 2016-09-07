@@ -118,17 +118,23 @@ public abstract class PepperImporterTest extends PepperModuleTest {
 			assertFalse("The name of the supported formats can't be empty.", formatDef.getFormatName().equals(""));
 
 			assertNotNull("The version of supported formats has to be set.", formatDef.getFormatVersion());
-			assertFalse("The version of the supported formats can't be empty.", formatDef.getFormatVersion().equals(""));
+			assertFalse("The version of the supported formats can't be empty.",
+					formatDef.getFormatVersion().equals(""));
 		}
-		assertTrue("Cannot test the supported formats please set variable 'supportedFormatsCheck'.", this.supportedFormatsCheck.size() > 0);
-		assertEquals("There is a different between the number formats which are supported by module, and the number of formats which shall be supported.", this.supportedFormatsCheck.size(), getFixture().getSupportedFormats().size());
+		assertTrue("Cannot test the supported formats please set variable 'supportedFormatsCheck'.",
+				this.supportedFormatsCheck.size() > 0);
+		assertEquals(
+				"There is a different between the number formats which are supported by module, and the number of formats which shall be supported.",
+				this.supportedFormatsCheck.size(), getFixture().getSupportedFormats().size());
 		for (FormatDesc formatCheck : this.supportedFormatsCheck) {
 			Boolean hasOpponend = false;
 			for (FormatDesc formatDef : getFixture().getSupportedFormats()) {
-				if ((formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName())) && (formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
+				if ((formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName()))
+						&& (formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
 					hasOpponend = true;
 			}
-			assertTrue("The format '" + formatCheck.getFormatName() + " " + formatCheck.getFormatVersion() + "' has to be supported, but does not exist in list of suppoted formats.", hasOpponend);
+			assertTrue("The format '" + formatCheck.getFormatName() + " " + formatCheck.getFormatVersion()
+					+ "' has to be supported, but does not exist in list of suppoted formats.", hasOpponend);
 		}
 	}
 }

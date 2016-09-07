@@ -35,7 +35,6 @@ import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.SaltFactory;
-import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
 import org.corpus_tools.salt.common.SDocumentGraph;
 import org.corpus_tools.salt.graph.Identifier;
@@ -73,7 +72,7 @@ public class RemoveDocumentFromMMTest extends PepperJobImpl {
 	 */
 	@Test
 	public void testDocumentRemoveFromMM() {
-		
+
 		List<SDocument> expectedSDocuments = new Vector<SDocument>();
 		for (int i = 0; i < 30; i++) {
 			SDocument sDoc = SaltFactory.createSDocument();
@@ -100,7 +99,7 @@ public class RemoveDocumentFromMMTest extends PepperJobImpl {
 		}
 		PepperConfiguration conf = new PepperConfiguration();
 		conf.setProperty(PepperConfiguration.PROP_MAX_AMOUNT_OF_SDOCUMENTS, "2");
-		
+
 		getFixture().convert();
 
 		for (SDocument sDoc : expectedSDocuments) {
@@ -117,7 +116,8 @@ public class RemoveDocumentFromMMTest extends PepperJobImpl {
 		public PepperMapper createPepperMapper(Identifier sElementId) {
 			if (sElementId.getIdentifiableElement() instanceof SDocument) {
 				if (((SDocument) sElementId.getIdentifiableElement()).getDocumentGraph() == null) {
-					throw new PepperModuleException(this, "An error in test occured, because the SDocumentGraph was null.");
+					throw new PepperModuleException(this,
+							"An error in test occured, because the SDocumentGraph was null.");
 				}
 			}
 			return (new PepperMapperImpl() {

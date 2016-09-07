@@ -44,7 +44,8 @@ public class PepperImporterImpl_IsImportableTest {
 	@Test
 	public void whenFilesAreSampledForOneImporter_thenReturnXLinesOfFiles() {
 		File corpusPath = new File(getTestResources() + "normalFiles/");
-		Collection<String> sampledFileContent = fixture.sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), "me");
+		Collection<String> sampledFileContent = fixture
+				.sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), "me");
 		assertThat(sampledFileContent).isNotNull();
 		assertThat(sampledFileContent.size()).isEqualTo(2);
 	}
@@ -57,8 +58,10 @@ public class PepperImporterImpl_IsImportableTest {
 		CorpusPathResolver corpusPathResolver = new CorpusPathResolver(URI.createFileURI(corpusPath.getAbsolutePath()));
 		fixture.setCorpusPathResolver(corpusPathResolver);
 		secondImporter.setCorpusPathResolver(corpusPathResolver);
-		Collection<String> sampledFileContent = fixture.sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), "me");
-		Collection<String> sampledFileContent2 = secondImporter.sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), "me");
+		Collection<String> sampledFileContent = fixture
+				.sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), "me");
+		Collection<String> sampledFileContent2 = secondImporter
+				.sampleFileContent(URI.createFileURI(corpusPath.getAbsolutePath()), "me");
 
 		assertThat(sampledFileContent).containsExactly(sampledFileContent2.toArray(new String[0]));
 	}

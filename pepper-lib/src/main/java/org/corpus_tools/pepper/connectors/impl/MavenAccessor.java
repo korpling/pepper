@@ -237,7 +237,8 @@ public class MavenAccessor {
 		repos = new HashMap<String, RemoteRepository>();
 		forbiddenFruits = new HashSet<String>();
 		parentDependencies = new HashMap<String, List<Dependency>>();
-		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath().getAbsolutePath().concat("/local-repo/");
+		PATH_LOCAL_REPO = pepperOSGiConnector.getPepperStarterConfiguration().getTempPath().getAbsolutePath()
+				.concat("/local-repo/");
 		try {
 			File lr = new File(PATH_LOCAL_REPO);
 			if (lr.exists()) {
@@ -303,15 +304,21 @@ public class MavenAccessor {
 				Bundle bundle = null;
 				STATUS status = null;
 				for (Dependency dependency : allDeps) {
-					bundle = pepperOSGiConnector.getBundle(dependency.getArtifact().getGroupId(), dependency.getArtifact().getArtifactId(), null);
-					status = bundle == null || bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true") ? STATUS.FINAL : STATUS.OVERRIDABLE;
-					forbiddenFruits.add(dependency.getArtifact().toString().concat(DELIMITER).concat(status.toString()).concat(DELIMITER).concat(bundle == null ? "" : bundle.getSymbolicName()));
+					bundle = pepperOSGiConnector.getBundle(dependency.getArtifact().getGroupId(),
+							dependency.getArtifact().getArtifactId(), null);
+					status = bundle == null
+							|| bundle.getHeaders().get("Bundle-SymbolicName").contains("singleton:=true") ? STATUS.FINAL
+									: STATUS.OVERRIDABLE;
+					forbiddenFruits.add(dependency.getArtifact().toString().concat(DELIMITER).concat(status.toString())
+							.concat(DELIMITER).concat(bundle == null ? "" : bundle.getSymbolicName()));
 				}
 				write2Blacklist();
 				collectResult = null;
 
 			} catch (DependencyCollectionException e) {
-				logger.warn("An error occured initializing the update mechanism. Please check your internet connection.", e);
+				logger.warn(
+						"An error occured initializing the update mechanism. Please check your internet connection.",
+						e);
 				return false;
 			}
 			session = null;
@@ -339,10 +346,12 @@ public class MavenAccessor {
 		DependencySelector depFilter = new AndDependencySelector(
 				new ScopeDependencySelector("test", "Test"/*
 															 * , "provided"
-															 */), new OptionalDependencySelector(), new ExclusionDependencySelector());
+															 */), new OptionalDependencySelector(),
+				new ExclusionDependencySelector());
 		session.setDependencySelector(depFilter);
 
-		DependencyGraphTransformer transformer = new ConflictResolver(new NearestVersionSelector(), new JavaScopeSelector(), new SimpleOptionalitySelector(), new JavaScopeDeriver());
+		DependencyGraphTransformer transformer = new ConflictResolver(new NearestVersionSelector(),
+				new JavaScopeSelector(), new SimpleOptionalitySelector(), new JavaScopeDeriver());
 		// TODO this was uncommented because of a findbugs warning, check if
 		// this line is essential
 		// new ChainedDependencyGraphTransformer(transformer, new
@@ -388,14 +397,17 @@ public class MavenAccessor {
 	 * This method checks the provided pepper plugin for updates and triggers
 	 * the installation process if a newer version is available
 	 */
-	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion, Bundle installedBundle) {
+	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot,
+			boolean ignoreFrameworkVersion, Bundle installedBundle) {
 		if (forbiddenFruits.isEmpty() && !initDependencies()) {
 			logger.warn("Update could not be performed, because the pepper dependencies could not be listed.");
 			return false;
 		}
 
 		if (logger.isTraceEnabled()) {
-			logger.trace("Starting update process for " + groupId + ", " + artifactId + ", " + repositoryUrl + ", isSnapshot=" + isSnapshot + ", ignoreFrameworkVersion=" + ignoreFrameworkVersion + ", installedBundle=" + installedBundle);
+			logger.trace("Starting update process for " + groupId + ", " + artifactId + ", " + repositoryUrl
+					+ ", isSnapshot=" + isSnapshot + ", ignoreFrameworkVersion=" + ignoreFrameworkVersion
+					+ ", installedBundle=" + installedBundle);
 		} else {
 			logger.info("Starting update process for " + artifactId);
 		}
@@ -434,7 +446,8 @@ public class MavenAccessor {
 			Iterator<Version> itVersions = versions.iterator();
 			VersionScheme vScheme = new GenericVersionScheme();
 			boolean srcExists = false;
-			Version installedVersion = installedBundle == null ? vScheme.parseVersion("0.0.0") : vScheme.parseVersion(installedBundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT"));
+			Version installedVersion = installedBundle == null ? vScheme.parseVersion("0.0.0")
+					: vScheme.parseVersion(installedBundle.getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT"));
 			Version newestVersion = null;
 
 			/*
@@ -455,7 +468,8 @@ public class MavenAccessor {
 						file = artifact.getFile();
 
 					} catch (ArtifactResolutionException e) {
-						logger.warn("Plugin version " + newestVersion + " could not be found in repository. Checking the next lower version ...");
+						logger.warn("Plugin version " + newestVersion
+								+ " could not be found in repository. Checking the next lower version ...");
 					}
 				}
 			}
@@ -467,7 +481,8 @@ public class MavenAccessor {
 			 */
 			if (update) {
 				/* create list of necessary repositories */
-				Artifact pom = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId(), "pom", artifact.getVersion());
+				Artifact pom = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId(), "pom",
+						artifact.getVersion());
 				artifactRequest.setArtifact(pom);
 				boolean pomReadingErrors = false;
 				try {
@@ -482,13 +497,15 @@ public class MavenAccessor {
 				if (artifactResult != null && artifactResult.getArtifact().getFile().exists()) {
 					try {
 						SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-						saxParser.parse(artifactResult.getArtifact().getFile().getAbsolutePath(), new POMReader(repoList));
+						saxParser.parse(artifactResult.getArtifact().getFile().getAbsolutePath(),
+								new POMReader(repoList));
 					} catch (SAXException | IOException | ParserConfigurationException e) {
 						pomReadingErrors = true;
 					}
 				}
 				if (pomReadingErrors) {
-					logger.warn("Could not determine all relevant repositories, update might fail. Trying to continue ...");
+					logger.warn(
+							"Could not determine all relevant repositories, update might fail. Trying to continue ...");
 					repoList.add(repos.get(KORPLING_MAVEN_REPO));
 				}
 
@@ -500,7 +517,9 @@ public class MavenAccessor {
 							return false;
 						}
 					} catch (BundleException | IOException e) {
-						logger.warn("An error occured while trying to remove OSGi bundle " + installedBundle.getSymbolicName() + ". This may cause update problems. Trying to continue ...");
+						logger.warn("An error occured while trying to remove OSGi bundle "
+								+ installedBundle.getSymbolicName()
+								+ ". This may cause update problems. Trying to continue ...");
 					}
 				}
 
@@ -527,12 +546,19 @@ public class MavenAccessor {
 					}
 				}
 				if (parentVersion == null) {
-					logger.warn(artifactId + ": Could not perform update: pepper-parent version could not be determined.");
+					logger.warn(
+							artifactId + ": Could not perform update: pepper-parent version could not be determined.");
 					return false;
 				}
 				VersionRange range = isCompatiblePlugin(parentVersion);
 				if (!ignoreFrameworkVersion && range != null) {
-					logger.info((new StringBuilder()).append("No update was performed because of a version incompatibility according to pepper-framework: ").append(newLine).append(artifactId).append(" only supports ").append(range.toString()).append(", but ").append(pepperOSGiConnector.getFrameworkVersion()).append(" is installed!").append(newLine).append("You can make pepper ignore this by using \"update").append(isSnapshot ? " snapshot " : " ").append("iv ").append(artifactId).append("\"").toString());
+					logger.info((new StringBuilder())
+							.append("No update was performed because of a version incompatibility according to pepper-framework: ")
+							.append(newLine).append(artifactId).append(" only supports ").append(range.toString())
+							.append(", but ").append(pepperOSGiConnector.getFrameworkVersion()).append(" is installed!")
+							.append(newLine).append("You can make pepper ignore this by using \"update")
+							.append(isSnapshot ? " snapshot " : " ").append("iv ").append(artifactId).append("\"")
+							.toString());
 					return false;
 				}
 				allDependencies = cleanDependencies(allDependencies, session, parentVersion);
@@ -550,9 +576,14 @@ public class MavenAccessor {
 							artifactResult = mvnSystem.resolveArtifact(session, artifactRequest);
 							installArtifacts.add(artifactResult.getArtifact());
 						} catch (ArtifactResolutionException e) {
-							logger.warn("Artifact " + dependency.getArtifact().getArtifactId() + " could not be resolved. Dependency will not be installed.");
-							if (!Boolean.parseBoolean(pepperOSGiConnector.getPepperStarterConfiguration().getProperty("pepper.forceUpdate").toString())) {
-								logger.error("Artifact ".concat(artifact.getArtifactId()).concat(" will not be installed. Resolution of dependency ").concat(dependency.getArtifact().getArtifactId()).concat(" failed and \"force update\" is disabled in pepper.properties."));
+							logger.warn("Artifact " + dependency.getArtifact().getArtifactId()
+									+ " could not be resolved. Dependency will not be installed.");
+							if (!Boolean.parseBoolean(pepperOSGiConnector.getPepperStarterConfiguration()
+									.getProperty("pepper.forceUpdate").toString())) {
+								logger.error("Artifact ".concat(artifact.getArtifactId())
+										.concat(" will not be installed. Resolution of dependency ")
+										.concat(dependency.getArtifact().getArtifactId())
+										.concat(" failed and \"force update\" is disabled in pepper.properties."));
 								return false;
 							}
 						}
@@ -570,14 +601,16 @@ public class MavenAccessor {
 							putOnBlacklist(installArtifact);
 						} else if (installedBundle != null) {
 							pepperOSGiConnector.remove(installedBundle.getSymbolicName());
-							logger.info("Successfully removed version ".concat(installedBundle.getVersion().toString()).concat(" of ").concat(artifactId));
+							logger.info("Successfully removed version ".concat(installedBundle.getVersion().toString())
+									.concat(" of ").concat(artifactId));
 						}
 						if (bundle != null) {
 							bundle.start();
 						}
 					} catch (IOException | BundleException e) {
 						if (logger.isTraceEnabled()) {
-							logger.trace("File could not be installed: " + installArtifact + " (" + installArtifact.getFile() + "); " + e.getClass().getSimpleName());
+							logger.trace("File could not be installed: " + installArtifact + " ("
+									+ installArtifact.getFile() + "); " + e.getClass().getSimpleName());
 						} else {
 							logger.warn("File could not be installed: " + installArtifact.getFile());
 						}
@@ -598,7 +631,8 @@ public class MavenAccessor {
 			} else {
 				logger.info("No (newer) version of " + artifactId + " could be found.");
 			}
-		} catch (VersionRangeResolutionException | InvalidVersionSpecificationException | DependencyCollectionException e) {
+		} catch (VersionRangeResolutionException | InvalidVersionSpecificationException
+				| DependencyCollectionException e) {
 			if (e instanceof DependencyCollectionException) {
 				Throwable t = e.getCause();
 				while (t.getCause() != null) {
@@ -616,7 +650,8 @@ public class MavenAccessor {
 					}
 				}
 				if (t instanceof HttpResponseException) {
-					logger.error("Dependency resolution failed!" + System.lineSeparator() + "\tUnsatisfying http response: " + t.getMessage());
+					logger.error("Dependency resolution failed!" + System.lineSeparator()
+							+ "\tUnsatisfying http response: " + t.getMessage());
 				}
 			}
 			update = false;
@@ -628,17 +663,20 @@ public class MavenAccessor {
 		VersionScheme vScheme = new GenericVersionScheme();
 		Version frameworkVersion;
 		try {
-			frameworkVersion = vScheme.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "-SNAPSHOT"));
+			frameworkVersion = vScheme
+					.parseVersion(pepperOSGiConnector.getFrameworkVersion().replace(".SNAPSHOT", "-SNAPSHOT"));
 			final Version depParentVersion = vScheme.parseVersion(pluginFrameworkVersion);
 			int m = 1 + Integer.parseInt(depParentVersion.toString().split("\\.")[0]);
 			final Version maxVersion = vScheme.parseVersion(m + ".0.0");
-			String rangeString = "[".concat(pluginFrameworkVersion).concat(",").concat(maxVersion.toString()).concat(")");
+			String rangeString = "[".concat(pluginFrameworkVersion).concat(",").concat(maxVersion.toString())
+					.concat(")");
 			VersionRange range = vScheme.parseVersionRange(rangeString);
 			if (!range.containsVersion(frameworkVersion)) {
 				return range;
 			}
 		} catch (InvalidVersionSpecificationException e) {
-			logger.error("Could not compare required framework version to running framework. Trying to perform update anyway...");
+			logger.error(
+					"Could not compare required framework version to running framework. Trying to perform update anyway...");
 		}
 		return null;
 	}
@@ -666,7 +704,7 @@ public class MavenAccessor {
 				} else {// dependency not installed yet or not singleton
 					if ("provided".equalsIgnoreCase(startNode.getDependency().getScope())) {
 						putOnBlacklist(node.getArtifact());
-						return Collections.<Dependency> emptyList();
+						return Collections.<Dependency>emptyList();
 					} else {
 						retVal.addAll(getAllDependencies(node, skipFramework));
 					}
@@ -685,8 +723,10 @@ public class MavenAccessor {
 													// use of this method, etc)
 													// we do the check
 			Bundle bundle = pepperOSGiConnector.getBundle(artifact.getGroupId(), artifact.getArtifactId(), null);
-			STATUS status = bundle == null || !pepperOSGiConnector.isSingleton(bundle) ? STATUS.OVERRIDABLE : STATUS.FINAL;
-			forbiddenFruits.add(artifact.toString().concat(DELIMITER).concat(status.toString()).concat(DELIMITER).concat(bundle == null ? "" : bundle.getSymbolicName()));
+			STATUS status = bundle == null || !pepperOSGiConnector.isSingleton(bundle) ? STATUS.OVERRIDABLE
+					: STATUS.FINAL;
+			forbiddenFruits.add(artifact.toString().concat(DELIMITER).concat(status.toString()).concat(DELIMITER)
+					.concat(bundle == null ? "" : bundle.getSymbolicName()));
 			logger.debug("Put dependency on blacklist: ".concat(artifact.toString()));
 		}
 	}
@@ -758,13 +798,15 @@ public class MavenAccessor {
 	 * @param parentVersion
 	 * @return
 	 */
-	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session, String parentVersion) {
+	private List<Dependency> cleanDependencies(List<Dependency> dependencies, RepositorySystemSession session,
+			String parentVersion) {
 		try {
 			final List<Dependency> parentDeps;
 			List<Dependency> checkList = parentDependencies.get(parentVersion.replace("-SNAPSHOT", ""));
 			if (checkList == null) {
 				CollectRequest collectRequest = new CollectRequest();
-				collectRequest.setRoot(new Dependency(new DefaultArtifact(GROUP_ID_PEPPER, ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), ""));
+				collectRequest.setRoot(new Dependency(
+						new DefaultArtifact(GROUP_ID_PEPPER, ARTIFACT_ID_PEPPER_PARENT, "pom", parentVersion), ""));
 				collectRequest.addRepository(repos.get(CENTRAL_REPO));
 				collectRequest.addRepository(repos.get(KORPLING_MAVEN_REPO));
 				CollectResult collectResult;
@@ -787,14 +829,18 @@ public class MavenAccessor {
 				j = 0;
 				next = dependencies.get(i);
 				status = getDependencyStatus(next.toString());
-				while (j < parentDeps.size() && !(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId()) || STATUS.OVERRIDABLE.equals(status))) {
+				while (j < parentDeps.size()
+						&& !(next.getArtifact().getArtifactId().equals(parentDeps.get(j).getArtifact().getArtifactId())
+								|| STATUS.OVERRIDABLE.equals(status))) {
 					j++;
 				}
 				if (j == parentDeps.size() || STATUS.OVERRIDABLE.equals(status)) {
 					newDeps.add(next);
 				} else {
 					forbiddenFruits.add(next.getArtifact().toString() + DELIMITER + STATUS.FINAL);
-					logger.debug("The following dependency was put on blacklist, because it equals a parent dependency: " + next.getArtifact().toString());
+					logger.debug(
+							"The following dependency was put on blacklist, because it equals a parent dependency: "
+									+ next.getArtifact().toString());
 				}
 			}
 			return newDeps;
@@ -899,7 +945,8 @@ public class MavenAccessor {
 		// d +=
 		// startNode.getArtifact().toString().concat("
 		// (").concat(startNode.getDependency().getScope()).concat(")");
-		dep.append(startNode.getArtifact().toString().concat(" (").concat(startNode.getDependency().getScope()).concat(")"));
+		dep.append(startNode.getArtifact().toString().concat(" (").concat(startNode.getDependency().getScope())
+				.concat(")"));
 		for (DependencyNode node : startNode.getChildren()) {
 			// d += System.lineSeparator().concat(getDependencyPrint(node, depth
 			// + 1));
@@ -923,7 +970,9 @@ public class MavenAccessor {
 		}
 		// maven coordinates could not be determined, assume, we talk about a
 		// pepper plugin:
-		return printDependencies(bundle.getSymbolicName().substring(0, bundle.getSymbolicName().lastIndexOf('.')), bundle.getSymbolicName().substring(bundle.getSymbolicName().lastIndexOf('.') + 1), bundle.getVersion().toString(), KORPLING_MAVEN_REPO);
+		return printDependencies(bundle.getSymbolicName().substring(0, bundle.getSymbolicName().lastIndexOf('.')),
+				bundle.getSymbolicName().substring(bundle.getSymbolicName().lastIndexOf('.') + 1),
+				bundle.getVersion().toString(), KORPLING_MAVEN_REPO);
 	}
 
 	private static class MavenRepositoryListener extends AbstractRepositoryListener {
@@ -950,7 +999,8 @@ public class MavenAccessor {
 		@Override
 		public void artifactDescriptorInvalid(RepositoryEvent event) {
 			if (TRACE) {
-				logger.trace("Invalid artifact descriptor for " + event.getArtifact() + ": " + event.getException().getMessage());
+				logger.trace("Invalid artifact descriptor for " + event.getArtifact() + ": "
+						+ event.getException().getMessage());
 			}
 		}
 
@@ -1065,7 +1115,8 @@ public class MavenAccessor {
 			String message = event.getRequestType() == TransferEvent.RequestType.PUT ? "Uploading" : "Downloading";
 
 			if (TRACE) {
-				logger.trace(message + ": " + event.getResource().getRepositoryUrl() + event.getResource().getResourceName());
+				logger.trace(message + ": " + event.getResource().getRepositoryUrl()
+						+ event.getResource().getResourceName());
 			}
 		}
 
@@ -1093,7 +1144,8 @@ public class MavenAccessor {
 						throughput = " at " + format.format(kbPerSec) + " KB/sec";
 					}
 
-					logger.trace(type + ": " + resource.getRepositoryUrl() + resource.getResourceName() + " (" + len + throughput + ")");
+					logger.trace(type + ": " + resource.getRepositoryUrl() + resource.getResourceName() + " (" + len
+							+ throughput + ")");
 				}
 			}
 		}
@@ -1166,7 +1218,8 @@ public class MavenAccessor {
 
 		@Override
 		public void characters(char[] ch, int start, int length) throws SAXException {
-			if (read && ROOT_TAG.equals(ppparent) && TAG_REPOSITORIES.equals(pparent) && TAG_REPOSITORY.equals(parent) && (TAG_ID.equals(currTag) || TAG_URL.equals(currTag))) {
+			if (read && ROOT_TAG.equals(ppparent) && TAG_REPOSITORIES.equals(pparent) && TAG_REPOSITORY.equals(parent)
+					&& (TAG_ID.equals(currTag) || TAG_URL.equals(currTag))) {
 				for (int i = start; i < start + length; i++) {
 					chars.append(ch[i]);
 				}
@@ -1177,12 +1230,14 @@ public class MavenAccessor {
 		public void endElement(java.lang.String uri, String localName, String qName) throws SAXException {
 			if (read) {
 				localName = qName.substring(qName.lastIndexOf(":") + 1);
-				boolean constraint = ROOT_TAG.equals(ppparent) && TAG_REPOSITORIES.equals(pparent) && TAG_REPOSITORY.equals(parent);
+				boolean constraint = ROOT_TAG.equals(ppparent) && TAG_REPOSITORIES.equals(pparent)
+						&& TAG_REPOSITORY.equals(parent);
 				if (constraint && TAG_URL.equals(localName)) {
 					url = chars.toString();
 				} else if (constraint && TAG_ID.equals(localName)) {
 					id = chars.toString();
-				} else if (ROOT_TAG.equals(pparent) && TAG_REPOSITORIES.equals(parent) && TAG_REPOSITORY.equals(localName)) {
+				} else if (ROOT_TAG.equals(pparent) && TAG_REPOSITORIES.equals(parent)
+						&& TAG_REPOSITORY.equals(localName)) {
 					resultsList.add(getRepo(id, url));
 				} else if (ROOT_TAG.equals(parent) && TAG_REPOSITORIES.equals(localName)) {
 					read = false;

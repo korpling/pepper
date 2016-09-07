@@ -40,7 +40,8 @@ import org.corpus_tools.salt.common.SDocument;
  * @author Florian Zipser
  */
 public enum DOCUMENT_STATUS {
-	NOT_STARTED(0, "NOT_STARTED"), IN_PROGRESS(1, "IN_PROGRESS"), COMPLETED(2, "COMPLETED"), DELETED(3, "DELETED"), FAILED(4, "FAILED");
+	NOT_STARTED(0, "NOT_STARTED"), IN_PROGRESS(1, "IN_PROGRESS"), COMPLETED(2, "COMPLETED"), DELETED(3,
+			"DELETED"), FAILED(4, "FAILED");
 
 	/** represents the level of the type */
 	private final int value;

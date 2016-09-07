@@ -36,7 +36,6 @@ import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
-import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.impl.CorpusPathResolver;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
@@ -84,7 +83,8 @@ public class PepperImpl implements Pepper {
 			throw new FileNotFoundException("Cannot find importers for corpus path, because corpus path is null.  ");
 		}
 		if (getModuleResolver() == null) {
-			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath + "', because the module resolver is null. ");
+			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath
+					+ "', because the module resolver is null. ");
 		}
 
 		final Set<String> retVal = new HashSet<>();
@@ -95,7 +95,7 @@ public class PepperImpl implements Pepper {
 				((PepperImporterImpl) importer).setCorpusPathResolver(corpusPathResolver);
 			}
 			final Double rate = importer.isImportable(corpusPath);
-			if (rate!= null && rate > 0) {
+			if (rate != null && rate > 0) {
 				retVal.add(importer.getName());
 			}
 		}

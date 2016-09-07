@@ -152,8 +152,7 @@ public interface PepperMapperController extends Runnable {
 	public void setPepperModule(PepperModule pepperModule);
 
 	/**
-	 * {@inheritDoc
-	 * PepperJobImpl#getPermissionForProcessDoument(DocumentController)}
+	 * {@inheritDoc PepperJobImpl#getPermissionForProcessDoument(DocumentController)}
 	 **/
 	public boolean getPermissionForProcessDoument(DocumentController controller);
 }

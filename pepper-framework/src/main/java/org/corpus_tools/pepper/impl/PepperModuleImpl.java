@@ -344,7 +344,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Activate
 	protected void activate(ComponentContext componentContext) {
 		this.componentContext = componentContext;
-		if ((componentContext != null) && (componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null)) {
+		if ((componentContext != null) && (componentContext.getBundleContext() != null)
+				&& (componentContext.getBundleContext().getBundle() != null)) {
 			this.setSymbolicName(componentContext.getBundleContext().getBundle().getSymbolicName());
 			this.setVersion(componentContext.getBundleContext().getBundle().getVersion().toString());
 		}
@@ -412,8 +413,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	}
 
 	/**
-	 * {@inheritDoc
-	 * PepperModule#setPepperModuleController_basic(ModuleController)}
+	 * {@inheritDoc PepperModule#setPepperModuleController_basic(ModuleController)}
 	 */
 	@Override
 	public void setPepperModuleController_basic(ModuleController newModuleController) {
@@ -591,7 +591,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				controller.join();
 				alreadyWaitedFor.add(controller);
 			} catch (InterruptedException e) {
-				throw new PepperFWException("Cannot wait for mapper thread '" + controller + "' in " + this.getName() + " to end. ", e);
+				throw new PepperFWException(
+						"Cannot wait for mapper thread '" + controller + "' in " + this.getName() + " to end. ", e);
 			}
 		}
 		this.end();
@@ -601,7 +602,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 				try {
 					controller.join();
 				} catch (InterruptedException e) {
-					throw new PepperFWException("Cannot wait for mapper thread '" + controller + "' in " + this.getName() + " to end. ", e);
+					throw new PepperFWException(
+							"Cannot wait for mapper thread '" + controller + "' in " + this.getName() + " to end. ", e);
 				}
 				this.done(controller);
 			}
@@ -633,17 +635,26 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		if (id.getIdentifiableElement() instanceof SDocument) {
 			DocumentController docController = getDocumentId2DC().get(SaltUtil.getGlobalId(id));
 			if (docController == null) {
-				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a " + DocumentController.class.getSimpleName() + " object corresponding to " + SDocument.class.getSimpleName() + " '" + SaltUtil.getGlobalId(id) + "' to pass status '" + result + "'. Controllers are listed for the following Identifier objects: " + getDocumentId2DC() + ". ");
+				throw new PepperFWException("Error in '" + getName() + "'. Cannot find a "
+						+ DocumentController.class.getSimpleName() + " object corresponding to "
+						+ SDocument.class.getSimpleName() + " '" + SaltUtil.getGlobalId(id) + "' to pass status '"
+						+ result + "'. Controllers are listed for the following Identifier objects: "
+						+ getDocumentId2DC() + ". ");
 			}
 			if (DOCUMENT_STATUS.DELETED.equals(result)) {
 				this.getModuleController().delete(docController);
 			} else if (DOCUMENT_STATUS.COMPLETED.equals(result)) {
 				this.getModuleController().complete(docController);
 			} else if (DOCUMENT_STATUS.FAILED.equals(result)) {
-				logger.error("Cannot map '" + SaltUtil.getGlobalId(id) + "' with module '" + this.getName() + "', because of a mapping result was '" + DOCUMENT_STATUS.FAILED + "'.");
+				logger.error("Cannot map '" + SaltUtil.getGlobalId(id) + "' with module '" + this.getName()
+						+ "', because of a mapping result was '" + DOCUMENT_STATUS.FAILED + "'.");
 				this.getModuleController().delete(docController);
 			} else
-				throw new PepperModuleException(this, "Cannot notify pepper framework for process of Identifier '" + id.getId() + "', because the mapping result was '" + result + "', and only '" + DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.FAILED + "' and '" + DOCUMENT_STATUS.DELETED + "' is permitted.");
+				throw new PepperModuleException(this,
+						"Cannot notify pepper framework for process of Identifier '" + id.getId()
+								+ "', because the mapping result was '" + result + "', and only '"
+								+ DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.FAILED + "' and '"
+								+ DOCUMENT_STATUS.DELETED + "' is permitted.");
 		}
 	}
 
@@ -653,7 +664,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	@Override
 	public void done(PepperMapperController controller) {
 		if (controller == null)
-			throw new PepperFWException("This might be a bug of Pepper framework. The given PepperMapperController is null in methode done().");
+			throw new PepperFWException(
+					"This might be a bug of Pepper framework. The given PepperMapperController is null in methode done().");
 		if (controller.getMappingSubjects() != null) {
 			for (MappingSubject subject : controller.getMappingSubjects()) {
 				String globalId = SaltUtil.getGlobalId(subject.getIdentifier());
@@ -697,8 +709,10 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			if (sCorpusGraph != null) {
 				if (MODULE_TYPE.IMPORTER.equals(getModuleType())) {
 					boolean belongsToSetCorpusGraph = false;
-					if ((sCorpusGraph.getIdentifier() != null) && (((PepperImporter) this).getCorpusGraph() != null) && (((PepperImporter) this).getCorpusGraph().getIdentifier() != null)) {
-						if (sCorpusGraph.getIdentifier().equals(((PepperImporter) this).getCorpusGraph().getIdentifier())) {
+					if ((sCorpusGraph.getIdentifier() != null) && (((PepperImporter) this).getCorpusGraph() != null)
+							&& (((PepperImporter) this).getCorpusGraph().getIdentifier() != null)) {
+						if (sCorpusGraph.getIdentifier()
+								.equals(((PepperImporter) this).getCorpusGraph().getIdentifier())) {
 							belongsToSetCorpusGraph = true;
 						}
 					} else {
@@ -723,10 +737,13 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			}
 		}
 
-		if ((sElementId != null) && (sElementId.getIdentifiableElement() != null) && ((sElementId.getIdentifiableElement() instanceof SDocument) || ((sElementId.getIdentifiableElement() instanceof SCorpus)))) {
+		if ((sElementId != null) && (sElementId.getIdentifiableElement() != null)
+				&& ((sElementId.getIdentifiableElement() instanceof SDocument)
+						|| ((sElementId.getIdentifiableElement() instanceof SCorpus)))) {
 			// only if given sElementId belongs to an object of type SDocument
 			// or SCorpus
-			PepperMapperController controller = new PepperMapperControllerImpl(mapperThreadGroup, this.getName() + "_mapper(" + sElementId.getId() + ")");
+			PepperMapperController controller = new PepperMapperControllerImpl(mapperThreadGroup,
+					this.getName() + "_mapper(" + sElementId.getId() + ")");
 
 			String id = sElementId.getId();
 			if (sElementId.getIdentifiableElement() instanceof SDocument) {
@@ -765,7 +782,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	public PepperMapper createPepperMapper(Identifier sElementId) {
-		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '" + this.getName() + "' has not been overridden. Please check that first.");
+		throw new NotInitializedException("Cannot start mapping, because the method createPepperMapper() of module '"
+				+ this.getName() + "' has not been overridden. Please check that first.");
 	}
 
 	// /**
@@ -1038,7 +1056,9 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 		// < pepper 1.1.6
 		// if (controller== null)
 		// throw new
-		// PepperFWException("Cannot return the progress for sDocumentId '"+sDocumentId+"', because no mapper controller exists. This might be a bug.");
+		// PepperFWException("Cannot return the progress for sDocumentId
+		// '"+sDocumentId+"', because no mapper controller exists. This might be
+		// a bug.");
 		if (controller != null) {
 			return (controller.getProgress());
 		} else {
@@ -1051,7 +1071,8 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 */
 	@Override
 	public Double getProgress() {
-		Collection<PepperMapperController> controllers = Collections.synchronizedCollection(this.getMapperControllers().values());
+		Collection<PepperMapperController> controllers = Collections
+				.synchronizedCollection(this.getMapperControllers().values());
 		Double progress = 0d;
 		// walk through all controllers to aggregate progresses
 		if ((controllers != null) && (controllers.size() > 0)) {

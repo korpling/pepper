@@ -163,10 +163,12 @@ public class DocumentControllerImpl implements DocumentController {
 	 */
 	protected void sleep() {
 		if (getDocument() == null) {
-			throw new PepperFWException("Cannot send document to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
+			throw new PepperFWException(
+					"Cannot send document to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
 		if (getLocation() == null) {
-			throw new PepperFWException("Cannot send document to sleep, since no location to store document '" + getDocumentId() + "' is set.");
+			throw new PepperFWException("Cannot send document to sleep, since no location to store document '"
+					+ getDocumentId() + "' is set.");
 		}
 		sleepLock.lock();
 		try {
@@ -204,7 +206,8 @@ public class DocumentControllerImpl implements DocumentController {
 	@Override
 	public void awake() {
 		if (getDocument() == null) {
-			throw new PepperFWException("Cannot send document to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
+			throw new PepperFWException(
+					"Cannot send document to sleep, since no " + SDocument.class.getSimpleName() + " is set.");
 		}
 		sleepLock.lock();
 		try {
@@ -212,7 +215,8 @@ public class DocumentControllerImpl implements DocumentController {
 			aSleep = false;
 			logger.debug("[Pepper] woke up document '{}'. ", SaltUtil.getGlobalId(getDocumentId()));
 		} catch (Exception e) {
-			throw new PepperFWException("Cannot awake the document '" + getDocumentId().getId() + "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
+			throw new PepperFWException("Cannot awake the document '" + getDocumentId().getId()
+					+ "', because an exception occured, loading it from location '" + getLocation() + "'. ", e);
 		} finally {
 			sleepLock.unlock();
 		}
@@ -260,7 +264,8 @@ public class DocumentControllerImpl implements DocumentController {
 	@Override
 	public synchronized void addModuleControllers(ModuleControllerImpl moduleController) {
 		if (isStarted)
-			throw new PepperFWException("Cannot add any further module controllers, since the processing of document '" + getGlobalId() + "' has already been started.");
+			throw new PepperFWException("Cannot add any further module controllers, since the processing of document '"
+					+ getGlobalId() + "' has already been started.");
 		getModuleControllers().add(moduleController);
 		getDetailedStatuses().put(moduleController.getId(), new DetailedStatus());
 	}
@@ -286,7 +291,8 @@ public class DocumentControllerImpl implements DocumentController {
 		public synchronized void setStatus(DOCUMENT_STATUS status) {
 			if (DOCUMENT_STATUS.IN_PROGRESS.equals(status)) {
 				startTime = System.nanoTime();
-			} else if ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status)) || (DOCUMENT_STATUS.DELETED.equals(status))) {
+			} else if ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status))
+					|| (DOCUMENT_STATUS.DELETED.equals(status))) {
 				processingTime = (System.nanoTime() - startTime) / 1000000;
 			}
 			this.status = status;
@@ -357,29 +363,40 @@ public class DocumentControllerImpl implements DocumentController {
 	@Override
 	public void updateStatus(ModuleController moduleController, DOCUMENT_STATUS status) {
 		if (moduleController == null) {
-			throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the given identifier for module conttroller is empty.");
+			throw new PepperFWException("Can not update status for document '" + getGlobalId()
+					+ "', because the given identifier for module conttroller is empty.");
 		}
 		if (status == null) {
-			throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the passed status is null.");
+			throw new PepperFWException(
+					"Can not update status for document '" + getGlobalId() + "', because the passed status is null.");
 		}
 		synchronized (moduleController) {
 			DetailedStatus detailedStatus = getDetailedStatuses().get(moduleController.getId());
 			if (detailedStatus == null)
-				throw new PepperFWException("Can not update status for document '" + getGlobalId() + "', because the passed identifier for module controller '" + moduleController.getId() + "' is not registered.");
+				throw new PepperFWException("Can not update status for document '" + getGlobalId()
+						+ "', because the passed identifier for module controller '" + moduleController.getId()
+						+ "' is not registered.");
 			isStarted = true;
-			if ((DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus())) && (DOCUMENT_STATUS.IN_PROGRESS.equals(status))) {
+			if ((DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus()))
+					&& (DOCUMENT_STATUS.IN_PROGRESS.equals(status))) {
 				numberOfProcessingModules++;
 				detailedStatus.setStatus(status);
 				currentModuleController = moduleController;
-			} else if ((DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) && ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status)) || (DOCUMENT_STATUS.DELETED.equals(status)))) {
+			} else if ((DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus()))
+					&& ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status))
+							|| (DOCUMENT_STATUS.DELETED.equals(status)))) {
 				numberOfProcessingModules--;
 				if (getNumOfProcessingModules() < 0) {
-					throw new PepperFWException("The number of " + PepperModule.class.getSimpleName() + " for this " + DocumentControllerImpl.class.getSimpleName() + " object '" + getGlobalId() + "' was set to a value less than 0.");
+					throw new PepperFWException("The number of " + PepperModule.class.getSimpleName() + " for this "
+							+ DocumentControllerImpl.class.getSimpleName() + " object '" + getGlobalId()
+							+ "' was set to a value less than 0.");
 				}
 				currentModuleController = null;
 				detailedStatus.setStatus(status);
 			} else {
-				throw new PepperFWException("Cannot update status of document '" + getGlobalId() + "' for module controller '" + moduleController + "', because the level of current status '" + detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
+				throw new PepperFWException("Cannot update status of document '" + getGlobalId()
+						+ "' for module controller '" + moduleController + "', because the level of current status '"
+						+ detailedStatus.getStatus() + "' is higher or equal to the given status '" + status + "'.");
 			}
 			this.updateGlobalStatus();
 		}
@@ -428,19 +445,19 @@ public class DocumentControllerImpl implements DocumentController {
 				// if one PepperModuleController says deleted, status is deleted
 				newGlobalStatus = DOCUMENT_STATUS.DELETED;
 				break;
-			}// if one PepperMOduleController says deleted, status is deleted
+			} // if one PepperMOduleController says deleted, status is deleted
 			else if (DOCUMENT_STATUS.IN_PROGRESS.equals(detailedStatus.getStatus())) {
 				// if one PepperModuleController says IN_PROCESS, status is
 				// IN_PROCESS
 				newGlobalStatus = DOCUMENT_STATUS.IN_PROGRESS;
 				break;
-			}// if one PepperModuleController says IN_PROCESS, status is
+			} // if one PepperModuleController says IN_PROCESS, status is
 				// IN_PROCESS
 			else if (DOCUMENT_STATUS.FAILED.equals(detailedStatus.getStatus())) {
 				// if one PepperModuleController says FAILED, status is FAILED
 				newGlobalStatus = DOCUMENT_STATUS.FAILED;
 				break;
-			}// if one PepperModuleController says FAILED, status is FAILED
+			} // if one PepperModuleController says FAILED, status is FAILED
 			else if (DOCUMENT_STATUS.COMPLETED.equals(detailedStatus.getStatus())) {
 				completedExists = true;
 			} else if (DOCUMENT_STATUS.NOT_STARTED.equals(detailedStatus.getStatus())) {

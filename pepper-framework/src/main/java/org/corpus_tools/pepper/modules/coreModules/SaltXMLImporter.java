@@ -76,7 +76,8 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 	public Double isImportable(URI corpusPath) {
 		Double retValue = 0.0;
 		for (String content : sampleFileContent(corpusPath, SaltUtil.FILE_ENDING_SALT_XML, ENDING_XML)) {
-			if ((content.contains("<?xml")) && (content.contains("xmi:version=\"2.0\"")) && (content.contains("salt"))) {
+			if ((content.contains("<?xml")) && (content.contains("xmi:version=\"2.0\""))
+					&& (content.contains("salt"))) {
 				retValue = 1.0;
 				break;
 			}

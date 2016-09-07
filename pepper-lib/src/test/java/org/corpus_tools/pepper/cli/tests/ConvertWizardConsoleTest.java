@@ -69,13 +69,15 @@ public class ConvertWizardConsoleTest {
 		StepDesc importStep = new StepDesc();
 		importStep.setName("TestImporter");
 		importStep.setModuleType(MODULE_TYPE.IMPORTER);
-		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/importFolder/").getCanonicalPath() + "/"));
+		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(
+				new File(folder.getAbsolutePath() + "/./corpus/importFolder/").getCanonicalPath() + "/"));
 		pepperJob.addStepDesc(importStep);
 
 		StepDesc exportStep = new StepDesc();
 		exportStep.setName("TestImporter");
 		exportStep.setModuleType(MODULE_TYPE.IMPORTER);
-		exportStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/exportFolder").getCanonicalPath() + "/"));
+		exportStep.getCorpusDesc().setCorpusPath(URI
+				.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/exportFolder").getCanonicalPath() + "/"));
 		pepperJob.addStepDesc(exportStep);
 
 		ConvertWizardConsole.deresolveURIs(pepperFile, pepperJob);

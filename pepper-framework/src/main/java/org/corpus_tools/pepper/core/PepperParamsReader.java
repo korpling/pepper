@@ -174,7 +174,9 @@ public class PepperParamsReader extends DefaultHandler2 {
 						file = new File(fileStr.replace("./", ""));
 						retFile = new File(location.getAbsolutePath() + "/" + file);
 					} else {
-						throw new PepperFWException("An error reading pepper-params file occured, there was an relative uri '" + fileStr + "', but the base path to resolve it (via setLocation()) was not set. ");
+						throw new PepperFWException(
+								"An error reading pepper-params file occured, there was an relative uri '" + fileStr
+										+ "', but the base path to resolve it (via setLocation()) was not set. ");
 					}
 				} else {
 					retFile = new File(fileStr);

@@ -40,11 +40,12 @@ import org.slf4j.LoggerFactory;
  * this class is derived from the general {@link Properties} class. It is
  * enhanced for methods to have an easier access to fields to configure the
  * Pepper framework, but you can also find anything necessary when treating this
- * object as a normal {@link Properties} object. <h1>Loading and resolving
- * configuration</h1> Next to the the mechanisms of loading a prop file or an
- * xml file, this object can also resolve the configuration file by checking the
- * location of the Pepper bundle. It is assumed, that the configuration file is
- * contained in one of two possible locations.
+ * object as a normal {@link Properties} object.
+ * <h1>Loading and resolving configuration</h1> Next to the the mechanisms of
+ * loading a prop file or an xml file, this object can also resolve the
+ * configuration file by checking the location of the Pepper bundle. It is
+ * assumed, that the configuration file is contained in one of two possible
+ * locations.
  * <ol>
  * <li>development phase: it is assumed, that the configuration file is stored
  * in PEPPER_SOURCE_HOME/src/main/resoruces</li>
@@ -129,7 +130,7 @@ public class PepperConfiguration extends Properties {
 	 * This array contains all properties, which with the Pepper framework can
 	 * be configured.
 	 */
-	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS};
+	public static final String[] ALL_PROP_NAMES = { PROP_COMPUTE_PERFORMANCE, PROP_MAX_AMOUNT_OF_SDOCUMENTS };
 	public static final String ENV_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 	public static final String PROP_PEPPER_MODULE_RESOURCES = "pepper.modules.resources";
 
@@ -184,12 +185,15 @@ public class PepperConfiguration extends Properties {
 	 */
 	public void load(File configurationFile) {
 		confFolder = configurationFile.getParentFile();
-		try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(configurationFile.getAbsolutePath()));) {
+		try (BufferedInputStream in = new BufferedInputStream(
+				new FileInputStream(configurationFile.getAbsolutePath()));) {
 			load(in);
 		} catch (FileNotFoundException e2) {
-			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e2);
+			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '"
+					+ configurationFile.getAbsolutePath() + "', because of nested exception: ", e2);
 		} catch (IOException e) {
-			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '" + configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
+			throw new PepperConfigurationException("Cannot load configuration file for Pepper at location '"
+					+ configurationFile.getAbsolutePath() + "', because of nested exception: ", e);
 		}
 	}
 
@@ -208,12 +212,14 @@ public class PepperConfiguration extends Properties {
 	 */
 	public void load(ComponentContext componentContext) {
 		if (componentContext == null) {
-			throw new PepperConfigurationException("Cannot resolve configuration file for Pepper, because the given component context is null.");
+			throw new PepperConfigurationException(
+					"Cannot resolve configuration file for Pepper, because the given component context is null.");
 		}
 
 		String configFileStr = null;
 
-		if ((componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null) && (componentContext.getBundleContext().getBundle().getLocation() != null)) {
+		if ((componentContext.getBundleContext() != null) && (componentContext.getBundleContext().getBundle() != null)
+				&& (componentContext.getBundleContext().getBundle().getLocation() != null)) {
 			String[] bundleNames = System.getProperty("osgi.bundles").split(",");
 			if (bundleNames.length > 0) {
 				String currLocation = componentContext.getBundleContext().getBundle().getLocation();

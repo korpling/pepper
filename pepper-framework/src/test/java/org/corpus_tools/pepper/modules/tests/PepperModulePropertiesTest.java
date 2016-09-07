@@ -124,7 +124,8 @@ public class PepperModulePropertiesTest extends TestCase {
 	public void testCheckProperties() {
 		String propName1 = "prop1";
 
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop1);
 
 		try {
@@ -148,15 +149,20 @@ public class PepperModulePropertiesTest extends TestCase {
 		String propName4 = "prop4";
 		String propName5 = "prop5";
 
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop3);
-		PepperModuleProperty<Integer> prop4 = new PepperModuleProperty<Integer>(propName4, Integer.class, "some desc", false);
+		PepperModuleProperty<Integer> prop4 = new PepperModuleProperty<Integer>(propName4, Integer.class, "some desc",
+				false);
 		getFixture().addProperty(prop4);
-		PepperModuleProperty<Integer> prop5 = new PepperModuleProperty<Integer>(propName5, Integer.class, "some desc", false);
+		PepperModuleProperty<Integer> prop5 = new PepperModuleProperty<Integer>(propName5, Integer.class, "some desc",
+				false);
 		getFixture().addProperty(prop5);
 
 		Properties properties = new Properties();
@@ -177,11 +183,14 @@ public class PepperModulePropertiesTest extends TestCase {
 		String propName2 = "prop2";
 		String propName3 = "prop3";
 
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop3);
 
 		Properties properties = new Properties();
@@ -199,7 +208,8 @@ public class PepperModulePropertiesTest extends TestCase {
 	@Test
 	public void testRemoveProperty() {
 		String propName1 = "prop1";
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc", true);
+		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
+				true);
 		getFixture().addProperty(prop1);
 		Properties properties = new Properties();
 		properties.put(propName1, 12);

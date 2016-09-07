@@ -243,7 +243,8 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			if (e instanceof PepperException)
 				throw (PepperException) e;
 			else
-				throw new PepperException("Cannot read xml-file'" + getXmlResource() + "', because of a nested exception. ", e);
+				throw new PepperException(
+						"Cannot read xml-file'" + getXmlResource() + "', because of a nested exception. ", e);
 		}
 
 		String dictionaryName = null;
@@ -254,7 +255,8 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			writer.println("package myPackage;");
 			writer.println("");
 			writer.println("/**");
-			writer.println("* This interface is a dictionary for files following the model of '" + outFile.getName().replace(".java", "") + "'.");
+			writer.println("* This interface is a dictionary for files following the model of '"
+					+ outFile.getName().replace(".java", "") + "'.");
 			writer.println("*");
 			writer.println("* @author " + XMLTagExtractor.class.getSimpleName());
 			writer.println("**/");
@@ -262,20 +264,26 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			for (String key : getNamespaces().keySet()) {
 				String ns = getNamespaces().get(key);
 				writer.println("\t\t/** constant to address the xml-namespace prefix'" + key + "'. **/");
-				writer.println("\t\tpublic static final String " + PREFIX_NAMESPACE + key.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + key + "\";");
+				writer.println("\t\tpublic static final String " + PREFIX_NAMESPACE
+						+ key.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + key + "\";");
 
 				writer.println("\t\t/** constant to address the xml-namespace '" + ns + "'. **/");
-				writer.println("\t\tpublic static final String " + PREFIX_NAMESPACE_VALUE + key.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + ns + "\";");
+				writer.println("\t\tpublic static final String " + PREFIX_NAMESPACE_VALUE
+						+ key.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + ns + "\";");
 			}
 			writer.println();
 			for (String tagName : getTagNames()) {
 				writer.println("\t\t/** constant to address the xml-element '" + tagName + "'. **/");
-				writer.println("\t\tpublic static final String " + PREFIX_ELEMENT + tagName.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + toNCNames(tagName) + "\";");
+				writer.println("\t\tpublic static final String " + PREFIX_ELEMENT
+						+ tagName.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + toNCNames(tagName)
+						+ "\";");
 			}
 			writer.println();
 			for (String attName : getAttributeNames()) {
 				writer.println("\t\t/** constant to address the xml-attribute '" + attName + "'. **/");
-				writer.println("\t\tpublic static final String " + PREFIX_ATTRIBUTE + attName.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + toNCNames(attName) + "\";");
+				writer.println("\t\tpublic static final String " + PREFIX_ATTRIBUTE
+						+ attName.toUpperCase().replace(":", "_").replace("-", "_") + "= \"" + toNCNames(attName)
+						+ "\";");
 			}
 			writer.println("}");
 
@@ -294,11 +302,13 @@ public class XMLTagExtractor extends DefaultHandler2 {
 			writer.println("import org.xml.sax.ext.DefaultHandler2;");
 			writer.println("");
 			writer.println("/**");
-			writer.println("* This class parses an xml file following the model of '" + outFile.getName().replace(".java", "") + "'.");
+			writer.println("* This class parses an xml file following the model of '"
+					+ outFile.getName().replace(".java", "") + "'.");
 			writer.println("*");
 			writer.println("* @author " + XMLTagExtractor.class.getSimpleName());
 			writer.println("**/");
-			writer.println("public class " + outFile.getName().replace(".java", "") + " extends DefaultHandler2 implements " + dictionaryName + " {");
+			writer.println("public class " + outFile.getName().replace(".java", "")
+					+ " extends DefaultHandler2 implements " + dictionaryName + " {");
 
 			writer.println("\t\t@Override");
 			writer.println("\t\tpublic void startElement(	String uri,");
@@ -314,7 +324,8 @@ public class XMLTagExtractor extends DefaultHandler2 {
 				else
 					writer.print("else if");
 				i++;
-				writer.println(" (" + PREFIX_ELEMENT + tagName.toUpperCase().replace(":", "_").replace("-", "_") + ".equals(qName)){");
+				writer.println(" (" + PREFIX_ELEMENT + tagName.toUpperCase().replace(":", "_").replace("-", "_")
+						+ ".equals(qName)){");
 				writer.println("\t\t\t}");
 			}
 			writer.println("\t\t}");

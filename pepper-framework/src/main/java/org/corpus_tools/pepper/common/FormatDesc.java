@@ -24,7 +24,8 @@ import org.eclipse.emf.common.util.URI;
  * object is used for instance to describe the set of formats which can be
  * handled by a {@link org.corpus_tools.pepper.modules.PepperImporter} or a
  * {@link org.corpus_tools.pepper.modules.PepperExporter} . Or it can be used to
- * determine the format of a corpus resource as given in {@link CorpusDesc}. <br/>
+ * determine the format of a corpus resource as given in {@link CorpusDesc}.
+ * <br/>
  * Main fields are:
  * <ul>
  * <li>{@link #formatName} - to determine the name of the format</li>
@@ -135,7 +136,9 @@ public class FormatDesc {
 		}
 		if (obj != null) {
 			if (obj instanceof FormatDesc) {
-				if ((getFormatName() != null) && (getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName())) && (getFormatVersion() != null) && (getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))) {
+				if ((getFormatName() != null) && (getFormatName().equalsIgnoreCase(((FormatDesc) obj).getFormatName()))
+						&& (getFormatVersion() != null)
+						&& (getFormatVersion().equalsIgnoreCase(((FormatDesc) obj).getFormatVersion()))) {
 					return (true);
 				} else {
 					return (false);

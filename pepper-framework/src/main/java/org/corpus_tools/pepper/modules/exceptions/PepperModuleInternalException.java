@@ -39,7 +39,10 @@ public class PepperModuleInternalException extends PepperModuleException {
 	 * @return
 	 */
 	private static String createMsg(PepperModule module, String msg) {
-		return ("Error in Pepper module '" + (module.getName() != null ? module.getName() : "NO_NAME") + ", " + (module.getVersion() != null ? module.getVersion() : "NO_VERSION") + "': " + msg + "This might be a bug, please contact the module supplier" + (module.getSupplierHomepage() != null ? " " + module.getSupplierHomepage() : "") + ". ");
+		return ("Error in Pepper module '" + (module.getName() != null ? module.getName() : "NO_NAME") + ", "
+				+ (module.getVersion() != null ? module.getVersion() : "NO_VERSION") + "': " + msg
+				+ "This might be a bug, please contact the module supplier"
+				+ (module.getSupplierHomepage() != null ? " " + module.getSupplierHomepage() : "") + ". ");
 	}
 
 	/**
