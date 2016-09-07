@@ -23,6 +23,7 @@ import java.util.List;
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleNotReadyException;
@@ -46,31 +47,31 @@ public interface PepperModule {
 	 * mapped to a resource.Can be used by importers to be put in collection
 	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
-	public static final String ENDING_FOLDER = "FOLDER";
+	static final String ENDING_FOLDER = "FOLDER";
 	/**
 	 * A string specifying a value for a leaf folder as ending. This is useful
 	 * for {@link #setTypeOfResource(URI)}, to determine, that even a leaf
 	 * folder can be mapped to a resource. Can be used by importers to be put in
 	 * collection {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
-	public static final String ENDING_LEAF_FOLDER = "LEAF_FOLDER";
+	static final String ENDING_LEAF_FOLDER = "LEAF_FOLDER";
 	/**
 	 * Ending for an xml file. Can be used by importers to be put in collection
 	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
-	public static final String ENDING_XML = "xml";
+	static final String ENDING_XML = "xml";
 	/**
 	 * Ending for an txt file. Can be used by importers to be put in collection
 	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
-	public static final String ENDING_TXT = "txt";
+	static final String ENDING_TXT = "txt";
 	/**
 	 * Ending for an tab file. Can be used by importers to be put in collection
 	 * {@link #getDocumentEndings()} or {@link #getCorpusEndings()}
 	 */
-	public static final String ENDING_TAB = "tab";
+	static final String ENDING_TAB = "tab";
 	/** All kinds of file endings **/
-	public static final String ENDING_ALL_FILES = "ALL_FILES";
+	static final String ENDING_ALL_FILES = "ALL_FILES";
 
 	/**
 	 * Returns a {@link PepperModuleDesc} object, which is a kind of a
@@ -80,14 +81,14 @@ public interface PepperModule {
 	 * 
 	 * @return fingerprint to this module
 	 */
-	public PepperModuleDesc getFingerprint();
+	PepperModuleDesc getFingerprint();
 
 	/**
 	 * Returns the type of this module.
 	 * 
 	 * @return type of module
 	 */
-	public MODULE_TYPE getModuleType();
+	MODULE_TYPE getModuleType();
 
 	/**
 	 * Returns the {@link ComponentContext} of the OSGi environment the bundle
@@ -95,7 +96,7 @@ public interface PepperModule {
 	 * 
 	 * @return
 	 */
-	public ComponentContext getComponentContext();
+	ComponentContext getComponentContext();
 
 	/**
 	 * Returns the name of this module. In most cases, the name somehow
@@ -128,7 +129,7 @@ public interface PepperModule {
 	 * 
 	 * @return a short description of the task of this module
 	 */
-	public String getDesc();
+	String getDesc();
 
 	/**
 	 * Sets a short description of this module. Please support some information,
@@ -137,7 +138,7 @@ public interface PepperModule {
 	 * @param desc
 	 *            a short description of the task of this module
 	 */
-	public void setDesc(String desc);
+	void setDesc(String desc);
 
 	/**
 	 * Returns a uri where to find more information about this module and where
@@ -145,7 +146,7 @@ public interface PepperModule {
 	 * 
 	 * @return contact address like eMail address or homepage address
 	 */
-	public URI getSupplierContact();
+	URI getSupplierContact();
 
 	/**
 	 * Sets a uri where to find more information about this module and where to
@@ -154,7 +155,7 @@ public interface PepperModule {
 	 * @param uri
 	 *            contact address like eMail address or homepage address
 	 */
-	public void setSupplierContact(URI eMail);
+	void setSupplierContact(URI eMail);
 
 	/**
 	 * Sets the {@link URI} to the homepage describing the functionality of the
@@ -162,7 +163,7 @@ public interface PepperModule {
 	 * 
 	 * @return {@link URI} to the homepage
 	 */
-	public URI getSupplierHomepage();
+	URI getSupplierHomepage();
 
 	/**
 	 * Returns the {@link URI} to the homepage describing the functionality of
@@ -171,7 +172,7 @@ public interface PepperModule {
 	 * @param hp
 	 *            {@link URI} to the homepage
 	 */
-	public void setSupplierHomepage(URI hp);
+	void setSupplierHomepage(URI hp);
 
 	/**
 	 * Returns a {@link PepperModuleProperties} object containing properties to
@@ -179,7 +180,7 @@ public interface PepperModule {
 	 * 
 	 * @return
 	 */
-	public PepperModuleProperties getProperties();
+	PepperModuleProperties getProperties();
 
 	/**
 	 * Sets the{@link PepperModuleProperties} object containing properties to
@@ -191,7 +192,7 @@ public interface PepperModule {
 	 * 
 	 * @param properties
 	 */
-	public void setProperties(PepperModuleProperties properties);
+	void setProperties(PepperModuleProperties properties);
 
 	/**
 	 * Returns the container and controller object for the current module. The
@@ -226,7 +227,7 @@ public interface PepperModule {
 	 *            the new value of the '<em>Pepper Module Controller</em>'
 	 *            container reference.
 	 */
-	public void setPepperModuleController_basic(ModuleController value);
+	void setPepperModuleController_basic(ModuleController value);
 
 	/**
 	 * Returns the {@link SaltProject} object, which is filled, manipulated or
@@ -325,7 +326,7 @@ public interface PepperModule {
 	 * @return a list describing the reasons, or an empty list if there were no
 	 *         problems
 	 */
-	public Collection<String> getStartProblems();
+	Collection<String> getStartProblems();
 
 	/**
 	 * This method is called by the pepper framework after initializing this
@@ -347,7 +348,7 @@ public interface PepperModule {
 	 * @return false, {@link PepperModule} instance is not ready for any reason,
 	 *         true, else.
 	 */
-	public boolean isReadyToStart() throws PepperModuleNotReadyException;
+	boolean isReadyToStart() throws PepperModuleNotReadyException;
 
 	/**
 	 * Sets whether this {@link PepperModule} is able to run multithreaded. This
@@ -356,7 +357,7 @@ public interface PepperModule {
 	 * @param isThreaded
 	 *            true, if module can run in multithread mode.
 	 */
-	public void setIsMultithreaded(boolean isMultithreaded);
+	void setIsMultithreaded(boolean isMultithreaded);
 
 	/**
 	 * Returns whether this {@link PepperModule} is able to run multithreaded.
@@ -365,7 +366,7 @@ public interface PepperModule {
 	 * 
 	 * @return true, if module can run in multithread mode.
 	 */
-	public boolean isMultithreaded();
+	boolean isMultithreaded();
 
 	/**
 	 * Starts the conversion process. This method is the main method of a pepper
@@ -390,7 +391,8 @@ public interface PepperModule {
 	 * Default initializations are done there (for more details, please take a
 	 * look into the doc of that method). Further this method links the created
 	 * {@link PepperMapper} object to a {@link PepperMapperController} object
-	 * and makes sure, that the process runs in a by Pepper controlled manner. <br/>
+	 * and makes sure, that the process runs in a by Pepper controlled manner.
+	 * <br/>
 	 * <strong>Note: When your module should not run in multithreaded mode, call
 	 * {@link #setIsMultithreaded(boolean)}.</strong> <br/>
 	 * <strong>Note: In case of you override this method, please make sure to
@@ -421,7 +423,7 @@ public interface PepperModule {
 	 * @return {@link PepperMapper} object to do the mapping task for object
 	 *         connected to given {@link Identifier}
 	 */
-	public PepperMapper createPepperMapper(Identifier sElementId);
+	PepperMapper createPepperMapper(Identifier sElementId);
 
 	/**
 	 * This method could be overridden, to make a proposal for the import order
@@ -439,7 +441,7 @@ public interface PepperModule {
 	 *            proposed
 	 * @return a list determining the import order of {@link SDocument} objects
 	 */
-	public List<Identifier> proposeImportOrder(SCorpusGraph sCorpusGraph);
+	List<Identifier> proposeImportOrder(SCorpusGraph sCorpusGraph);
 
 	/**
 	 * This method is invoked by the Pepper framework, to get the current
@@ -483,50 +485,53 @@ public interface PepperModule {
 	 * @param controller
 	 *            The object which is done with its job
 	 */
-	public void done(PepperMapperController controller);
+	void done(PepperMapperController controller);
 
 	/**
 	 * This method is called by a {@link PepperMapperController} object to
 	 * notify the {@link PepperModule} object, that the mapping for this object
 	 * is done.
 	 * 
-	 * @param sElementId
+	 * @param identifier
 	 * @param result
 	 */
-	public void done(Identifier sElementId, DOCUMENT_STATUS result);
+	void done(Identifier identifier, DOCUMENT_STATUS result);
 
-	// /**
-	// * Invokes processings, before the mapping was started. This could be
-	// * helpful, for instance to make some preparations for the mapping. To
-	// * trigger this pre processing for a specific Pepper module a set of
-	// * customization properties is available. Customization properties
-	// * triggering a pre processing starts with
-	// * {@value PepperModuleProperties#PREFIX_PEPPER_BEFORE}. This method is
-	// * called by the method {@link #map()}, before
-	// * {@link PepperMapper#mapSDocument()} was called.
-	// *
-	// * @param sElementId
-	// * id of either {@link SDocument} or {@link SCorpus} object to be
-	// * prepared
-	// * @throws PepperModuleException
-	// */
-	// public void before(Identifier sElementId) throws PepperModuleException;
-	//
-	// /**
-	// * Invokes processings, after the mapping is done. This could be helpful,
-	// * for instance to make some processing after the mapping e.g. adding all
-	// * created nodes and relations to a layer. To trigger this post processing
-	// * for a specific Pepper module a set of customization properties is
-	// * available. Customization properties triggering a post processing starts
-	// * with {@value PepperModuleProperties#PREFIX_PEPPER_AFTER}. This method
-	// is
-	// * called by the method {@link #map()}, after
-	// * {@link PepperMapper#mapSDocument()} was called.
-	// *
-	// * @param sElementId
-	// * id of either {@link SDocument} or {@link SCorpus} object to be
-	// * post processed
-	// * @throws PepperModuleException
-	// */
-	// public void after(Identifier sElementId) throws PepperModuleException;
+	/**
+	 * This method is called by the Pepper framework to run an integration test
+	 * for module. When the method returns null, it means that no integration
+	 * test is supported. Otherwise, the {@link SelfTestDesc} object needs to
+	 * provide an input corpus path and an output corpus path.
+	 * 
+	 * When this module is:
+	 * <ul>
+	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * the format to be imported. {@link SelfTestDesc#getExpectedCorpusPath()}
+	 * should contain the expected salt project (for control).</li>
+	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()} should
+	 * contain a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * salt project (for control).</li>
+	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * corpus in output format.</li>
+	 * </ul>
+	 * The simplest way to create a test description is:
+	 * 
+	 * <pre>
+	 * return new IntegrationTestDesc(inputPath, outputPath);
+	 * </pre>
+	 * 
+	 * When this module is an importer or a manipulator the method
+	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called to
+	 * compare output salt project with expected salt project. When the module
+	 * is an exporter the method {@link SelfTestDesc#compare(URI, URI)} is
+	 * called to compare the created output folder with an expected one. By
+	 * default this method checks whether the file structure and each file is
+	 * equal.
+	 * 
+	 * @return test description
+	 */
+	SelfTestDesc getSelfTestDesc();
 }

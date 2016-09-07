@@ -49,6 +49,7 @@ import org.corpus_tools.pepper.cli.PepperStarterConfiguration;
 import org.corpus_tools.pepper.cli.exceptions.PepperOSGiException;
 import org.corpus_tools.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
 import org.corpus_tools.pepper.cli.exceptions.PepperPropertyException;
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
@@ -116,11 +117,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	@Override
 	public void init() {
 		if (getPepperStarterConfiguration().getPlugInPath() == null) {
-			throw new PepperPropertyException("Cannot start Pepper, because no plugin path is given for Pepper modules.");
+			throw new PepperPropertyException(
+					"Cannot start Pepper, because no plugin path is given for Pepper modules.");
 		}
 		File pluginPath = new File(getPepperStarterConfiguration().getPlugInPath());
 		if (!pluginPath.exists()) {
-			throw new PepperOSGiException("Cannot load any plugins, since the configured path for plugins '" + pluginPath.getAbsolutePath() + "' does not exist. Please check the entry '" + PepperStarterConfiguration.PROP_PLUGIN_PATH + "' in the Pepper configuration file at '" + (getConfiguration().getConfFolder() != null ? getConfiguration().getConfFolder().getAbsolutePath() : "empty") + "'. ");
+			throw new PepperOSGiException(
+					"Cannot load any plugins, since the configured path for plugins '" + pluginPath.getAbsolutePath()
+							+ "' does not exist. Please check the entry '" + PepperStarterConfiguration.PROP_PLUGIN_PATH
+							+ "' in the Pepper configuration file at '" + (getConfiguration().getConfFolder() != null
+									? getConfiguration().getConfFolder().getAbsolutePath() : "empty")
+							+ "'. ");
 		}
 
 		try {
@@ -149,7 +156,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			}
 			logger.debug("\tinstalling OSGI-bundles:");
 
-			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI(), dropInURIs);
+			bundles = this.installBundles(new File(getPepperStarterConfiguration().getPlugInPath()).toURI(),
+					dropInURIs);
 			logger.debug("----------------------------------------------------------");
 			logger.debug("installing OSGI-bundles...FINISHED");
 			logger.debug("starting OSGI-bundles...");
@@ -175,7 +183,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		List<Bundle> bList = new ArrayList<Bundle>();
 		bList.addAll(bundleIdMap.values());
 		for (int i = 0; i < bList.size(); i++) {
-			if (bList.get(i).getSymbolicName() != null && bList.get(i).getSymbolicName().contains(ARTIFACT_ID_PEPPER_FRAMEWORK)) {
+			if (bList.get(i).getSymbolicName() != null
+					&& bList.get(i).getSymbolicName().contains(ARTIFACT_ID_PEPPER_FRAMEWORK)) {
 				frameworkVersion = bList.get(i).getVersion().toString().replace(".SNAPSHOT", "-SNAPSHOT");
 			}
 		}
@@ -256,7 +265,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		if (configuration instanceof PepperStarterConfiguration) {
 			this.properties = (PepperStarterConfiguration) configuration;
 		} else {
-			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '" + PepperStarterConfiguration.class.getSimpleName() + "'.");
+			throw new PepperConfigurationException("Cannot set the given configuration, since it is not of type '"
+					+ PepperStarterConfiguration.class.getSimpleName() + "'.");
 		}
 	}
 
@@ -283,7 +293,11 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						pepperOSGi = (Pepper) getBundleContext().getService(serviceReference);
 					}
 				} else {
-					throw new PepperFWException("The pepper-framework was not found in OSGi environment. Searching for class: " + Pepper.class.getName() + " brought no result. May be the container package is not listed in property '" + Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA + "': '" + frameworkProperties + "'. ");
+					throw new PepperFWException(
+							"The pepper-framework was not found in OSGi environment. Searching for class: "
+									+ Pepper.class.getName()
+									+ " brought no result. May be the container package is not listed in property '"
+									+ Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA + "': '" + frameworkProperties + "'. ");
 				}
 				pepper = pepperOSGi;
 				pepper.setConfiguration(getConfiguration());
@@ -397,7 +411,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	protected Collection<Bundle> installBundles(URI pluginPath, List<URI> dropinPaths) throws BundleException, URISyntaxException, IOException {
+	protected Collection<Bundle> installBundles(URI pluginPath, List<URI> dropinPaths)
+			throws BundleException, URISyntaxException, IOException {
 
 		ArrayList<Bundle> bundles = new ArrayList<>();
 
@@ -410,7 +425,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		StringBuilder osgiBundlesProp = null;
 
 		for (URI dropinLocation : loadLocations) {
-			File[] fileLocations = new File(dropinLocation.getPath()).listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
+			File[] fileLocations = new File(dropinLocation.getPath())
+					.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
 			if (fileLocations != null) {
 				for (File bundleJar : fileLocations) {
 					// check if file is file-object
@@ -420,7 +436,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						Bundle bundle = install(bundleURI);
 						if (bundle != null) {
 							bundles.add(bundle);
-							logger.debug("\t\tinstalling bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
+							logger.debug(
+									"\t\tinstalling bundle: " + bundle.getSymbolicName() + "-" + bundle.getVersion());
 
 							// set system property for bundle pathes
 							if (osgiBundlesProp == null) {
@@ -474,7 +491,8 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			String pluginPath = getPepperStarterConfiguration().getPlugInPath();
 			if (pluginPath != null) {
 				// download file, if file is a web resource
-				if (("http".equalsIgnoreCase(bundleURI.getScheme())) || ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
+				if (("http".equalsIgnoreCase(bundleURI.getScheme()))
+						|| ("https".equalsIgnoreCase(bundleURI.getScheme()))) {
 					String tempPath = getPepperStarterConfiguration().getTempPath().getCanonicalPath();
 					URL bundleUrl = bundleURI.toURL();
 					if (!tempPath.endsWith("/")) {
@@ -493,11 +511,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 						while (entries.hasMoreElements()) {
 							ZipEntry entry = entries.nextElement();
 							File entryDestination = new File(pluginPath, entry.getName());
-							if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
+							if (!entryDestination.getParentFile().exists()
+									&& !entryDestination.getParentFile().mkdirs()) {
 								logger.warn("Cannot create folder '" + entryDestination.getParentFile() + "'. ");
 							}
 							if (entry.isDirectory()) {
-								if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
+								if (!entryDestination.getParentFile().exists()
+										&& !entryDestination.getParentFile().mkdirs()) {
 									logger.warn("Cannot create folder {}. ", entryDestination.getParentFile());
 								}
 							} else {
@@ -634,11 +654,17 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			try {
 				bundle.start();
 			} catch (BundleException e) {
-				logger.warn("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly. The bundle is located at '" + locationBundleIdMap.inverse().get(bundleId) + "'. This could cause other problems. For more details turn on log mode to debug and see log file. ", e);
+				logger.warn(
+						"The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion()
+								+ "' wasn't started correctly. The bundle is located at '"
+								+ locationBundleIdMap.inverse().get(bundleId)
+								+ "'. This could cause other problems. For more details turn on log mode to debug and see log file. ",
+						e);
 			}
 		}
 		if (bundle.getState() != Bundle.ACTIVE) {
-			logger.error("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion() + "' wasn't started correctly.");
+			logger.error("The bundle '" + bundle.getSymbolicName() + "-" + bundle.getVersion()
+					+ "' wasn't started correctly.");
 		}
 	}
 
@@ -667,7 +693,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 					pepperBundle.start();
 				}
 			} catch (BundleException e) {
-				throw new PepperOSGiFrameworkPluginException("The Pepper framework bundle could not have been started. Unfortunatly Pepper cannot be started without that OSGi bundle. ", e);
+				throw new PepperOSGiFrameworkPluginException(
+						"The Pepper framework bundle could not have been started. Unfortunatly Pepper cannot be started without that OSGi bundle. ",
+						e);
 			}
 		}
 	}
@@ -738,8 +766,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 * This method checks the pepperModules in the modules.xml for updates and
 	 * triggers the installation process if a newer version is available
 	 */
-	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot, boolean ignoreFrameworkVersion) {
-		return maven.update(groupId, artifactId, repositoryUrl, isSnapshot, ignoreFrameworkVersion, getBundle(groupId, artifactId, null));
+	public boolean update(String groupId, String artifactId, String repositoryUrl, boolean isSnapshot,
+			boolean ignoreFrameworkVersion) {
+		return maven.update(groupId, artifactId, repositoryUrl, isSnapshot, ignoreFrameworkVersion,
+				getBundle(groupId, artifactId, null));
 	}
 
 	/**
@@ -767,7 +797,10 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 		boolean ignoreVersion = version == null;
 		for (Bundle bundle : bundleIdMap.values()) {
 			symName = bundle.getSymbolicName();
-			if (symName != null && (symName.contains(groupId) || groupId.contains(symName)) && (symName.contains(artifactId) || artifactId.contains(symName)) && (ignoreVersion || (version.contains(bundle.getVersion().toString()) || bundle.getVersion().toString().contains(version)))) {
+			if (symName != null && (symName.contains(groupId) || groupId.contains(symName))
+					&& (symName.contains(artifactId) || artifactId.contains(symName))
+					&& (ignoreVersion || (version.contains(bundle.getVersion().toString())
+							|| bundle.getVersion().toString().contains(version)))) {
 
 				return bundle.toString();
 			}
@@ -811,7 +844,9 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	public String printDependencies(String bundleId) {
 		String result = maven.printDependencies(bundleIdMap.get(Long.parseLong(bundleId)));
-		return result == null ? "Could not compute dependencies for bundle #".concat(bundleId).concat(System.lineSeparator()) : result;
+		return result == null
+				? "Could not compute dependencies for bundle #".concat(bundleId).concat(System.lineSeparator())
+				: result;
 	}
 
 	/**
@@ -827,11 +862,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 	 */
 	public String printDependencies(String groupId, String artifactId, String version, String repositoryUrl) {
 		String result = maven.printDependencies(groupId, artifactId, version, repositoryUrl);
-		return result == null ? "Could not compute dependencies for given coordinates".concat(System.lineSeparator()) : result;
+		return result == null ? "Could not compute dependencies for given coordinates".concat(System.lineSeparator())
+				: result;
 	}
 
 	@Override
-	public Set<String> findAppropriateImporters(org.eclipse.emf.common.util.URI corpusPath) throws FileNotFoundException {
+	public Set<String> findAppropriateImporters(org.eclipse.emf.common.util.URI corpusPath)
+			throws FileNotFoundException {
 		if (getPepper() == null) {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}
@@ -844,5 +881,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}
 		return (getPepper().getRegisteredImporters());
+	}
+
+	@Override
+	public Collection<ModuleFitness> checkFitness() {
+		if (getPepper() == null) {
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
+		return (getPepper().checkFitness());
 	}
 }

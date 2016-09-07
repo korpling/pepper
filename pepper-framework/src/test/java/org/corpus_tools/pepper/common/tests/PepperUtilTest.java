@@ -17,11 +17,14 @@
  */
 package org.corpus_tools.pepper.common.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.junit.Before;
@@ -44,7 +47,8 @@ public class PepperUtilTest {
 		String theString = "In linguistics, human language is a system of sounds.";
 		StringBuilder out = new StringBuilder();
 		int length = 20;
-		assertEquals("human language is a system of sounds.", theString = PepperUtil.breakString2(out, theString, length));
+		assertEquals("human language is a system of sounds.",
+				theString = PepperUtil.breakString2(out, theString, length));
 		assertEquals("In linguistics, ", out.toString());
 		out = new StringBuilder();
 		assertEquals("system of sounds.", theString = PepperUtil.breakString2(out, theString, length));
@@ -75,7 +79,8 @@ public class PepperUtilTest {
 		StringBuilder out = new StringBuilder();
 		out.append("   ");
 		int length = 20;
-		assertEquals("human language is a system of sounds.", theString = PepperUtil.breakString2(out, theString, length));
+		assertEquals("human language is a system of sounds.",
+				theString = PepperUtil.breakString2(out, theString, length));
 		assertEquals("   In linguistics, ", out.toString());
 		out = new StringBuilder();
 		out.append("   ");
@@ -108,8 +113,12 @@ public class PepperUtilTest {
 		content[2][1] = "Phonetics is the study of acoustic, visual, and articulatory properties in the production and perception of speech and non-speech sounds.";
 		content[2][2] = "AnotherValue";
 
-		assertEquals("+----+---------------------+------+\n| No | description         | valu |\n|    |                     | e    |\n+----+---------------------+------+\n| 1  | In linguistics,     | what |\n|    | human language is a | AVal |\n|    | system of sounds.   | ue   |\n| 2  | Phonetics is the    | Anot |\n|    | study of acoustic,  | herV |\n|    | visual, and         | alue |\n|    | articulatory        |      |\n|    | properties in the   |      |\n|    | production and      |      |\n|    | perception of       |      |\n|    | speech and non-     |      |\n|    | speech sounds.      |      |\n+----+---------------------+------+\n", PepperUtil.createTable(length, content, true, true, true));
-		assertEquals("+---+--------------------+----+\n|No |description         |valu|\n|   |                    |e   |\n+---+--------------------+----+\n|1  |In linguistics,     |what|\n|   |human language is a |AVal|\n|   |system of sounds.   |ue  |\n|2  |Phonetics is the    |Anot|\n|   |study of acoustic,  |herV|\n|   |visual, and         |alue|\n|   |articulatory        |    |\n|   |properties in the   |    |\n|   |production and      |    |\n|   |perception of       |    |\n|   |speech and non-     |    |\n|   |speech sounds.      |    |\n+---+--------------------+----+\n", PepperUtil.createTable(length, content, true, false, true));
+		assertEquals(
+				"+----+---------------------+------+\n| No | description         | valu |\n|    |                     | e    |\n+----+---------------------+------+\n| 1  | In linguistics,     | what |\n|    | human language is a | AVal |\n|    | system of sounds.   | ue   |\n| 2  | Phonetics is the    | Anot |\n|    | study of acoustic,  | herV |\n|    | visual, and         | alue |\n|    | articulatory        |      |\n|    | properties in the   |      |\n|    | production and      |      |\n|    | perception of       |      |\n|    | speech and non-     |      |\n|    | speech sounds.      |      |\n+----+---------------------+------+\n",
+				PepperUtil.createTable(length, content, true, true, true));
+		assertEquals(
+				"+---+--------------------+----+\n|No |description         |valu|\n|   |                    |e   |\n+---+--------------------+----+\n|1  |In linguistics,     |what|\n|   |human language is a |AVal|\n|   |system of sounds.   |ue  |\n|2  |Phonetics is the    |Anot|\n|   |study of acoustic,  |herV|\n|   |visual, and         |alue|\n|   |articulatory        |    |\n|   |properties in the   |    |\n|   |production and      |    |\n|   |perception of       |    |\n|   |speech and non-     |    |\n|   |speech sounds.      |    |\n+---+--------------------+----+\n",
+				PepperUtil.createTable(length, content, true, false, true));
 	}
 
 	@Test
@@ -152,5 +161,27 @@ public class PepperUtilTest {
 		assertTrue(file.toString().contains("pepper-test"));
 		assertTrue(file.toString().contains("test/sub"));
 		assertTrue(file.exists());
+	}
+
+	@Test
+	public void whenListIsNullOrEmpty_isNullOrEmptyShouldReturnTrue() {
+		assertThat(PepperUtil.isNullOrEmpty(null)).isTrue();
+		assertThat(PepperUtil.isNullOrEmpty(new ArrayList<>())).isTrue();
+	}
+
+	@Test
+	public void whenListIsNotNullOrEmpty_isNullOrEmptyShouldReturnFalse() {
+		assertThat(PepperUtil.isNullOrEmpty(Arrays.asList("Bla"))).isFalse();
+	}
+
+	@Test
+	public void whenListIsNullOrEmpty_isNotNullOrEmptyShouldReturnFalse() {
+		assertThat(PepperUtil.isNotNullOrEmpty(null)).isFalse();
+		assertThat(PepperUtil.isNotNullOrEmpty(new ArrayList<>())).isFalse();
+	}
+
+	@Test
+	public void whenListIsNotNullOrEmpty_isNotNullOrEmptyShouldReturnTrue() {
+		assertThat(PepperUtil.isNotNullOrEmpty(Arrays.asList("Bla"))).isTrue();
 	}
 }

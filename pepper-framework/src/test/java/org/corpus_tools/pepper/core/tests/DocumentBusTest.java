@@ -231,7 +231,8 @@ public class DocumentBusTest {
 			}
 		}
 		for (SimplePepperModuleController outController : moduleControllers) {
-			assertEquals(outController.controllerId + " has not the expected number of elements", docControllers.size(), outController.getDocumentControllers().size());
+			assertEquals(outController.controllerId + " has not the expected number of elements", docControllers.size(),
+					outController.getDocumentControllers().size());
 			assertTrue(outController.getDocumentControllers().containsAll(docControllers));
 
 			assertTrue(outController + " is not done", outController.done);
@@ -282,7 +283,8 @@ public class DocumentBusTest {
 		}
 
 		public String toString() {
-			return (controllerId + "(wait: " + waitTime + ")" + ": consumed/produced: " + getDocumentControllers() + " ==> still on bus: " + getFixture().getDocumentBus());
+			return (controllerId + "(wait: " + waitTime + ")" + ": consumed/produced: " + getDocumentControllers()
+					+ " ==> still on bus: " + getFixture().getDocumentBus());
 		}
 	}
 }

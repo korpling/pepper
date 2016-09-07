@@ -9,6 +9,7 @@ Pepper helps you to write test code faster by providing a test suite skeleton (t
 
 To set up the tests for the JUnit framework override the method setUp() as shown in the following snippet:
 
+\code
     @Before
     protected void setUp() throws Exception {
         //1: setting and initializing of class to test
@@ -18,6 +19,7 @@ To set up the tests for the JUnit framework override the method setUp() as shown
             .setFormatName("myFormat")
             .setFormatVersion("1.0"));
     }                
+\endcode
 
 Since the JUnit framework can not know about the classes to test, you need to set and initialize it as shown on position 1. In case you are implementing an im- or exporter, you need to set the supported formats and versions in your test case. Pepper will check them automatically, but the test environment needs to know the correct pairs of format name and version. Replace FORMAT\_NAME and FORMAT\_VERSION with your specific ones. You can even add more than one @ref org.corpus_tools.pepper.common.FormatDesc object.
 
@@ -25,6 +27,7 @@ The provided test classes emulate the Pepper environment, so that you can run yo
 
 In case that you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a predefined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model:
 
+\code
 	public void someTest(){
         getFixture().setCorpusDesc(new CorpusDesc().
             setCorpusPath(URI
@@ -52,6 +55,7 @@ In case that you write an importer, you can create an input file containing a co
         assertEquals(X, getFixture().getSaltProject()
             .getCorpusGraphs().get(0).getCorpora().size());
     }
+\endcode
 
 More samples for testing can be found in the automatically generated test classes when using Pepper's archetype for Maven, see @ref tutorial.
 
@@ -60,3 +64,22 @@ For testing an exporter, you may want to use Salt's sample generator (org.corpus
 The class @ref org.corpus_tools.pepper.testFramework.PepperTestUtil provides some very helpful methods like @ref org.corpus_tools.pepper.testFramework.PepperTestUtil.getSrcResources() to get a reference to the resources folder (./src/main/resources) or the method getTestResources to get a reference to the test resource folder (./src/test/resources).
 
 When you are implementing an importer and an exporter you may want to make sure that no data is lost, you can orchestrate the im- and the exporter and compare the input files with the output files. In that case implementing the classes @ref org.corpus_tools.pepper.testFramework.PepperImporterTest and @ref org.corpus_tools.pepper.testFramework.PepperExporterTest won't do the job, because they assume that you are testing a single module. To load multiple modules in the Pepper test environment, use the method @ref org.corpus_tools.pepper.testFramework.PepperTestUtil.start(Collection\<PepperModule\> fixtures) instead and pass your im- and your exporter.
+
+## Testing self-tests
+
+To test whether the self-test is working or not, you can run it as a JUnit test as follows:
+
+\code
+@Test
+public void whenSelfTestingModule_thenResultShouldBeTrue() {
+	final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper())
+			.selfTest(getFixture());
+	assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
+	assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
+	//when module is an importer, you can also test the next feature
+	assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
+	//when module is an importer or a manipulator, you can also test the next feature
+	assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
+}
+\endcode
+To learn more about the self-test please check \ref selftest

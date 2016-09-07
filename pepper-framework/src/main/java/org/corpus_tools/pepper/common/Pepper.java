@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -121,5 +122,19 @@ public interface Pepper {
 	 * @return returns an empty list, if check was positive; if list is not
 	 *         empty, each entry describes a single problem.
 	 */
+	@Deprecated
 	public Collection<String> selfTest();
+
+	/**
+	 * Checks the fitness of each registered Pepper module. The fitness of a
+	 * module indicates in what way a module is docking to the Pepper interface.
+	 * For instance it checks whether a module provides a contact address of the
+	 * module'supplier. Or when the module is an importer whether it supports
+	 * the {@link PepperImporterImpl#isImportable(URI)} method. <br/>
+	 * Further the fitness says whether a module is ready to start.
+	 * 
+	 * @return a list of fitness entries, one per module, if no module is
+	 *         registered an empty list is returned
+	 */
+	public Collection<ModuleFitness> checkFitness();
 }

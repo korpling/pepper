@@ -146,8 +146,10 @@ public class BeforeAfterAction {
 	 * @throws PepperModuleException
 	 */
 	public void before(SCorpusGraph corpusGraph) throws PepperModuleException {
-		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH) != null) {
-			boolean isReport = Boolean.parseBoolean(getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
+		if (getPepperModule().getProperties()
+				.getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH) != null) {
+			boolean isReport = Boolean.parseBoolean(getPepperModule().getProperties()
+					.getProperty(PepperModuleProperties.PROP_AFTER_REPORT_CORPUSGRAPH).getValue().toString());
 			if (isReport && corpusGraph != null) {
 				List<SNode> roots = corpusGraph.getRoots();
 				if (roots != null) {
@@ -156,7 +158,8 @@ public class BeforeAfterAction {
 					str.append(getPepperModule().getName());
 					for (SNode root : roots) {
 						str.append(":\n");
-						str.append(getPepperModule().getSaltProject().getCorpusGraphs().indexOf(((SCorpus) root).getGraph()));
+						str.append(getPepperModule().getSaltProject().getCorpusGraphs()
+								.indexOf(((SCorpus) root).getGraph()));
 						str.append("\n");
 						str.append(reportCorpusStructure(corpusGraph, root, "", true));
 					}
@@ -178,7 +181,8 @@ public class BeforeAfterAction {
 		if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES) != null) {
 			// copies resources as files from source to target
 
-			String resString = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
+			String resString = (String) getPepperModule().getProperties()
+					.getProperty(PepperModuleProperties.PROP_AFTER_COPY_RES).getValue();
 			copyResources(resString);
 		}
 	}
@@ -193,7 +197,9 @@ public class BeforeAfterAction {
 	 * @param prefix
 	 * @param isTail
 	 * @return
+	 * @deprecated use {@link SCorpusGraph#toTreeString() instead}
 	 */
+	@Deprecated()
 	protected String reportCorpusStructure(SCorpusGraph corpusGraph, SNode node, String prefix, boolean isTail) {
 		StringBuilder retStr = new StringBuilder();
 		retStr.append(prefix);
@@ -204,9 +210,11 @@ public class BeforeAfterAction {
 		for (Relation out : outRelations) {
 			if (i < outRelations.size() - 1) {
 				retStr.append(prefix);
-				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), false));
+				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(),
+						prefix + (isTail ? "    " : "│   "), false));
 			} else {
-				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(), prefix + (isTail ? "    " : "│   "), true));
+				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(),
+						prefix + (isTail ? "    " : "│   "), true));
 			}
 			i++;
 		}
@@ -234,11 +242,13 @@ public class BeforeAfterAction {
 						// check if source and target is given
 						boolean copyOk = true;
 						if ((sourceStr == null) || (sourceStr.isEmpty())) {
-							logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because no source file was given in property value '" + resource + "'. ");
+							logger.warn("Cannot copy resources for '" + getPepperModule().getName()
+									+ "' because no source file was given in property value '" + resource + "'. ");
 							copyOk = false;
 						}
 						if ((targetStr == null) || (targetStr.isEmpty())) {
-							logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because no target file was given in property value '" + resource + "'. ");
+							logger.warn("Cannot copy resources for '" + getPepperModule().getName()
+									+ "' because no target file was given in property value '" + resource + "'. ");
 							copyOk = false;
 						}
 						if (copyOk) {
@@ -247,7 +257,8 @@ public class BeforeAfterAction {
 
 							// in case of source or target aren't absolute
 							// resolve them against current Job's base directory
-							String baseDir = getPepperModule().getModuleController().getJob().getBaseDir().toFileString();
+							String baseDir = getPepperModule().getModuleController().getJob().getBaseDir()
+									.toFileString();
 							if (!baseDir.endsWith("/")) {
 								baseDir = baseDir + "/";
 							}
@@ -255,7 +266,9 @@ public class BeforeAfterAction {
 								source = new File(baseDir + sourceStr);
 							}
 							if (!source.exists()) {
-								logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because source does not exist '" + source.getAbsolutePath() + "'. Check the property value '" + resource + "'. ");
+								logger.warn("Cannot copy resources for '" + getPepperModule().getName()
+										+ "' because source does not exist '" + source.getAbsolutePath()
+										+ "'. Check the property value '" + resource + "'. ");
 							} else {
 								// only copy if source exists
 
@@ -275,7 +288,8 @@ public class BeforeAfterAction {
 										}
 										target = new File(targetStr + source.getName());
 										FileUtils.copyDirectory(source, target);
-										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '" + target.getAbsolutePath() + "'.");
+										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '"
+												+ target.getAbsolutePath() + "'.");
 									} else {
 										targetStr = target.getCanonicalPath();
 										if (!targetStr.endsWith("/")) {
@@ -283,10 +297,13 @@ public class BeforeAfterAction {
 										}
 										target = new File(targetStr + source.getName());
 										FileUtils.copyFile(source, target);
-										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '" + target.getAbsolutePath() + "'.");
+										logger.trace("Copied resource from '" + source.getAbsolutePath() + "' to '"
+												+ target.getAbsolutePath() + "'.");
 									}
 								} catch (IOException e) {
-									logger.warn("Cannot copy resources for '" + getPepperModule().getName() + "' because of '" + e.getMessage() + "'. Check the property value '" + resource + "'. ");
+									logger.warn("Cannot copy resources for '" + getPepperModule().getName()
+											+ "' because of '" + e.getMessage() + "'. Check the property value '"
+											+ resource + "'. ");
 								}
 							}
 						}
@@ -321,14 +338,17 @@ public class BeforeAfterAction {
 						SDocument sDoc = (SDocument) id.getIdentifiableElement();
 
 						// add layers
-						String layers = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
+						String layers = (String) getPepperModule().getProperties()
+								.getProperty(PepperModuleProperties.PROP_BEFORE_ADD_SLAYER).getValue();
 						addSLayers(sDoc, layers);
 					} else if (id.getIdentifiableElement() instanceof SCorpus) {
 
 					}
 				}
 			}
-			if ((getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null) && (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue() != null)) {
+			if ((getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META) != null)
+					&& (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META)
+							.getValue() != null)) {
 				// read meta data
 				readMeta(id);
 			}
@@ -354,30 +374,40 @@ public class BeforeAfterAction {
 	public void after(Identifier id) throws PepperModuleException {
 		if (getPepperModule().getProperties() != null) {
 			if ((id != null) && (id.getIdentifiableElement() != null)) {
-				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
+				if (getPepperModule().getProperties()
+						.getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER) != null) {
 					if (id.getIdentifiableElement() instanceof SDocument) {
 						SDocument sDoc = (SDocument) id.getIdentifiableElement();
 						// add slayers after processing
-						String layers = (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
+						String layers = (String) getPepperModule().getProperties()
+								.getProperty(PepperModuleProperties.PROP_AFTER_ADD_SLAYER).getValue();
 						addSLayers(sDoc, layers);
 					}
 				}
-				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue() != null) {
-					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
-						renameAnnotations(id, (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue());
+				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS)
+						.getValue() != null) {
+					if (id.getIdentifiableElement() instanceof SDocument
+							&& ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
+						renameAnnotations(id, (String) getPepperModule().getProperties()
+								.getProperty(PepperModuleProperties.PROP_AFTER_RENAME_ANNOTATIONS).getValue());
 					}
 				}
-				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue() != null) {
-					//remove is also done by rename
-					
-					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
-						renameAnnotations(id, (String) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue());
+				if (getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS)
+						.getValue() != null) {
+					// remove is also done by rename
+
+					if (id.getIdentifiableElement() instanceof SDocument
+							&& ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
+						renameAnnotations(id, (String) getPepperModule().getProperties()
+								.getProperty(PepperModuleProperties.PROP_AFTER_REMOVE_ANNOTATIONS).getValue());
 					}
 				}
-				if ((Boolean)getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_TOKENIZE).getValue()) {
-					//remove is also done by rename
-					
-					if (id.getIdentifiableElement() instanceof SDocument && ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
+				if ((Boolean) getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_AFTER_TOKENIZE)
+						.getValue()) {
+					// remove is also done by rename
+
+					if (id.getIdentifiableElement() instanceof SDocument
+							&& ((SDocument) id.getIdentifiableElement()).getDocumentGraph() != null) {
 						((SDocument) id.getIdentifiableElement()).getDocumentGraph().tokenize();
 					}
 				}
@@ -440,7 +470,8 @@ public class BeforeAfterAction {
 	public void readMeta(Identifier id) {
 		if (getPepperModule() instanceof PepperImporter) {
 			URI resourceURI = ((PepperImporter) getPepperModule()).getIdentifier2ResourceTable().get(id);
-			Object endingObj = getPepperModule().getProperties().getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue();
+			Object endingObj = getPepperModule().getProperties()
+					.getProperty(PepperModuleProperties.PROP_BEFORE_READ_META).getValue();
 			if (endingObj != null) {
 				String ending = endingObj.toString().trim();
 				if (resourceURI != null) {
@@ -452,7 +483,8 @@ public class BeforeAfterAction {
 						File[] files = resource.listFiles();
 						if (files != null) {
 							for (File file : files) {
-								if (file.getName().equalsIgnoreCase(((SNode) id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
+								if (file.getName().equalsIgnoreCase(
+										((SNode) id.getIdentifiableElement()).getPath().lastSegment() + "." + ending)) {
 									metaFile = file;
 									break;
 								}
@@ -465,7 +497,9 @@ public class BeforeAfterAction {
 
 						String[] parts = resource.getName().split("[.]");
 						if (parts != null) {
-							metaFile = new File(resource.getAbsolutePath().substring(0, resource.getAbsolutePath().lastIndexOf(".")) + "." + ending);
+							metaFile = new File(
+									resource.getAbsolutePath().substring(0, resource.getAbsolutePath().lastIndexOf("."))
+											+ "." + ending);
 							if (!metaFile.exists()) {
 								metaFile = null;
 							}
@@ -476,15 +510,19 @@ public class BeforeAfterAction {
 						try (FileInputStream str = new FileInputStream(metaFile)) {
 							props.load(str);
 						} catch (IOException e) {
-							logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath() + "', but a problem occured: " + e.getMessage() + ". ", e);
+							logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath()
+									+ "', but a problem occured: " + e.getMessage() + ". ", e);
 						}
 						for (Object key : props.keySet()) {
 							IdentifiableElement container = id.getIdentifiableElement();
 							if ((container != null) && (container instanceof SAnnotationContainer)) {
 								if (!((SAnnotationContainer) container).containsLabel(key.toString())) {
-									((SAnnotationContainer) container).createMetaAnnotation(null, key.toString(), props.getProperty(key.toString()));
+									((SAnnotationContainer) container).createMetaAnnotation(null, key.toString(),
+											props.getProperty(key.toString()));
 								} else {
-									logger.warn("Cannot add meta annotation '" + key.toString() + "', because it already exist on object '" + id.getId() + "' please check file '" + metaFile.getAbsolutePath() + "'. ");
+									logger.warn("Cannot add meta annotation '" + key.toString()
+											+ "', because it already exist on object '" + id.getId()
+											+ "' please check file '" + metaFile.getAbsolutePath() + "'. ");
 								}
 							}
 						}
@@ -497,12 +535,11 @@ public class BeforeAfterAction {
 	/**
 	 * Renames all annotations matching the search template to the new
 	 * namespace, name or value. To rename an annotation, use the following
-	 * syntax:
-	 * "old_namespace::old_name=old_value := new_namespace::new_name=new_value",
-	 * determining the name is mandatory whereas the namespace and value are
-	 * optional. For instance a pos annotation can be renamed as follows:
-	 * "salt::pos:=part-of-speech". A list of renamings must be separated with
-	 * ";".
+	 * syntax: "old_namespace::old_name=old_value :=
+	 * new_namespace::new_name=new_value", determining the name is mandatory
+	 * whereas the namespace and value are optional. For instance a pos
+	 * annotation can be renamed as follows: "salt::pos:=part-of-speech". A list
+	 * of renamings must be separated with ";".
 	 * 
 	 * @param id
 	 *            identifying the current object
@@ -516,24 +553,28 @@ public class BeforeAfterAction {
 				for (String renaming : renamings) {
 					String[] parts = renaming.split(":=");
 					if (parts.length == 2) {
-						renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), SaltUtil.unmarshalAnnotation(parts[1]).iterator().next());
+						renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(),
+								SaltUtil.unmarshalAnnotation(parts[1]).iterator().next());
 					} else if (parts.length == 1) {
 						renamingMap.put(SaltUtil.unmarshalAnnotation(parts[0]).iterator().next(), null);
 					}
 				}
-				
+
 				SDocument document = (SDocument) id.getIdentifiableElement();
 
 				// rename all annotations of nodes
-				Iterator<SAnnotationContainer> it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getNodes().iterator();
+				Iterator<SAnnotationContainer> it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document
+						.getDocumentGraph().getNodes().iterator();
 				rename(it, renamingMap);
 
 				// rename all annotations of relations
-				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document.getDocumentGraph().getRelations().iterator();
+				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document
+						.getDocumentGraph().getRelations().iterator();
 				rename(it, renamingMap);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
-				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id, e.getMessage());
+				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id,
+						e.getMessage());
 			}
 		}
 	}
@@ -544,11 +585,11 @@ public class BeforeAfterAction {
 			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {
 				Label label = node.getLabel(entry.getKey()[0], entry.getKey()[1]);
 				if (label != null) {
-					if (entry.getValue()== null){
-						//remove label
+					if (entry.getValue() == null) {
+						// remove label
 						node.removeLabel(label.getQName());
-					}
-					else if (label.getQName().equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
+					} else if (label.getQName()
+							.equals(SaltUtil.createQName(entry.getValue()[0], entry.getValue()[1]))) {
 						// if only value is different
 						label.setValue(entry.getValue()[2]);
 					} else {
@@ -569,7 +610,8 @@ public class BeforeAfterAction {
 								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], label.getValue());
 							} else {
 								// use new annotation value
-								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]);
+								node.createMetaAnnotation(entry.getValue()[0], entry.getValue()[1],
+										entry.getValue()[2]);
 							}
 						}
 					}

@@ -19,7 +19,7 @@
   	
   	<!-- Include license and notice file -->
   	<fileSet>
-  		<outputDirectory>./${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<outputDirectory>./${project.artifactId}-${project.version}</outputDirectory>
   		<includes>
   			<include>${license.file}</include>
   			<include>${notice.file}</include>
@@ -28,7 +28,7 @@
   	
   	<!-- Include resource files -->
   	<fileSet>
-  		<outputDirectory>./${project.groupId}.${project.artifactId}_${project.version}</outputDirectory>
+  		<outputDirectory>./${project.artifactId}-${project.version}</outputDirectory>
   		<directory>${basedir}/src/main/resources/</directory>
   	</fileSet>
   </fileSets>

@@ -19,6 +19,7 @@ package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -54,9 +55,23 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
 	}
 
+	@Override
+	public Double isImportable(URI corpusPath) {
+		return 0.1;
+	}
+
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingImporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingImporter")
+						.appendSegment("expected"));
+	}
+
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(Identifier)}
+	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
+	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {

@@ -33,7 +33,8 @@ import org.corpus_tools.pepper.modules.PepperModuleProperties;
  * use only. This class extends the abstract Step description of
  * {@link StepDesc} with the following:
  * <ul>
- * <li>a unique identifier representing the position of this step in workflow</li>
+ * <li>a unique identifier representing the position of this step in workflow
+ * </li>
  * </ul>
  * 
  * @author Florian Zipser
@@ -112,7 +113,7 @@ public class Step extends StepDesc {
 				((PepperExporter) getModuleController().getPepperModule()).setCorpusDesc(getCorpusDesc());
 			}
 		}
-		return(this);
+		return (this);
 	}
 
 	/**
@@ -169,9 +170,11 @@ public class Step extends StepDesc {
 	 * @return module type
 	 */
 	public MODULE_TYPE getModuleType() {
-		if ((super.getModuleType() == null) && (getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
+		if ((super.getModuleType() == null) && (getModuleController() != null)
+				&& (getModuleController().getPepperModule() != null)) {
 			synchronized (this) {
-				if ((super.getModuleType() == null) && (getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
+				if ((super.getModuleType() == null) && (getModuleController() != null)
+						&& (getModuleController().getPepperModule() != null)) {
 					setModuleType(getModuleController().getPepperModule().getModuleType());
 				}
 			}
@@ -194,6 +197,6 @@ public class Step extends StepDesc {
 		} else {
 			super.setProps(props);
 		}
-		return(this);
+		return (this);
 	}
 }

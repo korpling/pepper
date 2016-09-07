@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
@@ -62,6 +63,15 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 
 	}
 
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
+						.appendSegment("expected"));
+	}
+
 	/**
 	 * Creates a mapper to export primary texts.
 	 */
@@ -90,7 +100,8 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 						try {
 							out = new PrintWriter(outFile);
 						} catch (FileNotFoundException e) {
-							throw new PepperModuleException(this, "Cannot write primary text '" + text.getIdentifier() + "' to file '" + outFile.getAbsolutePath() + "'. ", e);
+							throw new PepperModuleException(this, "Cannot write primary text '" + text.getIdentifier()
+									+ "' to file '" + outFile.getAbsolutePath() + "'. ", e);
 						}
 						if (out != null) {
 							out.print(text.getText());

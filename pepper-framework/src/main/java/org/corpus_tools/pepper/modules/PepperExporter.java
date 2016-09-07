@@ -33,7 +33,8 @@ import org.eclipse.emf.common.util.URI;
  * A mapping task in the Pepper workflow is not a monolithic block. It consists
  * of several smaller steps.
  * <ul>
- * <li>Declare the fingerprint of the module. This is part of the constructor.</li>
+ * <li>Declare the fingerprint of the module. This is part of the constructor.
+ * </li>
  * <li>Check readyness of the module.</li>
  * <li>Export the corpus structure.</li>
  * <li>Export the document structure and create a mapper for each corpus and
@@ -41,15 +42,14 @@ import org.eclipse.emf.common.util.URI;
  * <li>clean-up</li>
  * </ul>
  * The following describes the single steps in short. To get a more detailed
- * explanation, take a look to the documentations found at <a
- * href="http://u.hu-berlin.de/saltnpepper"
- * >http://u.hu-berlin.de/saltnpepper</a>.
+ * explanation, take a look to the documentations found at
+ * <a href="http://u.hu-berlin.de/saltnpepper" >http://u.hu-berlin.de/
+ * saltnpepper</a>.
  * </p>
  * <p>
- * <h3>Declare the fingerprint</h3>
- * Initialize the module and set the modules name, its description and the
- * format description of data which are importable. This is part of the
- * constructor:
+ * <h3>Declare the fingerprint</h3> Initialize the module and set the modules
+ * name, its description and the format description of data which are
+ * importable. This is part of the constructor:
  * 
  * <pre>
  * public MyModule() {
@@ -57,18 +57,19 @@ import org.eclipse.emf.common.util.URI;
  * 	setSupplierContact(URI.createURI(&quot;Contact address of the module's supplier&quot;));
  * 	setSupplierHomepage(URI.createURI(&quot;homepage of the module&quot;));
  * 	setDesc(&quot;A short description of what is the intention of this module, for instance which formats are importable. &quot;);
- * 	this.addSupportedFormat(&quot;The name of a format which is importable e.g. txt&quot;, &quot;The version corresponding to the format name&quot;, null);
+ * 	this.addSupportedFormat(&quot;The name of a format which is importable e.g. txt&quot;,
+ * 			&quot;The version corresponding to the format name&quot;, null);
  * }
  * </pre>
  * 
  * </p>
  * <p>
- * <h3>Check readyness of the module</h3>
- * This method is invoked by the Pepper framework before the mapping process is
- * started. This method must return true, otherwise, this Pepper module could
- * not be used in a Pepper workflow. At this point problems which prevent the
- * module from being used you can report all problems to the user, for instance
- * a database connection could not be established.
+ * <h3>Check readyness of the module</h3> This method is invoked by the Pepper
+ * framework before the mapping process is started. This method must return
+ * true, otherwise, this Pepper module could not be used in a Pepper workflow.
+ * At this point problems which prevent the module from being used you can
+ * report all problems to the user, for instance a database connection could not
+ * be established.
  * 
  * <pre>
  * public boolean isReadyToStart() {
@@ -78,8 +79,9 @@ import org.eclipse.emf.common.util.URI;
  * 
  * </p>
  * 
- * </p> <h3>Export corpus structure</h3> The corpus-structure export is handled
- * in the method {@link #exportCorpusStructure()}. It is invoked on top of the
+ * </p>
+ * <h3>Export corpus structure</h3> The corpus-structure export is handled in
+ * the method {@link #exportCorpusStructure()}. It is invoked on top of the
  * method ' start() ' of the PepperExporter . For totally changing the default
  * behavior just override this method. The aim of the method
  * {@link #exportCorpusStructure()} is to fill the map of corresponding
@@ -115,10 +117,10 @@ import org.eclipse.emf.common.util.URI;
  * snippet a {@link URI} having the ending 'tab' is created for each
  * {@link SDocument}.
  * <p>
- * <h3>Export the document structure</h3>
- * In the method {@link #createPepperMapper(Identifier)} a {@link PepperMapper}
- * object needs to be initialized and returned. The {@link PepperMapper} is the
- * major part major part doing the mapping. It provides the methods
+ * <h3>Export the document structure</h3> In the method
+ * {@link #createPepperMapper(Identifier)} a {@link PepperMapper} object needs
+ * to be initialized and returned. The {@link PepperMapper} is the major part
+ * major part doing the mapping. It provides the methods
  * {@link PepperMapper#mapSCorpus()} to handle the mapping of a single
  * {@link SCorpus} object and {@link PepperMapper#mapSDocument()} to handle a
  * single {@link SDocument} object. Both methods are invoked by the Pepper
@@ -155,7 +157,8 @@ import org.eclipse.emf.common.util.URI;
  * 	};
  * 	// pass current file or folder to mapper. When using
  * 	// PepperImporter.importCorpusStructure or
- * 	// PepperExporter.exportCorpusStructure, the mapping between file or folder
+ * 	// PepperExporter.exportCorpusStructure, the mapping between file or
+ * 	// folder
  * 	// and SCorpus or SDocument was stored here
  * 	mapper.setResourceURI(getIdentifier2ResourceTable().get(sElementId));
  * 	return (mapper);
@@ -164,11 +167,11 @@ import org.eclipse.emf.common.util.URI;
  * 
  * </p>
  * <p>
- * <h3>clean-up</h3>
- * Sometimes it might be necessary to clean up after the module did the job. For
- * instance when writing an im- or an exporter it might be necessary to close
- * file streams, a db connection etc. Therefore, after the processing is done,
- * the Pepper framework calls the method described in the following snippet:
+ * <h3>clean-up</h3> Sometimes it might be necessary to clean up after the
+ * module did the job. For instance when writing an im- or an exporter it might
+ * be necessary to close file streams, a db connection etc. Therefore, after the
+ * processing is done, the Pepper framework calls the method described in the
+ * following snippet:
  * 
  * <pre>
  * public void end() {

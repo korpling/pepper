@@ -32,7 +32,6 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.PepperImporter;
-import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.SALT_TYPE;
@@ -45,14 +44,13 @@ import org.xml.sax.ext.DefaultHandler2;
 
 /**
  * <p>
- * This class is an abstract implementation of {@link PepperImporter} and cannot
- * be instantiated directly. To implement an exporter for Pepper, the easiest
- * way is to derive this class. For further information, read the javadoc of
- * {@link PepperManipulator} and the documentation of
- * <a href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * An importer in Pepper reads data from a format A and maps its data to a Salt
+ * model. An importer must implement the class {@link PepperImporter} and can
+ * extend the this class. We strongly recommend to extend this class, since it
+ * contains a lot of helpful functions and methods controlling the workflow.
  * </p>
  * 
- * @see PepperManipulator
+ * @see PepperImporter
  * 
  * @author Florian Zipser
  */
@@ -163,20 +161,25 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	public void importCorpusStructure(SCorpusGraph corpusGraph) throws PepperModuleException {
 		this.setCorpusGraph(corpusGraph);
 		if (this.getCorpusGraph() == null) {
-			throw new PepperModuleException(this, "Cannot start with importing corpus, because salt project isn't set.");
+			throw new PepperModuleException(this,
+					"Cannot start with importing corpus, because salt project isn't set.");
 		}
 		if (this.getCorpusDesc() == null) {
-			throw new PepperModuleException(this, "Cannot start with importing corpus, because no corpus definition to import is given.");
+			throw new PepperModuleException(this,
+					"Cannot start with importing corpus, because no corpus definition to import is given.");
 		}
 		if (this.getCorpusDesc().getCorpusPath() == null) {
-			throw new PepperModuleException(this, "Cannot start with importing corpus, because the path of given corpus definition is null.");
+			throw new PepperModuleException(this,
+					"Cannot start with importing corpus, because the path of given corpus definition is null.");
 		}
 		if (!this.getCorpusDesc().getCorpusPath().isFile()) {
-			throw new PepperModuleException(this, "Cannot start with importing corpus, because the given corpus path does not locate a file.");
+			throw new PepperModuleException(this,
+					"Cannot start with importing corpus, because the given corpus path does not locate a file.");
 		}
 		// clean uri in corpus path (if it is a folder and ends with/, / has to
 		// be removed)
-		if ((this.getCorpusDesc().getCorpusPath().toFileString().endsWith("/")) || (this.getCorpusDesc().getCorpusPath().toFileString().endsWith("\\"))) {
+		if ((this.getCorpusDesc().getCorpusPath().toFileString().endsWith("/"))
+				|| (this.getCorpusDesc().getCorpusPath().toFileString().endsWith("\\"))) {
 			this.getCorpusDesc().setCorpusPath(this.getCorpusDesc().getCorpusPath().trimSegments(1));
 		}
 		Boolean containsDocuments = importCorpusStructureRec(this.getCorpusDesc().getCorpusPath(), null);
@@ -196,7 +199,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			}
 		}
 		if (getIdentifier2ResourceTable().isEmpty()) {
-			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName(), this.getCorpusDesc().getCorpusPath());
+			logger.warn("[{}] No corpora and documents fount to import in '{}'. ", getName(),
+					this.getCorpusDesc().getCorpusPath());
 		}
 		if (!containsDocuments) {
 			logger.warn("[{}] No documents fount to import in '{}'. ", getName(), this.getCorpusDesc().getCorpusPath());
@@ -246,10 +250,14 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 									// if retval is true or returned value is
 									// true
 									// set retVal to true
-									Boolean containsDocuments = importCorpusStructureRec(URI.createFileURI(file.getCanonicalPath()), sCorpus);
+									Boolean containsDocuments = importCorpusStructureRec(
+											URI.createFileURI(file.getCanonicalPath()), sCorpus);
 									retVal = (retVal || containsDocuments);
 								} catch (IOException e) {
-									throw new PepperModuleException("Cannot import corpus structure, because cannot create a URI out of file '" + file + "'. ", e);
+									throw new PepperModuleException(
+											"Cannot import corpus structure, because cannot create a URI out of file '"
+													+ file + "'. ",
+											e);
 								}
 							}
 						}
@@ -261,7 +269,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 					if (parent == null) {
 						// if there is no corpus given, create one with name of
 						// document
-						parent = getCorpusGraph().createCorpus(null, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						parent = getCorpusGraph().createCorpus(null,
+								currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 
 						this.getIdentifier2ResourceTable().put(parent.getIdentifier(), currURI);
 					}
@@ -271,7 +280,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 						sDocument = getCorpusGraph().createDocument(parent, currURI.lastSegment());
 					} else {
 						// if uri is a file, cut off file ending
-						sDocument = getCorpusGraph().createDocument(parent, currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
+						sDocument = getCorpusGraph().createDocument(parent,
+								currURI.lastSegment().replace("." + currURI.fileExtension(), ""));
 					}
 					// link documentId with resource
 					this.getIdentifier2ResourceTable().put(sDocument.getIdentifier(), currURI);
@@ -291,11 +301,14 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 	@Override
 	public void start() throws PepperModuleException {
 		if (getCorpusDesc().getCorpusPath() == null) {
-			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because no corpus path was given. ");
+			throw new WorkflowException(
+					"[" + getName() + "] Cannot import corpus-structure, because no corpus path was given. ");
 		}
 		File corpusFile = new File(getCorpusDesc().getCorpusPath().toFileString());
 		if (!corpusFile.exists()) {
-			throw new WorkflowException("[" + getName() + "] Cannot import corpus-structure, because the given corpus path '" + corpusFile.getAbsolutePath() + "' does not exist. ");
+			throw new WorkflowException(
+					"[" + getName() + "] Cannot import corpus-structure, because the given corpus path '"
+							+ corpusFile.getAbsolutePath() + "' does not exist. ");
 		}
 		super.start();
 	}
@@ -346,7 +359,8 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			if (isLeafFolder(folder)) {// resource is leaf folder
 				if (this.getDocumentEndings().contains(ENDING_LEAF_FOLDER)) {
 					return (SALT_TYPE.SDOCUMENT);
-				} else if ((this.getCorpusEndings().contains(ENDING_FOLDER)) || (this.getCorpusEndings().contains(ENDING_LEAF_FOLDER))) {
+				} else if ((this.getCorpusEndings().contains(ENDING_FOLDER))
+						|| (this.getCorpusEndings().contains(ENDING_LEAF_FOLDER))) {
 					return (SALT_TYPE.SCORPUS);
 				} else
 					return (null);
@@ -362,12 +376,12 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 		else {// resource is not a folder
 			String ending = resource.fileExtension();
 			File resourceAsFile = new File(resource.toFileString());
-			
-			if(resourceAsFile.isHidden()) {
+
+			if (resourceAsFile.isHidden()) {
 				// explicitly ignore hidden files as document
 				return (null);
 			} else {
-				
+
 				if (this.getDocumentEndings().contains(ENDING_ALL_FILES)) {
 					return (SALT_TYPE.SDOCUMENT);
 				} else if (this.getDocumentEndings().contains(ending)) {

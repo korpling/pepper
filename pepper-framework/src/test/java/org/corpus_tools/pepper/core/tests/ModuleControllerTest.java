@@ -262,7 +262,8 @@ public class ModuleControllerTest {
 		List<DocumentController> expectedDocumentControllers = new Vector<DocumentController>();
 		for (SDocument sDocument : saltProject.getCorpusGraphs().get(0).getDocuments()) {
 			DocumentController controller = new DocumentControllerImpl();
-			controller.setLocation(URI.createFileURI(PepperTestUtil.getTempPath_static("moduleController").toString()+"/document.salt"));
+			controller.setLocation(URI.createFileURI(
+					PepperTestUtil.getTempPath_static("moduleController").toString() + "/document.salt"));
 			controller.setDocument(sDocument);
 			controller.addModuleControllers(getFixture());
 			expectedDocumentControllers.add(controller);

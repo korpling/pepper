@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -24,8 +25,12 @@ import java.io.IOException;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
+import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.modules.coreModules.TextExporter;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SDocument;
@@ -41,10 +46,11 @@ public class TextExporterTest extends PepperExporterTest {
 		return (TextExporter) fixture;
 	}
 
-	FormatDesc formatDesc = new FormatDesc().setFormatName(TextExporter.FORMAT_NAME).setFormatVersion(TextExporter.FORMAT_VERSION);
+	FormatDesc formatDesc = new FormatDesc().setFormatName(TextExporter.FORMAT_NAME)
+			.setFormatVersion(TextExporter.FORMAT_VERSION);
 
 	@Before
-	public void setUp() {
+	public void beforeEach() {
 		setFixture(new TextExporter());
 		addSupportedFormat(formatDesc);
 	}
@@ -56,16 +62,19 @@ public class TextExporterTest extends PepperExporterTest {
 	 */
 	@Test
 	public void test1Doc1Text() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1")).get(0);
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1"))
+				.get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
-		getFixture().setCorpusDesc(new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test1")));
+		getFixture().setCorpusDesc(
+				new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test1")));
 
 		start();
 
 		String parent = getTestResources() + "/TextExporterTest/test1";
 
-		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
 	}
 
 	/**
@@ -75,56 +84,74 @@ public class TextExporterTest extends PepperExporterTest {
 	 */
 	@Test
 	public void test3Doc1Text() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1")).get(0);
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1"))
+				.get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
 
 		SDocument sDoc2 = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc2");
 		sDoc2.setDocumentGraph(SaltFactory.createSDocumentGraph());
-		sDoc2.getDocumentGraph().createTextualDS("With SaltNPepper we provide two powerful frameworks for dealing with linguistically annotated data. SaltNPepper is an Open Source project developed at the Humboldt-Universität zu Berlin and INRIA (Institut national de recherche en informatique et automatique). In linguistic research a variety of formats exists, but no unified way of processing them. To fill that gap, we developed a meta model called Salt which abstracts over linguistic data. Based on this model, we also developed the pluggable universal converter framework Pepper to convert linguistic data between various formats. ");
+		sDoc2.getDocumentGraph().createTextualDS(
+				"With SaltNPepper we provide two powerful frameworks for dealing with linguistically annotated data. SaltNPepper is an Open Source project developed at the Humboldt-Universität zu Berlin and INRIA (Institut national de recherche en informatique et automatique). In linguistic research a variety of formats exists, but no unified way of processing them. To fill that gap, we developed a meta model called Salt which abstracts over linguistic data. Based on this model, we also developed the pluggable universal converter framework Pepper to convert linguistic data between various formats. ");
 
 		SDocument sDoc3 = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc3");
 		sDoc3.setDocumentGraph(SaltFactory.createSDocumentGraph());
-		sDoc3.getDocumentGraph().createTextualDS("Black pepper (Piper nigrum) is a flowering vine in the family Piperaceae, cultivated for its fruit, which is usually dried and used as a spice and seasoning. When dried, the fruit is known as a peppercorn. When fresh and fully mature, it is approximately 5 millimetres (0.20 in) in diameter, dark red, and, like all drupes, contains a single seed. Peppercorns, and the ground pepper derived from them, may be described simply as pepper, or more precisely as black pepper (cooked and dried unripe fruit), green pepper (dried unripe fruit) and white pepper (ripe fruit seeds).\n\nBlack pepper is native to south India, and is extensively cultivated there and elsewhere in tropical regions. Currently Vietnam is the world's largest producer and exporter of pepper, producing 34% of the world's Piper nigrum crop as of 2008.\n\nDried ground pepper has been used since antiquity for both its flavour and as a traditional medicine. Black pepper is the world's most traded spice. It is one of the most common spices added to European cuisine and its descendants. The spiciness of black pepper is due to the chemical piperine, not to be confused with the capsaicin that gives fleshy peppers theirs. It is ubiquitous in the modern world as a seasoning and is often paired with salt.");
+		sDoc3.getDocumentGraph().createTextualDS(
+				"Black pepper (Piper nigrum) is a flowering vine in the family Piperaceae, cultivated for its fruit, which is usually dried and used as a spice and seasoning. When dried, the fruit is known as a peppercorn. When fresh and fully mature, it is approximately 5 millimetres (0.20 in) in diameter, dark red, and, like all drupes, contains a single seed. Peppercorns, and the ground pepper derived from them, may be described simply as pepper, or more precisely as black pepper (cooked and dried unripe fruit), green pepper (dried unripe fruit) and white pepper (ripe fruit seeds).\n\nBlack pepper is native to south India, and is extensively cultivated there and elsewhere in tropical regions. Currently Vietnam is the world's largest producer and exporter of pepper, producing 34% of the world's Piper nigrum crop as of 2008.\n\nDried ground pepper has been used since antiquity for both its flavour and as a traditional medicine. Black pepper is the world's most traded spice. It is one of the most common spices added to European cuisine and its descendants. The spiciness of black pepper is due to the chemical piperine, not to be confused with the capsaicin that gives fleshy peppers theirs. It is ubiquitous in the modern world as a seasoning and is often paired with salt.");
 
-		getFixture().setCorpusDesc(new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test2")));
+		getFixture().setCorpusDesc(
+				new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test2")));
 
 		start();
 
 		String parent = getTestResources() + "/TextExporterTest/test2";
 
-		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
-		assertTrue(compareFiles(new File(parent + "/corp1/doc2.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2.txt")));
-		assertTrue(compareFiles(new File(parent + "/corp1/doc3.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc2.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc3.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
 	}
 
-	/**
-	 * Tests the export of multiple documents with multiple texts.
-	 * 
-	 * @throws IOException
-	 */
 	@Test
-	public void test3DocMultiText() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1")).get(0);
+	public void whenExporting3DocumentsWithMultipleTexts_thenExport4Texts() throws IOException {
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1"))
+				.get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
 
 		SDocument sDoc2 = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc2");
 		sDoc2.setDocumentGraph(SaltFactory.createSDocumentGraph());
-		sDoc2.getDocumentGraph().createTextualDS("With SaltNPepper we provide two powerful frameworks for dealing with linguistically annotated data. SaltNPepper is an Open Source project developed at the Humboldt-Universität zu Berlin and INRIA (Institut national de recherche en informatique et automatique). In linguistic research a variety of formats exists, but no unified way of processing them. To fill that gap, we developed a meta model called Salt which abstracts over linguistic data. Based on this model, we also developed the pluggable universal converter framework Pepper to convert linguistic data between various formats. ");
+		sDoc2.getDocumentGraph().createTextualDS(
+				"With SaltNPepper we provide two powerful frameworks for dealing with linguistically annotated data. SaltNPepper is an Open Source project developed at the Humboldt-Universität zu Berlin and INRIA (Institut national de recherche en informatique et automatique). In linguistic research a variety of formats exists, but no unified way of processing them. To fill that gap, we developed a meta model called Salt which abstracts over linguistic data. Based on this model, we also developed the pluggable universal converter framework Pepper to convert linguistic data between various formats. ");
 		sDoc2.getDocumentGraph().createTextualDS("This is text number 2.  ");
 
 		SDocument sDoc3 = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc3");
 		sDoc3.setDocumentGraph(SaltFactory.createSDocumentGraph());
-		sDoc3.getDocumentGraph().createTextualDS("Black pepper (Piper nigrum) is a flowering vine in the family Piperaceae, cultivated for its fruit, which is usually dried and used as a spice and seasoning. When dried, the fruit is known as a peppercorn. When fresh and fully mature, it is approximately 5 millimetres (0.20 in) in diameter, dark red, and, like all drupes, contains a single seed. Peppercorns, and the ground pepper derived from them, may be described simply as pepper, or more precisely as black pepper (cooked and dried unripe fruit), green pepper (dried unripe fruit) and white pepper (ripe fruit seeds).\n\nBlack pepper is native to south India, and is extensively cultivated there and elsewhere in tropical regions. Currently Vietnam is the world's largest producer and exporter of pepper, producing 34% of the world's Piper nigrum crop as of 2008.\n\nDried ground pepper has been used since antiquity for both its flavour and as a traditional medicine. Black pepper is the world's most traded spice. It is one of the most common spices added to European cuisine and its descendants. The spiciness of black pepper is due to the chemical piperine, not to be confused with the capsaicin that gives fleshy peppers theirs. It is ubiquitous in the modern world as a seasoning and is often paired with salt.");
+		sDoc3.getDocumentGraph().createTextualDS(
+				"Black pepper (Piper nigrum) is a flowering vine in the family Piperaceae, cultivated for its fruit, which is usually dried and used as a spice and seasoning. When dried, the fruit is known as a peppercorn. When fresh and fully mature, it is approximately 5 millimetres (0.20 in) in diameter, dark red, and, like all drupes, contains a single seed. Peppercorns, and the ground pepper derived from them, may be described simply as pepper, or more precisely as black pepper (cooked and dried unripe fruit), green pepper (dried unripe fruit) and white pepper (ripe fruit seeds).\n\nBlack pepper is native to south India, and is extensively cultivated there and elsewhere in tropical regions. Currently Vietnam is the world's largest producer and exporter of pepper, producing 34% of the world's Piper nigrum crop as of 2008.\n\nDried ground pepper has been used since antiquity for both its flavour and as a traditional medicine. Black pepper is the world's most traded spice. It is one of the most common spices added to European cuisine and its descendants. The spiciness of black pepper is due to the chemical piperine, not to be confused with the capsaicin that gives fleshy peppers theirs. It is ubiquitous in the modern world as a seasoning and is often paired with salt.");
 
-		getFixture().setCorpusDesc(new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test3")));
+		getFixture().setCorpusDesc(
+				new CorpusDesc().setFormatDesc(formatDesc).setCorpusPath(getTempURI("TextExporterTest/test3")));
 		start();
 		String parent = getTestResources() + "/TextExporterTest/test3";
 
-		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
-		assertTrue(compareFiles(new File(parent + "/corp1/doc2_sText1.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText1.txt")));
-		assertTrue(compareFiles(new File(parent + "/corp1/doc2_sText2.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText2.txt")));
-		assertTrue(compareFiles(new File(parent + "/corp1/doc3.txt"), new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc1.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc1.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc2_sText1.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText1.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc2_sText2.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText2.txt")));
+		assertTrue(compareFiles(new File(parent + "/corp1/doc3.txt"),
+				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
+	}
+
+	@Test
+	public void whenSelfTestingModule_thenResultShouldBeTrue() {
+		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
+
+		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
+		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
 	}
 }

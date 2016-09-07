@@ -29,8 +29,10 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	public static final String PROP_FILE_ENDING = "fileEnding";
 
 	public DOTManipulatorProperties() {
-		this.addProperty(new PepperModuleProperty<String>(PROP_OUTPUTFILE, String.class, "The location to where the output shall be written to as File object.", true));
-		this.addProperty(new PepperModuleProperty<String>(PROP_FILE_ENDING, String.class, "The file ending of dot files.", SaltUtil.FILE_ENDING_DOT, false));
+		this.addProperty(new PepperModuleProperty<String>(PROP_OUTPUTFILE, String.class,
+				"The location to where the output shall be written to as File object.", true));
+		this.addProperty(new PepperModuleProperty<String>(PROP_FILE_ENDING, String.class,
+				"The file ending of dot files.", SaltUtil.FILE_ENDING_DOT, false));
 	}
 
 	/**
@@ -40,10 +42,12 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	 * @return
 	 */
 	public File getOutputFile() {
-		File retVal = null;
-		PepperModuleProperty<String> prop = (PepperModuleProperty<String>) this.getProperty(PROP_OUTPUTFILE);
-		retVal = new File(prop.getValue());
-		return (retVal);
+		final PepperModuleProperty<String> prop = (PepperModuleProperty<String>) this.getProperty(PROP_OUTPUTFILE);
+		final String fileName = prop.getValue();
+		if (fileName != null && !fileName.isEmpty()) {
+			return (new File(fileName));
+		}
+		return null;
 	}
 
 	/**

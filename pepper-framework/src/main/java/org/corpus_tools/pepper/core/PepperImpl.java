@@ -31,12 +31,12 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.common.JOB_STATUS;
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
-import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.impl.CorpusPathResolver;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
 
 @Component(name = "PepperImpl", immediate = true)
 public class PepperImpl implements Pepper {
-	private static final Logger logger = LoggerFactory.getLogger(PepperImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/** Configuration object for Pepper **/
 	private PepperConfiguration configuration = null;
@@ -84,7 +84,8 @@ public class PepperImpl implements Pepper {
 			throw new FileNotFoundException("Cannot find importers for corpus path, because corpus path is null.  ");
 		}
 		if (getModuleResolver() == null) {
-			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath + "', because the module resolver is null. ");
+			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath
+					+ "', because the module resolver is null. ");
 		}
 
 		final Set<String> retVal = new HashSet<>();
@@ -95,7 +96,7 @@ public class PepperImpl implements Pepper {
 				((PepperImporterImpl) importer).setCorpusPathResolver(corpusPathResolver);
 			}
 			final Double rate = importer.isImportable(corpusPath);
-			if (rate!= null && rate > 0) {
+			if (rate != null && rate > 0) {
 				retVal.add(importer.getName());
 			}
 		}
@@ -314,6 +315,26 @@ public class PepperImpl implements Pepper {
 
 	// ===================================== end: wirering module resolver via
 	// OSGi
+	/**
+	 * Returns all registered {@link PepperModule}s. If no module is registered,
+	 * returns an empty list.
+	 * 
+	 * @return
+	 */
+	private Collection<PepperModule> getAllRegisteredModules() {
+		Collection<PepperModule> modules = new ArrayList<>();
+		if (getModuleResolver() != null) {
+			modules.addAll(getModuleResolver().getPepperImporters());
+			modules.addAll(getModuleResolver().getPepperManipulators());
+			modules.addAll(getModuleResolver().getPepperExporters());
+		}
+		return modules;
+	}
+
+	@Override
+	public Collection<ModuleFitness> checkFitness() {
+		return new ModuleFitnessChecker(this).checkFitness(getAllRegisteredModules());
+	}
 
 	@Override
 	public Collection<String> selfTest() {

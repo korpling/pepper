@@ -50,11 +50,19 @@ public class PepperModuleException extends AbstractPepperModuleException {
 	}
 
 	public PepperModuleException(PepperModule pepperModule, String s) {
-		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s);
+		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", "
+				+ (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION")
+				+ "', please contact the module supplier"
+				+ (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". "
+				+ s);
 	}
 
 	public PepperModuleException(PepperModule pepperModule, String s, Throwable ex) {
-		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", " + (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION") + "', please contact the module supplier" + (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s, ex);
+		super("Error in Pepper module '" + (pepperModule.getName() != null ? pepperModule.getName() : "NO_NAME") + ", "
+				+ (pepperModule.getVersion() != null ? pepperModule.getVersion() : "NO_VERSION")
+				+ "', please contact the module supplier"
+				+ (pepperModule.getSupplierContact() != null ? " " + pepperModule.getSupplierContact() : "") + ". " + s,
+				ex);
 	}
 
 	public PepperModuleException(PepperMapper pepperMapper, String s) {

@@ -139,7 +139,8 @@ public class DocumentBus {
 		if ((inputModuleControllerIds == null) || (inputModuleControllerIds.isEmpty()))
 			throw new PepperFWException("Cannot create a document bus with an empty list of input module controllers.");
 		if ((outputModuleControllerIds == null) || (outputModuleControllerIds.isEmpty()))
-			throw new PepperFWException("Cannot create a document bus with an empty list of output module controllers.");
+			throw new PepperFWException(
+					"Cannot create a document bus with an empty list of output module controllers.");
 
 		this.inputModuleControllerIds = new Vector<String>();
 		for (String inputControllerId : inputModuleControllerIds) {
@@ -338,9 +339,12 @@ public class DocumentBus {
 	 */
 	public void finish(String inputControllerId) {
 		if ((inputControllerId == null) || (inputControllerId.isEmpty()))
-			throw new PepperFWException("Cannot finish PepperModuleController for document queue, because given id is null.");
+			throw new PepperFWException(
+					"Cannot finish PepperModuleController for document queue, because given id is null.");
 		if (!inputModuleControllerIds.contains(inputControllerId))
-			throw new PepperFWException("Cannot finish PepperModuleController for document queue, because  to document queue, because the given id '" + inputControllerId + "' is not contained in input list of document queue.");
+			throw new PepperFWException(
+					"Cannot finish PepperModuleController for document queue, because  to document queue, because the given id '"
+							+ inputControllerId + "' is not contained in input list of document queue.");
 
 		lock.lock();
 		try {
@@ -378,7 +382,9 @@ public class DocumentBus {
 		if (documentController == null)
 			throw new PepperFWException("Cannot add a null value as DocumentController into documentBus.");
 		if (logger.isDebugEnabled()) {
-			logger.debug("[Pepper] new document '{}' added to document bus. Following documents are waiting in document bus '{}': '{}'... ", documentController.getGlobalId(), getId(), getDocumentBus().values());
+			logger.debug(
+					"[Pepper] new document '{}' added to document bus. Following documents are waiting in document bus '{}': '{}'... ",
+					documentController.getGlobalId(), getId(), getDocumentBus().values());
 		}
 
 		// TODO if possible send documents to sleep, before waiting for lock,
@@ -406,7 +412,8 @@ public class DocumentBus {
 		lock.lock();
 		try {
 			if (logger.isTraceEnabled()) {
-				logger.trace("[Pepper] blocking lock for new document '{}' in document bus {}. ", documentController.getGlobalId(), getId());
+				logger.trace("[Pepper] blocking lock for new document '{}' in document bus {}. ",
+						documentController.getGlobalId(), getId());
 			}
 			// add new document controller to all queues
 			Collection<ConcurrentLinkedQueue<DocumentController>> queues = getDocumentBus().values();
@@ -438,7 +445,8 @@ public class DocumentBus {
 		} finally {
 			lock.unlock();
 			if (logger.isTraceEnabled()) {
-				logger.trace("[Pepper] unlocked lock for new document '{}' in document bus '{}'. ", documentController.getGlobalId(), getId());
+				logger.trace("[Pepper] unlocked lock for new document '{}' in document bus '{}'. ",
+						documentController.getGlobalId(), getId());
 			}
 		}
 	}
@@ -503,19 +511,28 @@ public class DocumentBus {
 	public DocumentController pop(String outputControllerId, boolean ignorePermissionForDocument) {
 		DocumentController documentController = null;
 		if (logger.isDebugEnabled()) {
-			logger.debug("[Pepper] remove document for controller {} from document bus. Following documents are still waiting in bus: '{}'... ", outputControllerId, getDocumentBus().values());
+			logger.debug(
+					"[Pepper] remove document for controller {} from document bus. Following documents are still waiting in bus: '{}'... ",
+					outputControllerId, getDocumentBus().values());
 		}
 		lock.lock();
 		try {
-			logger.trace("[Pepper] blocking lock for remove document for controller {} in document bus {}. ", outputControllerId, getId());
+			logger.trace("[Pepper] blocking lock for remove document for controller {} in document bus {}. ",
+					outputControllerId, getId());
 			ConcurrentLinkedQueue<DocumentController> queue = getDocumentBus().get(outputControllerId);
 			if (queue == null) {
-				throw new PepperFWException("Document bus '" + getId() + "' cannot pop a document controller, because there is no entry for module controller '" + outputControllerId + "'.");
+				throw new PepperFWException("Document bus '" + getId()
+						+ "' cannot pop a document controller, because there is no entry for module controller '"
+						+ outputControllerId + "'.");
 			}
 			if ((queue.size() == 0) && (!this.isFinished())) {
-				logger.trace("[Pepper] start waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ", getId(), outputControllerId);
+				logger.trace(
+						"[Pepper] start waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ",
+						getId(), outputControllerId);
 				waitUntilAllDocumentsArePut.await();
-				logger.trace("[Pepper] ended waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ", getId(), outputControllerId);
+				logger.trace(
+						"[Pepper] ended waiting for condition 'waitUntilAllDocumentsArePut' in DocumentBus {} in pop({}). ",
+						getId(), outputControllerId);
 			}
 
 			documentController = queue.poll();
@@ -523,18 +540,25 @@ public class DocumentBus {
 			if (!ignorePermissionForDocument) {
 				if ((documentController != null) && (documentController.isAsleep())) {
 					if (getPepperJob() != null) {
-						logger.debug("[Pepper] waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ", (documentController.getGlobalId() != null) ? documentController.getGlobalId() : "NULL", outputControllerId, getId());
+						logger.debug(
+								"[Pepper] waiting for permission to wake up document '{}' for module '{}' in document bus '{}'... ",
+								(documentController.getGlobalId() != null) ? documentController.getGlobalId() : "NULL",
+								outputControllerId, getId());
 						getPepperJob().getPermissionForProcessDoument(documentController);
 					}
 					documentController.awake();
 				}
 			}
 		} catch (InterruptedException e) {
-			throw new PepperFWException("Something went wrong, when waiting for lock 'waitUntilAllDocumentsArePut'.", e);
+			throw new PepperFWException("Something went wrong, when waiting for lock 'waitUntilAllDocumentsArePut'.",
+					e);
 		} finally {
 			lock.unlock();
 			if (logger.isTraceEnabled()) {
-				logger.trace("[Pepper] unlocked lock for remove document for controller {} in document bus '{}'and return document '{}'. ", outputControllerId, getId(), (documentController != null) ? documentController.getGlobalId() : "NULL");
+				logger.trace(
+						"[Pepper] unlocked lock for remove document for controller {} in document bus '{}'and return document '{}'. ",
+						outputControllerId, getId(),
+						(documentController != null) ? documentController.getGlobalId() : "NULL");
 			}
 		}
 		return (documentController);

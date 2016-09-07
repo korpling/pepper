@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperMapper;
@@ -48,7 +49,8 @@ public class SaltValidator extends PepperManipulatorImpl {
 	private static final Logger logger = LoggerFactory.getLogger(SaltValidator.class);
 
 	private static final String MSG_PREFIX = "[validator]: ";
-	private static final String MSG_HELP = "You can switch on property '" + SaltValidatorProperties.PROP_CLEAN + "' to try to clean the model, but take care, this could also mean to remove model objects.";
+	private static final String MSG_HELP = "You can switch on property '" + SaltValidatorProperties.PROP_CLEAN
+			+ "' to try to clean the model, but take care, this could also mean to remove model objects.";
 
 	public SaltValidator() {
 		super();
@@ -63,6 +65,15 @@ public class SaltValidator extends PepperManipulatorImpl {
 	public PepperMapper createPepperMapper(Identifier sElementId) {
 		PepperMapper mapper = new ValidatorMapper();
 		return (mapper);
+	}
+
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltValidator")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltValidator")
+						.appendSegment("expected"));
 	}
 
 	/**
@@ -85,12 +96,14 @@ public class SaltValidator extends PepperManipulatorImpl {
 				for (SRelation relation : getCorpus().getGraph().getOutRelations(getCorpus().getId())) {
 					if (relation.getTarget() instanceof SDocument) {
 						if ((isLeafCorpus != null) && (!isLeafCorpus)) {
-							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId() + "' contains corpora and documents as well.");
+							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId()
+									+ "' contains corpora and documents as well.");
 						}
 						isLeafCorpus = true;
 					} else if (relation.getTarget() instanceof SCorpus) {
 						if ((isLeafCorpus != null) && (isLeafCorpus)) {
-							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId() + "' contains corpora and documents as well.");
+							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId()
+									+ "' contains corpora and documents as well.");
 						}
 						isLeafCorpus = true;
 					}
@@ -135,11 +148,13 @@ public class SaltValidator extends PepperManipulatorImpl {
 						invalidities.add(msg);
 					}
 
-					if ((rel.getSource() != null) && (rel.getTarget() != null) && (rel.getSource().equals(rel.getTarget()))) {
+					if ((rel.getSource() != null) && (rel.getTarget() != null)
+							&& (rel.getSource().equals(rel.getTarget()))) {
 						// source and target of relation point to the same node
 						if (((SaltValidatorProperties) getProperties()).isSelfRelation()) {
 							getDocument().getDocumentGraph().removeRelation(rel);
-							invalidities.add("[DELETED] The source and target of relation '" + rel.getId() + "' points to the same node '" + rel.getSource().getId() + "'. ");
+							invalidities.add("[DELETED] The source and target of relation '" + rel.getId()
+									+ "' points to the same node '" + rel.getSource().getId() + "'. ");
 						}
 					}
 
@@ -148,29 +163,39 @@ public class SaltValidator extends PepperManipulatorImpl {
 						if (textRel.getStart() == null) {
 							// relation has no start value
 
-							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' has no sStart value.");
+							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getId()
+									+ "' has no sStart value.");
 						}
 						if (textRel.getEnd() == null) {
 							// relation has no end value
 
-							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' has no sEnd value.");
+							invalidities.add("The " + STextualRelation.class.getSimpleName() + " '" + rel.getId()
+									+ "' has no sEnd value.");
 						}
 						if (textRel.getTarget().getText() == null) {
 							// relation target has no text
 
-							invalidities.add("The " + STextualDS.class.getSimpleName() + " '" + textRel.getTarget().getId() + "' has contains no sText value, but there are '" + STextualRelation.class.getSimpleName() + "' relations refering it.");
+							invalidities.add("The " + STextualDS.class.getSimpleName() + " '"
+									+ textRel.getTarget().getId() + "' has contains no sText value, but there are '"
+									+ STextualRelation.class.getSimpleName() + "' relations refering it.");
 						}
 						if ((textRel.getStart() > textRel.getTarget().getText().length()) || (textRel.getStart() < 0)) {
 							// end value is bigger than size of text or is less
 							// than o
 
-							invalidities.add("The sStart value '" + textRel.getStart() + "' of " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' is not in range of target text. It's length is '" + textRel.getTarget().getText().length() + "'.");
+							invalidities.add("The sStart value '" + textRel.getStart() + "' of "
+									+ STextualRelation.class.getSimpleName() + " '" + rel.getId()
+									+ "' is not in range of target text. It's length is '"
+									+ textRel.getTarget().getText().length() + "'.");
 						}
 						if ((textRel.getEnd() > textRel.getTarget().getText().length()) || (textRel.getEnd() < 0)) {
 							// end value is bigger than size of text or is less
 							// than o
 
-							invalidities.add("The sEnd value '" + textRel.getEnd() + "' of " + STextualRelation.class.getSimpleName() + " '" + rel.getId() + "' is not in range of target text. It's length is '" + textRel.getTarget().getText().length() + "'.");
+							invalidities.add("The sEnd value '" + textRel.getEnd() + "' of "
+									+ STextualRelation.class.getSimpleName() + " '" + rel.getId()
+									+ "' is not in range of target text. It's length is '"
+									+ textRel.getTarget().getText().length() + "'.");
 						}
 					}
 				}
@@ -180,7 +205,8 @@ public class SaltValidator extends PepperManipulatorImpl {
 				if (!((SaltValidatorProperties) getProperties()).isClean()) {
 					msg = msg + MSG_HELP;
 				}
-				msg = msg + "The following invalidities have been found in document-structure '" + getDocument().getId() + "':";
+				msg = msg + "The following invalidities have been found in document-structure '" + getDocument().getId()
+						+ "':";
 				logger.info(msg);
 				for (String invalidity : invalidities) {
 					logger.info("\t" + invalidity);
