@@ -402,7 +402,7 @@ public class ConvertWizardConsole {
 				} else {
 					out.println("\tchosen importer: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+//					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 
@@ -414,7 +414,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
 						propLegend = null;
@@ -424,10 +424,12 @@ public class ConvertWizardConsole {
 			} else if (state == 2) {
 				// choose properties
 
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
@@ -493,7 +495,7 @@ public class ConvertWizardConsole {
 				} else {
 					out.println("\tchosen manipulator: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+//					pepperJob.addStepDesc(stepDesc);
 
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
@@ -505,7 +507,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
 						propLegend = null;
@@ -513,11 +515,13 @@ public class ConvertWizardConsole {
 					}
 				}
 			} else if (state == 2) {
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 1;
 					prompt = promptOld;
 					out.println(legend);
 					out.println(MSG_MAN);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end while
@@ -618,7 +622,7 @@ public class ConvertWizardConsole {
 				} else {
 					out.println("\tchosen exporter: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+//					pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 
@@ -630,7 +634,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_EX_CORPUS);
 						propLegend = null;
@@ -640,10 +644,12 @@ public class ConvertWizardConsole {
 			} else if (state == 2) {
 				// choose properties
 
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
@@ -821,7 +827,7 @@ public class ConvertWizardConsole {
 	}
 
 	/**
-	 * Reads a property from the given inpu and returns true, if the input was
+	 * Reads a property from the given input and returns true, if the input was
 	 * not empty and false otherwise.
 	 * 
 	 * @param input
@@ -831,7 +837,7 @@ public class ConvertWizardConsole {
 	 *            added
 	 * @return true if input was not empty
 	 */
-	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc) {
+	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc, PepperJob pepperJob) {
 		if ((input != null) && (!input.isEmpty())) {
 			int eqPosition = StringUtils.indexOf(input, "=");
 			if (eqPosition > 0) {

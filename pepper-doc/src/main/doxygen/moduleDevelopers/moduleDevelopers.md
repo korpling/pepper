@@ -27,6 +27,10 @@ For testing, Pepper uses the JUnit framework (http://junit.org) and provides a t
 
 * \subpage testing
 
+In oder to use third-party dependencies, and activate them for use during the development and debugging process, read 
+
+* \subpage dependencies
+
 When you are done with the implementation work of your module you should deliver it in a way which Pepper can easily plug in into the platform. Therefore Pepper provides a Maven assembly goal to do so.  
 
 * \subpage bundle

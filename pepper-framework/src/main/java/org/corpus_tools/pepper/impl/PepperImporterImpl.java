@@ -485,7 +485,7 @@ public abstract class PepperImporterImpl extends PepperModuleImpl implements Pep
 			try {
 				localPathResolver = new CorpusPathResolver(corpusPath);
 			} catch (FileNotFoundException e) {
-				new PepperModuleException("Cannot sample files for isImportable. ", e);
+				throw new PepperModuleException("Cannot sample files for isImportable. ", e);
 			}
 		}
 		return localPathResolver.sampleFileContent(fileEndings);
