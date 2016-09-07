@@ -455,8 +455,10 @@ boolean&#160;</td><td class="memItemRight" valign="bottom"><b>isMultithreaded</b
 <div class="textblock"><p>This is a <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_exporter.html">PepperExporter</a> which exports a salt model to the SaltXML format. </p>
 <p>This module stores every document in a separate file. These files then contains the document structure. The corpus structure is stored in a single file called saltProject + SALT_FILE_ENDING. The value SALT_FILE_ENDING can be got by method getSaltFileEnding(). <br />
  <br />
- When method <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_salt_x_m_l_exporter.html#ad78b5b9f8bbde1a5057b8d26a2674094" title="Creates a Resource for the SaltProject to persist contained objects like SDocumentGraph etc...">start()</a> is called, the saltProject will be attached to a resource with the uri "this.getCorpusDefinition().getCorpusPath().toFileString() +"/"+ " saltProject"+ SALT_ENDING". Before it can be stored, all documents have to be processed. <br />
- The module now waits for documents which can be exported. When a document finished all previous modules, it can be exported. This means, that 1) every document will also get a resource with the uri "this.getCorpusDefinition().getCorpusPath().toFileString() + " /" sElementId.getSElementPath()+ SALT_FILE_ENDING". And 2) the document structure will be stored to file. <br />
+ When method <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_salt_x_m_l_exporter.html#ad78b5b9f8bbde1a5057b8d26a2674094" title="Creates a Resource for the SaltProject to persist contained objects like SDocumentGraph etc...">start()</a> is called, the saltProject will be attached to a resource with the uri "this.getCorpusDefinition().getCorpusPath().toFileString() +"/"+
+" saltProject"+ SALT_ENDING". Before it can be stored, all documents have to be processed. <br />
+ The module now waits for documents which can be exported. When a document finished all previous modules, it can be exported. This means, that 1) every document will also get a resource with the uri "this.getCorpusDefinition().getCorpusPath().toFileString() + " /"
+sElementId.getSElementPath()+ SALT_FILE_ENDING". And 2) the document structure will be stored to file. <br />
  After all was done, the saltProject will be exported.</p>
 <dl class="section author"><dt>Author</dt><dd>Florian Zipser </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
@@ -508,7 +510,7 @@ boolean&#160;</td><td class="memItemRight" valign="bottom"><b>isMultithreaded</b
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1modules.html">modules</a></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules.html">coreModules</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_salt_x_m_l_exporter.html">SaltXMLExporter</a></li>
-    <li class="footer">Generated on Wed Sep 7 2016 10:28:58 for Pepper by
+    <li class="footer">Generated on Wed Sep 7 2016 22:20:30 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
