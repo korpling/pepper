@@ -29,10 +29,10 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 	public PepperModuleDescMarshallable(PepperModuleDesc pepperModuleDesc){
 		this();
 		this.desc = pepperModuleDesc.getDesc();
-		this.homepageURI = pepperModuleDesc.getSupplierHomepage().toString();
+		this.homepageURI = pepperModuleDesc.getSupplierHomepage()==null? "" : pepperModuleDesc.getSupplierHomepage().toString();
 		this.moduleType = pepperModuleDesc.getModuleType();
 		this.name = pepperModuleDesc.getName();
-		this.supplierContactURI = pepperModuleDesc.getSupplierContact().toString();
+		this.supplierContactURI = pepperModuleDesc.getSupplierContact()==null? "" : pepperModuleDesc.getSupplierContact().toString();
 		this.version = pepperModuleDesc.getVersion();
 		List<FormatDesc> supportedFormats = pepperModuleDesc.getSupportedFormats();
 		for (FormatDesc fDesc : supportedFormats){

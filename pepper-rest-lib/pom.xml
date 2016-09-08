@@ -18,7 +18,7 @@
   	<dependency>
   		<groupId>com.eclipsesource.jaxrs</groupId>
   		<artifactId>jersey-all</artifactId>
-  		<version>2.18</version>
+  		<version>2.22</version> <!--  used to be 2.18 -->
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
@@ -89,10 +89,16 @@
   	</dependency>
   	<dependency>
   		<groupId>javax.servlet</groupId>
-  		<artifactId>servlet-api</artifactId>
-  		<version>3.0-alpha-1</version>
+  		<artifactId>javax.servlet-api</artifactId>
+  		<version>3.1.0</version>
   		<scope>provided</scope>
   	</dependency>
+	<dependency>
+		<groupId>javax.ws.rs</groupId>
+		<artifactId>javax.ws.rs-api</artifactId>
+		<version>2.0.1</version>
+		<scope>compile</scope>
+	</dependency>
   </dependencies>
   <build>
     <plugins>      
@@ -117,14 +123,20 @@
             <Bundle-Name>${project.artifactId}</Bundle-Name>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Version>${project.version}</Bundle-Version>
-            <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>                
+            <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>                            
             <Import-Package>
-            !com.sun.*, !javax.jms*, !javax.resource*, !javax.mail.internet*, !javax.enterprise*, !oracle.dms*, !oracle.jdbc*, !oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*, !oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, 
-            <!-- org.glassfish.jersey.servlet, org.glassfish.jersey.server, * -->             
+            !com.sun.*, !javax.jms*, !javax.resource*, !javax.mail.internet*, !javax.enterprise*, !oracle.dms*, !oracle.jdbc*, 
+            !oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*, !oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, 
+            !jersey.repackaged.*, !com.ibm*, !javax.annotation*, !javax.inject*, !javax.servlet*, !org.jvnet*,
+             <!--org.glassfish.jersey.servlet, org.glassfish.jersey.server-->, 
+             !org.glassfish*, !javax.ws.rs*, !org.glassfish.jersey.internal*, !org.glassfish.jersey.uri*, !org.glassfish.jersey.spi*, !org.glassfish.jersey.process*, !org.glassfish.jersey.model.*, 
+             !org.glassfish.jersey.filter*, !org.glassfish.jersey*, !org.corpus_tools.pepper.core*, *             
             </Import-Package>                
             <Export-Package>            
-            org.corpus_tools.pepper.service.*, org.eclipse.persistence.*,
-            org.glassfish.jersey.client*, org.glassfish.jersey.jackson*, org.glassfish.jersey.message*, com.fasterxml.jackson*, org.glassfish.jersey.oauth1.signature* <!-- packages to make gui start -->
+            org.corpus_tools.pepper.service.*, org.eclipse.persistence.*, org.glassfish.jersey.client*, org.glassfish.jersey.jackson*, org.glassfish.jersey.message*, 
+            com.fasterxml.jackson*, org.glassfish.jersey.oauth1.signature*, org.glassfish.jersey.server, org.glassfish.jersey.servlet, org.glassfish.jersey.containers,
+            <!-- packages to make gui start -->
+            javax.servlet.http, javax.ws.rs, javax.ws.rs.*<!-- to make service run -->
             </Export-Package>
             <!--Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
             <Include-Resource>{maven-resources}</Include-Resource-->         

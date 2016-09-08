@@ -16,12 +16,6 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<!--dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-REST-service</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
-		</dependency-->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
@@ -48,9 +42,19 @@
 			<version>${com.google.gwt.version}</version>
 		</dependency>
 		<dependency>
+		    <groupId>com.google.gwt</groupId>
+		    <artifactId>gwt-elemental</artifactId>
+		    <version>${com.google.gwt.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.jsoup</groupId>
+    		<artifactId>jsoup</artifactId>
+    		<version>1.7.2</version>
 		</dependency>
 	</dependencies>
 	<packaging>bundle</packaging>	
@@ -84,10 +88,13 @@
 		            <Embed-Dependency>vaadin.*</Embed-Dependency>
 		            <Import-Package> 
 		            org.glassfish.jersey.client*, org.glassfish.jersey.jackson*, org.glassfish.jersey.message*, com.fasterxml.jackson*, org.glassfish.jersey.oauth1.signature*, <!-- packages to make gui start -->
-		            !com.google.appengine.api.*,!com.google.apphosting*,!com.google.gson*, !com.google.gwt.thirdparty* *
+		            !com.google.appengine.api.*,!com.google.apphosting*,!com.google.gson*, !com.google.gwt.thirdparty*, !com.ibm*, !com.liferay*, !com.steadystate*, !com.thoughtworks*, !elemental*, !javax.portlet*,
+		            !net.sourceforge*, !org.apache.tapestry*, !org.apache.tools*, !org.apache.xalan*, !org.apache.xerces*, !org.apache.*, !org.atmosphere.*, !org.cyberneko*, !org.eclipse.jdt*, 
+		            !org.eclipse.jetty.*, !org.hibernate*, !org.jsoup*, !org.kohsuke*, !org.w3c*, !sun*, com.vaadin.server, com.vaadin*, *
 		            </Import-Package>
 		            <Export-Package>
-		            com.vaadin*, com.google*, com.gargoylesoftware*, javax.servlet.http, javax.servlet*, org.corpus_tools.pepper.gui.client
+		            com.vaadin.server, com.vaadin*, com.google*, com.gargoylesoftware*, javax.servlet*, org.corpus_tools.pepper.gui.client,
+		            elemental.json*, javax.servlet.http, org.jsoup*, org.jsoup.nodes*
 		            </Export-Package>      
 		          </instructions>
 		        </configuration>

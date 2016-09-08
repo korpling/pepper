@@ -2,5 +2,11 @@
     <wb-module deploy-name="pepper-RESTService">
         <wb-resource deploy-path="/" source-path="/"/>
         <wb-resource deploy-path="/" source-path="/resources"/>
+        <dependent-module archiveName="pepper-framework-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-framework/pepper-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pepper-REST-lib-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-REST-lib/pepper-REST-lib">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

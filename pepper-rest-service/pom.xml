@@ -20,13 +20,11 @@
 			<artifactId>pepper-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>pepper-REST-lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		 -->
 		<dependency>
 			<groupId>com.eclipsesource.jaxrs</groupId>
 			<artifactId>jersey-all</artifactId>
@@ -111,12 +109,12 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>3.0-alpha-1</version>
+			<version>[3.0-alpha-1,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
-		<plugins>
+		<plugins><!-- MAVEN BUNDLE -->
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -126,7 +124,7 @@
 					<execution>
 						<phase>process-classes</phase>
 						<goals>
-							<goal>bundle</goal>
+							<goal>manifest</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -140,21 +138,31 @@
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
 						<Import-Package>
-							!com.sun.*, !javax.jms*, !javax.resource*, !javax.mail.internet*,
+							!com.sun.*, !sun.misc, !javax.jms*, !javax.resource*, !javax.mail.internet*,
 							!javax.enterprise*, !oracle.dms*, !oracle.jdbc*,
 							!oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*,
 							!oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, <!-- 
 								packages to make context factory available -->
-							org.glassfish.jersey.servlet, org.glassfish.jersey.server, <!-- packages 
-								to make service run -->
-							*
+							org.glassfish.jersey.message*, !org.glassfish.jersey.internal.*, 
+							!org.glassfish.jersey.process.internal, !org.glassfish.jersey.process,
+							!org.glassfish.jersey.server, !org.glassfish.jersey.server.*, !org.glassfish.jersey.server.internal, !org.glassfish.jersey.server.internal.*,
+							!org.glassfish.jersey.servlet.internal, !org.glassfish.jersey.servlet.internal.*, !org.glassfish.jersey.uri, !org.glassfish.jersey.uri.*,
+							!org.glassfish.jersey.spi, !org.glassfish.jersey, !org.glassfish.jersey.model.internal, !org.glassfish.jersey.model, !org.glassfish.jersey.servlet.spi,
+							javax.inject.*, <!-- packages to make service run -->
+							javax.servlet.http, javax.servlet, javax.ws.rs, !javax.ws.rs.container, !com.google.common.io,
 							<!-- packages to make gui start -->
+							 *
 						</Import-Package>
 						<Export-Package>
-							org.corpus_tools.pepper.service.*, org.eclipse.persistence.* <!-- packages 
+							org.corpus_tools.pepper.service.*, org.eclipse.persistence.*, javax.servlet, <!-- packages 
 								to make context factory available -->
+							org.glassfish.jersey.servlet, org.glassfish.jersey.server.spi, org.glassfish.jersey.servlet.spi,
+							org.glassfish.jersey.servlet.internal.spi, org.glassfish.jersey.internal, org.glassfish.jersey.servlet.internal,
+							org.glassfish.jersey.server, org.glassfish.jersey, org.glassfish.jersey.internal.util, org.glassfish.jersey.internal.util.collection,
+							org.glassfish.jersey.model.internal
 						</Export-Package>
-						<!--Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath> <Include-Resource>{maven-resources}</Include-Resource -->
+						<Bundle-ClassPath>WEB-INF/classes,WEB-INF/lib,{maven-dependencies}</Bundle-ClassPath>
+						<Include-Resource>{maven-resources}</Include-Resource>
 						<Web-ContextPath>/pepper-rest/</Web-ContextPath>
 						<Webapp-Context>/pepper-rest</Webapp-Context>
 						<_wab>src/main/webapp</_wab>

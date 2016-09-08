@@ -22,7 +22,7 @@
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
-	<packaging>bundle</packaging><!-- used to be war -->	
+	<packaging>war</packaging><!-- used to be war -->	
 	<build>
 		<resources>
 			<resource>
@@ -48,6 +48,17 @@
 				<version>9.2.3.v20140905</version>
 			</plugin>
 			
+			
+			<plugin>
+	          <artifactId>maven-war-plugin</artifactId>
+	          <configuration>
+	            <archive>
+	              <!-- add the generated manifest to the war -->
+	              <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+	            </archive>
+	          </configuration>
+	        </plugin>
+			
 			<!-- bundle plugin -->
 			<plugin>
 		        <groupId>org.apache.felix</groupId>
@@ -58,20 +69,31 @@
 		          <execution>
 		            <phase>process-classes</phase>
 		            <goals>
-		              <goal>bundle</goal>
+		              <goal>manifest</goal>
 		            </goals>
 		          </execution>
 		        </executions>
-		        <configuration>
+		        <configuration>		        
+		          <supportedProjectTypes>		          
+      				<supportedProjectType>war</supportedProjectType>		          
+      				<supportedProjectType>jar</supportedProjectType>		          
+      				<supportedProjectType>bundle</supportedProjectType>
+		          </supportedProjectTypes>
 		          <manifestLocation>${META-INF}</manifestLocation>
 		          <instructions>         	
 		            <Bundle-Name>${project.artifactId}</Bundle-Name>
 		            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-		            <Bundle-Version>${project.version}</Bundle-Version> 
+		            <Bundle-Version>${project.version}</Bundle-Version>
+		            <Embed-Dependency>pepper-gui-lib</Embed-Dependency> 
+		            <Embed-Transitive>True</Embed-Transitive>
 		            <Import-Package> 
-					org.glassfish.jersey.servlet, org.glassfish.jersey.server, com.vaadin*, com.google*, <!-- packages to make gui run -->
-		            org.corpus_tools.pepper*, *
-		            </Import-Package>   
+					org.glassfish.jersey.servlet*, org.glassfish.jersey.server, com.vaadin*, com.vaadin.server, com.vaadin.server*, 
+					!com.google*, !com.ibm*, !com.liferay*, !com.steadystate*, !com.thoughtworks*, !javax.portlet*,
+					!net.sourceforge*, !org.apache.*, !org.atmosphere*, !org.cyberneko*, !org.eclipse.jdt*, !org.eclipse.jetty.*, 
+					!org.hibernate*, !org.jsoup*, !org.kohsuke*, !org.w3c*, !sun*,<!-- packages to make gui run -->
+		            org.corpus_tools.pepper*, org.corpus_tools.pepper.gui.client, javax.servlet, javax.servlet.http, org.jsoup.nodes, *
+		            </Import-Package>
+		            <Export-Package>com.vaadin.server.*, org.corpus_tools.pepper.gui.*, com.vaadin.server, com.vaadin*</Export-Package>
 		            <Web-ContextPath>/pepper-gui/</Web-ContextPath>
 					<Webapp-Context>/pepper-gui</Webapp-Context>
 					<_wab>src/main/webapp</_wab> 

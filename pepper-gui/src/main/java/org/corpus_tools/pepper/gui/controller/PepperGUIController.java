@@ -4,12 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Collection;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.corpus_tools.pepper.common.MODULE_TYPE;
-import org.corpus_tools.pepper.common.PepperModuleDesc;
-import org.corpus_tools.pepper.gui.client.ServiceConnector;
 import org.corpus_tools.pepper.gui.components.PathSelectDialogue;
 import org.corpus_tools.pepper.gui.components.PepperGUI;
 import org.corpus_tools.pepper.gui.model.ConversionStepConfiguration;
@@ -49,11 +45,10 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	private IdProvider idProvider = null;
 	private Window debugWindow = null;
-	private ServiceConnector serviceConnector = null;
+	private Object tunnel = null;
 	private static final String SERVICE_URL = "http://localhost:8080/";
 	
 	protected void init(VaadinRequest request){
-		serviceConnector = new ServiceConnector(SERVICE_URL);
 		gui = new PepperGUI(this);
 		setErrorHandler(this);
 		setImmediate(true);
@@ -105,6 +100,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		}
 		else if (ID_BUTTON_IMPORTERS.equals(id)){
 			gui.setView(VIEW_NAME.IMPORTERS);
+			if (tunnel == null){
+				tunnel = new Tunnel(this.SERVICE_URL);
+			}
 		}
 		else if (ID_BUTTON_EXPORTERS.equals(id)){
 			gui.setView(VIEW_NAME.EXPORTERS);

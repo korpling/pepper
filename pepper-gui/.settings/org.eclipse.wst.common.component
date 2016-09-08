@@ -9,12 +9,6 @@
         <dependent-module archiveName="pepper-gui-lib-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-gui-lib/pepper-gui-lib">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="pepper-REST-lib-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-REST-lib/pepper-REST-lib">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/pepper-rest/pepper-rest">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/pepper-gui/target/classes"/>
         <property name="context-root" value="org.corpus-tools.pepper-gui_3.0.0-SNAPSHOT"/>
     </wb-module>
