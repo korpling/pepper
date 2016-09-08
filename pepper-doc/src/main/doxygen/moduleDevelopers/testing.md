@@ -25,7 +25,7 @@ Since the JUnit framework can not know about the classes to test, you need to se
 
 The provided test classes emulate the Pepper environment, so that you can run your entire module and just check the in- or output.
 
-In case that you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a predefined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model:
+If you write an importer, you can create an input file containing a corpus in the format you want to support, run your importer and check its output against a predefined template. The test will return a processed Salt model which can be checked for its nodes, relations and so on. The following snippet shows how to read a document and how to check the returned Salt model:
 
 \code
 	public void someTest(){
@@ -37,11 +37,6 @@ In case that you write an importer, you can create an input file containing a co
             .setFormatVersion(FORMAT_VERSION);
         
         //...
-        
-        //create an empty corpus graph, which is filled by your module 
-        SCorpusGraph importedSCorpusGraph= SaltFactory.createSCorpusGraph();
-        // add the corpus graph to your module
-        getFixture().getSaltProject().addCorpusGraph(importedSCorpusGraph);
         
         //run your Pepper module
         start();
@@ -55,7 +50,17 @@ In case that you write an importer, you can create an input file containing a co
         assertEquals(X, getFixture().getSaltProject()
             .getCorpusGraphs().get(0).getCorpora().size());
     }
+
 \endcode
+    
+If your test does **not** extend `PepperModuleTest` or either of its sub-classes, you will also have to add an `SCorpusGraph` to the module's `SaltProject`:
+
+    //create an empty corpus graph, which is filled by your module 
+    SCorpusGraph importedSCorpusGraph= SaltFactory.createSCorpusGraph();
+    // add the corpus graph to your module
+    getFixture().getSaltProject().addCorpusGraph(importedSCorpusGraph);
+        
+>>>>>>> develop
 
 More samples for testing can be found in the automatically generated test classes when using Pepper's archetype for Maven, see @ref tutorial.
 
