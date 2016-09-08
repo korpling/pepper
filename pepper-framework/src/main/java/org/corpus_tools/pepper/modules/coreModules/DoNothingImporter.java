@@ -17,6 +17,8 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
+import java.io.File;
+
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.core.SelfTestDesc;
@@ -62,9 +64,16 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
+		URI inURI = getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("doNothingImporter").appendSegment("in");
+		
+		// We have to make sure the input directory exists, even if this is the "do nothing" importer
+		if(!new File(inURI.toFileString()).mkdirs()) {
+			logger.warn("Can't create input directory for DoNothingImporter");
+		}
+		
 		return new SelfTestDesc(
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingImporter")
-						.appendSegment("in"),
+				inURI,
 				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingImporter")
 						.appendSegment("expected"));
 	}
