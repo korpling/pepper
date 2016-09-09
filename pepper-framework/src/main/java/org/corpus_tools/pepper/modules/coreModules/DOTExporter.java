@@ -83,7 +83,8 @@ public class DOTExporter extends PepperExporterImpl {
 			segments.append("/");
 			segments.append(segment);
 		}
-		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments.toString() + "." + SaltUtil.FILE_ENDING_SALT_XML);
+		outputURI = URI.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + segments.toString() + "."
+				+ SaltUtil.FILE_ENDING_SALT_XML);
 
 		mapper.setResourceURI(outputURI);
 		return (mapper);

@@ -68,8 +68,8 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	}
 
 	/**
-	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}. {@inheritDoc
-	 * PepperModule#createPepperMapper(Identifier)}
+	 * Creates a mapper of type {@link EXMARaLDA2SaltMapper}.
+	 * {@inheritDoc PepperModule#createPepperMapper(Identifier)}
 	 */
 	@Override
 	public PepperMapper createPepperMapper(Identifier sElementId) {
@@ -113,15 +113,18 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 					line = br.readLine();
 				}
 			} catch (FileNotFoundException e) {
-				throw new PepperModuleException(this, "Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
+				throw new PepperModuleException(this,
+						"Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
 			} catch (IOException e) {
-				throw new PepperModuleException(this, "Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
+				throw new PepperModuleException(this,
+						"Cannot read file '" + getResourceURI() + "', because of nested exception: ", e);
 			} finally {
 				if (br != null) {
 					try {
 						br.close();
 					} catch (IOException e) {
-						throw new PepperModuleException(this, "Cannot close file '" + getResourceURI() + "', because of nested exception: ", e);
+						throw new PepperModuleException(this,
+								"Cannot close file '" + getResourceURI() + "', because of nested exception: ", e);
 					}
 				}
 			}

@@ -6,7 +6,7 @@
   <parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
   </parent>
   <dependencies>
@@ -91,7 +91,7 @@
   		<groupId>javax.servlet</groupId>
   		<artifactId>javax.servlet-api</artifactId>
   		<version>3.1.0</version>
-  		<scope>provided</scope>
+  		<scope>compile</scope>
   	</dependency>
 	<dependency>
 		<groupId>javax.ws.rs</groupId>
@@ -130,13 +130,13 @@
             !jersey.repackaged.*, !com.ibm*, !javax.annotation*, !javax.inject*, !javax.servlet*, !org.jvnet*,
              <!--org.glassfish.jersey.servlet, org.glassfish.jersey.server-->, 
              !org.glassfish*, !javax.ws.rs*, !org.glassfish.jersey.internal*, !org.glassfish.jersey.uri*, !org.glassfish.jersey.spi*, !org.glassfish.jersey.process*, !org.glassfish.jersey.model.*, 
-             !org.glassfish.jersey.filter*, !org.glassfish.jersey*, !org.corpus_tools.pepper.core*, *             
+             !org.glassfish.jersey.filter*, !org.glassfish.jersey*, !org.corpus_tools.pepper.core*, javax.servlet.http, *             
             </Import-Package>                
             <Export-Package>            
             org.corpus_tools.pepper.service.*, org.eclipse.persistence.*, org.glassfish.jersey.client*, org.glassfish.jersey.jackson*, org.glassfish.jersey.message*, 
             com.fasterxml.jackson*, org.glassfish.jersey.oauth1.signature*, org.glassfish.jersey.server, org.glassfish.jersey.servlet, org.glassfish.jersey.containers,
             <!-- packages to make gui start -->
-            javax.servlet.http, javax.ws.rs, javax.ws.rs.*<!-- to make service run -->
+            javax.servlet.http, javax.ws.rs, javax.ws.rs.*<!-- to make service run -->, javax.servlet
             </Export-Package>
             <!--Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
             <Include-Resource>{maven-resources}</Include-Resource-->         

@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<properties>
@@ -108,13 +108,31 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>[3.0-alpha-1,4.0.0)</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>${jersey.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<build>
-		<plugins><!-- MAVEN BUNDLE -->
+		<plugins><!-- MAVEN BUNDLE -->			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -124,7 +142,7 @@
 					<execution>
 						<phase>process-classes</phase>
 						<goals>
-							<goal>manifest</goal>
+							<goal>bundle</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -149,17 +167,22 @@
 							!org.glassfish.jersey.servlet.internal, !org.glassfish.jersey.servlet.internal.*, !org.glassfish.jersey.uri, !org.glassfish.jersey.uri.*,
 							!org.glassfish.jersey.spi, !org.glassfish.jersey, !org.glassfish.jersey.model.internal, !org.glassfish.jersey.model, !org.glassfish.jersey.servlet.spi,
 							javax.inject.*, <!-- packages to make service run -->
-							javax.servlet.http, javax.servlet, javax.ws.rs, !javax.ws.rs.container, !com.google.common.io,
+							javax.servlet.http, javax.servlet, javax.ws.rs, !javax.ws.rs.container, !com.google.common.io, !javax.xml.bind, !javax.xml.bind.*, !org.corpus_tools.pepper.core,
 							<!-- packages to make gui start -->
+							!org.glassfish.hk2.*, org.glassfish.hk2.extension, !org.jvnet.hk2.annotations, !org.jvnet.hk2.external.runtime, org.jvnet.hk2.external.generator,
 							 *
 						</Import-Package>
 						<Export-Package>
-							org.corpus_tools.pepper.service.*, org.eclipse.persistence.*, javax.servlet, <!-- packages 
+							org.corpus_tools.pepper.service.*, org.eclipse.persistence.*, javax.servlet, javax.servlet.http,<!-- packages 
 								to make context factory available -->
-							org.glassfish.jersey.servlet, org.glassfish.jersey.server.spi, org.glassfish.jersey.servlet.spi,
+							org.glassfish.jersey.servlet, org.glassfish.jersey.server.spi, org.glassfish.jersey.servlet.spi, org.glassfish.jersey.spi,
 							org.glassfish.jersey.servlet.internal.spi, org.glassfish.jersey.internal, org.glassfish.jersey.servlet.internal,
-							org.glassfish.jersey.server, org.glassfish.jersey, org.glassfish.jersey.internal.util, org.glassfish.jersey.internal.util.collection,
-							org.glassfish.jersey.model.internal
+							org.glassfish.jersey.server, org.glassfish.jersey.server.internal.process, org.glassfish.jersey, org.glassfish.jersey.internal.util, 
+							org.glassfish.jersey.internal.util.collection, org.glassfish.jersey.server.internal.inject, org.glassfish.hk2.utilities.binding,
+							org.glassfish.jersey.model, org.glassfish.jersey.model.internal, org.glassfish.jersey.server.model, org.glassfish.jersey.process,
+							org.glassfish.jersey.process.internal, org.glassfish.jersey.internal.inject, javax.ws.rs.container, org.glassfish.jersey.server.monitoring,
+							org.glassfish.hk2.utilities, org.glassfish.hk2.api, org.glassfish.hk2.internal, org.glassfish.hk2.utilities.reflection, org.glassfish.hk2.extension,
+							org.jvnet.hk2.internal, org.jvnet.hk2.external.generator
 						</Export-Package>
 						<Bundle-ClassPath>WEB-INF/classes,WEB-INF/lib,{maven-dependencies}</Bundle-ClassPath>
 						<Include-Resource>{maven-resources}</Include-Resource>

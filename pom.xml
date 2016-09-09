@@ -1,21 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
 		<module>pepper-parentModule</module>
-		<module>pepper-sampleModules</module>
+		<module>pepper-newModule</module>
 		<module>pepper-lib</module>
 		<module>pepper-gui</module>
 		<module>pepper-gui-lib</module>
-		<module>pepper-rest</module>
-		<!-- 
 		<module>pepper-rest-service</module>
 		<module>pepper-rest-lib</module>
-		 -->
 		<module>pepper-doc</module>
 	</modules>
 	<developers>
@@ -59,8 +57,8 @@
 		<connection>scm:git:git://github.com/korpling/pepper.git</connection>
 		<developerConnection>scm:git:git@github.com:korpling/pepper.git</developerConnection>
 		<url>https://github.com/korpling/pepper</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -71,13 +69,23 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>oss-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<properties>
 		<pepper.mail>saltnpepper@lists.hu-berlin.de</pepper.mail>
 		<pepper.hp>http://corpus-tools.org/pepper/</pepper.hp>
 		<pepper.shortDesc>A highly extensible plattform for conversion and
-			manipulation of linguistic data between an unbound set of formats.
-			Pepper can be used stand-alone as a command line interface, or be
-			integrated as an API into other software products. </pepper.shortDesc>
+			manipulation of linguistic data.</pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<bundle.file>${project.groupId}.${project.artifactId}_${project.version}.jar</bundle.file>
@@ -91,10 +99,12 @@
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
 
 		<!-- versions of dependencies -->
-		<salt.version>3.0.2</salt.version>
+		<salt.version>[3.3.0,3.4.0-SNAPSHOT)</salt.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.11</junit.version>
+		<assertj.version>2.4.1</assertj.version>
+		<mockito.version>1.10.19</mockito.version>
 		<org.osgi.core.version>4.3.1</org.osgi.core.version>
 		<org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
 		<org.eclipse.osgi.version>3.9.1-v20130814-1242</org.eclipse.osgi.version>
@@ -106,6 +116,7 @@
 		<com.google.gwt.version>2.7.0</com.google.gwt.version>
 		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
 		<commons.io.version>2.4</commons.io.version>
+		<guava.version>18.0</guava.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
@@ -162,6 +173,18 @@
 			<version>${xmlunit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- OSGI service-component -->
 		<!-- OSGI Annotations. Use standard first, override with custom. -->
 		<dependency>
@@ -180,6 +203,13 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<!-- start: OSGi declaractive services -->
 		<dependency>

@@ -54,7 +54,7 @@ public class ConvertWizardConsoleTest {
 	/**
 	 * Checks whether the deresolving of pathes works for pathes: import path:
 	 * HOME/corpus/importFolder export path: HOME/corpus/exportFolder workflow
-	 * file: HOME/corpus/wf.pepper should be deresolved in workflow file to
+	 * file: HOME/corpus/test.pepper should be deresolved in workflow file to
 	 * import path: ./importFolder export path: ./exportFolder
 	 * 
 	 * @throws IOException
@@ -69,13 +69,15 @@ public class ConvertWizardConsoleTest {
 		StepDesc importStep = new StepDesc();
 		importStep.setName("TestImporter");
 		importStep.setModuleType(MODULE_TYPE.IMPORTER);
-		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/importFolder/").getCanonicalPath() + "/"));
+		importStep.getCorpusDesc().setCorpusPath(URI.createFileURI(
+				new File(folder.getAbsolutePath() + "/./corpus/importFolder/").getCanonicalPath() + "/"));
 		pepperJob.addStepDesc(importStep);
 
 		StepDesc exportStep = new StepDesc();
 		exportStep.setName("TestImporter");
 		exportStep.setModuleType(MODULE_TYPE.IMPORTER);
-		exportStep.getCorpusDesc().setCorpusPath(URI.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/exportFolder").getCanonicalPath() + "/"));
+		exportStep.getCorpusDesc().setCorpusPath(URI
+				.createFileURI(new File(folder.getAbsolutePath() + "/./corpus/exportFolder").getCanonicalPath() + "/"));
 		pepperJob.addStepDesc(exportStep);
 
 		ConvertWizardConsole.deresolveURIs(pepperFile, pepperJob);

@@ -33,7 +33,8 @@ import org.corpus_tools.pepper.modules.PepperModuleProperties;
  * use only. This class extends the abstract Step description of
  * {@link StepDesc} with the following:
  * <ul>
- * <li>a unique identifier representing the position of this step in workflow</li>
+ * <li>a unique identifier representing the position of this step in
+ * workflow</li>
  * </ul>
  * 
  * @author Florian Zipser
@@ -103,7 +104,7 @@ public class Step extends StepDesc {
 	 * {@link CorpusDesc} to the {@link ModuleControllerImpl}, if already set.
 	 */
 	@Override
-	public synchronized void setCorpusDesc(CorpusDesc corpusDesc) {
+	public synchronized Step setCorpusDesc(CorpusDesc corpusDesc) {
 		super.setCorpusDesc(corpusDesc);
 		if ((getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
 			if (getModuleController().getPepperModule() instanceof PepperImporter) {
@@ -112,6 +113,7 @@ public class Step extends StepDesc {
 				((PepperExporter) getModuleController().getPepperModule()).setCorpusDesc(getCorpusDesc());
 			}
 		}
+		return (this);
 	}
 
 	/**
@@ -168,9 +170,11 @@ public class Step extends StepDesc {
 	 * @return module type
 	 */
 	public MODULE_TYPE getModuleType() {
-		if ((super.getModuleType() == null) && (getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
+		if ((super.getModuleType() == null) && (getModuleController() != null)
+				&& (getModuleController().getPepperModule() != null)) {
 			synchronized (this) {
-				if ((super.getModuleType() == null) && (getModuleController() != null) && (getModuleController().getPepperModule() != null)) {
+				if ((super.getModuleType() == null) && (getModuleController() != null)
+						&& (getModuleController().getPepperModule() != null)) {
 					setModuleType(getModuleController().getPepperModule().getModuleType());
 				}
 			}
@@ -187,11 +191,12 @@ public class Step extends StepDesc {
 	 * @param props
 	 *            properties to customize processing
 	 */
-	public synchronized void setProps(Properties props) {
+	public synchronized Step setProps(Properties props) {
 		if (getModuleController() != null) {
 			getModuleController().getPepperModule().getProperties().setPropertyValues(props);
 		} else {
 			super.setProps(props);
 		}
+		return (this);
 	}
 }

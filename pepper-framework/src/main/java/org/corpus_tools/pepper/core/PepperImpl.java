@@ -18,10 +18,14 @@
 package org.corpus_tools.pepper.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -33,6 +37,8 @@ import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
+import org.corpus_tools.pepper.impl.CorpusPathResolver;
+import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperManipulator;
@@ -52,7 +58,7 @@ public class PepperImpl implements Pepper {
 	/** Configuration object for Pepper **/
 	private PepperConfiguration configuration = null;
 
-	/** {@inheritDoc Pepper#getConfiguration()} **/
+	@Override
 	public PepperConfiguration getConfiguration() {
 		if (configuration == null) {
 			synchronized (this) {
@@ -63,7 +69,7 @@ public class PepperImpl implements Pepper {
 		return configuration;
 	}
 
-	/** {@inheritDoc Pepper#setConfiguration(PepperConfiguration)} **/
+	@Override
 	public void setConfiguration(PepperConfiguration configuration) {
 		this.configuration = configuration;
 		if (getModuleResolver() != null) {
@@ -71,14 +77,29 @@ public class PepperImpl implements Pepper {
 		}
 	}
 
-	/** {@inheritDoc Pepper#isImportable(URI, PepperModuleDesc)} **/
-	public Double isImportable(URI corpusPath, PepperModuleDesc description) {
+	@Override
+	public Set<String> findAppropriateImporters(URI corpusPath) throws FileNotFoundException {
+		if (corpusPath == null) {
+			throw new FileNotFoundException("Cannot find importers for corpus path, because corpus path is null.  ");
+		}
+		if (getModuleResolver() == null) {
+			throw new PepperFWException("Cannot find importers for corpus path '" + corpusPath
+					+ "', because the module resolver is null. ");
+		}
+
+		final Set<String> retVal = new HashSet<>();
+		final CorpusPathResolver corpusPathResolver = new CorpusPathResolver(corpusPath);
+
 		for (PepperImporter importer : getModuleResolver().getPepperImporters()) {
-			if (importer.getName().equals(description.getName())) {
-				return (importer.isImportable(corpusPath));
+			if (importer instanceof PepperImporterImpl) {
+				((PepperImporterImpl) importer).setCorpusPathResolver(corpusPathResolver);
+			}
+			final Double rate = importer.isImportable(corpusPath);
+			if (rate != null && rate > 0) {
+				retVal.add(importer.getName());
 			}
 		}
-		return (null);
+		return retVal;
 	}
 
 	static class JobEntry {
@@ -109,9 +130,6 @@ public class PepperImpl implements Pepper {
 		return (mapOfJobs);
 	}
 
-	/**
-	 * {@inheritDoc Pepper#createJob()}
-	 */
 	@Override
 	public String createJob() {
 		PepperJobImpl job = null;
@@ -144,9 +162,6 @@ public class PepperImpl implements Pepper {
 		return (getMapOfJobs().keySet());
 	}
 
-	/**
-	 * {@inheritDoc Pepper#getJob(String)}
-	 */
 	@Override
 	public PepperJob getJob(String id) throws JobNotFoundException {
 		return (getPepperJobImpl(id));
@@ -165,9 +180,6 @@ public class PepperImpl implements Pepper {
 		return (job);
 	}
 
-	/**
-	 * {@inheritDoc Pepper#removeJob(String)}
-	 */
 	@Override
 	public boolean removeJob(String id) throws JobNotFoundException {
 		boolean retVal = false;
@@ -217,12 +229,26 @@ public class PepperImpl implements Pepper {
 		}
 	}
 
-	/**
-	 * {@inheritDoc Pepper#getRegisteredModules()}
-	 */
+	@Override
+	public Collection<PepperModuleDesc> getRegisteredImporters() {
+		Collection<PepperModuleDesc> retVal = new ArrayList<>();
+		if (getModuleResolver() == null) {
+			throw new PepperFWException("Cannot return registered modules, because the module resolver is missing.");
+		}
+		List<PepperImporter> importers = getModuleResolver().getPepperImporters();
+		if (importers != null) {
+			for (PepperModule pepperModule : getModuleResolver().getPepperImporters()) {
+				if (pepperModule != null) {
+					retVal.add(pepperModule.getFingerprint());
+				}
+			}
+		}
+		return retVal;
+	}
+
 	@Override
 	public Collection<PepperModuleDesc> getRegisteredModules() {
-		Vector<PepperModuleDesc> retVal = new Vector<PepperModuleDesc>();
+		Collection<PepperModuleDesc> retVal = new ArrayList<>();
 		if (getModuleResolver() == null) {
 			throw new PepperFWException("Cannot return registered modules, because the module resolver is missing.");
 		}
@@ -289,9 +315,6 @@ public class PepperImpl implements Pepper {
 	// ===================================== end: wirering module resolver via
 	// OSGi
 
-	/**
-	 * {@inheritDoc Pepper#selfTest()}
-	 */
 	@Override
 	public Collection<String> selfTest() {
 		Collection<String> retVal = new Vector<String>();

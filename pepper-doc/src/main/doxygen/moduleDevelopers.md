@@ -1,2 +1,0 @@
-Pepper module Developers {#moduleDevelopers}
-======

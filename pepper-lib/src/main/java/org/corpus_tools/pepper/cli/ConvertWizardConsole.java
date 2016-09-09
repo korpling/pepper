@@ -19,18 +19,21 @@ package org.corpus_tools.pepper.cli;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
@@ -87,14 +90,16 @@ public class ConvertWizardConsole {
 	private static final String PROMPT = "wizard";
 
 	private static final String MSG_IM = "\tPlease enter the number or the name of the importer you want to use. ";
-	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to corpus you want to import or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
-	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customiazation, press enter. ";
+	private static final String MSG_IMPORT_CORPUS = "\tPlease enter a (further) path to a corpus you want to import or press enter to skip. When you use a relative path make it relative to:'"
+			+ new File("").getAbsolutePath() + "/'. ";
+	private static final String MSG_PROP = "\tTo use a customization property, please enter it's number or name, the '=' and a value (e.g. 'name=value', or 'number=value'). To skip the customization, press enter. ";
 	private static final String MSG_MAN = "\tIf you want to use a manipulator, please enter it's number or name, or press enter to skip. ";
 	private static final String MSG_NO_PROPS = "\tNo customization properties available.";
 	private static final String MSG_NO_VALID_MODULE = "\tSorry could not match the input, please enter the number or the name of the module again. ";
 	private static final String MSG_NO_VALID_PROP = "\tSorry could not match the input, please enter the number or the name of the property followed by '=' and the value again. ";
 	private static final String MSG_EX = "\tPlease enter the number or the name of the exporter you want to use. ";
-	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make the relative to:'" + new File("").getAbsolutePath() + "/'. ";
+	private static final String MSG_EX_CORPUS = "\tPlease enter a (further) path to which you want to export the corpus or press enter to skip. When you use a relative path make it relative to:'"
+			+ new File("").getAbsolutePath() + "/'. ";
 
 	private static final String MSG_ABORTED = "Creating of Pepper workflow aborted by user's input. ";
 
@@ -217,7 +222,8 @@ public class ConvertWizardConsole {
 				return (null);
 			}
 			prompt = promptOld;
-			out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and 'exit' to exit. ");
+			out.println(
+					"Type 'convert' to start the conversion, 'save' to save the workflow description and 'exit' to exit. ");
 			String input = null;
 			while ((input = getUserInput(in, out)) != null) {
 				String[] parts = input.split(" ");
@@ -230,7 +236,8 @@ public class ConvertWizardConsole {
 					}
 					i++;
 				}
-				if ((COMMAND.SAVE.getName().equalsIgnoreCase(command)) || (COMMAND.SAVE.getAbbreviation().equalsIgnoreCase(command))) {
+				if ((COMMAND.SAVE.getName().equalsIgnoreCase(command))
+						|| (COMMAND.SAVE.getAbbreviation().equalsIgnoreCase(command))) {
 					File outputFile = null;
 					if (parts.length == 1) {
 						// path to workflow description wasn't given and needs
@@ -251,7 +258,8 @@ public class ConvertWizardConsole {
 						try {
 							deresolveURIs(outputFile, pepperJob);
 							URI workflowURI = pepperJob.save(URI.createFileURI(outputFile.getAbsolutePath()));
-							out.println("Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
+							out.println(
+									"Stored Pepper workflow description at '" + outputFile.getAbsolutePath() + "'. ");
 							// because of the deresolving of the URI, the
 							// relative
 							// path now is incompatible with current working
@@ -260,17 +268,20 @@ public class ConvertWizardConsole {
 							// to be stored and reloaded again
 							pepperJob.load(workflowURI);
 						} catch (Exception e) {
-							out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath() + "', because of: " + e.getMessage());
+							out.println("Could not store Pepper workflow to '" + outputFile.getAbsolutePath()
+									+ "', because of: " + e.getMessage());
 							if (isDebug) {
 								e.printStackTrace(out);
 							}
 						}
 					}
 
-				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command)) || (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
+				} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command))
+						|| (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
 					return (pepperJob);
 				}
-				out.println("Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
+				out.println(
+						"Type 'convert' to start the conversion, 'save' to save the workflow description and enter to exit. ");
 			}
 		} catch (ExitWizardException e) {
 			out.println(MSG_ABORTED);
@@ -297,10 +308,12 @@ public class ConvertWizardConsole {
 		for (StepDesc stepDesc : pepperJob.getStepDescs()) {
 			if ((stepDesc.getCorpusDesc() != null) && (stepDesc.getCorpusDesc().getCorpusPath() != null)) {
 				URI before = stepDesc.getCorpusDesc().getCorpusPath();
-				stepDesc.getCorpusDesc().setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base));
+				stepDesc.getCorpusDesc()
+						.setCorpusPath(stepDesc.getCorpusDesc().getCorpusPath().deresolve(base, true, true, true));
 				if (!stepDesc.getCorpusDesc().getCorpusPath().equals(before)) {
 					// creates a leading './' if URI is relative
-					stepDesc.getCorpusDesc().setCorpusPath(URI.createFileURI("./" + stepDesc.getCorpusDesc().getCorpusPath()));
+					stepDesc.getCorpusDesc()
+							.setCorpusPath(URI.createFileURI("./" + stepDesc.getCorpusDesc().getCorpusPath()));
 				}
 			}
 		}
@@ -350,7 +363,8 @@ public class ConvertWizardConsole {
 
 					File corpusPath = new File(input);
 					if (!corpusPath.exists()) {
-						out.println("\tThe path to corpus does not exist '" + corpusPath.getAbsolutePath() + "' please type in another one. ");
+						out.println("\tThe path to corpus does not exist '" + corpusPath.getAbsolutePath()
+								+ "' please type in another one. ");
 					} else {
 						stepDesc = pepperJob.createStepDesc();
 						stepDesc.setModuleType(MODULE_TYPE.IMPORTER);
@@ -369,7 +383,8 @@ public class ConvertWizardConsole {
 						if ((number2Module == null) || (name2Module == null)) {
 							number2Module = new HashMap<Integer, PepperModuleDesc>();
 							name2Module = new HashMap<String, PepperModuleDesc>();
-							legend = createModuleLegend(stepDesc.getCorpusDesc().getCorpusPath(), number2Module, name2Module, MODULE_TYPE.IMPORTER);
+							legend = createModuleLegend(stepDesc.getCorpusDesc().getCorpusPath(), number2Module,
+									name2Module, MODULE_TYPE.IMPORTER);
 						}
 						out.println(legend);
 						out.println(MSG_IM);
@@ -397,9 +412,9 @@ public class ConvertWizardConsole {
 					out.println(legend);
 					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed importer: '" + moduleDesc + "'. \n");
+					out.println("\tchosen importer: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+					// pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 
@@ -411,7 +426,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
 						propLegend = null;
@@ -421,10 +436,12 @@ public class ConvertWizardConsole {
 			} else if (state == 2) {
 				// choose properties
 
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
@@ -488,9 +505,9 @@ public class ConvertWizardConsole {
 					out.println(legend);
 					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed manipulator: '" + moduleDesc + "'. \n");
+					out.println("\tchosen manipulator: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+					// pepperJob.addStepDesc(stepDesc);
 
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
@@ -502,7 +519,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_IMPORT_CORPUS);
 						propLegend = null;
@@ -510,11 +527,13 @@ public class ConvertWizardConsole {
 					}
 				}
 			} else if (state == 2) {
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 1;
 					prompt = promptOld;
 					out.println(legend);
 					out.println(MSG_MAN);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end while
@@ -613,9 +632,9 @@ public class ConvertWizardConsole {
 					out.println(legend);
 					out.println(MSG_NO_VALID_MODULE);
 				} else {
-					out.println("\tchoosed exporter: '" + moduleDesc + "'. \n");
+					out.println("\tchosen exporter: '" + moduleDesc + "'. \n");
 					stepDesc.setName(moduleDesc.getName());
-					pepperJob.addStepDesc(stepDesc);
+					// pepperJob.addStepDesc(stepDesc);
 					if (moduleDesc.getProperties() != null) {
 						// module takes customization properties
 
@@ -627,7 +646,7 @@ public class ConvertWizardConsole {
 						out.println(MSG_PROP);
 					} else {
 						// module does not take customization properties
-
+						pepperJob.addStepDesc(stepDesc);
 						out.println(MSG_NO_PROPS);
 						out.println(MSG_EX_CORPUS);
 						propLegend = null;
@@ -637,55 +656,55 @@ public class ConvertWizardConsole {
 			} else if (state == 2) {
 				// choose properties
 
-				if (!readProp(number2PropName, input, stepDesc)) {
+				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
+				} else {
+					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
 		return (true);
 	}
 
-	public static class ImporterModuleDesc implements Comparable<ImporterModuleDesc> {
-		public Double probability = null;
-		public PepperModuleDesc moduleDesc = null;
-
-		public ImporterModuleDesc(PepperModuleDesc moduleDesc, Double probability) {
-			this.probability = probability;
-			this.moduleDesc = moduleDesc;
-		}
-
-		@Override
-		public int compareTo(ImporterModuleDesc arg0) {
-			if (this.probability == null) {
-				this.probability = 0.0;
+	/**
+	 * Returns all module descriptions and if the module type was
+	 * {@link MODULE_TYPE#IMPORTER}, even the number of recommended importers.
+	 * 
+	 * @param corpusPath
+	 * @param moduleType
+	 * @return
+	 */
+	private Pair<List<PepperModuleDesc>, Integer> getModuleDescriptions(final URI corpusPath,
+			final MODULE_TYPE moduleType) {
+		final List<PepperModuleDesc> modules = new ArrayList<>();
+		Integer numOfRecommended = 0;
+		// if module is importer, find appropriate importers
+		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
+			Set<String> possibleImporters = null;
+			try {
+				possibleImporters = getPepper().findAppropriateImporters(corpusPath);
+			} catch (FileNotFoundException e) {
+				out.println("Cannot read corpus path '" + corpusPath + "'. " + e.getMessage());
+				return new ImmutablePair<>(modules, numOfRecommended);
 			}
-			if (arg0.probability == null) {
-				arg0.probability = 0.0;
+			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredImporters()) {
+				if (possibleImporters.contains(moduleDesc.getName())) {
+					numOfRecommended++;
+					modules.add(0, moduleDesc);
+				} else {
+					modules.add(moduleDesc);
+				}
 			}
-			return (Double.compare(this.probability, arg0.probability));
+		} else {
+			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
+				if (moduleType.equals(moduleDesc.getModuleType())) {
+					modules.add(moduleDesc);
+				}
+			}
 		}
-
-		/**
-		 * This method is here to satisfy findbugs.
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			return (super.equals(obj));
-		}
-
-		/**
-		 * This method is here to satisfy findbugs.
-		 */
-		@Override
-		public int hashCode() {
-			return super.hashCode();
-		}
-
-		public String toString() {
-			return (probability + " " + moduleDesc.getName());
-		}
+		return new ImmutablePair<>(modules, numOfRecommended);
 	}
 
 	/**
@@ -698,32 +717,11 @@ public class ConvertWizardConsole {
 	 * @param name2Module
 	 * @return legend for the map to be printed
 	 */
-	private String createModuleLegend(URI corpusPath, Map<Integer, PepperModuleDesc> number2Module, Map<String, PepperModuleDesc> name2Module, MODULE_TYPE moduleType) {
-		ArrayList<PepperModuleDesc> modules = new ArrayList<PepperModuleDesc>();
-		int numOfRecommended = 0;
-		// if module is importer, call isImportable
-		if (MODULE_TYPE.IMPORTER.equals(moduleType)) {
-			List<ImporterModuleDesc> importerModuleDescs = new ArrayList<ConvertWizardConsole.ImporterModuleDesc>();
-			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
-				if (MODULE_TYPE.IMPORTER.equals(moduleDesc.getModuleType())) {
-					Double isImportable = getPepper().isImportable(corpusPath, moduleDesc);
-					if ((isImportable != null) && (isImportable > 0.0)) {
-						numOfRecommended++;
-					}
-					importerModuleDescs.add(new ImporterModuleDesc(moduleDesc, isImportable));
-				}
-			}
-			Collections.reverse(importerModuleDescs);
-			for (ImporterModuleDesc moduleDesc : importerModuleDescs) {
-				modules.add(moduleDesc.moduleDesc);
-			}
-		} else {
-			for (PepperModuleDesc moduleDesc : getPepper().getRegisteredModules()) {
-				if (moduleType.equals(moduleDesc.getModuleType())) {
-					modules.add(moduleDesc);
-				}
-			}
-		}
+	private String createModuleLegend(URI corpusPath, Map<Integer, PepperModuleDesc> number2Module,
+			Map<String, PepperModuleDesc> name2Module, MODULE_TYPE moduleType) {
+		Pair<List<PepperModuleDesc>, Integer> moduleDescs = getModuleDescriptions(corpusPath, moduleType);
+		List<PepperModuleDesc> modules = moduleDescs.getLeft();
+		int numOfRecommended = moduleDescs.getRight();
 
 		String retStr = null;
 		String[][] map = new String[modules.size() + 1][3];
@@ -740,7 +738,7 @@ public class ConvertWizardConsole {
 			number2Module.put(num, moduleDesc);
 			name2Module.put(moduleDesc.getName(), moduleDesc);
 			String prefix = "";
-			if (numOfRecommended > num) {
+			if (numOfRecommended >= num) {
 				prefix = "* ";
 			} else {
 				prefix = "  ";
@@ -843,7 +841,7 @@ public class ConvertWizardConsole {
 	}
 
 	/**
-	 * Reads a property from the given inpu and returns true, if the input was
+	 * Reads a property from the given input and returns true, if the input was
 	 * not empty and false otherwise.
 	 * 
 	 * @param input
@@ -853,7 +851,8 @@ public class ConvertWizardConsole {
 	 *            added
 	 * @return true if input was not empty
 	 */
-	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc) {
+	private boolean readProp(Map<Integer, String> number2propName, String input, StepDesc stepDesc,
+			PepperJob pepperJob) {
 		if ((input != null) && (!input.isEmpty())) {
 			int eqPosition = StringUtils.indexOf(input, "=");
 			if (eqPosition > 0) {

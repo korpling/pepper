@@ -160,7 +160,8 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	 */
 	public void load() {
 		File pepperHome = findPepperHome();
-		File propFile = new File(pepperHome.getAbsolutePath() + "/" + FILE_PEPPER_CONF + "/" + FILE_PEPPER_TEST_PROP + "/");
+		File propFile = new File(
+				pepperHome.getAbsolutePath() + "/" + FILE_PEPPER_CONF + "/" + FILE_PEPPER_TEST_PROP + "/");
 		if (!propFile.exists()) {
 			propFile = new File(pepperHome.getAbsolutePath() + "/" + FILE_PEPPER_CONF + "/" + FILE_PEPPER_PROP + "/");
 		}
@@ -174,7 +175,8 @@ public class PepperStarterConfiguration extends PepperConfiguration {
 	 */
 	public void load(File propertiesFile) {
 		if (!propertiesFile.exists())
-			throw new PepperPropertyException("Cannot read pepper property file, because it does not exist '" + propertiesFile.getAbsolutePath() + "'.");
+			throw new PepperPropertyException("Cannot read pepper property file, because it does not exist '"
+					+ propertiesFile.getAbsolutePath() + "'.");
 		try {
 			this.setConfFolder(propertiesFile.getParentFile());
 			this.load(new FileInputStream(propertiesFile));

@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.modules;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * The class {@link PepperModuleProperty} offers a possibility to describe a
@@ -35,7 +36,8 @@ import java.io.File;
  * @author Florian Zipser
  * 
  */
-public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>> {
+public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>, Serializable {
+	private static final long serialVersionUID = -1577480488804525468L;
 
 	/**
 	 * Creates a {@link PepperModuleProperty} instance and sets its values to
@@ -102,7 +104,8 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 *            determines if the property is required (true means property is
 	 *            required)
 	 */
-	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue, final boolean required) {
+	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue,
+			final boolean required) {
 		this(name, clazz, description, required);
 		this.value = defaultValue;
 	}
@@ -237,7 +240,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 			// File
 			else if (File.class.isAssignableFrom(clazz))
 				this.value = (T) new File(value);
-		}// end: checks type of value
+		} // end: checks type of value
 	}
 
 	/**

@@ -30,7 +30,8 @@ import org.corpus_tools.salt.common.SDocumentGraph;
  * <ul>
  * <li>{@link MEMORY_POLICY#THRIFTY} - each time, a {@link PepperModule} is
  * setting a {@link SDocument} to {@link DOCUMENT_STATUS#COMPLETED} and no other
- * {@link PepperModule} is currently working on it, it will be send to sleep.</li>
+ * {@link PepperModule} is currently working on it, it will be send to
+ * sleep.</li>
  * <li>{@link MEMORY_POLICY#MODERATE} - each time, a {@link PepperModule} is
  * setting a {@link SDocument} to {@link DOCUMENT_STATUS#COMPLETED}, no other
  * {@link PepperModule} is currently working on it and no other

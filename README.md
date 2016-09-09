@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/korpling/pepper.svg?branch=develop)](https://travis-ci.org/korpling/pepper)
+
 ![](http://korpling.github.io/pepper/images/SaltNPepper_logo2010.png)
 
 # About Pepper
@@ -21,4 +23,6 @@
 * Homepage: http://corpus-tools.org/pepper
 * Code: https://github.com/korpling/pepper
 * Bug and issue tracking: https://github.com/korpling/pepper/issues
-* Code documentation for people who want to use Pepper as a library, who want create their own Pepper module or who want to take part in the Pepper development https://korpling.github.io/pepper/doc-snapshot/
+* Code documentation for people who want to use Pepper as a library, who want create their own Pepper module or who want to take part in the Pepper development 
+ * stable version: https://korpling.github.io/pepper/doc/
+ * snapshot version: https://korpling.github.io/pepper/doc-snapshot/

@@ -17,7 +17,9 @@
  */
 package org.corpus_tools.pepper.common;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.Set;
 
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
 import org.eclipse.emf.common.util.URI;
@@ -43,17 +45,16 @@ public interface Pepper {
 	public void setConfiguration(PepperConfiguration configuration);
 
 	/**
-	 * Returns if a corpus located at the given {@link URI} is importable by
-	 * importer described in the passed {@link PepperModuleDesc}. If yes, 1 must
-	 * be returned, if no 0 must be returned. If it is not quite sure, if the
-	 * given corpus is importable by this importer any value between 0 and 1 can
-	 * be returned. If this method is not overridden, null is returned.
+	 * Returns the names of importers which can import the data located at the
+	 * specified <code>corpusPath</code>. If no importer was found for importing
+	 * the returned list is empty, not null.
 	 * 
-	 * @return 1 if corpus is importable, 0 if corpus is not importable, 0 < X <
-	 *         1, if no definitiv answer is possible, null if method is not
-	 *         overridden
+	 * @param corpusPath
+	 *            the path which should be checked by each importer
+	 * @return names of importers how can import the data located at
+	 *         <code>corpusPath</code>
 	 */
-	public Double isImportable(URI corpusPath, PepperModuleDesc description);
+	public Set<String> findAppropriateImporters(final URI corpusPath) throws FileNotFoundException;
 
 	/**
 	 * Creates a new {@link PepperJob} object for a new conversion process.
@@ -83,8 +84,18 @@ public interface Pepper {
 	public boolean removeJob(String id) throws JobNotFoundException;
 
 	/**
+	 * Returns all {@link PepperModuleDesc} corresponding to a registered
+	 * importer. When no importer is registered returns an empty collection, not
+	 * null.
+	 * 
+	 * @return all importer fingerprints
+	 */
+	public Collection<PepperModuleDesc> getRegisteredImporters();
+
+	/**
 	 * Returns a collection of all {@link PepperModuleDesc} corresponding to
-	 * Pepper modules, which are registered in this {@link Pepper} instance. <br/>
+	 * Pepper modules, which are registered in this {@link Pepper} instance.
+	 * <br/>
 	 * Note: Depending on the implementation, the computation of this result,
 	 * can take a time. It could be useful, to store the returned list in case
 	 * of multiple calls.

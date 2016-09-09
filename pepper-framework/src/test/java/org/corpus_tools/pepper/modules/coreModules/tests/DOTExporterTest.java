@@ -108,7 +108,8 @@ public class DOTExporterTest extends PepperExporterTest {
 
 		{// checking if export was correct
 			assertTrue("The Corpus Structure was not created", currentFile.isFile());
-			assertTrue("The Corpus Structure is wrong (" + currentFile + ")", this.compareFiles(expectedURI, currentURI));
+			assertTrue("The Corpus Structure is wrong (" + currentFile + ")",
+					this.compareFiles(expectedURI, currentURI));
 		}
 	}
 

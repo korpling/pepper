@@ -178,7 +178,8 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		assertTrue(Double.valueOf(0.4).equals(getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(2), DOCUMENT_STATUS.COMPLETED);
 		// exception because of division problem
-		assertTrue(Double.valueOf(0.6) < getFixture().getProgress() && (Double.valueOf(0.61) > getFixture().getProgress()));
+		assertTrue(Double.valueOf(0.6) < getFixture().getProgress()
+				&& (Double.valueOf(0.61) > getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(3), DOCUMENT_STATUS.COMPLETED);
 		assertTrue(Double.valueOf(0.8).equals(getFixture().getProgress()));
 		getFixture().updateStatus(moduleControllers.get(4), DOCUMENT_STATUS.COMPLETED);
@@ -255,7 +256,8 @@ public class DocumentControllerTest extends DocumentControllerImpl {
 		sDocument.setName("myDocument");
 		SampleGenerator.createDocumentStructure(sDocument);
 		getFixture().setDocument(sDocument);
-		getFixture().setLocation(URI.createFileURI(File.createTempFile(sDocument.getName(), "." + SaltUtil.FILE_ENDING_SALT_XML).getAbsolutePath()));
+		getFixture().setLocation(URI.createFileURI(
+				File.createTempFile(sDocument.getName(), "." + SaltUtil.FILE_ENDING_SALT_XML).getAbsolutePath()));
 
 		getFixture().sendToSleep();
 		assertTrue(getFixture().isAsleep());

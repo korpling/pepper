@@ -81,8 +81,9 @@ public class StepDesc {
 	 * 
 	 * @param moduleType
 	 */
-	public synchronized void setModuleType(MODULE_TYPE moduleType) {
+	public synchronized StepDesc setModuleType(MODULE_TYPE moduleType) {
 		this.moduleType = moduleType;
+		return (this);
 	}
 
 	/**
@@ -109,8 +110,9 @@ public class StepDesc {
 	 * @param name
 	 *            of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
-	public synchronized void setName(String name) {
+	public synchronized StepDesc setName(String name) {
 		this.name = name;
+		return (this);
 	}
 
 	/**
@@ -138,8 +140,9 @@ public class StepDesc {
 	 * @param version
 	 *            of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
-	public synchronized void setVersion(String version) {
+	public synchronized StepDesc setVersion(String version) {
 		this.version = version;
+		return (this);
 	}
 
 	/**
@@ -187,8 +190,9 @@ public class StepDesc {
 	 * 
 	 * @param corpusDesc
 	 */
-	public synchronized void setCorpusDesc(CorpusDesc corpusDesc) {
+	public synchronized StepDesc setCorpusDesc(CorpusDesc corpusDesc) {
 		this.corpusDesc = corpusDesc;
+		return (this);
 	}
 
 	/** object for temporary storage of customization properties **/
@@ -215,8 +219,9 @@ public class StepDesc {
 	 * @param props
 	 *            properties to customize processing
 	 */
-	public synchronized void setProps(Properties props) {
+	public synchronized StepDesc setProps(Properties props) {
 		this.props = props;
+		return (this);
 	}
 
 	public void toXML(XMLStreamWriter writer) {
@@ -276,9 +281,11 @@ public class StepDesc {
 			str.append((getVersion() != null) ? ", " + getVersion() : "");
 		} else if (getCorpusDesc().getFormatDesc() != null) {
 			str.append("format: ");
-			str.append((getCorpusDesc().getFormatDesc().getFormatName() != null) ? getCorpusDesc().getFormatDesc().getFormatName() : "");
+			str.append((getCorpusDesc().getFormatDesc().getFormatName() != null)
+					? getCorpusDesc().getFormatDesc().getFormatName() : "");
 			str.append(",");
-			str.append((getCorpusDesc().getFormatDesc().getFormatVersion() != null) ? getCorpusDesc().getFormatDesc().getFormatVersion() : "");
+			str.append((getCorpusDesc().getFormatDesc().getFormatVersion() != null)
+					? getCorpusDesc().getFormatDesc().getFormatVersion() : "");
 		}
 		str.append(")");
 		return (str.toString());

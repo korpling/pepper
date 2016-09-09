@@ -5,7 +5,7 @@
 		<artifactId>pepperModules-TCFModules</artifactId>
 		<repositories>
 			<snapshotRepository>
-				<url>http://korpling.german.hu-berlin.de/maven2/</url>
+				<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 			</snapshotRepository>
 			<releaseRepository>
 				<url>http://central.maven.org/maven2/</url>
@@ -43,7 +43,6 @@
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
 	<pepperModules>
-	    <groupId>edu.eurac.commul</groupId>
 		<artifactId>pepperModules-MMAX2Modules</artifactId>
 	</pepperModules>
 	<pepperModules>
@@ -53,7 +52,6 @@
 		<artifactId>pepperModules-PAULAModules</artifactId>
 	</pepperModules>
 	<pepperModules>
-		<groupId>edu.tufts.perseus</groupId>
 		<artifactId>pepperModules-PerseusModules</artifactId>
 	</pepperModules>
 	<pepperModules>
@@ -67,6 +65,9 @@
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-SaltInfoModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-SpreadsheetModules</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-TEIModules</artifactId>
@@ -88,8 +89,5 @@
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-GrAFModules</artifactId>
-	</pepperModules>
-	<pepperModules>
-		<artifactId>pepperModules-PAULAModules</artifactId>
 	</pepperModules>
 </pepperModulesList>

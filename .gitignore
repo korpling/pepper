@@ -5,4 +5,8 @@
 /target/
 /pepper-lib/plugins/*
 /pepper-lib/lib/*
+bin
 rebel.xml
+.classpath
+.project
+.settings

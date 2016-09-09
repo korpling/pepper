@@ -498,7 +498,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 			if (sElementId == null)
 				throw new PepperOSGiRunnerException("Passed sElementId cannot be null.");
 			if (sElementId.getIdentifiableElement() == null)
-				throw new PepperOSGiRunnerException("SIdentifiableElement corresponding to passed sElementId cannot be null.");
+				throw new PepperOSGiRunnerException(
+						"SIdentifiableElement corresponding to passed sElementId cannot be null.");
 
 			if (sElementId.getIdentifiableElement() instanceof SDocument)
 				givenSDocuments.add((SDocument) sElementId.getIdentifiableElement());
@@ -536,7 +537,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 					if (deletedSDocuments != null) {
 						int idxDeleteDoc = deletedSDocuments.indexOf(getDocument());
-						if ((idxDeleteDoc != -1) && (deletedSDocuments.get(idxDeleteDoc).getGraph().equals(getDocument().getGraph()))) {
+						if ((idxDeleteDoc != -1)
+								&& (deletedSDocuments.get(idxDeleteDoc).getGraph().equals(getDocument().getGraph()))) {
 							status = DOCUMENT_STATUS.DELETED;
 						}
 					}
@@ -833,7 +835,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		// export phase
 		assertEquals(expectedSDocuments.size(), myExporter1.givenSDocuments.size());
 		assertTrue(expectedSDocuments.containsAll(myExporter1.givenSDocuments));
-		assertTrue("expected: " + expectedSDocuments + ", but was " + myExporter1.givenSDocuments, myExporter1.givenSDocuments.containsAll(expectedSDocuments));
+		assertTrue("expected: " + expectedSDocuments + ", but was " + myExporter1.givenSDocuments,
+				myExporter1.givenSDocuments.containsAll(expectedSDocuments));
 	}
 
 	/**
@@ -924,7 +927,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		// export phase
 		assertEquals(expectedSDocuments1.size(), myExporter1.givenSDocuments.size());
 		assertTrue(expectedSDocuments1.containsAll(myExporter1.givenSDocuments));
-		assertTrue("expected: " + expectedSDocuments1 + ", but was " + myExporter1.givenSDocuments, myExporter1.givenSDocuments.containsAll(expectedSDocuments1));
+		assertTrue("expected: " + expectedSDocuments1 + ", but was " + myExporter1.givenSDocuments,
+				myExporter1.givenSDocuments.containsAll(expectedSDocuments1));
 	}
 
 	/**
@@ -977,7 +981,10 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 			@Override
 			public void run() {
 				while (!JOB_STATUS.ENDED.equals(getFixture().getStatus())) {
-					assertTrue("Current number of documents is not correct. Expected: less than '2', but was '" + getFixture().getNumOfActiveDocuments() + "'. ", getFixture().getNumOfActiveDocuments() <= 2);
+					assertTrue(
+							"Current number of documents is not correct. Expected: less than '2', but was '"
+									+ getFixture().getNumOfActiveDocuments() + "'. ",
+							getFixture().getNumOfActiveDocuments() <= 2);
 					try {
 						Thread.sleep(10l);
 					} catch (InterruptedException e) {
@@ -1033,35 +1040,41 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		XMLOutputFactory o = XMLOutputFactory.newFactory();
 		XMLStreamWriter xmlWriter = o.createXMLStreamWriter(outStream);
 		xmlWriter.writeStartDocument();
-		xmlWriter.writeStartElement(PepperParamsReader.PREFIX_PEPPERPARAMS, PepperParamsReader.ELEMENT_PEPPERPARAMS, PepperParamsReader.NS_PEPPERPARAMS);
+		xmlWriter.writeStartElement(PepperParamsReader.PREFIX_PEPPERPARAMS, PepperParamsReader.ELEMENT_PEPPERPARAMS,
+				PepperParamsReader.NS_PEPPERPARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.PREFIX_XMI, PepperParamsReader.NS_XMI, "version", "2.0");
 		xmlWriter.writeStartElement(PepperParamsReader.ELEMENT_PEPPER_JOB_PARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_ID, "anyId");
 		xmlWriter.writeStartElement(PepperParamsReader.ELEMENT_IMPORTER_PARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_MODULE_NAME, "importer1");
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_SOURCE_PATH, corpPath.toString());
-		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS, URI.createFileURI(propFile.getAbsolutePath()).toString());
+		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS,
+				URI.createFileURI(propFile.getAbsolutePath()).toString());
 		xmlWriter.writeEndElement();
 		xmlWriter.writeStartElement(PepperParamsReader.ELEMENT_IMPORTER_PARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_FORMAT_NAME, "anyFormat");
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_FORMAT_VERSION, "anyFormatVersion");
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_SOURCE_PATH, corpPath.toString());
-		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS, URI.createFileURI(propFile.getAbsolutePath()).toString());
+		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS,
+				URI.createFileURI(propFile.getAbsolutePath()).toString());
 		xmlWriter.writeEndElement();
 		xmlWriter.writeStartElement(PepperParamsReader.ELEMENT_MODULE_PARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_MODULE_NAME, "manipulator1");
-		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS, URI.createFileURI(propFile.getAbsolutePath()).toString());
+		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS,
+				URI.createFileURI(propFile.getAbsolutePath()).toString());
 		xmlWriter.writeEndElement();
 		xmlWriter.writeStartElement(PepperParamsReader.ELEMENT_EXPORTER_PARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_MODULE_NAME, "exporter1");
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_DEST_PATH, corpPath.toString());
-		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS, URI.createFileURI(propFile.getAbsolutePath()).toString());
+		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS,
+				URI.createFileURI(propFile.getAbsolutePath()).toString());
 		xmlWriter.writeEndElement();
 		xmlWriter.writeStartElement(PepperParamsReader.ELEMENT_EXPORTER_PARAMS);
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_FORMAT_NAME, "anyFormat");
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_FORMAT_VERSION, "anyFormatVersion");
 		xmlWriter.writeAttribute(PepperParamsReader.ATT_DEST_PATH, corpPath.toString());
-		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS, URI.createFileURI(propFile.getAbsolutePath()).toString());
+		xmlWriter.writeAttribute(PepperParamsReader.ATT_SPECIAL_PARAMS,
+				URI.createFileURI(propFile.getAbsolutePath()).toString());
 		xmlWriter.writeEndElement();
 		xmlWriter.writeEndElement();
 		xmlWriter.writeEndDocument();
@@ -1086,7 +1099,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		assertEquals(props, getFixture().getStepDescs().get(0).getProps());
 
 		assertEquals("anyFormat", getFixture().getStepDescs().get(1).getCorpusDesc().getFormatDesc().getFormatName());
-		assertEquals("anyFormatVersion", getFixture().getStepDescs().get(1).getCorpusDesc().getFormatDesc().getFormatVersion());
+		assertEquals("anyFormatVersion",
+				getFixture().getStepDescs().get(1).getCorpusDesc().getFormatDesc().getFormatVersion());
 		assertEquals(corpPath, getFixture().getStepDescs().get(1).getCorpusDesc().getCorpusPath());
 		assertEquals(MODULE_TYPE.IMPORTER, getFixture().getStepDescs().get(1).getModuleType());
 		assertNotNull(getFixture().getStepDescs().get(1).getProps());
@@ -1107,7 +1121,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		assertEquals(props, getFixture().getStepDescs().get(3).getProps());
 
 		assertEquals("anyFormat", getFixture().getStepDescs().get(4).getCorpusDesc().getFormatDesc().getFormatName());
-		assertEquals("anyFormatVersion", getFixture().getStepDescs().get(4).getCorpusDesc().getFormatDesc().getFormatVersion());
+		assertEquals("anyFormatVersion",
+				getFixture().getStepDescs().get(4).getCorpusDesc().getFormatDesc().getFormatVersion());
 		assertEquals(corpPath, getFixture().getStepDescs().get(4).getCorpusDesc().getCorpusPath());
 		assertEquals(MODULE_TYPE.EXPORTER, getFixture().getStepDescs().get(4).getModuleType());
 		assertNotNull(getFixture().getStepDescs().get(4).getProps());
@@ -1173,7 +1188,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		step3.getProps().put("prop2", "5");
 		getFixture().addStepDesc(step3);
 
-		File file = new File(PepperUtil.getTempTestFile("pepperJobImplTest").getAbsolutePath() + "/test_save." + PepperUtil.FILE_ENDING_PEPPER);
+		File file = new File(PepperUtil.getTempTestFile("pepperJobImplTest").getAbsolutePath() + "/test_save."
+				+ PepperUtil.FILE_ENDING_PEPPER);
 
 		getFixture().save(URI.createFileURI(file.getAbsolutePath()));
 

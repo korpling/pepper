@@ -1,10 +1,37 @@
 ***********************************************************************************
 ***								CHANGELOG for Pepper							***
 ***********************************************************************************
-*	groupId:		de.hu_berlin.german.korpling.saltnpepper					  *
+*	groupId:		org.corpus_tools                         					  *
 *	artifactId:		pepper												          *
 *													                              *
 ***********************************************************************************
+
+Version 3.0.2
+=============
+* fix Salt dependency
+* enhance module tutorial
+* correct pepper parent module version in newModule archetype
+
+Version 3.0.1
+=============
+* make sure Pepper is using the latest bugfix version of Salt (currently 3.0.6)
+* update Maven Aether dependency to enhance the update process
+* fix some Eclipse build warnings
+
+Version 3.0.0
+=============
+* updated Salt to version 3.0.3
+* allowed to define a maven snapshot repository separate from stable repository 
+* changed all package names to org.corpus_tools.pepper
+* changed group-id org.corpus_tools
+* updated use of commons.lang3 to version 3.4
+* added more tolerancy in wizard for backslaches and relative pathes
+* Fix memory leak when documents are deleted
+
+Version 2.1.2
+=============
+* added an integrated TextExporter
+* removed memeory settings in bat and sh
 
 Version 2.1.1
 =============
@@ -18,7 +45,7 @@ Version 2.1.1
 * fixed #60: Properties in workflow description are not passed to Pepper, when there are characters like linebraks in the value.
 * fixed #59: sort Pepper modules in list view
 * fixed #57: Catch exceptions throwed by SAX (org.xml.sax.SAXParseException) and create a user friendly output, informing the user, that there are problems like encoding issues in the source files.
-* fixed #55: Problems with path deresolving in Pepper wizzard at least in Windows
+* fixed #55: Problems with path deresolving in Pepper wizard at least in Windows
 * fixed #56: problems with file encoding in Windows
 
 Version 2.1.1

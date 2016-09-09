@@ -140,7 +140,8 @@ public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 	}
 
 	@Override
-	public void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws XMLStreamException {
+	public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
+			throws XMLStreamException {
 		xml.writeAttribute(prefix, namespaceURI, localName, value);
 	}
 

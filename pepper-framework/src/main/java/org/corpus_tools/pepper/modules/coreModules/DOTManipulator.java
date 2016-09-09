@@ -66,7 +66,8 @@ public class DOTManipulator extends PepperManipulatorImpl {
 		};
 
 		String outputStr = ((DOTManipulatorProperties) this.getProperties()).getOutputFile().getAbsolutePath();
-		File outputFile = new File(outputStr + "/" + ((SNode) sElementId.getIdentifiableElement()).getPath() + "." + ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
+		File outputFile = new File(outputStr + "/" + ((SNode) sElementId.getIdentifiableElement()).getPath() + "."
+				+ ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
 		if (!outputFile.exists()) {
 			try {
 				if (!outputFile.getParentFile().exists()) {
@@ -75,7 +76,8 @@ public class DOTManipulator extends PepperManipulatorImpl {
 					}
 				}
 				if (!outputFile.getParentFile().exists()) {
-					throw new PepperModuleException("Cannot create folder for output file for dot: " + outputFile.getParentFile());
+					throw new PepperModuleException(
+							"Cannot create folder for output file for dot: " + outputFile.getParentFile());
 				}
 				if (!outputFile.createNewFile()) {
 					logger.warn("Cannot create file {}. ", outputFile);
