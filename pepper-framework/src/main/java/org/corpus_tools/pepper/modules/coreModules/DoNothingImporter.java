@@ -66,16 +66,15 @@ public class DoNothingImporter extends PepperImporterImpl implements PepperImpor
 	public SelfTestDesc getSelfTestDesc() {
 		URI inURI = getResources().appendSegment("modules").appendSegment("selfTests")
 				.appendSegment("doNothingImporter").appendSegment("in");
-		
-		// We have to make sure the input directory exists, even if this is the "do nothing" importer
-		if(!new File(inURI.toFileString()).mkdirs()) {
-			logger.warn("Can't create input directory for DoNothingImporter");
+
+		// We have to make sure the input directory exists, even if this is the
+		// "do nothing" importer
+		if (!new File(inURI.toFileString()).mkdirs()) {
+			logger.warn("Can't create input directory '" + inURI + "' for DoNothingImporter");
 		}
-		
-		return new SelfTestDesc(
-				inURI,
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingImporter")
-						.appendSegment("expected"));
+
+		return new SelfTestDesc(inURI, getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("doNothingImporter").appendSegment("expected"));
 	}
 
 	/**
