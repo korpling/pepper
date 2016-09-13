@@ -31,13 +31,12 @@ Create a runnable Pepper instance with Maven
 To create a full functional Pepper instance go to PEPPER_HOME and run
 
 \code
-mvn clean package assembly:single install
+mvn clean install assembly:single
 \endcode
 
 clean - to clean up
-package - to create the jars of sub-project
-assembly:single - to bundle the projects to zip files
 install - to deploy all sub projects to local maven repository
+assembly:single - to bundle the projects to zip files
 
 Further topics
 ===

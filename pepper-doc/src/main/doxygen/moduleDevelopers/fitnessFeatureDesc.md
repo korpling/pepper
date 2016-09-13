@@ -108,7 +108,7 @@ public MyModule(){
 
 \endcode
  
-### HAS_SELFTEST {#selftest}
+### HAS_SELFTEST
 
 This fitness feature indicates whether the module provides a self test. A self test is a test setup to check whether the module is runnable within a Pepper instance (similar to a system integration test). Therefore the module needs to provide a corpus as an input and an expected corpus. The output corpus then is compared to the expected corpus.
 When your module fails thus check, provide an input corpus, an expected corpus and override the following method:
