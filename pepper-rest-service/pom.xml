@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>pepper-rest</artifactId>
+	<artifactId>pepper-rest-service</artifactId>
 	<packaging>bundle</packaging>
 	<parent>
 		<groupId>org.corpus-tools</groupId>
@@ -13,6 +13,7 @@
 	<properties>
 		<jersey.version>2.22.2</jersey.version>
 		<jackson.version>2.7.3</jackson.version>
+		<hk2.version>2.5.0-b12</hk2.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -20,11 +21,11 @@
 			<artifactId>pepper-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>pepper-REST-lib</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>com.eclipsesource.jaxrs</groupId>
 			<artifactId>jersey-all</artifactId>
@@ -49,9 +50,6 @@
 			<version>2.0.2-beta</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--dependency> <groupId>com.eclipsesource.jaxrs</groupId> <artifactId>provider-multipart</artifactId> 
-			<version>2.2</version> <scope>provided</scope> </dependency -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-base</artifactId>
@@ -130,6 +128,31 @@
 			<version>${jersey.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+    		<groupId>org.glassfish.jersey.bundles.repackaged</groupId>
+    		<artifactId>jersey-guava</artifactId>
+    		<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.hk2</groupId>
+			<artifactId>hk2-locator</artifactId>
+			<version>${hk2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.hk2</groupId>
+			<artifactId>hk2-api</artifactId>
+			<version>${hk2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.hk2</groupId>
+			<artifactId>hk2-utils</artifactId>
+			<version>${hk2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.hk2.external</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${hk2.version}</version>
+		</dependency>		
 	</dependencies>
 	<build>
 		<plugins><!-- MAVEN BUNDLE -->			
@@ -155,41 +178,69 @@
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
-						<Import-Package>
-							!com.sun.*, !sun.misc, !javax.jms*, !javax.resource*, !javax.mail.internet*,
-							!javax.enterprise*, !oracle.dms*, !oracle.jdbc*,
-							!oracle.spatial*, !oracle.sql*, !oracle.ucp*, !oracle.xdb*,
-							!oracle.xml*, !org.antlr.stringtemplate, !org.apache.tools.ant*, <!-- 
-								packages to make context factory available -->
-							org.glassfish.jersey.message*, !org.glassfish.jersey.internal.*, 
-							!org.glassfish.jersey.process.internal, !org.glassfish.jersey.process,
-							!org.glassfish.jersey.server, !org.glassfish.jersey.server.*, !org.glassfish.jersey.server.internal, !org.glassfish.jersey.server.internal.*,
-							!org.glassfish.jersey.servlet.internal, !org.glassfish.jersey.servlet.internal.*, !org.glassfish.jersey.uri, !org.glassfish.jersey.uri.*,
-							!org.glassfish.jersey.spi, !org.glassfish.jersey, !org.glassfish.jersey.model.internal, !org.glassfish.jersey.model, !org.glassfish.jersey.servlet.spi,
-							javax.inject.*, <!-- packages to make service run -->
-							javax.servlet.http, javax.servlet, javax.ws.rs, !javax.ws.rs.container, !com.google.common.io, !javax.xml.bind, !javax.xml.bind.*, !org.corpus_tools.pepper.core,
-							<!-- packages to make gui start -->
-							!org.glassfish.hk2.*, org.glassfish.hk2.extension, !org.jvnet.hk2.annotations, !org.jvnet.hk2.external.runtime, org.jvnet.hk2.external.generator,
-							 *
-						</Import-Package>
-						<Export-Package>
-							org.corpus_tools.pepper.service.*, org.eclipse.persistence.*, javax.servlet, javax.servlet.http,<!-- packages 
-								to make context factory available -->
-							org.glassfish.jersey.servlet, org.glassfish.jersey.server.spi, org.glassfish.jersey.servlet.spi, org.glassfish.jersey.spi,
-							org.glassfish.jersey.servlet.internal.spi, org.glassfish.jersey.internal, org.glassfish.jersey.servlet.internal,
-							org.glassfish.jersey.server, org.glassfish.jersey.server.internal.process, org.glassfish.jersey, org.glassfish.jersey.internal.util, 
-							org.glassfish.jersey.internal.util.collection, org.glassfish.jersey.server.internal.inject, org.glassfish.hk2.utilities.binding,
-							org.glassfish.jersey.model, org.glassfish.jersey.model.internal, org.glassfish.jersey.server.model, org.glassfish.jersey.process,
-							org.glassfish.jersey.process.internal, org.glassfish.jersey.internal.inject, javax.ws.rs.container, org.glassfish.jersey.server.monitoring,
-							org.glassfish.hk2.utilities, org.glassfish.hk2.api, org.glassfish.hk2.internal, org.glassfish.hk2.utilities.reflection, org.glassfish.hk2.extension,
-							org.jvnet.hk2.internal, org.jvnet.hk2.external.generator
-						</Export-Package>
-						<Bundle-ClassPath>WEB-INF/classes,WEB-INF/lib,{maven-dependencies}</Bundle-ClassPath>
+						<Bundle-ClassPath>.,WEB-INF/classes,{maven-dependencies}</Bundle-ClassPath>
 						<Include-Resource>{maven-resources}</Include-Resource>
 						<Web-ContextPath>/pepper-rest/</Web-ContextPath>
 						<Webapp-Context>/pepper-rest</Webapp-Context>
 						<_wab>src/main/webapp</_wab>
 						<Service-Component>${allServiceComponents}</Service-Component>
+						<Import-Package>
+						<!-- IMPORTS -->
+						javax.servlet,					
+						org.eclipse.persistence.internal.core*,
+						org.glassfish.jersey.servlet,
+						org.jvnet.hk2.external.generator,
+						<!-- NON-IMPORTS -->
+						!com.google.common.io,
+						!com.sun*, 
+						!javax.enterprise.*,
+						!javax.jms*,
+						!javax.mail.*,
+						!javax.resource*,
+						!jersey.repackaged.org.objectweb.*,
+						!oracle.*,
+						!org.antlr*,
+						!org.apache.tools*,
+						!org.corpus_tools.pepper.core,
+						!org.eclipse.persistence.annotations,
+						!org.eclipse.persistence.annotations.*,
+						!org.eclipse.persistence.core.*,						
+						!org.eclipse.persistence.descriptors*,
+						!org.eclipse.persistence.dynamic*,
+						!org.eclipse.persistence.config,
+						!org.eclipse.persistence.config*,
+						!org.eclipse.persistence.eis,
+						!org.eclipse.persistence.eis.*,
+						!org.eclipse.persistence.exceptions*,
+						!org.eclipse.persistence.expressions*,
+						!org.eclipse.persistence.history,
+						!org.eclipse.persistence.history.*,
+						!org.eclipse.persistence.indirection*,						
+						!org.eclipse.persistence.internal*,
+						!org.eclipse.persistence.jaxb*,
+						!org.eclipse.persistence.logging,
+						!org.eclipse.persistence.logging*,
+						!org.eclipse.persistence.mappings*,
+						!org.eclipse.persistence.oxm*,
+						!org.eclipse.persistence.platform.*,
+						!org.eclipse.persistence.queries*,
+						!org.eclipse.persistence.sequencing*,
+						!org.eclipse.persistence.sessions*,
+						!org.eclipse.persistence.tools.profiler*,						
+						!org.eclipse.persistence.tools.schemaframework*,
+						!org.jvnet.hk2.annotations,
+						!org.jvnet.mimepull,
+						!org.jvnet.hk2.external.runtime,						
+						!sun.*,
+						*
+						</Import-Package>
+						<Export-Package>
+						jersey.repackaged.org.objectweb.asm,
+						org.eclipse.persistence*,
+						org.glassfish*,
+						org.jvnet.* 
+						</Export-Package>	
+						<Embed-Dependency>hk2-*</Embed-Dependency>										
 					</instructions>
 				</configuration>
 			</plugin>

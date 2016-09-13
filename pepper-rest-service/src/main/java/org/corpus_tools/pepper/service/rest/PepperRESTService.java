@@ -35,6 +35,7 @@ import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallab
 import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
 import org.eclipse.emf.common.util.URI;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -119,18 +120,16 @@ public class PepperRESTService implements PepperServiceImplConstants {
 	// uploads data to pepper server and returns step id
 	@POST
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-	@Produces(MediaType.TEXT_PLAIN)
 	@Path("job/{id}/")
-	public void uploadData(@PathParam("id") String id, byte[] data) {
-
+	public void uploadData(@PathParam("id") String id, @FormDataParam("data") byte[] data) {
+		return;
 	}
 
 	// uploads path to data to pepper server and returns step id
 	@POST
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.TEXT_PLAIN)
-	@Path("job/{id}/")
-	public void uploadData(@PathParam("id") String jobId, String path, byte[] data) {
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	@Path("job/{id}/{path}")
+	public void uploadData(@PathParam("id") String jobId, @PathParam("path") String path, @FormDataParam("data") byte[] data) {
 
 		if (path.endsWith("/")) {
 			path = path.substring(0, path.length() - 1);

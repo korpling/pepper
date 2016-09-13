@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ public class WebApplication extends Application {
 		}
 		final Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(PepperRESTService.class);
+		classes.add(MultiPartFeature.class);
 		classes.add(ServiceEventListener.class);
 		return classes;
 	}
