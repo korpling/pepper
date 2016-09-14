@@ -15,7 +15,7 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
-import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
+import org.corpus_tools.pepper.service.lib.adapters.PepperModuleCollectionMarshallable;
 import org.eclipse.emf.common.util.URI;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;

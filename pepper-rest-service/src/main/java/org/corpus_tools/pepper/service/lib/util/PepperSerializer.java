@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.service.util;
+package org.corpus_tools.pepper.service.lib.util;
 
 import java.io.StringReader;
 

@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.service.adapters;
+package org.corpus_tools.pepper.service.lib.adapters;
 
 import java.util.ArrayList;
 import java.util.Collection;

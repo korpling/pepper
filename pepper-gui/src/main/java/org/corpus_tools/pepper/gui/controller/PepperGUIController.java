@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Collection;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.corpus_tools.pepper.common.MODULE_TYPE;
+import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.gui.client.ServiceConnector;
 import org.corpus_tools.pepper.gui.components.PathSelectDialogue;
 import org.corpus_tools.pepper.gui.components.PepperGUI;
 import org.corpus_tools.pepper.gui.model.ConversionStepConfiguration;
@@ -46,7 +50,11 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private IdProvider idProvider = null;
 	private Window debugWindow = null;
 	private Object tunnel = null;
-	private static final String SERVICE_URL = "http://localhost:8080/";
+	private ServiceConnector serviceConnector = null;
+	private static final String SERVICE_URL = "http://localhost:8080/pepper-rest/resource/";
+	
+	/* pepper stuff */
+	Collection<PepperModuleDesc> modules = null;
 	
 	protected void init(VaadinRequest request){
 		gui = new PepperGUI(this);
@@ -54,6 +62,8 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		setImmediate(true);
 		
 		idProvider = new IdProvider();
+		serviceConnector = new ServiceConnector(SERVICE_URL);
+		modules = serviceConnector.getAllModules();
 		
 		{//prepare path select window
 			Window w = new Window(PATH_DIALOGUE_TITLE);
@@ -90,8 +100,10 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		String id = event.getComponent().getId();
 		debugOut("click event, id="+id);
 		if (ID_BUTTON_ABOUT.equals(id)){	
-//			Collection<PepperModuleDesc> modules = serviceConnector.getAllModules(MODULE_TYPE.EXPORTER);
-//			gui.debugOut(modules.toString());
+			if (modules==null){
+				modules = serviceConnector.getAllModules();
+			}
+			gui.debugOut(modules.toString());
 		}
 		else if (ID_BUTTON_NEW.equals(id)){
 		}

@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.service.adapters;
+package org.corpus_tools.pepper.service.lib.adapters;
 
 import java.util.List;
 import java.util.Vector;
@@ -68,6 +68,10 @@ public class PepperJobMarshallable implements PepperMarshallable<PepperJob>{
 	private String id;
 	
 	@XmlElement
+	public String getId(){
+		return this.id;
+	}
+	
 	public void setId(String id){
 		this.id = id;
 	}
@@ -75,6 +79,10 @@ public class PepperJobMarshallable implements PepperMarshallable<PepperJob>{
 	private String basedirURI;
 	
 	@XmlElement
+	public String getBaseDirURI(){
+		return this.basedirURI;
+	}
+	
 	public void setBasedirURI(String uri){
 		this.basedirURI = uri;
 	}
@@ -82,6 +90,10 @@ public class PepperJobMarshallable implements PepperMarshallable<PepperJob>{
 	private JOB_STATUS jobStatus;
 	
 	@XmlElement
+	public JOB_STATUS getJobStatus(){
+		return this.jobStatus;
+	}
+	
 	public void setJobStatus(JOB_STATUS status){
 		this.jobStatus = status;
 	}

@@ -31,9 +31,10 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.StepDesc;
-import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
-import org.corpus_tools.pepper.service.util.PepperSerializer;
+import org.corpus_tools.pepper.service.lib.adapters.PepperModuleCollectionMarshallable;
+import org.corpus_tools.pepper.service.lib.util.PepperSerializer;
+import org.corpus_tools.pepper.service.lib.util.PepperServiceURLDictionary;
 import org.eclipse.emf.common.util.URI;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.osgi.service.component.annotations.Component;
@@ -48,7 +49,7 @@ import com.google.common.io.Files;
 @WebService
 @Path("/resource")
 @Component(name = "PepperRESTService", immediate = true)
-public class PepperRESTService implements PepperServiceImplConstants {
+public class PepperRESTService implements PepperServiceImplConstants, PepperServiceURLDictionary {
 
 	/* statics */
 	private static Pepper pepper;
@@ -72,7 +73,7 @@ public class PepperRESTService implements PepperServiceImplConstants {
 
 	// returns all pepper modules
 	@GET
-	@Path("modules")
+	@Path(PATH_ALL_MODULES)
 	public String getModules() {
 		System.out.println("---------------------> Pepper " + pepper.getRegisteredModules());
 		PepperModuleCollectionMarshallable modules = new PepperModuleCollectionMarshallable(
@@ -96,7 +97,7 @@ public class PepperRESTService implements PepperServiceImplConstants {
 	// return workflow file for job
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	@Path("job/{id}")
+	@Path(PATH_JOB + "/{id}")
 	public String getJobDescription(@PathParam("id") String id) {
 		PepperJob job = pepper.getJob(id);
 		if (job == null) {
@@ -112,7 +113,7 @@ public class PepperRESTService implements PepperServiceImplConstants {
 	// status report of job
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	@Path("job/{id}/report")
+	@Path(PATH_JOB + "/{id}/report")
 	public String getJobReport(@PathParam("id") String id) {
 		return null;
 	}
@@ -128,7 +129,7 @@ public class PepperRESTService implements PepperServiceImplConstants {
 	// uploads path to data to pepper server and returns step id
 	@POST
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-	@Path("job/{id}/{path}")
+	@Path(PATH_JOB + "/{id}/{path}")
 	public void uploadData(@PathParam("id") String jobId, @PathParam("path") String path, @FormDataParam("data") byte[] data) {
 
 		if (path.endsWith("/")) {
@@ -198,7 +199,7 @@ public class PepperRESTService implements PepperServiceImplConstants {
 	// downloads data from pepper server
 	@GET
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	@Path("job/{id}/{stepNo}")
+	@Path(PATH_JOB + "/{id}/{stepNo}")
 	public byte[] getData(@PathParam("id") String jobId, @PathParam("stepNo") Integer stepNo) {
 
 		PepperJob job = pepper.getJob(jobId);

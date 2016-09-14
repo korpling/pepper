@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.service.adapters;
+package org.corpus_tools.pepper.service.lib.adapters;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,7 +34,6 @@ public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<
 		return name;
 	}
 	
-	@XmlElement
 	public void setName(String name){
 		this.name = name;
 	}
@@ -46,7 +45,6 @@ public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<
 		return required;
 	}
 	
-	@XmlElement
 	public void setRequired(boolean required){
 		this.required = required;
 	}
@@ -58,7 +56,6 @@ public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<
 		return type;
 	}
 	
-	@XmlElement
 	public void setType(Class<PT> type){
 		this.type = type;
 	}
@@ -70,7 +67,6 @@ public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<
 		return description;
 	}
 	
-	@XmlElement
 	public void setDescription(String description){
 		this.description = description;
 	}
@@ -85,7 +81,6 @@ public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<
 		return value;
 	}
 	
-	@XmlElement	
 	public void setValue(PT value){
 		this.value = value;
 	}	
