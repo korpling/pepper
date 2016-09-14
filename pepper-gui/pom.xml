@@ -19,7 +19,7 @@
 		<dependency><!-- TODO change to rest-lib, which shall provide adapters and util (the only the things the 
 		gui needs to know -->
 			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-REST-service</artifactId>
+			<artifactId>pepper-rest-service</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>		
