@@ -16,12 +16,13 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<dependency><!-- TODO change to rest-lib, which shall provide adapters and util (the only the things the 
+		gui needs to know -->
 			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-gui-lib</artifactId>
+			<artifactId>pepper-REST-service</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		
+			<scope>provided</scope>
+		</dependency>		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>pepper-framework</artifactId>
