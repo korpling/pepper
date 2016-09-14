@@ -84,18 +84,24 @@
 		          <instructions>         	
 		            <Bundle-Name>${project.artifactId}</Bundle-Name>
 		            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-		            <Bundle-Version>${project.version}</Bundle-Version>               
-		            <Embed-Dependency>vaadin.*</Embed-Dependency>
-		            <Import-Package> 
-		            org.glassfish.jersey.client*, org.glassfish.jersey.jackson*, org.glassfish.jersey.message*, com.fasterxml.jackson*, org.glassfish.jersey.oauth1.signature*, <!-- packages to make gui start -->
-		            !com.google.appengine.api.*,!com.google.apphosting*,!com.google.gson*, !com.google.gwt.thirdparty*, !com.ibm*, !com.liferay*, !com.steadystate*, !com.thoughtworks*, !elemental*, !javax.portlet*,
-		            !net.sourceforge*, !org.apache.tapestry*, !org.apache.tools*, !org.apache.xalan*, !org.apache.xerces*, !org.apache.*, !org.atmosphere.*, !org.cyberneko*, !org.eclipse.jdt*, 
-		            !org.eclipse.jetty.*, !org.hibernate*, !org.jsoup*, !org.kohsuke*, !org.w3c*, !sun*, com.vaadin.server, com.vaadin*, *
+		            <Bundle-Version>${project.version}</Bundle-Version>              
+		            <Import-Package>
+					javax.servlet*,					
+					org.corpus_tools.pepper.gui.components,
+		            		            
+					!com.google.appengine*, 
+					!com.google.apphosting*,
+					!com.google.gwt.thirdparty*,
+					!com.liferay*,					
+					!javax.*, 
+					!org.atmosphere*,
+					!org.jsoup*,
+					!org.w3c*,
+					*
 		            </Import-Package>
 		            <Export-Package>
-		            com.vaadin.server, com.vaadin*, com.google*, com.gargoylesoftware*, javax.servlet*, org.corpus_tools.pepper.gui.client,
-		            elemental.json*, javax.servlet.http, org.jsoup*, org.jsoup.nodes*
-		            </Export-Package>      
+		            com.vaadin.*, org.corpus_tools.pepper.gui.client, elemental.json*, org.jsoup*
+		            </Export-Package> 
 		          </instructions>
 		        </configuration>
 		   </plugin>

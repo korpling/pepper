@@ -21,11 +21,6 @@
 			<artifactId>pepper-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-REST-lib</artifactId>
-			<version>${project.version}</version>
-		</dependency-->
 		<dependency>
 			<groupId>com.eclipsesource.jaxrs</groupId>
 			<artifactId>jersey-all</artifactId>
@@ -191,6 +186,7 @@
 						org.glassfish.jersey.servlet,
 						org.jvnet.hk2.external.generator,
 						<!-- NON-IMPORTS -->
+						!com.fasterxml*,
 						!com.google.common.io,
 						!com.sun*, 
 						!javax.enterprise.*,

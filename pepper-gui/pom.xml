@@ -21,6 +21,53 @@
 			<artifactId>pepper-gui-lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>pepper-framework</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-themes</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-server</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiled</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${com.google.gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${com.google.gwt.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.gwt</groupId>
+		    <artifactId>gwt-elemental</artifactId>
+		    <version>${com.google.gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.jsoup</groupId>
+    		<artifactId>jsoup</artifactId>
+    		<version>1.7.2</version>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging><!-- used to be war -->	
 	<build>
@@ -54,7 +101,7 @@
 	          <configuration>
 	            <archive>
 	              <!-- add the generated manifest to the war -->
-	              <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+	              <manifestFile>META-INF/MANIFEST.MF</manifestFile>	              
 	            </archive>
 	          </configuration>
 	        </plugin>
@@ -69,8 +116,8 @@
 		          <execution>
 		            <phase>process-classes</phase>
 		            <goals>
-		              <goal>manifest</goal>
-		            </goals>
+		              <goal>bundle</goal>
+		            </goals>		            
 		          </execution>
 		        </executions>
 		        <configuration>		        
@@ -81,22 +128,62 @@
 		          </supportedProjectTypes>
 		          <manifestLocation>${META-INF}</manifestLocation>
 		          <instructions>         	
+		          	<Bundle-ClassPath>
+		          	WEB-INF/classes,
+		          	WEB-INF/lib/jsoup-1.7.2.jar,
+		          	WEB-INF/lib/vaadin-client-compiled-7.4.3.jar,		          	
+		          	WEB-INF/lib/vaadin-sass-compiler-7.4.3.jar,
+		          	WEB-INF/lib/vaadin-server-7.4.3.jar,
+		          	WEB-INF/lib/vaadin-shared-7.4.3.jar,		          			          	
+		          	WEB-INF/lib/vaadin-themes-7.4.3.jar
+		          	</Bundle-ClassPath>
 		            <Bundle-Name>${project.artifactId}</Bundle-Name>
 		            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 		            <Bundle-Version>${project.version}</Bundle-Version>
-		            <Embed-Dependency>pepper-gui-lib</Embed-Dependency> 
-		            <Embed-Transitive>True</Embed-Transitive>
-		            <Import-Package> 
-					org.glassfish.jersey.servlet*, org.glassfish.jersey.server, com.vaadin*, com.vaadin.server, com.vaadin.server*, 
-					!com.google*, !com.ibm*, !com.liferay*, !com.steadystate*, !com.thoughtworks*, !javax.portlet*,
-					!net.sourceforge*, !org.apache.*, !org.atmosphere*, !org.cyberneko*, !org.eclipse.jdt*, !org.eclipse.jetty.*, 
-					!org.hibernate*, !org.jsoup*, !org.kohsuke*, !org.w3c*, !sun*,<!-- packages to make gui run -->
-		            org.corpus_tools.pepper*, org.corpus_tools.pepper.gui.client, javax.servlet, javax.servlet.http, org.jsoup.nodes, *
-		            </Import-Package>
-		            <Export-Package>com.vaadin.server.*, org.corpus_tools.pepper.gui.*, com.vaadin.server, com.vaadin*</Export-Package>
 		            <Web-ContextPath>/pepper-gui/</Web-ContextPath>
 					<Webapp-Context>/pepper-gui</Webapp-Context>
 					<_wab>src/main/webapp</_wab> 
+					<Import-Package>
+					
+					com.vaadin.*,
+					com.vaadin.server.*, 
+					javax.servlet*,
+					javax.ws.rs.*,
+					org.corpus_tools.pepper.*,
+					org.glassfish.*,
+					org.jsoup.*,
+					
+					!com.google.appengine*,
+					!com.google.apphosting*,
+					!com.google.gwt.core*,
+					!com.google.gwt.thirdparty*,
+					!com.google.gwt.xhr*,
+					!com.liferay*,
+					!javax.*, 
+					!org.atmosphere*,
+					!org.w3c*,
+					*
+					</Import-Package>
+					<Export-Package>
+					com.vaadin.annotations,
+					com.vaadin.data, 
+					com.vaadin.data.*,
+					com.vaadin.event,
+					com.vaadin.event.*,
+					com.vaadin.*,
+					com.vaadin.sass,
+					com.vaadin.sass.*,
+					com.vaadin.server,
+					com.vaadin.server.*,
+					com.vaadin.shared,
+					com.vaadin.shared.*,
+					com.vaadin.ui,
+					com.vaadin.ui.*, 
+					elemental.json,
+					elemental.json.*,
+					org.jsoup,
+					org.jsoup.*
+					</Export-Package>
 		          </instructions>
 		        </configuration>
 		   </plugin>			
