@@ -64,6 +64,8 @@ public class PepperConfiguration extends Properties {
 	public static final String EMAIL = "saltnpepper@lists.hu-berlin.de";
 	/** pepper-homepage */
 	public static final String HOMEPAGE = "http://corpus-tools.org/pepper/";
+	/** link to Pepper developers homepage for fitness features **/
+	public static final String FITNESS_FEATURE_DESC = "https://korpling.github.io/pepper/doc/fitness.html";
 	/**
 	 * A sub folder in Pepper directory to be used as workspace (to store jobs
 	 * etc.)

@@ -29,8 +29,9 @@ import org.corpus_tools.pepper.modules.PepperMapper;
  * @author Florian Zipser
  *
  */
-@SuppressWarnings("serial")
 public class AbstractPepperModuleException extends PepperException {
+
+	private static final long serialVersionUID = -2476758519498655948L;
 
 	public AbstractPepperModuleException() {
 		super();

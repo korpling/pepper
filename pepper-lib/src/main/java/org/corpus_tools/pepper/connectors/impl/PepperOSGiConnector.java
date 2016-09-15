@@ -49,6 +49,7 @@ import org.corpus_tools.pepper.cli.PepperStarterConfiguration;
 import org.corpus_tools.pepper.cli.exceptions.PepperOSGiException;
 import org.corpus_tools.pepper.cli.exceptions.PepperOSGiFrameworkPluginException;
 import org.corpus_tools.pepper.cli.exceptions.PepperPropertyException;
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
@@ -880,5 +881,13 @@ public class PepperOSGiConnector implements Pepper, PepperConnector {
 			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
 		}
 		return (getPepper().getRegisteredImporters());
+	}
+
+	@Override
+	public Collection<ModuleFitness> checkFitness() {
+		if (getPepper() == null) {
+			throw new PepperException("We are sorry, but no Pepper has been resolved in OSGi environment. ");
+		}
+		return (getPepper().checkFitness());
 	}
 }

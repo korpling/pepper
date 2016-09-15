@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.common.JOB_STATUS;
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
@@ -53,7 +54,7 @@ import org.slf4j.LoggerFactory;
 
 @Component(name = "PepperImpl", immediate = true)
 public class PepperImpl implements Pepper {
-	private static final Logger logger = LoggerFactory.getLogger(PepperImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger("Pepper");
 
 	/** Configuration object for Pepper **/
 	private PepperConfiguration configuration = null;
@@ -314,6 +315,26 @@ public class PepperImpl implements Pepper {
 
 	// ===================================== end: wirering module resolver via
 	// OSGi
+	/**
+	 * Returns all registered {@link PepperModule}s. If no module is registered,
+	 * returns an empty list.
+	 * 
+	 * @return
+	 */
+	private Collection<PepperModule> getAllRegisteredModules() {
+		Collection<PepperModule> modules = new ArrayList<>();
+		if (getModuleResolver() != null) {
+			modules.addAll(getModuleResolver().getPepperImporters());
+			modules.addAll(getModuleResolver().getPepperManipulators());
+			modules.addAll(getModuleResolver().getPepperExporters());
+		}
+		return modules;
+	}
+
+	@Override
+	public Collection<ModuleFitness> checkFitness() {
+		return new ModuleFitnessChecker(this).checkFitness(getAllRegisteredModules());
+	}
 
 	@Override
 	public Collection<String> selfTest() {

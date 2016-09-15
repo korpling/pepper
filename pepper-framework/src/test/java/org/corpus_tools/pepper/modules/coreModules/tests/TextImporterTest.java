@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -26,12 +27,17 @@ import java.io.PrintWriter;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
+import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter.TextMapper;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SDocument;
+import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -144,5 +150,25 @@ public class TextImporterTest extends PepperImporterTest {
 
 		assertEquals(3, getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora().size());
 		assertEquals(4, getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments().size());
+	}
+
+	@Test
+	public void whenSelfTestingModule_thenResultShouldBeTrue() {
+		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
+
+		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
+		assertThat(
+				fitness.getFitness(
+						FitnessFeature.HAS_PASSED_SELFTEST))
+								.describedAs(""
+										+ SaltUtil
+												.compare(SaltUtil
+														.loadSaltProject(
+																fixture.getSelfTestDesc().getExpectedCorpusPath())
+														.getCorpusGraphs().get(0))
+												.with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs())
+								.isTrue();
+		assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
+		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
 	}
 }

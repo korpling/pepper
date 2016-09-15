@@ -42,10 +42,12 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	 * @return
 	 */
 	public File getOutputFile() {
-		File retVal = null;
-		PepperModuleProperty<String> prop = (PepperModuleProperty<String>) this.getProperty(PROP_OUTPUTFILE);
-		retVal = new File(prop.getValue());
-		return (retVal);
+		final PepperModuleProperty<String> prop = (PepperModuleProperty<String>) this.getProperty(PROP_OUTPUTFILE);
+		final String fileName = prop.getValue();
+		if (fileName != null && !fileName.isEmpty()) {
+			return (new File(fileName));
+		}
+		return null;
 	}
 
 	/**

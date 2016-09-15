@@ -41,8 +41,8 @@ import org.eclipse.emf.common.util.URI;
  * A mapping task in the Pepper workflow is not a monolithic block. It consists
  * of several smaller steps.
  * <ul>
- * <li>Declare the fingerprint of the module. This is part of the
- * constructor.</li>
+ * <li>Declare the fingerprint of the module. This is part of the constructor.
+ * </li>
  * <li>Check readyness of the module.</li>
  * <li>Analyze whether the files in the passed corpus path is importable by this
  * importer.</li>
@@ -53,8 +53,8 @@ import org.eclipse.emf.common.util.URI;
  * </ul>
  * The following describes the single steps in short. To get a more detailed
  * explanation, take a look to the documentations found at
- * <a href="http://u.hu-berlin.de/saltnpepper"
- * >http://u.hu-berlin.de/saltnpepper</a>.
+ * <a href="http://u.hu-berlin.de/saltnpepper" >http://u.hu-berlin.de/
+ * saltnpepper</a>.
  * </p>
  * <p>
  * <h3>Declare the fingerprint</h3> Initialize the module and set the modules
@@ -209,7 +209,7 @@ public interface PepperImporter extends PepperModule {
 	 * A character or character sequence to mark a file extension as not to be
 	 * one of the imported ones.
 	 */
-	public static final String NEGATIVE_FILE_EXTENSION_MARKER = "-";
+	static final String NEGATIVE_FILE_EXTENSION_MARKER = "-";
 
 	/**
 	 * Returns a list of formats, which are importable by this
@@ -260,7 +260,7 @@ public interface PepperImporter extends PepperModule {
 	 * </table>
 	 * 
 	 */
-	public Map<Identifier, URI> getIdentifier2ResourceTable();
+	Map<Identifier, URI> getIdentifier2ResourceTable();
 
 	/**
 	 * Returns list containing all format endings for files, which are
@@ -269,7 +269,7 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings
 	 */
-	public Collection<String> getDocumentEndings();
+	Collection<String> getDocumentEndings();
 
 	/**
 	 * Returns a collection of all file endings for a {@link SCorpus} object.
@@ -282,7 +282,7 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings
 	 */
-	public Collection<String> getCorpusEndings();
+	Collection<String> getCorpusEndings();
 
 	/**
 	 * Returns a collection of filenames, not to be imported.
@@ -292,7 +292,7 @@ public interface PepperImporter extends PepperModule {
 	 * 
 	 * @return a collection of endings to be ignored
 	 */
-	public Collection<String> getIgnoreEndings();
+	Collection<String> getIgnoreEndings();
 
 	/**
 	 * This method is a callback and can be overridden by derived importers.
@@ -305,8 +305,8 @@ public interface PepperImporter extends PepperModule {
 	 * If this method is not overridden, the default behavior is:
 	 * <ul>
 	 * <li>For each file having an ending, which is contained in
-	 * {@link #getDocumentEndings()} {@link SALT_TYPE#SDOCUMENT} is
-	 * returned</li>
+	 * {@link #getDocumentEndings()} {@link SALT_TYPE#SDOCUMENT} is returned
+	 * </li>
 	 * <li>For each file having an ending, which is contained in
 	 * {@link #getCorpusEndings()} {@link SALT_TYPE#SCorpus} is returned</li>
 	 * <li>If {@link #getDocumentEndings()} contains {@link #ENDING_ALL_FILES},
@@ -326,7 +326,7 @@ public interface PepperImporter extends PepperModule {
 	 *         represents a {@link SDocument} object or null, if it shall be
 	 *         igrnored.
 	 */
-	public SALT_TYPE setTypeOfResource(URI resource);
+	SALT_TYPE setTypeOfResource(URI resource);
 
 	/**
 	 * This method is called by Pepper at the start of a conversion process to
@@ -359,15 +359,15 @@ public interface PepperImporter extends PepperModule {
 	FormatDesc addSupportedFormat(String formatName, String formatVersion, URI formatReference);
 
 	/**
-	 * This method is called by the pepper framework and returns if a corpus
-	 * located at the given {@link URI} is importable by this importer. If yes,
-	 * 1 must be returned, if no 0 must be returned. If it is not quite sure, if
-	 * the given corpus is importable by this importer any value between 0 and 1
-	 * can be returned. If this method is not overridden, null is returned.
+	 * This method is called by Pepper and returns if a corpus located at the
+	 * given {@link URI} is importable by this importer. If yes, 1 must be
+	 * returned, if no 0 must be returned. If it is not quite sure, if the given
+	 * corpus is importable by this importer any value between 0 and 1 can be
+	 * returned. If this method is not overridden, null is returned.
 	 * 
 	 * @return 1 if corpus is importable, 0 if corpus is not importable, 0 < X <
 	 *         1, if no definitiv answer is possible, null if method is not
 	 *         overridden
 	 */
-	public Double isImportable(URI corpusPath);
+	Double isImportable(URI corpusPath);
 }

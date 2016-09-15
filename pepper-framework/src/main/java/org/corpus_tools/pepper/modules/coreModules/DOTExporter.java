@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperMapper;
@@ -33,13 +34,25 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(name = "DOTExporterComponent", factory = "PepperExporterComponentFactory", enabled = true)
 public class DOTExporter extends PepperExporterImpl {
+	public static final String FORMAT_NAME = "dot";
+	public static final String FORMAT_VERSION = "1.0";
+
 	public DOTExporter() {
 		super("DOTExporter");
 		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
 		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
 		setDesc("This exporter exports a Salt model to the dot syntax. This can be used to create a graphical representation of the Salt model. ");
 		// set list of formats supported by this module
-		this.addSupportedFormat("dot", "1.0", null);
+		this.addSupportedFormat(FORMAT_NAME, FORMAT_VERSION, null);
+	}
+
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotExporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotExporter")
+						.appendSegment("expected"));
 	}
 
 	@Override

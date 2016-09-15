@@ -414,6 +414,7 @@ public class PepperModuleProperties implements Serializable {
 		return simpleTokSeparators;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("[");

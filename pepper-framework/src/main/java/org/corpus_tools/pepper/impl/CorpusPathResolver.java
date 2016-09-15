@@ -187,7 +187,6 @@ public class CorpusPathResolver {
 			throw new NotInitializedException(
 					"Please call setCorpusPath(URI) first or use other constructor new CorpusPathResolver(URI). ");
 		}
-
 		Collection<File> unreadFiles = unreadFilesGroupedByExtension.get(fileEnding);
 		// read files as long as there are files to be read
 		if (unreadFiles != null) {
@@ -242,7 +241,7 @@ public class CorpusPathResolver {
 	protected String readFirstLines(final File file, final int numOfLinesToRead) {
 		if (file == null || !file.exists()) {
 			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '"
-					+ (file == null ? file : file.getAbsolutePath()) + "', because it was null or does not exist. ");
+					+ file.getAbsolutePath() + "', because it was null or does not exist. ");
 		}
 		if (numOfLinesToRead < 1) {
 			return null;

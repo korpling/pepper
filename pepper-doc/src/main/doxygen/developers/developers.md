@@ -25,6 +25,24 @@ pepper-parentModule | Is the parent project for all Pepper modules and contains 
 To run Pepper only the projects pepper-lib and pepper-framework are necessary. When there is already an OSGi environment only the project pepper-framework is necessary.
 
 
+Create a runnable Pepper instance with Maven
+===
+
+To create a full functional Pepper instance go to PEPPER_HOME and run
+
+\code
+mvn clean install assembly:single
+\endcode
+
+clean - to clean up
+install - to deploy all sub projects to local maven repository
+assembly:single - to bundle the projects to zip files
+
+Further topics
+===
+
+\subpage dev_fitnessCheck
+
 Items to be described in future
 ===
 

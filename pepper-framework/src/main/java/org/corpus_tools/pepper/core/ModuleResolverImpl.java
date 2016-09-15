@@ -50,6 +50,8 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+
 /**
  * The {@link ModuleResolverImpl} realizes a bridge between the Pepper framework
  * and the OSGi environment. Through OSGi declarative services all
@@ -365,7 +367,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 *            - the object for setting resources
 	 */
 	protected void setResources(PepperModule module) {
-		if ((module.getSymbolicName() == null) || (module.getSymbolicName().isEmpty())) {
+		if (Strings.isNullOrEmpty(module.getSymbolicName())) {
 			throw new PepperModuleException(
 					"Cannot set resources to module '" + module.getName() + "', because its symbolic name is empty.");
 		}
@@ -375,23 +377,23 @@ public class ModuleResolverImpl implements ModuleResolver {
 		resourcePathStr = System.getProperty(propName);
 
 		// check case 2 (general system environment for module resources)
-		if ((resourcePathStr == null) || (resourcePathStr.isEmpty())) {
+		if (Strings.isNullOrEmpty(resourcePathStr)) {
 			String env = System.getenv(PepperConfiguration.ENV_PEPPER_MODULE_RESOURCES);
-			if ((env != null) && (!env.isEmpty())) {
+			if (!Strings.isNullOrEmpty(env)) {
 				resourcePathStr = env + "/" + module.getSymbolicName();
 			}
 		}
 
 		// check case 3 (general system property for module resources)
-		if ((resourcePathStr == null) || (resourcePathStr.isEmpty())) {
+		if (Strings.isNullOrEmpty(resourcePathStr)) {
 			String prop = System.getProperty(PepperConfiguration.PROP_PEPPER_MODULE_RESOURCES);
-			if ((prop != null) && (!prop.isEmpty())) {
+			if (!Strings.isNullOrEmpty(prop)) {
 				resourcePathStr = prop + "/" + module.getSymbolicName();
 			}
 		}
 
 		// check case 4 (retrieve path from location where bundle is)
-		if ((resourcePathStr == null) || (resourcePathStr.isEmpty())) {
+		if (Strings.isNullOrEmpty(resourcePathStr)) {
 			resourcePathStr = retrieveResourcePathFromBundle(module);
 		}
 
@@ -444,8 +446,9 @@ public class ModuleResolverImpl implements ModuleResolver {
 				String currLocation = module.getComponentContext().getBundleContext().getBundle().getLocation();
 				currLocation = currLocation.replace("initial@reference:file:", "");
 				currLocation = currLocation.replace("../", "");
-				if (currLocation.endsWith("/"))
+				if (currLocation.endsWith("/")) {
 					currLocation = currLocation.substring(0, currLocation.length() - 1);
+				}
 				String location = null;
 				for (String bundleLocation : bundleLocations) {
 					if (bundleLocation.contains(currLocation)) {
@@ -510,10 +513,10 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 *            - number of module instance
 	 */
 	protected void setTemporaries(PepperModule module, int number) {
-		if ((module.getSymbolicName() == null) || (module.getSymbolicName().isEmpty()))
+		if (Strings.isNullOrEmpty(module.getSymbolicName())) {
 			throw new PepperModuleException(
 					"Cannot set temporaries to module '" + module.getName() + "', because its symbolic name is empty.");
-
+		}
 		File genTmpPath = getConfiguration().getTempPath();
 		if (genTmpPath == null)
 			throw new PepperFWException("Cannot start converting, because the system property '"
@@ -539,12 +542,14 @@ public class ModuleResolverImpl implements ModuleResolver {
 	 */
 	private Integer increaseNumberOfModules(PepperModule module) {
 		Integer retVal = null;
-		if (module == null)
+		if (module == null) {
 			throw new PepperFWException("Cannot increase number of modules, because module is empty. ");
+		}
 		String moduleSymbolicName = module.getSymbolicName();
-		if ((moduleSymbolicName == null) || (moduleSymbolicName.isEmpty()))
+		if (Strings.isNullOrEmpty(moduleSymbolicName)) {
 			throw new PepperFWException("Cannot increase number of module '" + module.getName()
 					+ "', because the symbolic name of module is empty.");
+		}
 		synchronized (this) {
 			if (this.numberOfModuleInstances.containsKey(moduleSymbolicName)) {
 				Integer number = this.numberOfModuleInstances.get(moduleSymbolicName);
@@ -578,11 +583,11 @@ public class ModuleResolverImpl implements ModuleResolver {
 					if (pepperImporters == null)
 						pepperImporters = new Vector<PepperImporter>();
 					PepperImporter importer = (PepperImporter) instance;
-					if ((importer.getSymbolicName() == null) || (importer.getSymbolicName().isEmpty()))
+					if (Strings.isNullOrEmpty(importer.getSymbolicName())) {
 						throw new PepperModuleException(
 								"Cannot register PepperModule, because the symbolic name of module '"
 										+ importer.getName() + "' is empty.");
-
+					}
 					this.setTemporaries(importer, increaseNumberOfModules(importer));
 					this.setResources(importer);
 					pepperImporters.add(importer);
@@ -725,6 +730,7 @@ public class ModuleResolverImpl implements ModuleResolver {
 	/**
 	 * TODO make docu
 	 */
+	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (pepperImporterComponentFactories: ");

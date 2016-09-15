@@ -48,7 +48,11 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitness.Fitness;
+import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.common.Pepper;
+import org.corpus_tools.pepper.common.PepperConfiguration;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
 import org.corpus_tools.pepper.common.PepperUtil;
@@ -166,6 +170,9 @@ public class PepperStarter {
 		//
 		SELFTEST("self-test", "st", null,
 				"Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
+		//
+		FITNESS("fitness", "f", null,
+				"Checks the fitness of each registered Pepper module. The fitness check also checks features, that are necessary to run a module and features which should be implemented."),
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
@@ -292,11 +299,12 @@ public class PepperStarter {
 	 * Returns a String containing a table with information about the passed
 	 * Pepper module.
 	 * 
+	 * @param moduleSelector
+	 *            either the name of a module or the number of a module
+	 * 
 	 * @return
 	 */
-	// @Command(description="A table with information about the passed Pepper
-	// module.")
-	public String list(String moduleName) {
+	public String list(String moduleSelector) {
 		StringBuilder retVal = new StringBuilder();
 		PepperModuleDesc moduleDesc = null;
 		Collection<PepperModuleDesc> moduleDescs = null;
@@ -311,15 +319,15 @@ public class PepperStarter {
 		}
 		Integer numOfModule = null;
 		try {
-			numOfModule = Integer.parseInt(moduleName);
+			numOfModule = Integer.parseInt(moduleSelector);
 			if (number2module != null) {
 				moduleDesc = number2module.get(numOfModule);
 			}
 		} catch (NumberFormatException ex) {
 			// try to read module desc by name
-			if ((moduleDesc == null) && (moduleName != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
+			if ((moduleDesc == null) && (moduleSelector != null) && (moduleDescs != null) && (moduleDescs.size() > 0)) {
 				for (PepperModuleDesc desc : moduleDescs) {
-					if (moduleName.equalsIgnoreCase(desc.getName())) {
+					if (moduleSelector.equalsIgnoreCase(desc.getName())) {
 						moduleDesc = desc;
 						break;
 					}
@@ -373,7 +381,7 @@ public class PepperStarter {
 
 			retVal.append("\n");
 		} else {
-			retVal.append("- no Pepper module was found for given name '" + moduleName + "' -");
+			retVal.append("- no Pepper module was found for given name '" + moduleSelector + "' -");
 		}
 
 		return (retVal.toString());
@@ -551,22 +559,6 @@ public class PepperStarter {
 	}
 
 	/**
-	 * Updates a Pepper module(s).
-	 */
-	// public String update(List<String> params) {
-	// if (getPepper() instanceof PepperOSGiConnector) {
-	// OSGiConsole console = new OSGiConsole((PepperOSGiConnector) getPepper(),
-	// PROMPT);
-	// console.installAndStart(params, output);
-	// return ("Updated Pepper module.");
-	// } else {
-	// return
-	// ("No OSGi console available, since Pepper is not running in OSGi mode.
-	// ");
-	// }
-	// }
-
-	/**
 	 * Removes an existing Pepper module(s).
 	 */
 	public String remove(List<String> params) {
@@ -584,9 +576,7 @@ public class PepperStarter {
 	 * 
 	 * @return
 	 */
-	// @Command(description="Tests if the Pepper framework is in runnable mode
-	// or if any problems are detected, either in Pepper itself or in any
-	// registered Pepper module.")
+	@Deprecated
 	public String selfTest() {
 		StringBuilder retVal = new StringBuilder();
 		Collection<String> problems = getPepper().selfTest();
@@ -599,6 +589,70 @@ public class PepperStarter {
 			}
 		}
 		return (retVal.toString());
+	}
+
+	/**
+	 * Returns a fitness report as a String. This report contains a fitness
+	 * value for each module and if a module is not fit, the report is expanded
+	 * for a detailed report containing one value for each fitness feature.
+	 * 
+	 * @return fitness report
+	 */
+	public String fitness() {
+		final StringBuilder retVal = new StringBuilder();
+		final Collection<ModuleFitness> moduleFitnisses = getPepper().checkFitness();
+		for (ModuleFitness moduleFitness : moduleFitnisses) {
+			final Fitness overallFitness = moduleFitness.getOverallFitness();
+			retVal.append(printFitnessDetails(moduleFitness.getModuleName(), overallFitness + "", 80, 0));
+			if (!Fitness.FIT.equals(overallFitness)) {
+				for (FitnessFeature healthFeature : FitnessFeature.getHealthFeatures()) {
+					final Boolean featureHealth = moduleFitness.getFitness(healthFeature);
+					if (featureHealth != null) {
+						retVal.append(
+								printFitnessDetails(healthFeature + "", featureHealth ? "YES" : "NO" + "", 80, 4));
+					}
+				}
+				for (FitnessFeature fitnessFeature : FitnessFeature.getFitnessFeatures()) {
+					final Boolean featureFitness = moduleFitness.getFitness(fitnessFeature);
+					if (featureFitness != null) {
+						retVal.append(
+								printFitnessDetails(fitnessFeature + "", featureFitness ? "YES" : "NO" + "", 80, 4));
+					}
+				}
+			}
+		}
+		retVal.append("For more information on particular fitness features see: "
+				+ PepperConfiguration.FITNESS_FEATURE_DESC + ". ");
+		return (retVal.toString());
+	}
+
+	/**
+	 * Prints a line for {@link FitnessFeature} for instance:
+	 * 
+	 * <pre>
+	 * DoNothingImporter............................................................FIT
+	 *     IS_READY_TO_RUN......................................................FIT
+	 * </pre>
+	 * 
+	 * @param name
+	 * @param value
+	 * @param size
+	 * @param blanks
+	 * @return
+	 */
+	private String printFitnessDetails(String name, String value, int size, int blanks) {
+		final StringBuilder str = new StringBuilder();
+		for (int i = 0; i < blanks; i++) {
+			str.append(" ");
+		}
+		str.append(name);
+		for (int i = 0; i < size - name.length() - value.length() - 2 * blanks; i++) {
+			str.append(".");
+		}
+		str.append(value);
+		str.append("\n");
+		return str.toString();
+
 	}
 
 	/**
@@ -1126,6 +1180,9 @@ public class PepperStarter {
 			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(command))
 					|| (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(command))) {
 				output.println(selfTest());
+			} else if ((COMMAND.FITNESS.getName().equalsIgnoreCase(command))
+					|| (COMMAND.FITNESS.getAbbreviation().equalsIgnoreCase(command))) {
+				output.println(fitness());
 			} else if ((COMMAND.CONVERT.getName().equalsIgnoreCase(command))
 					|| (COMMAND.CONVERT.getAbbreviation().equalsIgnoreCase(command))) {
 				if (params.size() == 1) {
@@ -1177,7 +1234,7 @@ public class PepperStarter {
 			} else {
 				String msg = e.getMessage();
 				if ((msg != null) && (!msg.isEmpty())) {
-					logger.error(" ", e.getMessage());
+					logger.error(" ", e);
 				} else {
 					e.printStackTrace();
 				}
