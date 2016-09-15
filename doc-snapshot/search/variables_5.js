@@ -7,6 +7,7 @@ var searchData=
   ['file_5fpepper_5fconf',['FILE_PEPPER_CONF',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_configuration.html#ad1fd5cabf258bf2a6ff5f5b94bb76254',1,'org::corpus_tools::pepper::cli::PepperStarterConfiguration']]],
   ['file_5fpepper_5fprop',['FILE_PEPPER_PROP',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_configuration.html#a4e62f6d67d43d6355462a82844111a2c',1,'org::corpus_tools::pepper::cli::PepperStarterConfiguration']]],
   ['file_5fpepper_5ftest_5fprop',['FILE_PEPPER_TEST_PROP',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_configuration.html#a17b58e6565fad0202600d2b147ccc124',1,'org::corpus_tools::pepper::cli::PepperStarterConfiguration']]],
+  ['fitness_5ffeature_5fdesc',['FITNESS_FEATURE_DESC',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a92af167b86b1369345a22e28d21991f3',1,'org::corpus_tools::pepper::common::PepperConfiguration']]],
   ['formatdesc',['formatDesc',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_corpus_desc.html#a220e738658e9af2e32084d865d27054e',1,'org::corpus_tools::pepper::common::CorpusDesc']]],
   ['formatname',['formatName',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_format_desc.html#a0908f4fc20252442e82837d5b8780b31',1,'org::corpus_tools::pepper::common::FormatDesc']]],
   ['formatreference',['formatReference',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_format_desc.html#a187775de44f675c55a43d1e5e0b1f72c',1,'org::corpus_tools::pepper::common::FormatDesc']]],

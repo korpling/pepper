@@ -12,6 +12,7 @@ var moduleDevelopers =
     [ "Customizing the mapping", "customization.html", null ],
     [ "Pepper module developers helper", "helper.html", null ],
     [ "Testing", "testing.html", null ],
+    [ "Fitness Check", "fitness.html", null ],
     [ "Using third-party dependencies", "dependencies.html", "dependencies" ],
     [ "Bundle and deliver", "bundle.html", null ]
 ];

@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "Pepper", "index.html", [
-    [ "Pepper developers", "developers.html", null ],
+    [ "Pepper developers", "developers.html", "developers" ],
     [ "Pepper module developers", "moduleDevelopers.html", "moduleDevelopers" ],
     [ "Pepper users", "users.html", "users" ],
     [ "Classes", "annotated.html", [
@@ -19,10 +19,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#afccf2589538ec7fbb673535f332ee8da",
-"classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html#a3e9b48b16d0d764676fa0ec460ece577",
-"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_data_exception.html",
-"interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html#a622d16f74b43d2f716139dace011bb16"
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#a80b5a3d6b13b6d8bee48552e1aadcf39",
+"classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_pepper_configuration_exception.html#afce6e9760d85008706ce9f3c5bbe62df",
+"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator_properties.html#a6fdd6faaf165269c6f976051bb46b99c",
+"functions_func_s.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

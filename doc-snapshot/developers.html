@@ -119,6 +119,11 @@ $(document).ready(function(){initNavTree('developers.html','');});
 <td>pepper-parentModule </td><td>Is the parent project for all Pepper modules and contains the most necessary dependencies and Maven settings. </td></tr>
 </table>
 <p>To run Pepper only the projects pepper-lib and pepper-framework are necessary. When there is already an OSGi environment only the project pepper-framework is necessary.</p>
+<h1>Create a runnable Pepper instance with Maven </h1>
+<p>To create a full functional Pepper instance go to PEPPER_HOME and run</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;mvn clean install assembly:single</div></div><!-- fragment --><p>clean - to clean up install - to deploy all sub projects to local maven repository assembly:single - to bundle the projects to zip files</p>
+<h1>Further topics </h1>
+<p><a class="el" href="dev_fitnessCheck.html">Fitness check</a></p>
 <h1>Items to be described in future </h1>
 <ul>
 <li>Pepper uses OSGi to realize its plugIn structure</li>
@@ -134,7 +139,7 @@ $(document).ready(function(){initNavTree('developers.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 8 2016 11:19:36 for Pepper by
+    <li class="footer">Generated on Thu Sep 15 2016 16:08:46 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

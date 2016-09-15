@@ -1,5 +1,6 @@
 var interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper =
 [
+    [ "checkFitness", "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a45699cdba786282706b160866352ff0a", null ],
     [ "createJob", "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#ac7c25c4e55c8159972dddd407c52bb9b", null ],
     [ "findAppropriateImporters", "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a6f9d364523c041d570d2c8b8e41d0422", null ],
     [ "getConfiguration", "interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a66a7e7d21d802b510d57f154809759b8", null ],

@@ -1,5 +1,6 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl =
 [
+    [ "checkFitness", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a1c26308290e36e429923d1837580e7e6", null ],
     [ "cleanUp", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a045f7b6267c19b6bef8e6973b09b9a16", null ],
     [ "createJob", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a229bf36f6ca0e8b1a07e21adfc9087cf", null ],
     [ "findAppropriateImporters", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#ab05bde1d8e2e4892c5522c57e03f3496", null ],

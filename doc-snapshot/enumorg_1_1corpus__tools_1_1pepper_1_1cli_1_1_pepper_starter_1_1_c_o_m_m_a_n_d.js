@@ -9,6 +9,7 @@ var enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n
     [ "CONVERT", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#a948aec928fcef5f52e719250be75a934", null ],
     [ "DEBUG", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#a4b0317a9446526393ab5d449482cda05", null ],
     [ "EXIT", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#a43f9cdff750798cbeed239f3386ade90", null ],
+    [ "FITNESS", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#ad9a3d496b7bf1e46ac30fd72afbafd86", null ],
     [ "HELP", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#a28415a12a091f0a103b6d6bd991350e7", null ],
     [ "INSTALL_START", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#acee8751ec11a1911bbc8494a5ae6d01d", null ],
     [ "LIST", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html#a1a23008b3f72c82d6d627f9585d355e5", null ],

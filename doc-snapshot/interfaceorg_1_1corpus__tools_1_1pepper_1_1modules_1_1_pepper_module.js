@@ -2,7 +2,7 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module =
 [
     [ "createPepperMapper", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a9dc9348828cdffb97cb6f2d2633e5c14", null ],
     [ "done", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a096b38f49fe3fd4432543990660eac35", null ],
-    [ "done", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#afece3bc5ce302e442bdf1be6f953a4c0", null ],
+    [ "done", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ad83942548834c7c68bbd657045ce728e", null ],
     [ "end", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aeccf4d0f1495cc9b4a860b6989bfa7bf", null ],
     [ "getComponentContext", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ad7b2508338998453121ca827486e43b4", null ],
     [ "getCorpusGraph", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#af1e0cca2a447a443f55b075185069d34", null ],
@@ -16,6 +16,7 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module =
     [ "getProperties", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a1856341f264d4d1a849bc58b89c88484", null ],
     [ "getResources", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a15e28b31d76d956690cd9587b7aa9a8d", null ],
     [ "getSaltProject", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a2e2d6ad8bbbb8170a0a623f60a79bd9f", null ],
+    [ "getSelfTestDesc", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aa0478576501db0d1ab500dcc23f7a14d", null ],
     [ "getStartProblems", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a4675564af3b38fb8bc173c9da92cb2dc", null ],
     [ "getSupplierContact", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#af455b9435c10a37ba201db186e98981c", null ],
     [ "getSupplierHomepage", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aa395ac268d0f64fb177f0a1f0e4a8b3f", null ],

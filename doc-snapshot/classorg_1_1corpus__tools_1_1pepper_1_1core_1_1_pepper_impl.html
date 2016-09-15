@@ -170,6 +170,9 @@ Set&lt; String &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findAp
 <tr class="memitem:a878e4cb238b48369f00b2748d57da12a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a878e4cb238b48369f00b2748d57da12a">unsetModuleResolver</a> (<a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html">ModuleResolver</a> moduleResolver)</td></tr>
 <tr class="memdesc:a878e4cb238b48369f00b2748d57da12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver_impl.html">ModuleResolverImpl</a> reference.  <a href="#a878e4cb238b48369f00b2748d57da12a">More...</a><br /></td></tr>
 <tr class="separator:a878e4cb238b48369f00b2748d57da12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c26308290e36e429923d1837580e7e6"><td class="memItemLeft" align="right" valign="top">Collection&lt; <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a1c26308290e36e429923d1837580e7e6">checkFitness</a> ()</td></tr>
+<tr class="memdesc:a1c26308290e36e429923d1837580e7e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the fitness of each registered Pepper module.  <a href="#a1c26308290e36e429923d1837580e7e6">More...</a><br /></td></tr>
+<tr class="separator:a1c26308290e36e429923d1837580e7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fefc2a5c9d371b3e2af6cb6fe3cdc69"><td class="memItemLeft" align="right" valign="top">Collection&lt; String &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a1fefc2a5c9d371b3e2af6cb6fe3cdc69">selfTest</a> ()</td></tr>
 <tr class="memdesc:a1fefc2a5c9d371b3e2af6cb6fe3cdc69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the Pepper framework is ready to run.  <a href="#a1fefc2a5c9d371b3e2af6cb6fe3cdc69">More...</a><br /></td></tr>
 <tr class="separator:a1fefc2a5c9d371b3e2af6cb6fe3cdc69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,6 +188,28 @@ Set&lt; String &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findAp
 <tr class="separator:a6f9d364523c041d570d2c8b8e41d0422 inherit pub_methods_interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a1c26308290e36e429923d1837580e7e6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Collection&lt;<a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a>&gt; org.corpus_tools.pepper.core.PepperImpl.checkFitness </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks the fitness of each registered Pepper module. </p>
+<p>The fitness of a module indicates in what way a module is docking to the Pepper interface. For instance it checks whether a module provides a contact address of the module'supplier. Or when the module is an importer whether it supports the <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_importer_impl.html#aef5229e642a983dd9ce8556e494adc19">PepperImporterImpl#isImportable(URI)</a> method. <br />
+ Further the fitness says whether a module is ready to start.</p>
+<dl class="section return"><dt>Returns</dt><dd>a list of fitness entries, one per module, if no module is registered an empty list is returned </dd></dl>
+
+<p>Implements <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html#a45699cdba786282706b160866352ff0a">org.corpus_tools.pepper.common.Pepper</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a045f7b6267c19b6bef8e6973b09b9a16"></a>
 <div class="memitem">
 <div class="memproto">
@@ -547,7 +572,7 @@ Set&lt; String &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findAp
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1core.html">core</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html">PepperImpl</a></li>
-    <li class="footer">Generated on Thu Sep 8 2016 11:19:37 for Pepper by
+    <li class="footer">Generated on Thu Sep 15 2016 16:08:46 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

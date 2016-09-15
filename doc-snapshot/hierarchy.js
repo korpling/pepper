@@ -2,8 +2,8 @@ var hierarchy =
 [
     [ "org.corpus_tools.pepper.impl.BeforeAfterAction", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html", null ],
     [ "org.corpus_tools.pepper.cli.ConvertWizardConsole.COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html", null ],
-    [ "org.corpus_tools.pepper.cli.PepperStarter.COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html", null ],
     [ "org.corpus_tools.pepper.cli.OSGiConsole.COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_o_s_gi_console_1_1_c_o_m_m_a_n_d.html", null ],
+    [ "org.corpus_tools.pepper.cli.PepperStarter.COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html", null ],
     [ "Comparable", null, [
       [ "org.corpus_tools.pepper.common.PepperModuleDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_module_desc.html", null ],
       [ "org.corpus_tools.pepper.modules.PepperModuleProperty< T >", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property.html", null ]
@@ -31,6 +31,8 @@ var hierarchy =
     [ "org.corpus_tools.pepper.modules.ModuleController", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_module_controller.html", [
       [ "org.corpus_tools.pepper.core.ModuleControllerImpl", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_controller_impl.html", null ]
     ] ],
+    [ "org.corpus_tools.pepper.common.ModuleFitness", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html", null ],
+    [ "org.corpus_tools.pepper.core.ModuleFitnessChecker", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html", null ],
     [ "org.corpus_tools.pepper.core.ModuleResolver", "interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html", [
       [ "org.corpus_tools.pepper.core.ModuleResolverImpl", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver_impl.html", null ]
     ] ],
@@ -62,6 +64,7 @@ var hierarchy =
           [ "org.corpus_tools.pepper.modules.coreModules.TextImporter", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_text_importer.html", null ]
         ] ],
         [ "org.corpus_tools.pepper.impl.PepperManipulatorImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_manipulator_impl.html", [
+          [ "org.corpus_tools.pepper.modules.coreModules.DoNothingManipulator", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_do_nothing_manipulator.html", null ],
           [ "org.corpus_tools.pepper.modules.coreModules.DOTManipulator", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html", null ],
           [ "org.corpus_tools.pepper.modules.coreModules.SaltValidator", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_salt_validator.html", null ]
         ] ]
@@ -79,7 +82,8 @@ var hierarchy =
         [ "org.corpus_tools.pepper.modules.coreModules.TextImporter", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_text_importer.html", null ]
       ] ],
       [ "org.corpus_tools.pepper.modules.PepperManipulator", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_manipulator.html", [
-        [ "org.corpus_tools.pepper.impl.PepperManipulatorImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_manipulator_impl.html", null ]
+        [ "org.corpus_tools.pepper.impl.PepperManipulatorImpl", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_manipulator_impl.html", null ],
+        [ "org.corpus_tools.pepper.modules.coreModules.DoNothingManipulator", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_do_nothing_manipulator.html", null ]
       ] ]
     ] ],
     [ "org.corpus_tools.pepper.testFramework.PepperModuleTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test.html", [
@@ -123,6 +127,7 @@ var hierarchy =
         [ "org.corpus_tools.pepper.exceptions.WorkflowException", "classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_workflow_exception.html", null ]
       ] ]
     ] ],
+    [ "org.corpus_tools.pepper.core.SelfTestDesc", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html", null ],
     [ "org.corpus_tools.pepper.common.StepDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html", [
       [ "org.corpus_tools.pepper.core.Step", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_step.html", null ]
     ] ],
