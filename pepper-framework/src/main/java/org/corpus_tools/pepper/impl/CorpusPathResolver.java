@@ -241,7 +241,7 @@ public class CorpusPathResolver {
 	protected String readFirstLines(final File file, final int numOfLinesToRead) {
 		if (file == null || !file.exists()) {
 			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '"
-					+ file.getAbsolutePath() + "', because it was null or does not exist. ");
+					+ (file == null ? "" : file.getAbsolutePath()) + "', because it was null or does not exist. ");
 		}
 		if (numOfLinesToRead < 1) {
 			return null;

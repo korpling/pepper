@@ -19,8 +19,10 @@ package org.corpus_tools.pepper.core;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
@@ -192,7 +194,8 @@ public class SelfTestDesc {
 	}
 
 	private boolean isXmlFile(File pobablyXMlFile) {
-		try (BufferedReader brTest = new BufferedReader(new FileReader(pobablyXMlFile))) {
+		try (BufferedReader brTest = new BufferedReader(new InputStreamReader(
+		    new FileInputStream(pobablyXMlFile), StandardCharsets.UTF_8))) {
 			final String firstLine = brTest.readLine();
 			if (!Strings.isNullOrEmpty(firstLine)) {
 				if (firstLine.contains("<?xml")) {
