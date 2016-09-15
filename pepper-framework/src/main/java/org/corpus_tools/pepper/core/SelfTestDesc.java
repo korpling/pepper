@@ -194,8 +194,8 @@ public class SelfTestDesc {
 	}
 
 	private boolean isXmlFile(File pobablyXMlFile) {
-		try (BufferedReader brTest = new BufferedReader(new InputStreamReader(
-		    new FileInputStream(pobablyXMlFile), StandardCharsets.UTF_8))) {
+		try (BufferedReader brTest = new BufferedReader(
+				new InputStreamReader(new FileInputStream(pobablyXMlFile), StandardCharsets.UTF_8))) {
 			final String firstLine = brTest.readLine();
 			if (!Strings.isNullOrEmpty(firstLine)) {
 				if (firstLine.contains("<?xml")) {
