@@ -165,6 +165,7 @@
             <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
             <Import-Package>
             com.sun.xml.internal.stream,
+            com.sun.org.apache.xerces.internal.impl,
             org.glassfish.jersey.internal,
             org.jvnet.hk2.external.generator,
             <!-- NON-IMPORTS -->
@@ -222,7 +223,8 @@
 			*
             </Import-Package>
             <Export-Package>
-            com.sun.xml.internal.stream,
+            com.sun.xml.internal.stream*,            
+            com.sun.org.apache.xerces.*,
             javassist*,
             javax*,   
             javax.inject;version="2.5.0-b12",       

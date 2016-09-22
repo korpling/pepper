@@ -47,8 +47,9 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", PepperServiceImplConstants.DATA_FORMAT);
 			InputStream xml = connection.getInputStream();
-		
-			for (PepperModuleDescMarshallable pmdm : ((PepperModuleCollectionMarshallable)serializer.unmarshal(xml.toString(), PepperModuleCollectionMarshallable.class)).getModuleList()){
+			Collection<PepperModuleDescMarshallable> rawList = ((PepperModuleCollectionMarshallable)serializer.unmarshal(xml.toString(), PepperModuleCollectionMarshallable.class)).getModuleList();
+			logger.info("Received list: " + rawList);
+			for (PepperModuleDescMarshallable pmdm : rawList){
 				moduleList.add(pmdm.getPepperObject());
 			}
 		} catch (IOException e){
