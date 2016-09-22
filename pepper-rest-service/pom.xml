@@ -142,6 +142,7 @@
 						javax.servlet,						
 						org.corpus_tools.pepper.*,
 						org.eclipse.persistence.internal.core*,
+						org.eclipse.persistence.jaxb,
 						org.glassfish.jersey.media.multipart,
 						org.glassfish.hk2.api,
 						org.glassfish.hk2.utilities,
@@ -205,6 +206,7 @@
             			org.glassfish.jersey.servlet,-->
             			jersey.repackaged.*,
 						org.eclipse.persistence*,
+						org.eclipse.persistence.jaxb,
 						org.jvnet.mimepull
 						</Export-Package>	
 						<Embed-Dependency>hk2-*</Embed-Dependency>										

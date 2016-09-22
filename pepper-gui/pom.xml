@@ -152,7 +152,7 @@
 		            <Web-ContextPath>/pepper-gui/</Web-ContextPath>
 					<Webapp-Context>/pepper-gui</Webapp-Context>
 					<_wab>src/main/webapp</_wab> 
-					<Import-Package>					
+					<Import-Package>									
 					com.vaadin.*,
 					com.vaadin.server.*,
 					javax.inject,
@@ -163,19 +163,21 @@
 					javax.ws.rs.container,
 					javax.ws.rs.core,
 					javax.ws.rs.ext,
+					javax.xml.stream,
 					jersey.repackaged.com.google.common.base,
 					jersey.repackaged.com.google.common.collect,
 					org.apache.commons.lang3,
 					org.corpus_tools.pepper.common,
 					org.corpus_tools.pepper.service.adapters,
 					org.corpus_tools.pepper.service.interfaces,
-					org.corpus_tools.pepper.service.util,					
+					org.corpus_tools.pepper.service.util,	
+					org.eclipse.persistence.jaxb,				
 					<!--org.glassfish.hk2.api,
 					org.glassfish.hk2.extension,
 					org.glassfish.hk2.internal,
 					org.glassfish.hk2.osgiresourcelocator,
 					org.glassfish.hk2.utilities,
-					org.glassfish.hk2.utilities.binding,-->					
+					org.glassfish.hk2.utilities.binding,-->			
 					org.glassfish.jersey.internal,
 					org.glassfish.jersey.internal.spi,
 					org.glassfish.jersey.logging,

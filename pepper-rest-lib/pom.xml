@@ -159,6 +159,7 @@
             <Bundle-Version>${project.version}</Bundle-Version>
             <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
             <Import-Package>
+            com.sun.xml.internal.stream,
             org.glassfish.jersey.internal,
             org.jvnet.hk2.external.generator,
             <!-- NON-IMPORTS -->
