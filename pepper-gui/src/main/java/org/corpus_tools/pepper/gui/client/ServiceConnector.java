@@ -52,6 +52,7 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 			e.printStackTrace();
 		}
 		logger.info("Received response: " + response);
+		logger.info("Response entity:" + response.getEntity());
 		if (response.getStatus() == 404){
 			logger.error(ERR_404);
 		} else {

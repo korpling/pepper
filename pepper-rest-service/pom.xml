@@ -139,12 +139,16 @@
 						<Service-Component>${allServiceComponents}</Service-Component>
 						<Import-Package>
 						<!-- IMPORTS -->
-						javax.servlet,					
+						javax.servlet,						
 						org.corpus_tools.pepper.*,
 						org.eclipse.persistence.internal.core*,
 						org.glassfish.jersey.media.multipart,
-						org.glassfish.jersey.servlet,
+						org.glassfish.hk2.api,
+						org.glassfish.hk2.utilities,
+						org.glassfish.hk2.utilities.binding,
+						org.glassfish.hk2.utilities.cache,	
 						org.jvnet.hk2.external.generator,
+						org.jvnet.hk2.external.runtime,															
 						<!-- NON-IMPORTS -->
 						!com.fasterxml*,
 						!com.google.common.io,
@@ -154,6 +158,8 @@
 						!javax.mail.*,
 						!javax.resource*,
 						!jersey.repackaged.org.objectweb.*,
+						!jersey.repackaged.com.google.common.collect,
+						!jersey.repackaged.com.google.common.*,
 						!oracle.*,
 						!org.antlr*,
 						!org.apache.tools*,
@@ -184,15 +190,22 @@
 						!org.eclipse.persistence.sessions*,
 						!org.eclipse.persistence.tools.profiler*,						
 						!org.eclipse.persistence.tools.schemaframework*,
+						!org.glassfish.hk2*,
+						!org.glassfish.jersey*,
 						!org.jvnet.hk2.annotations,
-						!org.jvnet.mimepull,
-						!org.jvnet.hk2.external.runtime,						
+						!org.jvnet.hk2.external.generator,								
 						!sun.*,
 						*
 						</Import-Package>
 						<Export-Package>
-						jersey.repackaged.org.objectweb.asm,
-						org.eclipse.persistence*
+						jersey.repackaged.org.objectweb.asm,						
+            			org.glassfish.jersey.*,<!--media.multipart,
+            			org.glassfish.jersey.media.multipart.internal,
+            			org.glassfish.jersey.server.spi,
+            			org.glassfish.jersey.servlet,-->
+            			jersey.repackaged.*,
+						org.eclipse.persistence*,
+						org.jvnet.mimepull
 						</Export-Package>	
 						<Embed-Dependency>hk2-*</Embed-Dependency>										
 					</instructions>
