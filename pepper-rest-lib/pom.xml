@@ -227,6 +227,7 @@
             org.glassfish.hk2.orgiresourcelocator,
             <!--org.glassfish.hk2*,-->
             org.glassfish.jersey*,
+            org.glassfish.jersey.media.multipart,
             org.glassfish.jersey.internal, 
             <!--org.glassfish.hk2.osgiresourcelocator,-->
             org.jsoup,
