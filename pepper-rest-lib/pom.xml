@@ -217,6 +217,7 @@
 			*
             </Import-Package>
             <Export-Package>
+            com.sun.xml.internal.stream,
             javassist*,
             javax*,   
             javax.inject;version="2.5.0-b12",       
