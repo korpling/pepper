@@ -85,12 +85,12 @@
 		<groupId>org.glassfish.hk2</groupId>
 		<artifactId>osgi-resource-locator</artifactId>
 		<version>${hk2.version}</version>
-	</dependency>
+	</dependency><!-- 
 	<dependency>
 		<groupId>org.glassfish.hk2.external</groupId>
 		<artifactId>javax.inject</artifactId>
 		<version>${hk2.version}</version>
-	</dependency>
+	</dependency>-->
 	<dependency>
    		<groupId>org.glassfish.jersey.bundles.repackaged</groupId>
    		<artifactId>jersey-guava</artifactId>
@@ -206,6 +206,7 @@
 			!org.eclipse.persistence.tools.profiler*,						
 			!org.eclipse.persistence.tools.schemaframework*,
 			!org.glassfish.jersey*,
+			!org.glassfish.hk2.osgiresourcelocator,
 			!org.glassfish.jersey.internal.util,
 			!org.jvnet.hk2.annotations,
 			!org.jvnet.mimepull,
@@ -223,16 +224,17 @@
 			org.apache.commons.*,
             org.corpus_tools.pepper.service*,
             org.eclipse.persistence*,
-            org.glassfish.hk2*,
+            org.glassfish.hk2.orgiresourcelocator,
+            <!--org.glassfish.hk2*,-->
             org.glassfish.jersey*,
             org.glassfish.jersey.internal, 
-            org.glassfish.hk2.osgiresourcelocator,
+            <!--org.glassfish.hk2.osgiresourcelocator,-->
             org.jsoup,
-            org.jsoup.*,
+            org.jsoup.*<!--,
             org.jvnet.hk2.component,
             org.jvnet.hk2.external.generator,
 			org.jvnet.hk2.external.runtime,
-			org.jvnet.hk2.internal
+			org.jvnet.hk2.internal -->
 
             </Export-Package>            
           </instructions>
