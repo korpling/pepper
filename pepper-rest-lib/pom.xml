@@ -216,9 +216,11 @@
             </Import-Package>
             <Export-Package>
             javassist*,
-            javax*,          
+            javax*,   
+            javax.inject;version="2.5.0-b12",       
 			jersey.repackaged*,          
 			org.aopalliance*,
+			org.apache.commons.*,
             org.corpus_tools.pepper.service*,
             org.eclipse.persistence*,
             org.glassfish.hk2*,
