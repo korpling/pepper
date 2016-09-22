@@ -1,4 +1,4 @@
-package org.corpus_tools.pepper.service.lib.util;
+package org.corpus_tools.pepper.service.util;
 
 public interface PepperServiceURLDictionary {
 	public static final String PATH_ALL_MODULES = "modules";

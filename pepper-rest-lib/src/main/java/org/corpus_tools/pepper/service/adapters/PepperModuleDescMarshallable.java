@@ -29,10 +29,10 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 	public PepperModuleDescMarshallable(PepperModuleDesc pepperModuleDesc){
 		this();
 		this.desc = pepperModuleDesc.getDesc();
-		this.homepageURI = pepperModuleDesc.getSupplierHomepage().toString();
+		this.homepageURI = pepperModuleDesc.getSupplierHomepage()==null? "" : pepperModuleDesc.getSupplierHomepage().toString();
 		this.moduleType = pepperModuleDesc.getModuleType();
 		this.name = pepperModuleDesc.getName();
-		this.supplierContactURI = pepperModuleDesc.getSupplierContact().toString();
+		this.supplierContactURI = pepperModuleDesc.getSupplierContact()==null? "" : pepperModuleDesc.getSupplierContact().toString();
 		this.version = pepperModuleDesc.getVersion();
 		List<FormatDesc> supportedFormats = pepperModuleDesc.getSupportedFormats();
 		for (FormatDesc fDesc : supportedFormats){
@@ -73,7 +73,6 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		return name;
 	}
 	
-	@XmlElement
 	public void setName(String name){
 		this.name = name;
 	}
@@ -85,7 +84,6 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		return version;
 	}
 	
-	@XmlElement
 	public void setVersion(String version){
 		this.version = version;
 	}
@@ -97,7 +95,6 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		return moduleType;
 	}
 	
-	@XmlElement
 	public void setModuleType(MODULE_TYPE moduleType){
 		this.moduleType = moduleType;
 	}
@@ -109,7 +106,6 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		return desc;
 	}
 	
-	@XmlElement
 	public void setDesc(String desc){
 		this.desc = desc;
 	}
@@ -121,7 +117,6 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		return supplierContactURI;
 	}
 	
-	@XmlElement
 	public void setSupplierContactURI(String supplierContactURI){
 		this.supplierContactURI = supplierContactURI;
 	}
@@ -133,7 +128,6 @@ public class PepperModuleDescMarshallable implements PepperMarshallable<PepperMo
 		return homepageURI;
 	}
 	
-	@XmlElement
 	public void setHomepageURI(String homepageURI){
 		this.homepageURI = homepageURI;
 	}

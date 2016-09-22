@@ -34,7 +34,6 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 		return formatName;
 	}
 	
-	@XmlElement
 	public void setFormatName(String formatName){
 		this.formatName = formatName;
 	}
@@ -46,7 +45,6 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 		return formatVersion;
 	}
 	
-	@XmlElement
 	public void setFormatVersion(String formatVersion){
 		this.formatVersion = formatVersion;
 	}
@@ -58,7 +56,6 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 		return formatReferenceURI;
 	}
 	
-	@XmlElement
 	public void setFormatReferenceURI(String formatReferenceURI){
 		this.formatReferenceURI = formatReferenceURI;
 	}

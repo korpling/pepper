@@ -9,13 +9,13 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Link;
 import javax.ws.rs.core.Response;
 
 import org.corpus_tools.pepper.common.PepperModuleDesc;
-import org.corpus_tools.pepper.service.lib.adapters.PepperModuleCollectionMarshallable;
-import org.corpus_tools.pepper.service.lib.util.PepperSerializer;
-import org.corpus_tools.pepper.service.lib.util.PepperServiceURLDictionary;
-import org.corpus_tools.pepper.service.rest.PepperRESTService;
+import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
+import org.corpus_tools.pepper.service.util.PepperSerializer;
+import org.corpus_tools.pepper.service.util.PepperServiceURLDictionary;
 
 public class ServiceConnector implements PepperServiceURLDictionary{
 	private String serviceUrl;
@@ -29,7 +29,7 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 		this.client = ClientBuilder.newClient();
 		this.baseTarget = client.target(serviceUrl);
 		
-		serializer = PepperSerializer.getInstance(PepperRESTService.DATA_FORMAT);
+		serializer = PepperSerializer.getInstance("application/xml");
 	}
 
 	public Collection<PepperModuleDesc> getAllModules() {

@@ -26,7 +26,7 @@ public class WebApplication extends Application {
 		final Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(PepperRESTService.class);
 		classes.add(MultiPartFeature.class);
-		classes.add(ServiceEventListener.class);
+//		classes.add(ServiceEventListener.class);
 		return classes;
 	}
 }

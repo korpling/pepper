@@ -1,27 +1,6 @@
 package org.corpus_tools.pepper.service.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
-import org.corpus_tools.pepper.common.MODULE_TYPE;
-import org.corpus_tools.pepper.common.Pepper;
-import org.corpus_tools.pepper.common.PepperModuleDesc;
-import org.corpus_tools.pepper.modules.PepperModuleProperties;
-import org.corpus_tools.pepper.service.lib.adapters.PepperModuleCollectionMarshallable;
-import org.eclipse.emf.common.util.URI;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 //@RunWith(MockitoJUnitRunner.class)
 public class PepperRESTServiceTest extends JerseyTest {

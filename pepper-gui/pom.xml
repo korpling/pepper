@@ -9,6 +9,7 @@
 		<version>3.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -16,19 +17,12 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency><!-- TODO change to rest-lib, which shall provide adapters and util (the only the things the 
-		gui needs to know -->
-			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-rest-service</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>pepper-framework</artifactId>
+			<artifactId>pepper-rest-lib</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
@@ -59,18 +53,7 @@
 		    <artifactId>gwt-elemental</artifactId>
 		    <version>${com.google.gwt.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-		<dependency>
-    		<groupId>org.jsoup</groupId>
-    		<artifactId>jsoup</artifactId>
-    		<version>1.7.2</version>
-		</dependency>
-	</dependencies>
-	<packaging>war</packaging><!-- used to be war -->	
+	</dependencies>	
 	<build>
 		<resources>
 			<resource>
@@ -102,8 +85,19 @@
 	          <configuration>
 	            <archive>
 	              <!-- add the generated manifest to the war -->
-	              <manifestFile>META-INF/MANIFEST.MF</manifestFile>	              
+	              <manifestFile>META-INF/MANIFEST.MF</manifestFile>	              	              
 	            </archive>
+	            <!-- <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>  -->
+	            <packagingIncludes>
+	            WEB-INF/lib/vaadin-*.jar,
+	            <!-- ,
+	            WEB-INF/lib/hk2*.jar,
+	            WEB-INF/lib/javassist*.jar,
+	            WEB-INF/lib/javax.inject*.jar,
+	            WEB-INF/lib/jersey-*.jar,
+	            WEB-INF/lib/*resource-locator*.jar,
+	            -->
+	            %regex[WEB-INF/classes/.*]</packagingIncludes>
 	          </configuration>
 	        </plugin>
 			
@@ -117,7 +111,7 @@
 		          <execution>
 		            <phase>process-classes</phase>
 		            <goals>
-		              <goal>bundle</goal>
+		              <goal>manifest</goal>
 		            </goals>		            
 		          </execution>
 		        </executions>
@@ -131,7 +125,21 @@
 		          <instructions>         	
 		          	<Bundle-ClassPath>
 		          	WEB-INF/classes,
-		          	WEB-INF/lib/jsoup-1.7.2.jar,
+		          	<!-- 
+					WEB-INF/lib/osgi-resource-locator-2.5.0-b12.jar,
+		          	WEB-INF/lib/hk2-api-2.5.0-b12.jar,
+		          	WEB-INF/lib/hk2-locator-2.5.0-b12.jar,
+		          	WEB-INF/lib/hk2-utils-2.5.0-b12.jar,
+		          	WEB-INF/lib/javax.inject-2.5.0-b12.jar,
+		          	WEB-INF/lib/jersey-guava-2.23.2,jar,
+		          	
+					WEB-INF/lib/jersey-client-2.23.2.jar,
+					WEB-INF/lib/jersey-server-2.23.2.jar,
+					WEB-INF/lib/jersey-common-2.23.2.jar,
+					WEB-INF/lib/jersey-container-servlet-2.23.2.jar,
+					WEB-INF/lib/jersey-container-servlet-core-2.23.2.jar,
+					WEB-INF/lib/jersey-media-jaxb-2.23.2.jar,-->
+
 		          	WEB-INF/lib/vaadin-client-compiled-7.4.3.jar,		          	
 		          	WEB-INF/lib/vaadin-sass-compiler-7.4.3.jar,
 		          	WEB-INF/lib/vaadin-server-7.4.3.jar,
@@ -144,15 +152,37 @@
 		            <Web-ContextPath>/pepper-gui/</Web-ContextPath>
 					<Webapp-Context>/pepper-gui</Webapp-Context>
 					<_wab>src/main/webapp</_wab> 
-					<Import-Package>
-					
+					<Import-Package>					
 					com.vaadin.*,
-					com.vaadin.server.*, 
-					javax.servlet*,
-					javax.ws.rs.*,
-					org.corpus_tools.pepper.*,
-					org.glassfish.*,
-					org.jsoup.*,
+					com.vaadin.server.*,
+					javax.inject,
+					javax.servlet,
+					javax.servlet.http,					
+					javax.ws.rs,
+					javax.ws.rs.client,
+					javax.ws.rs.container,
+					javax.ws.rs.core,
+					javax.ws.rs.ext,
+					jersey.repackaged.com.google.common.base,
+					jersey.repackaged.com.google.common.collect,
+					org.apache.commons.lang3,
+					org.corpus_tools.pepper.common,
+					org.corpus_tools.pepper.service.util,
+					org.glassfish.hk2.api,
+					org.glassfish.hk2.internal,
+					org.glassfish.hk2.osgiresourcelocator,
+					org.glassfish.hk2.utilities,
+					org.glassfish.hk2.utilities.binding,					
+					org.glassfish.jersey.internal,
+					org.glassfish.jersey.logging,
+					org.glassfish.jersey.servlet,
+					org.jsoup,			
+					org.jsoup.nodes,
+					org.jsoup.parser,
+					org.jsoup.select,
+					org.jvnet.hk2.component,
+					org.jvnet.hk2.external.generator,
+					org.jvnet.hk2.internal,
 					
 					!com.google.appengine*,
 					!com.google.apphosting*,
@@ -160,9 +190,17 @@
 					!com.google.gwt.thirdparty*,
 					!com.google.gwt.xhr*,
 					!com.liferay*,
+					!com.sun.*,
 					!javax.*, 
-					!org.atmosphere*,
+					
+					!javax.ws.rs,
+					!javax.ws.rs.client,
+					!javax.ws.rs.container,
+					!javax.ws.rs.ext,
+										
+					!org.atmosphere*,			
 					!org.w3c*,
+					<!--!sun.*,-->
 					*
 					</Import-Package>
 					<Export-Package>
@@ -181,9 +219,7 @@
 					com.vaadin.ui,
 					com.vaadin.ui.*, 
 					elemental.json,
-					elemental.json.*,
-					org.jsoup,
-					org.jsoup.*
+					elemental.json.*
 					</Export-Package>
 		          </instructions>
 		        </configuration>
