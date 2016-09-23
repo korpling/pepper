@@ -166,6 +166,7 @@
             <Import-Package>
             com.sun.xml.internal.stream,
             com.sun.org.apache.xerces.internal.impl,
+            org.eclipse.emf.common.util,
             org.glassfish.jersey.internal,
             org.jvnet.hk2.external.generator,
             <!-- NON-IMPORTS -->

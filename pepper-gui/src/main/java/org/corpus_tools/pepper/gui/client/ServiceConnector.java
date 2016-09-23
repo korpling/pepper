@@ -1,7 +1,8 @@
 package org.corpus_tools.pepper.gui.client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,7 +47,14 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 			HttpURLConnection connection = (HttpURLConnection) (new URL("http://localhost:8080/pepper-rest/resource/modules")).openConnection();
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", PepperServiceImplConstants.DATA_FORMAT);
-			InputStream xml = connection.getInputStream();
+			InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+			BufferedReader br = new BufferedReader(reader);			
+			StringBuilder xml = new StringBuilder();
+			String line = br.readLine();
+			while (line != null){
+				xml.append(line);
+				line = br.readLine();
+			}
 			Collection<PepperModuleDescMarshallable> rawList = ((PepperModuleCollectionMarshallable)serializer.unmarshal(xml.toString(), PepperModuleCollectionMarshallable.class)).getModuleList();
 			logger.info("Received list: " + rawList);
 			for (PepperModuleDescMarshallable pmdm : rawList){
