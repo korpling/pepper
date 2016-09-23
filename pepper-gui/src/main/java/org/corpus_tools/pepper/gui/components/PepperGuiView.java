@@ -80,10 +80,10 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	}
 	
 	@Override
-	public final void display(boolean visible, Component... c){
-		for (int i=0; i<c.length; i++){
-			c[i].setVisible(visible);
-		}		
+	public final void display(boolean visible, Component... c){		
+		for (Component component : c){
+			component.setVisible(true);
+		}
 	}
 	
 	@Override

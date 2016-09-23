@@ -55,8 +55,7 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 				xml.append(line);
 				line = br.readLine();
 			}
-			Collection<PepperModuleDescMarshallable> rawList = ((PepperModuleCollectionMarshallable)serializer.unmarshal(xml.toString(), PepperModuleCollectionMarshallable.class)).getModuleList();
-			logger.info("Received list: " + rawList);
+			Collection<PepperModuleDescMarshallable> rawList = ((PepperModuleCollectionMarshallable)serializer.unmarshal(xml.toString(), PepperModuleCollectionMarshallable.class)).getModuleList();			
 			for (PepperModuleDescMarshallable pmdm : rawList){
 				moduleList.add(pmdm.getPepperObject());
 			}
