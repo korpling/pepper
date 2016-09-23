@@ -1,11 +1,15 @@
 package org.corpus_tools.pepper.gui.model;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.corpus_tools.pepper.common.MODULE_TYPE;
+import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.modules.PepperModuleProperties;
+import org.corpus_tools.pepper.modules.PepperModuleProperty;
 
 public class ConversionStepConfiguration implements ConversionStepDescriptor{
-	private Map<String, String> customizations;
+	private PepperModuleProperties properties;
 	private String moduleName;
 	private String path;
 	private final MODULE_TYPE type;
@@ -19,10 +23,10 @@ public class ConversionStepConfiguration implements ConversionStepDescriptor{
 	 * @param path -- source (for importers) or target (for exporters) path, may be null, ignored for manipulators
 	 * @param type -- {@link MODULE_TYPE#IMPORTER}, {@link MODULE_TYPE#EXPORTER} or {@link MODULE_TYPE#MANIPULATOR}, may not be null
 	 */
-	public ConversionStepConfiguration(String moduleName, Map<String, String> properties, String path, MODULE_TYPE type){
+	public ConversionStepConfiguration(String moduleName, PepperModuleProperties properties, String path, MODULE_TYPE type){
 		if (type!=null){
 			this.moduleName = moduleName;
-			this.customizations = properties;
+			this.properties = properties;
 			this.path = !MODULE_TYPE.MANIPULATOR.equals(type)? path : null;
 			this.type = type;			
 		}
@@ -60,8 +64,8 @@ public class ConversionStepConfiguration implements ConversionStepDescriptor{
 	}
 
 	@Override
-	public Map<String, String> getProperties() {
-		return customizations;
+	public PepperModuleProperties getProperties() {
+		return properties;
 	}
 
 	@Override
@@ -75,17 +79,35 @@ public class ConversionStepConfiguration implements ConversionStepDescriptor{
 	}
 
 	@Override
-	public void setProperties(Map<String, String> properties) {
-		this.customizations = properties;
-	}
-	
-	@Override
-	public void setProperty(String key, String value) {
-		customizations.put(key, value);
+	public void setProperties(PepperModuleProperties properties) {
+		this.properties = properties;
 	}
 
 	@Override
 	public String getPropertyValue(String key) {
-		return customizations.get(key);
+		return properties.get(key);
+	}
+
+	@Override
+	public StepDesc toStepDesc() {
+		return null;
+	}
+
+	@Override
+	public void fromStepDesc(StepDesc stepDesc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T> void setProperty(Class<T> clazz, String name, T value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T> void setProperty(PepperModuleProperty<T> property) {
+		// TODO Auto-generated method stub
+		
 	}
 }
