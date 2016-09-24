@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.StepDesc;
@@ -15,43 +16,80 @@ import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
  * @author klotzmaz
  *
  */
-@Deprecated
 @XmlRootElement
+@XmlSeeAlso({CorpusDescMarshallable.class})
 public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 	
 	/**
 	 * Constructor for marshalling.
 	 * @param desc
 	 */
-	public StepDescMarshallable(StepDesc desc) {}
+	public StepDescMarshallable(StepDesc desc) {
+		this.moduleType = desc.getModuleType();
+		this.name = desc.getName();
+		this.version = desc.getVersion();
+		this.properties = desc.getProps();
+		this.setCorpusDesc(new CorpusDescMarshallable(desc.getCorpusDesc()));
+	}
+	
 
 	/**
 	 * Constructor for unmarshalling.
 	 */
+	public StepDescMarshallable() {}
+
 	@Override
 	public StepDesc getPepperObject() {
-		//TODO
-		return null;
+		StepDesc stepDesc = new StepDesc();
+		stepDesc.setCorpusDesc(this.corpusDesc.getPepperObject());
+		stepDesc.setModuleType(this.moduleType);
+		stepDesc.setName(this.name);
+		stepDesc.setProps(getProperties());
+		stepDesc.setVersion(this.version);
+		return stepDesc;
+	}
+	
+	private CorpusDescMarshallable corpusDesc;
+	
+	@XmlElement
+	public CorpusDescMarshallable getCorpusDesc(){
+		return this.corpusDesc;
+	}
+	
+	public void setCorpusDesc(CorpusDescMarshallable corpusDesc){
+		this.corpusDesc = corpusDesc;
 	}
 	
 	private MODULE_TYPE moduleType;
 	
 	@XmlElement
-	private void setModuleType(MODULE_TYPE moduleType){
+	public MODULE_TYPE getModuleType(){
+		return this.moduleType;
+	}
+	
+	public void setModuleType(MODULE_TYPE moduleType){
 		this.moduleType = moduleType;
 	}
 	
 	private String name;
 	
 	@XmlElement
-	private void setName(String name){
+	public String getName(){
+		return this.name;
+	}
+	
+	public void setName(String name){
 		this.name = name;
 	}
 	
 	private String version;
 	
 	@XmlElement
-	private void setVersion(String version){
+	public String getVersion(){
+		return this.version;
+	}
+	
+	public void setVersion(String version){
 		this.version = version;
 	}
 	
@@ -60,6 +98,10 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 	private Properties properties;
 	
 	@XmlElement
+	public Properties getProperties(){
+		return this.properties;
+	}
+	
 	public void setProperties(Properties properties){
 		this.properties = properties;
 	}

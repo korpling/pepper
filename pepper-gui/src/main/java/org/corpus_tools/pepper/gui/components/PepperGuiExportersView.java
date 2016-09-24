@@ -62,5 +62,10 @@ public class PepperGuiExportersView extends PepperGuiView {
 	public Component getDetailsComponent() {
 		return details;
 	}
+	
+	@Override
+	public ListSelect getModuleSelector() {
+		return exportersList;
+	}
 
 }

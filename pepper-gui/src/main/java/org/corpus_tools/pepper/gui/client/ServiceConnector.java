@@ -7,14 +7,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.service.adapters.PepperJobMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
+import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
 import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
 import org.corpus_tools.pepper.service.util.PepperServiceURLDictionary;
@@ -41,8 +43,8 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 		logger.info("ServiceConnector initialized with base target" + baseTarget + " and Serializer " + serializer);		
 	}
 
-	public Collection<PepperModuleDesc> getAllModules() {
-		ArrayList<PepperModuleDesc> moduleList = new ArrayList<PepperModuleDesc>(); 
+	public Collection<PepperModuleDescMarshallable> getAllModules() {
+		ArrayList<PepperModuleDescMarshallable> moduleList = new ArrayList<PepperModuleDescMarshallable>(); 
 		try{				
 			HttpURLConnection connection = (HttpURLConnection) (new URL("http://localhost:8080/pepper-rest/resource/modules")).openConnection();
 			connection.setRequestMethod("GET");
@@ -57,12 +59,38 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 			}
 			Collection<PepperModuleDescMarshallable> rawList = ((PepperModuleCollectionMarshallable)serializer.unmarshal(xml.toString(), PepperModuleCollectionMarshallable.class)).getModuleList();			
 			for (PepperModuleDescMarshallable pmdm : rawList){
-				moduleList.add(pmdm.getPepperObject());
+				moduleList.add(pmdm);
 			}
 		} catch (IOException e){
 			logger.error(ERR_REQUEST);
 		}
 	
 		return moduleList;
+	}
+
+	/**
+	 * 
+	 * @param configs
+	 * @return 
+	 * 		Job id
+	 */
+	public String createJob(List<StepDescMarshallable> configs) {
+		PepperJobMarshallable jdm = new PepperJobMarshallable();
+		jdm.setBasedirURI("."); // TODO what to do with this
+		jdm.getSteps().addAll(configs);
+		
+		try{				
+			HttpURLConnection connection = (HttpURLConnection) (new URL("http://localhost:8080/pepper-rest/resource/job")).openConnection();
+			connection.setRequestMethod("POST");
+			
+			connection.setRequestProperty("Accept", PepperServiceImplConstants.DATA_FORMAT);
+			
+			/* TODO write post */
+			
+		} catch (IOException e){
+			logger.error(ERR_REQUEST);
+		}
+		
+		return null;
 	}
 }

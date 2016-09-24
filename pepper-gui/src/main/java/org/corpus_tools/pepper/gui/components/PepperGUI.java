@@ -1,12 +1,14 @@
 package org.corpus_tools.pepper.gui.components;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.gui.controller.PepperGUIComponentDictionary;
 import org.corpus_tools.pepper.gui.controller.PepperGUIController;
 import org.corpus_tools.pepper.gui.controller.VIEW_NAME;
-import org.corpus_tools.pepper.gui.model.ConversionStepDescriptor;
+import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
+import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.server.FontAwesome;
@@ -81,11 +83,11 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		return main.getModuleType();
 	}
 	
-	public void setConfig(ConversionStepDescriptor config){
+	public void setConfig(StepDescMarshallable config){
 		main.setConfig(config);
 	}
 	
-	public ConversionStepDescriptor getConfig(){
+	public StepDescMarshallable getConfig(){
 		return main.getConfig();
 	}
 	
@@ -130,7 +132,12 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	}
 
 	@Override
-	public List<ConversionStepDescriptor> getAllConfigurations() {
+	public List<StepDescMarshallable> getAllConfigurations() {
 		return main.getAllConfigurations();
+	}
+
+	@Override
+	public void setAvailableModules(Collection<PepperModuleDescMarshallable> modules) {
+		main.setAvailableModules(modules);		
 	}
 }

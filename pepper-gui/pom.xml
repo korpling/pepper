@@ -170,7 +170,7 @@
 					org.corpus_tools.pepper.common,
 					org.corpus_tools.pepper.service.adapters,
 					org.corpus_tools.pepper.service.interfaces,
-					org.corpus_tools.pepper.service.util,	
+					org.corpus_tools.pepper.service.util,
 					org.eclipse.persistence.jaxb,				
 					<!--org.glassfish.hk2.api,
 					org.glassfish.hk2.extension,

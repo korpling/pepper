@@ -5,12 +5,14 @@ import org.corpus_tools.pepper.gui.controller.PepperGUIController;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 
 @DesignRoot
 public class PepperGuiManipulatorsView extends PepperGuiView {
 	private boolean isInit = false;
+	private ListSelect manipulatorsList;
 	
 	public PepperGuiManipulatorsView(){
 		super();
@@ -48,5 +50,10 @@ public class PepperGuiManipulatorsView extends PepperGuiView {
 	public Component getDetailsComponent() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ListSelect getModuleSelector() {
+		return manipulatorsList;
 	}
 }

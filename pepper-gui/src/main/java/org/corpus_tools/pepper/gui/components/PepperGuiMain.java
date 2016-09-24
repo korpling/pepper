@@ -1,9 +1,11 @@
 package org.corpus_tools.pepper.gui.components;
+import java.util.Collection;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.gui.controller.VIEW_NAME;
-import org.corpus_tools.pepper.gui.model.ConversionStepDescriptor;
+import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
+import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
@@ -38,11 +40,11 @@ public class PepperGuiMain extends Panel implements View{
 		}
 	}
 	
-	public void setConfig(ConversionStepDescriptor config){
+	public void setConfig(StepDescMarshallable config){
 		((View)getContent()).setConfig(config);
 	}
 	
-	public ConversionStepDescriptor getConfig(){
+	public StepDescMarshallable getConfig(){
 		return ((View)getContent()).getConfig();
 	}
 	
@@ -76,7 +78,14 @@ public class PepperGuiMain extends Panel implements View{
 	}
 
 	@Override
-	public List<ConversionStepDescriptor> getAllConfigurations() {
+	public List<StepDescMarshallable> getAllConfigurations() {
 		return ((View)getConfig()).getAllConfigurations();
+	}
+
+	@Override
+	public void setAvailableModules(Collection<PepperModuleDescMarshallable> modules) {
+		importers.setAvailableModules(modules);
+		exporters.setAvailableModules(modules);
+		manipulators.setAvailableModules(modules);
 	}
 }

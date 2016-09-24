@@ -31,7 +31,9 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.service.adapters.PepperJobMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
+import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
 import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
 import org.corpus_tools.pepper.service.util.PepperServiceURLDictionary;
@@ -240,6 +242,21 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 			}
 		}
 		return ArrayUtils.EMPTY_BYTE_ARRAY;
+	}
+	
+	@POST
+	@Consumes(DATA_FORMAT)
+	@Path(PATH_JOB)
+	public String createJob(String jobDescription){		
+		// TODO add method to pepper that allows putting a job instead of creating an object and then filling it
+		PepperJobMarshallable desc = (PepperJobMarshallable) serializer.unmarshal(jobDescription, PepperJobMarshallable.class);
+		PepperJob job = pepper.getJob(pepper.createJob());
+		job.setBaseDir(URI.createURI(desc.getBaseDirURI()));
+		for (StepDescMarshallable sdm : desc.getSteps()){
+			job.addStepDesc(sdm.getPepperObject());
+		}
+		job.convert();
+		return job.getId();
 	}
 
 }

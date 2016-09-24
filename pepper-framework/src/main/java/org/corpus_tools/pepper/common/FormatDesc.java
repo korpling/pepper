@@ -123,6 +123,17 @@ public class FormatDesc{
 		this.formatReference = formatReference;
 		return (this);
 	}
+	
+	/**
+	 * Sets the documentation reference for the linguistic format.
+	 * 
+	 * @param formatReference
+	 *            link to documentation
+	 * @return this
+	 */
+	public FormatDesc setFormatReference(String formatReference) {
+		return this.setFormatReference(URI.createURI(formatReference));
+	}
 
 	/**
 	 * Compares a {@link CorpusDesc} object with this object. Both objects are

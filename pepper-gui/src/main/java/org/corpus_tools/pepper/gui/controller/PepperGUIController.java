@@ -1,20 +1,20 @@
 package org.corpus_tools.pepper.gui.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.corpus_tools.pepper.common.MODULE_TYPE;
-import org.corpus_tools.pepper.common.PepperModuleDesc;
+import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.gui.client.ServiceConnector;
 import org.corpus_tools.pepper.gui.components.PathSelectDialogue;
 import org.corpus_tools.pepper.gui.components.PepperGUI;
-import org.corpus_tools.pepper.gui.model.ConversionStepConfiguration;
-import org.corpus_tools.pepper.gui.model.ConversionStepDescriptor;
-import org.corpus_tools.pepper.gui.model.WorkflowDescriptionWriter;
+import org.corpus_tools.pepper.gui.components.View;
+import org.corpus_tools.pepper.service.adapters.CorpusDescMarshallable;
+import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
+import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
+import org.eclipse.emf.common.util.URI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -54,7 +54,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private static final String SERVICE_URL = "http://localhost:8080/pepper-rest/resource/";
 	
 	/* pepper stuff */
-	Collection<PepperModuleDesc> modules = null;
+	Collection<PepperModuleDescMarshallable> modules = null;
 	
 	protected void init(VaadinRequest request){
 		gui = new PepperGUI(this);
@@ -64,6 +64,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		idProvider = new IdProvider();
 		serviceConnector = new ServiceConnector(SERVICE_URL);
 		modules = serviceConnector.getAllModules();
+		gui.setAvailableModules(modules);
 		
 		{//prepare path select window
 			Window w = new Window(PATH_DIALOGUE_TITLE);
@@ -133,18 +134,22 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		}
 		else if (ID_BUTTON_PATH_SELECT.equals(id)){			
 			removeWindow(pathSelectDialogueWindow);		
-			ConversionStepDescriptor config = gui.getConfig(); 
-			if (config==null){
-				config = new ConversionStepConfiguration(null, null, pathDialogue.getSelectedPath(), gui.getModuleType());				
+			StepDescMarshallable config = gui.getConfig(); 
+			if (config==null){				
+				config = new StepDescMarshallable();
+				config.setModuleType(gui.getModuleType());
+				CorpusDesc corpusDesc = new CorpusDesc();
+				corpusDesc.setCorpusPath(URI.createURI(pathDialogue.getSelectedPath()));				
 				gui.setConfig(config);
 			} else {
-				config.setPath(pathDialogue.getSelectedPath());
+				if (config.getCorpusDesc() == null){
+					config.setCorpusDesc(new CorpusDescMarshallable());
+				}
+				config.getCorpusDesc().setCorpusPathURI(pathDialogue.getSelectedPath());
 				gui.update();
 			}
 		}
-		else if (ID_BUTTON_PROGRESS.equals(id)){
-			gui.update();
-		}else if (id.startsWith(PATH_PREFIX)){
+		else if (id.startsWith(PATH_PREFIX)){
 			modifyPathSelectDialogue(id.substring(1), false);
 		}
 		else if (ID_BUTTON_ADD.equals(id)){
@@ -156,18 +161,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	}
 	
 	private boolean writeWorkflowFile(String absolutePath){
-		OutputStream xmlOutStream = WorkflowDescriptionWriter.toXML( gui.getAllConfigurations() );
-		File out = new File(absolutePath);
-		out.getParentFile().mkdirs();
-		try {
-			PrintWriter p = new PrintWriter(out);
-			p.print(xmlOutStream.toString());
-			p.close();
-			return true;
-		} catch (FileNotFoundException e) {
-			// TODO
-			return false;
-		}		
+		return false;	
 	}
 	
 	//FIXME remove on release
@@ -206,17 +200,20 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	@Override
 	public void layoutClick(LayoutClickEvent event) {		
 		Component c = event.getClickedComponent();
-		String id = c.getId();
-		String newRoot = ((ListSelect)c).getValue().toString();
+		String id = c.getId();		
 		if (event.isDoubleClick() && ID_PATH_SELECT.equals(id)){			
+			String newRoot = String.valueOf(((ListSelect)c).getValue());
 			modifyPathSelectDialogue(newRoot, true);			
+		}
+		else if (c instanceof View){
+			((View)c).update();
 		}
 	}
 	
 	@Override
 	public void valueChange(ValueChangeEvent event) {		
-		/* right now this method must not be used for anything else */
-		pathDialogue.setPathLabelValue(pathDialogue.getListValue());
+		/* right now this method must not be used for anything else */ 
+		pathDialogue.setPathLabelValue(pathDialogue.getListValue());				
 	}
 
 	/*
@@ -237,14 +234,27 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_PATH_FIELD_MAIN.equals(id)){
 			TextField c = (TextField)event.getComponent();
 			c.removeTextChangeListener(this);
-			ConversionStepDescriptor config = gui.getConfig();
+			StepDescMarshallable config = gui.getConfig();
 			if (config==null){
-				gui.setConfig(new ConversionStepConfiguration(null, null, txt.replace("file://", ""), gui.getModuleType()));
+				StepDescMarshallable newConfig = new StepDescMarshallable();
+				newConfig.setModuleType(gui.getModuleType());
+				newConfig.setCorpusDesc(new CorpusDescMarshallable());
+				newConfig.getCorpusDesc().setCorpusPathURI(txt.replace("file://", ""));
+				gui.setConfig(newConfig);
 			} else {
-				config.setPath(txt.replace("file://", ""));				
+				if (config.getCorpusDesc() == null){
+					config.setCorpusDesc(new CorpusDescMarshallable());
+				}
+				config.getCorpusDesc().setCorpusPathURI(txt.replace("file://", ""));				
 				gui.update();
 			}
 			c.addTextChangeListener(this);
 		}
+	}
+
+	public void start() {
+		// TODO block for further configuration (in which ever sense)
+		List<StepDescMarshallable> configs = gui.getAllConfigurations();
+		serviceConnector.createJob(configs);
 	}
 }

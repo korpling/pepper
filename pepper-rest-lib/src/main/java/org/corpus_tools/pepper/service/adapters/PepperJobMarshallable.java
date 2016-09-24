@@ -20,7 +20,6 @@ import org.eclipse.emf.common.util.URI;
  * @author klotzmaz
  *
  */
-@Deprecated
 @XmlRootElement
 @XmlSeeAlso({StepDescMarshallable.class})
 public class PepperJobMarshallable implements PepperMarshallable<PepperJob>{

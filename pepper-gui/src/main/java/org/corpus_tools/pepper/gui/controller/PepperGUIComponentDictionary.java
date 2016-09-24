@@ -19,6 +19,10 @@ public interface PepperGUIComponentDictionary {
 	public static final String ID_PATH_FIELD_DIALOGUE = "E";
 	public static final String ID_PATH_FIELD_MAIN = "F";
 	
+	public static final String ID_IMPORTER_SELECT = "G";
+	public static final String ID_EXPORTER_SELECT = "H";
+	public static final String ID_MANIPULATOR_SELECT = "I";	
+	
 	public static final String PATH_PREFIX = "#";
 	public static final String CONFIG_BUTTON_ID_PREFIX = "%";
 

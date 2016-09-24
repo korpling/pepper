@@ -89,6 +89,18 @@ public class CorpusDesc {
 		this.corpusPath = corpusPath;
 		return (this);
 	}
+	
+	/**
+	 * Sets the path of where to store or from where to load this corpus.
+	 * 
+	 * @param corpusPath
+	 *            location of corpus
+	 * @param this
+	 *            object
+	 */
+	public CorpusDesc setCorpusPath(String corpusPath) {
+		return this.setCorpusPath(URI.createURI(corpusPath));
+	}
 
 	/**
 	 * Returns a string representation of this object. <strong>Note: This

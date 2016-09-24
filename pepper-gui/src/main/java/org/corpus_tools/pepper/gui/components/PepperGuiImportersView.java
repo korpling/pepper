@@ -32,7 +32,8 @@ public class PepperGuiImportersView extends PepperGuiView{
 		setModuleType(MODULE_TYPE.IMPORTER);		
 		btnShowAll.setId(ID_BUTTON_SHOW_ALL);
 		btnBrowseLocal.setId(ID_BUTTON_BROWSE_LOCAL);
-		importPath.setId(ID_PATH_FIELD_MAIN);		
+		importPath.setId(ID_PATH_FIELD_MAIN);
+		importersList.setId(ID_IMPORTER_SELECT);
 	}
 	
 	@Override
@@ -45,6 +46,7 @@ public class PepperGuiImportersView extends PepperGuiView{
 			btnBrowseLocal.addClickListener(controller);
 			importPath.addTextChangeListener(controller);	
 			importPath.setTextChangeEventMode(TextChangeEventMode.LAZY);
+//			importersList.addValueChangeListener(controller);			
 			
 			isInit = true;
 		}
@@ -68,5 +70,10 @@ public class PepperGuiImportersView extends PepperGuiView{
 	@Override
 	public Component getDetailsComponent() {
 		return details;
+	}
+
+	@Override
+	public ListSelect getModuleSelector() {
+		return importersList;
 	}	
 }

@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
-import org.eclipse.emf.common.util.URI;
 
 @XmlRootElement
 public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
@@ -22,7 +21,7 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 	public FormatDesc getPepperObject() {
 		FormatDesc retVal = new FormatDesc();
 		retVal.setFormatName(formatName);
-		retVal.setFormatReference(URI.createURI(formatReferenceURI));
+		retVal.setFormatReference(formatReferenceURI);
 		retVal.setFormatVersion(formatVersion);
 		return retVal;
 	}	
