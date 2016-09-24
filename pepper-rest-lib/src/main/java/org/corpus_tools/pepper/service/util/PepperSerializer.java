@@ -1,6 +1,7 @@
 package org.corpus_tools.pepper.service.util;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -73,6 +74,18 @@ public class PepperSerializer {
 		Unmarshaller um = getUnmarshaller(targetClass);
 		try {
 			return ((PepperMarshallable<?>)um.unmarshal(new StringReader(source)));
+		} catch (JAXBException e) {
+			logger.warn("");//TODO ERR_MSG
+		}
+		return null;
+	}
+	
+	public String marshal(PepperMarshallable<?> marshallable){
+		Marshaller m = getMarshaller(marshallable.getClass());
+		try {
+			StringWriter writer = new StringWriter(); 
+			m.marshal(marshallable, writer);
+			return writer.toString();
 		} catch (JAXBException e) {
 			logger.warn("");//TODO ERR_MSG
 		}

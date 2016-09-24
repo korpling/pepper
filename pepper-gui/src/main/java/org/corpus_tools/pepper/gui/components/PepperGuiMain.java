@@ -1,4 +1,5 @@
 package org.corpus_tools.pepper.gui.components;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,7 +80,11 @@ public class PepperGuiMain extends Panel implements View{
 
 	@Override
 	public List<StepDescMarshallable> getAllConfigurations() {
-		return ((View)getConfig()).getAllConfigurations();
+		List<StepDescMarshallable> configs = new ArrayList<StepDescMarshallable>();
+		configs.addAll(importers.getAllConfigurations());
+		configs.addAll(manipulators.getAllConfigurations());
+		configs.addAll(exporters.getAllConfigurations());
+		return configs;
 	}
 
 	@Override

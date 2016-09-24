@@ -252,9 +252,11 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		}
 	}
 
-	public void start() {
+	public String start() {
 		// TODO block for further configuration (in which ever sense)
 		List<StepDescMarshallable> configs = gui.getAllConfigurations();
-		serviceConnector.createJob(configs);
+		String jobId = serviceConnector.createJob(configs);
+		debugOut("Started job: "+jobId);
+		return jobId;
 	}
 }

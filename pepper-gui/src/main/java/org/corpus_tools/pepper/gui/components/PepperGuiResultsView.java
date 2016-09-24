@@ -24,8 +24,6 @@ public class PepperGuiResultsView extends PepperGuiView {
 	private static final String BUTTON_PROGRESS_CAPTION_MAKE_VISIBLE = "Details ▸";
 	private static final String BUTTON_PROGRESS_CAPTION_MAKE_INVISIBLE = "Details ▾";
 	
-	private boolean isInit = false;
-	
 	public PepperGuiResultsView(){
 		super();
 		barLayout.setDefaultComponentAlignment(Alignment.TOP_LEFT);

@@ -3,6 +3,7 @@ package org.corpus_tools.pepper.gui.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,14 +80,29 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 		jdm.setBasedirURI("."); // TODO what to do with this
 		jdm.getSteps().addAll(configs);
 		
+		String data = serializer.marshal(jdm);
+		
 		try{				
 			HttpURLConnection connection = (HttpURLConnection) (new URL("http://localhost:8080/pepper-rest/resource/job")).openConnection();
 			connection.setRequestMethod("POST");
-			
-			connection.setRequestProperty("Accept", PepperServiceImplConstants.DATA_FORMAT);
-			
-			/* TODO write post */
-			
+			connection.setDoOutput(true);
+			connection.setDoInput(true);			
+			connection.setRequestProperty("Content-Type", PepperServiceImplConstants.DATA_FORMAT);	
+			connection.setRequestProperty("Content-Length", Integer.toString(data.length()));
+			connection.connect();
+			/*SEND*/
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			writer.write(data);
+			writer.flush();
+			/*RECEIVE*/
+			InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+			StringBuilder response = new StringBuilder();
+			int c = reader.read();
+			while (c != -1){
+				response.append((char)c);
+				c = reader.read();
+			}			
+			return response.toString();
 		} catch (IOException e){
 			logger.error(ERR_REQUEST);
 		}
