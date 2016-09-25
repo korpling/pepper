@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.StepDesc;
-import org.corpus_tools.pepper.core.PepperJobImpl;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
 import org.eclipse.emf.common.util.URI;
 
@@ -26,18 +25,11 @@ public class PepperJobMarshallable implements PepperMarshallable<PepperJob>{
 
 	@Override
 	public PepperJob getPepperObject() {
-		if (pepperObj!=null){
-			return this.pepperObj;
-		}
-		
-		PepperJob obj = new PepperJobImpl(this.id);		
-		for (StepDescMarshallable desc : stepDescs){
-			obj.addStepDesc(desc.getPepperObject());
-		}
-		
-		obj.setBaseDir(URI.createURI(this.basedirURI));
-		
-		
+		/* 
+		 * This method is not implemented to avoid using package org.corpus_tools.pepper.core
+		 * providing PepperJobImpl. This prevents a lot of complications with package imports
+		 * and uses conflicts. 
+		 */
 		return null;
 	}
 	

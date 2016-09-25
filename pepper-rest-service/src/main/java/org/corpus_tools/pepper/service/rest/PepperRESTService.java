@@ -12,6 +12,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -31,6 +32,7 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.exceptions.JobNotFoundException;
 import org.corpus_tools.pepper.service.adapters.PepperJobMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
@@ -76,8 +78,8 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 	// returns all pepper modules
 	@GET
 	@Path(PATH_ALL_MODULES)
+	@Produces(DATA_FORMAT)
 	public String getModules() {
-		System.out.println("---------------------> Pepper " + pepper.getRegisteredModules());
 		PepperModuleCollectionMarshallable modules = new PepperModuleCollectionMarshallable(
 				pepper.getRegisteredModules());
 		JAXBContext context;
@@ -101,15 +103,19 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 	@Produces(MediaType.APPLICATION_XML)
 	@Path(PATH_JOB + "/{id}")
 	public String getJobDescription(@PathParam("id") String id) {
-		PepperJob job = pepper.getJob(id);
-		if (job == null) {
-			return "No such job"; // TODO XML
+		try{
+			PepperJob job = pepper.getJob(id);
+			if (job == null) {
+				return "No such job"; // TODO XML
+			}
+			if (JOB_STATUS.NOT_STARTED.equals(job.getStatus())) {
+				logger.info("Job " + id + " started.");
+				job.convert();
+			}
+			return job.getStatusReport(); // TODO XML
+		} catch (JobNotFoundException e) {			
+			return "404";
 		}
-		if (JOB_STATUS.NOT_STARTED.equals(job.getStatus())) {
-			logger.info("Job " + id + " started.");
-			job.convert();
-		}
-		return job.getStatusReport(); // TODO XML
 	}
 
 	// status report of job
@@ -246,9 +252,10 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 	
 	@POST
 	@Consumes(DATA_FORMAT)
+	@Produces(MediaType.TEXT_PLAIN)
 	@Path(PATH_JOB)
-	public String createJob(String jobDescription){		
-		// TODO add method to pepper that allows putting a job instead of creating an object and then filling it
+	public String createJob(String jobDescription){	
+		logger.info("Received data:", jobDescription);
 		PepperJobMarshallable desc = (PepperJobMarshallable) serializer.unmarshal(jobDescription, PepperJobMarshallable.class);
 		PepperJob job = pepper.getJob(pepper.createJob());
 		job.setBaseDir(URI.createURI(desc.getBaseDirURI()));
@@ -257,6 +264,13 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 		}
 		job.convert();
 		return job.getId();
+	}
+	
+	@GET
+	@Path("tell/me")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String echo(){
+		return "here";
 	}
 
 }

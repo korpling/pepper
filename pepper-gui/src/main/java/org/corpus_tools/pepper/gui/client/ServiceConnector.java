@@ -82,6 +82,8 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 		
 		String data = serializer.marshal(jdm);
 		
+		logger.info(data); //TODO shift to debug later
+		
 		try{				
 			HttpURLConnection connection = (HttpURLConnection) (new URL("http://localhost:8080/pepper-rest/resource/job")).openConnection();
 			connection.setRequestMethod("POST");
@@ -95,16 +97,22 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 			writer.write(data);
 			writer.flush();
 			/*RECEIVE*/
-			InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-			StringBuilder response = new StringBuilder();
-			int c = reader.read();
-			while (c != -1){
-				response.append((char)c);
-				c = reader.read();
-			}			
-			return response.toString();
+			if (connection.getResponseCode() == 200){		
+				InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+				StringBuilder response = new StringBuilder();
+				int c = reader.read();
+				while (c != -1){
+					response.append((char)c);
+					c = reader.read();
+				}			
+				return response.toString();
+			} else {
+				logger.error(ERR_REQUEST+" "+connection.getResponseCode());
+			}
 		} catch (IOException e){
 			logger.error(ERR_REQUEST);
+			//DEBUG:
+			e.printStackTrace();
 		}
 		
 		return null;
