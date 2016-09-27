@@ -58,6 +58,10 @@ public class ModuleFitnessChecker {
 		this.pepper = pepper;
 	}
 
+	public ModuleFitnessChecker() {
+		this.pepper = PepperTestUtil.createDefaultPepper();
+	}
+
 	/**
 	 * Returns a {@link ModuleFitness} value for each {@link PepperModule} in
 	 * specified list.
@@ -165,7 +169,7 @@ public class ModuleFitnessChecker {
 	 * @param modules
 	 * @return
 	 */
-	public static List<ModuleFitness> checkHealth(final Collection<PepperModule> modules) {
+	public List<ModuleFitness> checkHealth(final Collection<PepperModule> modules) {
 		final List<ModuleFitness> moduleFitness = new ArrayList<>();
 		if (modules == null) {
 			return moduleFitness;
@@ -185,7 +189,7 @@ public class ModuleFitnessChecker {
 	 * @param modules
 	 * @return
 	 */
-	public static ModuleFitness checkHealth(final PepperModule module) {
+	public ModuleFitness checkHealth(final PepperModule module) {
 		if (module == null) {
 			return null;
 		}
@@ -194,14 +198,15 @@ public class ModuleFitnessChecker {
 		new AddFeature(fitness, FitnessFeature.HAS_NAME) {
 			@Override
 			public boolean condition() {
-				return Strings.isNullOrEmpty(module.getName()) ? false : true;
+				return !Strings.isNullOrEmpty(module.getName());
 			}
 		};
 
 		new AddFeature(fitness, FitnessFeature.IS_READY_TO_RUN) {
 			@Override
 			public boolean condition() {
-				return module.isReadyToStart() ? true : false;
+				PepperTestUtil.prepareFixturesAndCreateJob(pepper, Arrays.asList(module));
+				return module.isReadyToStart();
 			}
 		};
 		return fitness;
