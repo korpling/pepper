@@ -11,10 +11,9 @@
 		 </v-absolute-layout>
 		 <v-absolute-layout width="750" height="350" visible="false" :expand _id="details">
 		 	<v-label :left="20" _id="lblImportersList">Please select an importer from the list.</v-label>
-		 	<v-list-select :top="80" :left="20" width="150" height="100" caption="importers" _id="importersList"/>
-		 	<v-table :top="80" :left="200" width="500" height="150" caption="properties" _id="propertiesTable"/>
+		 	<v-list-select :top="100" :left="20" width="150" height="300" caption="importers" _id="importersList"/>
+		 	<v-table :top="80" :left="200" width="500" height="300" caption="properties" _id="propertiesTable"/>
 		 	<v-button :top="180" :left="20" _id="btnShowAll" visible="false">Show all</v-button>
-		 	<v-table :top="240" :left="20" width="700" height="90" _id="descriptionTable"/> 	
 		 </v-absolute-layout>		 
 	</v-vertical-layout>
 </body>
