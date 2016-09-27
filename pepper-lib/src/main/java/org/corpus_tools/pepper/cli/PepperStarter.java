@@ -1394,9 +1394,9 @@ public class PepperStarter {
 				} else {
 					logger.info(starter.list(args[1]));
 				}
-			} else if ((COMMAND.SELFTEST.getName().equalsIgnoreCase(args[0])
-					|| (COMMAND.SELFTEST.getAbbreviation().equalsIgnoreCase(args[0])))) {
-				logger.info(starter.selfTest());
+			} else if ((COMMAND.FITNESS.getName().equalsIgnoreCase(args[0])
+					|| (COMMAND.FITNESS.getAbbreviation().equalsIgnoreCase(args[0])))) {
+				logger.info(starter.fitness());
 			} else if ((COMMAND.UPDATE.getName().equalsIgnoreCase(args[0]))
 					|| (COMMAND.UPDATE.getAbbreviation().equalsIgnoreCase(args[0]))) {
 				List<String> params = new Vector<String>();
