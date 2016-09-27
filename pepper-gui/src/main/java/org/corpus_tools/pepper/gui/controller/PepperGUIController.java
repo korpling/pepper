@@ -43,7 +43,7 @@ import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Window;
 
 @Title("Pepper converter framework")
-@Theme("valo")
+@Theme("flat valo")
 @Push
 public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, LayoutClickListener, TextChangeListener, ValueChangeListener, Receiver, ErrorHandler{	
 	private PepperGUI gui = null;
