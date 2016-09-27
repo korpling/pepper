@@ -18,6 +18,7 @@ import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -43,6 +44,7 @@ import com.vaadin.ui.Window;
 
 @Title("Pepper converter framework")
 @Theme("valo")
+@Push
 public class PepperGUIController extends UI implements PepperGUIComponentDictionary, ClickListener, LayoutClickListener, TextChangeListener, ValueChangeListener, Receiver, ErrorHandler{	
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;

@@ -12,11 +12,11 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.ProgressBar;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @DesignRoot
@@ -110,9 +110,16 @@ public class PepperGuiResultsView extends PepperGuiView implements ProgressDispl
 
 	@Override
 	public void setProgress(String elementName, final float progress) {
-		ProgressBar b = progressComponentMap.get(elementName);
+		final ProgressBar b = progressComponentMap.get(elementName);
 		if (b != null){
-			b.setValue(progress);
+			final UI ui = getUI();
+			ui.access(new Runnable() {				
+				@Override
+				public void run() {
+					b.setValue(progress);
+					ui.push();
+				}
+			});
 		}
 	}
 
