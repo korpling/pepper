@@ -20,7 +20,6 @@ public class PepperGuiExportersView extends PepperGuiView {
 	private AbsoluteLayout details;
 	private ListSelect exportersList;
 	private Table propertiesTable;
-	private Table descriptionTable;
 	
 	public PepperGuiExportersView(){
 		super();
@@ -50,7 +49,7 @@ public class PepperGuiExportersView extends PepperGuiView {
 
 	@Override
 	public Table getDescriptionTable() {
-		return descriptionTable;
+		return null;
 	}
 
 	@Override
