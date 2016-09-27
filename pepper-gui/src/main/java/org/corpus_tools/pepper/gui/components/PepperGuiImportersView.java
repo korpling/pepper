@@ -19,8 +19,6 @@ public class PepperGuiImportersView extends PepperGuiView{
 	private Label lblImportersList;
 	private ListSelect importersList;	
 	private Table propertiesTable;
-	private Button btnShowAll;
-	private Table descriptionTable;
 	private Button btnBrowseLocal;
 	private TextField importPath;
 	private AbsoluteLayout details;
@@ -29,8 +27,7 @@ public class PepperGuiImportersView extends PepperGuiView{
 	
 	public PepperGuiImportersView(){
 		super();	
-		setModuleType(MODULE_TYPE.IMPORTER);		
-		btnShowAll.setId(ID_BUTTON_SHOW_ALL);
+		setModuleType(MODULE_TYPE.IMPORTER);
 		btnBrowseLocal.setId(ID_BUTTON_BROWSE_LOCAL);
 		importPath.setId(ID_PATH_FIELD_MAIN);
 		importersList.setId(ID_IMPORTER_SELECT);
@@ -42,11 +39,9 @@ public class PepperGuiImportersView extends PepperGuiView{
 		if (!isInit){			
 			PepperGUIController controller = (PepperGUIController)getUI();
 //			upload.setReceiver(controller);
-			btnShowAll.addClickListener(controller);
 			btnBrowseLocal.addClickListener(controller);
 			importPath.addTextChangeListener(controller);	
-			importPath.setTextChangeEventMode(TextChangeEventMode.LAZY);
-//			importersList.addValueChangeListener(controller);			
+			importPath.setTextChangeEventMode(TextChangeEventMode.LAZY);		
 			
 			isInit = true;
 		}
@@ -59,7 +54,7 @@ public class PepperGuiImportersView extends PepperGuiView{
 
 	@Override
 	public Table getDescriptionTable() {
-		return descriptionTable;
+		return null;
 	}
 
 	@Override
