@@ -21,7 +21,6 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.ui.UIState.NotificationTypeConfiguration;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -84,7 +83,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 						@Override
 						public void valueChange(ValueChangeEvent event) {
 							logger.info("New value: " + event.getProperty().getValue());
-							PepperGuiView.this.update();
+							PepperGuiView.this.update(); 
 						}
 					});
 				}
