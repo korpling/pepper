@@ -12,9 +12,9 @@ import java.util.zip.ZipOutputStream;
 
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.ArrayUtils;
+import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.Pepper;
@@ -34,9 +35,12 @@ import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.common.StepDesc;
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
 import org.corpus_tools.pepper.service.adapters.PepperJobMarshallable;
+import org.corpus_tools.pepper.service.adapters.PepperJobReportMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
+import org.corpus_tools.pepper.service.interfaces.JobSignal;
 import org.corpus_tools.pepper.service.interfaces.PepperServiceImplConstants;
+import org.corpus_tools.pepper.service.internal.PepperServiceJobRunner;
 import org.corpus_tools.pepper.service.util.PepperSerializer;
 import org.corpus_tools.pepper.service.util.PepperServiceURLDictionary;
 import org.eclipse.emf.common.util.URI;
@@ -53,21 +57,23 @@ import com.google.common.io.Files;
 @WebService
 @Path("/resource")
 @Component(name = "PepperRESTService", immediate = true)
-public class PepperRESTService implements PepperServiceImplConstants, PepperServiceURLDictionary {
+public class PepperRESTService implements PepperServiceImplConstants, PepperServiceURLDictionary, JobSignal {
 
 	/* statics */
 	private static Pepper pepper;
-	private static PepperSerializer serializer = PepperSerializer.getInstance(DATA_FORMAT);
+	private static PepperSerializer serializer;
 
 	private static final Logger logger = LoggerFactory.getLogger(PepperRESTService.class);
 	
 	public static final String ERR_MSG_ZIPPING_ERROR = "An error occured zipping the data.";
+	private static final String ERR_JOB_NOT_FOUND = "No such job available.";
 
 	@Reference(unbind = "unsetPepper", cardinality = ReferenceCardinality.MANDATORY, policy = ReferencePolicy.STATIC)
 	public void setPepper(Pepper pepperInstance) {
-		pepper = pepperInstance;
+		pepper = pepperInstance;	
 		logger.info("pepper set to:" + pepper);
 		(new File(LOCAL_JOB_DIR)).mkdir();
+		serializer = PepperSerializer.getInstance(DATA_FORMAT);
 	}
 
 	public void unsetPepper(Pepper pepperInstance) {
@@ -95,7 +101,13 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 			e.printStackTrace();
 		}
 		return (writer.toString());
-
+	}
+	
+	@POST
+	@Path("try")
+	@Produces(DATA_FORMAT)
+	public String getEcho(){
+		return "hi";
 	}
 
 	// return workflow file for job
@@ -118,12 +130,27 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 		}
 	}
 
-	// status report of job
+	/**
+	 * Get status report of job.
+	 * @param id
+	 * @return
+	 */
 	@GET
-	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(DATA_FORMAT)
 	@Path(PATH_JOB + "/{id}/report")
 	public String getJobReport(@PathParam("id") String id) {
-		return null;
+		PepperSerializer serializer = PepperSerializer.getInstance(DATA_FORMAT);
+		try {
+			PepperJob job = pepper.getJob(id);
+			PepperJobReportMarshallable report = new PepperJobReportMarshallable(id, job.getProgressByModules());
+			logger.info("Mapping: " + report.getProgressByPath());
+			String xml = serializer.marshal(report);
+			logger.info("Delivering report: " + xml);
+			return xml;
+		} catch (JobNotFoundException e) {
+			return "404";
+		}
 	}
 
 	// uploads data to pepper server and returns step id
@@ -255,22 +282,63 @@ public class PepperRESTService implements PepperServiceImplConstants, PepperServ
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path(PATH_JOB)
 	public String createJob(String jobDescription){	
-		logger.info("Received data:", jobDescription);
-		PepperJobMarshallable desc = (PepperJobMarshallable) serializer.unmarshal(jobDescription, PepperJobMarshallable.class);
-		PepperJob job = pepper.getJob(pepper.createJob());
-		job.setBaseDir(URI.createURI(desc.getBaseDirURI()));
-		for (StepDescMarshallable sdm : desc.getSteps()){
-			job.addStepDesc(sdm.getPepperObject());
+		serializer = PepperSerializer.getInstance(DATA_FORMAT);
+		if (jobDescription == null || jobDescription.trim().isEmpty()){
+			logger.warn("No data received.");
+			return null;
 		}
-		job.convert();
+		logger.info("Received data:" + System.lineSeparator() + jobDescription.toString());
+		logger.info("Using serializer: "+serializer);
+		Object obj = serializer.unmarshal(jobDescription, PepperJobMarshallable.class);
+		logger.info("Unmarshalled received data to: " + obj);
+		PepperJobMarshallable desc = (PepperJobMarshallable) obj;
+		PepperJob job = pepper.getJob(pepper.createJob());
+		job.setBaseDir(job.getBaseDir()); //wtf?
+		logger.info("Set basedir to: " + job.getBaseDir());
+		boolean allPathsGiven = true;
+		for (StepDescMarshallable sdm : desc.getSteps()){
+			StepDesc sd = sdm.getPepperObject();
+			job.addStepDesc(sd);
+			CorpusDesc cd = sd.getCorpusDesc();
+			allPathsGiven &= MODULE_TYPE.MANIPULATOR.equals(sd.getModuleType()) || (cd != null && !(cd.getCorpusPath() == null || cd.getCorpusPath().toString().trim().isEmpty()));
+		}
+		/* if the service runs as server application, the corpus paths will not be set and the
+		 * service will have to wait for data to be uploaded 
+		 */
+		if (allPathsGiven) {
+			/*TODO implement a mechanism that keeps track of open threads 
+			 * to beware to many threads by too many requests
+			 */
+			Thread conversionThread = new Thread(new PepperServiceJobRunner(pepper, job.getId()), "ServiceConversion-Thread");
+			conversionThread.start();
+		}
 		return job.getId();
 	}
 	
-	@GET
-	@Path("tell/me")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String echo(){
-		return "here";
-	}
 
+	
+	@PUT
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path(PATH_JOB + "/job/{id}/{signal}")
+	public String signal(@PathParam("id") String jobId, @PathParam("signal") String signal){
+		try{
+			PepperJob job = pepper.getJob(jobId);
+			if (SIG_STOP.equals(signal)){
+				// TODO
+				throw new UnsupportedOperationException(ERR_SIG_NOT_SUPPORTED);
+			}
+			else if (SIG_START.equals(signal) && JOB_STATUS.NOT_STARTED.equals(job.getStatus())){
+				/*TODO implement a mechanism that keeps track of open threads 
+				 * to beware to many threads by too many requests
+				 */
+				Thread conversionThread = new Thread(new PepperServiceJobRunner(pepper, job.getId()), "ServiceConversion-Thread");
+				conversionThread.start();
+			}
+			return job.getStatus().toString(); 
+		} catch (JobNotFoundException e) {
+			logger.error(ERR_JOB_NOT_FOUND);
+		}
+		return "404";
+	}	
 }

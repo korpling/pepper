@@ -20,6 +20,7 @@ package org.corpus_tools.pepper.common;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.core.Step;
@@ -105,6 +106,12 @@ public abstract class PepperJob {
 	 * @return a report of the progress status
 	 */
 	public abstract String getStatusReport();
+	
+	/**
+	 * Returns a mapping from "step_name:corpus_path" to overall progress of the given data.
+	 * For a manipulator, no corpus path will be given.
+	 */
+	public abstract Map<String, Double> getProgressByModules();
 
 	/** list of all step descriptions **/
 	protected Vector<StepDesc> stepDescs = null;

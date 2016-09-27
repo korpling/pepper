@@ -132,7 +132,7 @@ public class FormatDesc{
 	 * @return this
 	 */
 	public FormatDesc setFormatReference(String formatReference) {
-		return this.setFormatReference(URI.createURI(formatReference));
+		return this.setFormatReference(URI.createFileURI(formatReference));
 	}
 
 	/**

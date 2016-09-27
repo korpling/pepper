@@ -82,6 +82,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 					moduleSelector.addValueChangeListener(new ValueChangeListener() {					
 						@Override
 						public void valueChange(ValueChangeEvent event) {
+							logger.info("New value: " + event.getProperty().getValue());
 							PepperGuiView.this.update();
 						}
 					});
@@ -160,18 +161,19 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	@Override
 	public void update() {
 		TextField pathField = getPathField();
-		if (pathField!=null 
-				&& getConfig()!=null 
-				&& getConfig().getCorpusDesc() != null 
-				&& getConfig().getCorpusDesc().getCorpusPathURI()!=null ){			
-			File f = new File(getConfig().getCorpusDesc().getCorpusPathURI().toString());
-			if (f.exists()){
+		boolean isManipulator = MODULE_TYPE.MANIPULATOR.equals(getModuleType());
+		boolean up = getConfig()!=null 
+				 && ((pathField!=null
+				 && getConfig().getCorpusDesc() != null 
+				 && getConfig().getCorpusDesc().getCorpusPathURI()!=null) || isManipulator);  
+		if (up){	;
+			if (isManipulator || (new File(getConfig().getCorpusDesc().getCorpusPathURI().toString())).exists()){
 				display(true, getDetailsComponent());
 			} else {
 				Notification.show(ERR_MSG_LOCATION_DOES_NOT_EXIST);//TODO shift to message label
 				display(false, getDetailsComponent());
 			}
-			{
+			if (!isManipulator){
 				pathField.removeTextChangeListener((PepperGUIController)getUI());
 				pathField.setValue(getConfig().getCorpusDesc().getCorpusPathURI().toString());
 				pathField.addTextChangeListener((PepperGUIController)getUI());
@@ -183,6 +185,10 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 				PepperModuleDescMarshallable selectedModule = availableModules.get(val.toString());
 				List<Item> items = module2ItemsMap.get(selectedModule);
 				if (!selectedModule.getName().equals(lastSelectedModule)){
+					if (!selectedModule.getSupportedFormats().isEmpty()) {
+						config.getCorpusDesc().setFormatDesc(selectedModule.getSupportedFormats().get(0)); //FIXME
+					}
+					config.setName(selectedModule.getName());
 					if (items != null){
 						for (Item item : items){
 							Item itm = propTable.addItem(item.getItemProperty("Property").getValue());

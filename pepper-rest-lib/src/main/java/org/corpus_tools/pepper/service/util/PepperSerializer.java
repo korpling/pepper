@@ -19,6 +19,8 @@ public class PepperSerializer {
 	private static final Logger logger = LoggerFactory.getLogger(PepperSerializer.class);
 	private static final String ERR_MSG_CREATE_MARSHALLER = "An error occured creating marshaller for class ";
 	private static final String ERR_MSG_CREATE_UNMARSHALLER = "An error occured creating marshaller for class ";
+	private static final String ERR_MARSHALLING = "An error occured marshalling the given object.";
+	private static final String ERR_UNMARSHALLING = "An error occured unmarshalling the given stream.";
 	
 	private final String DATA_FORMAT;
 	
@@ -75,7 +77,7 @@ public class PepperSerializer {
 		try {
 			return ((PepperMarshallable<?>)um.unmarshal(new StringReader(source)));
 		} catch (JAXBException e) {
-			logger.warn("");//TODO ERR_MSG
+			logger.error(ERR_UNMARSHALLING);//TODO ERR_MSG
 		}
 		return null;
 	}
@@ -84,10 +86,11 @@ public class PepperSerializer {
 		Marshaller m = getMarshaller(marshallable.getClass());
 		try {
 			StringWriter writer = new StringWriter(); 
+			logger.info("Marshalling " + marshallable + " onto " + writer);
 			m.marshal(marshallable, writer);
 			return writer.toString();
 		} catch (JAXBException e) {
-			logger.warn("");//TODO ERR_MSG
+			logger.error(ERR_MARSHALLING);//TODO ERR_MSG
 		}
 		return null;
 	}

@@ -99,7 +99,7 @@ public class CorpusDesc {
 	 *            object
 	 */
 	public CorpusDesc setCorpusPath(String corpusPath) {
-		return this.setCorpusPath(URI.createURI(corpusPath));
+		return this.setCorpusPath(URI.createFileURI(corpusPath));
 	}
 
 	/**

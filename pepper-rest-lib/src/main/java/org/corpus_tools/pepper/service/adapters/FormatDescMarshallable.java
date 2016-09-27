@@ -21,7 +21,9 @@ public class FormatDescMarshallable implements PepperMarshallable<FormatDesc>{
 	public FormatDesc getPepperObject() {
 		FormatDesc retVal = new FormatDesc();
 		retVal.setFormatName(formatName);
-		retVal.setFormatReference(formatReferenceURI);
+		if (formatReferenceURI != null){
+			retVal.setFormatReference(formatReferenceURI);			
+		}
 		retVal.setFormatVersion(formatVersion);
 		return retVal;
 	}	

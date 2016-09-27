@@ -36,12 +36,14 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 	/**
 	 * Constructor for unmarshalling.
 	 */
-	public StepDescMarshallable() {}
+	public StepDescMarshallable() {	}
 
 	@Override
 	public StepDesc getPepperObject() {
 		StepDesc stepDesc = new StepDesc();
-		stepDesc.setCorpusDesc(this.corpusDesc.getPepperObject());
+		if (corpusDesc != null){
+			stepDesc.setCorpusDesc(this.corpusDesc.getPepperObject());
+		}		
 		stepDesc.setModuleType(this.moduleType);
 		stepDesc.setName(this.name);
 		stepDesc.setProps(getProperties());
@@ -93,8 +95,6 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 		this.version = version;
 	}
 	
-	//note: we don't need to marshal the CorpusDesc object, since this information will be uploaded to the server (TODO Check if that does not cause any trouble)
-	
 	private Properties properties;
 	
 	@XmlElement
@@ -105,7 +105,4 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 	public void setProperties(Properties properties){
 		this.properties = properties;
 	}
-	
-	
-
 }

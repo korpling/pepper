@@ -4,6 +4,7 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.gui.controller.PepperGUIController;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Table;
@@ -13,6 +14,9 @@ import com.vaadin.ui.TextField;
 public class PepperGuiManipulatorsView extends PepperGuiView {
 	private boolean isInit = false;
 	private ListSelect manipulatorsList;
+	private Table propertiesTable;
+	private Table descriptionTable;
+	private AbsoluteLayout details;
 	
 	public PepperGuiManipulatorsView(){
 		super();
@@ -24,32 +28,31 @@ public class PepperGuiManipulatorsView extends PepperGuiView {
 		super.attach();
 		if (!isInit){
 			PepperGUIController controller = (PepperGUIController)getUI();
-			//TODO set controller for elements here
 			isInit = true;
 		}
 	}
 
+	/**
+	 * Returns null for this class.
+	 */
 	@Override
-	public TextField getPathField() {
+	public TextField getPathField() {				
 		return null;
 	}
 
 	@Override
 	public Table getDescriptionTable() {
-		// TODO Auto-generated method stub
-		return null;
+		return descriptionTable;
 	}
 
 	@Override
 	public Table getPropertiesTable() {
-		// TODO Auto-generated method stub
-		return null;
+		return propertiesTable;
 	}
 
 	@Override
 	public Component getDetailsComponent() {
-		// TODO Auto-generated method stub
-		return null;
+		return details;
 	}
 
 	@Override

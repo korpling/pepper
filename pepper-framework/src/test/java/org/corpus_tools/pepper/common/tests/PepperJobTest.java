@@ -19,6 +19,8 @@ package org.corpus_tools.pepper.common.tests;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Map;
+
 import org.corpus_tools.pepper.common.PepperJob;
 import org.corpus_tools.pepper.core.PepperJobImpl;
 import org.corpus_tools.salt.common.SaltProject;
@@ -88,6 +90,11 @@ public class PepperJobTest extends PepperJob {
 
 	@Override
 	public SaltProject getSaltProject() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Map<String, Double> getProgressByModules() {
 		throw new UnsupportedOperationException();
 	}
 }

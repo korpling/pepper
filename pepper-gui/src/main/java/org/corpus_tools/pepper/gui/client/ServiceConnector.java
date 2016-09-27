@@ -8,13 +8,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import org.corpus_tools.pepper.service.adapters.PepperJobMarshallable;
+import org.corpus_tools.pepper.service.adapters.PepperJobReportMarshallable;
+import org.corpus_tools.pepper.service.adapters.PepperJobReportMarshallable.PathProgress;
 import org.corpus_tools.pepper.service.adapters.PepperModuleCollectionMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
@@ -34,6 +39,13 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 	private static final Logger logger = LoggerFactory.getLogger(ServiceConnector.class);
 	private static final String ERR_404 = "Requested resource not available.";
 	private static final String ERR_REQUEST = "An error occured performing the request.";
+	private static final String ERR_NO_CONNECTION = "No connection was built. Request was not performed.";
+	private static final String ERR_CONNECTION_INPUT = "Could not read connection input.";
+	private static final String ERR_BUILD_CONNECTION(String method, String url){
+		StringBuilder builder = new StringBuilder();
+		return builder.append("An error occured building a connection of type ")
+				.append(method.toString()).append(" to ").append(url).toString();
+	}
 	
 	public ServiceConnector(String serviceURL){
 		this.serviceUrl = serviceURL;
@@ -77,7 +89,6 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 	 */
 	public String createJob(List<StepDescMarshallable> configs) {
 		PepperJobMarshallable jdm = new PepperJobMarshallable();
-		jdm.setBasedirURI("."); // TODO what to do with this
 		jdm.getSteps().addAll(configs);
 		
 		String data = serializer.marshal(jdm);
@@ -89,7 +100,8 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
 			connection.setDoInput(true);			
-			connection.setRequestProperty("Content-Type", PepperServiceImplConstants.DATA_FORMAT);	
+			connection.setRequestProperty("Content-Type", PepperServiceImplConstants.DATA_FORMAT);
+			connection.setRequestProperty("Accept", MediaType.TEXT_PLAIN);
 			connection.setRequestProperty("Content-Length", Integer.toString(data.length()));
 			connection.connect();
 			/*SEND*/
@@ -107,7 +119,7 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 				}			
 				return response.toString();
 			} else {
-				logger.error(ERR_REQUEST+" "+connection.getResponseCode());
+				logger.error(ERR_REQUEST +" RESPONSE CODE: "+ connection.getResponseCode());
 			}
 		} catch (IOException e){
 			logger.error(ERR_REQUEST);
@@ -116,5 +128,91 @@ public class ServiceConnector implements PepperServiceURLDictionary{
 		}
 		
 		return null;
+	}
+
+	/*
+	 * TODO ask Thomas how to use one connection kept open
+	 */
+	public Collection<PathProgress> getProgress(String jobId) {
+		HttpURLConnection connection = getConnection(HttpMethod.GET, "http://localhost:8080/pepper-rest/resource/job/".concat(jobId).concat("/report"), null, PepperServiceImplConstants.DATA_FORMAT);
+		try {
+			if (connection != null){
+				connection.connect();
+				String data = getConnectionInput(connection);
+				logger.info("Received progress response:"+System.lineSeparator()+data);
+				PepperJobReportMarshallable report = (PepperJobReportMarshallable) serializer.unmarshal(data, PepperJobReportMarshallable.class);
+				return report
+						.getProgressByPath()
+						.getCollection();
+			} else {
+				logger.error(ERR_NO_CONNECTION);
+			}
+		} catch (IOException e) {
+			logger.error(ERR_REQUEST);
+		}		
+		return Collections.<PathProgress>emptySet();
+	}
+	
+	/**
+	 * This method creates a http connection to the desired target.
+	 * @param method
+	 * 			The method to be used, such as GET or POST.
+	 * 			Available methods are listed in {@link HttpMethod} interface.
+	 * @param targetUrl
+	 * 			URL for target of connection, must not be null.
+	 * @param sendType
+	 * 			The media type to be sent, such as "application/xml" etc.
+	 * 			Set to null if not needed.
+	 * @param acceptType
+	 * 			The media type to be received, such as "application/xml" etc.
+	 * 			Set to null if not needed.
+	 * @return
+	 * 			The {@link HttpURLConnection} to the target (not connected, data length not configured).
+	 */
+	private HttpURLConnection getConnection(String method, String targetUrl, String sendType, String acceptType){
+		HttpURLConnection connection = null;
+		if (targetUrl == null){
+			return null;
+		}
+		try {
+			connection = (HttpURLConnection) (new URL(targetUrl)).openConnection();
+			connection.setRequestMethod(method);
+			if (HttpMethod.POST.equals(method)){
+				connection.setDoOutput(true);
+			}
+			if (acceptType == null){
+				connection.setDoInput(false);
+			} else {
+				connection.setRequestProperty("Accept", acceptType);
+			}
+			if (sendType != null){
+				connection.setRequestProperty("Content-Type", sendType);
+			}						
+		} catch (IOException e) {
+			logger.error(ERR_BUILD_CONNECTION(method, targetUrl));
+		}		
+		return connection;
+	}
+	
+	/**
+	 * This method reads the input from the given connection.
+	 * @param connection
+	 * @return
+	 */
+	private String getConnectionInput(HttpURLConnection connection){
+		StringBuilder data = new StringBuilder();
+		try{
+			InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+			BufferedReader br = new BufferedReader(reader);			
+			
+			String line = br.readLine();
+			while (line != null){
+				data.append(line);
+				line = br.readLine();
+			} 
+		}catch (IOException e){
+			logger.error(ERR_CONNECTION_INPUT);
+		}
+		return data.toString();
 	}
 }

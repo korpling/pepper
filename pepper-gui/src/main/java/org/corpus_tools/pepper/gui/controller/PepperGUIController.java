@@ -3,18 +3,20 @@ package org.corpus_tools.pepper.gui.controller;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.gui.client.ServiceConnector;
 import org.corpus_tools.pepper.gui.components.PathSelectDialogue;
 import org.corpus_tools.pepper.gui.components.PepperGUI;
+import org.corpus_tools.pepper.gui.components.ProgressDisplay;
 import org.corpus_tools.pepper.gui.components.View;
 import org.corpus_tools.pepper.service.adapters.CorpusDescMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -45,19 +47,25 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	private PepperGUI gui = null;
 	private Window pathSelectDialogueWindow = null;
 	private PathSelectDialogue pathDialogue = null;
-	private final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserHome().getAbsolutePath();
-	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";
 	private IdProvider idProvider = null;
 	private Window debugWindow = null;
-	private Object tunnel = null;
 	private ServiceConnector serviceConnector = null;
+	private JobManager jobManager = null;	
+	private Thread progressThread = null;
+
+	private static final String PATH_DIALOGUE_TITLE = "Select your path, please";	
 	private static final String SERVICE_URL = "http://localhost:8080/pepper-rest/resource/";
+	private final String DEFAULT_DIALOGUE_PATH = SystemUtils.getUserHome().getAbsolutePath();
+	
+	private static final Logger logger = LoggerFactory.getLogger(PepperGUIController.class);
 	
 	/* pepper stuff */
 	Collection<PepperModuleDescMarshallable> modules = null;
 	
 	protected void init(VaadinRequest request){
+		setImmediate(true);
 		gui = new PepperGUI(this);
+		gui.setImmediate(true);
 		setErrorHandler(this);
 		setImmediate(true);
 		
@@ -98,7 +106,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		String id = event.getComponent().getId();
+		String id = event!=null? event.getComponent().getId() : null;
 		debugOut("click event, id="+id);
 		if (ID_BUTTON_ABOUT.equals(id)){	
 			if (modules==null){
@@ -113,9 +121,6 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		}
 		else if (ID_BUTTON_IMPORTERS.equals(id)){
 			gui.setView(VIEW_NAME.IMPORTERS);
-			if (tunnel == null){
-				tunnel = new Tunnel(this.SERVICE_URL);
-			}
 		}
 		else if (ID_BUTTON_EXPORTERS.equals(id)){
 			gui.setView(VIEW_NAME.EXPORTERS);
@@ -213,7 +218,9 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 	@Override
 	public void valueChange(ValueChangeEvent event) {		
 		/* right now this method must not be used for anything else */ 
-		pathDialogue.setPathLabelValue(pathDialogue.getListValue());				
+		if (((Class<?>)event.getProperty().getType()).isAssignableFrom(String.class)){
+			pathDialogue.setPathLabelValue(pathDialogue.getListValue());
+		}						
 	}
 
 	/*
@@ -254,9 +261,16 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 
 	public String start() {
 		// TODO block for further configuration (in which ever sense)
-		List<StepDescMarshallable> configs = gui.getAllConfigurations();
-		String jobId = serviceConnector.createJob(configs);
+		String jobId = serviceConnector.createJob(gui.getAllConfigurations());
 		debugOut("Started job: "+jobId);
+		jobManager.checkForProgress(true);
+		jobManager.add(jobId);
+		progressThread.start();
 		return jobId;
+	}
+	
+	public void registerProgressDisplay(ProgressDisplay progressDisplay){
+		jobManager = new JobManager(serviceConnector, progressDisplay);
+		progressThread = new Thread(jobManager, "JobManager-Thread");		
 	}
 }

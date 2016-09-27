@@ -27,8 +27,10 @@ import java.io.Reader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.CancellationException;
@@ -1428,5 +1430,21 @@ public class PepperJobImpl extends PepperJob {
 			str.append("}");
 		}
 		return (str.toString());
+	}
+
+	/**
+	 * {@inheritDoc PepperJob#getProgressByModules}
+	 */
+	@Override
+	public Map<String, Double> getProgressByModules() {
+		Map<String, Double> retVal = new HashMap<>();
+		String path = null;
+		double progress = 0.0;
+		for (Step step : getAllSteps()){
+			path = step.getName() + (MODULE_TYPE.MANIPULATOR.equals(step.getModuleType())? "" : (":" + step.getCorpusDesc().getCorpusPath().toString().replace("file:/", "")));
+			progress = step.getModuleController().getPepperModule().getProgress();
+			retVal.put(path, progress);
+		}
+		return retVal;
 	}
 }
