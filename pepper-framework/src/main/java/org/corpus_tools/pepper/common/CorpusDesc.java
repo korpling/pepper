@@ -117,6 +117,11 @@ public class CorpusDesc {
 			return this;
 		}
 
+		public Builder withCorpusPath(String corpusPath) {
+			corpusDesc.setCorpusPath(URI.createFileURI(corpusPath));
+			return this;
+		}
+
 		public Builder withFormatName(String formatName) {
 			corpusDesc.getFormatDesc().setFormatName(formatName);
 			return this;
