@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperMapper;
@@ -30,8 +31,6 @@ import org.corpus_tools.salt.core.SNode;
 import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 @Component(name = "DOTManipulatorComponent", factory = "PepperManipulatorComponentFactory")
@@ -44,9 +43,13 @@ public class DOTManipulator extends PepperManipulatorImpl {
 		this.setProperties(new DOTManipulatorProperties());
 	}
 
-	@Activate
-	public void activate(ComponentContext componentContext) {
-		super.activate(componentContext);
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotManipulator")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotManipulator")
+						.appendSegment("expected"));
 	}
 
 	@Override
@@ -54,20 +57,19 @@ public class DOTManipulator extends PepperManipulatorImpl {
 		PepperMapper mapper = new PepperMapperImpl() {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
-				// TODO fixme
-				// Salt2DOT salt2Dot = new Salt2DOT();
-				// salt2Dot.salt2Dot(getDocument().getIdentifier(),
-				// getResourceURI());
-
 				SaltUtil.saveDocumentGraph(getDocument().getDocumentGraph(), getResourceURI());
 				addProgress(1.0);
 				return (DOCUMENT_STATUS.COMPLETED);
 			}
 		};
+		final File dotPath = ((DOTManipulatorProperties) this.getProperties()).getOutputFile();
+		if (dotPath == null) {
+			return mapper;
+		}
 
-		String outputStr = ((DOTManipulatorProperties) this.getProperties()).getOutputFile().getAbsolutePath();
-		File outputFile = new File(outputStr + "/" + ((SNode) sElementId.getIdentifiableElement()).getPath() + "."
-				+ ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
+		File outputFile = new File(
+				dotPath.getAbsolutePath() + "/" + ((SNode) sElementId.getIdentifiableElement()).getPath() + "."
+						+ ((DOTManipulatorProperties) this.getProperties()).getFileEnding());
 		if (!outputFile.exists()) {
 			try {
 				if (!outputFile.getParentFile().exists()) {
@@ -83,7 +85,7 @@ public class DOTManipulator extends PepperManipulatorImpl {
 					logger.warn("Cannot create file {}. ", outputFile);
 				}
 			} catch (IOException e) {
-				throw new PepperModuleException("Cannot create output file for dot: " + outputStr);
+				throw new PepperModuleException("Cannot create output file for dot: " + dotPath);
 			}
 		}
 

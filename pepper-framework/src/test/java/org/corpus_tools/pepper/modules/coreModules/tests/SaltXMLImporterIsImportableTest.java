@@ -47,25 +47,25 @@ public class SaltXMLImporterIsImportableTest {
 	}
 
 	@Test
-	public void whenCorpusPathContainsNoPAULAFiles_thenReturn0() {
+	public void whenCorpusPathContainsNoSaltFiles_thenReturn0() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "noSalt/");
 		assertEquals(Double.valueOf(0.0), getFixture().isImportable(corpusPath));
 	}
 
 	@Test
-	public void whenCorpusPathContainsNoFilesWithPaulaEnding_thenReturn0() {
+	public void whenCorpusPathContainsNoFilesWithSaltEnding_thenReturn0() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "fakeSalt/");
 		assertEquals(Double.valueOf(0.0), getFixture().isImportable(corpusPath));
 	}
 
 	@Test
-	public void whenCorpusPathContainsOnlyPaulaFiles_thenReturn1() {
+	public void whenCorpusPathContainsOnlySaltFiles_thenReturn1() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "onlySalt/");
 		assertEquals(Double.valueOf(1.0), getFixture().isImportable(corpusPath));
 	}
 
 	@Test
-	public void whenCorpusPathContainsPaulaAndNonePaulaFiles_thenReturn1() {
+	public void whenCorpusPathContainsSaltAndNoneSaltFiles_thenReturn1() {
 		URI corpusPath = URI.createFileURI(getTestResources() + "mixedContent/");
 		assertEquals(Double.valueOf(1.0), getFixture().isImportable(corpusPath));
 	}

@@ -36,7 +36,6 @@ public class PepperGuiExportersView extends PepperGuiView {
 		if (!isInit){
 			PepperGUIController controller = (PepperGUIController)getUI();
 			btnBrowseLocal.addClickListener(controller);
-			exportPath.addTextChangeListener(controller);
 			
 			isInit = true;
 		}

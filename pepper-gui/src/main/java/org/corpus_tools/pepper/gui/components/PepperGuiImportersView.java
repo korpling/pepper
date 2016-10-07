@@ -40,8 +40,6 @@ public class PepperGuiImportersView extends PepperGuiView{
 			PepperGUIController controller = (PepperGUIController)getUI();
 //			upload.setReceiver(controller);
 			btnBrowseLocal.addClickListener(controller);
-			importPath.addTextChangeListener(controller);	
-			importPath.setTextChangeEventMode(TextChangeEventMode.LAZY);		
 			
 			isInit = true;
 		}

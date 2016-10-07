@@ -32,7 +32,6 @@ import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.exceptions.WorkflowException;
 import org.corpus_tools.pepper.modules.PepperImporter;
-import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.SALT_TYPE;
@@ -45,14 +44,13 @@ import org.xml.sax.ext.DefaultHandler2;
 
 /**
  * <p>
- * This class is an abstract implementation of {@link PepperImporter} and cannot
- * be instantiated directly. To implement an exporter for Pepper, the easiest
- * way is to derive this class. For further information, read the javadoc of
- * {@link PepperManipulator} and the documentation of
- * <a href="http://u.hu-berlin.de/saltnpepper">u.hu-berlin.de/saltnpepper</a>.
+ * An importer in Pepper reads data from a format A and maps its data to a Salt
+ * model. An importer must implement the class {@link PepperImporter} and can
+ * extend the this class. We strongly recommend to extend this class, since it
+ * contains a lot of helpful functions and methods controlling the workflow.
  * </p>
  * 
- * @see PepperManipulator
+ * @see PepperImporter
  * 
  * @author Florian Zipser
  */

@@ -14,13 +14,14 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
 @DesignRoot
-public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary, View{	
+public class PepperGUI extends VerticalLayout implements PepperGUIComponentDictionary, View, Button.ClickListener{	
 	private Button btnNewWorkflow;
 	private Button btnLoadWorkflow;
 	private Button btnAbout;
@@ -52,11 +53,11 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 		btnNewWorkflow.addClickListener(controller);		
 		btnLoadWorkflow.addClickListener(controller);
 		btnAbout.addClickListener(controller);
-		btnImporters.addClickListener(controller);
-		btnExporters.addClickListener(controller);
-		btnManipulators.addClickListener(controller);
-		btnResults.addClickListener(controller);
-		btnAdd.addClickListener(controller);
+		btnImporters.addClickListener(this);
+		btnExporters.addClickListener(this);
+		btnManipulators.addClickListener(this);
+		btnResults.addClickListener(this);
+		btnAdd.addClickListener(this);
 		
 		configList.setImmediate(true);
 		configList.setDefaultComponentAlignment(Alignment.TOP_LEFT);
@@ -115,10 +116,9 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	}
 	
 	private void addButton(int id){
-		Button b = new Button(Integer.toString(id));
-		b.setId(CONFIG_BUTTON_ID_PREFIX.concat(Integer.toString(id)));		
+		Button b = new IndexedButton(id);		
 		configList.addComponent(b);
-		b.addClickListener((PepperGUIController)getUI());
+		b.addClickListener(this);
 	}
 
 	@Override
@@ -139,5 +139,55 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 	@Override
 	public void setAvailableModules(Collection<PepperModuleDescMarshallable> modules) {
 		main.setAvailableModules(modules);		
+	}
+
+	@Override
+	public void buttonClick(ClickEvent event) {
+		Button b = event.getButton();
+		if (b instanceof IndexedButton){
+			setConfig(((IndexedButton) b).getIndex());
+		}
+		else if (btnAdd.equals(b)){
+			add();
+		}
+		else if (btnAbout.equals(b)){
+			
+		}
+		else if (btnExporters.equals(b)){
+			setView(VIEW_NAME.EXPORTERS);
+		}
+		else if (btnImporters.equals(b)){
+			setView(VIEW_NAME.IMPORTERS);
+		}
+		else if (btnManipulators.equals(b)){
+			setView(VIEW_NAME.MANIPULATORS);
+		}
+		else if (btnResults.equals(b)){
+			setView(VIEW_NAME.RESULTS);
+		}
+		else if (btnLoadWorkflow.equals(b)){
+			
+		}
+		else if (btnNewWorkflow.equals(b)){
+			
+		}
+	}
+	
+	public class IndexedButton extends Button{
+		
+		private final int index;
+		
+		public IndexedButton(int humanReadableIndex){
+			this.index = humanReadableIndex-1;
+			setCaption(Integer.toString(humanReadableIndex));
+		}
+		
+		public int getIndex(){
+			return this.index;
+		}
+		
+		public int getHumanReadableIndex(){
+			return index+1;
+		}
 	}
 }

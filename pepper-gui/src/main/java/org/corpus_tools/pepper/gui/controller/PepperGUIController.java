@@ -121,18 +121,6 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 		else if (ID_BUTTON_LOAD.equals(id)){
 			
 		}
-		else if (ID_BUTTON_IMPORTERS.equals(id)){
-			gui.setView(VIEW_NAME.IMPORTERS);
-		}
-		else if (ID_BUTTON_EXPORTERS.equals(id)){
-			gui.setView(VIEW_NAME.EXPORTERS);
-		}
-		else if (ID_BUTTON_MANIPULATORS.equals(id)){
-			gui.setView(VIEW_NAME.MANIPULATORS);
-		}
-		else if (ID_BUTTON_RESULTS.equals(id)){
-			gui.setView(VIEW_NAME.RESULTS);
-		}
 		else if (ID_BUTTON_BROWSE_LOCAL.equals(id)){
 			modifyPathSelectDialogue(DEFAULT_DIALOGUE_PATH, false);
 		}
@@ -160,11 +148,19 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 			modifyPathSelectDialogue(id.substring(1), false);
 		}
 		else if (ID_BUTTON_ADD.equals(id)){
-			gui.add();
+			add();
 		}
 		else if ("test".equals(id)){//TODO remove before RELEASE
 		}
 		
+	}
+	
+	public void add(){
+		gui.add();
+	}
+	
+	public void setConfig(int id){
+		gui.setConfig(id);
 	}
 	
 	private boolean writeWorkflowFile(String absolutePath){

@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -24,8 +25,12 @@ import java.io.IOException;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
+import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.modules.coreModules.TextExporter;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SDocument;
@@ -45,7 +50,7 @@ public class TextExporterTest extends PepperExporterTest {
 			.setFormatVersion(TextExporter.FORMAT_VERSION);
 
 	@Before
-	public void setUp() {
+	public void beforeEach() {
 		setFixture(new TextExporter());
 		addSupportedFormat(formatDesc);
 	}
@@ -57,7 +62,7 @@ public class TextExporterTest extends PepperExporterTest {
 	 */
 	@Test
 	public void test1Doc1Text() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1"))
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1"))
 				.get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
@@ -79,7 +84,7 @@ public class TextExporterTest extends PepperExporterTest {
 	 */
 	@Test
 	public void test3Doc1Text() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1"))
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1"))
 				.get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
@@ -109,14 +114,9 @@ public class TextExporterTest extends PepperExporterTest {
 				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
 	}
 
-	/**
-	 * Tests the export of multiple documents with multiple texts.
-	 * 
-	 * @throws IOException
-	 */
 	@Test
-	public void test3DocMultiText() throws IOException {
-		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("corp1"))
+	public void whenExporting3DocumentsWithMultipleTexts_thenExport4Texts() throws IOException {
+		SCorpus sCorpus = getFixture().getSaltProject().getCorpusGraphs().get(0).createCorpus(URI.createURI("/corp1"))
 				.get(0);
 		SDocument sDoc = getFixture().getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
@@ -145,5 +145,13 @@ public class TextExporterTest extends PepperExporterTest {
 				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc2_sText2.txt")));
 		assertTrue(compareFiles(new File(parent + "/corp1/doc3.txt"),
 				new File(getFixture().getCorpusDesc().getCorpusPath().toFileString() + "/corp1/doc3.txt")));
+	}
+
+	@Test
+	public void whenSelfTestingModule_thenResultShouldBeTrue() {
+		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
+
+		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
+		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
 	}
 }

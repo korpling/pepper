@@ -33,8 +33,8 @@ import org.eclipse.emf.common.util.URI;
  * A mapping task in the Pepper workflow is not a monolithic block. It consists
  * of several smaller steps.
  * <ul>
- * <li>Declare the fingerprint of the module. This is part of the
- * constructor.</li>
+ * <li>Declare the fingerprint of the module. This is part of the constructor.
+ * </li>
  * <li>Check readyness of the module.</li>
  * <li>Export the corpus structure.</li>
  * <li>Export the document structure and create a mapper for each corpus and
@@ -43,8 +43,8 @@ import org.eclipse.emf.common.util.URI;
  * </ul>
  * The following describes the single steps in short. To get a more detailed
  * explanation, take a look to the documentations found at
- * <a href="http://u.hu-berlin.de/saltnpepper"
- * >http://u.hu-berlin.de/saltnpepper</a>.
+ * <a href="http://u.hu-berlin.de/saltnpepper" >http://u.hu-berlin.de/
+ * saltnpepper</a>.
  * </p>
  * <p>
  * <h3>Declare the fingerprint</h3> Initialize the module and set the modules

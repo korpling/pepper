@@ -10,6 +10,7 @@ import java.util.List;
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.gui.controller.PepperGUIComponentDictionary;
 import org.corpus_tools.pepper.gui.controller.PepperGUIController;
+import org.corpus_tools.pepper.service.adapters.CorpusDescMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModuleDescMarshallable;
 import org.corpus_tools.pepper.service.adapters.PepperModulePropertyMarshallable;
 import org.corpus_tools.pepper.service.adapters.StepDescMarshallable;
@@ -22,6 +23,8 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -40,7 +43,10 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	protected MODULE_TYPE type;
 	protected HashMap<String, PepperModuleDescMarshallable> availableModules = null;
 	protected HashMap<String, List<Item>> module2ItemsMap = null;
-	protected  String lastSelectedModule = null;
+	/** Maps property name to mapping int->obj, where index is the value of the property for the current index */
+	protected HashMap<String, HashMap<Integer, Object>> modifiedProperties = null;
+	protected String lastSelectedModule = null;
+	private int currentIndex = 0;
 	
 	private boolean isInit = false;
 	
@@ -57,13 +63,19 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		Design.read(this);
 		configurations = new ArrayList<StepDescMarshallable>();	
 		module2ItemsMap = new HashMap<String, List<Item>>();
+		modifiedProperties = new HashMap<>();
 	}
 	
 	@Override
 	public void attach(){
 		super.attach();
 		if (!isInit){
-			this.addLayoutClickListener((PepperGUIController)getUI());
+			PepperGUIController controller = (PepperGUIController)getUI();
+			if (getPathField()!=null){
+				getPathField().addTextChangeListener(controller);
+				getPathField().setTextChangeEventMode(TextChangeEventMode.LAZY);
+			}
+			this.addLayoutClickListener(controller);
 			if (config==null){
 				if (!configurations.isEmpty()){
 					config = configurations.get(configurations.size()-1);
@@ -100,14 +112,18 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		}
 		isInit = true;
 	}
+	
+	protected int getCurrentIndex(){
+		return this.currentIndex;
+	}
 
+	/*
+	 * TODO make private/protected if possible (and delete from interface, this is a local thing)
+	 */
 	@Override
 	public void setConfig(StepDescMarshallable stepDesc) {
 		if (getModuleType() != null){
-			if (config == null){
-				this.config = stepDesc;
-			}
-			if (getModuleType().equals(config.getModuleType())){
+			if (stepDesc.getModuleType().equals(getModuleType())){
 				this.config = stepDesc;
 				if (!configurations.contains(config)){
 					configurations.add(config);
@@ -119,7 +135,16 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	
 	@Override
 	public final void setConfig(int id){
+		currentIndex = id;
 		setConfig(configurations.get(id));
+		if (getPathField() != null){
+			getPathField().setValue(config.getCorpusDesc().getCorpusPathURI());
+		}
+		if (getModuleSelector() != null){
+			getModuleSelector().setValue(config.getName());
+		}
+		//TODO table stuff
+		
 	}
 
 	@Override
@@ -141,15 +166,18 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	@Override
 	public final void display(boolean visible, Component... c){		
 		for (Component component : c){
-			component.setVisible(true);
+			component.setVisible(visible);
 		}
 	}
 	
 	@Override
 	public final void add(){
 		StepDescMarshallable stepDesc = new StepDescMarshallable();
+		stepDesc.setCorpusDesc(new CorpusDescMarshallable());
+		stepDesc.getCorpusDesc().setCorpusPathURI("");
 		stepDesc.setModuleType(type);
-		setConfig(stepDesc);		
+		setConfig(stepDesc);
+		clearFields();
 		update();
 	}
 	
@@ -158,6 +186,9 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		return configurations.size();
 	}
 	
+	/*
+	 * This method is problematic: It handles too much at a time. When one thing is changed, everything will be reset.
+	 */
 	@Override
 	public void update() {
 		TextField pathField = getPathField();
@@ -166,12 +197,9 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 				 && ((pathField!=null
 				 && getConfig().getCorpusDesc() != null 
 				 && getConfig().getCorpusDesc().getCorpusPathURI()!=null) || isManipulator);  
-		if (up){	;
+		if (up){	
 			if (isManipulator || (new File(getConfig().getCorpusDesc().getCorpusPathURI().toString())).exists()){
 				display(true, getDetailsComponent());
-			} else {
-				Notification.show(ERR_MSG_LOCATION_DOES_NOT_EXIST);//TODO shift to message label
-				display(false, getDetailsComponent());
 			}
 			if (!isManipulator){
 				pathField.removeTextChangeListener((PepperGUIController)getUI());
@@ -190,30 +218,31 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 					}
 					config.setName(selectedModule.getName());
 					if (items != null){
-						for (Item item : items){
+						String propertyName = null;
+						for (Item item : items){							
 							Item itm = propTable.addItem(item.getItemProperty("Property").getValue());
+							propertyName = (String) itm.getItemProperty("Property").getValue();
 							itm.getItemProperty("Property").setValue(item.getItemProperty("Property").getValue());
-							itm.getItemProperty("Value").setValue(item.getItemProperty("Value").getValue());
+							itm.getItemProperty("Value").setValue(item.getItemProperty("Value").getValue());							
 							itm.getItemProperty("Help").setValue(item.getItemProperty("Help").getValue());
+							Object value = modifiedProperties.get(propertyName).get(currentIndex);
+							if (value != null){
+								AbstractField valueField = ((AbstractField)itm.getItemProperty("Value").getValue());
+								valueField.setValue(value);
+							}
 						}
 					} else {
 						items = new ArrayList<Item>();
 						for (PepperModulePropertyMarshallable<?> pmp : selectedModule.getProperties()){					
 							Item item = propTable.addItem(pmp.getName());
-							item.getItemProperty("Property").setValue(pmp.getName());
-							AbstractComponent c = null;					
-							if (Boolean.class.equals(pmp.getType())){
-								c = new ComboBox();						
+							item.getItemProperty("Property").setValue(pmp.getName());									
+							final boolean isBooleanValued = Boolean.class.isAssignableFrom((pmp.getType()));							
+							AbstractField c = isBooleanValued? new ComboBox() : new TextField();						
+							if (isBooleanValued){
 								((ComboBox)c).addItems("True", "False");
-								if (pmp.getRequired()){
-									((ComboBox)c).setValue(Boolean.toString((Boolean)pmp.getValue()));
-								}
 							}
-							else if (String.class.equals(pmp.getType())){
-								c = new TextField();
-								if (pmp.getValue() != null){
-									((TextField)c).setValue((String)pmp.getValue());
-								}
+							if (pmp.getRequired()){
+								c.setValue(pmp.getValue());
 							}
 							c.setImmediate(true);
 							/*HELP BUTTON*/
@@ -256,7 +285,18 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 				}
 			}			
 		} else {
-			logger.warn(WARN_METHOD_NA(this.getClass()));
+			throw new UnsupportedOperationException(WARN_METHOD_NA(this.getClass()));
+		}
+	}
+	
+	@Override
+	public void clearFields(){
+		if (getPathField() != null){
+			getPathField().clear();
+			display(false, getDetailsComponent());
+		}
+		if (getModuleSelector() != null){
+			getModuleSelector().unselect(getModuleSelector().getValue());			
 		}
 	}
 }

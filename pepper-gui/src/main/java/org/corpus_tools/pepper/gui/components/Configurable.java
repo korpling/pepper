@@ -13,4 +13,5 @@ public interface Configurable {
 	public Table getPropertiesTable();
 	public Component getDetailsComponent();
 	public ListSelect getModuleSelector();
+	public void clearFields();
 }

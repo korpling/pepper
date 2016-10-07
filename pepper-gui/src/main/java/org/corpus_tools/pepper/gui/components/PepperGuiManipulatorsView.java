@@ -15,7 +15,6 @@ public class PepperGuiManipulatorsView extends PepperGuiView {
 	private boolean isInit = false;
 	private ListSelect manipulatorsList;
 	private Table propertiesTable;
-	private Table descriptionTable;
 	private AbsoluteLayout details;
 	
 	public PepperGuiManipulatorsView(){
@@ -42,7 +41,7 @@ public class PepperGuiManipulatorsView extends PepperGuiView {
 
 	@Override
 	public Table getDescriptionTable() {
-		return descriptionTable;
+		return null;
 	}
 
 	@Override

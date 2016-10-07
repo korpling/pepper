@@ -25,6 +25,4 @@ public interface PepperGUIComponentDictionary {
 	
 	public static final String PATH_PREFIX = "#";
 	public static final String CONFIG_BUTTON_ID_PREFIX = "%";
-
-	public static final String ERR_MSG_LOCATION_DOES_NOT_EXIST = "Location does not exist.";
 }

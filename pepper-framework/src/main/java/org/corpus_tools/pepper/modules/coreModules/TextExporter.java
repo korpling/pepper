@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
@@ -60,6 +61,15 @@ public class TextExporter extends PepperExporterImpl implements PepperExporter {
 		setExportMode(EXPORT_MODE.DOCUMENTS_IN_FILES);
 		setDocumentEnding(ENDING_TXT);
 
+	}
+
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		return new SelfTestDesc(
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
+						.appendSegment("in"),
+				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtExporter")
+						.appendSegment("expected"));
 	}
 
 	/**

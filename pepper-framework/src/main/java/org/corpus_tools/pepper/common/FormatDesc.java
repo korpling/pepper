@@ -36,7 +36,7 @@ import org.eclipse.emf.common.util.URI;
  * 
  * @author Florian Zipser
  */
-public class FormatDesc{
+public class FormatDesc {
 
 	/**
 	 * Initilizes an object.
@@ -186,5 +186,28 @@ public class FormatDesc{
 		result.append(formatReference);
 		result.append(')');
 		return result.toString();
+	}
+
+	public static class FormatDescBuilder {
+		private FormatDesc formatDesc = new FormatDesc();
+
+		public FormatDescBuilder withName(String formatName) {
+			formatDesc.setFormatName(formatName);
+			return this;
+		}
+
+		public FormatDescBuilder withVersion(String formatVersion) {
+			formatDesc.setFormatVersion(formatVersion);
+			return this;
+		}
+
+		public FormatDescBuilder withFormatReference(URI formatReference) {
+			formatDesc.setFormatReference(formatReference);
+			return this;
+		}
+
+		public FormatDesc build() {
+			return formatDesc;
+		}
 	}
 }

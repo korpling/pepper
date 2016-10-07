@@ -76,6 +76,16 @@
 									<include>**/*.xml</include>
 									<include>Doxyfile</include>
 								</includes>
+								<excludes>
+									<exclude>**/moduleDevelopers/dependencies.md</exclude>
+								</excludes>
+							</resource>
+							<resource>
+								<directory>src/main/doxygen/</directory>
+								<filtering>false</filtering>
+								<includes>
+									<include>**/moduleDevelopers/dependencies.md</include>
+								</includes>
 							</resource>
 						</resources>
 					</configuration>
