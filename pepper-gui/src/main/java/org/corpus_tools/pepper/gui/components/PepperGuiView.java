@@ -21,6 +21,8 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
@@ -52,6 +54,10 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	
 	public static final Logger logger = LoggerFactory.getLogger(PepperGuiView.class);
 	
+	public static final String TABLE_PROP_PROPERTY = "Property";
+	public static final String TABLE_PROP_VALUE = "Value";
+	public static final String TABLE_PROP_HELP = "Help";
+	
 	public static final String WARN_METHOD_NA(Class<?> clazz){
 		return "Method not implemented for class "+clazz;
 	}
@@ -72,7 +78,26 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		if (!isInit){
 			PepperGUIController controller = (PepperGUIController)getUI();
 			if (getPathField()!=null){
-				getPathField().addTextChangeListener(controller);
+				final TextField tf = getPathField();
+				getPathField().addTextChangeListener(new TextChangeListener() {					
+					@Override
+					public void textChange(TextChangeEvent event) {
+						StepDescMarshallable config = PepperGuiView.this.getConfig();
+						if (config==null){
+							StepDescMarshallable newConfig = new StepDescMarshallable();
+							newConfig.setModuleType(PepperGuiView.this.getModuleType());
+							newConfig.setCorpusDesc(new CorpusDescMarshallable());
+							newConfig.getCorpusDesc().setCorpusPathURI(tf.getValue().replace("file://", ""));
+							PepperGuiView.this.setConfig(newConfig);
+						} else {
+							if (config.getCorpusDesc() == null){
+								config.setCorpusDesc(new CorpusDescMarshallable());
+							}
+							config.getCorpusDesc().setCorpusPathURI(tf.getValue().replace("file://", ""));				
+							PepperGuiView.this.update();
+						}						
+					}
+				});
 				getPathField().setTextChangeEventMode(TextChangeEventMode.LAZY);
 			}
 			this.addLayoutClickListener(controller);
@@ -104,9 +129,9 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 			{
 				Table propTable = getPropertiesTable();
 				if (propTable != null){
-					propTable.addContainerProperty("Property", String.class, "");
-					propTable.addContainerProperty("Value", AbstractComponent.class, "");
-					propTable.addContainerProperty("Help", Button.class, null);
+					propTable.addContainerProperty(TABLE_PROP_PROPERTY, String.class, "");
+					propTable.addContainerProperty(TABLE_PROP_VALUE, AbstractComponent.class, "");
+					propTable.addContainerProperty(TABLE_PROP_HELP, Button.class, null);
 				}
 			}
 		}
@@ -186,8 +211,44 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		return configurations.size();
 	}
 	
+	/**
+	 * This method reads the user input and writes it into the configuration object.
+	 * TODO this method should not exist. All changes should be written by listeners
+	 */
+	public void writeConfig(){
+		StepDescMarshallable config = getConfig();
+		if (config == null){
+			config = new StepDescMarshallable();			
+		}
+		if (config.getCorpusDesc() == null){
+			config.setCorpusDesc(new CorpusDescMarshallable());
+		}		
+		{//store input path
+			config.getCorpusDesc().setCorpusPathURI(getPathField().getValue());
+		}
+		{//store selected module			
+			config.setModuleType(getModuleType());
+			Object val = getModuleSelector().getValue();
+			if (val != null){
+				config.setName(val.toString());
+				config.getCorpusDesc().setFormatDesc( availableModules.get(val.toString()).getSupportedFormats().get(0) );
+			}
+		}
+		{//store module config
+			//TODO read properties from table
+		}
+	}
+	
+	/**
+	 * This method reads the configuration object and puts the values into gui elements.
+	 */
+	public void readConfig(){
+		
+	}
+	
 	/*
 	 * This method is problematic: It handles too much at a time. When one thing is changed, everything will be reset.
+	 * --> Split into writeConfig and readConfig
 	 */
 	@Override
 	public void update() {
@@ -220,14 +281,14 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 					if (items != null){
 						String propertyName = null;
 						for (Item item : items){							
-							Item itm = propTable.addItem(item.getItemProperty("Property").getValue());
-							propertyName = (String) itm.getItemProperty("Property").getValue();
-							itm.getItemProperty("Property").setValue(item.getItemProperty("Property").getValue());
-							itm.getItemProperty("Value").setValue(item.getItemProperty("Value").getValue());							
-							itm.getItemProperty("Help").setValue(item.getItemProperty("Help").getValue());
+							Item itm = propTable.addItem(item.getItemProperty(TABLE_PROP_PROPERTY).getValue());
+							propertyName = (String) itm.getItemProperty(TABLE_PROP_PROPERTY).getValue();
+							itm.getItemProperty(TABLE_PROP_PROPERTY).setValue(item.getItemProperty("Property").getValue());
+							itm.getItemProperty(TABLE_PROP_VALUE).setValue(item.getItemProperty("Value").getValue());							
+							itm.getItemProperty(TABLE_PROP_HELP).setValue(item.getItemProperty("Help").getValue());
 							Object value = modifiedProperties.get(propertyName).get(currentIndex);
 							if (value != null){
-								AbstractField valueField = ((AbstractField)itm.getItemProperty("Value").getValue());
+								AbstractField valueField = ((AbstractField)itm.getItemProperty(TABLE_PROP_VALUE).getValue());
 								valueField.setValue(value);
 							}
 						}
@@ -235,7 +296,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 						items = new ArrayList<Item>();
 						for (PepperModulePropertyMarshallable<?> pmp : selectedModule.getProperties()){					
 							Item item = propTable.addItem(pmp.getName());
-							item.getItemProperty("Property").setValue(pmp.getName());									
+							item.getItemProperty(TABLE_PROP_PROPERTY).setValue(pmp.getName());									
 							final boolean isBooleanValued = Boolean.class.isAssignableFrom((pmp.getType()));							
 							AbstractField c = isBooleanValued? new ComboBox() : new TextField();						
 							if (isBooleanValued){
@@ -256,8 +317,8 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 									Notification.show(mp.getDescription().replaceAll("(.{100})", "$1"+System.lineSeparator()));
 								}
 							});						
-							item.getItemProperty("Value").setValue(c);
-							item.getItemProperty("Help").setValue(help);
+							item.getItemProperty(TABLE_PROP_VALUE).setValue(c);
+							item.getItemProperty(TABLE_PROP_HELP).setValue(help);
 							items.add(item);
 						}
 						module2ItemsMap.put(selectedModule.getName(), items);
@@ -298,5 +359,23 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		if (getModuleSelector() != null){
 			getModuleSelector().unselect(getModuleSelector().getValue());			
 		}
+	}
+	
+	protected abstract class ConfigListener implements ValueChangeListener, FieldListener{
+
+		AbstractField field = null;
+		
+		private ConfigListener(AbstractField field){
+			this.field = field;
+		}
+		
+		@Override
+		public final void valueChange(ValueChangeEvent event) {
+			write(field.getValue());
+		}	
+	}
+	
+	protected interface FieldListener{		
+		public void write(Object value);			
 	}
 }

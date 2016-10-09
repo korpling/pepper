@@ -151,6 +151,7 @@
 						org.jvnet.hk2.external.generator,
 						org.jvnet.hk2.external.runtime,															
 						<!-- NON-IMPORTS -->
+						!commonj.*,
 						!com.fasterxml*,
 						!com.google.common.io,
 						!com.sun*, 

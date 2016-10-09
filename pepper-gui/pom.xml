@@ -177,7 +177,7 @@
 					org.glassfish.jersey.internal,
 					org.glassfish.jersey.internal.spi,
 					org.glassfish.jersey.logging,
-					org.glassfish.jersey.servlet,
+					<!--org.glassfish.jersey.servlet, -->
 					org.jsoup,			
 					org.jsoup.nodes,
 					org.jsoup.parser,

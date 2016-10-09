@@ -236,7 +236,7 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 				modifyPathSelectDialogue(txt, false);
 			}
 		}
-		else if (ID_PATH_FIELD_MAIN.equals(id)){
+		else if (ID_PATH_FIELD_MAIN.equals(id)){/*DEAD code, but do not remove yet*/
 			TextField c = (TextField)event.getComponent();
 			c.removeTextChangeListener(this);
 			StepDescMarshallable config = gui.getConfig();

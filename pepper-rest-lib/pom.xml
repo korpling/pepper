@@ -170,6 +170,7 @@
             org.glassfish.jersey.internal,
             org.jvnet.hk2.external.generator,
             <!-- NON-IMPORTS -->
+            !commonj.*,
             !com.*,
 			!com.fasterxml*,
 			!com.google.common.io,
