@@ -219,7 +219,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 			List<PepperModulePropertyMarshallable<?>> properties = 
 					(config.getProperties() != null && config.getProperties().getProperties() != null && !config.getProperties().getProperties().isEmpty())?
 							config.getProperties().getProperties() :
-								availableModules.get(config.getName()).getProperties();
+								(availableModules.containsKey(config.getName())? availableModules.get(config.getName()).getProperties() : Collections.<PepperModulePropertyMarshallable<?>>emptyList());
 			for (PepperModulePropertyMarshallable<?> p : properties){
 				addPropertyItem(p);
 			}
