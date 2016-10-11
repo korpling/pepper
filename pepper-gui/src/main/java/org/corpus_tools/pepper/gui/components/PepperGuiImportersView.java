@@ -68,5 +68,10 @@ public class PepperGuiImportersView extends PepperGuiView{
 	@Override
 	public ListSelect getModuleSelector() {
 		return importersList;
+	}
+
+	@Override
+	public boolean isInit() {
+		return isInit;
 	}	
 }

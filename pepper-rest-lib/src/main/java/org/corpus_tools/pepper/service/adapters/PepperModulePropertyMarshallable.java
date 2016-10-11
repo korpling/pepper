@@ -9,7 +9,7 @@ import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
 
 @XmlRootElement
 @XmlSeeAlso({String.class})
-public class PepperModulePropertyMarshallable<PT> implements PepperMarshallable<PepperModuleProperty<PT>>{
+public class PepperModulePropertyMarshallable<PT extends Object> implements PepperMarshallable<PepperModuleProperty<PT>>{
 		
 	public PepperModulePropertyMarshallable(){		
 	}

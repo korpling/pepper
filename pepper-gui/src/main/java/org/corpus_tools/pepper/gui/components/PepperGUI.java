@@ -190,4 +190,9 @@ public class PepperGUI extends VerticalLayout implements PepperGUIComponentDicti
 			return index+1;
 		}
 	}
+
+	@Override
+	public boolean isInit() {
+		return main.isInit();
+	}
 }

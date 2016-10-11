@@ -58,4 +58,9 @@ public class PepperGuiManipulatorsView extends PepperGuiView {
 	public ListSelect getModuleSelector() {
 		return manipulatorsList;
 	}
+
+	@Override
+	public boolean isInit() {
+		return isInit;
+	}
 }

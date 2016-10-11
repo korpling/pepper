@@ -93,4 +93,9 @@ public class PepperGuiMain extends Panel implements View{
 		exporters.setAvailableModules(modules);
 		manipulators.setAvailableModules(modules);
 	}
+
+	@Override
+	public boolean isInit() {
+		return ((View)getContent()).isInit();
+	}
 }

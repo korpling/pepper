@@ -171,4 +171,9 @@ public class PepperGuiResultsView extends PepperGuiView implements ProgressDispl
 			PepperGuiResultsView.this.BUTTON_PROGRESS_CAPTION_MAKE_INVISIBLE :
 			PepperGuiResultsView.this.BUTTON_PROGRESS_CAPTION_MAKE_VISIBLE);
 	}
+
+	@Override
+	public boolean isInit() {
+		return isInit;
+	}
 }

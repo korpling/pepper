@@ -1,13 +1,12 @@
 package org.corpus_tools.pepper.service.adapters;
 
-import java.util.Properties;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.corpus_tools.pepper.common.MODULE_TYPE;
 import org.corpus_tools.pepper.common.StepDesc;
+import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.service.interfaces.PepperMarshallable;
 
 /**
@@ -28,7 +27,7 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 		this.moduleType = desc.getModuleType();
 		this.name = desc.getName();
 		this.version = desc.getVersion();
-		this.properties = desc.getProps();
+		this.properties = new PepperModulePropertiesMarshallable(desc.getProps());
 		this.setCorpusDesc(new CorpusDescMarshallable(desc.getCorpusDesc()));
 	}
 	
@@ -36,7 +35,9 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 	/**
 	 * Constructor for unmarshalling.
 	 */
-	public StepDescMarshallable() {	}
+	public StepDescMarshallable() {
+		this.properties = new PepperModulePropertiesMarshallable();		
+	}
 
 	@Override
 	public StepDesc getPepperObject() {
@@ -46,7 +47,7 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 		}		
 		stepDesc.setModuleType(this.moduleType);
 		stepDesc.setName(this.name);
-		stepDesc.setProps(getProperties());
+		stepDesc.setProps(getProperties().getPepperObject().getProperties()); //TODO check if that's correct
 		stepDesc.setVersion(this.version);
 		return stepDesc;
 	}
@@ -95,14 +96,10 @@ public class StepDescMarshallable implements PepperMarshallable<StepDesc>{
 		this.version = version;
 	}
 	
-	private Properties properties;
+	private PepperModulePropertiesMarshallable properties;
 	
 	@XmlElement
-	public Properties getProperties(){
+	public PepperModulePropertiesMarshallable getProperties(){
 		return this.properties;
-	}
-	
-	public void setProperties(Properties properties){
-		this.properties = properties;
 	}
 }

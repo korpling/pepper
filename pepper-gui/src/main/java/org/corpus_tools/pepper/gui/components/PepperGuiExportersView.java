@@ -66,4 +66,9 @@ public class PepperGuiExportersView extends PepperGuiView {
 		return exportersList;
 	}
 
+	@Override
+	public boolean isInit() {
+		return isInit;
+	}
+
 }

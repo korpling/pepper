@@ -20,4 +20,5 @@ public interface View {
 	public void setConfig(int id);
 	public StepDescMarshallable getConfig();	
 	public MODULE_TYPE getModuleType();
+	public boolean isInit();
 }

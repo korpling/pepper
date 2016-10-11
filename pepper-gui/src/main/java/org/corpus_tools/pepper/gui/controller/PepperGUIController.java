@@ -202,15 +202,15 @@ public class PepperGUIController extends UI implements PepperGUIComponentDiction
 
 	@Override
 	public void layoutClick(LayoutClickEvent event) {		
-		Component c = event.getClickedComponent();
-		String id = c.getId();		
-		if (event.isDoubleClick() && ID_PATH_SELECT.equals(id)){			
-			String newRoot = String.valueOf(((ListSelect)c).getValue());
-			modifyPathSelectDialogue(newRoot, true);			
-		}
-		else if (c instanceof View){
-			((View)c).update();
-		}
+//		Component c = event.getClickedComponent();
+//		String id = c.getId();		
+//		if (event.isDoubleClick() && ID_PATH_SELECT.equals(id)){			
+//			String newRoot = String.valueOf(((ListSelect)c).getValue());
+//			modifyPathSelectDialogue(newRoot, true);			
+//		}
+//		else if (c instanceof View){
+//			((View)c).update();
+//		}
 	}
 	
 	@Override
