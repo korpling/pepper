@@ -117,61 +117,64 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 				if (moduleSelector != null){
 					moduleSelector.addValueChangeListener(new ValueChangeListener() {					
 						@Override
-						public void valueChange(ValueChangeEvent event) {							
-							StepDescMarshallable config = PepperGuiView.this.getConfig();
-							if (config == null){
-								config = new StepDescMarshallable();
-							}
-							if (config.getCorpusDesc() == null){
-								config.setCorpusDesc(new CorpusDescMarshallable());
-							}
-							config.setName(event.getProperty().getValue().toString());							
-							/*setup properties table*/
-							Table propTable = PepperGuiView.this.getPropertiesTable();
-							String module = event.getProperty().getValue().toString();
-							logger.info("MODULE SELECTED: "+module);
-							if (module != lastSelectedModule){
-								config.getProperties().getProperties().clear();
-								lastSelectedModule = module;
-								PepperModuleDescMarshallable mdesc = availableModules.get(module);
-								config.setName(module);
-								Item item = null;
-								AbstractField valueSetter = null;
-								for (PepperModulePropertyMarshallable<?> p : mdesc.getProperties()){
-									config.getProperties().getProperties().add(p);
-									item = propTable.addItem(p.getName());
-									item.getItemProperty(TABLE_PROP_PROPERTY).setValue(p.getName());
-									if (p.getType().isAssignableFrom(Boolean.class)){
-										valueSetter = new ComboBox();
-										((ComboBox)valueSetter).addItems("True", "False");
-									} else {
-										valueSetter = new TextField();										
-									}
-									if (p.getRequired()){
-										valueSetter.setValue(p.getValue());
-									}
-									item.getItemProperty(TABLE_PROP_VALUE).setValue(valueSetter);
-									item.getItemProperty(TABLE_PROP_HELP).setValue(new HelpButton(p.getDescription()));								
-									final String pname = p.getName();
-									valueSetter.addValueChangeListener(new ValueChangeListener() {										
-										@Override
-										public void valueChange(ValueChangeEvent event) {
-											StepDescMarshallable config = PepperGuiView.this.getConfig();
-											Iterator<PepperModulePropertyMarshallable<?>> itp = config.getProperties().getProperties().iterator();
-											PepperModulePropertyMarshallable<?> nxt = itp.next();
-											while (pname != nxt.getName()){
-												nxt = itp.next();
-											}
-											if (nxt.getType().isAssignableFrom(Boolean.class)){
-												((PepperModulePropertyMarshallable<Boolean>)nxt).setValue(Boolean.valueOf((String)event.getProperty().getValue()));
-											}
-											else if (nxt.getType().isAssignableFrom(String.class)){
-												((PepperModulePropertyMarshallable<String>)nxt).setValue((String)event.getProperty().getValue());
-											}
-										}
-									});
+						public void valueChange(ValueChangeEvent event) {	
+							Object val = event.getProperty().getValue();
+							if (val != null){
+								StepDescMarshallable config = PepperGuiView.this.getConfig();
+								if (config == null){
+									config = new StepDescMarshallable();
 								}
-							}
+								if (config.getCorpusDesc() == null){
+									config.setCorpusDesc(new CorpusDescMarshallable());
+								}
+								config.setName(event.getProperty().getValue().toString());							
+								/*setup properties table*/
+								Table propTable = PepperGuiView.this.getPropertiesTable();
+								String module = val.toString();
+								logger.info("MODULE SELECTED: "+module);
+								if (module != lastSelectedModule){
+									config.getProperties().getProperties().clear();
+									lastSelectedModule = module;
+									PepperModuleDescMarshallable mdesc = availableModules.get(module);
+									config.setName(module);
+									Item item = null;
+									AbstractField valueSetter = null;
+									for (PepperModulePropertyMarshallable<?> p : mdesc.getProperties()){
+										config.getProperties().getProperties().add(p);
+										item = propTable.addItem(p.getName());
+										item.getItemProperty(TABLE_PROP_PROPERTY).setValue(p.getName());
+										if (p.getType().isAssignableFrom(Boolean.class)){
+											valueSetter = new ComboBox();
+											((ComboBox)valueSetter).addItems("True", "False");
+										} else {
+											valueSetter = new TextField();										
+										}
+										if (p.getRequired()){
+											valueSetter.setValue(p.getValue());
+										}
+										item.getItemProperty(TABLE_PROP_VALUE).setValue(valueSetter);
+										item.getItemProperty(TABLE_PROP_HELP).setValue(new HelpButton(p.getDescription()));								
+										final String pname = p.getName();
+										valueSetter.addValueChangeListener(new ValueChangeListener() {										
+											@Override
+											public void valueChange(ValueChangeEvent event) {
+												StepDescMarshallable config = PepperGuiView.this.getConfig();
+												Iterator<PepperModulePropertyMarshallable<?>> itp = config.getProperties().getProperties().iterator();
+												PepperModulePropertyMarshallable<?> nxt = itp.next();
+												while (pname != nxt.getName()){
+													nxt = itp.next();
+												}
+												if (nxt.getType().isAssignableFrom(Boolean.class)){
+													((PepperModulePropertyMarshallable<Boolean>)nxt).setValue(Boolean.valueOf((String)event.getProperty().getValue()));
+												}
+												else if (nxt.getType().isAssignableFrom(String.class)){
+													((PepperModulePropertyMarshallable<String>)nxt).setValue((String)event.getProperty().getValue());
+												}
+											}
+										});
+									}
+								}
+							}							
 						}
 					});
 				}
@@ -253,7 +256,6 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		stepDesc.setModuleType(type);
 		setConfig(stepDesc);
 		clearFields();
-		update();
 	}
 	
 	@Override
@@ -267,81 +269,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 	 */
 	@Override
 	public void update() {
-//		TextField pathField = getPathField();
-//		boolean isManipulator = MODULE_TYPE.MANIPULATOR.equals(getModuleType());
-//		boolean up = getConfig()!=null 
-//				 && ((pathField!=null
-//				 && getConfig().getCorpusDesc() != null 
-//				 && getConfig().getCorpusDesc().getCorpusPathURI()!=null) || isManipulator);  
-//		if (up){	
-//			if (isManipulator || (new File(getConfig().getCorpusDesc().getCorpusPathURI().toString())).exists()){
-//				display(true, getDetailsComponent());
-//			}
-//			if (!isManipulator){
-//				pathField.removeTextChangeListener((PepperGUIController)getUI());
-//				pathField.setValue(getConfig().getCorpusDesc().getCorpusPathURI().toString());
-//				pathField.addTextChangeListener((PepperGUIController)getUI());
-//			}
-//			Object val = getModuleSelector().getValue();
-//			if (val != null && !val.toString().trim().isEmpty()){
-//				Table propTable = getPropertiesTable();
-//				propTable.removeAllItems();
-//				PepperModuleDescMarshallable selectedModule = availableModules.get(val.toString());
-//				List<Item> items = module2ItemsMap.get(selectedModule);
-//				if (!selectedModule.getName().equals(lastSelectedModule)){
-//					if (!selectedModule.getSupportedFormats().isEmpty()) {
-//						config.getCorpusDesc().setFormatDesc(selectedModule.getSupportedFormats().get(0)); //FIXME
-//					}
-//					config.setName(selectedModule.getName());
-//					if (items != null){
-//						String propertyName = null;
-//						for (Item item : items){							
-//							Item itm = propTable.addItem(item.getItemProperty(TABLE_PROP_PROPERTY).getValue());
-//							propertyName = (String) itm.getItemProperty(TABLE_PROP_PROPERTY).getValue();
-//							itm.getItemProperty(TABLE_PROP_PROPERTY).setValue(item.getItemProperty("Property").getValue());
-//							itm.getItemProperty(TABLE_PROP_VALUE).setValue(item.getItemProperty("Value").getValue());							
-//							itm.getItemProperty(TABLE_PROP_HELP).setValue(item.getItemProperty("Help").getValue());
-//							Object value = modifiedProperties.get(propertyName).get(currentIndex);
-//							if (value != null){
-//								AbstractField valueField = ((AbstractField)itm.getItemProperty(TABLE_PROP_VALUE).getValue());
-//								valueField.setValue(value);
-//							}
-//						}
-//					} else {
-//						items = new ArrayList<Item>();
-//						for (PepperModulePropertyMarshallable<?> pmp : selectedModule.getProperties()){					
-//							Item item = propTable.addItem(pmp.getName());
-//							item.getItemProperty(TABLE_PROP_PROPERTY).setValue(pmp.getName());									
-//							final boolean isBooleanValued = Boolean.class.isAssignableFrom((pmp.getType()));							
-//							AbstractField c = isBooleanValued? new ComboBox() : new TextField();						
-//							if (isBooleanValued){
-//								((ComboBox)c).addItems("True", "False");
-//							}
-//							if (pmp.getRequired()){
-//								c.setValue(pmp.getValue());
-//							}
-//							c.setImmediate(true);
-//							/*HELP BUTTON*/
-//							Button help = new Button(FontAwesome.QUESTION);
-//							final PepperModulePropertyMarshallable<?> mp = pmp;
-//							help.addClickListener(new ClickListener() {							
-//								@Override
-//								public void buttonClick(ClickEvent event) {
-//									//TODO replace by helper window
-//									//TODO introduce style interface or enum with heights etc
-//									Notification.show(mp.getDescription().replaceAll("(.{100})", "$1"+System.lineSeparator()));
-//								}
-//							});						
-//							item.getItemProperty(TABLE_PROP_VALUE).setValue(c);
-//							item.getItemProperty(TABLE_PROP_HELP).setValue(help);
-//							items.add(item);
-//						}
-//						module2ItemsMap.put(selectedModule.getName(), items);
-//					}
-//					lastSelectedModule = selectedModule.getName();
-//				}
-//			}
-//		}
+		// TODO remove
 	}
 	
 	@Override
