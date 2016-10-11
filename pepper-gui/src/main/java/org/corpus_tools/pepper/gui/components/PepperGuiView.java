@@ -165,7 +165,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 													nxt = itp.next();
 												}
 												if (nxt.getType().isAssignableFrom(Boolean.class)){
-													((PepperModulePropertyMarshallable<Boolean>)nxt).setValue(Boolean.valueOf((String)event.getProperty().getValue()));
+													((PepperModulePropertyMarshallable<Boolean>)nxt).setValue((Boolean)event.getProperty().getValue());
 												}
 												else if (nxt.getType().isAssignableFrom(String.class)){
 													((PepperModulePropertyMarshallable<String>)nxt).setValue((String)event.getProperty().getValue());
