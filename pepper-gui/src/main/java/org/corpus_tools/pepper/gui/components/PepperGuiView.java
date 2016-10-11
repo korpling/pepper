@@ -79,7 +79,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 					@Override
 					public void textChange(TextChangeEvent event) {
 						String path = event.getText();
-						if (new File(path).exists()){
+						if ((new File(path)).exists() || !MODULE_TYPE.IMPORTER.equals(getModuleType())){
 							StepDescMarshallable config = PepperGuiView.this.getConfig();
 							if (config==null){
 								StepDescMarshallable newConfig = new StepDescMarshallable();
@@ -133,10 +133,10 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 								String module = val.toString();
 								logger.info("MODULE SELECTED: "+module);
 								if (module != lastSelectedModule){
-									config.getProperties().getProperties().clear();
-									lastSelectedModule = module;
-									PepperModuleDescMarshallable mdesc = availableModules.get(module);
 									config.setName(module);
+									lastSelectedModule = module;
+									config.getProperties().getProperties().clear();
+									PepperModuleDescMarshallable mdesc = availableModules.get(module);
 									Item item = null;
 									AbstractField valueSetter = null;
 									for (PepperModulePropertyMarshallable<?> p : mdesc.getProperties()){
@@ -145,7 +145,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 										item.getItemProperty(TABLE_PROP_PROPERTY).setValue(p.getName());
 										if (p.getType().isAssignableFrom(Boolean.class)){
 											valueSetter = new ComboBox();
-											((ComboBox)valueSetter).addItems("True", "False");
+											((ComboBox)valueSetter).addItems(Boolean.TRUE, Boolean.FALSE);
 										} else {
 											valueSetter = new TextField();										
 										}
@@ -208,21 +208,50 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 					configurations.add(config);
 				}
 			}
-		}		
-	}
-	
-	@Override
-	public final void setConfig(int id){
-		currentIndex = id;
-		setConfig(configurations.get(id));
+		}
 		if (getPathField() != null){
 			getPathField().setValue(config.getCorpusDesc().getCorpusPathURI());
 		}
 		if (getModuleSelector() != null){
 			getModuleSelector().setValue(config.getName());
 		}
-		//TODO table stuff
-		
+		if (getPropertiesTable() != null){
+			List<PepperModulePropertyMarshallable<?>> properties = 
+					(config.getProperties() != null && config.getProperties().getProperties() != null && !config.getProperties().getProperties().isEmpty())?
+							config.getProperties().getProperties() :
+								availableModules.get(config.getName()).getProperties();
+			for (PepperModulePropertyMarshallable<?> p : properties){
+				addPropertyItem(p);
+			}
+		}
+	}
+	
+	/*
+	 * TODO make dynamic	
+	 */
+	private void addPropertyItem(PepperModulePropertyMarshallable<?> property){
+		Table t = getPropertiesTable();
+		if (t != null){
+			Item itm = t.addItem(property.getName());
+			itm.getItemProperty(TABLE_PROP_PROPERTY).setValue(property.getName());
+			AbstractField valueSetter = null;
+			if (property.getType().isAssignableFrom(Boolean.class)){
+				valueSetter = new ComboBox();
+				((ComboBox)valueSetter).addItems(Boolean.TRUE, Boolean.FALSE);
+			}
+			else if (property.getType().isAssignableFrom(String.class)){
+				valueSetter = new TextField();
+			}
+			if (property.getRequired()){
+				valueSetter.setValue(property.getValue());
+			}
+		}
+	}	
+	
+	@Override
+	public final void setConfig(int id){
+		currentIndex = id;
+		setConfig(configurations.get(id));
 	}
 
 	@Override
