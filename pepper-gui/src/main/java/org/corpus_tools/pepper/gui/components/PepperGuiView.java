@@ -67,6 +67,15 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		configurations = new ArrayList<StepDescMarshallable>();	
 		module2ItemsMap = new HashMap<String, List<Item>>();
 		modifiedProperties = new HashMap<>();
+		{
+			mdfProps = new HashMap<>();				
+			Table propTable = getPropertiesTable();
+			if (propTable != null){
+				propTable.addContainerProperty(TABLE_PROP_PROPERTY, String.class, "");
+				propTable.addContainerProperty(TABLE_PROP_VALUE, AbstractComponent.class, "");
+				propTable.addContainerProperty(TABLE_PROP_HELP, Button.class, null);
+			}
+		}
 	}
 	
 	@Override
@@ -169,15 +178,6 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 				}
 				
 			}
-			{
-				mdfProps = new HashMap<>();				
-				Table propTable = getPropertiesTable();
-				if (propTable != null){
-					propTable.addContainerProperty(TABLE_PROP_PROPERTY, String.class, "");
-					propTable.addContainerProperty(TABLE_PROP_VALUE, AbstractComponent.class, "");
-					propTable.addContainerProperty(TABLE_PROP_HELP, Button.class, null);
-				}
-			}
 		}
 	}
 	
@@ -233,6 +233,8 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		Table t = getPropertiesTable();
 		if (t != null){
 			Item itm = t.addItem(property.getName());
+			logger.info("new item: "+property.getName());
+			logger.info("table: " + t.getContainerPropertyIds());
 			itm.getItemProperty(TABLE_PROP_PROPERTY).setValue(property.getName());
 			AbstractField valueSetter = null;
 			if (property.getType().isAssignableFrom(Boolean.class)){
