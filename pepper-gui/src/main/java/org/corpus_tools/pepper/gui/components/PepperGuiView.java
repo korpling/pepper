@@ -158,18 +158,7 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 										valueSetter.addValueChangeListener(new ValueChangeListener() {										
 											@Override
 											public void valueChange(ValueChangeEvent event) {
-												StepDescMarshallable config = PepperGuiView.this.getConfig();
-												Iterator<PepperModulePropertyMarshallable<?>> itp = config.getProperties().getProperties().iterator();
-												PepperModulePropertyMarshallable<?> nxt = itp.next();
-												while (pname != nxt.getName()){
-													nxt = itp.next();
-												}
-												if (nxt.getType().isAssignableFrom(Boolean.class)){
-													((PepperModulePropertyMarshallable<Boolean>)nxt).setValue((Boolean)event.getProperty().getValue());
-												}
-												else if (nxt.getType().isAssignableFrom(String.class)){
-													((PepperModulePropertyMarshallable<String>)nxt).setValue((String)event.getProperty().getValue());
-												}
+												PepperGuiView.this.fillPropertiesTable();
 											}
 										});
 									}
@@ -214,7 +203,14 @@ public abstract class PepperGuiView extends VerticalLayout implements View, Conf
 		}
 		if (getModuleSelector() != null){
 			getModuleSelector().setValue(config.getName());
-		}
+		}		
+		fillPropertiesTable();
+	}
+	
+	/*
+	 * TODO make dynamic	
+	 */
+	private void fillPropertiesTable(){
 		boolean probsAvailable = config.getProperties() != null && config.getProperties().getProperties() != null && !config.getProperties().getProperties().isEmpty();
 		if (getPropertiesTable() != null){
 			List<PepperModulePropertyMarshallable<?>> properties = 
