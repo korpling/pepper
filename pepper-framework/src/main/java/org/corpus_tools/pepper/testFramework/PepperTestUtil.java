@@ -188,13 +188,8 @@ public class PepperTestUtil {
 		start(createDefaultPepper(), fixtures);
 	}
 
-	/**
-	 * {@inheritDoc #start(Collection)}
-	 * 
-	 * @param pepper
-	 *            a pepper instance to be used
-	 */
-	public static void start(final Pepper pepper, final Collection<? extends PepperModule> fixtures) {
+	public static PepperJob prepareFixturesAndCreateJob(final Pepper pepper,
+			final Collection<? extends PepperModule> fixtures) {
 		if (fixtures == null) {
 			throw new PepperModuleTestException(
 					"Cannot start Pepper modules, because the list of fixtures is not set.");
@@ -208,15 +203,15 @@ public class PepperTestUtil {
 		 * and exporters
 		 */
 		SaltProject saltProject = null;
-		int i = 1;
+		boolean hasOnlyOneFixture = true;
 		for (PepperModule fixture : fixtures) {
-			if (i == 1) {
+			if (hasOnlyOneFixture) {
 				saltProject = fixture.getSaltProject();
 			} else if (saltProject != fixture.getSaltProject()) {
 				throw new PepperModuleTestException(
 						"Cannot run test because the SaltProject objects are not equal for all Pepper modules. ");
 			}
-			i++;
+			hasOnlyOneFixture = false;
 
 			// if module does not have a resource, set a default one
 			if (fixture.getResources() == null) {
@@ -249,7 +244,7 @@ public class PepperTestUtil {
 		createStepForFixtures(fixtures, job);
 
 		/** Create and add alibi steps **/
-		if ((importers.size() == 0) || (importers.size() != saltProject.getCorpusGraphs().size())) {
+		if ((importers.isEmpty()) || (importers.size() != saltProject.getCorpusGraphs().size())) {
 			for (SCorpusGraph cGraph : saltProject.getCorpusGraphs()) {
 				boolean isAssociated = false;
 				for (PepperModule fixture : fixtures) {
@@ -264,14 +259,22 @@ public class PepperTestUtil {
 				}
 			}
 		}
-		if (exporters.size() == 0) {
+		if (exporters.isEmpty()) {
 			Step alibiStep = createAlibiStep(false);
 			((PepperJobImpl) job).addStep(alibiStep);
 		}
+		return job;
+	}
 
-		// start the conversion
+	/**
+	 * {@inheritDoc #start(Collection)}
+	 * 
+	 * @param pepper
+	 *            a pepper instance to be used
+	 */
+	public static void start(final Pepper pepper, final Collection<? extends PepperModule> fixtures) {
+		final PepperJob job = prepareFixturesAndCreateJob(pepper, fixtures);
 		job.convert();
-
 		for (DocumentController controller : ((PepperJobImpl) job).getDocumentControllers()) {
 			controller.awake();
 		}
