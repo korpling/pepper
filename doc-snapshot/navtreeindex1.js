@@ -77,10 +77,13 @@ var NAVTREEINDEX1 =
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_controller_impl.html#af7436c2f227cdf59262239ebe3b51ded":[3,0,0,0,0,3,3,19],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_controller_impl.html#afe2a887d4ea096c05a40058d2e6276f5":[3,0,0,0,0,3,3,10],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html":[3,0,0,0,0,3,4],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a529bfe9fd0be56cef6df688fe4f3aca7":[3,0,0,0,0,3,4,1],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a8985296620140e7c15877091187e4b21":[3,0,0,0,0,3,4,4],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#ac636f3b7ad0cc7e8c51a38179a41ea48":[3,0,0,0,0,3,4,3],
-"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#ac726e42d62edffcca2df87b3fe39b43d":[3,0,0,0,0,3,4,2],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a4ad239b0888e6ad63053f9ab98369892":[3,0,0,0,0,3,4,5],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a529bfe9fd0be56cef6df688fe4f3aca7":[3,0,0,0,0,3,4,2],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a8985296620140e7c15877091187e4b21":[3,0,0,0,0,3,4,7],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#ab107598ba714e9266b322262ce5e2c95":[3,0,0,0,0,3,4,1],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#ac636f3b7ad0cc7e8c51a38179a41ea48":[3,0,0,0,0,3,4,6],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#ac726e42d62edffcca2df87b3fe39b43d":[3,0,0,0,0,3,4,3],
+"classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#adb9d113d087f616d2e84e8f1b5016fb6":[3,0,0,0,0,3,4,4],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#af9d296f17098d3bde5ad0ff387dfe8b8":[3,0,0,0,0,3,4,0],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver_impl.html":[3,0,0,0,0,3,6],
 "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver_impl.html#a01b5950d109554ad8d151264bfa7d7a3":[3,0,0,0,0,3,6,10],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_not_initialized_exception.html":[3,0,0,0,0,4,2],
 "classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_not_initialized_exception.html#a2895b8cb581db9d4ebf000ed5c73ac79":[3,0,0,0,0,4,2,1],
 "classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_not_initialized_exception.html#a68ab8fc7b4d84e58ca7dbb071662335a":[3,0,0,0,0,4,2,2],
-"classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_not_initialized_exception.html#aa08f416a76d011699041ea82de6cebe4":[3,0,0,0,0,4,2,0],
-"classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_pepper_configuration_exception.html":[3,0,0,0,0,4,3],
-"classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_pepper_configuration_exception.html#aecffa14654ae8b8c887bf75cd9d92022":[3,0,0,0,0,4,3,1],
-"classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_pepper_configuration_exception.html#af67254cf07acd6a888aaf180d8153a55":[3,0,0,0,0,4,3,0]
+"classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_not_initialized_exception.html#aa08f416a76d011699041ea82de6cebe4":[3,0,0,0,0,4,2,0]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"functions_func_o.html":[3,2,1,13],
+"functions_func_p.html":[3,2,1,14],
+"functions_func_r.html":[3,2,1,15],
 "functions_func_s.html":[3,2,1,16],
 "functions_func_t.html":[3,2,1,17],
 "functions_func_u.html":[3,2,1,18],
@@ -226,7 +229,7 @@ var NAVTREEINDEX4 =
 "pages.html":[],
 "testing.html":[1,11],
 "tutorial.html":[1,0],
-"useEclipse.html":[1,1],
 "useEclipse.html":[1,13,0],
+"useEclipse.html":[1,1],
 "users.html":[2]
 };

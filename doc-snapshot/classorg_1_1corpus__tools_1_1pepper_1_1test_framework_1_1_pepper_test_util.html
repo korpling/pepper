@@ -135,6 +135,8 @@ static <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1
 <tr class="memitem:ae4da40dc4b9666af45c8f2fa8cfa057e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#ae4da40dc4b9666af45c8f2fa8cfa057e">start</a> (final Collection&lt; <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a> &gt; fixtures)</td></tr>
 <tr class="memdesc:ae4da40dc4b9666af45c8f2fa8cfa057e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This methods starts the processing of Pepper in the development environment for a set of Pepper modules.  <a href="#ae4da40dc4b9666af45c8f2fa8cfa057e">More...</a><br /></td></tr>
 <tr class="separator:ae4da40dc4b9666af45c8f2fa8cfa057e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af658cfe14f1247d817685bc42bdacb65"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html">PepperJob</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#af658cfe14f1247d817685bc42bdacb65">prepareFixturesAndCreateJob</a> (final <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html">Pepper</a> pepper, final Collection&lt;?extends <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a> &gt; fixtures)</td></tr>
+<tr class="separator:af658cfe14f1247d817685bc42bdacb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d92a9b09979cd53b6c3cfc22c248837"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html#a4d92a9b09979cd53b6c3cfc22c248837">start</a> (final <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html">Pepper</a> pepper, final Collection&lt;?extends <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a> &gt; fixtures)</td></tr>
 <tr class="memdesc:a4d92a9b09979cd53b6c3cfc22c248837"><td class="mdescLeft">&#160;</td><td class="mdescRight">{ #start(Collection)}  <a href="#a4d92a9b09979cd53b6c3cfc22c248837">More...</a><br /></td></tr>
 <tr class="separator:a4d92a9b09979cd53b6c3cfc22c248837"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,6 +240,42 @@ static String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 
 </div>
 </div>
+<a class="anchor" id="af658cfe14f1247d817685bc42bdacb65"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html">PepperJob</a> org.corpus_tools.pepper.testFramework.PepperTestUtil.prepareFixturesAndCreateJob </td>
+          <td>(</td>
+          <td class="paramtype">final <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper.html">Pepper</a>&#160;</td>
+          <td class="paramname"><em>pepper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">final Collection&lt;?extends <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a> &gt;&#160;</td>
+          <td class="paramname"><em>fixtures</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>set the salt project for all modules, if it is already set, check that it is equal in all modules. Extract all importers, manipulators and exporters</p>
+<p>Create and add alibi steps </p>
+
+</div>
+</div>
 <a class="anchor" id="ae4da40dc4b9666af45c8f2fa8cfa057e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -322,8 +360,6 @@ getFixture().importCorpusStructure(importedCorpusGraph);
   </table>
   </dd>
 </dl>
-<p>set the salt project for all modules, if it is already set, check that it is equal in all modules. Extract all importers, manipulators and exporters</p>
-<p>Create and add alibi steps </p>
 
 </div>
 </div>
@@ -333,7 +369,7 @@ getFixture().importCorpusStructure(importedCorpusGraph);
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1test_framework.html">testFramework</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html">PepperTestUtil</a></li>
-    <li class="footer">Generated on Thu Oct 6 2016 16:31:53 for Pepper by
+    <li class="footer">Generated on Wed Oct 12 2016 10:57:52 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
