@@ -19,6 +19,7 @@ package org.corpus_tools.pepper.testFramework;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.corpus_tools.pepper.common.CorpusDesc;
@@ -184,8 +185,16 @@ public class PepperTestUtil {
 	 * @param fixtures
 	 *            the fixture modules
 	 */
-	public static void start(final Collection<PepperModule> fixtures) {
+	public static void start(final Collection<? extends PepperModule> fixtures) {
 		start(createDefaultPepper(), fixtures);
+	}
+
+	/**
+	 * @see #start(Collection)
+	 */
+	@SafeVarargs
+	public static <T extends PepperModule> void runPepperForTest(T... fixtures) {
+		start(createDefaultPepper(), Arrays.asList(fixtures));
 	}
 
 	public static PepperJob prepareFixturesAndCreateJob(final Pepper pepper,
@@ -267,7 +276,7 @@ public class PepperTestUtil {
 	}
 
 	/**
-	 * {@inheritDoc #start(Collection)}
+	 * @see #start(Collection)
 	 * 
 	 * @param pepper
 	 *            a pepper instance to be used
