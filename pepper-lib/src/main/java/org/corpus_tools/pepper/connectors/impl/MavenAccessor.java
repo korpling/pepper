@@ -512,7 +512,10 @@ public class MavenAccessor {
 				/* remove older version */
 				if (installedBundle != null) {
 					try {
-						if (!pepperOSGiConnector.remove(installedBundle.getSymbolicName())) {
+						if (pepperOSGiConnector.remove(installedBundle.getSymbolicName())) {
+							logger.info("Successfully removed version ".concat(installedBundle.getVersion().toString())
+									.concat(" of ").concat(artifactId));
+						} else {
 							logger.warn("Could not remove older version. Update process aborted.");
 							return false;
 						}
@@ -599,11 +602,7 @@ public class MavenAccessor {
 						if (i != 0) {// the module itself must not be put on the
 										// blacklist
 							putOnBlacklist(installArtifact);
-						} else if (installedBundle != null) {
-							pepperOSGiConnector.remove(installedBundle.getSymbolicName());
-							logger.info("Successfully removed version ".concat(installedBundle.getVersion().toString())
-									.concat(" of ").concat(artifactId));
-						}
+						} 
 						if (bundle != null) {
 							bundle.start();
 						}
