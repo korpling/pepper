@@ -172,7 +172,13 @@ public class PepperStarter {
 				"Tests if the Pepper framework is in runnable mode or if any problems are detected, either in Pepper itself or in any registered Pepper module."),
 		//
 		FITNESS("fitness", "f", null,
-				"Checks the fitness of each registered Pepper module. The fitness check also checks features, that are necessary to run a module and features which should be implemented."),
+				"Checks the fitness of each registered Pepper module. "
+					+ "The fitness check tests features of a module that are "
+					+ "necessary to run a module and features which should be "
+					+ "implemented. Modules having the status \"HEALTHY\" should "
+					+ "be possible to run, having the status \"FIT\" means they "
+					+ "also passed the more rigid tests. Modules that have a "
+					+ "\"CRITICAL\" health status are very likely to cause problems."),
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
