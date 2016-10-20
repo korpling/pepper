@@ -90,4 +90,7 @@
 	<pepperModules>
 		<artifactId>pepperModules-GrAFModules</artifactId>
 	</pepperModules>
+    <pepperModules>
+		<artifactId>pepperModules-WebannoTSVModules</artifactId>
+	</pepperModules>
 </pepperModulesList>
