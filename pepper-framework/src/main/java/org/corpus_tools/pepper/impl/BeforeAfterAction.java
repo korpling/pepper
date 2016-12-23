@@ -52,6 +52,8 @@ import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+
 /**
  * <p>
  * This class is a helper class to perform actions before or after a mapping was
@@ -205,9 +207,9 @@ public class BeforeAfterAction {
 		retStr.append(prefix);
 		retStr.append(((isTail ? "└── " : "├── ") + node.getName()));
 		retStr.append("\n");
-		List<SRelation<SNode, SNode>> outRelations = corpusGraph.getOutRelations(node.getId());
+		List<SRelation<? extends SNode, ? extends SNode>> outRelations = corpusGraph.getOutRelations(node.getId());
 		int i = 0;
-		for (Relation out : outRelations) {
+		for (Relation<? extends SNode, ? extends SNode> out : outRelations) {
 			if (i < outRelations.size() - 1) {
 				retStr.append(prefix);
 				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(),
@@ -422,35 +424,37 @@ public class BeforeAfterAction {
 	 * Adds the passed layer to all nodes and objects in the passed
 	 * {@link SDocument}.
 	 * 
-	 * @param sDoc
-	 * @param layers
+	 * @param document
+	 * @param layerNames
 	 */
-	public void addSLayers(SDocument sDoc, String layers) {
-		if ((layers != null) && (!layers.isEmpty())) {
-			String[] layerArray = layers.split(";");
-			if (layerArray.length > 0) {
-				for (String layer : layerArray) {
-					layer = layer.trim();
-					// create SLayer and add to document-structure
-					List<SLayer> sLayers = sDoc.getDocumentGraph().getLayerByName(layer);
-					SLayer sLayer = null;
-					if ((sLayers != null) && (sLayers.size() > 0)) {
-						sLayer = sLayers.get(0);
-					}
-					if (sLayer == null) {
-						sLayer = SaltFactory.createSLayer();
-						sLayer.setName(layer);
-						sDoc.getDocumentGraph().addLayer(sLayer);
-					}
-					// add all nodes to new layer
-					for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
-						sNode.addLayer(sLayer);
-					}
-					// add all relations to new layer
-					for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
-						sRel.addLayer(sLayer);
-					}
-				}
+	public void addSLayers(SDocument document, String layerNames) {
+		if (Strings.isNullOrEmpty(layerNames)) {
+			return;
+		}
+		String[] layerArray = layerNames.split(";");
+		if (layerArray.length == 0) {
+			return;
+		}
+		for (String layerName : layerArray) {
+			layerName = layerName.trim();
+			// create SLayer and add to document-structure
+			List<SLayer> layers = document.getDocumentGraph().getLayerByName(layerName);
+			SLayer layer = null;
+			if ((layers != null) && (layers.size() > 0)) {
+				layer = layers.get(0);
+			}
+			if (layer == null) {
+				layer = SaltFactory.createSLayer();
+				layer.setName(layerName);
+				document.getDocumentGraph().addLayer(layer);
+			}
+			// add all nodes to new layer
+			for (SNode node : document.getDocumentGraph().getNodes()) {
+				layer.addNode(node);
+			}
+			// add all relations to new layer
+			for (SRelation<? extends SNode, ? extends SNode> rel : document.getDocumentGraph().getRelations()) {
+				layer.addRelation(rel);
 			}
 		}
 	}
@@ -563,14 +567,10 @@ public class BeforeAfterAction {
 				SDocument document = (SDocument) id.getIdentifiableElement();
 
 				// rename all annotations of nodes
-				Iterator<SAnnotationContainer> it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document
-						.getDocumentGraph().getNodes().iterator();
-				rename(it, renamingMap);
+				rename(document.getDocumentGraph().getNodes().iterator(), renamingMap);
 
 				// rename all annotations of relations
-				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document
-						.getDocumentGraph().getRelations().iterator();
-				rename(it, renamingMap);
+				rename(document.getDocumentGraph().getRelations().iterator(), renamingMap);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 				logger.warn("Cannot rename labels in object '{}', because of a nested exeption '{}'. ", id,
@@ -579,7 +579,7 @@ public class BeforeAfterAction {
 		}
 	}
 
-	private void rename(Iterator<SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
+	private void rename(Iterator<? extends SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
 		while (it.hasNext()) {
 			SAnnotationContainer node = it.next();
 			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {
