@@ -61,13 +61,13 @@ public class DOTExporter extends PepperExporterImpl {
 			@Override
 			public DOCUMENT_STATUS mapSDocument() {
 				// workaround to deal with a bug in salt
-				SCorpusGraph sCorpusGraph = getDocument().getGraph();
+				SCorpusGraph corpusGraph = getDocument().getGraph();
 
 				SaltUtil.save_DOT(getDocument(), getResourceURI());
 
 				// workaround to deal with a bug in salt
 				if (getDocument().getGraph() == null) {
-					getDocument().setGraph(sCorpusGraph);
+					corpusGraph.addNode(getDocument());
 				}
 
 				addProgress(1.0);
