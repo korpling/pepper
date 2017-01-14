@@ -216,7 +216,7 @@ public abstract class PepperUtil {
 				return (null);
 			}
 			char[] chrs = theString.toCharArray();
-			HashSet<Character> separators = new HashSet<Character>();
+			HashSet<Character> separators = new HashSet<>();
 			separators.add(' ');
 			separators.add('.');
 			separators.add(',');
@@ -595,18 +595,21 @@ public abstract class PepperUtil {
 	 *            location of the xml-file
 	 */
 	public static void readXMLResource(DefaultHandler2 contentHandler, URI documentLocation) {
-		if (documentLocation == null)
+		if (documentLocation == null) {
 			throw new PepperModuleXMLResourceException(
 					"Cannot load a xml-resource, because the given uri to locate file is null.");
+		}
 
 		File resourceFile = new File(documentLocation.toFileString());
-		if (!resourceFile.exists())
+		if (!resourceFile.exists()) {
 			throw new PepperModuleXMLResourceException(
 					"Cannot load a xml-resource, because the file does not exist: " + resourceFile);
+		}
 
-		if (!resourceFile.canRead())
+		if (!resourceFile.canRead()) {
 			throw new PepperModuleXMLResourceException(
 					"Cannot load a xml-resource, because the file can not be read: " + resourceFile);
+		}
 
 		SAXParser parser;
 		XMLReader xmlReader;
@@ -616,6 +619,7 @@ public abstract class PepperUtil {
 		try {
 			parser = factory.newSAXParser();
 			xmlReader = parser.getXMLReader();
+			xmlReader.setErrorHandler(contentHandler);
 			xmlReader.setContentHandler(contentHandler);
 		} catch (ParserConfigurationException e) {
 			throw new PepperModuleXMLResourceException(
@@ -634,6 +638,7 @@ public abstract class PepperUtil {
 			try {
 				parser = factory.newSAXParser();
 				xmlReader = parser.getXMLReader();
+				xmlReader.setErrorHandler(contentHandler);
 				xmlReader.setContentHandler(contentHandler);
 				xmlReader.parse(resourceFile.getAbsolutePath());
 			} catch (Exception e1) {
