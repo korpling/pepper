@@ -630,6 +630,7 @@ public abstract class PepperUtil {
 		}
 		try {
 			InputStream inputStream = new FileInputStream(resourceFile);
+			System.err.println("Oh, really?");
 			Reader reader = new InputStreamReader(inputStream, "UTF-8");
 			InputSource is = new InputSource(reader);
 			is.setEncoding("UTF-8");
