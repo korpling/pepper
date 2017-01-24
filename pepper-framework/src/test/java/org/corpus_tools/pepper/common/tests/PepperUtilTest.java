@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.corpus_tools.pepper.common.PepperUtil;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.ext.DefaultHandler2;
 
 /**
  * This class is a test class to tes {@link PepperUtil}.
@@ -183,5 +185,10 @@ public class PepperUtilTest {
 	@Test
 	public void whenListIsNotNullOrEmpty_isNotNullOrEmptyShouldReturnTrue() {
 		assertThat(PepperUtil.isNotNullOrEmpty(Arrays.asList("Bla"))).isTrue();
+	}
+	
+	@Test
+	public void whenReadingXMLResourceWithBOM_BOMShouldBeDropped() {
+		PepperUtil.readXMLResource(new DefaultHandler2(), URI.createFileURI(this.getClass().getResource("/resources/bom.xml").getPath()));
 	}
 }
