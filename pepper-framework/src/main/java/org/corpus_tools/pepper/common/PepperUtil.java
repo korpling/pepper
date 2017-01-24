@@ -33,6 +33,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleXMLResourceException;
@@ -41,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 
@@ -630,11 +633,15 @@ public abstract class PepperUtil {
 		}
 		try {
 			InputStream inputStream = new FileInputStream(resourceFile);
-			Reader reader = new InputStreamReader(inputStream, "UTF-8");
+			BOMInputStream bomInputStream = new BOMInputStream(inputStream, ByteOrderMark.UTF_8, ByteOrderMark.UTF_16BE, ByteOrderMark.UTF_16LE, ByteOrderMark.UTF_32BE, ByteOrderMark.UTF_32LE);
+			Reader reader = new InputStreamReader(bomInputStream, "UTF-8");
 			InputSource is = new InputSource(reader);
 			is.setEncoding("UTF-8");
 			xmlReader.parse(is);
 		} catch (SAXException e) {
+			if (e instanceof SAXParseException) {
+				throw new PepperModuleXMLResourceException("Error parsing the file '" + resourceFile.getAbsolutePath() + "'!", e.getCause());
+			}
 			try {
 				parser = factory.newSAXParser();
 				xmlReader = parser.getXMLReader();
