@@ -110,7 +110,7 @@
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
 		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
 		<commons.io.version>2.4</commons.io.version>
-		<guava.version>18.0</guava.version>
+		<guava.version>19.0</guava.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
 		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
