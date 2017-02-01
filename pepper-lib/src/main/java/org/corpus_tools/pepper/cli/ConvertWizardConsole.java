@@ -437,11 +437,12 @@ public class ConvertWizardConsole {
 				// choose properties
 
 				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
+					
+					pepperJob.addStepDesc(stepDesc);
+					
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
-				} else {
-					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
@@ -528,12 +529,13 @@ public class ConvertWizardConsole {
 				}
 			} else if (state == 2) {
 				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
+					
+					pepperJob.addStepDesc(stepDesc);
+					
 					state = 1;
 					prompt = promptOld;
 					out.println(legend);
 					out.println(MSG_MAN);
-				} else {
-					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end while
@@ -657,11 +659,12 @@ public class ConvertWizardConsole {
 				// choose properties
 
 				if (!readProp(number2PropName, input, stepDesc, pepperJob)) {
+					
+					pepperJob.addStepDesc(stepDesc);
+					
 					state = 0;
 					prompt = promptOld;
 					out.println(MSG_IMPORT_CORPUS);
-				} else {
-					pepperJob.addStepDesc(stepDesc);
 				}
 			}
 		} // end: while
