@@ -396,8 +396,9 @@ public class ModuleFitnessChecker {
 			boolean val;
 			try {
 				val = condition();
-			} catch (RuntimeException e) {
+			} catch (Throwable e) {
 				val = false;
+				logger.warn("Cannot check fitness feature '" + feature + "', because a nested excpetion occured. ", e);
 			}
 			fitness.setFeature(feature, val);
 		}
