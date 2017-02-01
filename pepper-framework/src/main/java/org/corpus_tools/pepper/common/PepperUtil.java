@@ -633,14 +633,16 @@ public abstract class PepperUtil {
 		}
 		try {
 			InputStream inputStream = new FileInputStream(resourceFile);
-			BOMInputStream bomInputStream = new BOMInputStream(inputStream, ByteOrderMark.UTF_8, ByteOrderMark.UTF_16BE, ByteOrderMark.UTF_16LE, ByteOrderMark.UTF_32BE, ByteOrderMark.UTF_32LE);
+			BOMInputStream bomInputStream = new BOMInputStream(inputStream, ByteOrderMark.UTF_8, ByteOrderMark.UTF_16BE,
+					ByteOrderMark.UTF_16LE, ByteOrderMark.UTF_32BE, ByteOrderMark.UTF_32LE);
 			Reader reader = new InputStreamReader(bomInputStream, "UTF-8");
 			InputSource is = new InputSource(reader);
 			is.setEncoding("UTF-8");
 			xmlReader.parse(is);
 		} catch (SAXException e) {
 			if (e instanceof SAXParseException) {
-				throw new PepperModuleXMLResourceException("Error parsing the file '" + resourceFile.getAbsolutePath() + "'!", e.getCause());
+				throw new PepperModuleXMLResourceException(
+						"Error parsing the file '" + resourceFile.getAbsolutePath() + "'!", e.getCause());
 			}
 			try {
 				parser = factory.newSAXParser();

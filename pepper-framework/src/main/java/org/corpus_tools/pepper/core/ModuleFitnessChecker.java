@@ -270,14 +270,7 @@ public class ModuleFitnessChecker {
 
 		boolean hasPassed = false;
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
-
-		final List<String> problems = new ArrayList<>();
-		if (!selfTestDesc.isValid(problems)) {
-			if (PepperUtil.isNotNullOrEmpty(problems)) {
-				for (String problem : problems) {
-					logger.warn(warn(pepperModule, problem));
-				}
-			}
+		if (selfTestIsNotValid(selfTestDesc, pepperModule)) {
 			return moduleFitness;
 		}
 
@@ -324,6 +317,19 @@ public class ModuleFitnessChecker {
 		return moduleFitness;
 	}
 
+	private boolean selfTestIsNotValid(final SelfTestDesc selfTestDesc, final PepperModule pepperModule) {
+		final List<String> problems = new ArrayList<>();
+		if (!selfTestDesc.isValid(problems)) {
+			if (PepperUtil.isNotNullOrEmpty(problems)) {
+				for (String problem : problems) {
+					logger.warn(warn(pepperModule, problem));
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Creating a uri from file with appending of further fragments can cause
 	 * invalid uris. For instance
@@ -363,8 +369,8 @@ public class ModuleFitnessChecker {
 
 	private static boolean whenModuleIsExpoterThenCallSelftestDescCompare(PepperModule pepperModule,
 			SelfTestDesc selfTestDesc) {
+		final PepperExporter exporter = (PepperExporter) pepperModule;
 		try {
-			final PepperExporter exporter = (PepperExporter) pepperModule;
 			return selfTestDesc.compare(exporter.getCorpusDesc().getCorpusPath(), selfTestDesc.getExpectedCorpusPath());
 		} catch (RuntimeException e) {
 			logger.warn(warn(pepperModule,

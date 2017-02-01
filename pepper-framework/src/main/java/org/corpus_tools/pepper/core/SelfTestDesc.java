@@ -59,8 +59,8 @@ import com.google.common.base.Strings;
  */
 public class SelfTestDesc {
 	private static final Logger logger = LoggerFactory.getLogger("Pepper");
-	private URI inputCorpusPath = null;
-	private URI expectedCorpusPath = null;
+	private final URI inputCorpusPath;
+	private final URI expectedCorpusPath;
 
 	/**
 	 * Creates an object with input corpus path and expected path.
@@ -337,5 +337,26 @@ public class SelfTestDesc {
 	@Override
 	public String toString() {
 		return "SelfTestDesc [inputCorpusPath=" + inputCorpusPath + ", expectedCorpusPath=" + expectedCorpusPath + "]";
+	}
+
+	public static class Builder {
+		private URI inputCorpusPath;
+		private URI expectedCorpusPath;
+
+		public Builder withInputCorpusPath(URI inputCorpusPath) {
+			this.inputCorpusPath = inputCorpusPath;
+			return this;
+		}
+
+		public Builder withExpectedCorpusPath(URI expectedCorpusPath) {
+			this.expectedCorpusPath = expectedCorpusPath;
+			return this;
+		}
+
+		public SelfTestDesc build() {
+			final SelfTestDesc selfTestDesc = new SelfTestDesc(inputCorpusPath, expectedCorpusPath);
+			return selfTestDesc;
+		}
+
 	}
 }
