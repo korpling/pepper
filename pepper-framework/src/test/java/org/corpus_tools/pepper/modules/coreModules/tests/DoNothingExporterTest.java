@@ -17,27 +17,16 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.corpus_tools.pepper.common.FormatDesc;
-import org.corpus_tools.pepper.common.ModuleFitness;
-import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
-import org.corpus_tools.pepper.core.ModuleFitnessChecker;
-import org.corpus_tools.pepper.modules.coreModules.DOTExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
-import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RunWith(JUnit4.class)
 public class DoNothingExporterTest extends PepperExporterTest {
-	private static final Logger logger = LoggerFactory.getLogger(DOTExporter.class);
 
 	@Before
 	public void setUp() throws Exception {
@@ -48,12 +37,5 @@ public class DoNothingExporterTest extends PepperExporterTest {
 		formatDef.setFormatName(DoNothingExporter.FORMAT_NAME);
 		formatDef.setFormatVersion(DoNothingExporter.FORMAT_VERSION);
 		this.supportedFormatsCheck.add(formatDef);
-	}
-
-	@Test
-	public void whenSelfTestingModule_thenResultShouldBeTrue() {
-		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
-		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
 	}
 }
