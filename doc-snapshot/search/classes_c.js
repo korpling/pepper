@@ -36,6 +36,7 @@ var searchData=
   ['peppermodulepropertyexception',['PepperModulePropertyException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_property_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],
   ['peppermoduletest',['PepperModuleTest',['../classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test.html',1,'org::corpus_tools::pepper::testFramework']]],
   ['peppermoduletestexception',['PepperModuleTestException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_test_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],
+  ['peppermoduletesthelper',['PepperModuleTestHelper',['../classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test_helper.html',1,'org::corpus_tools::pepper::testFramework']]],
   ['peppermodulexmlresourceexception',['PepperModuleXMLResourceException',['../classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_x_m_l_resource_exception.html',1,'org::corpus_tools::pepper::modules::exceptions']]],
   ['pepperosgiconnector',['PepperOSGiConnector',['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html',1,'org::corpus_tools::pepper::connectors::impl']]],
   ['pepperosgiexception',['PepperOSGiException',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions_1_1_pepper_o_s_gi_exception.html',1,'org::corpus_tools::pepper::cli::exceptions']]],

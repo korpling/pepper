@@ -86,10 +86,12 @@ var hierarchy =
         [ "org.corpus_tools.pepper.modules.coreModules.DoNothingManipulator", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_do_nothing_manipulator.html", null ]
       ] ]
     ] ],
-    [ "org.corpus_tools.pepper.testFramework.PepperModuleTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test.html", [
-      [ "org.corpus_tools.pepper.testFramework.PepperExporterTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_exporter_test.html", null ],
-      [ "org.corpus_tools.pepper.testFramework.PepperImporterTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_importer_test.html", null ],
-      [ "org.corpus_tools.pepper.testFramework.PepperManipulatorTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_manipulator_test.html", null ]
+    [ "org.corpus_tools.pepper.testFramework.PepperModuleTestHelper", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test_helper.html", [
+      [ "org.corpus_tools.pepper.testFramework.PepperModuleTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_module_test.html", [
+        [ "org.corpus_tools.pepper.testFramework.PepperExporterTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_exporter_test.html", null ],
+        [ "org.corpus_tools.pepper.testFramework.PepperImporterTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_importer_test.html", null ],
+        [ "org.corpus_tools.pepper.testFramework.PepperManipulatorTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_manipulator_test.html", null ]
+      ] ]
     ] ],
     [ "org.corpus_tools.pepper.cli.PepperStarter", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter.html", null ],
     [ "org.corpus_tools.pepper.testFramework.PepperTestUtil", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_test_util.html", null ],
