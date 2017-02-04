@@ -8,6 +8,7 @@ var searchData=
   ['exceptions',['exceptions',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions.html',1,'org::corpus_tools::pepper::cli']]],
   ['exceptions',['exceptions',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions.html',1,'org::corpus_tools::pepper::modules']]],
   ['exceptions',['exceptions',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1exceptions.html',1,'org::corpus_tools::pepper']]],
+  ['helpers',['helpers',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers.html',1,'org::corpus_tools::pepper::testFramework']]],
   ['impl',['impl',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1impl.html',1,'org::corpus_tools::pepper']]],
   ['impl',['impl',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl.html',1,'org::corpus_tools::pepper::connectors']]],
   ['modules',['modules',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1modules.html',1,'org::corpus_tools::pepper']]],

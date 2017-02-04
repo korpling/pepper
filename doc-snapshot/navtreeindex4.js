@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"functions_func_j.html":[3,2,1,9],
 "functions_func_l.html":[3,2,1,10],
 "functions_func_m.html":[3,2,1,11],
 "functions_func_n.html":[3,2,1,12],
@@ -229,6 +228,7 @@ var NAVTREEINDEX4 =
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules.html":[3,0,0,0,0,6,0],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions.html":[3,0,0,0,0,6,1],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1test_framework.html":[3,0,0,0,0,7],
+"namespaceorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers.html":[3,0,0,0,0,7,0],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1util.html":[3,0,0,0,0,8],
 "pages.html":[],
 "testing.html":[1,11],

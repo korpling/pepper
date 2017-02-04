@@ -6,6 +6,6 @@ var searchData=
   ['sources_5fresources',['SOURCES_RESOURCES',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a87a55a67b9c5187cec1d923b6560ba38',1,'org::corpus_tools::pepper::common::PepperConfiguration']]],
   ['status',['status',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a7995bdef9d959e4e72f9ae16d2a99e89',1,'org::corpus_tools::pepper::common::PepperJob']]],
   ['stepdescs',['stepDescs',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a23a7cfa4a9aff0762c9317749da0a0d4',1,'org::corpus_tools::pepper::common::PepperJob']]],
-  ['supportedformatscheck',['supportedFormatsCheck',['../classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_exporter_test.html#a372f15d1a23a2cde417e9f35b780f081',1,'org.corpus_tools.pepper.testFramework.PepperExporterTest.supportedFormatsCheck()'],['../classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_importer_test.html#ad29170f0ca7ea23fd4b9b7f46129d279',1,'org.corpus_tools.pepper.testFramework.PepperImporterTest.supportedFormatsCheck()']]],
+  ['supportedformatscheck',['supportedFormatsCheck',['../classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_im_exporter_test.html#af7eee1f11fe38085299032f90c04407e',1,'org::corpus_tools::pepper::testFramework::helpers::PepperImExporterTest']]],
   ['symbolicname',['symbolicName',['../classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#ae1c597fb4412848a9367b6fcb08ed37a',1,'org::corpus_tools::pepper::impl::PepperModuleImpl']]]
 ];
