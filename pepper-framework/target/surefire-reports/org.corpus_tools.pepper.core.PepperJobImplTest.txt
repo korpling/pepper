@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.corpus_tools.pepper.core.PepperJobImplTest
+-------------------------------------------------------------------------------
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.261 sec - in org.corpus_tools.pepper.core.PepperJobImplTest
