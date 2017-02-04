@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework;
+package org.corpus_tools.pepper.testFramework.helpers;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,7 @@ import org.corpus_tools.pepper.core.ModuleControllerImpl;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.pepper.util.FileComparator;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;

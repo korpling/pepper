@@ -166,13 +166,15 @@ public class FormatDesc {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (formatName: ");
+		StringBuffer result = new StringBuffer();
+		result.append('(');
 		result.append(formatName);
-		result.append(", formatVersion: ");
+		result.append(", ");
 		result.append(formatVersion);
-		result.append(", formatReference: ");
-		result.append(formatReference);
+		if (formatReference != null) {
+			result.append(", ");
+			result.append(formatReference);
+		}
 		result.append(')');
 		return result.toString();
 	}

@@ -41,11 +41,7 @@ public class TextImporterTest extends PepperImporterTest {
 	@Before
 	public void setUp() throws Exception {
 		setFixture(new TextImporter());
-		// set formats to support
-		FormatDesc formatDef = new FormatDesc();
-		formatDef.setFormatName(TextImporter.FORMAT_NAME);
-		formatDef.setFormatVersion(TextImporter.FORMAT_VERSION);
-		this.supportedFormatsCheck.add(formatDef);
+		addFormatWhichShouldBeSupported(TextImporter.FORMAT_NAME, TextImporter.FORMAT_VERSION);
 	}
 
 	private File testPath = getTempPath("textImporterTest");

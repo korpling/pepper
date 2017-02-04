@@ -41,6 +41,7 @@ import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleTestException;
+import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;

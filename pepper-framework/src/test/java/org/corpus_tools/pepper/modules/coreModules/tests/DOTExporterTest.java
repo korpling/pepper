@@ -17,7 +17,6 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
-import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.modules.coreModules.DOTExporter;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
 import org.corpus_tools.salt.SaltFactory;
@@ -31,10 +30,6 @@ public class DOTExporterTest extends PepperExporterTest {
 	public void setUp() throws Exception {
 		super.setFixture(new DOTExporter());
 		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
-		// set formats to support
-		FormatDesc formatDef = new FormatDesc();
-		formatDef.setFormatName(DOTExporter.FORMAT_NAME);
-		formatDef.setFormatVersion(DOTExporter.FORMAT_VERSION);
-		this.supportedFormatsCheck.add(formatDef);
+		addFormatWhichShouldBeSupported(DOTExporter.FORMAT_NAME, DOTExporter.FORMAT_VERSION);
 	}
 }

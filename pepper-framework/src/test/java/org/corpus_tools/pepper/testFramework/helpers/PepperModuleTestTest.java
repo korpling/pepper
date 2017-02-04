@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework;
+package org.corpus_tools.pepper.testFramework.helpers;
 
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;

@@ -70,7 +70,7 @@ import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.testFramework.PepperModuleTest;
+import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;

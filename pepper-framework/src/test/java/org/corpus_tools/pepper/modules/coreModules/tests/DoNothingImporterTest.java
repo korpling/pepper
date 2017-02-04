@@ -17,7 +17,7 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
-import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
 import org.junit.Before;
@@ -27,10 +27,6 @@ public class DoNothingImporterTest extends PepperImporterTest {
 	@Before
 	public void setUp() throws Exception {
 		setFixture(new DoNothingImporter());
-		// set formats to support
-		FormatDesc formatDef = new FormatDesc();
-		formatDef.setFormatName(DoNothingImporter.FORMAT_NAME);
-		formatDef.setFormatVersion(DoNothingImporter.FORMAT_VERSION);
-		this.supportedFormatsCheck.add(formatDef);
+		addFormatWhichShouldBeSupported(DoNothingExporter.FORMAT_NAME, DoNothingExporter.FORMAT_VERSION);
 	}
 }

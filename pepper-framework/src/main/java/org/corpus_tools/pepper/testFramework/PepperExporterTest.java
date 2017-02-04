@@ -17,21 +17,11 @@
  */
 package org.corpus_tools.pepper.testFramework;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.List;
-import java.util.Vector;
-
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.modules.PepperExporter;
+import org.corpus_tools.pepper.testFramework.helpers.PepperImExporterTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SaltProject;
-import org.junit.Test;
 
 /**
  * <p>
@@ -81,63 +71,9 @@ import org.junit.Test;
  * @author florian
  *
  */
-public abstract class PepperExporterTest extends PepperModuleTest {
-	/**
-	 * A list of formats, which shall be supported
-	 */
-	protected List<FormatDesc> supportedFormatsCheck = null;
-
-	/**
-	 * Adds a format description to the list of formats which are supported by
-	 * the module to be tested.
-	 */
-	public void addSupportedFormat(FormatDesc formatDesc) {
-		if (formatDesc == null) {
-			fail("Cannot add an empty format description.");
-		}
-		if (supportedFormatsCheck == null) {
-			fail("The internal list supportedFormatsCheck is null.");
-		}
-		supportedFormatsCheck.add(formatDesc);
-	}
-
-	protected void setFixture(PepperExporter fixture) {
-		super.setFixture(fixture);
-		this.supportedFormatsCheck = new Vector<FormatDesc>();
-	}
-
+public abstract class PepperExporterTest extends PepperImExporterTest {
 	@Override
 	protected PepperExporter getFixture() {
 		return ((PepperExporter) super.getFixture());
-	}
-
-	@Test
-	public void testGetSupportedFormats() {
-		assertNotNull("There have to be some supported formats", getFixture().getSupportedFormats());
-		List<FormatDesc> formatDefs = getFixture().getSupportedFormats();
-		assertNotSame("Number of supported formats have to be more than 0", 0, formatDefs);
-		for (FormatDesc formatDef : formatDefs) {
-			assertNotNull("The name of supported formats has to be set.", formatDef.getFormatName());
-			assertFalse("The name of the supported formats can't be empty.", formatDef.getFormatName().equals(""));
-
-			assertNotNull("The version of supported formats has to be set.", formatDef.getFormatVersion());
-			assertFalse("The version of the supported formats can't be empty.",
-					formatDef.getFormatVersion().equals(""));
-		}
-		assertTrue("Cannot test the supported formats please set variable 'supportedFormatsCheck'.",
-				this.supportedFormatsCheck.size() > 0);
-		assertEquals(
-				"There is a different between the number formats which are supported by module, and the number of formats which shall be supported.",
-				this.supportedFormatsCheck.size(), getFixture().getSupportedFormats().size());
-		for (FormatDesc formatCheck : this.supportedFormatsCheck) {
-			Boolean hasOpponend = false;
-			for (FormatDesc formatDef : getFixture().getSupportedFormats()) {
-				if ((formatDef.getFormatName().equalsIgnoreCase(formatCheck.getFormatName()))
-						&& (formatDef.getFormatVersion().equalsIgnoreCase(formatCheck.getFormatVersion())))
-					hasOpponend = true;
-			}
-			assertTrue("The format '" + formatCheck.getFormatName() + " " + formatCheck.getFormatVersion()
-					+ "' has to be supported, but does not exist in list of suppoted formats.", hasOpponend);
-		}
 	}
 }

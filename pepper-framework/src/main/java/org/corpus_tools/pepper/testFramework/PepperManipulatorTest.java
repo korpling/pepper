@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.testFramework;
 
 import org.corpus_tools.pepper.modules.PepperManipulator;
+import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SaltProject;
 

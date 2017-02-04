@@ -17,7 +17,6 @@
  */
 package org.corpus_tools.pepper.modules.coreModules.tests;
 
-import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.modules.coreModules.SaltXMLExporter;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
 import org.junit.Before;
@@ -26,10 +25,6 @@ public class SaltXMLExporterTest extends PepperExporterTest {
 	@Before
 	public void setUp() throws Exception {
 		setFixture(new SaltXMLExporter());
-		// set formats to support
-		FormatDesc formatDef = new FormatDesc();
-		formatDef.setFormatName(SaltXMLExporter.FORMAT_NAME);
-		formatDef.setFormatVersion(SaltXMLExporter.FORMAT_VERSION);
-		this.supportedFormatsCheck.add(formatDef);
+		addFormatWhichShouldBeSupported(SaltXMLExporter.FORMAT_NAME, SaltXMLExporter.FORMAT_VERSION);
 	}
 }
