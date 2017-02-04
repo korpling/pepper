@@ -178,19 +178,19 @@ public abstract class PepperModuleTestHelper {
 	 *            URI with path
 	 */
 	public void setResourcesURI(URI resourceURI) {
-		if (resourceURI != null) {
-			File resourceDir = new File(resourceURI.toFileString());
-			if (!resourceDir.exists()) {
-				if (!resourceDir.mkdirs()) {
-					logger.warn("Cannot create folder {}. ", resourceDir);
-				}
-			}
-			this.resourceURI = resourceURI;
-			if (getFixture() != null) {
-				getFixture().setResources(resourceURI);
-			}
-		} else
+		if (resourceURI == null) {
 			throw new PepperTestException("A resource uri must be set.");
+		}
+		File resourceDir = new File(resourceURI.toFileString());
+		if (!resourceDir.exists()) {
+			if (!resourceDir.mkdirs()) {
+				logger.warn("Cannot create folder {}. ", resourceDir);
+			}
+		}
+		this.resourceURI = resourceURI;
+		if (getFixture() != null) {
+			getFixture().setResources(resourceURI);
+		}
 	}
 
 	/**
