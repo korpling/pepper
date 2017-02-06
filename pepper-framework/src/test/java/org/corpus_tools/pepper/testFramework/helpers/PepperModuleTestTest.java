@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.testFramework.helpers;
 
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -31,6 +32,11 @@ public class PepperModuleTestTest {
 	@Before
 	public void beforeEach() {
 		fixture = new PepperModuleTest() {
+			@Override
+			protected void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness) {
+				// do nothing
+
+			}
 		};
 	}
 

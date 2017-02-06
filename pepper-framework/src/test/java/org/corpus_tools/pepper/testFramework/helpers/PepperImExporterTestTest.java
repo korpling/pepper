@@ -17,9 +17,9 @@
  */
 package org.corpus_tools.pepper.testFramework.helpers;
 
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
-import org.corpus_tools.pepper.testFramework.helpers.PepperImExporterTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +29,11 @@ public class PepperImExporterTestTest {
 	@Before
 	public void beforeEach() {
 		fixture = new PepperImExporterTest() {
+			@Override
+			protected void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness) {
+				// do nothing
+
+			}
 		};
 	}
 

@@ -18,16 +18,17 @@
 package org.corpus_tools.pepper.testFramework.helpers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
+import java.util.Set;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
-import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.core.ModuleFitnessChecker;
-import org.corpus_tools.pepper.modules.PepperImporter;
-import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.util.Difference;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.junit.Test;
 
@@ -51,6 +52,7 @@ public abstract class PepperModuleTest extends PepperModuleTestHelper {
 
 	@Test
 	public void checkThatCorpusGraphIsSettable() {
+		whenFixtureIsNullThenFail();
 		final SCorpusGraph corpGraph = SaltFactory.createSCorpusGraph();
 		getFixture().setCorpusGraph(corpGraph);
 
@@ -58,13 +60,22 @@ public abstract class PepperModuleTest extends PepperModuleTestHelper {
 				.isEqualTo(corpGraph);
 	}
 
+	private void whenFixtureIsNullThenFail() {
+		if (getFixture() == null) {
+			fail("Cannot run tests when no fixture is set. Please call setFixture(PepperModule) before running test. ");
+		}
+	}
+
 	@Test
 	public void checkThatModuleHasName() {
+		whenFixtureIsNullThenFail();
+
 		assertThat(getFixture().getName()).as("A module's name must not be empty. ").isNotEmpty();
 	}
 
 	@Test
 	public void checkThatResourcePathIsSet() {
+		whenFixtureIsNullThenFail();
 		getFixture().setResources(resourceURI);
 		final String msg = "Cannot run test, because resources arent set. Please call setResourcesURI(URI resourceURI) before start testing. ";
 
@@ -74,29 +85,30 @@ public abstract class PepperModuleTest extends PepperModuleTestHelper {
 
 	@Test
 	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest() {
+		whenFixtureIsNullThenFail();
 		if (getFixture().getSelfTestDesc() == null) {
 			// no self test given --> nothing to be tested
 			return;
 		}
-
 		// WHEN
-		final ModuleFitness fitness = new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
-
+		final ModuleFitness fitness = runSelfTest();
 		// THEN
-		assertThat(fitness.getFitness(FitnessFeature.HAS_SELFTEST)).isTrue();
-		if (fixture instanceof PepperImporter && fixture instanceof PepperManipulator) {
-			assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).as("" + SaltUtil
-					.compare(SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath())
-							.getCorpusGraphs().get(0))
-					.with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs()).isTrue();
-		} else {
-			assertThat(fitness.getFitness(FitnessFeature.HAS_PASSED_SELFTEST)).isTrue();
+		checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(fitness);
+	}
+
+	protected ModuleFitness runSelfTest() {
+		return new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
+	}
+
+	protected abstract void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness);
+
+	protected String diffsBetweenActualAndExpected() {
+		final Set<Difference> diffs = SaltUtil.compare(
+				SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath()).getCorpusGraphs().get(0))
+				.with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs();
+		if (!diffs.isEmpty()) {
+			return "There are differences between actual and expected Salt model: " + diffs;
 		}
-		if (fixture instanceof PepperImporter) {
-			assertThat(fitness.getFitness(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
-		}
-		if (fixture instanceof PepperImporter && fixture instanceof PepperManipulator) {
-			assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA)).isTrue();
-		}
+		return diffs.toString();
 	}
 }

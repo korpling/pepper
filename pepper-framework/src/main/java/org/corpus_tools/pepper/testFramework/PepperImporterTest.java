@@ -17,7 +17,14 @@
  */
 package org.corpus_tools.pepper.testFramework;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_PASSED_SELFTEST;
+import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_SELFTEST;
+import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA;
+import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.IS_VALID_SELFTEST_DATA;
+
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.testFramework.helpers.PepperImExporterTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -74,5 +81,13 @@ import org.corpus_tools.salt.common.SaltProject;
 public abstract class PepperImporterTest extends PepperImExporterTest {
 	protected PepperImporter getFixture() {
 		return ((PepperImporter) super.getFixture());
+	}
+
+	@Override
+	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(final ModuleFitness fitness) {
+		assertThat(fitness.getFitness(HAS_SELFTEST)).isTrue();
+		assertThat(fitness.getFitness(HAS_PASSED_SELFTEST)).as(diffsBetweenActualAndExpected()).isTrue();
+		assertThat(fitness.getFitness(IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
+		assertThat(fitness.getFitness(IS_VALID_SELFTEST_DATA)).isTrue();
 	}
 }

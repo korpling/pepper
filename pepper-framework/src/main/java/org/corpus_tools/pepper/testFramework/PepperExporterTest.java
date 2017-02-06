@@ -17,7 +17,12 @@
  */
 package org.corpus_tools.pepper.testFramework;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_PASSED_SELFTEST;
+import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_SELFTEST;
+
 import org.corpus_tools.pepper.common.FormatDesc;
+import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.testFramework.helpers.PepperImExporterTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -75,5 +80,11 @@ public abstract class PepperExporterTest extends PepperImExporterTest {
 	@Override
 	protected PepperExporter getFixture() {
 		return ((PepperExporter) super.getFixture());
+	}
+
+	@Override
+	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(final ModuleFitness fitness) {
+		assertThat(fitness.getFitness(HAS_SELFTEST)).isTrue();
+		assertThat(fitness.getFitness(HAS_PASSED_SELFTEST)).isTrue();
 	}
 }
