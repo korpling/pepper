@@ -17,7 +17,10 @@
  */
 package org.corpus_tools.pepper.core;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -345,7 +348,7 @@ public class ModuleControllerImpl implements ModuleController {
 	 * This list is used to control, if this {@link ModuleControllerImpl} object
 	 * and its {@link PepperModule} work correctly.
 	 **/
-	private HashSet<DocumentController> controllList = null;
+	private final Set<DocumentController> controllList = Collections.newSetFromMap(new ConcurrentHashMap<DocumentController, Boolean>());
 
 	/**
 	 * This set contains all {@link DocumentController} objects which have been
@@ -357,13 +360,8 @@ public class ModuleControllerImpl implements ModuleController {
 	 * 
 	 * @return set of document controllers in progress
 	 */
-	private HashSet<DocumentController> getControllList() {
-		if (controllList == null) {
-			synchronized (this) {
-				controllList = new HashSet<DocumentController>();
-			}
-		}
-		return (controllList);
+	private Set<DocumentController> getControllList() {
+		return controllList;
 	}
 
 	/** {@inheritDoc ModuleController#next(boolean)} */
