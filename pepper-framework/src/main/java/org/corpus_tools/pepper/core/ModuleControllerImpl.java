@@ -315,7 +315,7 @@ public class ModuleControllerImpl implements ModuleController {
 	 * A lock determining, whether this object currently is busy with importing
 	 * corpus structure or importing document structure.
 	 **/
-	protected ReentrantLock busyLock = null;
+	protected final ReentrantLock busyLock = new ReentrantLock();
 
 	/**
 	 * A lock determining, whether this object currently is busy with importing
@@ -324,12 +324,6 @@ public class ModuleControllerImpl implements ModuleController {
 	 * @return
 	 */
 	protected ReentrantLock getBusyLock() {
-		if (busyLock == null) {
-			synchronized (this) {
-				if (busyLock == null)
-					busyLock = new ReentrantLock();
-			}
-		}
 		return (busyLock);
 	}
 
