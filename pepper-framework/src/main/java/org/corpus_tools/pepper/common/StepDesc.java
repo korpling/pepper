@@ -19,6 +19,7 @@ package org.corpus_tools.pepper.common;
 
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -61,6 +62,8 @@ import org.eclipse.emf.common.util.URI;
  *
  */
 public class StepDesc {
+	
+	private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
 	/** Type of module to be used **/
 	private MODULE_TYPE moduleType = null;
@@ -72,7 +75,12 @@ public class StepDesc {
 	 * @return module type
 	 */
 	public MODULE_TYPE getModuleType() {
-		return moduleType;
+		lock.readLock().lock();
+		try {
+			return moduleType;
+		} finally {
+			lock.readLock().unlock();
+		}
 	}
 
 	/**
@@ -80,9 +88,16 @@ public class StepDesc {
 	 * to be used.
 	 * 
 	 * @param moduleType
+	 * @return 
 	 */
-	public synchronized StepDesc setModuleType(MODULE_TYPE moduleType) {
-		this.moduleType = moduleType;
+	public StepDesc setModuleType(MODULE_TYPE moduleType) {
+		lock.writeLock().lock();
+		try {
+			this.moduleType = moduleType;
+		}
+		finally {
+			lock.writeLock().unlock();
+		}
 		return (this);
 	}
 
@@ -100,7 +115,12 @@ public class StepDesc {
 	 * @return name of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
 	public String getName() {
-		return name;
+		lock.readLock().lock();
+		try {
+			return name;
+		} finally {
+			lock.readLock().unlock();
+		}
 	}
 
 	/**
@@ -109,9 +129,15 @@ public class StepDesc {
 	 * 
 	 * @param name
 	 *            of {@link org.corpus_tools.pepper.modules.PepperModule}
+	 * @return 
 	 */
-	public synchronized StepDesc setName(String name) {
-		this.name = name;
+	public StepDesc setName(String name) {
+		lock.writeLock().lock();
+		try {
+			this.name = name;
+		} finally {
+			lock.writeLock().unlock();
+		}
 		return (this);
 	}
 
@@ -129,7 +155,12 @@ public class StepDesc {
 	 * @return version of {@link org.corpus_tools.pepper.modules.PepperModule}
 	 */
 	public String getVersion() {
-		return version;
+		lock.readLock().lock();
+		try {
+			return version;
+		} finally {
+			lock.readLock().unlock();
+		}
 	}
 
 	/**
@@ -139,9 +170,15 @@ public class StepDesc {
 	 * 
 	 * @param version
 	 *            of {@link org.corpus_tools.pepper.modules.PepperModule}
+	 * @return 
 	 */
 	public synchronized StepDesc setVersion(String version) {
-		this.version = version;
+		lock.writeLock().lock();
+		try {
+			this.version = version;
+		} finally {
+			lock.writeLock().unlock();
+		}
 		return (this);
 	}
 
@@ -154,7 +191,7 @@ public class StepDesc {
 	 * <li>version of the format, the corpus is in or has to be exported in</li>
 	 * </ul>
 	 **/
-	private CorpusDesc corpusDesc = null;
+	private CorpusDesc corpusDesc = new CorpusDesc();
 
 	/**
 	 * Returns an object to describe all infos about the corpus to im- or
@@ -168,15 +205,13 @@ public class StepDesc {
 	 * 
 	 * @return
 	 */
-	public CorpusDesc getCorpusDesc() {
-		if (corpusDesc == null) {
-			synchronized (this) {
-				if (corpusDesc == null) {
-					corpusDesc = new CorpusDesc();
-				}
-			}
+	public  CorpusDesc getCorpusDesc() {
+		lock.readLock().lock();
+		try {
+			return corpusDesc;
+		} finally {
+			lock.readLock().unlock();
 		}
-		return corpusDesc;
 	}
 
 	/**
@@ -189,9 +224,15 @@ public class StepDesc {
 	 * </ul>
 	 * 
 	 * @param corpusDesc
+	 * @return 
 	 */
-	public synchronized StepDesc setCorpusDesc(CorpusDesc corpusDesc) {
-		this.corpusDesc = corpusDesc;
+	public StepDesc setCorpusDesc(CorpusDesc corpusDesc) {
+		lock.writeLock().lock();
+		try {
+			this.corpusDesc = corpusDesc;
+		} finally {
+			lock.writeLock().unlock();
+		}
 		return (this);
 	}
 
@@ -206,7 +247,12 @@ public class StepDesc {
 	 * @return
 	 */
 	public Properties getProps() {
-		return props;
+		lock.readLock().lock();
+		try {
+			return props;
+		} finally {
+			lock.readLock().unlock();
+		}
 	}
 
 	/**
@@ -218,14 +264,24 @@ public class StepDesc {
 	 * 
 	 * @param props
 	 *            properties to customize processing
+	 * @return 
 	 */
-	public synchronized StepDesc setProps(Properties props) {
-		this.props = props;
+	public StepDesc setProps(Properties props) {
+		lock.writeLock().lock();
+		try {
+			this.props = props;
+		} finally {
+			lock.writeLock().unlock();
+		}
 		return (this);
 	}
 
 	public void toXML(XMLStreamWriter writer) {
 		if (writer != null) {
+			// Lock this entire block to ensure consistency, since the 
+			// lock is reenterant the sub-locking in the getter-functions
+			// will not cause any problems.
+			lock.readLock().lock();
 			try {
 				writer.writeStartElement("step");
 				if (getModuleType() != null)
@@ -259,6 +315,8 @@ public class StepDesc {
 				writer.writeEndElement();
 			} catch (XMLStreamException e) {
 				throw new PepperFWException("Cannot marshall StepDesc.", e);
+			} finally {
+				lock.readLock().unlock();
 			}
 		}
 	}
@@ -267,27 +325,36 @@ public class StepDesc {
 	 * Returns a string representation of this object. <strong>Note: This
 	 * representation cannot be used for serialization/deserialization
 	 * purposes.</strong>
+	 * @return 
 	 */
 	@Override
 	public String toString() {
+		
 		StringBuilder str = new StringBuilder();
-		if (getModuleType() != null) {
-			str.append(getModuleType().toString());
-		} else
-			str.append("UNKNOWN_STEP");
-		str.append("(");
-		if (getName() != null) {
-			str.append((getName() != null) ? getName() : "");
-			str.append((getVersion() != null) ? ", " + getVersion() : "");
-		} else if (getCorpusDesc().getFormatDesc() != null) {
-			str.append("format: ");
-			str.append((getCorpusDesc().getFormatDesc().getFormatName() != null)
-					? getCorpusDesc().getFormatDesc().getFormatName() : "");
-			str.append(",");
-			str.append((getCorpusDesc().getFormatDesc().getFormatVersion() != null)
-					? getCorpusDesc().getFormatDesc().getFormatVersion() : "");
+		
+		lock.readLock().lock();
+		try {
+
+			if (getModuleType() != null) {
+				str.append(getModuleType().toString());
+			} else
+				str.append("UNKNOWN_STEP");
+			str.append("(");
+			if (getName() != null) {
+				str.append((getName() != null) ? getName() : "");
+				str.append((getVersion() != null) ? ", " + getVersion() : "");
+			} else if (getCorpusDesc().getFormatDesc() != null) {
+				str.append("format: ");
+				str.append((getCorpusDesc().getFormatDesc().getFormatName() != null)
+						? getCorpusDesc().getFormatDesc().getFormatName() : "");
+				str.append(",");
+				str.append((getCorpusDesc().getFormatDesc().getFormatVersion() != null)
+						? getCorpusDesc().getFormatDesc().getFormatVersion() : "");
+			}
+			str.append(")");
+		} finally {
+			lock.readLock().unlock();
 		}
-		str.append(")");
 		return (str.toString());
 	}
 }
