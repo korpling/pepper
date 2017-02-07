@@ -194,7 +194,7 @@ public class ModuleControllerImpl implements ModuleController {
 	 * Executor, to create and manage threads for import of corpus structure and
 	 * import of document structure
 	 **/
-	protected ExecutorService executor = null;
+	protected final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	/**
 	 * Returns an executor service for this object. Executor, to create and
@@ -204,13 +204,6 @@ public class ModuleControllerImpl implements ModuleController {
 	 * @return
 	 */
 	protected ExecutorService getExecutor() {
-		if (executor == null) {
-			synchronized (this) {
-				if (executor == null) {
-					executor = Executors.newSingleThreadExecutor();
-				}
-			}
-		}
 		return (executor);
 	}
 
