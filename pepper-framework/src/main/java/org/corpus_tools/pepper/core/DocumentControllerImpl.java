@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -317,7 +318,7 @@ public class DocumentControllerImpl implements DocumentController {
 	 * {@link ModuleControllerImpl} objects to be processed and details to their
 	 * statuses.
 	 **/
-	private volatile Map<String, DetailedStatus> detailedStatuses = null;
+	private final Map<String, DetailedStatus> detailedStatuses = new ConcurrentHashMap<>();
 
 	/**
 	 * A map relating all statuses of the {@link SDocument} contained in this
@@ -328,12 +329,6 @@ public class DocumentControllerImpl implements DocumentController {
 	 * @return map
 	 */
 	private Map<String, DetailedStatus> getDetailedStatuses() {
-		if (detailedStatuses == null) {
-			synchronized (this) {
-				if (detailedStatuses == null)
-					detailedStatuses = new Hashtable<String, DocumentControllerImpl.DetailedStatus>();
-			}
-		}
 		return (detailedStatuses);
 	}
 
