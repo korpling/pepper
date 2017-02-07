@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -528,7 +529,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * A map relating {@link Identifier} belonging to {@link SDocument} objects
 	 * to their {@link DocumentController} container.
 	 **/
-	private Map<String, DocumentController> documentId2DC = null;
+	private final Map<String, DocumentController> documentId2DC = new ConcurrentHashMap<>();
 
 	/**
 	 * Returns the map relating {@link Identifier} belonging to
@@ -537,13 +538,6 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 	 * @return map
 	 */
 	protected Map<String, DocumentController> getDocumentId2DC() {
-		if (documentId2DC == null) {
-			synchronized (this) {
-				if (documentId2DC == null) {
-					documentId2DC = new Hashtable<String, DocumentController>();
-				}
-			}
-		}
 		return (documentId2DC);
 	}
 
