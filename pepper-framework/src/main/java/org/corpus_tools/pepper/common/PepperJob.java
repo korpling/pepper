@@ -107,7 +107,7 @@ public abstract class PepperJob {
 	public abstract String getStatusReport();
 
 	/** list of all step descriptions **/
-	protected Vector<StepDesc> stepDescs = null;
+	protected final Vector<StepDesc> stepDescs = new Vector<>();
 
 	/**
 	 * Returns a list of all step descriptions. In order of how the
@@ -117,13 +117,6 @@ public abstract class PepperJob {
 	 * @return list of {@link StepDesc} objects
 	 */
 	public List<StepDesc> getStepDescs() {
-		if (stepDescs == null) {
-			synchronized (this) {
-				if (stepDescs == null) {
-					stepDescs = new Vector<StepDesc>();
-				}
-			}
-		}
 		return (stepDescs);
 	}
 
