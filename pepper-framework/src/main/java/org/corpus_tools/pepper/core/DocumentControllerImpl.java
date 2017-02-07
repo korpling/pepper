@@ -24,6 +24,7 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
@@ -280,37 +281,56 @@ public class DocumentControllerImpl implements DocumentController {
 	 *
 	 */
 	protected static class DetailedStatus {
+		
+		private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+		
 		public DetailedStatus() {
 		}
 
 		private DOCUMENT_STATUS status = DOCUMENT_STATUS.NOT_STARTED;
 
 		public DOCUMENT_STATUS getStatus() {
-			return status;
+			lock.readLock().lock();
+			try {
+				return status;
+			} finally {
+				lock.readLock().unlock();
+			}
 		}
 
-		public synchronized void setStatus(DOCUMENT_STATUS status) {
-			if (DOCUMENT_STATUS.IN_PROGRESS.equals(status)) {
-				startTime = System.nanoTime();
-			} else if ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status))
-					|| (DOCUMENT_STATUS.DELETED.equals(status))) {
-				processingTime = (System.nanoTime() - startTime) / 1000000;
+		public void setStatus(DOCUMENT_STATUS status) {
+			
+			lock.writeLock().lock();
+			try {
+				if (DOCUMENT_STATUS.IN_PROGRESS.equals(status)) {
+					startTime = System.nanoTime();
+				} else if ((DOCUMENT_STATUS.COMPLETED.equals(status)) || (DOCUMENT_STATUS.FAILED.equals(status))
+						|| (DOCUMENT_STATUS.DELETED.equals(status))) {
+					processingTime = (System.nanoTime() - startTime) / 1000000;
+				}
+				this.status = status;
+			} finally {
+				lock.writeLock().unlock();
 			}
-			this.status = status;
 		}
 
 		private Long startTime = null;
 		private Long processingTime = null;
 
 		public Long getProcessingTime() {
-			Long time = null;
-			if ((processingTime == null) && (startTime != null))
-				time = (System.nanoTime() - startTime) / 1000000;
-			else
-				return processingTime;
-			return (time);
+			lock.readLock().lock(); 
+			try {
+				Long time = null;
+				if ((processingTime == null) && (startTime != null))
+					time = (System.nanoTime() - startTime) / 1000000;
+				else
+					return processingTime;
+				return (time);
+			} finally {
+				lock.readLock().unlock();
+			}
 		}
-	}
+	} // end class DetailedStatus
 
 	/**
 	 * A map relating all statuses of the {@link SDocument} contained in this
