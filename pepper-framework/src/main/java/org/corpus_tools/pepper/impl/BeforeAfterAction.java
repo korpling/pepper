@@ -20,6 +20,7 @@ package org.corpus_tools.pepper.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -507,8 +508,8 @@ public class BeforeAfterAction {
 					}
 					if (metaFile != null) {
 						Properties props = new Properties();
-						try (FileInputStream str = new FileInputStream(metaFile)) {
-							props.load(str);
+						try (InputStreamReader rdr = new InputStreamReader(new FileInputStream(metaFile), "UTF-8")) {
+							props.load(rdr);
 						} catch (IOException e) {
 							logger.warn("Tried to load meta data file '" + metaFile.getAbsolutePath()
 									+ "', but a problem occured: " + e.getMessage() + ". ", e);

@@ -106,7 +106,8 @@ public class PepperModuleProperties implements Serializable {
 	 * c=d<br/>
 	 * To enable the reading of meta data set this property to the file ending
 	 * of the metadata file. For instance in case of the file is named
-	 * data.meta: {@value #PROP_BEFORE_READ_META}=meta
+	 * data.meta: {@value #PROP_BEFORE_READ_META}=meta. The file is expected
+	 * to be UTF-8 encoded.
 	 */
 	public static final String PROP_BEFORE_READ_META = PREFIX_PEPPER_BEFORE + "readMeta";
 
@@ -151,7 +152,7 @@ public class PepperModuleProperties implements Serializable {
 		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_ADD_SLAYER, String.class,
 				"Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_READ_META, String.class,
-				"Reads meta data for corpora and subcorpora in a very simple attribute-value format like: a=b. To enable the reading of meta data set this property to the file ending of the metadata file.  For instance in case of the file is named data.meta: pepper.before.readMeta=meta"));
+				"Reads meta data for corpora and subcorpora in a very simple attribute-value format like: a=b. To enable the reading of meta data set this property to the file ending of the metadata file.  For instance in case of the file is named data.meta: pepper.before.readMeta=meta. The file is expected to be UTF-8 encoded."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class,
 				"Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
 		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class,
