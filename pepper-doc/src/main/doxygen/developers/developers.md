@@ -34,9 +34,11 @@ To create a full functional Pepper instance go to PEPPER_HOME and run
 mvn clean install assembly:single
 \endcode
 
-clean - to clean up
-install - to deploy all sub projects to local maven repository
-assembly:single - to bundle the projects to zip files
+* clean - to clean up
+* install - to deploy all sub projects to local maven repository
+* assembly:single - to bundle the projects to zip files
+
+The runnable Pepper instance was assembled into _PEPPER_SRC/pepper-lib/target/distribution_. You can directly run Pepper from org.corpus-tools.pepper-lib_XXX or unzip the assembled zip file to another location. To run Pepper use _pepper.sh_ or _pepper.bat_.     
 
 Further topics
 ===
