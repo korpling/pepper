@@ -6,6 +6,8 @@ var searchData=
   ['module_5ftype',['MODULE_TYPE',['../namespaceorg_1_1corpus__tools_1_1pepper_1_1common.html#enumorg_1_1corpus__tools_1_1pepper_1_1common_1_1_m_o_d_u_l_e___t_y_p_e',1,'org::corpus_tools::pepper::common']]],
   ['modulecontroller',['ModuleController',['../interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_module_controller.html',1,'org::corpus_tools::pepper::modules']]],
   ['modulecontrollerimpl',['ModuleControllerImpl',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_controller_impl.html',1,'org::corpus_tools::pepper::core']]],
+  ['modulefitness',['ModuleFitness',['../classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html',1,'org::corpus_tools::pepper::common']]],
+  ['modulefitnesschecker',['ModuleFitnessChecker',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html',1,'org::corpus_tools::pepper::core']]],
   ['moduleresolver',['ModuleResolver',['../interfaceorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver.html',1,'org::corpus_tools::pepper::core']]],
   ['moduleresolverimpl',['ModuleResolverImpl',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_resolver_impl.html',1,'org::corpus_tools::pepper::core']]]
 ];

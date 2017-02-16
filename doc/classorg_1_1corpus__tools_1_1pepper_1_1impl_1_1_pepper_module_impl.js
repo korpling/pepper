@@ -22,6 +22,7 @@ var classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl =
     [ "getProperties", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a386b21d7d8dd0b4a0227465ccac3013f", null ],
     [ "getResources", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a4ae29dbf42ed63e79ef440d2feb446a0", null ],
     [ "getSaltProject", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a0fad37a532d1b50201010bfecdea6cff", null ],
+    [ "getSelfTestDesc", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#aabf989b3171bb9bb70140017f59005eb", null ],
     [ "getStartProblems", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#aeae593828d9c4be6bca726502da7cd08", null ],
     [ "getSupplierContact", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#ae052279b36cc5af653a16f7937588236", null ],
     [ "getSupplierHomepage", "classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a9b94bf0b3924f49edd8059baf1a58ad9", null ],
