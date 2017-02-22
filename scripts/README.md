@@ -10,13 +10,14 @@ python updateModules.py( PATH_TO_MODULE)+
 ``` 
 If no modules are passed, it is assumed, that modules are located in "../pepperModules".
 
-## release all modules
+## Release all modules
 
 Release all modules via git. This means:
-* branch 'develop'is checked out and updated
-* branch 'master' is checked out and updated
-* 'develop' is merged in 'master'
-* 'master' is pushed 
+
+1. branch 'develop'is checked out and updated
+1. branch 'master' is checked out and updated
+1. 'develop' is merged in 'master'
+1. 'master' is pushed 
 
 ```
 python releaseModules.py( PATH_TO_MODULE)+
