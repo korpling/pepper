@@ -7,13 +7,13 @@ from lib.modulePathes import *
 def printHello():
 	print "+--------------------------------------------------------+"
 	print "|                                                        |"
-	print "|                Releases Pepper modules                 |"
+	print "|          Prepare Releases of Pepper modules            |"
 	print "|                                                        |"
 	print "+--------------------------------------------------------+"
 
 
 def printWhatWillHappen():
-	print("The following modules will be released: ")
+	print("The following modules will be prepared for release: ")
 	for modulePath in modulePathes:
 		print("\t"+modulePath)
 

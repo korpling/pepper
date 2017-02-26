@@ -31,3 +31,8 @@ def reset(modulePath):
 	print("resetting "+modulePath+"...")
 	devnull = open(os.devnull, 'w')
 	subprocess.call(['git', 'reset', '--hard'], stdout=devnull)
+
+def push(modulePath):
+	print("push "+modulePath+"...")
+	devnull = open(os.devnull, 'w')
+	subprocess.call(['git', 'push'], stdout=devnull)
