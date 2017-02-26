@@ -22,4 +22,4 @@ if __name__ == "__main__":
 	modulePathes= findModulePathes(DEFAULT_MODULE_PATH, sys.argv)	
 	exitWhenNoModulePathesGiven(modulePathes)
 	printWhatWillHappen()
-	OnModules(modulePathes).do([push])
+	OnModules(modulePathes).do([push, checkoutDevelop, update])

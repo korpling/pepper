@@ -28,7 +28,7 @@ If no modules are passed, it is assumed, that modules are located in "../pepperM
 
 ## Release all modules
 
-Pushes current branch.
+Pushes current branch and switches to develop branch.
 
 If no modules are passed, it is assumed, that modules are located in "../pepperModules".
 
