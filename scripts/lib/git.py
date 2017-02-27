@@ -3,6 +3,7 @@ import os
 import subprocess
 from subprocess import CalledProcessError
 
+
 BRANCH_DEVELOP="develop"
 BRANCH_MASTER="master"
 
@@ -36,3 +37,4 @@ def push(modulePath):
 	print("push "+modulePath+"...")
 	devnull = open(os.devnull, 'w')
 	subprocess.call(['git', 'push'], stdout=devnull)
+
