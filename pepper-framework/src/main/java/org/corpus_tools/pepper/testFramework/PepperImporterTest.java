@@ -87,7 +87,7 @@ public abstract class PepperImporterTest extends PepperImExporterTest {
 	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(final ModuleFitness fitness) {
 		assertThat(fitness.getFitness(HAS_SELFTEST)).isTrue();
 		assertThat(fitness.getFitness(HAS_PASSED_SELFTEST)).as(diffsBetweenActualAndExpected()).isTrue();
-		assertThat(fitness.getFitness(IS_IMPORTABLE_SEFTEST_DATA)).isTrue();
+		assertThat(fitness.getFitness(IS_IMPORTABLE_SEFTEST_DATA)).as("The imported file was not detected as being importable by this importer. ").isTrue();
 		assertThat(fitness.getFitness(IS_VALID_SELFTEST_DATA)).isTrue();
 	}
 }
