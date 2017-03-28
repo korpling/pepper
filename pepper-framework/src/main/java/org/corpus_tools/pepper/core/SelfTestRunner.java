@@ -76,7 +76,7 @@ public class SelfTestRunner {
 			return moduleFitness;
 		}
 
-		if (isImporter(pepperModule)) {
+		if (isImporter()) {
 			final PepperImporter importer = (PepperImporter) pepperModule;
 			final CorpusDesc corpusDesc = PepperUtil.createCorpusDesc()
 					.withCorpusPath(cleanURI(selfTestDesc.getInputCorpusPath())).build();
@@ -84,7 +84,7 @@ public class SelfTestRunner {
 			final Double importRate = importer.isImportable(corpusDesc.getCorpusPath());
 			final boolean isImportable = (importRate != null && importRate > 0.0) ? true : false;
 			moduleFitness.setFeature(FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA, isImportable);
-		} else if (isManipulatorOrExporter(pepperModule)) {
+		} else if (isManipulator() || isExporter()) {
 			// load Salt from in corpus path
 			SaltProject saltProject = null;
 			try {
@@ -94,7 +94,7 @@ public class SelfTestRunner {
 						+ selfTestDesc.getInputCorpusPath() + "'. The path might not contain a salt project. "));
 				return moduleFitness;
 			}
-			if (pepperModule instanceof PepperExporter) {
+			if (isExporter()) {
 				final PepperExporter exporter = (PepperExporter) pepperModule;
 				exporter.setCorpusDesc(new CorpusDesc.Builder()
 						.withCorpusPath(URI.createFileURI(PepperUtil.getTempFile("self-test").getAbsolutePath())
@@ -107,7 +107,7 @@ public class SelfTestRunner {
 
 		PepperTestUtil.start(pepper, Arrays.asList(pepperModule));
 
-		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
+		if (isImporter() || isManipulator()) {
 			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule, selfTestDesc);
 			final boolean isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
 			moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
@@ -119,25 +119,29 @@ public class SelfTestRunner {
 		return moduleFitness;
 	}
 
-	private boolean isImporter(PepperModule pepperModule) {
+	private boolean isImporter() {
 		return pepperModule instanceof PepperImporter;
 	}
 
-	private boolean isManipulatorOrExporter(PepperModule pepperModule) {
-		return pepperModule instanceof PepperManipulator || pepperModule instanceof PepperExporter;
+	private boolean isExporter() {
+		return pepperModule instanceof PepperExporter;
+	}
+
+	private boolean isManipulator() {
+		return pepperModule instanceof PepperManipulator;
 	}
 
 	private boolean selfTestIsNotValid(final SelfTestDesc selfTestDesc, final PepperModule pepperModule) {
 		final List<String> problems = new ArrayList<>();
-		if (!selfTestDesc.isValid(problems)) {
-			if (PepperUtil.isNotNullOrEmpty(problems)) {
-				for (String problem : problems) {
-					logger.warn(warn(pepperModule, problem));
-				}
-			}
-			return true;
+		if (selfTestDesc.isValid(problems)) {
+			return false;
 		}
-		return false;
+		if (PepperUtil.isNotNullOrEmpty(problems)) {
+			for (String problem : problems) {
+				logger.warn(warn(pepperModule, problem));
+			}
+		}
+		return true;
 	}
 
 	/**
