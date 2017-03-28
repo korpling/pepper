@@ -67,7 +67,9 @@ public abstract class PepperManipulatorTest extends PepperModuleTest {
 	@Override
 	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(final ModuleFitness fitness) {
 		assertThat(fitness.getFitness(HAS_SELFTEST)).isTrue();
-		assertThat(fitness.getFitness(HAS_PASSED_SELFTEST)).as(diffsBetweenActualAndExpected()).isTrue();
+		boolean hasPassedSelfTest = fitness.getFitness(HAS_PASSED_SELFTEST);
+		whenHasNotPassedSelfTestThenSaveSaltProject(hasPassedSelfTest);
+		assertThat(hasPassedSelfTest).as(diffsBetweenActualAndExpected()).isTrue();
 		assertThat(fitness.getFitness(IS_VALID_SELFTEST_DATA)).isTrue();
 	}
 }

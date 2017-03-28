@@ -38,7 +38,7 @@ public class SelfTestDescTest {
 
 	@Before
 	public void beforeEach() {
-		fixture = new SelfTestDesc(null, null);
+		fixture = SelfTestDesc.create().build();
 	}
 
 	private File resourcePath(String subPath) {
@@ -114,7 +114,6 @@ public class SelfTestDescTest {
 
 	@Test
 	public void whenTestContainsNoInputOrOutputCorpusPath_thenValidShouldHaveTwoProblems() {
-		fixture = new SelfTestDesc(null, null);
 		final List<String> problems = new ArrayList<>();
 		assertThat(fixture.isValid(problems)).isFalse();
 		assertThat(problems).hasSize(2);

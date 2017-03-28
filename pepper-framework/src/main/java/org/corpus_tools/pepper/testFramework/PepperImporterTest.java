@@ -86,7 +86,9 @@ public abstract class PepperImporterTest extends PepperImExporterTest {
 	@Override
 	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(final ModuleFitness fitness) {
 		assertThat(fitness.getFitness(HAS_SELFTEST)).isTrue();
-		assertThat(fitness.getFitness(HAS_PASSED_SELFTEST)).as(diffsBetweenActualAndExpected()).isTrue();
+		boolean hasPassedSelfTest = fitness.getFitness(HAS_PASSED_SELFTEST);
+		whenHasNotPassedSelfTestThenSaveSaltProject(hasPassedSelfTest);
+		assertThat(hasPassedSelfTest).as(diffsBetweenActualAndExpected()).isTrue();
 		assertThat(fitness.getFitness(IS_IMPORTABLE_SEFTEST_DATA))
 				.as("The imported file was not detected as being importable by this importer. ").isTrue();
 		assertThat(fitness.getFitness(IS_VALID_SELFTEST_DATA)).as("The imported Salt model is not valid. ").isTrue();

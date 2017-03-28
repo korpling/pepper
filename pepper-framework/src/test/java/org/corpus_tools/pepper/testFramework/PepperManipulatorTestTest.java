@@ -47,7 +47,7 @@ public class PepperManipulatorTestTest {
 		public MyPepperManipulatorTest() {
 			super();
 			setFixture(Mockito.spy(PepperManipulatorImpl.class));
-			when(getFixture().getSelfTestDesc()).thenReturn(new SelfTestDesc(null, null));
+			when(getFixture().getSelfTestDesc()).thenReturn(SelfTestDesc.create().build());
 		}
 
 		@Override

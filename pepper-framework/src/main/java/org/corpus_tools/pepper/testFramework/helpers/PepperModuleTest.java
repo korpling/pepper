@@ -20,6 +20,7 @@ package org.corpus_tools.pepper.testFramework.helpers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import java.io.File;
 import java.util.Set;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
@@ -30,6 +31,7 @@ import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.util.Difference;
 import org.corpus_tools.salt.util.SaltUtil;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
 /**
@@ -110,5 +112,14 @@ public abstract class PepperModuleTest extends PepperModuleTestHelper {
 			return "There are differences between actual and expected Salt model: " + diffs;
 		}
 		return diffs.toString();
+	}
+
+	protected void whenHasNotPassedSelfTestThenSaveSaltProject(boolean hasPassedSelfTest) {
+		if (!hasPassedSelfTest) {
+			final File saltProjectLoaction = getTempPath("actualSaltProject");
+			getFixture().getSaltProject().saveSaltProject(URI.createFileURI(saltProjectLoaction.getAbsolutePath()));
+			System.out.println("Test did not passed has self-test, the actual Salt project was stored to '"
+					+ saltProjectLoaction.getAbsolutePath() + "'. ");
+		}
 	}
 }

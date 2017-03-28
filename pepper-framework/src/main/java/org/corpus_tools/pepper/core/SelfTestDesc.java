@@ -23,8 +23,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -59,7 +62,7 @@ import com.google.common.base.Strings;
  */
 public class SelfTestDesc {
 	private static final Logger logger = LoggerFactory.getLogger("Pepper");
-	private final URI inputCorpusPath;
+	private final List<URI> inputCorpusPaths;
 	private final URI expectedCorpusPath;
 
 	/**
@@ -69,17 +72,35 @@ public class SelfTestDesc {
 	 *            the path where the corpus used as input is located
 	 * @param expectedCorpusPath
 	 *            the path where the expected corpus is located
+	 * @deprecated use {@link #create()} instead
 	 */
+	@Deprecated
 	public SelfTestDesc(URI inputCorpusPath, URI expectedCorpusPath) {
-		this.inputCorpusPath = inputCorpusPath;
+		this.inputCorpusPaths = Arrays.asList(inputCorpusPath);
+		this.expectedCorpusPath = expectedCorpusPath;
+	}
+
+	private SelfTestDesc(List<URI> inputCorpusPaths, URI expectedCorpusPath) {
+		this.inputCorpusPaths = inputCorpusPaths;
 		this.expectedCorpusPath = expectedCorpusPath;
 	}
 
 	/**
-	 * @return the path where the corpus used as input is located
+	 * @return the path where the corpus used as input is located. If multiple
+	 *         input corpus paths are given, the first one is returned.
 	 */
 	public URI getInputCorpusPath() {
-		return inputCorpusPath;
+		if (inputCorpusPaths.isEmpty()) {
+			return null;
+		}
+		return inputCorpusPaths.get(0);
+	}
+
+	/**
+	 * @return the paths where the corpus used as input are located
+	 */
+	public List<URI> getInputCorpusPathes() {
+		return inputCorpusPaths;
 	}
 
 	/**
@@ -304,11 +325,18 @@ public class SelfTestDesc {
 	}
 
 	@Override
+	public String toString() {
+		return "SelfTestDesc [inputCorpusPaths=" + inputCorpusPaths + ", expectedCorpusPath=" + expectedCorpusPath
+				+ ", docBuilderFactory=" + docBuilderFactory + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((docBuilderFactory == null) ? 0 : docBuilderFactory.hashCode());
 		result = prime * result + ((expectedCorpusPath == null) ? 0 : expectedCorpusPath.hashCode());
-		result = prime * result + ((inputCorpusPath == null) ? 0 : inputCorpusPath.hashCode());
+		result = prime * result + ((inputCorpusPaths == null) ? 0 : inputCorpusPaths.hashCode());
 		return result;
 	}
 
@@ -321,30 +349,44 @@ public class SelfTestDesc {
 		if (getClass() != obj.getClass())
 			return false;
 		SelfTestDesc other = (SelfTestDesc) obj;
+		if (docBuilderFactory == null) {
+			if (other.docBuilderFactory != null)
+				return false;
+		} else if (!docBuilderFactory.equals(other.docBuilderFactory))
+			return false;
 		if (expectedCorpusPath == null) {
 			if (other.expectedCorpusPath != null)
 				return false;
 		} else if (!expectedCorpusPath.equals(other.expectedCorpusPath))
 			return false;
-		if (inputCorpusPath == null) {
-			if (other.inputCorpusPath != null)
+		if (inputCorpusPaths == null) {
+			if (other.inputCorpusPaths != null)
 				return false;
-		} else if (!inputCorpusPath.equals(other.inputCorpusPath))
+		} else if (!inputCorpusPaths.equals(other.inputCorpusPaths))
 			return false;
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "SelfTestDesc [inputCorpusPath=" + inputCorpusPath + ", expectedCorpusPath=" + expectedCorpusPath + "]";
+	/**
+	 * @return a builder to build a {@link SelfTestDesc} instance.
+	 */
+	public static Builder create() {
+		return new Builder();
 	}
 
 	public static class Builder {
-		private URI inputCorpusPath;
+		private List<URI> inputCorpusPaths = new ArrayList<>();
 		private URI expectedCorpusPath;
 
+		/**
+		 * Adds a (further) input corpus path. If <code>inputCorpusPath</code>
+		 * is not null.
+		 */
 		public Builder withInputCorpusPath(URI inputCorpusPath) {
-			this.inputCorpusPath = inputCorpusPath;
+			if (inputCorpusPath == null) {
+				return this;
+			}
+			inputCorpusPaths.add(inputCorpusPath);
 			return this;
 		}
 
@@ -354,7 +396,7 @@ public class SelfTestDesc {
 		}
 
 		public SelfTestDesc build() {
-			final SelfTestDesc selfTestDesc = new SelfTestDesc(inputCorpusPath, expectedCorpusPath);
+			final SelfTestDesc selfTestDesc = new SelfTestDesc(inputCorpusPaths, expectedCorpusPath);
 			return selfTestDesc;
 		}
 
