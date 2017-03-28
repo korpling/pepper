@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.Set;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
-import org.corpus_tools.pepper.core.ModuleFitnessChecker;
+import org.corpus_tools.pepper.core.SelfTestRunner;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
@@ -99,7 +99,7 @@ public abstract class PepperModuleTest extends PepperModuleTestHelper {
 	}
 
 	protected ModuleFitness runSelfTest() {
-		return new ModuleFitnessChecker(PepperTestUtil.createDefaultPepper()).selfTest(fixture);
+		return new SelfTestRunner(PepperTestUtil.createDefaultPepper(), null, fixture).selfTest();
 	}
 
 	protected abstract void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness);
