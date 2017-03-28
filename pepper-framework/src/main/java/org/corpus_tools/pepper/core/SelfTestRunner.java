@@ -91,7 +91,7 @@ public class SelfTestRunner {
 				saltProject = SaltUtil.loadCompleteSaltProject(cleanURI(selfTestDesc.getInputCorpusPath()));
 			} catch (RuntimeException e) {
 				logger.warn(warn(pepperModule, "The input salt project was could not have been loaded from path '"
-						+ selfTestDesc.getInputCorpusPath() + "'. The path might not contain a salt project. "));
+						+ selfTestDesc.getInputCorpusPaths() + "'. The path might not contain a salt project. "));
 				return moduleFitness;
 			}
 			if (isExporter()) {

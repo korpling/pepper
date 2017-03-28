@@ -99,7 +99,7 @@ public class SelfTestDesc {
 	/**
 	 * @return the paths where the corpus used as input are located
 	 */
-	public List<URI> getInputCorpusPathes() {
+	public List<URI> getInputCorpusPaths() {
 		return inputCorpusPaths;
 	}
 
