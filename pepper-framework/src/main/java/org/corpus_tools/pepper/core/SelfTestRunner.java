@@ -88,10 +88,10 @@ public class SelfTestRunner {
 			// load Salt from in corpus path
 			SaltProject saltProject = null;
 			try {
-				saltProject = SaltUtil.loadCompleteSaltProject(cleanURI(selfTestDesc.getInputCorpusPath()));
+				saltProject = loadSaltProjectWithMultipleCorpora(selfTestDesc);
 			} catch (RuntimeException e) {
 				logger.warn(warn(pepperModule, "The input salt project was could not have been loaded from path '"
-						+ selfTestDesc.getInputCorpusPaths() + "'. The path might not contain a salt project. "));
+						+ selfTestDesc.getInputCorpusPaths() + "'. The path might not contain a salt project. "), e);
 				return moduleFitness;
 			}
 			if (isExporter()) {
@@ -129,6 +129,25 @@ public class SelfTestRunner {
 
 	private boolean isManipulator() {
 		return pepperModule instanceof PepperManipulator;
+	}
+
+	private SaltProject loadSaltProjectWithMultipleCorpora(SelfTestDesc selfTestDesc) {
+		if (selfTestDesc == null) {
+			return null;
+		}
+		SaltProject saltProject = null;
+		for (URI inputCorpusPath : selfTestDesc.getInputCorpusPaths()) {
+			if (saltProject == null) {
+				saltProject = SaltUtil.loadCompleteSaltProject(cleanURI(inputCorpusPath));
+			} else {
+				final SaltProject tmpProject = SaltUtil.loadCompleteSaltProject(cleanURI(inputCorpusPath));
+				if (tmpProject.getCorpusGraphs() == null || tmpProject.getCorpusGraphs().isEmpty()) {
+					continue;
+				}
+				saltProject.addCorpusGraph(tmpProject.getCorpusGraphs().get(0));
+			}
+		}
+		return saltProject;
 	}
 
 	private boolean selfTestIsNotValid(final SelfTestDesc selfTestDesc, final PepperModule pepperModule) {

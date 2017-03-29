@@ -25,10 +25,12 @@ import java.util.Set;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.core.SelfTestRunner;
+import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.exceptions.SaltResourceException;
 import org.corpus_tools.salt.util.Difference;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
@@ -105,8 +107,15 @@ public abstract class PepperModuleTest extends PepperModuleTestHelper {
 	protected abstract void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness);
 
 	protected String diffsBetweenActualAndExpected() {
-		final Set<Difference> diffs = SaltUtil.compare(
-				SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath()).getCorpusGraphs().get(0))
+		SCorpusGraph expectedCorpusGraph = null;
+		try {
+			expectedCorpusGraph = SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath())
+					.getCorpusGraphs().get(0);
+		} catch (SaltResourceException e) {
+			throw new PepperTestException("Cannot load expected corpus graph from '"
+					+ fixture.getSelfTestDesc().getExpectedCorpusPath() + "', because of a nested exception. ", e);
+		}
+		final Set<Difference> diffs = SaltUtil.compare(expectedCorpusGraph)
 				.with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs();
 		if (!diffs.isEmpty()) {
 			return "There are differences between actual and expected Salt model: " + diffs;

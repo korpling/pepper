@@ -23,6 +23,7 @@ import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_SE
 import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.IS_VALID_SELFTEST_DATA;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
+import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
@@ -66,6 +67,10 @@ import org.corpus_tools.salt.common.SaltProject;
 public abstract class PepperManipulatorTest extends PepperModuleTest {
 	@Override
 	public void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(final ModuleFitness fitness) {
+		if (fitness == null) {
+			throw new PepperFWException(
+					"Cannot run self-test, becuase module fitness was null. This might be an error in test framework.");
+		}
 		assertThat(fitness.getFitness(HAS_SELFTEST)).isTrue();
 		boolean hasPassedSelfTest = fitness.getFitness(HAS_PASSED_SELFTEST);
 		whenHasNotPassedSelfTestThenSaveSaltProject(hasPassedSelfTest);
