@@ -379,6 +379,14 @@ public class SelfTestDesc {
 		private URI expectedCorpusPath;
 
 		/**
+		 * This constructor's visibility will be changed to private. To create a
+		 * SelfTestDesc use SelfTestDesc.create() instead.
+		 */
+		@Deprecated
+		public Builder() {
+		}
+
+		/**
 		 * Adds a (further) input corpus path. If <code>inputCorpusPath</code>
 		 * is not null.
 		 */

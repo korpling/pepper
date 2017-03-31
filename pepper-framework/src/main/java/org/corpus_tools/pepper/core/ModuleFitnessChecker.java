@@ -145,6 +145,16 @@ public class ModuleFitnessChecker {
 		return fitness;
 	}
 
+	/**
+	 * Use
+	 * {@link SelfTestRunner#SelfTestRunner(Pepper, ModuleFitness, PepperModule)}
+	 * instead.
+	 */
+	@Deprecated
+	public ModuleFitness selfTest(final PepperModule pepperModule) {
+		return new SelfTestRunner(pepper, null, pepperModule).selfTest();
+	}
+
 	private static boolean hasSupportedFormats(final List<FormatDesc> formatDescs) {
 		boolean hasFormats = false;
 		if (formatDescs != null && formatDescs.size() > 0) {
