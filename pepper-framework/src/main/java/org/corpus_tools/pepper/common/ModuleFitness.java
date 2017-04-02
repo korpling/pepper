@@ -30,9 +30,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
 /**
  * An object determining the fitness of a single Pepper module. Multiple single
  * fitness values forms one combined value determining the overall fitness.
- * 
- * @author florian
- *
  */
 public class ModuleFitness {
 	public static enum Fitness {
@@ -123,8 +120,6 @@ public class ModuleFitness {
 		/**
 		 * Returns the names of the fitness features taking part at health test.
 		 * These are the features which makes a module able to be ran.
-		 * 
-		 * @return
 		 */
 		public static Collection<FitnessFeature> getHealthFeatures() {
 			if (HEALTH_FEATURES.size() < 1) {
@@ -139,8 +134,6 @@ public class ModuleFitness {
 
 		/**
 		 * Returns the names of the fitness feature.
-		 * 
-		 * @return
 		 */
 		public static Collection<FitnessFeature> getFitnessFeatures() {
 			if (FITNESS_FEATURES.size() < 1) {
@@ -174,9 +167,6 @@ public class ModuleFitness {
 	 * {@link Fitness#HEALTHY}. If the {@link FitnessFeature} is a fitness
 	 * feature, true means {@link Fitness#HEALTHY} and false means
 	 * {@link Fitness#CRITICAL}.
-	 * 
-	 * @param feature
-	 * @param value
 	 */
 	public void setFeature(final FitnessFeature feature, boolean value) {
 		if (feature != null) {
@@ -184,6 +174,10 @@ public class ModuleFitness {
 		}
 	}
 
+	/**
+	 * Returns value for specified fitness feature. When the fitness feature is
+	 * not contained in list, null is returned.
+	 */
 	public Boolean getFitness(final FitnessFeature feature) {
 		return fitnessMap.get(feature);
 	}
@@ -280,9 +274,6 @@ public class ModuleFitness {
 
 	/**
 	 * A simple builder to create {@link ModuleFitness} objects.
-	 * 
-	 * @author florian
-	 *
 	 */
 	public static class ModuleFitnessBuilder {
 		private ModuleFitness moduleFitness;
