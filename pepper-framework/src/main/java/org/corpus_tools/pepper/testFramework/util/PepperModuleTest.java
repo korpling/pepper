@@ -3,7 +3,6 @@ package org.corpus_tools.pepper.testFramework.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_PASSED_SELFTEST;
-import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.IS_IMPORTABLE_SEFTEST_DATA;
 import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
@@ -14,7 +13,6 @@ import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
 import org.corpus_tools.pepper.testFramework.old.PepperImporterTest;
@@ -34,7 +32,7 @@ import org.junit.Test;
  * {@link #setFixture(PepperModule)} and {@link #testedModule}.
  */
 public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality {
-	private static ModuleFitness fitness = null;
+	protected static ModuleFitness fitness = null;
 
 	@Test
 	public void checkThatModuleHasName() {
@@ -79,15 +77,6 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 	}
 
 	@Test
-	public void checkThatMethodIsImportableIsImplemented() {
-		preTest();
-		fitness.getFitness(FitnessFeature.IS_IMPORTABLE);
-		assumeTrue(
-				"The module does not provide implement method isImportable(). This is not required in current Pepper version, but strongly recommanded. ",
-				fitness.getFitness(FitnessFeature.IS_IMPORTABLE));
-	}
-
-	@Test
 	public void checkThatModuleHasPassedSelfTest() {
 		preTest();
 		assumeTrue(fitness.getFitness(FitnessFeature.HAS_SELFTEST));
@@ -97,7 +86,7 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 				.as("The module has not passed the provided self-test. " + diffsBetweenActualAndExpected()).isTrue();
 	}
 
-	protected String diffsBetweenActualAndExpected() {
+	private String diffsBetweenActualAndExpected() {
 		SCorpusGraph expectedCorpusGraph = null;
 		try {
 			expectedCorpusGraph = SaltUtil.loadSaltProject(testedModule.getSelfTestDesc().getExpectedCorpusPath())
@@ -114,37 +103,13 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 		return diffs.toString();
 	}
 
-	protected void whenHasNotPassedSelfTestThenSaveSaltProject(boolean hasPassedSelfTest) {
+	private void whenHasNotPassedSelfTestThenSaveSaltProject(boolean hasPassedSelfTest) {
 		if (!hasPassedSelfTest) {
 			final File saltProjectLoaction = getTempPath("actualSaltProject");
 			testedModule.getSaltProject().saveSaltProject(URI.createFileURI(saltProjectLoaction.getAbsolutePath()));
 			logger.error("Test did not passed has self-test, the actual Salt project was stored to '"
 					+ saltProjectLoaction.getAbsolutePath() + "'. ");
 		}
-	}
-
-	/**
-	 * Returns a {@link File} object pointing to a temporary path, where the
-	 * caller can store temporary files. The temporary path is located in the
-	 * temporary directory provided by the underlying os. The resulting
-	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/
-	 * <code>testDirectory</code>.
-	 * 
-	 * @param testDirectory
-	 *            last part of the temporary path
-	 * @return a file object locating to a temporary folder, where files can be
-	 *         stored temporarily
-	 */
-	protected File getTempPath(String testDirectory) {
-		return (PepperTestUtil.createTempPath(testDirectory));
-	}
-
-	@Test
-	public void checkThatModuleCanImportSelfTestData() {
-		preTest();
-		assumeTrue(fitness.getFitness(FitnessFeature.HAS_SELFTEST));
-		assertThat(fitness.getFitness(IS_IMPORTABLE_SEFTEST_DATA))
-				.as("The imported file was not detected as being importable by this importer. ").isTrue();
 	}
 
 	@Test
@@ -155,11 +120,10 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 				.as("The self-test does not produce a valid salt model. ").isTrue();
 	}
 
-	private void preTest() {
-		assumeTrue(
-				"The fitness check for " + this.getClass().getSimpleName()
-						+ " is turned off. To turn it on, set variable 'RUN_FITNESS_CHECK' to 'true'. ",
-				this instanceof RunFitnessCheck);
+	protected void preTest() {
+		assumeTrue("The fitness check for '" + this.getClass().getSimpleName()
+				+ "' is turned off. To turn it on, implement the interface '" + RunFitnessCheck.class
+				+ "' in your class. ", this instanceof RunFitnessCheck);
 		whenFitnessCheckWasntStartetdThenRun();
 		whenFixtureIsNullThenFail();
 	}
