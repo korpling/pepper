@@ -31,7 +31,7 @@ import org.junit.Test;
  * {@link PepperManipulatorTest} and {@link PepperExporterTest}. The class
  * provides a set of helping functions, which are used in each derived sub
  * classes. For instance the module to be tested can be set and returned via
- * {@link #setFixture(PepperModule)} and {@link #getFixture()}.
+ * {@link #setFixture(PepperModule)} and {@link #testedModule}.
  */
 public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality {
 	private static ModuleFitness fitness = null;
@@ -100,14 +100,14 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 	protected String diffsBetweenActualAndExpected() {
 		SCorpusGraph expectedCorpusGraph = null;
 		try {
-			expectedCorpusGraph = SaltUtil.loadSaltProject(fixture.getSelfTestDesc().getExpectedCorpusPath())
+			expectedCorpusGraph = SaltUtil.loadSaltProject(testedModule.getSelfTestDesc().getExpectedCorpusPath())
 					.getCorpusGraphs().get(0);
 		} catch (SaltResourceException e) {
 			throw new PepperTestException("Cannot load expected corpus graph from '"
-					+ fixture.getSelfTestDesc().getExpectedCorpusPath() + "', because of a nested exception. ", e);
+					+ testedModule.getSelfTestDesc().getExpectedCorpusPath() + "', because of a nested exception. ", e);
 		}
 		final Set<Difference> diffs = SaltUtil.compare(expectedCorpusGraph)
-				.with(fixture.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs();
+				.with(testedModule.getSaltProject().getCorpusGraphs().get(0)).andFindDiffs();
 		if (!diffs.isEmpty()) {
 			return "There are differences between actual and expected Salt model: " + diffs;
 		}
@@ -117,7 +117,7 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 	protected void whenHasNotPassedSelfTestThenSaveSaltProject(boolean hasPassedSelfTest) {
 		if (!hasPassedSelfTest) {
 			final File saltProjectLoaction = getTempPath("actualSaltProject");
-			getFixture().getSaltProject().saveSaltProject(URI.createFileURI(saltProjectLoaction.getAbsolutePath()));
+			testedModule.getSaltProject().saveSaltProject(URI.createFileURI(saltProjectLoaction.getAbsolutePath()));
 			logger.error("Test did not passed has self-test, the actual Salt project was stored to '"
 					+ saltProjectLoaction.getAbsolutePath() + "'. ");
 		}
@@ -169,11 +169,11 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 			return;
 		}
 		ModuleFitnessChecker fitnessChecker = new ModuleFitnessChecker();
-		fitness = fitnessChecker.checkFitness(fixture);
+		fitness = fitnessChecker.checkFitness(testedModule);
 	}
 
 	private void whenFixtureIsNullThenFail() {
-		if (getFixture() == null) {
+		if (testedModule == null) {
 			fail("Cannot run tests when no fixture is set. Please call setFixture(PepperModule) before running test. ");
 		}
 	}

@@ -11,28 +11,28 @@ import org.slf4j.LoggerFactory;
 
 public abstract class PepperModuleTestCoreFunctionality {
 	protected static final Logger logger = LoggerFactory.getLogger("Pepper");
-	protected PepperModule fixture = null;
+	protected PepperModule testedModule = null;
 	protected static final URI DEFAULT_RESOURCE_PATH = URI.createFileURI("src/main/resources");
 	protected URI resourceURI = DEFAULT_RESOURCE_PATH;
 
-	/**
-	 * Returns the module to be tested.
-	 */
-	protected PepperModule getFixture() {
-		return fixture;
-	}
+	// /**
+	// * Returns the module to be tested.
+	// */
+	// protected PepperModule testedModule {
+	// return testedModule;
+	// }
 
 	/**
 	 * Sets the module to be tested. The module can be accessed via
-	 * {@link #getFixture()}.
+	 * {@link #testedModule}.
 	 */
 	protected void setFixture(PepperModule fixture) {
-		this.fixture = fixture;
+		this.testedModule = fixture;
 		if (resourceURI != null) {
-			getFixture().setResources(resourceURI);
+			testedModule.setResources(resourceURI);
 		}
-		getFixture().setSaltProject(SaltFactory.createSaltProject());
-		getFixture().getSaltProject().addCorpusGraph(SaltFactory.createSCorpusGraph());
+		testedModule.setSaltProject(SaltFactory.createSaltProject());
+		testedModule.getSaltProject().addCorpusGraph(SaltFactory.createSCorpusGraph());
 
 	}
 
@@ -53,8 +53,8 @@ public abstract class PepperModuleTestCoreFunctionality {
 			}
 		}
 		this.resourceURI = resourceURI;
-		if (getFixture() != null) {
-			getFixture().setResources(resourceURI);
+		if (testedModule != null) {
+			testedModule.setResources(resourceURI);
 		}
 	}
 }
