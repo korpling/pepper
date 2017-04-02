@@ -72,7 +72,7 @@ public class PepperTestUtil {
 	 * @return a file object locating to a temporary folder, where files can be
 	 *         stored temporarily
 	 */
-	public static File getTempPath_static(String testDirectory) {
+	public static File createTempPath(String testDirectory) {
 		if ((testDirectory == null) || (testDirectory.isEmpty())) {
 			throw new PepperModuleTestException(
 					"Cannot return a temporary directory, since the given last part is empty.");
