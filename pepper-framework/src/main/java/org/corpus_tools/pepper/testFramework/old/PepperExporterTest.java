@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework;
+package org.corpus_tools.pepper.testFramework.old;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_PASSED_SELFTEST;
@@ -24,7 +24,7 @@ import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_SE
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.modules.PepperExporter;
-import org.corpus_tools.pepper.testFramework.helpers.PepperImExporterTest;
+import org.corpus_tools.pepper.testFramework.old.helpers.PepperImExporterTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SaltProject;
 

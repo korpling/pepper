@@ -29,7 +29,7 @@ import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter.TextMapper;
-import org.corpus_tools.pepper.testFramework.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.old.PepperImporterTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;

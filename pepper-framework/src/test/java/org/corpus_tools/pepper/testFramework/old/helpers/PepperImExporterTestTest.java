@@ -15,11 +15,12 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework.helpers;
+package org.corpus_tools.pepper.testFramework.old.helpers;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
+import org.corpus_tools.pepper.testFramework.old.helpers.PepperImExporterTest;
 import org.junit.Before;
 import org.junit.Test;
 

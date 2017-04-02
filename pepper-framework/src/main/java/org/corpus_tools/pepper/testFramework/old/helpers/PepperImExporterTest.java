@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework.helpers;
+package org.corpus_tools.pepper.testFramework.old.helpers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;

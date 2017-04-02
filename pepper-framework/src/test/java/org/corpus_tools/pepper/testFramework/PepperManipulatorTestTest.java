@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
+import org.corpus_tools.pepper.testFramework.old.PepperManipulatorTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

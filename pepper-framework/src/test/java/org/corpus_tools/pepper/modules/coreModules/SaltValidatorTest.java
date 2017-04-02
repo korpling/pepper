@@ -18,7 +18,7 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.modules.coreModules.SaltValidator;
-import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
+import org.corpus_tools.pepper.testFramework.old.PepperManipulatorTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.junit.Before;
 

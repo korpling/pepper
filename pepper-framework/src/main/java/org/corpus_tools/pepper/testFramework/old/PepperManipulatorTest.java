@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework;
+package org.corpus_tools.pepper.testFramework.old;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_PASSED_SELFTEST;
@@ -25,7 +25,7 @@ import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.IS_VAL
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.PepperManipulator;
-import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
+import org.corpus_tools.pepper.testFramework.old.helpers.PepperModuleTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SaltProject;
 

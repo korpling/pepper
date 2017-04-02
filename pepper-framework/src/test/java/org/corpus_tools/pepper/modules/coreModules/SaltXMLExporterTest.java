@@ -18,7 +18,7 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.modules.coreModules.SaltXMLExporter;
-import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
 import org.junit.Before;
 
 public class SaltXMLExporterTest extends PepperExporterTest {

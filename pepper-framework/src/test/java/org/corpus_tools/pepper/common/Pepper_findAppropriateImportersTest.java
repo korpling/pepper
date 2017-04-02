@@ -28,7 +28,7 @@ import org.corpus_tools.pepper.core.ModuleResolver;
 import org.corpus_tools.pepper.core.PepperImpl;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
-import org.corpus_tools.pepper.testFramework.PepperTestUtil;
+import org.corpus_tools.pepper.testFramework.old.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;

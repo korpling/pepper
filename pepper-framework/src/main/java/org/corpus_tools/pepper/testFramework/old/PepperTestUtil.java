@@ -15,7 +15,7 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework;
+package org.corpus_tools.pepper.testFramework.old;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,6 +51,8 @@ import org.eclipse.emf.common.util.URI;
 /**
  * This class offers some static fields and methods for testing
  * {@link PepperModule} objects.
+ * 
+ * @author florian
  *
  */
 public class PepperTestUtil {

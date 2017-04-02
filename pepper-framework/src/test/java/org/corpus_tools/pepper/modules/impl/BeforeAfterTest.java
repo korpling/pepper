@@ -33,7 +33,7 @@ import org.corpus_tools.pepper.impl.BeforeAfterAction;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
-import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
+import org.corpus_tools.pepper.testFramework.old.helpers.PepperModuleTest;
 import org.corpus_tools.salt.SALT_TYPE;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;

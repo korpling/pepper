@@ -15,11 +15,12 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework.helpers;
+package org.corpus_tools.pepper.testFramework.old.helpers;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
+import org.corpus_tools.pepper.testFramework.old.helpers.PepperModuleTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;

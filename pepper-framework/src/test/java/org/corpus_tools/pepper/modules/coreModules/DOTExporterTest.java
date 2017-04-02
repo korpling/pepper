@@ -18,7 +18,7 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.modules.coreModules.DOTExporter;
-import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
