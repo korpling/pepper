@@ -29,8 +29,6 @@ import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 @Component(name = "DoNothingExporterComponent", factory = "PepperExporterComponentFactory")
@@ -38,12 +36,6 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 	public static final String MODULE_NAME = "DoNothingExporter";
 	public static final String FORMAT_NAME = "doNothing";
 	public static final String FORMAT_VERSION = "0.0";
-
-	@Override
-	@Activate
-	public void activate(ComponentContext componentContext) {
-		super.activate(componentContext);
-	}
 
 	public DoNothingExporter() {
 		// setting name of module
@@ -56,11 +48,10 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-
 		URI baseURI = getResources().appendSegment("modules").appendSegment("selfTests")
 				.appendSegment("doNothingExporter");
 		URI expectedURI = baseURI.appendSegment("expected");
-		URI inputURI = baseURI.appendSegment("expected");
+		URI inputURI = baseURI.appendSegment("in");
 		// We have to make sure the output directory exists, even if this is the
 		// "do nothing" exporter
 		if (!new File(expectedURI.toFileString()).mkdirs()) {

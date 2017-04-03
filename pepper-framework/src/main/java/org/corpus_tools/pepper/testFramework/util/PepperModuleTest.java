@@ -40,8 +40,8 @@ public abstract class PepperModuleTest<M extends PepperModule> extends PepperMod
 
 	private final static Map<PepperModule, ModuleFitness> fitnessTable = new HashMap<>();
 
-	protected ModuleFitness getFitness() {
-		return fitnessTable.get(testedModule);
+	protected Boolean getFitness(FitnessFeature feature) {
+		return fitnessTable.get(testedModule).getFitness(feature);
 	}
 
 	@Test
@@ -71,13 +71,13 @@ public abstract class PepperModuleTest<M extends PepperModule> extends PepperMod
 	@Test
 	public void checkThatModuleHasName() {
 		preTest();
-		assertThat(getFitness().getFitness(FitnessFeature.HAS_NAME)).as("A module's name must not be empty. ").isTrue();
+		assertThat(getFitness(FitnessFeature.HAS_NAME)).as("A module's name must not be empty. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleIsReadyToRun() {
 		preTest();
-		assertThat(getFitness().getFitness(FitnessFeature.IS_READY_TO_RUN))
+		assertThat(getFitness(FitnessFeature.IS_READY_TO_RUN))
 				.as("The module is not ready to run, please check the method ''PepperModule.isReadyToRun()'. ")
 				.isTrue();
 	}
@@ -85,36 +85,36 @@ public abstract class PepperModuleTest<M extends PepperModule> extends PepperMod
 	@Test
 	public void checkThatModuleHasSupplierContact() {
 		preTest();
-		assertThat(getFitness().getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT))
+		assertThat(getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT))
 				.as("The module does not provide an email address of the module's supplier. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasSupplierHomepage() {
 		preTest();
-		assertThat(getFitness().getFitness(FitnessFeature.HAS_SUPPLIER_HP))
+		assertThat(getFitness(FitnessFeature.HAS_SUPPLIER_HP))
 				.as("The module does not provide a link to the modules supplier's homepage. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasDescription() {
 		preTest();
-		assertThat(getFitness().getFitness(FitnessFeature.HAS_DESCRIPTION))
-				.as("The module does not provide a proper description. ").isTrue();
+		assertThat(getFitness(FitnessFeature.HAS_DESCRIPTION)).as("The module does not provide a proper description. ")
+				.isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasSupportedFormats() {
 		preTest();
-		assertThat(getFitness().getFitness(FitnessFeature.HAS_DESCRIPTION))
+		assertThat(getFitness(FitnessFeature.HAS_DESCRIPTION))
 				.as("The module does not provide a list of formats it supports. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasPassedSelfTest() {
 		preTest();
-		assumeTrue(getFitness().getFitness(FitnessFeature.HAS_SELFTEST));
-		boolean hasPassedSelfTest = getFitness().getFitness(HAS_PASSED_SELFTEST);
+		assumeTrue(getFitness(FitnessFeature.HAS_SELFTEST));
+		boolean hasPassedSelfTest = getFitness(HAS_PASSED_SELFTEST);
 		whenHasNotPassedSelfTestThenSaveSaltProject(hasPassedSelfTest);
 		assertThat(hasPassedSelfTest)
 				.as("The module has not passed the provided self-test. " + diffsBetweenActualAndExpected()).isTrue();
@@ -155,7 +155,7 @@ public abstract class PepperModuleTest<M extends PepperModule> extends PepperMod
 	}
 
 	private synchronized void whenFitnessCheckWasntStartetdThenRun() {
-		if (getFitness() != null) {
+		if (fitnessTable.get(testedModule) != null) {
 			return;
 		}
 		ModuleFitnessChecker fitnessChecker = new ModuleFitnessChecker();

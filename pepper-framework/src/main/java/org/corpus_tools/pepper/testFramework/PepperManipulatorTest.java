@@ -12,8 +12,8 @@ public abstract class PepperManipulatorTest<M extends PepperManipulator> extends
 	@Test
 	public void checkThatSelfTestResultIsValid() {
 		preTest();
-		assumeTrue(getFitness().getFitness(FitnessFeature.HAS_SELFTEST));
-		assertThat(getFitness().getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA))
+		assumeTrue(getFitness(FitnessFeature.HAS_SELFTEST));
+		assertThat(getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA))
 				.as("The self-test does not produce a valid salt model. ").isTrue();
 	}
 }

@@ -41,7 +41,7 @@ public class TextImporterTest extends PepperImporterTest<TextImporter> implement
 	private File testPath = createTestTempPath("textImporterTest");
 
 	@Before
-	public void beforeEach() throws Exception {
+	public void beforeEach() {
 		setTestedModule(new TextImporter());
 		addFormatWhichShouldBeSupported(TextImporter.FORMAT_NAME, TextImporter.FORMAT_VERSION);
 	}

@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class DOTExporterTest extends PepperExporterTest<DOTExporter> implements RunFitnessCheck {
 	@Before
-	public void setUp() throws Exception {
+	public void beforeEach() {
 		setTestedModule(new DOTExporter());
 		testedModule.setSaltProject(SaltFactory.createSaltProject());
 		addFormatWhichShouldBeSupported(DOTExporter.FORMAT_NAME, DOTExporter.FORMAT_VERSION);

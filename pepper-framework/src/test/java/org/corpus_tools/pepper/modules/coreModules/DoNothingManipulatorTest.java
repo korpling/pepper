@@ -24,8 +24,7 @@ import org.junit.Before;
 public class DoNothingManipulatorTest extends PepperManipulatorTest<DoNothingManipulator> implements RunFitnessCheck {
 
 	@Before
-	public void setUp() {
+	public void beforeEach() {
 		setTestedModule(new DoNothingManipulator());
-		// super.getFixture().setSaltProject(SaltFactory.createSaltProject());
 	}
 }

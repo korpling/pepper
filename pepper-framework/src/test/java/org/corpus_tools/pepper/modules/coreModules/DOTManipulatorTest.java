@@ -24,7 +24,7 @@ import org.junit.Before;
 public class DOTManipulatorTest extends PepperManipulatorTest<DOTManipulator> implements RunFitnessCheck {
 
 	@Before
-	public void setUp() throws Exception {
+	public void beforeEach() {
 		setTestedModule(new DOTManipulator());
 	}
 }

@@ -23,7 +23,7 @@ import org.junit.Before;
 
 public class SaltXMLExporterTest extends PepperExporterTest<SaltXMLExporter> implements RunFitnessCheck {
 	@Before
-	public void setUp() throws Exception {
+	public void beforeEach() {
 		setTestedModule(new SaltXMLExporter());
 		addFormatWhichShouldBeSupported(SaltXMLExporter.FORMAT_NAME, SaltXMLExporter.FORMAT_VERSION);
 	}

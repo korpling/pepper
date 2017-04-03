@@ -14,8 +14,7 @@ public abstract class PepperExporterTest<M extends PepperExporter> extends Peppe
 	@Test
 	public void checkThatModuleHasPassedSelfTest() {
 		preTest();
-		assumeTrue(getFitness().getFitness(FitnessFeature.HAS_SELFTEST));
-		assertThat(getFitness().getFitness(HAS_PASSED_SELFTEST))
-				.as("The module has not passed the provided self-test. ").isTrue();
+		assumeTrue(getFitness(FitnessFeature.HAS_SELFTEST));
+		assertThat(getFitness(HAS_PASSED_SELFTEST)).as("The module has not passed the provided self-test. ").isTrue();
 	}
 }

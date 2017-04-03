@@ -25,9 +25,8 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class DoNothingExporterTest extends PepperExporterTest<DoNothingExporter> implements RunFitnessCheck {
-
 	@Before
-	public void setUp() throws Exception {
+	public void beforeEach() {
 		setTestedModule(new DoNothingExporter());
 		addFormatWhichShouldBeSupported(DoNothingExporter.FORMAT_NAME, DoNothingExporter.FORMAT_VERSION);
 	}

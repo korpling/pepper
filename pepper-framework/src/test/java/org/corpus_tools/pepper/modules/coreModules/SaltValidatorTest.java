@@ -24,7 +24,7 @@ import org.junit.Before;
 public class SaltValidatorTest extends PepperManipulatorTest<SaltValidator> implements RunFitnessCheck {
 
 	@Before
-	public void setUp() throws Exception {
-		super.setTestedModule(new SaltValidator());
+	public void beforeEach() {
+		setTestedModule(new SaltValidator());
 	}
 }

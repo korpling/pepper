@@ -13,25 +13,25 @@ public abstract class PepperImporterTest<M extends PepperImporter> extends Peppe
 	@Test
 	public void checkThatMethodIsImportableIsImplemented() {
 		preTest();
-		getFitness().getFitness(FitnessFeature.IS_IMPORTABLE);
+		getFitness(FitnessFeature.IS_IMPORTABLE);
 		assumeTrue(
 				"The module does not provide implement method isImportable(). This is not required in current Pepper version, but strongly recommanded. ",
-				getFitness().getFitness(FitnessFeature.IS_IMPORTABLE));
+				getFitness(FitnessFeature.IS_IMPORTABLE));
 	}
 
 	@Test
 	public void checkThatModuleCanImportSelfTestData() {
 		preTest();
-		assumeTrue(getFitness().getFitness(FitnessFeature.HAS_SELFTEST));
-		assertThat(getFitness().getFitness(IS_IMPORTABLE_SEFTEST_DATA))
+		assumeTrue(getFitness(FitnessFeature.HAS_SELFTEST));
+		assertThat(getFitness(IS_IMPORTABLE_SEFTEST_DATA))
 				.as("The imported file was not detected as being importable by this importer. ").isTrue();
 	}
 
 	@Test
 	public void checkThatSelfTestResultIsValid() {
 		preTest();
-		assumeTrue(getFitness().getFitness(FitnessFeature.HAS_SELFTEST));
-		assertThat(getFitness().getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA))
+		assumeTrue(getFitness(FitnessFeature.HAS_SELFTEST));
+		assertThat(getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA))
 				.as("The self-test does not produce a valid salt model. ").isTrue();
 	}
 }
