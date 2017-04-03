@@ -33,7 +33,7 @@ import org.corpus_tools.pepper.impl.BeforeAfterAction;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
-import org.corpus_tools.pepper.testFramework.old.helpers.PepperModuleTest;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.SALT_TYPE;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
@@ -72,7 +72,7 @@ public class BeforeAfterTest {
 
 	@Test
 	public void testCopyRes() throws IOException {
-		File fromPath = new File(PepperModuleTest.getTestResources() + "/copyRes/");
+		File fromPath = new File(PepperTestUtil.getTestResources() + "/copyRes/");
 		File toPath = PepperUtil.getTempTestFile("to");
 
 		FileUtils.deleteDirectory(toPath);
@@ -118,7 +118,7 @@ public class BeforeAfterTest {
 
 	@Test
 	public void testPropReadMeta() throws IOException {
-		File corpusPath = new File(PepperModuleTest.getTestResources() + "/readMeta/");
+		File corpusPath = new File(PepperTestUtil.getTestResources() + "/readMeta/");
 		URI corpusURI = URI.createFileURI(corpusPath.getCanonicalPath());
 		SCorpusGraph graph = SaltFactory.createSCorpusGraph();
 		SCorpus corpus = graph.createCorpus(null, "corpus");

@@ -29,42 +29,19 @@ import org.corpus_tools.pepper.common.FormatDesc.FormatDescBuilder;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.modules.exceptions.PepperModuleTestException;
 import org.junit.Test;
 
-public abstract class PepperImExporterTest extends PepperModuleTest {
-
+public abstract class PepperImExporterTest<M extends PepperModule> extends PepperModuleTest<M> {
 	/**
 	 * A list of formats, which shall be supported
 	 */
-	private List<FormatDesc> supportedFormatsCheck = null;
-
-	@Override
-	protected void setFixture(PepperModule fixture) {
-		if (fixture == null) {
-			throw new PepperModuleTestException(
-					"Cannot start pepper test, because no pepper module was set for current test. ");
-		}
-		if (!(fixture instanceof PepperImporter || fixture instanceof PepperExporter)) {
-			throw new PepperModuleTestException(fixture,
-					"Cannot start pepper test, because the set pepper module neither an im- nor an exporter ");
-		}
-		super.setFixture(fixture);
-		initializeFormatsToBeSupportedWhenNecessary();
-	}
-
-	private void initializeFormatsToBeSupportedWhenNecessary() {
-		if (supportedFormatsCheck == null) {
-			supportedFormatsCheck = new ArrayList<>();
-		}
-	}
+	private final List<FormatDesc> supportedFormatsCheck = new ArrayList<>();
 
 	/**
 	 * Adds a format description to the list of formats which should be
 	 * supported by the module to be tested.
 	 */
 	protected void addFormatWhichShouldBeSupported(FormatDesc formatDesc) {
-		initializeFormatsToBeSupportedWhenNecessary();
 		if (formatDesc == null) {
 			fail("Cannot add an empty format description.");
 		}

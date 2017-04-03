@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.PepperUtil;
-import org.corpus_tools.pepper.testFramework.old.PepperTestUtil;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.SampleGenerator;
 import org.eclipse.emf.common.util.URI;

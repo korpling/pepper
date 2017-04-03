@@ -17,16 +17,15 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
-import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
-import org.corpus_tools.pepper.testFramework.old.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class DoNothingImporterTest extends PepperImporterTest {
+public class DoNothingImporterTest extends PepperImporterTest<DoNothingImporter> implements RunFitnessCheck {
 
 	@Before
 	public void setUp() throws Exception {
-		setFixture(new DoNothingImporter());
+		setTestedModule(new DoNothingImporter());
 		addFormatWhichShouldBeSupported(DoNothingExporter.FORMAT_NAME, DoNothingExporter.FORMAT_VERSION);
 	}
 }

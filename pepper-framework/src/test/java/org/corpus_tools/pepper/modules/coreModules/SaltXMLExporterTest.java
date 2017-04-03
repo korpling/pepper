@@ -17,14 +17,14 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import org.corpus_tools.pepper.modules.coreModules.SaltXMLExporter;
-import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class SaltXMLExporterTest extends PepperExporterTest {
+public class SaltXMLExporterTest extends PepperExporterTest<SaltXMLExporter> implements RunFitnessCheck {
 	@Before
 	public void setUp() throws Exception {
-		setFixture(new SaltXMLExporter());
+		setTestedModule(new SaltXMLExporter());
 		addFormatWhichShouldBeSupported(SaltXMLExporter.FORMAT_NAME, SaltXMLExporter.FORMAT_VERSION);
 	}
 }

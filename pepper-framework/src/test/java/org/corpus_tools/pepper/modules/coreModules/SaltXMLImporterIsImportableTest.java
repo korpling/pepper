@@ -19,8 +19,7 @@ package org.corpus_tools.pepper.modules.coreModules;
 
 import static org.junit.Assert.assertEquals;
 
-import org.corpus_tools.pepper.modules.coreModules.SaltXMLImporter;
-import org.corpus_tools.pepper.testFramework.old.PepperTestUtil;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;

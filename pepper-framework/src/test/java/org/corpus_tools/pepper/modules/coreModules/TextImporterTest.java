@@ -17,6 +17,7 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
+import static org.corpus_tools.pepper.testFramework.PepperTestUtil.createTestTempPath;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -27,24 +28,23 @@ import java.io.PrintWriter;
 import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
-import org.corpus_tools.pepper.modules.coreModules.TextImporter;
 import org.corpus_tools.pepper.modules.coreModules.TextImporter.TextMapper;
-import org.corpus_tools.pepper.testFramework.old.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TextImporterTest extends PepperImporterTest {
+public class TextImporterTest extends PepperImporterTest<TextImporter> implements RunFitnessCheck {
+	private File testPath = createTestTempPath("textImporterTest");
 
 	@Before
-	public void setUp() throws Exception {
-		setFixture(new TextImporter());
+	public void beforeEach() throws Exception {
+		setTestedModule(new TextImporter());
 		addFormatWhichShouldBeSupported(TextImporter.FORMAT_NAME, TextImporter.FORMAT_VERSION);
 	}
-
-	private File testPath = getTempPath("textImporterTest");
 
 	/**
 	 * Tests the import of a single txt file containing characters linebreaks
@@ -130,15 +130,15 @@ public class TextImporterTest extends PepperImporterTest {
 		formatDesc.setFormatVersion(TextImporter.FORMAT_VERSION);
 		corpDesc.setFormatDesc(formatDesc);
 		corpDesc.setCorpusPath(URI.createFileURI(c1.getAbsolutePath()));
-		getFixture().setCorpusDesc(corpDesc);
+		testedModule.setCorpusDesc(corpDesc);
 
 		start();
 
-		assertNotNull(getFixture().getSaltProject());
-		assertEquals(1, getFixture().getSaltProject().getCorpusGraphs().size());
-		assertNotNull(getFixture().getSaltProject().getCorpusGraphs().get(0));
+		assertNotNull(testedModule.getSaltProject());
+		assertEquals(1, testedModule.getSaltProject().getCorpusGraphs().size());
+		assertNotNull(testedModule.getSaltProject().getCorpusGraphs().get(0));
 
-		assertEquals(3, getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora().size());
-		assertEquals(4, getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments().size());
+		assertEquals(3, testedModule.getSaltProject().getCorpusGraphs().get(0).getCorpora().size());
+		assertEquals(4, testedModule.getSaltProject().getCorpusGraphs().get(0).getDocuments().size());
 	}
 }

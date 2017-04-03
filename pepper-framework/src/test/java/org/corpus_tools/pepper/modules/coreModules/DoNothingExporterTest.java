@@ -17,20 +17,18 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
-import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
-import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class DoNothingExporterTest extends PepperExporterTest {
+public class DoNothingExporterTest extends PepperExporterTest<DoNothingExporter> implements RunFitnessCheck {
 
 	@Before
 	public void setUp() throws Exception {
-		super.setFixture(new DoNothingExporter());
-		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
+		setTestedModule(new DoNothingExporter());
 		addFormatWhichShouldBeSupported(DoNothingExporter.FORMAT_NAME, DoNothingExporter.FORMAT_VERSION);
 	}
 }

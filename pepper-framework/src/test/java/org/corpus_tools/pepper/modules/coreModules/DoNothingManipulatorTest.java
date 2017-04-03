@@ -17,16 +17,15 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import org.corpus_tools.pepper.modules.coreModules.DoNothingManipulator;
-import org.corpus_tools.pepper.testFramework.old.PepperManipulatorTest;
-import org.corpus_tools.salt.SaltFactory;
+import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class DoNothingManipulatorTest extends PepperManipulatorTest {
+public class DoNothingManipulatorTest extends PepperManipulatorTest<DoNothingManipulator> implements RunFitnessCheck {
 
 	@Before
-	public void setUp() throws Exception {
-		super.setFixture(new DoNothingManipulator());
-		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
+	public void setUp() {
+		setTestedModule(new DoNothingManipulator());
+		// super.getFixture().setSaltProject(SaltFactory.createSaltProject());
 	}
 }

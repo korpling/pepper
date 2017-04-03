@@ -15,12 +15,10 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework.old.helpers;
+package org.corpus_tools.pepper.testFramework.util;
 
-import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperModuleImpl;
-import org.corpus_tools.pepper.testFramework.old.helpers.PepperModuleTest;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
@@ -33,60 +31,55 @@ public class PepperModuleTestTest {
 	@Before
 	public void beforeEach() {
 		fixture = new PepperModuleTest() {
-			@Override
-			protected void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness) {
-				// do nothing
-
-			}
 		};
 	}
 
 	@Test(expected = AssertionError.class)
 	public void whenCheckThatFixtureIsSetAndFixtureIsSet_thenFail() {
-		fixture.checkThatFixtureIsSet();
+		fixture.checkThatTestedModuleIsSet();
 	}
 
 	@Test
 	public void whenCheckThatFixtureIsSetAndNoFixtureIsSet_thenSuccess() {
-		fixture.setFixture(new PepperManipulatorImpl() {
+		fixture.setTestedModule(new PepperManipulatorImpl() {
 		});
 
-		fixture.checkThatFixtureIsSet();
+		fixture.checkThatTestedModuleIsSet();
 	}
 
 	@Test(expected = AssertionError.class)
 	public void whenCheckThatModuleHasNameAndNoNameIsSet_thenFail() {
-		fixture.setFixture(new ModuleWithoutName());
+		fixture.setTestedModule(new ModuleWithoutName());
 		fixture.checkThatModuleHasName();
 	}
 
 	@Test
 	public void whenCheckThatModuleHasNameAndNoNameIsSet_thenSuccess() {
-		fixture.setFixture(new ModuleWithName());
+		fixture.setTestedModule(new ModuleWithName());
 		fixture.checkThatModuleHasName();
 	}
 
 	@Test(expected = AssertionError.class)
 	public void whenCheckThatResourcePathIsSetAndItIsNotSet_thenFail() {
-		fixture.setFixture(new ModuleWithOutResource());
+		fixture.setTestedModule(new ModuleWithOutResource());
 		fixture.checkThatResourcePathIsSet();
 	}
 
 	@Test
 	public void whenCheckThatResourcePathIsSetAndItIsSet_thenSuccess() {
-		fixture.setFixture(new ModuleWithResource());
+		fixture.setTestedModule(new ModuleWithResource());
 		fixture.checkThatResourcePathIsSet();
 	}
 
 	@Test(expected = AssertionError.class)
 	public void whenCheckThatCorpusGraphIsSettableAndCorpusGraphIsNotSettable_thenFail() {
-		fixture.setFixture(new ModuleWhoseCorpusGraphIsNotSettable());
+		fixture.setTestedModule(new ModuleWhoseCorpusGraphIsNotSettable());
 		fixture.checkThatCorpusGraphIsSettable();
 	}
 
 	@Test
 	public void whenCheckThatCorpusGraphIsSettableAndCorpusGraphIsSettable_thenSuccess() {
-		fixture.setFixture(new ModuleWithName());
+		fixture.setTestedModule(new ModuleWithName());
 		fixture.checkThatCorpusGraphIsSettable();
 	}
 

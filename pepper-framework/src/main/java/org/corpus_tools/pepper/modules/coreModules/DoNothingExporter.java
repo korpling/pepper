@@ -56,17 +56,18 @@ public class DoNothingExporter extends PepperExporterImpl implements PepperExpor
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-		URI expectedURI = getResources().appendSegment("modules").appendSegment("selfTests")
-				.appendSegment("doNothingExporter").appendSegment("expected");
 
+		URI baseURI = getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("doNothingExporter");
+		URI expectedURI = baseURI.appendSegment("expected");
+		URI inputURI = baseURI.appendSegment("expected");
 		// We have to make sure the output directory exists, even if this is the
 		// "do nothing" exporter
 		if (!new File(expectedURI.toFileString()).mkdirs()) {
 			logger.warn("Can't create output directory '" + expectedURI + "' for DoNothingExporter");
 		}
 
-		return new SelfTestDesc(getResources().appendSegment("modules").appendSegment("selfTests")
-				.appendSegment("doNothingExporter").appendSegment("in"), expectedURI);
+		return SelfTestDesc.create().withInputCorpusPath(inputURI).withExpectedCorpusPath(expectedURI).build();
 	}
 
 	@Override

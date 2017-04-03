@@ -38,6 +38,7 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleXMLResourceException;
+import org.corpus_tools.pepper.util.FileComparator;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -788,5 +789,18 @@ public abstract class PepperUtil {
 	 */
 	public static <T> boolean isNotNullOrEmpty(final Collection<T> collection) {
 		return !isNullOrEmpty(collection);
+	}
+
+	/**
+	 * Compares the content of two files. Iff they are exactly the same, than
+	 * true will be returned. False otherwise.
+	 * 
+	 * <pre>
+	 * Use: 
+	 * <code>compare(file1).with(file2);</code>
+	 * </pre>
+	 */
+	public static FileComparator compare(File file1) {
+		return new FileComparator(file1);
 	}
 }

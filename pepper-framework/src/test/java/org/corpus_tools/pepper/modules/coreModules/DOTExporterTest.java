@@ -17,19 +17,19 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import org.corpus_tools.pepper.modules.coreModules.DOTExporter;
-import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.corpus_tools.salt.SaltFactory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class DOTExporterTest extends PepperExporterTest {
+public class DOTExporterTest extends PepperExporterTest<DOTExporter> implements RunFitnessCheck {
 	@Before
 	public void setUp() throws Exception {
-		super.setFixture(new DOTExporter());
-		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
+		setTestedModule(new DOTExporter());
+		testedModule.setSaltProject(SaltFactory.createSaltProject());
 		addFormatWhichShouldBeSupported(DOTExporter.FORMAT_NAME, DOTExporter.FORMAT_VERSION);
 	}
 }

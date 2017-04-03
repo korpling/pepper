@@ -30,7 +30,7 @@ import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.modules.PepperExporter;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperModule;
-import org.corpus_tools.pepper.testFramework.old.PepperTestUtil;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

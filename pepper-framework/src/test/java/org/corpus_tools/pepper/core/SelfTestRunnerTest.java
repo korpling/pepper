@@ -17,7 +17,7 @@ import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingManipulator;
-import org.corpus_tools.pepper.testFramework.old.PepperTestUtil;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.samples.SampleGenerator;
 import org.eclipse.emf.common.util.URI;

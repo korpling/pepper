@@ -41,7 +41,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingExporter;
 import org.corpus_tools.pepper.modules.coreModules.DoNothingImporter;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleTestException;
-import org.corpus_tools.pepper.testFramework.old.helpers.PepperModuleTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
@@ -61,25 +60,28 @@ public class PepperTestUtil {
 	public static String TMP_TEST_DIR = "pepper-test";
 
 	/**
-	 * Returns a {@link File} object pointing to a temporary path, where the
-	 * caller can store temporary files. The temporary path is located in the
-	 * temporary directory provided by the underlying os. The resulting
-	 * directory is located in TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/
-	 * <code>testDirectory</code>.
-	 * 
-	 * @param testDirectory
-	 *            last part of the temporary path
-	 * @return a file object locating to a temporary folder, where files can be
-	 *         stored temporarily
+	 * Returns a {@link File} object pointing to a temporary path, to store
+	 * temporary files. The path is located in the temporary directory provided
+	 * by the underlying os. The resulting directory is located in
+	 * TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/ <code>testDirectory</code>.
 	 */
-	public static File createTempPath(String testDirectory) {
+	public static File createTestTempPath(String testDirectory) {
 		if ((testDirectory == null) || (testDirectory.isEmpty())) {
-			throw new PepperModuleTestException(
-					"Cannot return a temporary directory, since the given last part is empty.");
+			PepperUtil.getTempFile();
 		}
 		File retVal = null;
 		retVal = PepperUtil.getTempTestFile(TMP_TEST_DIR + "/" + testDirectory);
 		return (retVal);
+	}
+
+	/**
+	 * Returns a {@link URI} object pointing to a temporary path, to store
+	 * temporary files. The path is located in the temporary directory provided
+	 * by the underlying os. The resulting directory is located in
+	 * TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/ <code>testDirectory</code>.
+	 */
+	public static URI createTempPathAsUri(String testDirectory) {
+		return (URI.createFileURI(createTestTempPath(testDirectory).getAbsolutePath()));
 	}
 
 	/**
@@ -115,7 +117,7 @@ public class PepperTestUtil {
 		FormatDesc formatDesc;
 
 		// set tmp folder
-		File tmpFolder = PepperModuleTest.getTempPath_static("pepperModuleTest");
+		File tmpFolder = PepperTestUtil.createTestTempPath("pepperModuleTest");
 
 		Step step = null;
 		CorpusDesc corpusDesc = new CorpusDesc();

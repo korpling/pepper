@@ -15,12 +15,10 @@
  *
  *
  */
-package org.corpus_tools.pepper.testFramework.old.helpers;
+package org.corpus_tools.pepper.testFramework.util;
 
-import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
-import org.corpus_tools.pepper.testFramework.old.helpers.PepperImExporterTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,11 +28,6 @@ public class PepperImExporterTestTest {
 	@Before
 	public void beforeEach() {
 		fixture = new PepperImExporterTest() {
-			@Override
-			protected void checkThatWhenSimulatingFitnessCheckModulePassesSelfTest(ModuleFitness fitness) {
-				// do nothing
-
-			}
 		};
 	}
 
@@ -46,7 +39,7 @@ public class PepperImExporterTestTest {
 		exporterToTest.addSupportedFormat("format1", "1.0", null);
 		exporterToTest.addSupportedFormat("format1", "2.0", null);
 		exporterToTest.addSupportedFormat("format2", "1.0", null);
-		fixture.setFixture(exporterToTest);
+		fixture.setTestedModule(exporterToTest);
 		fixture.addFormatWhichShouldBeSupported("format1", "1.0");
 		fixture.addFormatWhichShouldBeSupported("format1", "2.0");
 		fixture.addFormatWhichShouldBeSupported("format2", "1.0");

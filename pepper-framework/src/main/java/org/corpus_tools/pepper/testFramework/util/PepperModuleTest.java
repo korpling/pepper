@@ -6,6 +6,8 @@ import static org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature.HAS_PA
 import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.corpus_tools.pepper.common.ModuleFitness;
@@ -13,10 +15,12 @@ import org.corpus_tools.pepper.common.ModuleFitness.FitnessFeature;
 import org.corpus_tools.pepper.core.ModuleFitnessChecker;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.PepperImporterTest;
+import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
-import org.corpus_tools.pepper.testFramework.old.PepperExporterTest;
-import org.corpus_tools.pepper.testFramework.old.PepperImporterTest;
-import org.corpus_tools.pepper.testFramework.old.PepperManipulatorTest;
+import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.exceptions.SaltResourceException;
 import org.corpus_tools.salt.util.Difference;
@@ -29,21 +33,51 @@ import org.junit.Test;
  * {@link PepperManipulatorTest} and {@link PepperExporterTest}. The class
  * provides a set of helping functions, which are used in each derived sub
  * classes. For instance the module to be tested can be set and returned via
- * {@link #setFixture(PepperModule)} and {@link #testedModule}.
+ * {@link #setTestedModule(PepperModule)} and {@link #testedModule}.
  */
-public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality {
-	protected static ModuleFitness fitness = null;
+public abstract class PepperModuleTest<M extends PepperModule> extends PepperModuleTestCoreFunctionality<M> {
+	// protected static ModuleFitness fitness = null;
+
+	private final static Map<PepperModule, ModuleFitness> fitnessTable = new HashMap<>();
+
+	protected ModuleFitness getFitness() {
+		return fitnessTable.get(testedModule);
+	}
+
+	@Test
+	public void checkThatTestedModuleIsSet() {
+		assertThat(testedModule).as("The module tpo bes tested is not set. ").isNotNull();
+	}
+
+	@Test
+	public void checkThatCorpusGraphIsSettable() {
+		whenFixtureIsNullThenFail();
+		final SCorpusGraph corpGraph = SaltFactory.createSCorpusGraph();
+		testedModule.setCorpusGraph(corpGraph);
+		assertThat(testedModule.getCorpusGraph())
+				.as("When setting and getting the corpus graph, both should be the same. May be you have overwritten the method PepperModule.getCorpusGraph() or PepperModule.setCorpusGraph()? ")
+				.isEqualTo(corpGraph);
+	}
+
+	@Test
+	public void checkThatResourcePathIsSet() {
+		whenFixtureIsNullThenFail();
+		testedModule.setResources(resourceURI);
+		assertThat(testedModule.getResources())
+				.as("When setting and getting resource path, both should be the same. May be you have overwritten the method PepperModule.getResourceURI() or PepperModule.setResourceURI()? ")
+				.isEqualTo(resourceURI);
+	}
 
 	@Test
 	public void checkThatModuleHasName() {
 		preTest();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_NAME)).as("A module's name must not be empty. ").isTrue();
+		assertThat(getFitness().getFitness(FitnessFeature.HAS_NAME)).as("A module's name must not be empty. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleIsReadyToRun() {
 		preTest();
-		assertThat(fitness.getFitness(FitnessFeature.IS_READY_TO_RUN))
+		assertThat(getFitness().getFitness(FitnessFeature.IS_READY_TO_RUN))
 				.as("The module is not ready to run, please check the method ''PepperModule.isReadyToRun()'. ")
 				.isTrue();
 	}
@@ -51,36 +85,36 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 	@Test
 	public void checkThatModuleHasSupplierContact() {
 		preTest();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT))
+		assertThat(getFitness().getFitness(FitnessFeature.HAS_SUPPLIER_CONTACT))
 				.as("The module does not provide an email address of the module's supplier. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasSupplierHomepage() {
 		preTest();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_SUPPLIER_HP))
+		assertThat(getFitness().getFitness(FitnessFeature.HAS_SUPPLIER_HP))
 				.as("The module does not provide a link to the modules supplier's homepage. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasDescription() {
 		preTest();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_DESCRIPTION))
+		assertThat(getFitness().getFitness(FitnessFeature.HAS_DESCRIPTION))
 				.as("The module does not provide a proper description. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasSupportedFormats() {
 		preTest();
-		assertThat(fitness.getFitness(FitnessFeature.HAS_DESCRIPTION))
+		assertThat(getFitness().getFitness(FitnessFeature.HAS_DESCRIPTION))
 				.as("The module does not provide a list of formats it supports. ").isTrue();
 	}
 
 	@Test
 	public void checkThatModuleHasPassedSelfTest() {
 		preTest();
-		assumeTrue(fitness.getFitness(FitnessFeature.HAS_SELFTEST));
-		boolean hasPassedSelfTest = fitness.getFitness(HAS_PASSED_SELFTEST);
+		assumeTrue(getFitness().getFitness(FitnessFeature.HAS_SELFTEST));
+		boolean hasPassedSelfTest = getFitness().getFitness(HAS_PASSED_SELFTEST);
 		whenHasNotPassedSelfTestThenSaveSaltProject(hasPassedSelfTest);
 		assertThat(hasPassedSelfTest)
 				.as("The module has not passed the provided self-test. " + diffsBetweenActualAndExpected()).isTrue();
@@ -105,19 +139,11 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 
 	private void whenHasNotPassedSelfTestThenSaveSaltProject(boolean hasPassedSelfTest) {
 		if (!hasPassedSelfTest) {
-			final File saltProjectLoaction = getTempPath("actualSaltProject");
+			final File saltProjectLoaction = PepperTestUtil.createTestTempPath("actualSaltProject");
 			testedModule.getSaltProject().saveSaltProject(URI.createFileURI(saltProjectLoaction.getAbsolutePath()));
 			logger.error("Test did not passed has self-test, the actual Salt project was stored to '"
 					+ saltProjectLoaction.getAbsolutePath() + "'. ");
 		}
-	}
-
-	@Test
-	public void checkThatSelfTestResultIsValid() {
-		preTest();
-		assumeTrue(fitness.getFitness(FitnessFeature.HAS_SELFTEST));
-		assertThat(fitness.getFitness(FitnessFeature.IS_VALID_SELFTEST_DATA))
-				.as("The self-test does not produce a valid salt model. ").isTrue();
 	}
 
 	protected void preTest() {
@@ -129,16 +155,16 @@ public abstract class PepperModuleTest extends PepperModuleTestCoreFunctionality
 	}
 
 	private synchronized void whenFitnessCheckWasntStartetdThenRun() {
-		if (fitness != null) {
+		if (getFitness() != null) {
 			return;
 		}
 		ModuleFitnessChecker fitnessChecker = new ModuleFitnessChecker();
-		fitness = fitnessChecker.checkFitness(testedModule);
+		fitnessTable.put(testedModule, fitnessChecker.checkFitness(testedModule));
 	}
 
 	private void whenFixtureIsNullThenFail() {
 		if (testedModule == null) {
-			fail("Cannot run tests when no fixture is set. Please call setFixture(PepperModule) before running test. ");
+			fail("Cannot run tests when tested module is not set. Please call setTestedModule(PepperModule) before running test. ");
 		}
 	}
 }

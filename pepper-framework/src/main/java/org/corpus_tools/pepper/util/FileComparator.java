@@ -26,6 +26,16 @@ import java.io.IOException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleTestException;
 
 public class FileComparator {
+	private final File file1;
+
+	public FileComparator(File file1) {
+		this.file1 = file1;
+	}
+
+	public boolean with(File file2) {
+		return compareFiles(file1, file2);
+	}
+
 	/**
 	 * Compares the content of two files. Iff they are exactly the same, than
 	 * true will be returned. False otherwise.
@@ -35,10 +45,8 @@ public class FileComparator {
 	 * @param file2
 	 *            second file to compare
 	 * @return true, iff files are exactly the same
-	 * @throws IOException
-	 * @throws IOException
 	 */
-	public boolean compareFiles(File file1, File file2) throws IOException {
+	private boolean compareFiles(File file1, File file2) {
 		boolean retVal = false;
 
 		if ((file1 == null) || (file2 == null)) {

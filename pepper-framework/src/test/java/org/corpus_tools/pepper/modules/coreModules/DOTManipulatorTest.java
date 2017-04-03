@@ -17,19 +17,14 @@
  */
 package org.corpus_tools.pepper.modules.coreModules;
 
-import org.corpus_tools.pepper.modules.coreModules.DOTManipulator;
-import org.corpus_tools.pepper.testFramework.old.PepperManipulatorTest;
-import org.corpus_tools.salt.SaltFactory;
-import org.eclipse.emf.common.util.URI;
+import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
+import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class DOTManipulatorTest extends PepperManipulatorTest {
-
-	URI resourceURI = URI.createFileURI("./src/test/resources/resources");
+public class DOTManipulatorTest extends PepperManipulatorTest<DOTManipulator> implements RunFitnessCheck {
 
 	@Before
 	public void setUp() throws Exception {
-		super.setFixture(new DOTManipulator());
-		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
+		setTestedModule(new DOTManipulator());
 	}
 }

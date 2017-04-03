@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.corpus_tools.pepper.exceptions.NotInitializedException;
-import org.corpus_tools.pepper.testFramework.old.PepperTestUtil;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
