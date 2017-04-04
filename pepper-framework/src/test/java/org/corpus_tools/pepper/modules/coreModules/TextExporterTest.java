@@ -18,7 +18,7 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import static org.corpus_tools.pepper.common.PepperUtil.compare;
-import static org.corpus_tools.pepper.testFramework.PepperTestUtil.createTempPathAsUri;
+import static org.corpus_tools.pepper.testFramework.PepperTestUtil.createTestTempPathAsUri;
 import static org.corpus_tools.pepper.testFramework.PepperTestUtil.getTestResources;
 import static org.junit.Assert.assertTrue;
 
@@ -60,7 +60,7 @@ public class TextExporterTest extends PepperExporterTest<TextExporter> implement
 		SDocument sDoc = testedModule.getSaltProject().getCorpusGraphs().get(0).createDocument(sCorpus, "doc1");
 		SampleGenerator.createPrimaryData(sDoc);
 		testedModule.setCorpusDesc(new CorpusDesc().setFormatDesc(FORMAT_DESC)
-				.setCorpusPath(createTempPathAsUri("TextExporterTest/test1")));
+				.setCorpusPath(createTestTempPathAsUri("TextExporterTest/test1")));
 
 		start();
 
@@ -93,7 +93,7 @@ public class TextExporterTest extends PepperExporterTest<TextExporter> implement
 				"Black pepper (Piper nigrum) is a flowering vine in the family Piperaceae, cultivated for its fruit, which is usually dried and used as a spice and seasoning. When dried, the fruit is known as a peppercorn. When fresh and fully mature, it is approximately 5 millimetres (0.20 in) in diameter, dark red, and, like all drupes, contains a single seed. Peppercorns, and the ground pepper derived from them, may be described simply as pepper, or more precisely as black pepper (cooked and dried unripe fruit), green pepper (dried unripe fruit) and white pepper (ripe fruit seeds).\n\nBlack pepper is native to south India, and is extensively cultivated there and elsewhere in tropical regions. Currently Vietnam is the world's largest producer and exporter of pepper, producing 34% of the world's Piper nigrum crop as of 2008.\n\nDried ground pepper has been used since antiquity for both its flavour and as a traditional medicine. Black pepper is the world's most traded spice. It is one of the most common spices added to European cuisine and its descendants. The spiciness of black pepper is due to the chemical piperine, not to be confused with the capsaicin that gives fleshy peppers theirs. It is ubiquitous in the modern world as a seasoning and is often paired with salt.");
 
 		testedModule.setCorpusDesc(new CorpusDesc().setFormatDesc(FORMAT_DESC)
-				.setCorpusPath(PepperTestUtil.createTempPathAsUri("TextExporterTest/test2")));
+				.setCorpusPath(PepperTestUtil.createTestTempPathAsUri("TextExporterTest/test2")));
 
 		start();
 
@@ -126,7 +126,7 @@ public class TextExporterTest extends PepperExporterTest<TextExporter> implement
 				"Black pepper (Piper nigrum) is a flowering vine in the family Piperaceae, cultivated for its fruit, which is usually dried and used as a spice and seasoning. When dried, the fruit is known as a peppercorn. When fresh and fully mature, it is approximately 5 millimetres (0.20 in) in diameter, dark red, and, like all drupes, contains a single seed. Peppercorns, and the ground pepper derived from them, may be described simply as pepper, or more precisely as black pepper (cooked and dried unripe fruit), green pepper (dried unripe fruit) and white pepper (ripe fruit seeds).\n\nBlack pepper is native to south India, and is extensively cultivated there and elsewhere in tropical regions. Currently Vietnam is the world's largest producer and exporter of pepper, producing 34% of the world's Piper nigrum crop as of 2008.\n\nDried ground pepper has been used since antiquity for both its flavour and as a traditional medicine. Black pepper is the world's most traded spice. It is one of the most common spices added to European cuisine and its descendants. The spiciness of black pepper is due to the chemical piperine, not to be confused with the capsaicin that gives fleshy peppers theirs. It is ubiquitous in the modern world as a seasoning and is often paired with salt.");
 
 		testedModule.setCorpusDesc(new CorpusDesc().setFormatDesc(FORMAT_DESC)
-				.setCorpusPath(createTempPathAsUri("TextExporterTest/test3")));
+				.setCorpusPath(createTestTempPathAsUri("TextExporterTest/test3")));
 		start();
 		String parent = getTestResources() + "/TextExporterTest/test3";
 

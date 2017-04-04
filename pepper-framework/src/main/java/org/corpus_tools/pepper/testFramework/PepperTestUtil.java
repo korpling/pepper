@@ -80,7 +80,7 @@ public class PepperTestUtil {
 	 * by the underlying os. The resulting directory is located in
 	 * TEMP_PATH_BY_OS/{@value #TMP_TEST_DIR}/ <code>testDirectory</code>.
 	 */
-	public static URI createTempPathAsUri(String testDirectory) {
+	public static URI createTestTempPathAsUri(String testDirectory) {
 		return (URI.createFileURI(createTestTempPath(testDirectory).getAbsolutePath()));
 	}
 
