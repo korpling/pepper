@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.corpus_tools.pepper.core.DocumentBus;
-import org.corpus_tools.pepper.core.DocumentControllerImpl;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.salt.SaltFactory;

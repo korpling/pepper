@@ -20,7 +20,6 @@ package org.corpus_tools.pepper.common;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.corpus_tools.pepper.common.FormatDesc;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -26,8 +26,6 @@ import java.util.Vector;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
-import org.corpus_tools.pepper.core.PepperJobImpl;
-import org.corpus_tools.pepper.core.Step;
 import org.corpus_tools.pepper.core.PepperJobImplTest.MyImporter;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;

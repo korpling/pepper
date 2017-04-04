@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNull;
 import java.io.File;
 
 import org.corpus_tools.pepper.common.PepperUtil;
-import org.corpus_tools.pepper.core.PepperParamsReader;
 import org.corpus_tools.pepper.exceptions.PepperTestException;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;

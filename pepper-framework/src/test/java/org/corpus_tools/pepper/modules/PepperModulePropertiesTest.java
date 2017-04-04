@@ -19,8 +19,6 @@ package org.corpus_tools.pepper.modules;
 
 import java.util.Properties;
 
-import org.corpus_tools.pepper.modules.PepperModuleProperties;
-import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
 import org.junit.Before;
 import org.junit.Test;

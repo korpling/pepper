@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
-import org.corpus_tools.pepper.core.DocumentControllerImpl;
-import org.corpus_tools.pepper.core.ModuleControllerImpl;
 import org.corpus_tools.pepper.exceptions.PepperFWException;
 import org.corpus_tools.pepper.modules.DocumentController;
 import org.corpus_tools.pepper.modules.PepperModule;

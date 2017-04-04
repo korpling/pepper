@@ -26,8 +26,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.corpus_tools.pepper.common.MODULE_TYPE;
-import org.corpus_tools.pepper.common.StepDesc;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;

@@ -30,10 +30,6 @@ import java.util.Vector;
 
 import org.corpus_tools.pepper.common.Pepper;
 import org.corpus_tools.pepper.common.PepperModuleDesc;
-import org.corpus_tools.pepper.core.ModuleResolver;
-import org.corpus_tools.pepper.core.ModuleResolverImpl;
-import org.corpus_tools.pepper.core.PepperImpl;
-import org.corpus_tools.pepper.core.PepperJobImpl;
 import org.corpus_tools.pepper.exceptions.JobNotFoundException;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;

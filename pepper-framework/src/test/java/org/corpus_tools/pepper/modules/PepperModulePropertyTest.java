@@ -19,7 +19,6 @@ package org.corpus_tools.pepper.modules;
 
 import java.io.File;
 
-import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.junit.Test;
 
 import junit.framework.TestCase;
