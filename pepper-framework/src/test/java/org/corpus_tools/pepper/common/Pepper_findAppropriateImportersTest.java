@@ -59,7 +59,8 @@ public class Pepper_findAppropriateImportersTest {
 	@Test
 	public void whenFindAppropriateImportersForMultipleImportersAndTwoAreAppropriate_thenReturnTheOnes()
 			throws FileNotFoundException {
-		URI sampleURI = URI.createFileURI(PepperTestUtil.createTestTempPath("findAppropriateImporters").getAbsolutePath());
+		URI sampleURI = URI
+				.createFileURI(PepperTestUtil.createTestTempPath("findAppropriateImporters").getAbsolutePath());
 		PepperImporter importer1 = Mockito.spy(PepperImporterImpl.class);
 		when(importer1.getName()).thenReturn("importer1");
 		when(importer1.isImportable(sampleURI)).thenReturn(1.0);
@@ -79,7 +80,8 @@ public class Pepper_findAppropriateImportersTest {
 	@Test
 	public void whenFindAppropriateImportersAndNoImporterIsRegistered_thenReturnEmptySet()
 			throws FileNotFoundException {
-		URI sampleURI = URI.createFileURI(PepperTestUtil.createTestTempPath("findAppropriateImporters").getAbsolutePath());
+		URI sampleURI = URI
+				.createFileURI(PepperTestUtil.createTestTempPath("findAppropriateImporters").getAbsolutePath());
 		when(moduleResolver.getPepperImporters()).thenReturn(new ArrayList<PepperImporter>());
 
 		assertThat(fixture.findAppropriateImporters(sampleURI)).isEmpty();

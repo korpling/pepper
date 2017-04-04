@@ -185,9 +185,10 @@ public class PepperUtilTest {
 	public void whenListIsNotNullOrEmpty_isNotNullOrEmptyShouldReturnTrue() {
 		assertThat(PepperUtil.isNotNullOrEmpty(Arrays.asList("Bla"))).isTrue();
 	}
-	
+
 	@Test
 	public void whenReadingXMLResourceWithBOM_BOMShouldBeDropped() {
-		PepperUtil.readXMLResource(new DefaultHandler2(), URI.createFileURI(this.getClass().getResource("/resources/bom.xml").getPath()));
+		PepperUtil.readXMLResource(new DefaultHandler2(),
+				URI.createFileURI(this.getClass().getResource("/resources/bom.xml").getPath()));
 	}
 }

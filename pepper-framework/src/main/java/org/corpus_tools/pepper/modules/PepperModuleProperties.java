@@ -106,8 +106,8 @@ public class PepperModuleProperties implements Serializable {
 	 * c=d<br/>
 	 * To enable the reading of meta data set this property to the file ending
 	 * of the metadata file. For instance in case of the file is named
-	 * data.meta: {@value #PROP_BEFORE_READ_META}=meta. The file is expected
-	 * to be UTF-8 encoded.
+	 * data.meta: {@value #PROP_BEFORE_READ_META}=meta. The file is expected to
+	 * be UTF-8 encoded.
 	 */
 	public static final String PROP_BEFORE_READ_META = PREFIX_PEPPER_BEFORE + "readMeta";
 

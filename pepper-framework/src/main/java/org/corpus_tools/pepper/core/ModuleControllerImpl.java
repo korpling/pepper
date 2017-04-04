@@ -347,7 +347,8 @@ public class ModuleControllerImpl implements ModuleController {
 	 * This list is used to control, if this {@link ModuleControllerImpl} object
 	 * and its {@link PepperModule} work correctly.
 	 **/
-	private final Set<DocumentController> controllList = Collections.newSetFromMap(new ConcurrentHashMap<DocumentController, Boolean>());
+	private final Set<DocumentController> controllList = Collections
+			.newSetFromMap(new ConcurrentHashMap<DocumentController, Boolean>());
 
 	/**
 	 * This set contains all {@link DocumentController} objects which have been
