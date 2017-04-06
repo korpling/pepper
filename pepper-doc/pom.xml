@@ -46,15 +46,6 @@
 				</configuration>
 			</plugin>
 			<!-- end: maven site plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins </groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<!-- In default version from parent, a failure occures: Failed to execute 
-					goal org.apache.maven.plugins:maven-resources-plugin:2.7:copy-resources (copy-filter-docbook) 
-					on project salt-doc: Mark invalid -->
-				<version>2.6</version>
-			</plugin>
-			<!-- end of docbook plugin -->
 		</plugins>
 
 		<!-- start doxygen -->
