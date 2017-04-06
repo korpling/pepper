@@ -23,6 +23,7 @@ import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.salt.util.SaltUtil;
 
+@SuppressWarnings("serial")
 public class DOTManipulatorProperties extends PepperModuleProperties {
 	public static final String PREFIX = "dotManipulator.";
 	public static final String PROP_OUTPUTFILE = "outputDir";
@@ -56,7 +57,11 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	 * @return
 	 */
 	public String getFileEnding() {
-		PepperModuleProperty<String> prop = (PepperModuleProperty<String>) this.getProperty(PROP_FILE_ENDING);
-		return (prop.getValue());
+		PepperModuleProperty<?> prop = this.getProperty(PROP_FILE_ENDING);
+		if (prop.getValue() instanceof String) {
+			return ((String) prop.getValue());
+		} else {
+			return null;
+		}
 	}
 }

@@ -110,7 +110,7 @@ public class BeforeAfterTest {
 			assertTrue(sNode.getLayers().contains(layer1));
 			assertTrue(sNode.getLayers().contains(layer2));
 		}
-		for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
+		for (SRelation<?,?> sRel : sDoc.getDocumentGraph().getRelations()) {
 			assertTrue(sRel.getLayers().contains(layer1));
 			assertTrue(sRel.getLayers().contains(layer2));
 		}
@@ -169,7 +169,7 @@ public class BeforeAfterTest {
 			assertTrue(sNode.getLayers().contains(layer1));
 			assertTrue(sNode.getLayers().contains(layer2));
 		}
-		for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
+		for (SRelation<?,?> sRel : sDoc.getDocumentGraph().getRelations()) {
 			assertTrue(sRel.getLayers().contains(layer1));
 			assertTrue(sRel.getLayers().contains(layer2));
 		}

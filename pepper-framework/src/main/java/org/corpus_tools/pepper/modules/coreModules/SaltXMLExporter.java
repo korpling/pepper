@@ -30,7 +30,6 @@ import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -116,7 +115,7 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	}
 
 	/**
-	 * Creates a {@link Resource} for the {@link SaltProject} to persist
+	 * Creates a resource for the {@link SaltProject} to persist
 	 * contained objects like {@link SDocumentGraph} etc. This is caused by an
 	 * EMF constraint.
 	 */

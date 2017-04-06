@@ -47,7 +47,6 @@ import org.corpus_tools.salt.core.SRelation;
 import org.corpus_tools.salt.graph.IdentifiableElement;
 import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.graph.Label;
-import org.corpus_tools.salt.graph.Relation;
 import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
@@ -206,9 +205,9 @@ public class BeforeAfterAction {
 		retStr.append(prefix);
 		retStr.append(((isTail ? "└── " : "├── ") + node.getName()));
 		retStr.append("\n");
-		List<SRelation<SNode, SNode>> outRelations = corpusGraph.getOutRelations(node.getId());
+		List<SRelation<?, ?>> outRelations = corpusGraph.getOutRelations(node.getId());
 		int i = 0;
-		for (Relation out : outRelations) {
+		for (SRelation<?, ?> out : outRelations) {
 			if (i < outRelations.size() - 1) {
 				retStr.append(prefix);
 				retStr.append(reportCorpusStructure(corpusGraph, (SNode) out.getTarget(),
@@ -445,11 +444,11 @@ public class BeforeAfterAction {
 					}
 					// add all nodes to new layer
 					for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
-						sNode.addLayer(sLayer);
+						sLayer.addNode(sNode);
 					}
 					// add all relations to new layer
-					for (SRelation sRel : sDoc.getDocumentGraph().getRelations()) {
-						sRel.addLayer(sLayer);
+					for (SRelation<?, ?> sRel : sDoc.getDocumentGraph().getRelations()) {
+						sLayer.addRelation(sRel);
 					}
 				}
 			}
@@ -564,13 +563,11 @@ public class BeforeAfterAction {
 				SDocument document = (SDocument) id.getIdentifiableElement();
 
 				// rename all annotations of nodes
-				Iterator<SAnnotationContainer> it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document
-						.getDocumentGraph().getNodes().iterator();
+				Iterator<? extends SAnnotationContainer> it = document.getDocumentGraph().getNodes().iterator();
 				rename(it, renamingMap);
 
 				// rename all annotations of relations
-				it = (Iterator<SAnnotationContainer>) (Iterator<? extends SAnnotationContainer>) document
-						.getDocumentGraph().getRelations().iterator();
+				it = document.getDocumentGraph().getRelations().iterator();
 				rename(it, renamingMap);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -580,7 +577,7 @@ public class BeforeAfterAction {
 		}
 	}
 
-	private void rename(Iterator<SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
+	private void rename(Iterator<? extends SAnnotationContainer> it, Map<String[], String[]> renamingMap) {
 		while (it.hasNext()) {
 			SAnnotationContainer node = it.next();
 			for (Map.Entry<String[], String[]> entry : renamingMap.entrySet()) {

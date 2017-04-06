@@ -864,11 +864,6 @@ public class PepperJobImpl extends PepperJob {
 	/** Stores the time when this job was started **/
 	private Long startTime = 0l;
 
-	/** Returns the time when this job was started **/
-	private Long getStartTime() {
-		return startTime;
-	}
-
 	/**
 	 * Returns the amount of time the job already took.
 	 * 

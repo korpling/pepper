@@ -173,12 +173,12 @@ public class PepperStarter {
 		//
 		FITNESS("fitness", "f", null,
 				"Checks the fitness of each registered Pepper module. "
-					+ "The fitness check tests features of a module that are "
-					+ "necessary to run a module and features which should be "
-					+ "implemented. Modules having the status \"HEALTHY\" should "
-					+ "be possible to run, having the status \"FIT\" means they "
-					+ "also passed the more rigid tests. Modules that have a "
-					+ "\"CRITICAL\" health status are very likely to cause problems."),
+						+ "The fitness check tests features of a module that are "
+						+ "necessary to run a module and features which should be "
+						+ "implemented. Modules having the status \"HEALTHY\" should "
+						+ "be possible to run, having the status \"FIT\" means they "
+						+ "also passed the more rigid tests. Modules that have a "
+						+ "\"CRITICAL\" health status are very likely to cause problems."),
 		//
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//

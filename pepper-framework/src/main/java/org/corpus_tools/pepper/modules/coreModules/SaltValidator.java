@@ -93,7 +93,7 @@ public class SaltValidator extends PepperManipulatorImpl {
 		public DOCUMENT_STATUS mapSCorpus() {
 			if (getCorpus() != null) {
 				Boolean isLeafCorpus = null;
-				for (SRelation relation : getCorpus().getGraph().getOutRelations(getCorpus().getId())) {
+				for (SRelation<?,?> relation : getCorpus().getGraph().getOutRelations(getCorpus().getId())) {
 					if (relation.getTarget() instanceof SDocument) {
 						if ((isLeafCorpus != null) && (!isLeafCorpus)) {
 							logger.info(MSG_PREFIX + "Salt model not valid, the corpus '" + relation.getSource().getId()
@@ -126,7 +126,7 @@ public class SaltValidator extends PepperManipulatorImpl {
 		public DOCUMENT_STATUS mapSDocument() {
 			List<String> invalidities = new ArrayList<String>();
 			if (getDocument().getDocumentGraph() != null) {
-				for (SRelation rel : getDocument().getDocumentGraph().getRelations()) {
+				for (SRelation<?,?> rel : getDocument().getDocumentGraph().getRelations()) {
 					if (rel.getSource() == null) {
 						// relation has no source
 
