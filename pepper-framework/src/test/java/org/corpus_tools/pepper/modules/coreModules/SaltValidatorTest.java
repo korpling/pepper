@@ -18,10 +18,9 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class SaltValidatorTest extends PepperManipulatorTest<SaltValidator> implements RunFitnessCheck {
+public class SaltValidatorTest extends PepperManipulatorTest<SaltValidator> {
 
 	@Before
 	public void beforeEach() {

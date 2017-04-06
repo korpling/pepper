@@ -19,7 +19,6 @@ import org.corpus_tools.pepper.testFramework.PepperExporterTest;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
 import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.exceptions.SaltResourceException;
@@ -36,7 +35,7 @@ import org.junit.Test;
  * {@link #setTestedModule(PepperModule)} and {@link #testedModule}.
  */
 public abstract class PepperModuleTest<M extends PepperModule> extends PepperModuleTestCoreFunctionality<M> {
-	// protected static ModuleFitness fitness = null;
+	protected boolean isRunFitnessCheck = true;
 
 	private final static Map<PepperModule, ModuleFitness> fitnessTable = new HashMap<>();
 
@@ -147,9 +146,10 @@ public abstract class PepperModuleTest<M extends PepperModule> extends PepperMod
 	}
 
 	protected void preTest() {
-		assumeTrue("The fitness check for '" + this.getClass().getSimpleName()
-				+ "' is turned off. To turn it on, implement the interface '" + RunFitnessCheck.class
-				+ "' in your class. ", this instanceof RunFitnessCheck);
+		assumeTrue(
+				"The fitness check for '" + this.getClass().getSimpleName()
+						+ "' is turned off. To turn it on, set 'runFitnessCheck= true' to constructor or method marked with '@Before'. ",
+				isRunFitnessCheck);
 		whenFitnessCheckWasntStartetdThenRun();
 		whenFixtureIsNullThenFail();
 	}

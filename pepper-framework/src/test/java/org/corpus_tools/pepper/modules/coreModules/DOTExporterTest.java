@@ -18,14 +18,13 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.corpus_tools.salt.SaltFactory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class DOTExporterTest extends PepperExporterTest<DOTExporter> implements RunFitnessCheck {
+public class DOTExporterTest extends PepperExporterTest<DOTExporter> {
 	@Before
 	public void beforeEach() {
 		setTestedModule(new DOTExporter());

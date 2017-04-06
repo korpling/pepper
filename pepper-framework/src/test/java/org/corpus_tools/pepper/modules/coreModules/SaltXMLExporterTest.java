@@ -18,10 +18,9 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class SaltXMLExporterTest extends PepperExporterTest<SaltXMLExporter> implements RunFitnessCheck {
+public class SaltXMLExporterTest extends PepperExporterTest<SaltXMLExporter> {
 	@Before
 	public void beforeEach() {
 		setTestedModule(new SaltXMLExporter());

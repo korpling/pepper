@@ -18,13 +18,12 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class DoNothingExporterTest extends PepperExporterTest<DoNothingExporter> implements RunFitnessCheck {
+public class DoNothingExporterTest extends PepperExporterTest<DoNothingExporter> {
 	@Before
 	public void beforeEach() {
 		setTestedModule(new DoNothingExporter());

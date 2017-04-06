@@ -29,7 +29,6 @@ import org.corpus_tools.pepper.common.CorpusDesc;
 import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SDocument;
@@ -38,7 +37,7 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TextExporterTest extends PepperExporterTest<TextExporter> implements RunFitnessCheck {
+public class TextExporterTest extends PepperExporterTest<TextExporter> {
 	private static final FormatDesc FORMAT_DESC = new FormatDesc().setFormatName(TextExporter.FORMAT_NAME)
 			.setFormatVersion(TextExporter.FORMAT_VERSION);
 

@@ -18,10 +18,9 @@
 package org.corpus_tools.pepper.modules.coreModules;
 
 import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
-import org.corpus_tools.pepper.testFramework.RunFitnessCheck;
 import org.junit.Before;
 
-public class DOTManipulatorTest extends PepperManipulatorTest<DOTManipulator> implements RunFitnessCheck {
+public class DOTManipulatorTest extends PepperManipulatorTest<DOTManipulator> {
 
 	@Before
 	public void beforeEach() {
