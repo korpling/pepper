@@ -21,9 +21,6 @@ package org.corpus_tools.pepper.modules.exceptions;
  * Exception is used in case of an exception occurs concerning
  * {@link org.corpus_tools.pepper.modules.PepperModuleProperty} . Such an
  * exception can occur while initialization or while working with properties.
- * 
- * @author Florian Zipser
- *
  */
 @SuppressWarnings("serial")
 public class PepperModulePropertyException extends PepperModuleException {

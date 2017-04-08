@@ -181,8 +181,6 @@ import org.eclipse.emf.common.util.URI;
  * </pre>
  * 
  * </p>
- * 
- * @author Florian Zipser
  */
 public interface PepperExporter extends PepperModule {
 
@@ -267,9 +265,6 @@ public interface PepperExporter extends PepperModule {
 
 	/**
 	 * Determines how the corpus-structure should be exported.
-	 * 
-	 * @author Florian Zipser
-	 *
 	 */
 	public enum EXPORT_MODE {
 		/** corpus-structure should not be exported **/

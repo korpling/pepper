@@ -20,9 +20,6 @@ package org.corpus_tools.pepper.exceptions;
 /**
  * This class is highest exception. All PepperExceptions are derived from this
  * class. It can be instantiated, if no other Exception maps to the problem.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperException extends java.lang.RuntimeException {
 	/**

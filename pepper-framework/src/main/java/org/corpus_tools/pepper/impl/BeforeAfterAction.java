@@ -112,10 +112,6 @@ import org.slf4j.LoggerFactory;
  * </li>
  * </ul>
  * </p>
- * 
- * @author florian
- * @since 3.0.0
- *
  */
 public class BeforeAfterAction {
 

@@ -42,8 +42,6 @@ import org.slf4j.LoggerFactory;
 /**
  * An object of this types contains a {@link PepperModule} and handles as a
  * connector between such an object and the Pepper framework.
- * 
- * @author Florian Zipser
  */
 public class ModuleControllerImpl implements ModuleController {
 	private static final Logger logger = LoggerFactory.getLogger(ModuleController.class);

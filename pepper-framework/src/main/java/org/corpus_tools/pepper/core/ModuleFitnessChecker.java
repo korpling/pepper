@@ -40,9 +40,6 @@ import com.google.common.base.Strings;
 /**
  * A helper class for checking health and fitness of a module or a set of
  * modules.
- * 
- * @author florian
- *
  */
 public class ModuleFitnessChecker {
 	private static final Logger logger = LoggerFactory.getLogger("Pepper");
@@ -222,9 +219,6 @@ public class ModuleFitnessChecker {
 	 * helper class to check the feature's condition in an error prone manner.
 	 * When an exception occurs, the feature's fitness is automatically set to
 	 * false.
-	 * 
-	 * @author florian
-	 *
 	 */
 	private static abstract class AddFeature {
 		public AddFeature(final ModuleFitness fitness, final FitnessFeature feature) {

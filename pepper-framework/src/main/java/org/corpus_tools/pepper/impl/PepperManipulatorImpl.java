@@ -31,8 +31,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
  * </p>
  * 
  * @see PepperManipulator
- * 
- * @author Florian Zipser
  */
 public abstract class PepperManipulatorImpl extends PepperModuleImpl implements PepperManipulator {
 	/**

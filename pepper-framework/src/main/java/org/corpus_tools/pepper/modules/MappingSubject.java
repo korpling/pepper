@@ -28,9 +28,6 @@ import org.eclipse.emf.common.util.URI;
  * A subject is a container for {@link SDocument} or {@link SCorpus} object to
  * be merged. Further this container contains the {@link DOCUMENT_STATUS} and
  * the {@link URI} where the resource is located
- * 
- * @author Florian Zipser
- *
  */
 public class MappingSubject {
 	/**

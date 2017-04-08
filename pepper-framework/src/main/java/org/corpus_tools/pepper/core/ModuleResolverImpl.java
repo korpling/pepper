@@ -60,8 +60,6 @@ import com.google.common.base.Strings;
  * registered in the {@link ModuleResolverImpl}. The main task of this class is
  * to get a description of a {@link PepperModule} and to resolve a real instance
  * of that {@link PepperModule}.
- * 
- * @author Florian Zipser
  */
 @Component(name = "ModuleResolverComponent", configurationPid = "ModuleResolverComponent", immediate = true, enabled = true, servicefactory = false)
 public class ModuleResolverImpl implements ModuleResolver {

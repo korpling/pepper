@@ -22,9 +22,6 @@ package org.corpus_tools.pepper.modules.exceptions;
  * {@link org.corpus_tools.pepper.modules.PepperModule} and marks, that the
  * module is not ready for the requested action. For instance if it has not been
  * initialized.
- * 
- * @author florian
- *
  */
 @SuppressWarnings("serial")
 public class PepperModuleNotReadyException extends PepperModuleException {

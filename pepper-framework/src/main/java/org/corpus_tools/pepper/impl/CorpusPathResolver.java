@@ -129,9 +129,6 @@ public class CorpusPathResolver {
 	/**
 	 * Helper class to group a file, its content and the number of lines which
 	 * was read for content.
-	 * 
-	 * @author florian
-	 *
 	 */
 	private class FileContent {
 		public File file;

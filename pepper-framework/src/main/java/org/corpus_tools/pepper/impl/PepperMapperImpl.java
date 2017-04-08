@@ -36,9 +36,6 @@ import org.xml.sax.ext.DefaultHandler2;
 /**
  * An abstract implementation of {@link PepperMapper} to be used for further
  * derivations for specific mapping purposes.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperMapperImpl implements PepperMapper {
 

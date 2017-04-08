@@ -24,9 +24,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
  * This PepperException is thrown only by a
  * {@link org.corpus_tools.pepper.modules.PepperModule}. If such an exception
  * was thrown, it means that there are problems in the read resource.
- * 
- * @author Florian Zipser
- *
  */
 @SuppressWarnings("serial")
 public class PepperModuleDataException extends PepperModuleException {

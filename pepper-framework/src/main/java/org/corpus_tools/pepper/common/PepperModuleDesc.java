@@ -27,9 +27,6 @@ import org.eclipse.emf.common.util.URI;
 /**
  * This class is a kind of a fingerprint of a Pepper module and provides some
  * information about a module.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperModuleDesc implements Comparable<PepperModuleDesc> {
 

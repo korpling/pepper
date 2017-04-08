@@ -41,8 +41,6 @@ import org.slf4j.LoggerFactory;
  * Stores the global status of a {@link SDocument}. And a list of tuples for all
  * Modules and their current status. Can send {@link SDocumentGraph}s contained
  * in given {@link SDocument} to sleep and wake them.
- * 
- * @author Florian Zipser
  */
 public class DocumentControllerImpl implements DocumentController {
 	private static final Logger logger = LoggerFactory.getLogger(DocumentControllerImpl.class);
@@ -274,9 +272,6 @@ public class DocumentControllerImpl implements DocumentController {
 	 * A small helper class, to store the status and the processing a specific
 	 * {@link PepperModule} needed for the {@link SDocument} object contained by
 	 * the container {@link DocumentControllerImpl} object.
-	 * 
-	 * @author Florian Zipser
-	 *
 	 */
 	protected static class DetailedStatus {
 		public DetailedStatus() {

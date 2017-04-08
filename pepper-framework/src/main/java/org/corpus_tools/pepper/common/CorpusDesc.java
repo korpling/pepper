@@ -24,8 +24,6 @@ import org.eclipse.emf.common.util.URI;
  * description consists of a path addressing the location of the corpus and a
  * format description, in which the corpus currently is or is supposed to be
  * persist in.
- * 
- * @author Florian Zipser
  */
 public class CorpusDesc {
 	/**

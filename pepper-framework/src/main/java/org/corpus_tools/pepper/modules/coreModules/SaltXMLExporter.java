@@ -50,10 +50,6 @@ import org.osgi.service.component.annotations.Component;
  * sElementId.getSElementPath()+ SALT_FILE_ENDING". And 2) the document
  * structure will be stored to file. <br/>
  * After all was done, the saltProject will be exported.
- * 
- * @author Florian Zipser
- * @version 1.0
- * 
  */
 @Component(name = "SaltXMLExporterComponent", factory = "PepperExporterComponentFactory")
 public class SaltXMLExporter extends PepperExporterImpl implements PepperExporter {
@@ -78,6 +74,8 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 						.appendSegment("in"),
 				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlExporter")
 						.appendSegment("expected")) {
+			// Needs to override comparison for URI's, otherwise files will be
+			// compared as files, not as Salt objects
 			@Override
 			public boolean compare(final URI actualCorpusPath, final URI expectedCorpusPath) {
 				final SaltProject actual = SaltUtil.loadCompleteSaltProject(actualCorpusPath);
@@ -115,9 +113,9 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 	}
 
 	/**
-	 * Creates a resource for the {@link SaltProject} to persist
-	 * contained objects like {@link SDocumentGraph} etc. This is caused by an
-	 * EMF constraint.
+	 * Creates a resource for the {@link SaltProject} to persist contained
+	 * objects like {@link SDocumentGraph} etc. This is caused by an EMF
+	 * constraint.
 	 */
 	@Override
 	public void start() throws PepperModuleException {

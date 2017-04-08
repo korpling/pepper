@@ -668,9 +668,6 @@ public abstract class PepperUtil {
 	/**
 	 * Prints the status of the passed {@link PepperJob} object, until
 	 * {@link #setStop(Boolean#TRUE)} was called.
-	 * 
-	 * @author florian
-	 * 
 	 */
 	public static class PepperJobReporter extends Thread {
 		private static final Logger logger = LoggerFactory.getLogger(PepperJobReporter.class);

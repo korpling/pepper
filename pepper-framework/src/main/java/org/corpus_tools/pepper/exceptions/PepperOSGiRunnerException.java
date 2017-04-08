@@ -19,9 +19,6 @@ package org.corpus_tools.pepper.exceptions;
 
 /**
  * This exception is only to use for unit tests.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperOSGiRunnerException extends PepperException {
 

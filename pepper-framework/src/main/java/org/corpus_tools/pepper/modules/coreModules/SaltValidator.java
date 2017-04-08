@@ -40,9 +40,6 @@ import org.slf4j.LoggerFactory;
 /**
  * This class analyzes a Salt model and prints out a report about conflicts in
  * the Salt model.
- * 
- * @author Florian Zipser
- * 
  */
 @Component(name = "SaltValidatorManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class SaltValidator extends PepperManipulatorImpl {

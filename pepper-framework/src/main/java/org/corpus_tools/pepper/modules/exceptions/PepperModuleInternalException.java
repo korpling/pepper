@@ -24,9 +24,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
  * This PepperException is thrown only by a {@link PepperModule}. And is used to
  * type an exception as an internal exception, which means, when it is thrown a
  * bug occured.
- * 
- * @author Florian Zipser
- *
  */
 @SuppressWarnings("serial")
 public class PepperModuleInternalException extends PepperModuleException {

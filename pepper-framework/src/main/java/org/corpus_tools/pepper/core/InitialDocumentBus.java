@@ -26,9 +26,6 @@ import org.corpus_tools.pepper.modules.DocumentController;
 
 /**
  * TODO make docu
- * 
- * @author Florian Zipser
- *
  */
 public class InitialDocumentBus extends DocumentBus {
 	/** id for the initial document bus, which is input for importers **/

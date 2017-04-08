@@ -25,9 +25,6 @@ import org.corpus_tools.pepper.modules.PepperMapper;
  * objects. The reason of exception can be any and should be further specified
  * by subtypes. This exception just determines, that it occured during the
  * processing in a {@link org.corpus_tools.pepper.modules.PepperModule}.
- * 
- * @author Florian Zipser
- *
  */
 public class AbstractPepperModuleException extends PepperException {
 

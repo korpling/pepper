@@ -36,8 +36,6 @@ import org.corpus_tools.salt.common.SDocument;
  * objects, and no further processing of mapped object is necessary)</li>
  * </ul>
  * </ol>
- * 
- * @author Florian Zipser
  */
 public enum DOCUMENT_STATUS {
 	NOT_STARTED(0, "NOT_STARTED"), IN_PROGRESS(1, "IN_PROGRESS"), COMPLETED(2, "COMPLETED"), DELETED(3,

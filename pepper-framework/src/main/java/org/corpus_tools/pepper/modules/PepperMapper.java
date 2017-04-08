@@ -28,9 +28,6 @@ import org.eclipse.emf.common.util.URI;
  * This interface can be used in a threaded environment, where the
  * {@link PepperModule} is used for delegating thread jobs, and a set of
  * PepperMappers are mapping one {@link SDocument} or {@link SCorpus} object.
- * 
- * @author Florian Zipser
- *
  */
 public interface PepperMapper {
 	/**

@@ -121,8 +121,6 @@ import org.corpus_tools.salt.common.SDocument;
  * </pre>
  * 
  * </p>
- * 
- * @author Florian Zipser
  */
 public interface PepperManipulator extends PepperModule {
 }

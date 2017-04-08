@@ -22,9 +22,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
 /**
  * This PepperException is thrown by a {@link PepperModule}. If such an
  * exception is thrown, it means that an xml file has not been read correctly.
- * 
- * @author Florian Zipser
- *
  */
 @SuppressWarnings("serial")
 public class PepperModuleXMLResourceException extends PepperModuleException {

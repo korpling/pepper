@@ -102,9 +102,6 @@ import org.xml.sax.XMLReader;
  * <li>import of corpus structure</li>
  * <li>start</li>
  * </ul>
- * 
- * @author Florian Zipser
- * 
  */
 public class PepperJobImpl extends PepperJob {
 	private static final Logger logger = LoggerFactory.getLogger(PepperJobImpl.class);

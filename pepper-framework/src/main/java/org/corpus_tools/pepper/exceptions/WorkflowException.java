@@ -20,9 +20,6 @@ package org.corpus_tools.pepper.exceptions;
 /**
  * This PepperException is thrown if an internal error occurs. This means if it
  * is clear, that the error reason is a bug.
- * 
- * @author Florian Zipser
- *
  */
 public class WorkflowException extends PepperException {
 

@@ -45,9 +45,6 @@ import org.osgi.service.component.annotations.Property;
  * This class is a container for a set of {@link PepperModuleProperty} objects.
  * This class also offers some methods for accessing and maintaining the
  * objects.
- * 
- * @author Florian Zipser
- * 
  */
 @SuppressWarnings("serial")
 public class PepperModuleProperties implements Serializable {

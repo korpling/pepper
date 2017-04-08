@@ -33,8 +33,6 @@ import org.eclipse.emf.common.util.URI;
  * <li>{@link #formatReference} - to set a link to a more detailed description,
  * in most cases this is optional</li>
  * </ul>
- * 
- * @author Florian Zipser
  */
 public class FormatDesc {
 

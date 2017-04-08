@@ -32,9 +32,6 @@ import org.xml.sax.ext.DefaultHandler2;
  * the passed {@link PepperJob} object with the content of the read file. The
  * workflow description file has to be conform to
  * ./src/main/resources/workflowDescription_10.rnc.
- * 
- * @author Florian Zipser
- *
  */
 public class WorkflowDescriptionReader extends DefaultHandler2 {
 	public static final String TAG_PEPEPR_JOB = "pepper-job";

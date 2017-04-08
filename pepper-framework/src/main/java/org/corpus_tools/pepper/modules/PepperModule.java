@@ -37,8 +37,6 @@ import org.osgi.service.component.ComponentContext;
 
 /**
  * TODO make some docu
- * 
- * @author Florian Zipser
  */
 public interface PepperModule {
 	/**

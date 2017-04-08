@@ -22,9 +22,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
 /**
  * This Exception class can be used for Tests (i.e. JUnit tests) of
  * {@link org.corpus_tools.pepper.modules.PepperModule} classes.
- * 
- * @author Florian Zipser
- * 
  */
 @SuppressWarnings("serial")
 public class PepperModuleTestException extends PepperModuleException {

@@ -56,9 +56,6 @@ import com.google.common.base.Strings;
  * method {@link #compare(SaltProject, SaltProject)} or
  * {@link #compare(URI, URI)} is called later to compare the result produced by
  * the module with the expected model or files.
- * 
- * @author florian
- *
  */
 public class SelfTestDesc {
 	private static final Logger logger = LoggerFactory.getLogger("Pepper");

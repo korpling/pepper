@@ -38,10 +38,6 @@ import org.osgi.service.component.annotations.Component;
 /**
  * This is a PepperExporter which extracts and exports the primary text of a
  * Salt model and stores it into a text file.
- * 
- * @author Florian Zipser
- * @version 1.0
- * 
  */
 @Component(name = "TextExporterComponent", factory = "PepperExporterComponentFactory")
 public class TextExporter extends PepperExporterImpl implements PepperExporter {

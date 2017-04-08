@@ -32,9 +32,6 @@ import java.io.Serializable;
  * <li>a field determining if this property is required by the corresponding
  * {@link PepperModule} object</li>
  * </ol>
- * 
- * @author Florian Zipser
- * 
  */
 public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>, Serializable {
 	private static final long serialVersionUID = -1577480488804525468L;

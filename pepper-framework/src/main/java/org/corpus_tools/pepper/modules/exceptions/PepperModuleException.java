@@ -30,9 +30,6 @@ import org.corpus_tools.pepper.modules.PepperModule;
  * module. It does not give any information about the specific reason, for
  * instance a data error or an internal error etc. If possible, please use a
  * more specific subclassed Exception.</strong>
- * 
- * @author Florian Zipser
- * 
  */
 @SuppressWarnings("serial")
 public class PepperModuleException extends AbstractPepperModuleException {

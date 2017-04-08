@@ -27,9 +27,6 @@ import org.omg.CORBA.INITIALIZE;
  * <li>{@link #ENDED}, if the job ended successful</li>
  * <li>{@link #ENDED_WITH_ERRORS}, if the job ended with errors</li>
  * </ul>
- * 
- * @author Florian Zipser
- *
  */
 public enum JOB_STATUS {
 	//

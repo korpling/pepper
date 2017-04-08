@@ -39,9 +39,6 @@ import org.osgi.service.component.annotations.Component;
 /**
  * Maps a file-structure to a corpus-structure and reads the contained txt files
  * to map their content to {@link STextualDS} objects.
- * 
- * @author Florian Zipser
- * 
  */
 @Component(name = "TextImporterComponent", factory = "PepperImporterComponentFactory")
 public class TextImporter extends PepperImporterImpl implements PepperImporter {
@@ -90,9 +87,6 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 	/**
 	 * Reads the content of txt files and creates a {@link STextualDS} object
 	 * for each.
-	 * 
-	 * @author Florian Zipser
-	 *
 	 */
 	public static class TextMapper extends PepperMapperImpl {
 		/**

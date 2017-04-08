@@ -33,9 +33,6 @@ import org.xml.sax.ext.DefaultHandler2;
 
 /**
  * This class is a test class to tes {@link PepperUtil}.
- * 
- * @author florian
- *
  */
 public class PepperUtilTest {
 

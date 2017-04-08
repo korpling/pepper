@@ -65,8 +65,6 @@ import org.slf4j.helpers.NOPLogger;
 
 /**
  * TODO make docu
- * 
- * @author Florian Zipser
  */
 public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler {
 	protected Logger logger = LoggerFactory.getLogger("Pepper");

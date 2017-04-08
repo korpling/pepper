@@ -29,8 +29,6 @@ import org.corpus_tools.salt.common.SDocument;
 /**
  * An object of this types contains a {@link PepperModule} and handles as a
  * connector between such an object and the Pepper framework.
- * 
- * @author Florian Zipser
  */
 public interface ModuleController {
 

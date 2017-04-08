@@ -23,9 +23,6 @@ import javax.xml.stream.XMLStreamException;
 /**
  * This class is just a delegator class for a {@link XMLStreamWriter} with a
  * pretty printing possibility.
- * 
- * @author Florian Zipser
- *
  */
 public class XMLStreamWriter implements javax.xml.stream.XMLStreamWriter {
 

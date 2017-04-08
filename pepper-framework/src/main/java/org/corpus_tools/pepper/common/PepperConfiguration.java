@@ -52,9 +52,6 @@ import org.slf4j.LoggerFactory;
  * <li>testing phase: it is assumed, that the configuration file is stored in
  * BUNDLE_LOCATION/../BUNDLE_NAME</li>
  * </ol>
- * 
- * @author Florian Zipser
- * 
  */
 @SuppressWarnings("serial")
 public class PepperConfiguration extends Properties {

@@ -21,9 +21,6 @@ package org.corpus_tools.pepper.exceptions;
  * Is thrown, when any exception occurs concerning the configuration of Pepper.
  * For instance a configuration file cannot be read, or an invalid value is
  * contained.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperConfigurationException extends PepperException {
 

@@ -56,9 +56,6 @@ import org.eclipse.emf.common.util.URI;
  * <li>{@link #props} - a general property object (see: {@link Properties}) to
  * customize the mapping process</li>
  * </ul>
- * 
- * @author Florian Zipser
- *
  */
 public class StepDesc {
 

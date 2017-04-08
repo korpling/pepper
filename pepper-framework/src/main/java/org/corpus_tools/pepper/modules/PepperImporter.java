@@ -201,8 +201,6 @@ import org.eclipse.emf.common.util.URI;
  * </pre>
  * 
  * </p>
- *
- * @author Florian Zipser
  */
 public interface PepperImporter extends PepperModule {
 	/**

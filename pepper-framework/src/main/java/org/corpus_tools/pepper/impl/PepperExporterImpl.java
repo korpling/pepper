@@ -51,8 +51,6 @@ import org.eclipse.emf.common.util.URI;
  * </p>
  * 
  * @see PepperManipulator
- *
- * @author Florian Zipser
  */
 public abstract class PepperExporterImpl extends PepperModuleImpl implements PepperExporter {
 	/**

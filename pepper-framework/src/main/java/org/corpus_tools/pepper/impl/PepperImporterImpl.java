@@ -51,8 +51,6 @@ import org.xml.sax.ext.DefaultHandler2;
  * </p>
  * 
  * @see PepperImporter
- * 
- * @author Florian Zipser
  */
 public abstract class PepperImporterImpl extends PepperModuleImpl implements PepperImporter {
 	/**

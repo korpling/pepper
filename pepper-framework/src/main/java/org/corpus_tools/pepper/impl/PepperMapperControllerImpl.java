@@ -44,9 +44,6 @@ import org.slf4j.LoggerFactory;
  * {@link PepperMapper} object. This mechanism is used, to make sure that in
  * case of a forgotten clean up, the {@link PepperMapper} object can be removed
  * by the java garbage collector and does not overfill the main memory.
- * 
- * @author Florian Zipser
- * 
  */
 public class PepperMapperControllerImpl extends Thread implements PepperMapperController {
 	public Logger logger = LoggerFactory.getLogger("Pepper");

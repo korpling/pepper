@@ -25,11 +25,6 @@ import org.corpus_tools.pepper.exceptions.JobNotFoundException;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.eclipse.emf.common.util.URI;
 
-/**
- * 
- * @author Florian Zipser
- *
- */
 public interface Pepper {
 	/**
 	 * Returns set configuration for {@link Pepper}.

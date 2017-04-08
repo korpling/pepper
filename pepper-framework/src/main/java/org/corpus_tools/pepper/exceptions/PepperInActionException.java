@@ -22,9 +22,6 @@ package org.corpus_tools.pepper.exceptions;
  * new process or an action or tries to get access to a resource, but it
  * currently is in action and therefore can not be accessed. Normally this
  * exception means, that the caller should try it again later on.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperInActionException extends PepperException {
 

@@ -43,10 +43,6 @@ import org.osgi.service.component.annotations.Component;
  * {@value SaltFactory#FILE_ENDING_SALT}. The value
  * {@value SaltFactory#FILE_ENDING_SALT} can be got by method
  * getSaltFileEnding(). <br/>
- * 
- * @author Florian Zipser
- * @version 1.0
- * 
  */
 @Component(name = "SaltXMLImporterComponent", factory = "PepperImporterComponentFactory")
 public class SaltXMLImporter extends PepperImporterImpl implements PepperImporter {

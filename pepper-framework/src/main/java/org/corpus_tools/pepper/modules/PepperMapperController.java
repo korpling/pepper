@@ -33,9 +33,6 @@ import org.corpus_tools.salt.graph.Identifier;
  * sure that in case of a forgotten clean up, the {@link PepperMapper} object
  * can be removed by the java garbage collector and does not overfill the main
  * memory.
- * 
- * @author Florian Zipser
- *
  */
 public interface PepperMapperController extends Runnable {
 

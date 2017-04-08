@@ -38,9 +38,6 @@ import org.xml.sax.ext.DefaultHandler2;
  * with the content of the file. The pepperParams file is a relict of the times
  * where Pepper was based on EMF. Therefore the pepperParams file is an xmi
  * file.
- * 
- * @author Florian Zipser
- *
  */
 public class PepperParamsReader extends DefaultHandler2 {
 	public static final String NS_XMI = "http://www.omg.org/XMI";

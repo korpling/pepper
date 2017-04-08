@@ -41,9 +41,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Only starts pepper-osgi-runner, if {@value #PROP_TEST_DISABLED} is not set or
  * is set to false.
- * 
- * @author Florian Zipser
- * 
  */
 @Component(name = "PepperTestComponent", immediate = true, enabled = true)
 public class PepperOSGiRunner implements Runnable {

@@ -41,9 +41,6 @@ import org.corpus_tools.salt.common.SDocumentGraph;
  * limited, and was reached, no further {@link SDocumentGraph}s will be imported
  * until one was finished somehow.</li>
  * </ul>
- * 
- * @author Florian Zipser
- *
  */
 public enum MEMORY_POLICY {
 	THRIFTY, MODERATE, GREEDY

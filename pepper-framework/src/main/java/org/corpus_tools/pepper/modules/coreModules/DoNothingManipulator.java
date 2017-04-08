@@ -32,9 +32,6 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * A dummy manipulator, which waves through all documents and corpora.
- * 
- * @author florian
- *
  */
 @Component(name = "DoNothingManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class DoNothingManipulator extends PepperManipulatorImpl implements PepperManipulator {

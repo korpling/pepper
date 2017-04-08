@@ -48,9 +48,6 @@ import org.slf4j.LoggerFactory;
  * {@link ModuleController} objects on the input side. All these controllers
  * have to notify this queue to be finished, before the queue can notify the
  * controllers on the output side, that this queue is finished.
- * 
- * @author Florian Zipser
- * 
  */
 public class DocumentBus {
 	private static final Logger logger = LoggerFactory.getLogger(DocumentBus.class);

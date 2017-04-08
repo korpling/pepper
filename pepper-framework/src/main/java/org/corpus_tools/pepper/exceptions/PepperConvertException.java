@@ -17,11 +17,6 @@
  */
 package org.corpus_tools.pepper.exceptions;
 
-/**
- * 
- * @author Florian Zipser
- *
- */
 public class PepperConvertException extends PepperException {
 
 	/**

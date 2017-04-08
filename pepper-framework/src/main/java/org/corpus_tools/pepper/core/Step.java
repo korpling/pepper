@@ -36,9 +36,6 @@ import org.corpus_tools.pepper.modules.PepperModuleProperties;
  * <li>a unique identifier representing the position of this step in workflow
  * </li>
  * </ul>
- * 
- * @author Florian Zipser
- *
  */
 public class Step extends StepDesc {
 	/**

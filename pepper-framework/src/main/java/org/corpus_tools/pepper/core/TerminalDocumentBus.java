@@ -25,9 +25,6 @@ import org.corpus_tools.pepper.modules.DocumentController;
 
 /**
  * TODO make docu
- * 
- * @author Florian Zipser
- *
  */
 public class TerminalDocumentBus extends DocumentBus {
 	/** id for the terminal document bus, which is output for exporters **/
