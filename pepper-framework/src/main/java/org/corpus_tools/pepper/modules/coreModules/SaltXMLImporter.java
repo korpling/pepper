@@ -88,11 +88,11 @@ public class SaltXMLImporter extends PepperImporterImpl implements PepperImporte
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-		return new SelfTestDesc(
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlImporter")
-						.appendSegment("in"),
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlImporter")
-						.appendSegment("expected"));
+		final URI base = getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("saltXmlImporter");
+		final URI in = base.appendSegment("in");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
 	}
 
 	/**

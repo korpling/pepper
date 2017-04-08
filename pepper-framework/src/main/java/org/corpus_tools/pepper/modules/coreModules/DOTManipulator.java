@@ -45,11 +45,11 @@ public class DOTManipulator extends PepperManipulatorImpl {
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-		return new SelfTestDesc(
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotManipulator")
-						.appendSegment("in"),
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotManipulator")
-						.appendSegment("expected"));
+		final URI base = getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("dotManipulator");
+		final URI in = base.appendSegment("in");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
 	}
 
 	@Override

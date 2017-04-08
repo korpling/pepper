@@ -57,11 +57,11 @@ public class DoNothingManipulator extends PepperManipulatorImpl implements Peppe
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-		return new SelfTestDesc(
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingManipulator")
-						.appendSegment("in"),
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("doNothingManipulator")
-						.appendSegment("expected"));
+		final URI base = getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("doNothingManipulator");
+		final URI in = base.appendSegment("in");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
 	}
 
 	/**

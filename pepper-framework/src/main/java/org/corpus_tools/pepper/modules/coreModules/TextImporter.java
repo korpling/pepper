@@ -70,11 +70,11 @@ public class TextImporter extends PepperImporterImpl implements PepperImporter {
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
-		return new SelfTestDesc(
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtImporter")
-						.appendSegment("in").appendSegment("txtCorpus"),
-				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("txtImporter")
-						.appendSegment("expected"));
+		final URI base = getResources().appendSegment("modules").appendSegment("selfTests")
+				.appendSegment("txtImporter");
+		final URI in = base.appendSegment("in").appendSegment("txtCorpus");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
 	}
 
 	/**
