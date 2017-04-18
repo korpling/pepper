@@ -18,11 +18,7 @@
 package org.corpus_tools.pepper.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,8 +26,8 @@ import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.pepper.exceptions.NotInitializedException;
-import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.eclipse.emf.common.util.URI;
 
 import com.google.common.base.Strings;
@@ -201,6 +197,10 @@ public class CorpusPathResolver {
 		return readFiles;
 	}
 
+	public String readFirstLines(final File file, final int numOfLinesToRead) {
+		return PepperUtil.readFirstLines(file, numOfLinesToRead);
+	}
+
 	/**
 	 * Creates a sampled set of <code>numberOfSampledFiles</code> files
 	 * recursively from directory <code>dir</code> with specified endings.
@@ -224,42 +224,5 @@ public class CorpusPathResolver {
 			sampledFiles.add(allFiles[randomGenerator.nextInt(allFiles.length)]);
 		}
 		return sampledFiles;
-	}
-
-	/**
-	 * Reads the first X lines of the passed file and returns them as a String
-	 * 
-	 * @param corpusPath
-	 *            path to file
-	 * @param lines
-	 *            number of lines
-	 * @return first X lines
-	 */
-	protected String readFirstLines(final File file, final int numOfLinesToRead) {
-		if (file == null || !file.exists()) {
-			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '"
-					+ (file == null ? "" : file.getAbsolutePath()) + "', because it was null or does not exist. ");
-		}
-		if (numOfLinesToRead < 1) {
-			return null;
-		}
-		final StringBuilder fileContent = new StringBuilder();
-		try (LineNumberReader reader = new LineNumberReader(
-				new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-			String line;
-			boolean isFirstLine = true;
-			while (((line = reader.readLine()) != null) && reader.getLineNumber() <= numOfLinesToRead) {
-				if (!isFirstLine) {
-					fileContent.append(System.lineSeparator());
-				}
-				isFirstLine = false;
-				fileContent.append(line);
-
-			}
-		} catch (IOException e) {
-
-		}
-
-		return fileContent.toString();
 	}
 }

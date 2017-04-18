@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<saltCommon:SaltProject xmlns:sCorpusStructure="sCorpusStructure" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:saltCore="saltCore" xmlns:saltCommon="saltCommon" xmi:version="2.0">
+	<sCorpusGraphs>
+	<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::pcc3"/>
+	<nodes xsi:type="sCorpusStructure:SCorpus">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/pcc3"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::pcc3"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/pcc3/maz-00001"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::maz-00001"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/pcc3/maz-00002"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::maz-00002"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/pcc3/maz-1423"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::maz-1423"/>
+	</nodes>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.0" target="//@nodes.1">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel1"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel1"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.0" target="//@nodes.2">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel2"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel2"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.0" target="//@nodes.3">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel3"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel3"/>
+	</edges>
+	</sCorpusGraphs>
+</saltCommon:SaltProject>

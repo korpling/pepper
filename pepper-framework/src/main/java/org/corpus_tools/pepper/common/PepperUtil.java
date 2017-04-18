@@ -22,7 +22,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
@@ -797,7 +799,56 @@ public abstract class PepperUtil {
 	 * <code>compare(file1).with(file2);</code>
 	 * </pre>
 	 */
-	public static FileComparator compare(File file1) {
-		return new FileComparator(file1);
+	public static FileComparator.Builder compare(File file1) {
+		return new FileComparator.Builder(file1);
+	}
+
+	/**
+	 * Compares the content of two files. Iff they are exactly the same, than
+	 * true will be returned. False otherwise.
+	 * 
+	 * <pre>
+	 * Use: 
+	 * <code>compare(file1).with(file2);</code>
+	 * </pre>
+	 */
+	public static FileComparator.Builder compare(URI file1) {
+		return new FileComparator.Builder(file1);
+	}
+
+	/**
+	 * Reads the first X lines of the passed file and returns them as a String
+	 * 
+	 * @param corpusPath
+	 *            path to file
+	 * @param lines
+	 *            number of lines
+	 * @return first X lines
+	 */
+	public static String readFirstLines(final File file, final int numOfLinesToRead) {
+		if (file == null || !file.exists()) {
+			throw new PepperModuleException("Cannot read first '" + numOfLinesToRead + "' of specified file '"
+					+ (file == null ? "" : file.getAbsolutePath()) + "', because it was null or does not exist. ");
+		}
+		if (numOfLinesToRead < 1) {
+			return null;
+		}
+		final StringBuilder fileContent = new StringBuilder();
+		try (LineNumberReader reader = new LineNumberReader(
+				new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+			String line;
+			boolean isFirstLine = true;
+			while (((line = reader.readLine()) != null) && reader.getLineNumber() <= numOfLinesToRead) {
+				if (!isFirstLine) {
+					fileContent.append(System.lineSeparator());
+				}
+				isFirstLine = false;
+				fileContent.append(line);
+
+			}
+		} catch (IOException e) {
+
+		}
+		return fileContent.toString();
 	}
 }

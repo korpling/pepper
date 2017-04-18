@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<family name= "simpson">
+	<!-- bart's father-->
+	<father name= "homer"/>
+	<!-- bart's mother-->
+	<mother name="merge"/>
+</family>

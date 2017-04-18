@@ -224,6 +224,7 @@
 		<name>Humboldt-Universität zu Berlin, INRIA</name>
 	</organization>
 	<build>
+		<defaultGoal>clean install</defaultGoal>
 		<plugins>
 			<plugin>
 				<!-- a plugin to clean the project when calling mvn clean -->

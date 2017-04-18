@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -187,5 +188,19 @@ public class PepperUtilTest {
 	public void whenReadingXMLResourceWithBOM_BOMShouldBeDropped() {
 		PepperUtil.readXMLResource(new DefaultHandler2(),
 				URI.createFileURI(this.getClass().getResource("/resources/bom.xml").getPath()));
+	}
+
+	@Test
+	public void whenReadingFirst10LinesOfFile_thenReturn10FirstLines() {
+		File corpusFile = new File(PepperTestUtil.getTestResources() + "pepperUtil/" + "10lineFile.txt");
+		String content = PepperUtil.readFirstLines(corpusFile, 10);
+		assertEquals("1\n2\n3\n4\n5\n6\n7\n8\n9\n10", content);
+	}
+
+	@Test
+	public void whenReadingFirst10LinesOfFileWithOnly5Lines_thenReturn5FirstLines() {
+		File corpusFile = new File(PepperTestUtil.getTestResources() + "pepperUtil/" + "5lineFile.txt");
+		String content = PepperUtil.readFirstLines(corpusFile, 10);
+		assertEquals("1\n2\n3\n4\n5", content);
 	}
 }

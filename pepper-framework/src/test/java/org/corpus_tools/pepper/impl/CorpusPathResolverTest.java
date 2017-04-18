@@ -18,7 +18,6 @@
 package org.corpus_tools.pepper.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -103,20 +102,6 @@ public class CorpusPathResolverTest {
 
 		assertThat(fixture.sampleFiles(allFiles, 5).size()).isEqualTo(5);
 		assertThat(fixture.sampleFiles(allFiles, 3)).isNotEqualTo(fixture.sampleFiles(allFiles, 3));
-	}
-
-	@Test
-	public void whenReadingFirst10LinesOfFile_thenReturn10FirstLines() {
-		File corpusFile = new File(getTestResources() + "10lineFile.txt");
-		String content = fixture.readFirstLines(corpusFile, 10);
-		assertEquals("1\n2\n3\n4\n5\n6\n7\n8\n9\n10", content);
-	}
-
-	@Test
-	public void whenReadingFirst10LinesOfFileWithOnly5Lines_thenReturn5FirstLines() {
-		File corpusFile = new File(getTestResources() + "5lineFile.txt");
-		String content = fixture.readFirstLines(corpusFile, 10);
-		assertEquals("1\n2\n3\n4\n5", content);
 	}
 
 	@Test
