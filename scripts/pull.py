@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # This script is aimed to check all Pepper modules (all subfolders of the current folder) whether there have been changes since the last release and the current HEAD
 import subprocess
 import os

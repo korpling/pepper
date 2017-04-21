@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # This script replaces the version in a pom.xml file of the parent project. It is used to update the pepper-parent project version.
 import sys
 import os

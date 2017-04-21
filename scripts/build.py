@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import sys
 from lib.moduleProcessor import *
 from lib.mvn import *
