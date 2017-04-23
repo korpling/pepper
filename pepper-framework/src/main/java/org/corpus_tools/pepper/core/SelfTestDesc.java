@@ -17,35 +17,18 @@
  */
 package org.corpus_tools.pepper.core;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.io.FileUtils;
+import org.corpus_tools.pepper.common.PepperUtil;
 import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.util.SaltUtil;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.ElementNameQualifier;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-
-import com.google.common.base.Strings;
 
 /**
  * This class is a container for a module selftest. A Pepper module provides an
@@ -142,146 +125,183 @@ public class SelfTestDesc {
 	 * @return true, when the content of both paths is equal, false otherwise
 	 */
 	public boolean compare(final URI actualCorpusPath, final URI expectedCorpusPath) {
-		if (actualCorpusPath == null || expectedCorpusPath == null) {
-			return false;
-		}
-		final File actualDir = new File(actualCorpusPath.toFileString());
-		final File expectedDir = new File(expectedCorpusPath.toFileString());
-		if (!actualDir.exists() || !expectedDir.exists()) {
-			return false;
-		}
-
-		final Collection<File> actualFiles = FileUtils.listFiles(actualDir, null, true);
-		final Collection<File> expectedFiles = FileUtils.listFiles(expectedDir, null, true);
-		if (actualFiles == null || expectedFiles == null) {
-			return false;
-		}
-		if (actualFiles.size() != expectedFiles.size()) {
-			return false;
-		}
-
-		final String expectedFilePrefix = getCannonicalPathWithoutException(expectedDir);
-		final String actualFilePrefix = getCannonicalPathWithoutException(actualDir);
-
-		final Map<String, File> expectedFileMap = new Hashtable<>();
-		for (File expectedFile : expectedFiles) {
-			expectedFileMap.put(getCannonicalPathWithoutException(expectedFile).replace(expectedFilePrefix, ""),
-					expectedFile);
-		}
-		for (File actualFile : actualFiles) {
-			final File expectedFile = expectedFileMap
-					.get(getCannonicalPathWithoutException(actualFile).replace(actualFilePrefix, ""));
-			if (!compare(actualFile, expectedFile)) {
-				return false;
-			}
-		}
-		return true;
+		return PepperUtil.compare(actualCorpusPath).with(expectedCorpusPath);
 	}
 
-	private String getCannonicalPathWithoutException(File input) {
-		try {
-			return input.getCanonicalPath();
-		} catch (IOException e) {
-			logger.warn("Cannot create cannonical path for '" + input + "'.", e);
-		}
-		return "";
-	}
-
-	/**
-	 * This method is called by {@link #compare(URI, URI)} to compare two files
-	 * with each other.
-	 * 
-	 * <strong> You are free to overwrite this method with your own comparison.
-	 * </strong>
-	 * 
-	 * @param actualFile
-	 *            the file produced by the module itself (which was generated
-	 *            from the files from the input corpus path)
-	 * @param expectedFile
-	 *            the file, which is contained in expected corpus path.
-	 * @return true, when both files are equal, false otherwise
-	 */
-	protected boolean compare(final File actualFile, final File expectedFile) {
-		if (!filesDoExist(actualFile, expectedFile)) {
-			return false;
-		}
-		if (isXmlFile(expectedFile)) {
-			return compareXML(actualFile, expectedFile);
-		}
-		return filesAreEqual(actualFile, expectedFile);
-	}
-
-	private boolean isXmlFile(File pobablyXMlFile) {
-		try (BufferedReader brTest = new BufferedReader(
-				new InputStreamReader(new FileInputStream(pobablyXMlFile), StandardCharsets.UTF_8))) {
-			final String firstLine = brTest.readLine();
-			if (!Strings.isNullOrEmpty(firstLine)) {
-				if (firstLine.contains("<?xml")) {
-					return true;
-				}
-			}
-		} catch (IOException e1) {
-			return false;
-		}
-		return false;
-	}
-
-	private boolean filesAreEqual(final File actualFile, final File expectedFile) {
-		try {
-			return FileUtils.contentEquals(actualFile, expectedFile);
-		} catch (IOException e) {
-			return false;
-		}
-	}
-
-	private boolean filesDoExist(final File actualFile, final File expectedFile) {
-		if (actualFile == null || !actualFile.exists() || expectedFile == null || !expectedFile.exists()) {
-			return false;
-		}
-		return true;
-	}
-
-	protected final DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-
-	/**
-	 * This method is called by {@link #compare(URI, URI)} to compare two
-	 * xmlfiles with each other.
-	 * 
-	 * <strong> You are free to overwrite this method with your own comparison.
-	 * </strong>
-	 * 
-	 * @param actualXmlFile
-	 *            the xml file produced by the module itself (which was
-	 *            generated from the files from the input corpus path)
-	 * @param expectedXmlFile
-	 *            the xml file, which is contained in expected corpus path.
-	 * @return true, when both files are equal, false otherwise
-	 */
-	protected boolean compareXML(final File actualXmlFile, final File expectedXmlFile) {
-		if (!filesDoExist(actualXmlFile, expectedXmlFile)) {
-			return false;
-		}
-		if (filesAreEqual(actualXmlFile, expectedXmlFile)) {
-			return true;
-		}
-		final DocumentBuilder docBuilder;
-		final Diff diff;
-		try {
-			docBuilder = docBuilderFactory.newDocumentBuilder();
-			XMLUnit.setIgnoreWhitespace(true);
-			XMLUnit.setIgnoreComments(true);
-			XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
-			diff = XMLUnit.compareXML(docBuilder.parse(expectedXmlFile), docBuilder.parse(actualXmlFile));
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			return false;
-		}
-		diff.overrideElementQualifier(new ElementNameQualifier());
-		return diff.identical();
-	}
-
+	// /**
+	// * This method is called by the Pepper framework, when making a selftest
+	// of
+	// * the module. This method is called when tested module is an exporter.
+	// *
+	// * <strong> You are free to overwrite this method with your own
+	// comparison.
+	// * </strong>
+	// *
+	// * @param actualCorpusPath
+	// * is the corpus path produced by the module itself (which was
+	// * generated from the files from the input corpus path)
+	// * @param expectedCorpusPath
+	// * is the expected corpus path
+	// * @return true, when the content of both paths is equal, false otherwise
+	// */
+	// public boolean compare(final URI actualCorpusPath, final URI
+	// expectedCorpusPath) {
+	// if (actualCorpusPath == null || expectedCorpusPath == null) {
+	// return false;
+	// }
+	// final File actualDir = new File(actualCorpusPath.toFileString());
+	// final File expectedDir = new File(expectedCorpusPath.toFileString());
+	// if (!actualDir.exists() || !expectedDir.exists()) {
+	// return false;
+	// }
+	//
+	// final Collection<File> actualFiles = FileUtils.listFiles(actualDir, null,
+	// true);
+	// final Collection<File> expectedFiles = FileUtils.listFiles(expectedDir,
+	// null, true);
+	// if (actualFiles == null || expectedFiles == null) {
+	// return false;
+	// }
+	// if (actualFiles.size() != expectedFiles.size()) {
+	// return false;
+	// }
+	//
+	// final String expectedFilePrefix =
+	// getCannonicalPathWithoutException(expectedDir);
+	// final String actualFilePrefix =
+	// getCannonicalPathWithoutException(actualDir);
+	//
+	// final Map<String, File> expectedFileMap = new Hashtable<>();
+	// for (File expectedFile : expectedFiles) {
+	// expectedFileMap.put(getCannonicalPathWithoutException(expectedFile).replace(expectedFilePrefix,
+	// ""),
+	// expectedFile);
+	// }
+	// for (File actualFile : actualFiles) {
+	// final File expectedFile = expectedFileMap
+	// .get(getCannonicalPathWithoutException(actualFile).replace(actualFilePrefix,
+	// ""));
+	// if (!compare(actualFile, expectedFile)) {
+	// return false;
+	// }
+	// }
+	// return true;
+	// }
+	//
+	// private String getCannonicalPathWithoutException(File input) {
+	// try {
+	// return input.getCanonicalPath();
+	// } catch (IOException e) {
+	// logger.warn("Cannot create cannonical path for '" + input + "'.", e);
+	// }
+	// return "";
+	// }
+	//
+	// /**
+	// * This method is called by {@link #compare(URI, URI)} to compare two
+	// files
+	// * with each other.
+	// *
+	// * <strong> You are free to overwrite this method with your own
+	// comparison.
+	// * </strong>
+	// *
+	// * @param actualFile
+	// * the file produced by the module itself (which was generated
+	// * from the files from the input corpus path)
+	// * @param expectedFile
+	// * the file, which is contained in expected corpus path.
+	// * @return true, when both files are equal, false otherwise
+	// */
+	// protected boolean compare(final File actualFile, final File expectedFile)
+	// {
+	// if (!filesDoExist(actualFile, expectedFile)) {
+	// return false;
+	// }
+	// if (isXmlFile(expectedFile)) {
+	// return compareXML(actualFile, expectedFile);
+	// }
+	// return filesAreEqual(actualFile, expectedFile);
+	// }
+	//
+	// private boolean isXmlFile(File pobablyXMlFile) {
+	// try (BufferedReader brTest = new BufferedReader(
+	// new InputStreamReader(new FileInputStream(pobablyXMlFile),
+	// StandardCharsets.UTF_8))) {
+	// final String firstLine = brTest.readLine();
+	// if (!Strings.isNullOrEmpty(firstLine)) {
+	// if (firstLine.contains("<?xml")) {
+	// return true;
+	// }
+	// }
+	// } catch (IOException e1) {
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// private boolean filesAreEqual(final File actualFile, final File
+	// expectedFile) {
+	// try {
+	// return FileUtils.contentEquals(actualFile, expectedFile);
+	// } catch (IOException e) {
+	// return false;
+	// }
+	// }
+	//
+	// private boolean filesDoExist(final File actualFile, final File
+	// expectedFile) {
+	// if (actualFile == null || !actualFile.exists() || expectedFile == null ||
+	// !expectedFile.exists()) {
+	// return false;
+	// }
+	// return true;
+	// }
+	//
+	// protected final DocumentBuilderFactory docBuilderFactory =
+	// DocumentBuilderFactory.newInstance();
+	//
+	// /**
+	// * This method is called by {@link #compare(URI, URI)} to compare two
+	// * xmlfiles with each other.
+	// *
+	// * <strong> You are free to overwrite this method with your own
+	// comparison.
+	// * </strong>
+	// *
+	// * @param actualXmlFile
+	// * the xml file produced by the module itself (which was
+	// * generated from the files from the input corpus path)
+	// * @param expectedXmlFile
+	// * the xml file, which is contained in expected corpus path.
+	// * @return true, when both files are equal, false otherwise
+	// */
+	// protected boolean compareXML(final File actualXmlFile, final File
+	// expectedXmlFile) {
+	// if (!filesDoExist(actualXmlFile, expectedXmlFile)) {
+	// return false;
+	// }
+	// if (filesAreEqual(actualXmlFile, expectedXmlFile)) {
+	// return true;
+	// }
+	// final DocumentBuilder docBuilder;
+	// final Diff diff;
+	// try {
+	// docBuilder = docBuilderFactory.newDocumentBuilder();
+	// XMLUnit.setIgnoreWhitespace(true);
+	// XMLUnit.setIgnoreComments(true);
+	// XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
+	// diff = XMLUnit.compareXML(docBuilder.parse(expectedXmlFile),
+	// docBuilder.parse(actualXmlFile));
+	// } catch (ParserConfigurationException | SAXException | IOException e) {
+	// return false;
+	// }
+	// diff.overrideElementQualifier(new ElementNameQualifier());
+	// return diff.identical();
+	// }
 	/**
 	 * Returns whether this object was correctly instantiated by module.
-	 * 
+	 *
 	 * @param problems
 	 *            when object is not valid, the reason(s) are written here.
 	 * @return true if object is valid, false otherwise
@@ -298,7 +318,7 @@ public class SelfTestDesc {
 			final File inFile = new File(in.toFileString());
 			if (!inFile.exists()) {
 				if (problems != null) {
-					problems.add("The input corpus path '" + inFile.getAbsolutePath() + "' does not exist. ");
+					problems.add("The input corpus path '" + inFile.getAbsolutePath() + "'does not exist. ");
 				}
 				retVal = false;
 			}
@@ -321,48 +341,52 @@ public class SelfTestDesc {
 		return retVal;
 	}
 
-	@Override
-	public String toString() {
-		return "SelfTestDesc [inputCorpusPaths=" + inputCorpusPaths + ", expectedCorpusPath=" + expectedCorpusPath
-				+ ", docBuilderFactory=" + docBuilderFactory + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((docBuilderFactory == null) ? 0 : docBuilderFactory.hashCode());
-		result = prime * result + ((expectedCorpusPath == null) ? 0 : expectedCorpusPath.hashCode());
-		result = prime * result + ((inputCorpusPaths == null) ? 0 : inputCorpusPaths.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SelfTestDesc other = (SelfTestDesc) obj;
-		if (docBuilderFactory == null) {
-			if (other.docBuilderFactory != null)
-				return false;
-		} else if (!docBuilderFactory.equals(other.docBuilderFactory))
-			return false;
-		if (expectedCorpusPath == null) {
-			if (other.expectedCorpusPath != null)
-				return false;
-		} else if (!expectedCorpusPath.equals(other.expectedCorpusPath))
-			return false;
-		if (inputCorpusPaths == null) {
-			if (other.inputCorpusPaths != null)
-				return false;
-		} else if (!inputCorpusPaths.equals(other.inputCorpusPaths))
-			return false;
-		return true;
-	}
+	// @Override
+	// public String toString() {
+	// return "SelfTestDesc [inputCorpusPaths=" + inputCorpusPaths + ",
+	// expectedCorpusPath=" + expectedCorpusPath
+	// + ", docBuilderFactory=" + docBuilderFactory + "]";
+	// }
+	//
+	// @Override
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = prime * result + ((docBuilderFactory == null) ? 0 :
+	// docBuilderFactory.hashCode());
+	// result = prime * result + ((expectedCorpusPath == null) ? 0 :
+	// expectedCorpusPath.hashCode());
+	// result = prime * result + ((inputCorpusPaths == null) ? 0 :
+	// inputCorpusPaths.hashCode());
+	// return result;
+	// }
+	//
+	// @Override
+	// public boolean equals(Object obj) {
+	// if (this == obj)
+	// return true;
+	// if (obj == null)
+	// return false;
+	// if (getClass() != obj.getClass())
+	// return false;
+	// SelfTestDesc other = (SelfTestDesc) obj;
+	// if (docBuilderFactory == null) {
+	// if (other.docBuilderFactory != null)
+	// return false;
+	// } else if (!docBuilderFactory.equals(other.docBuilderFactory))
+	// return false;
+	// if (expectedCorpusPath == null) {
+	// if (other.expectedCorpusPath != null)
+	// return false;
+	// } else if (!expectedCorpusPath.equals(other.expectedCorpusPath))
+	// return false;
+	// if (inputCorpusPaths == null) {
+	// if (other.inputCorpusPaths != null)
+	// return false;
+	// } else if (!inputCorpusPaths.equals(other.inputCorpusPaths))
+	// return false;
+	// return true;
+	// }
 
 	/**
 	 * @return a builder to build a {@link SelfTestDesc} instance.
