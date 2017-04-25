@@ -23,17 +23,17 @@ import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.salt.util.SaltUtil;
 
-@SuppressWarnings("serial")
 public class DOTManipulatorProperties extends PepperModuleProperties {
+	private static final long serialVersionUID = 3660642467438248413L;
 	public static final String PREFIX = "dotManipulator.";
 	public static final String PROP_OUTPUTFILE = "outputDir";
 	public static final String PROP_FILE_ENDING = "fileEnding";
 
 	public DOTManipulatorProperties() {
-		this.addProperty(new PepperModuleProperty<String>(PROP_OUTPUTFILE, String.class,
+		addProperty(new PepperModuleProperty<String>(PROP_OUTPUTFILE, String.class,
 				"The location to where the output shall be written to as File object.", true));
-		this.addProperty(new PepperModuleProperty<String>(PROP_FILE_ENDING, String.class,
-				"The file ending of dot files.", SaltUtil.FILE_ENDING_DOT, false));
+		addProperty(new PepperModuleProperty<String>(PROP_FILE_ENDING, String.class, "The file ending of dot files.",
+				SaltUtil.FILE_ENDING_DOT, false));
 	}
 
 	/**
@@ -43,10 +43,10 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	 * @return
 	 */
 	public File getOutputFile() {
-		final PepperModuleProperty<String> prop = (PepperModuleProperty<String>) this.getProperty(PROP_OUTPUTFILE);
+		final PepperModuleProperty<String> prop = (PepperModuleProperty<String>) getProperty(PROP_OUTPUTFILE);
 		final String fileName = prop.getValue();
 		if (fileName != null && !fileName.isEmpty()) {
-			return (new File(fileName));
+			return new File(fileName);
 		}
 		return null;
 	}
@@ -57,9 +57,9 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	 * @return
 	 */
 	public String getFileEnding() {
-		PepperModuleProperty<?> prop = this.getProperty(PROP_FILE_ENDING);
+		PepperModuleProperty<?> prop = getProperty(PROP_FILE_ENDING);
 		if (prop.getValue() instanceof String) {
-			return ((String) prop.getValue());
+			return (String) prop.getValue();
 		} else {
 			return null;
 		}
