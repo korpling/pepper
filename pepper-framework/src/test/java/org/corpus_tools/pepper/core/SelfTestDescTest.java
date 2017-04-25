@@ -33,8 +33,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SelfTestDescTest {
-
 	private SelfTestDesc fixture;
+	private final static URI EMPTY_URI = URI.createURI("");
 
 	@Before
 	public void beforeEach() {
@@ -52,7 +52,8 @@ public class SelfTestDescTest {
 
 	@Test
 	public void whenComparingIdenticalModels_thenReturnTrue() {
-		final SelfTestDesc selfTestDesc = new SelfTestDesc(URI.createURI(""), URI.createURI(""));
+		final SelfTestDesc selfTestDesc = SelfTestDesc.create().withInputCorpusPath(EMPTY_URI)
+				.withExpectedCorpusPath(EMPTY_URI).build();
 
 		final SaltProject actual = SampleGenerator.createSaltProject();
 		final SaltProject expected = SampleGenerator.createSaltProject();
@@ -62,7 +63,8 @@ public class SelfTestDescTest {
 
 	@Test
 	public void whenComparingDifferentModels_thenReturnFalse() {
-		final SelfTestDesc selfTestDesc = new SelfTestDesc(URI.createURI(""), URI.createURI(""));
+		final SelfTestDesc selfTestDesc = SelfTestDesc.create().withInputCorpusPath(EMPTY_URI)
+				.withExpectedCorpusPath(EMPTY_URI).build();
 
 		final SaltProject actual = SampleGenerator.createSaltProject();
 		final SaltProject expected = SampleGenerator.createSaltProject();
@@ -121,7 +123,8 @@ public class SelfTestDescTest {
 
 	@Test
 	public void whenTestContainsNonExistingPathes_thenValidShouldHaveTwoProblems() {
-		fixture = new SelfTestDesc(URI.createFileURI("not existing"), URI.createFileURI("not existing"));
+		fixture = SelfTestDesc.create().withInputCorpusPath(URI.createFileURI("not existing"))
+				.withExpectedCorpusPath(URI.createFileURI("not existing")).build();
 		final List<String> problems = new ArrayList<>();
 		assertThat(fixture.isValid(problems)).isFalse();
 		assertThat(problems).hasSize(2);
@@ -129,59 +132,13 @@ public class SelfTestDescTest {
 
 	@Test
 	public void whenTestContainsExistingPathes_thenValidShouldHaveNoProblems() throws IOException {
-		final File testInFile = File.createTempFile("integrationTest", "xml", PepperUtil.getTempTestFile());
-		final File testOutFile = File.createTempFile("integrationTest", "xml", PepperUtil.getTempTestFile());
-		fixture = new SelfTestDesc(URI.createFileURI(testInFile.getAbsolutePath()),
-				URI.createFileURI(testOutFile.getAbsolutePath()));
+		final URI testInFile = URI.createFileURI(
+				File.createTempFile("integrationTest", "xml", PepperUtil.getTempTestFile()).getAbsolutePath());
+		final URI testOutFile = URI.createFileURI(
+				File.createTempFile("integrationTest", "xml", PepperUtil.getTempTestFile()).getAbsolutePath());
+		fixture = SelfTestDesc.create().withInputCorpusPath(testInFile).withExpectedCorpusPath(testOutFile).build();
 		final List<String> problems = new ArrayList<>();
 		assertThat(fixture.isValid(problems)).isTrue();
 		assertThat(problems).isEmpty();
 	}
-
-	// @Test
-	// public void whenComparingTwoNullFiles_ShouldReturnFalse() {
-	// assertThat(fixture.compare((File) null, null)).isFalse();
-	// }
-	//
-	// @Test
-	// public void whenComparingTwoNonExistingFiles_ShouldReturnFalse() {
-	// assertThat(fixture.compare(new File("doesNotExist"), new
-	// File("doesNotExist"))).isFalse();
-	// }
-	//
-	// @Test
-	// public void whenComparingTwoEqualFiles_ShouldReturnTrue() {
-	// final File actualFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoEqualFiles/actual.txt");
-	// final File expectedFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoEqualFiles/expected.txt");
-	// assertThat(fixture.compare(actualFile, expectedFile)).isTrue();
-	// }
-	//
-	// @Test
-	// public void whenComparingTwoNotEqualFiles_ShouldReturnFalse() {
-	// final File actualFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoNotEqualFiles/actual.txt");
-	// final File expectedFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoNotEqualFiles/expected.txt");
-	// assertThat(fixture.compare(actualFile, expectedFile)).isFalse();
-	// }
-	//
-	// @Test
-	// public void whenComparingTwoEqualXmlFiles_ShouldReturnTrue() {
-	// final File actualFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoEqualXmlFiles/actual.xml");
-	// final File expectedFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoEqualXmlFiles/expected.xml");
-	// assertThat(fixture.compare(actualFile, expectedFile)).isTrue();
-	// }
-	//
-	// @Test
-	// public void whenComparingTwoNotEqualXmlFiles_ShouldReturnFalse() {
-	// final File actualFile =
-	// resourcePath("/selfTest/comparisonTests/whenComparingTwoNotEqualXmlFiles/actual.xml");
-	// final File expectedFile = resourcePath(
-	// "/selfTest/comparisonTests/whenComparingTwoNotEqualXmlFiles/expected.xml");
-	// assertThat(fixture.compare(actualFile, expectedFile)).isFalse();
-	// }
 }

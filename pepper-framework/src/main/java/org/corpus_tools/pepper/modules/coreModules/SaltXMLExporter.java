@@ -75,25 +75,6 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 		final URI expectedCorpusPath = basePath.appendSegment("expected");
 		return SelfTestDesc.create().withInputCorpusPath(inputCorpusPath).withExpectedCorpusPath(expectedCorpusPath)
 				.build();
-
-		// return new SelfTestDesc(
-		// getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlExporter")
-		// .appendSegment("in"),
-		// getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("saltXmlExporter")
-		// .appendSegment("expected")) {
-		// // Needs to override comparison for URI's, otherwise files will be
-		// // compared as files, not as Salt objects
-		// @Override
-		// public boolean compare(final URI actualCorpusPath, final URI
-		// expectedCorpusPath) {
-		// final SaltProject actual =
-		// SaltUtil.loadCompleteSaltProject(actualCorpusPath);
-		// final SaltProject expected =
-		// SaltUtil.loadCompleteSaltProject(expectedCorpusPath);
-		// return
-		// (SaltUtil.compare(actual).with(expected).andCheckIsomorphie());
-		// }
-		// };
 	}
 
 	private class SaltXMLExporterMapper extends PepperMapperImpl {
