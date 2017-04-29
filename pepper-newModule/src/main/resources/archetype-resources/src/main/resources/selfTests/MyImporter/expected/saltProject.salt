@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<saltCommon:SaltProject xmlns:sCorpusStructure="sCorpusStructure" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:saltCore="saltCore" xmlns:saltCommon="saltCommon" xmi:version="2.0">
+	<sCorpusGraphs>
+	<nodes xsi:type="sCorpusStructure:SCorpus">
+		<labels xsi:type="saltCore:SMetaAnnotation" name="date" value="T::1989-12-17"/>
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::c1"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SCorpus">
+		<labels xsi:type="saltCore:SMetaAnnotation" name="date" value="T::1989-12-17"/>
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1/c2"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::c2"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SCorpus">
+		<labels xsi:type="saltCore:SMetaAnnotation" name="date" value="T::1989-12-17"/>
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1/c3"/>
+		<labels xsi:type="saltCore:SMetaAnnotation" name="author" value="T::Maggie Simpson"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::c3"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1/c2/d1"/>
+		<labels xsi:type="saltCore:SMetaAnnotation" name="author" value="T::Bart Simpson"/>
+		
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH_LOCATION" value="T::file:/tmp/pepper_florian/workspace/ur0q0j7f/d1artificial3318139558582567014.salt"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::d1"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1/c2/d2"/>
+		<labels xsi:type="saltCore:SMetaAnnotation" name="author" value="T::Lisa Simpson"/>
+		
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH_LOCATION" value="T::file:/tmp/pepper_florian/workspace/ur0q0j7f/d2artificial8199889995657522463.salt"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::d2"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1/c3/d3"/>
+		<labels xsi:type="saltCore:SMetaAnnotation" name="author" value="T::Marge Simpson"/>
+		
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH_LOCATION" value="T::file:/tmp/pepper_florian/workspace/ur0q0j7f/d3artificial4338249287239136211.salt"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::d3"/>
+	</nodes>
+	<nodes xsi:type="sCorpusStructure:SDocument">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/c1/c3/d4"/>
+		<labels xsi:type="saltCore:SMetaAnnotation" name="author" value="T::Homer Simpson"/>
+		
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SDOCUMENT_GRAPH_LOCATION" value="T::file:/tmp/pepper_florian/workspace/ur0q0j7f/d4artificial3120346812276046444.salt"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::d4"/>
+	</nodes>
+	<edges xsi:type="sCorpusStructure:SCorpusRelation" source="//@nodes.0" target="//@nodes.1">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpRel1"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpRel1"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusRelation" source="//@nodes.0" target="//@nodes.2">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpRel2"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpRel2"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.1" target="//@nodes.3">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel1"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel1"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.1" target="//@nodes.4">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel2"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel2"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.2" target="//@nodes.5">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel3"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel3"/>
+	</edges>
+	<edges xsi:type="sCorpusStructure:SCorpusDocumentRelation" source="//@nodes.2" target="//@nodes.6">
+		<labels xsi:type="saltCore:SElementId" namespace="salt" name="id" value="T::salt:/corpDocRel4"/>
+		<labels xsi:type="saltCore:SFeature" namespace="salt" name="SNAME" value="T::corpDocRel4"/>
+	</edges>
+	</sCorpusGraphs>
+</saltCommon:SaltProject>

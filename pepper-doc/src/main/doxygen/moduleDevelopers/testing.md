@@ -1,6 +1,24 @@
 Testing {#testing}
 ========
 
+Pepper provides a simple test framework to help you testing your module. 
+- derive from PepperExporterTest, PepperImporterTest, PepperManipulatorTest
+- simple test class for an importer:
+public class MyImporterTest extends PepperImporterTest<MyImporterTest> {
+	@Before
+	public void beforeEach() {
+		setTestedModule(new MyImporterTest());
+		addFormatWhichShouldBeSupported("myFormat", "myFormats_version");
+	}
+}
+
+- Selftest 
+-- how to turn off
+- how to run start()?
+- what is PepperTestUtil
+
+
+
 Pepper helps you to write test code faster by providing a test suite skeleton (the three classes @ref org.corpus_tools.pepper.testFramework.PepperManipulatorTest, @ref org.corpus_tools.pepper.testFramework.PepperImporterTest and @ref org.corpus_tools.pepper.testFramework.PepperExporterTest). These classes use the JUnit test framework (see: [junit.org](junit.org)) and implement some very basic tests for checking the consistency of a Pepper module. Just benefit from these classes by creating an own test class derived from one of them and your tests will be ran during the Maven build cycle. For getting an immediate feedback, you can also run them directly in your development environment by running a JUnit task. On the one hand the test classes provide tests which can be adapted to your needs and check if your module can be plugged into the Pepper framework (by checking if necessary values are set like the supported format for an im- or exporter). And on the other hand, they provide some helper classes and functions, which can be used when adding further test methods for checking the functionality of your module.
 
 > **Note**

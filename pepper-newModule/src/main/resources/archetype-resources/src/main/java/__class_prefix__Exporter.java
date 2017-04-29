@@ -32,8 +32,6 @@ import org.osgi.service.component.annotations.Component;
  * recommend, to take a look into the 'Developer's Guide for Pepper modules',
  * you will find on
  * <a href="http://corpus-tools.org/pepper/">http://corpus-tools.org/pepper</a>.
- * 
- * @author ${your_name}
  */
 //@formatter:off
 @Component(name = "${class_prefix}ExporterComponent", factory = "PepperExporterComponentFactory")

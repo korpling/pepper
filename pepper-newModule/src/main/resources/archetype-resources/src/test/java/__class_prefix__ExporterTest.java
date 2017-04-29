@@ -24,8 +24,6 @@ import org.junit.Test;
  * Please note, that the test class is derived from {@link PepperExporterTest}.
  * The usage of this class should simplfy your work and allows you to test only
  * your single importer in the Pepper environment.
- * 
- * @author ${your_name}
  */
 public class ${class_prefix}ExporterTest extends PepperExporterTest {
 	/**

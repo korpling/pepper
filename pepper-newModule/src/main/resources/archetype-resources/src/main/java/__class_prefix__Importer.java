@@ -1,10 +1,12 @@
 package ${package};
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
 import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperImporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
@@ -23,6 +25,7 @@ import org.corpus_tools.salt.common.SSpan;
 import org.corpus_tools.salt.common.SStructure;
 import org.corpus_tools.salt.common.STextualDS;
 import org.corpus_tools.salt.common.SToken;
+import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.graph.Identifier;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
@@ -69,8 +72,6 @@ import org.slf4j.LoggerFactory;
  * recommend, to take a look into the 'Developer's Guide for Pepper modules',
  * you will find on
  * <a href="http://corpus-tools.org/pepper/">http://corpus-tools.org/pepper</a>.
- * 
- * @author ${your_name}
  */
 @Component(name = "${class_prefix}ImporterComponent", factory = "PepperImporterComponentFactory")
 public class ${class_prefix}Importer extends PepperImporterImpl implements PepperImporter{
@@ -488,10 +489,59 @@ public class ${class_prefix}Importer extends PepperImporterImpl implements Peppe
 	 *         overridden
 	 */
 	public Double isImportable(URI corpusPath) {
-		// TODO some code to analyze the given corpus-structure
-		return (null);
+		// TODO which fileas are importable by your importer. This dummy accepts
+		// all folders as valid corpus pathes.
+		if (new File(corpusPath.toFileString()).isDirectory()) {
+			return 1.0;
+		}
+		return 0.0;
 	}
 
+	/**
+	 * This method is called by the Pepper framework to run an integration test
+	 * for module. When the method returns null, it means that no integration
+	 * test is supported. Otherwise, the {@link SelfTestDesc} object needs to
+	 * provide an input corpus path and an output corpus path.
+	 * 
+	 * When this module is:
+	 * <ul>
+	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * the format to be imported. {@link SelfTestDesc#getExpectedCorpusPath()}
+	 * should contain the expected salt project (for control).</li>
+	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()} should
+	 * contain a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * salt project (for control).</li>
+	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * corpus in output format.</li>
+	 * </ul>
+	 * The simplest way to create a test description is:
+	 * 
+	 * <pre>
+	 * return new IntegrationTestDesc(inputPath, outputPath);
+	 * </pre>
+	 * 
+	 * When this module is an importer or a manipulator the method
+	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called to
+	 * compare output salt project with expected salt project. When the module
+	 * is an exporter the method {@link SelfTestDesc#compare(URI, URI)} is
+	 * called to compare the created output folder with an expected one. By
+	 * default this method checks whether the file structure and each file is
+	 * equal.
+	 * 
+	 * @return test description
+	 */
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		final URI base = getResources().appendSegment("selfTests")
+				.appendSegment("${class_prefix}Importer");
+		final URI in = base.appendSegment("in");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
+	}
+	
 	// =================================================== optional
 	// ===================================================
 	/**
