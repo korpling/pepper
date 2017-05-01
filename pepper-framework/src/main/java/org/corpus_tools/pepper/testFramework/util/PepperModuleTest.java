@@ -103,13 +103,6 @@ public abstract class PepperModuleTest<M extends PepperModule> extends PepperMod
 	}
 
 	@Test
-	public void checkThatModuleHasSupportedFormats() {
-		preTest();
-		assertThat(getFitness(FitnessFeature.HAS_DESCRIPTION))
-				.as("The module does not provide a list of formats it supports. ").isTrue();
-	}
-
-	@Test
 	public void checkThatModuleHasPassedSelfTest() {
 		preTest();
 		assumeTrue(getFitness(FitnessFeature.HAS_SELFTEST));

@@ -59,7 +59,9 @@ public abstract class PepperImExporterTest<M extends PepperModule> extends Peppe
 
 	@Test
 	public void checkThatCorrectFormatsAreSupported() {
-		assertThat(getSupportedFormatsFromFixture()).containsAll(supportedFormatsCheck);
+		assertThat(getSupportedFormatsFromFixture())
+				.as("The module's list of supported formats does not conatin all expected formats. ")
+				.containsAll(supportedFormatsCheck);
 	}
 
 	private List<FormatDesc> getSupportedFormatsFromFixture() {
