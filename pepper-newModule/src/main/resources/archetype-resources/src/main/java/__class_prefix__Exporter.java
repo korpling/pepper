@@ -86,16 +86,7 @@ public class ${class_prefix}Exporter extends PepperExporterImpl implements Peppe
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			// workaround to deal with a bug in Salt
-//			SCorpusGraph sCorpusGraph = getDocument().getGraph();
-
 			SaltUtil.save_DOT(getDocument(), getResourceURI());
-
-//			// workaround to deal with a bug in Salt
-//			if (getDocument().getGraph() == null) {
-//				getDocument().setGraph(sCorpusGraph);
-//			}
-
 			addProgress(1.0);
 			return DOCUMENT_STATUS.COMPLETED;
 		}

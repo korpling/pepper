@@ -49,7 +49,7 @@ public class ${class_prefix}ExporterTest extends PepperExporterTest<${class_pref
 	 * document-structure contains the right number of nodes and relations.
 	 */
 	@Test
-	public void test_DummyImplementation() {
+	public void whenExportingSampleToDot_allDotFilesMustExist() {
 		// create a sample corpus, the class SampleGenerator provides a bunch of
 		// helpful methods to create sample documents and corpora
 		getTestedModule().setSaltProject(SampleGenerator.createSaltProject());
@@ -60,19 +60,20 @@ public class ${class_prefix}ExporterTest extends PepperExporterTest<${class_pref
 		// starts the Pepper framework and the conversion process
 		start();
 
-		File superCorpus = new File(PepperTestUtil.createTestTempPath("${class_prefix}Exporter").getAbsolutePath() + "/rootCorpus");
-		assertThat(superCorpus.exists()).isTrue();
-		File subCorpus1 = new File(superCorpus.getAbsolutePath() + "/subCorpus1");
-		assertThat(subCorpus1.exists()).isTrue();
-		File document1 = new File(subCorpus1.getAbsolutePath() + "/doc1.dot");
-		assertThat(document1.exists()).isTrue();
-		File document2 = new File(subCorpus1.getAbsolutePath() + "/doc2.dot");
-		assertThat(document2.exists()).isTrue();
-		File subCorpus2 = new File(superCorpus.getAbsolutePath() + "/subCorpus2");
-		assertThat(subCorpus1.exists()).isTrue();
-		File document3 = new File(subCorpus2.getAbsolutePath() + "/doc3.dot");
-		assertThat(document3.exists()).isTrue();
-		File document4 = new File(subCorpus2.getAbsolutePath() + "/doc4.dot");
-		assertThat(document4.exists()).isTrue();
+		URI superCorpus = PepperTestUtil.createTestTempPathAsUri("${class_prefix}Exporter").appendSegment("rootCorpus");
+		URI subCorpus1 = superCorpus.appendSegment("subCorpus1");
+		URI subCorpus2 = superCorpus.appendSegment("subCorpus2");
+
+		assertThat(createFile(superCorpus).exists()).isTrue();
+		assertThat(createFile(subCorpus1).exists()).isTrue();
+		assertThat(createFile(subCorpus1.appendSegment("doc1.dot")).exists()).isTrue();
+		assertThat(createFile(subCorpus1.appendSegment("doc2.dot")).exists()).isTrue();
+		assertThat(createFile(subCorpus2).exists()).isTrue();
+		assertThat(createFile(subCorpus2.appendSegment("doc3.dot")).exists()).isTrue();
+		assertThat(createFile(subCorpus2.appendSegment("doc4.dot")).exists()).isTrue();
+	}
+
+	private File createFile(URI uri) {
+		return new File(uri.toFileString());
 	}
 }
