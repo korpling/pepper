@@ -1,9 +1,8 @@
 package ${package};
 
 import java.util.List;
-
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
-import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperExporterImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperExporter;
@@ -11,7 +10,7 @@ import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleNotReadyException;
-import org.corpus_tools.salt.common.SCorpusGraph;
+import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.core.SNode;
 import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.util.SaltUtil;
@@ -51,9 +50,9 @@ public class ${class_prefix}Exporter extends PepperExporterImpl implements Peppe
 		super();
 		setName("${class_prefix}Exporter");
 		// TODO change suppliers e-mail address
-		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierContact(URI.createURI("${your_name}@${organisation}"));
 		// TODO change suppliers homepage
-		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
+		setSupplierHomepage(URI.createURI("${organisation}"));
 		// TODO add a description of what your module is supposed to do
 		setDesc("The exporter exports the corpus into a format named DOT (see: http://www.graphviz.org/), which can be used to visualize the corpus. ");
 		// TODO change "dot" with format name and 1.0 with format version to
@@ -77,7 +76,7 @@ public class ${class_prefix}Exporter extends PepperExporterImpl implements Peppe
 	public PepperMapper createPepperMapper(Identifier Identifier) {
 		PepperMapper mapper = new ${class_prefix}Mapper();
 		mapper.setResourceURI(getIdentifier2ResourceTable().get(Identifier));
-		return (mapper);
+		return mapper;
 	}
 
 	public static class ${class_prefix}Mapper extends PepperMapperImpl {
@@ -88,17 +87,17 @@ public class ${class_prefix}Exporter extends PepperExporterImpl implements Peppe
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
 			// workaround to deal with a bug in Salt
-			SCorpusGraph sCorpusGraph = getDocument().getGraph();
+//			SCorpusGraph sCorpusGraph = getDocument().getGraph();
 
 			SaltUtil.save_DOT(getDocument(), getResourceURI());
 
-			// workaround to deal with a bug in Salt
-			if (getDocument().getGraph() == null) {
-				getDocument().setGraph(sCorpusGraph);
-			}
+//			// workaround to deal with a bug in Salt
+//			if (getDocument().getGraph() == null) {
+//				getDocument().setGraph(sCorpusGraph);
+//			}
 
 			addProgress(1.0);
-			return (DOCUMENT_STATUS.COMPLETED);
+			return DOCUMENT_STATUS.COMPLETED;
 		}
 
 		/**
@@ -112,9 +111,48 @@ public class ${class_prefix}Exporter extends PepperExporterImpl implements Peppe
 					SaltUtil.save_DOT(getCorpus().getGraph(), getResourceURI());
 				}
 			}
-
-			return (DOCUMENT_STATUS.COMPLETED);
+			return DOCUMENT_STATUS.COMPLETED;
 		}
+	}
+	
+	/**
+	 * This method is called by the Pepper framework to run an integration test
+	 * for module. When the method returns null, it means that no integration
+	 * test is supported. Otherwise, the {@link SelfTestDesc} object needs to
+	 * provide an input corpus path and an output corpus path.
+	 * 
+	 * When this module is:
+	 * <ul>
+	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * the format to be imported. {@link SelfTestDesc#getExpectedCorpusPath()}
+	 * should contain the expected salt project (for control).</li>
+	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()} should
+	 * contain a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * salt project (for control).</li>
+	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * corpus in output format.</li>
+	 * </ul>
+	 * 
+	 * When this module is an importer or a manipulator the method
+	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called to
+	 * compare output salt project with expected salt project. When the module
+	 * is an exporter the method {@link SelfTestDesc#compare(URI, URI)} is
+	 * called to compare the created output folder with an expected one. By
+	 * default this method checks whether the file structure and each file is
+	 * equal.
+	 * 
+	 * @return test description
+	 */
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		final URI base = getResources().appendSegment("selfTests")
+				.appendSegment("${class_prefix}Exporter");
+		final URI in = base.appendSegment("in");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
 	}
 
 	// =================================================== optional
@@ -134,6 +172,6 @@ public class ${class_prefix}Exporter extends PepperExporterImpl implements Peppe
 	@Override
 	public boolean isReadyToStart() throws PepperModuleNotReadyException {
 		// TODO make some initializations if necessary
-		return (super.isReadyToStart());
+		return super.isReadyToStart();
 	}
 }

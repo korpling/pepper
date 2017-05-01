@@ -1,0 +1,85 @@
+digraph G {
+ordering=out;
+<salt:/c1/c2/d1#sSpan1> -> <salt:/c1/c2/d1#sTok1>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok1> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sTok1> -> <salt:/c1/c2/d1#sSpan3>[color=blue,style=filled,label="type= [anaphoric]"];
+<salt:/c1/c2/d1#sSpan3> -> <salt:/c1/c2/d1#sTok2>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok2> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan3> -> <salt:/c1/c2/d1#sTok3>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok3> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok2>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok3>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok4>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok4> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok5>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok5> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok6>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok6> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok7>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok7> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok8>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok8> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok9>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok9> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#sSpan2> -> <salt:/c1/c2/d1#sTok10>[color=dodgerblue3,style=filled];
+<salt:/c1/c2/d1#sTok10> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+<salt:/c1/c2/d1#structure1> -> <salt:/c1/c2/d1#structure2>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure2> -> <salt:/c1/c2/d1#sTok1>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure2> -> <salt:/c1/c2/d1#structure3>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure3> -> <salt:/c1/c2/d1#sTok2>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure3> -> <salt:/c1/c2/d1#sTok3>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure2> -> <salt:/c1/c2/d1#structure4>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure4> -> <salt:/c1/c2/d1#structure5>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure5> -> <salt:/c1/c2/d1#sTok4>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure5> -> <salt:/c1/c2/d1#sTok5>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure4> -> <salt:/c1/c2/d1#structure6>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure6> -> <salt:/c1/c2/d1#sTok6>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure6> -> <salt:/c1/c2/d1#structure7>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure7> -> <salt:/c1/c2/d1#structure8>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure8> -> <salt:/c1/c2/d1#sTok7>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure7> -> <salt:/c1/c2/d1#structure9>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure9> -> <salt:/c1/c2/d1#sTok8>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure9> -> <salt:/c1/c2/d1#structure10>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure10> -> <salt:/c1/c2/d1#structure11>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure11> -> <salt:/c1/c2/d1#sTok9>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure11> -> <salt:/c1/c2/d1#structure12>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure12> -> <salt:/c1/c2/d1#sTok10>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#structure1> -> <salt:/c1/c2/d1#sTok11>[color=seagreen,style=filled];
+<salt:/c1/c2/d1#sTok11> -> <salt:/c1/c2/d1#sText1>[color=yellow,style=filled];
+{
+rank=max;
+<salt:/c1/c2/d1#sText1>[shape=Mrecord,color=yellow,style=filled,label="{{salt:/c1/c2/d1#sText1}|{name= sText1}|{text=Is this example more complicated than it appears to be?}}"];
+}
+{
+rank=same;
+<salt:/c1/c2/d1#sTok1>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok1}|{name= sTok1}|{lemma=be}}"];
+<salt:/c1/c2/d1#sTok2>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok2}|{name= sTok2}|{lemma=this}}"];
+<salt:/c1/c2/d1#sTok3>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok3}|{name= sTok3}|{lemma=example}}"];
+<salt:/c1/c2/d1#sTok4>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok4}|{name= sTok4}|{lemma=more}}"];
+<salt:/c1/c2/d1#sTok5>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok5}|{name= sTok5}|{lemma=complicated}}"];
+<salt:/c1/c2/d1#sTok6>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok6}|{name= sTok6}|{lemma=than}}"];
+<salt:/c1/c2/d1#sTok7>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok7}|{name= sTok7}|{lemma=it}}"];
+<salt:/c1/c2/d1#sTok8>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok8}|{name= sTok8}|{lemma=appear}}"];
+<salt:/c1/c2/d1#sTok9>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok9}|{name= sTok9}|{lemma=to}}"];
+<salt:/c1/c2/d1#sTok10>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok10}|{name= sTok10}|{lemma=be}}"];
+<salt:/c1/c2/d1#sTok11>[shape=Mrecord,color=turquoise,style=filled,label="{{salt:/c1/c2/d1#sTok11}|{name= sTok11}|{lemma=.}}"];
+}
+{
+rank=same;
+<salt:/c1/c2/d1#sSpan1>[shape=Mrecord,color=dodgerblue3,style=filled,label="{{salt:/c1/c2/d1#sSpan1}|{name= sSpan1}|{Inf-Struct=contrast-focus}}"];
+<salt:/c1/c2/d1#sSpan3>[shape=Mrecord,color=dodgerblue3,style=filled,label="{{salt:/c1/c2/d1#sSpan3}|{name= sSpan3}}"];
+<salt:/c1/c2/d1#sSpan2>[shape=Mrecord,color=dodgerblue3,style=filled,label="{{salt:/c1/c2/d1#sSpan2}|{name= sSpan2}|{Inf-Struct=topic}}"];
+}
+<salt:/c1/c2/d1#structure1>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure1}|{name= structure1}|{cat=ROOT}}"];
+<salt:/c1/c2/d1#structure2>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure2}|{name= structure2}|{cat=SQ}}"];
+<salt:/c1/c2/d1#structure3>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure3}|{name= structure3}|{cat=NP}}"];
+<salt:/c1/c2/d1#structure4>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure4}|{name= structure4}|{cat=ADJP}}"];
+<salt:/c1/c2/d1#structure5>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure5}|{name= structure5}|{cat=ADJP}}"];
+<salt:/c1/c2/d1#structure6>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure6}|{name= structure6}|{cat=SBAR}}"];
+<salt:/c1/c2/d1#structure7>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure7}|{name= structure7}|{cat=S}}"];
+<salt:/c1/c2/d1#structure8>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure8}|{name= structure8}|{cat=NP}}"];
+<salt:/c1/c2/d1#structure9>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure9}|{name= structure9}|{cat=VP}}"];
+<salt:/c1/c2/d1#structure10>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure10}|{name= structure10}|{cat=S}}"];
+<salt:/c1/c2/d1#structure11>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure11}|{name= structure11}|{cat=VP}}"];
+<salt:/c1/c2/d1#structure12>[shape=Mrecord,color=seagreen,style=filled,label="{{salt:/c1/c2/d1#structure12}|{name= structure12}|{cat=VP}}"];
+}

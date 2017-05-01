@@ -1,18 +1,15 @@
 package ${package};
 
-import ${package}.${class_prefix}Exporter;
-
-import static org.junit.Assert.assertTrue;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
-
 import org.corpus_tools.pepper.common.CorpusDesc;
-import org.corpus_tools.pepper.common.FormatDesc;
 import org.corpus_tools.pepper.testFramework.PepperExporterTest;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.samples.SampleGenerator;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * This is a dummy implementation of a JUnit test for testing the
@@ -25,7 +22,7 @@ import org.junit.Test;
  * The usage of this class should simplfy your work and allows you to test only
  * your single importer in the Pepper environment.
  */
-public class ${class_prefix}ExporterTest extends PepperExporterTest {
+public class ${class_prefix}ExporterTest extends PepperExporterTest<${class_prefix}Exporter> {
 	/**
 	 * This method is called by the JUnit environment each time before a test
 	 * case starts. So each time a method annotated with @Test is called. This
@@ -33,13 +30,9 @@ public class ${class_prefix}ExporterTest extends PepperExporterTest {
 	 * influenced by before or after running test cases.
 	 */
 	@Before
-	public void setUp() {
-		setFixture(new ${class_prefix}Exporter());
-
-		FormatDesc formatDef = new FormatDesc();
-		formatDef.setFormatName("dot");
-		formatDef.setFormatVersion("1.0");
-		this.supportedFormatsCheck.add(formatDef);
+	public void beforeEach() {
+		setTestedModule(new ${class_prefix}Exporter());
+		addFormatWhichShouldBeSupported("dot", "1.0");
 	}
 
 	/**
@@ -59,27 +52,27 @@ public class ${class_prefix}ExporterTest extends PepperExporterTest {
 	public void test_DummyImplementation() {
 		// create a sample corpus, the class SampleGenerator provides a bunch of
 		// helpful methods to create sample documents and corpora
-		getFixture().setSaltProject(SampleGenerator.createSaltProject());
+		getTestedModule().setSaltProject(SampleGenerator.createSaltProject());
 
 		// determine location, to where the corpus should be exported
-		getFixture().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(getTempPath("${class_prefix}Exporter").getAbsolutePath())));
+		getTestedModule().setCorpusDesc(new CorpusDesc().setCorpusPath(URI.createFileURI(PepperTestUtil.createTestTempPath("${class_prefix}Exporter").getAbsolutePath())));
 
 		// starts the Pepper framework and the conversion process
 		start();
 
-		File superCorpus = new File(getTempPath("${class_prefix}Exporter").getAbsolutePath() + "/rootCorpus");
-		assertTrue(superCorpus.exists());
+		File superCorpus = new File(PepperTestUtil.createTestTempPath("${class_prefix}Exporter").getAbsolutePath() + "/rootCorpus");
+		assertThat(superCorpus.exists()).isTrue();
 		File subCorpus1 = new File(superCorpus.getAbsolutePath() + "/subCorpus1");
-		assertTrue(subCorpus1.exists());
+		assertThat(subCorpus1.exists()).isTrue();
 		File document1 = new File(subCorpus1.getAbsolutePath() + "/doc1.dot");
-		assertTrue(document1.exists());
+		assertThat(document1.exists()).isTrue();
 		File document2 = new File(subCorpus1.getAbsolutePath() + "/doc2.dot");
-		assertTrue(document2.exists());
+		assertThat(document2.exists()).isTrue();
 		File subCorpus2 = new File(superCorpus.getAbsolutePath() + "/subCorpus2");
-		assertTrue(subCorpus1.exists());
+		assertThat(subCorpus1.exists()).isTrue();
 		File document3 = new File(subCorpus2.getAbsolutePath() + "/doc3.dot");
-		assertTrue(document3.exists());
+		assertThat(document3.exists()).isTrue();
 		File document4 = new File(subCorpus2.getAbsolutePath() + "/doc4.dot");
-		assertTrue(document4.exists());
+		assertThat(document4.exists()).isTrue();
 	}
 }

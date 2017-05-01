@@ -1,0 +1,16 @@
+digraph G {
+ordering=out;
+<salt:/c1>[shape=Mrecord,color=gray28,style=filled,label="{{salt:/c1}|{name= c1}|{date= 1989-12-17}}"];
+<salt:/c1/c2>[shape=Mrecord,color=gray28,style=filled,label="{{salt:/c1/c2}|{name= c2}|{date= 1989-12-17}}"];
+<salt:/c1> -> <salt:/c1/c2>[color=gray28,style=filled,label="name= corpRel1"];
+<salt:/c1/c2/d1>[shape=Mrecord,color=gray,style=filled,label="{{salt:/c1/c2/d1}|{name= d1}|{author= Bart Simpson}}"];
+<salt:/c1/c2> -> <salt:/c1/c2/d1>[color=gray,style=filled,label="name= corpDocRel1"];
+<salt:/c1/c2/d2>[shape=Mrecord,color=gray,style=filled,label="{{salt:/c1/c2/d2}|{name= d2}|{author= Lisa Simpson}}"];
+<salt:/c1/c2> -> <salt:/c1/c2/d2>[color=gray,style=filled,label="name= corpDocRel2"];
+<salt:/c1/c3>[shape=Mrecord,color=gray28,style=filled,label="{{salt:/c1/c3}|{name= c3}|{author= Maggie Simpson}|{date= 1989-12-17}}"];
+<salt:/c1> -> <salt:/c1/c3>[color=gray28,style=filled,label="name= corpRel2"];
+<salt:/c1/c3/d3>[shape=Mrecord,color=gray,style=filled,label="{{salt:/c1/c3/d3}|{name= d3}|{author= Marge Simpson}}"];
+<salt:/c1/c3> -> <salt:/c1/c3/d3>[color=gray,style=filled,label="name= corpDocRel3"];
+<salt:/c1/c3/d4>[shape=Mrecord,color=gray,style=filled,label="{{salt:/c1/c3/d4}|{name= d4}|{author= Homer Simpson}}"];
+<salt:/c1/c3> -> <salt:/c1/c3/d4>[color=gray,style=filled,label="name= corpDocRel4"];
+}

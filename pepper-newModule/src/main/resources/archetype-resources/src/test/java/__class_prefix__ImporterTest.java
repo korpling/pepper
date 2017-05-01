@@ -1,13 +1,7 @@
 package ${package};
 
-import $
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import org.corpus_tools.pepper.common.FormatDesc;
-import org.corpus_tools.pepper.modules.coreModules.SaltXMLImporter;
 import org.corpus_tools.pepper.testFramework.PepperImporterTest;
 import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.salt.common.SCorpus;

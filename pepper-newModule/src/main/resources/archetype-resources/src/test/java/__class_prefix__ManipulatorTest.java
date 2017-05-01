@@ -1,9 +1,6 @@
 package ${package};
 
-import ${package}.${class_prefix}Manipulator;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.corpus_tools.pepper.testFramework.PepperManipulatorTest;
 import org.corpus_tools.salt.common.SCorpus;
@@ -23,7 +20,7 @@ import org.junit.Test;
  * work and allows you to test only your single manipulator in the Pepper
  * environment.
  */
-public class ${class_prefix}ManipulatorTest extends PepperManipulatorTest {
+public class ${class_prefix}ManipulatorTest extends PepperManipulatorTest<${class_prefix}Manipulator> {
 	/**
 	 * This method is called by the JUnit environment each time before a test
 	 * case starts. So each time a method annotated with @Test is called. This
@@ -31,8 +28,8 @@ public class ${class_prefix}ManipulatorTest extends PepperManipulatorTest {
 	 * influenced by before or after running test cases.
 	 */
 	@Before
-	public void setUp() {
-		setFixture(new ${class_prefix}Manipulator());
+	public void beforeEach() {
+		setTestedModule(new ${class_prefix}Manipulator());
 	}
 
 	/**
@@ -49,10 +46,10 @@ public class ${class_prefix}ManipulatorTest extends PepperManipulatorTest {
 	 * document-structure contains the right number of nodes and relations.
 	 */
 	@Test
-	public void test_DummyImplementation() {
+	public void whenManipulatingSampleCorpus_DateMetaAnnotationMustMatch1989_12_17() {
 		// create a sample corpus, the class SampleGenerator provides a bunch of
 		// helpful methods to create sample documents and corpora
-		getFixture().setSaltProject(SampleGenerator.createSaltProject());
+		getTestedModule().setSaltProject(SampleGenerator.createSaltProject());
 		// starts the Pepper framework and the conversion process
 		start();
 
@@ -60,12 +57,9 @@ public class ${class_prefix}ManipulatorTest extends PepperManipulatorTest {
 		// is 1989-12-17 just to show how tests work, for more tests, please
 		// take a look
 		// into ${class_prefix}Manipulator
-		for (SCorpus sCorpus : getFixture().getSaltProject().getCorpusGraphs().get(0).getCorpora()) {
-			assertNotNull(sCorpus.getMetaAnnotation("date"));
-			assertEquals("1989-12-17", sCorpus.getMetaAnnotation("date").getValue());
+		for (SCorpus corpus : getTestedModule().getSaltProject().getCorpusGraphs().get(0).getCorpora()) {
+			assertThat(corpus.getMetaAnnotation("date")).isNotNull();
+			assertThat(corpus.getMetaAnnotation("date").getValue()).isEqualTo("1989-12-17");
 		}
 	}
-
-	// TODO add further tests for any test cases you can think of and which are
-	// necessary
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.corpus_tools.pepper.common.DOCUMENT_STATUS;
-import org.corpus_tools.pepper.common.PepperConfiguration;
+import org.corpus_tools.pepper.core.SelfTestDesc;
 import org.corpus_tools.pepper.impl.PepperManipulatorImpl;
 import org.corpus_tools.pepper.impl.PepperMapperImpl;
 import org.corpus_tools.pepper.modules.PepperManipulator;
@@ -16,6 +16,7 @@ import org.corpus_tools.pepper.modules.exceptions.PepperModuleNotReadyException;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SDocument;
 import org.corpus_tools.salt.common.STextualDS;
+import org.corpus_tools.salt.common.SaltProject;
 import org.corpus_tools.salt.core.GraphTraverseHandler;
 import org.corpus_tools.salt.core.SAnnotation;
 import org.corpus_tools.salt.core.SGraph.GRAPH_TRAVERSE_TYPE;
@@ -51,9 +52,9 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 		super();
 		setName("${class_prefix}Manipulator");
 		// TODO change suppliers e-mail address
-		setSupplierContact(URI.createURI(PepperConfiguration.EMAIL));
+		setSupplierContact(URI.createURI("${your_name}@${organisation}"));
 		// TODO change suppliers homepage
-		setSupplierHomepage(URI.createURI(PepperConfiguration.HOMEPAGE));
+		setSupplierHomepage(URI.createURI("${organisation}"));
 		// TODO add a description of what your module is supposed to do
 		setDesc("The manipulator, traverses over the document-structure and prints out some information about it, like the frequencies of annotations, the number of nodes and edges and so on. ");
 	}
@@ -77,7 +78,7 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 	 */
 	public PepperMapper createPepperMapper(Identifier Identifier) {
 		${class_prefix}Mapper mapper = new ${class_prefix}Mapper();
-		return (mapper);
+		return mapper;
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 			if (getCorpus().getMetaAnnotation("date") == null) {
 				getCorpus().createMetaAnnotation(null, "date", "1989-12-17");
 			}
-			return (DOCUMENT_STATUS.COMPLETED);
+			return DOCUMENT_STATUS.COMPLETED;
 		}
 
 		/**
@@ -156,7 +157,7 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 			out.append("+---------------------------------+\n");
 			System.out.println(out.toString());
 
-			return (DOCUMENT_STATUS.COMPLETED);
+			return DOCUMENT_STATUS.COMPLETED;
 		}
 
 		/** A map storing frequencies of annotations of processed documents. */
@@ -170,7 +171,7 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 		 * annotations.
 		 */
 		@Override
-		public void nodeReached(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation sRelation, SNode fromNode, long order) {
+		public void nodeReached(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation<?,?> relation, SNode fromNode, long order) {
 			if (currNode.getAnnotations().size() != 0) {
 				// step through all annotations to collect them in frequencies
 				// table
@@ -194,7 +195,7 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 		 * In our dummy implementation, this method is not used.
 		 */
 		@Override
-		public void nodeLeft(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation edge, SNode fromNode, long order) {
+		public void nodeLeft(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation<?,?> relation, SNode fromNode, long order) {
 		}
 
 		/**
@@ -207,15 +208,55 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 		 * the nodes {@link STextualDS}.
 		 */
 		@Override
-		public boolean checkConstraint(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SRelation edge, SNode currNode, long order) {
+		public boolean checkConstraint(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SRelation<?,?> relation, SNode currNode, long order) {
 			if (currNode instanceof STextualDS) {
-				return (false);
+				return false;
 			} else {
-				return (true);
+				return true;
 			}
 		}
 	}
 
+	/**
+	 * This method is called by the Pepper framework to run an integration test
+	 * for module. When the method returns null, it means that no integration
+	 * test is supported. Otherwise, the {@link SelfTestDesc} object needs to
+	 * provide an input corpus path and an output corpus path.
+	 * 
+	 * When this module is:
+	 * <ul>
+	 * <li>an importer: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * the format to be imported. {@link SelfTestDesc#getExpectedCorpusPath()}
+	 * should contain the expected salt project (for control).</li>
+	 * <li>a manipulator: {@link SelfTestDesc#getInputCorpusPath()} should
+	 * contain a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * salt project (for control).</li>
+	 * <li>an exporter: {@link SelfTestDesc#getInputCorpusPath()} should contain
+	 * a salt project which is the module's input.
+	 * {@link SelfTestDesc#getExpectedCorpusPath()} should contain the expected
+	 * corpus in output format.</li>
+	 * </ul>
+	 * 
+	 * When this module is an importer or a manipulator the method
+	 * {@link SelfTestDesc#compare(SaltProject, SaltProject)} is called to
+	 * compare output salt project with expected salt project. When the module
+	 * is an exporter the method {@link SelfTestDesc#compare(URI, URI)} is
+	 * called to compare the created output folder with an expected one. By
+	 * default this method checks whether the file structure and each file is
+	 * equal.
+	 * 
+	 * @return test description
+	 */
+	@Override
+	public SelfTestDesc getSelfTestDesc() {
+		final URI base = getResources().appendSegment("selfTests")
+				.appendSegment("${class_prefix}Manipulator");
+		final URI in = base.appendSegment("in");
+		final URI expected = base.appendSegment("expected");
+		return SelfTestDesc.create().withInputCorpusPath(in).withExpectedCorpusPath(expected).build();
+	}
+	
 	// =================================================== optional
 	// ===================================================
 	/**
@@ -232,6 +273,6 @@ public class ${class_prefix}Manipulator extends PepperManipulatorImpl {
 	@Override
 	public boolean isReadyToStart() throws PepperModuleNotReadyException {
 		// TODO make some initializations if necessary
-		return (super.isReadyToStart());
+		return super.isReadyToStart();
 	}
 }
