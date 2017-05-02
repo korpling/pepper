@@ -79,4 +79,21 @@ public class PepperModulePropertyTest extends TestCase {
 				defaultValue);
 		assertEquals(defaultValue, prop.getValue());
 	}
+	
+	/**
+	 * Tests the use of the default value, i.e.,
+	 * the actual default value field
+	 * PepperModuleProperty#defaultValue.
+	 */
+	@Test
+	public void testGetDefault() {
+		String defaultValue = "hello world";
+		PepperModuleProperty<String> prop = new PepperModuleProperty<String>("prop1", String.class, "desc",
+				defaultValue);
+		assertEquals(defaultValue, prop.getValue());
+		prop.setValue("goodbye world");
+		assertEquals("goodbye world", prop.getValue());
+		assertEquals("hello world", prop.getDefaultValue());
+	}
+
 }
