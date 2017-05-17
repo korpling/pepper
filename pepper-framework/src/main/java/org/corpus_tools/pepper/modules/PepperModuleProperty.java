@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>, Serializable {
 	private static final long serialVersionUID = -1577480488804525468L;
-	private T defaultValue;
+	private final T defaultValue;
 
 	/**
 	 * Creates a {@link PepperModuleProperty} instance and sets its values to
@@ -53,6 +53,7 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 		this.name = name;
 		this.clazz = clazz;
 		this.description = description;
+		this.defaultValue = null;
 	}
 
 	/**
@@ -67,7 +68,9 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 *            a default value for the value
 	 */
 	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue) {
-		this(name, clazz, description);
+		this.name = name;
+		this.clazz = clazz;
+		this.description = description;
 		this.value = defaultValue;
 		this.defaultValue = defaultValue;
 	}
@@ -108,7 +111,10 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 */
 	public PepperModuleProperty(final String name, Class<T> clazz, final String description, T defaultValue,
 			final boolean required) {
-		this(name, clazz, description, required);
+		this.name = name;
+		this.clazz = clazz;
+		this.description = description;
+		this.required = required;
 		this.value = defaultValue;
 		this.defaultValue = defaultValue;
 	}
