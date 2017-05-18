@@ -17,83 +17,71 @@
  */
 package org.corpus_tools.pepper.modules;
 
-import java.io.File;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.junit.Test;
 
-import junit.framework.TestCase;
+public class PepperModulePropertyTest {
+	private PepperModuleProperty<?> property = null;
 
-public class PepperModulePropertyTest extends TestCase {
-	/**
-	 * Checks setting and returning an int value.
-	 */
+	private void when() {
+		property = PepperModuleProperty.create().withName("MyProp").withType(Boolean.class)
+				.withDescription("Any description.").withDefaultValue(true).isRequired(true).build();
+	}
+
 	@Test
-	public void testSetProperty_Int() {
+	public void whenBuildingPropertyWithName_PropertyMustContainName() {
+		when();
+		assertThat(property.getName()).isEqualTo("MyProp");
+	}
+
+	@Test
+	public void whenBuildingPropertyWithType_PropertyMustContainType() {
+		when();
+		assertThat(property.getType()).isEqualTo(Boolean.class);
+	}
+
+	@Test
+	public void whenBuildingPropertyWithDescription_PropertyMustContainDescription() {
+		when();
+		assertThat(property.getDescription()).isEqualTo("Any description.");
+	}
+
+	@Test
+	public void whenBuildingPropertyWithDefaultValue_PropertyMustContainDefaultValue() {
+		when();
+		assertThat(property.getDefaultValue()).isEqualTo(true);
+	}
+
+	@Test
+	public void whenBuildingPropertyWithReuired_PropertyMustBerequired() {
+		when();
+		assertThat(property.isRequired()).isEqualTo(true);
+	}
+
+	@Test
+	public void whenSettingValue_valueMustBeSetOne() {
 		Integer value = 123;
-		PepperModuleProperty<Integer> prop = new PepperModuleProperty<Integer>("prop1", Integer.class, "desc");
-		prop.setValueString(value.toString());
-		assertEquals(value, prop.getValue());
+		PepperModuleProperty<Integer> prop = PepperModuleProperty.create().withName("prop1").withType(Integer.class)
+				.withDescription("desc").build();
+		prop.setValue(value);
+		assertThat(prop.getValue()).isEqualTo(value);
 	}
 
-	/**
-	 * Checks setting and returning an int value.
-	 */
 	@Test
-	public void testSetProperty_Boolean() {
-		Boolean value = true;
-		PepperModuleProperty<Boolean> prop = new PepperModuleProperty<Boolean>("prop1", Boolean.class, "desc");
-		prop.setValueString(value.toString());
-		assertEquals(value, prop.getValue());
-	}
-
-	/**
-	 * Checks setting and returning an int value.
-	 */
-	@Test
-	public void testSetProperty_File() {
-		File value = new File("./me/");
-		PepperModuleProperty<File> prop = new PepperModuleProperty<File>("prop1", File.class, "desc");
-		prop.setValueString(value.toString());
-		assertEquals(value, prop.getValue());
-	}
-
-	/**
-	 * Checks setting and returning an int value.
-	 */
-	@Test
-	public void testSetProperty_String() {
-		String value = "hello world";
-		PepperModuleProperty<String> prop = new PepperModuleProperty<String>("prop1", String.class, "desc");
-		prop.setValueString(value);
-		assertEquals(value, prop.getValue());
-	}
-
-	/**
-	 * Tests the use of the default value.
-	 */
-	@Test
-	public void testSetUsingDefault() {
+	public void whenSettingDefaultValueAndNoValue_valueMustBeDefault() {
 		String defaultValue = "hello world";
-		PepperModuleProperty<String> prop = new PepperModuleProperty<String>("prop1", String.class, "desc",
-				defaultValue);
-		assertEquals(defaultValue, prop.getValue());
+		PepperModuleProperty<String> prop = PepperModuleProperty.create().withName("MyProp").withType(String.class)
+				.withDescription("desc").withDefaultValue(defaultValue).build();
+		assertThat(prop.getValue()).isEqualTo(defaultValue);
 	}
-	
-	/**
-	 * Tests the use of the default value, i.e.,
-	 * the actual default value field
-	 * PepperModuleProperty#defaultValue.
-	 */
+
 	@Test
-	public void testGetDefault() {
+	public void whenOverwritingDefaultValueWithValue_valueMustBeValue() {
 		String defaultValue = "hello world";
-		PepperModuleProperty<String> prop = new PepperModuleProperty<String>("prop1", String.class, "desc",
-				defaultValue);
-		assertEquals(defaultValue, prop.getValue());
+		PepperModuleProperty<String> prop = PepperModuleProperty.create().withName("MyProp").withType(String.class)
+				.withDescription("desc").withDefaultValue(defaultValue).build();
 		prop.setValue("goodbye world");
-		assertEquals("goodbye world", prop.getValue());
-		assertEquals("hello world", prop.getDefaultValue());
+		assertThat(prop.getValue()).isEqualTo("goodbye world");
 	}
-
 }
