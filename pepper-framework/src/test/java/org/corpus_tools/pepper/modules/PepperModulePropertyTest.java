@@ -84,4 +84,13 @@ public class PepperModulePropertyTest {
 		prop.setValue("goodbye world");
 		assertThat(prop.getValue()).isEqualTo("goodbye world");
 	}
+	
+	@Test
+	public void whenOverwritingDefaultValueWithValue_defaultValueMustBeDefaultValue() {
+		String defaultValue = "hello world";
+		PepperModuleProperty<String> prop = PepperModuleProperty.create().withName("MyProp").withType(String.class)
+				.withDescription("desc").withDefaultValue(defaultValue).build();
+		prop.setValue("goodbye world");
+		assertThat(prop.getDefaultValue()).isEqualTo("hello world");
+	}
 }
