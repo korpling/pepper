@@ -33,8 +33,9 @@ import java.io.Serializable;
  * A property is created in a fluent way. See the following sample:
  * 
  * <pre>
- * PepperModuleProperty.create().withName("MyProp").withClass(Boolean.class).withDefaultValue(true)
- * 		.withDescription("Please describe the property for the user. ").isRequired(false).build();
+ * PepperModuleProperty.create().withName("MyProp").withClass(String.class)
+ * 		.withDescription("Please describe the property for the user. ")
+ * 		.withDefaultValue("theDefaultWhenNoValueIsSet").isRequired(false).build();
  * </pre>
  */
 public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<?>>, Serializable {
