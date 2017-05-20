@@ -20,8 +20,6 @@ package org.corpus_tools.pepper.modules;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.corpus_tools.pepper.modules.PepperModuleProperty.create;
 
-import java.io.File;
-
 import org.junit.Test;
 
 public class PepperModulePropertyTest {
@@ -109,87 +107,6 @@ public class PepperModulePropertyTest {
 		String[] values = new String[] { "red", "green", "blue" };
 		PepperModuleProperty<String[]> prop = create().withName("MyProp").withType(String[].class)
 				.withDescription("desc").withDefaultValue(new String[] { "yellow", "black" }).build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToBooleanArray_valueMustBeTheBooleanArray() {
-		Boolean[] values = new Boolean[] { true, false, true };
-		PepperModuleProperty<Boolean[]> prop = create().withName("MyProp").withType(Boolean[].class)
-				.withDescription("desc").build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToCharacterArray_valueMustBeTheCharacterArray() {
-		Character[] values = new Character[] { 'a', 'b', 'c' };
-		PepperModuleProperty<Character[]> prop = create().withName("MyProp").withType(Character[].class)
-				.withDescription("desc").build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToIntegerArray_valueMustBeTheIntegerArray() {
-		Integer[] values = new Integer[] { 1, 2, 3 };
-		PepperModuleProperty<Integer[]> prop = create().withName("MyProp").withType(Integer[].class)
-				.withDescription("desc").build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToLongArray_valueMustBeTheLongArray() {
-		Long[] values = new Long[] { 1l, 2l, 3l };
-		PepperModuleProperty<Long[]> prop = create().withName("MyProp").withType(Long[].class).withDescription("desc")
-				.build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToFloatArray_valueMustBeTheFloatArray() {
-		Float[] values = new Float[] { 1.5f, 2.5f, 3.5f };
-		PepperModuleProperty<Float[]> prop = create().withName("MyProp").withType(Float[].class).withDescription("desc")
-				.build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToDoubleArray_valueMustBeTheDoubleArray() {
-		Double[] values = new Double[] { 1d, 2d, 3d };
-		PepperModuleProperty<Double[]> prop = create().withName("MyProp").withType(Double[].class)
-				.withDescription("desc").build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToByteArray_valueMustBeTheByteArray() {
-		Byte[] values = new Byte[] { 1, 2, 3 };
-		PepperModuleProperty<Byte[]> prop = create().withName("MyProp").withType(Byte[].class).withDescription("desc")
-				.build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToShortArray_valueMustBeTheShortArray() {
-		Short[] values = new Short[] { 1, 2, 3 };
-		PepperModuleProperty<Short[]> prop = create().withName("MyProp").withType(Short[].class).withDescription("desc")
-				.build();
-		prop.setValue(values);
-		assertThat(prop.getValue()).containsExactly(values);
-	}
-
-	@Test
-	public void whenSettingValueToFileArray_valueMustBeTheFileArray() {
-		File[] values = new File[] { new File("1"), new File("2"), new File("3") };
-		PepperModuleProperty<File[]> prop = create().withName("MyProp").withType(File[].class).withDescription("desc")
-				.build();
 		prop.setValue(values);
 		assertThat(prop.getValue()).containsExactly(values);
 	}

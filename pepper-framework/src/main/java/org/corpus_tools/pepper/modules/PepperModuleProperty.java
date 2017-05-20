@@ -183,6 +183,9 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 		} else if (Double[].class.isAssignableFrom(type)) {
 			List<Double> values = extractListFromString(Double.class, value);
 			this.value = (T) values.toArray(new Double[values.size()]);
+		} else if (Byte[].class.isAssignableFrom(type)) {
+			List<Byte> values = extractListFromString(Byte.class, value);
+			this.value = (T) values.toArray(new Byte[values.size()]);
 		} else if (Short[].class.isAssignableFrom(type)) {
 			List<Short> values = extractListFromString(Short.class, value);
 			this.value = (T) values.toArray(new Short[values.size()]);
