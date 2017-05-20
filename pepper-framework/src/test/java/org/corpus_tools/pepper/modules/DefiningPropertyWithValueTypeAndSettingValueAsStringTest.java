@@ -69,4 +69,30 @@ public class DefiningPropertyWithValueTypeAndSettingValueAsStringTest {
 		then();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void whenDefiningPropertyWithStringArrayValueAndSettingValueAsString_ValueMustBeReadAsStringArray() {
+		given(String[].class);
+		when("red, green,blue");
+		String[] expectedValue = new String[] { "red", "green", "blue" };
+		assertThat(((PepperModuleProperty<String[]>) property).getValue()).containsExactly(expectedValue);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void whenSettingValueAsStringWithoutCommasAndPropertyIsArray_ValuemustContainOnlyOneEntry() {
+		given(String[].class);
+		when("red greenblue");
+		String[] expectedValue = new String[] { "red greenblue" };
+		assertThat(((PepperModuleProperty<String[]>) property).getValue()).containsExactly(expectedValue);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void whenDefiningPropertyWithIntegerArrayValueAndSettingValueAsString_ValueMustBeReadAsIntegerArray() {
+		given(Integer[].class);
+		when("1, 2,3");
+		Integer[] expectedValue = new Integer[] { 1, 2, 3 };
+		assertThat(((PepperModuleProperty<Integer[]>) property).getValue()).containsExactly(expectedValue);
+	}
 }
