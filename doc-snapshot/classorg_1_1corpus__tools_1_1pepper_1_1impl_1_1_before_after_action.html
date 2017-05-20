@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9d414f414d364cda577b97a252700496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab67bee1b6b798650bf00b7bb1be3f8e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab67bee1b6b798650bf00b7bb1be3f8e2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html#ab67bee1b6b798650bf00b7bb1be3f8e2">copyResources</a> (String resString)</td></tr>
-<tr class="memdesc:ab67bee1b6b798650bf00b7bb1be3f8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads customization property <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#a70a319429f97cc19419674d042476f09">PepperModuleProperties#PROP_AFTER_COPY_RES</a> and copies the listed resources to the named target folder. <br /></td></tr>
+<tr class="memdesc:ab67bee1b6b798650bf00b7bb1be3f8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads customization property <a class="el" href="">PepperModuleProperties#PROP_AFTER_COPY_RES</a> and copies the listed resources to the named target folder. <br /></td></tr>
 <tr class="separator:ab67bee1b6b798650bf00b7bb1be3f8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915465862fc2e36a7de1c2a009e57f9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html#a915465862fc2e36a7de1c2a009e57f9a">before</a> (Identifier id)  throws PepperModuleException </td></tr>
 <tr class="memdesc:a915465862fc2e36a7de1c2a009e57f9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes actions, before the mapping of a corpus or document was started.  <a href="#a915465862fc2e36a7de1c2a009e57f9a">More...</a><br /></td></tr>
@@ -158,7 +158,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class is a helper class to perform actions before or after a mapping was done. A mapping could be the mapping of a single corpus or document or even the mapping of an entire corpus structure. </p>
-<p>This could be helpful, for instance to make some processing after the mapping e.g. adding all created nodes and relations to a layer. To trigger an action for a specific Pepper module a set of customization properties is available. Customization properties triggering a post processing starts with { <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#af9e266d52057f71b34c2fbb8666df8e7" title="Prefixes all post processing customization properties directly provided by Pepper (PepperModule)...">PepperModuleProperties::PREFIX_PEPPER_AFTER</a>}. Such an action could be the enhancement of a corpus with metadata (following the property file syntax) to enhance corpora in formats, which do not support metadata, see <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html#ad6b82d1ead92fe2abad6d4ef9c611512">readMeta(Identifier)</a>. Or the printing of a corpus structure, see <a class="el" href="">reportCorpusStructure(SNode, String, boolean)</a>. </p>
+<p>This could be helpful, for instance to make some processing after the mapping e.g. adding all created nodes and relations to a layer. To trigger an action for a specific Pepper module a set of customization properties is available. Customization properties triggering a post processing starts with { PepperModuleProperties::PREFIX_PEPPER_AFTER}. Such an action could be the enhancement of a corpus with metadata (following the property file syntax) to enhance corpora in formats, which do not support metadata, see <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html#ad6b82d1ead92fe2abad6d4ef9c611512">readMeta(Identifier)</a>. Or the printing of a corpus structure, see <a class="el" href="">reportCorpusStructure(SNode, String, boolean)</a>. </p>
 <p>Objects of this class are used by </p><ol>
 <li>
 <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html">PepperModuleImpl</a> to perform actions before or after a single document or corpus was processed and </li>
@@ -254,7 +254,7 @@ after <ul>
 </div><div class="memdoc">
 
 <p>Invokes an actions, after the mapping of an entire corpus structure was done. </p>
-<p>Customization properties triggering a post processing starts with { <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#af9e266d52057f71b34c2fbb8666df8e7" title="Prefixes all post processing customization properties directly provided by Pepper (PepperModule)...">PepperModuleProperties::PREFIX_PEPPER_AFTER</a>}. This method is called after invocation of linkPepperModule#start().@throwsPepperModuleException</p>
+<p>Customization properties triggering a post processing starts with { PepperModuleProperties::PREFIX_PEPPER_AFTER}. This method is called after invocation of linkPepperModule#start().@throwsPepperModuleException</p>
 
 </div>
 </div>
@@ -273,7 +273,7 @@ after <ul>
 </div><div class="memdoc">
 
 <p>Invokes actions, after the mapping of a corpus or document is done. </p>
-<p>This could be helpful, for instance to make some processing after the mapping e.g. adding all created nodes and relations to a layer. To trigger this post processing for a specific Pepper module a set of customization properties is available. Customization properties triggering a post processing starts with { <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#af9e266d52057f71b34c2fbb8666df8e7" title="Prefixes all post processing customization properties directly provided by Pepper (PepperModule)...">PepperModuleProperties::PREFIX_PEPPER_AFTER</a>}. This method is called by the method <a class="el" href="">map()</a>, after <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a438e0e6ad09a8ed506f84ea9cb909bd6">PepperMapper#mapSDocument()</a> was called.</p>
+<p>This could be helpful, for instance to make some processing after the mapping e.g. adding all created nodes and relations to a layer. To trigger this post processing for a specific Pepper module a set of customization properties is available. Customization properties triggering a post processing starts with { PepperModuleProperties::PREFIX_PEPPER_AFTER}. This method is called by the method <a class="el" href="">map()</a>, after <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a438e0e6ad09a8ed506f84ea9cb909bd6">PepperMapper#mapSDocument()</a> was called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>id of either <a class="el" href="">SDocument</a> or <a class="el" href="">SCorpus</a> object to be post processed </td></tr>
@@ -304,7 +304,7 @@ after <ul>
 </div><div class="memdoc">
 
 <p>Invokes an actions, after the mapping of an entire corpus structure was done. </p>
-<p>Customization properties triggering a pre processing starts with { <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#af9e266d52057f71b34c2fbb8666df8e7" title="Prefixes all post processing customization properties directly provided by Pepper (PepperModule)...">PepperModuleProperties::PREFIX_PEPPER_AFTER</a>}. This method is called before invocation of <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aa736ba804f3247b0b10d656d934cc71f">PepperModule#start()</a>.</p>
+<p>Customization properties triggering a pre processing starts with { PepperModuleProperties::PREFIX_PEPPER_AFTER}. This method is called before invocation of <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aa736ba804f3247b0b10d656d934cc71f">PepperModule#start()</a>.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">PepperModuleException</td><td></td></tr>
@@ -329,7 +329,7 @@ after <ul>
 </div><div class="memdoc">
 
 <p>Invokes actions, before the mapping of a corpus or document was started. </p>
-<p>This could be helpful, for instance to make some preparations for the mapping. To trigger this pre processing for a specific Pepper module a set of customization properties is available. Customization properties triggering a pre processing starts with { <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#a2b23f89c8f77281bf457b2be90d2c3a2" title="Prefixes all pre processing customization properties directly provided by Pepper (PepperModule). ">PepperModuleProperties::PREFIX_PEPPER_BEFORE</a>}. This method is called by the method <a class="el" href="">map()</a>, before <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a438e0e6ad09a8ed506f84ea9cb909bd6">PepperMapper#mapSDocument()</a> was called.</p>
+<p>This could be helpful, for instance to make some preparations for the mapping. To trigger this pre processing for a specific Pepper module a set of customization properties is available. Customization properties triggering a pre processing starts with { PepperModuleProperties::PREFIX_PEPPER_BEFORE}. This method is called by the method <a class="el" href="">map()</a>, before <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a438e0e6ad09a8ed506f84ea9cb909bd6">PepperMapper#mapSDocument()</a> was called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>id of either <a class="el" href="">SDocument</a> or <a class="el" href="">SCorpus</a> object to be prepared </td></tr>
@@ -360,7 +360,7 @@ after <ul>
 </div><div class="memdoc">
 
 <p>Loads meta data form a meta data file and adds them to the object corresponding to the passed <a class="el" href="">Identifier</a>. </p>
-<p>The meta data file is localized in the directory in case of the URI corresponding to passed <a class="el" href="">Identifier</a> is a directory or (in case the corresponding URI addresses a file) in the same directory as the resource corresponding to the passed <a class="el" href="">Identifier</a>. The meta data file must have the ending passed in <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_properties.html#af3d7012082906424a21366e269e85c27">PepperModuleProperties#PROP_BEFORE_READ_META</a>.</p>
+<p>The meta data file is localized in the directory in case of the URI corresponding to passed <a class="el" href="">Identifier</a> is a directory or (in case the corresponding URI addresses a file) in the same directory as the resource corresponding to the passed <a class="el" href="">Identifier</a>. The meta data file must have the ending passed in <a class="el" href="">PepperModuleProperties#PROP_BEFORE_READ_META</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>identifying the current object </td></tr>
@@ -470,7 +470,7 @@ new_namespace::new_name=new_value", determining the name is mandatory whereas th
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1impl.html">impl</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_before_after_action.html">BeforeAfterAction</a></li>
-    <li class="footer">Generated on Sun Apr 9 2017 11:07:52 for Pepper by
+    <li class="footer">Generated on Sat May 20 2017 21:48:01 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
