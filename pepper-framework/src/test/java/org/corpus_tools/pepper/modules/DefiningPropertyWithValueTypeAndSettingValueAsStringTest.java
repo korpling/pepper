@@ -24,12 +24,16 @@ import java.io.File;
 
 import org.junit.Test;
 
-public class DefiningPropertyWithValueTypeAndSettingValueAsString {
-	private PepperModuleProperty<?> property = create().withName("prop1").withType(Integer.class)
-			.withDescription("desc").build();
+public class DefiningPropertyWithValueTypeAndSettingValueAsStringTest {
+	private PepperModuleProperty<?> property;
 	private Object value;
 
-	private void when() {
+	private <T> void given(Class<T> clazz) {
+		property = create().withName("prop1").withType(clazz).withDescription("desc").build();
+	}
+
+	private void when(Object value) {
+		this.value = value;
 		property.setValueString(value.toString());
 	}
 
@@ -39,38 +43,30 @@ public class DefiningPropertyWithValueTypeAndSettingValueAsString {
 
 	@Test
 	public void whenDefiningPropertyWithIntegerValueAndSettingValueAsString_ValueMustBeReadAsInteger() {
-		value = 123;
-		when();
+		given(Integer.class);
+		when(123);
 		then();
 	}
 
-	/**
-	 * Checks setting and returning an int value.
-	 */
 	@Test
-	public void testSetProperty_Boolean() {
-		value = true;
-		when();
+	public void whenDefiningPropertyWithBooleanValueAndSettingValueAsString_ValueMustBeReadAsBoolean() {
+		given(Boolean.class);
+		when(true);
 		then();
 	}
 
-	/**
-	 * Checks setting and returning an int value.
-	 */
 	@Test
-	public void testSetProperty_File() {
-		value = new File("./me/");
-		when();
+	public void whenDefiningPropertyWithFileValueAndSettingValueAsString_ValueMustBeReadAsFile() {
+		given(File.class);
+		when(new File("./me/"));
 		then();
 	}
 
-	/**
-	 * Checks setting and returning an int value.
-	 */
 	@Test
-	public void testSetProperty_String() {
-		value = "hello world";
-		when();
+	public void whenDefiningPropertyWithStringValueAndSettingValueAsString_ValueMustBeReadAsString() {
+		given(String.class);
+		when("hello world");
 		then();
 	}
+
 }

@@ -94,4 +94,20 @@ public class PepperModulePropertyTest {
 		prop.setValue("goodbye world");
 		assertThat(prop.getDefaultValue()).isEqualTo("hello world");
 	}
+
+	@Test
+	public void whenHavingDefaultValueForAnArryProperty_ValueMustBeDefaultValue() {
+		PepperModuleProperty<String[]> prop = create().withName("MyProp").withType(String[].class)
+				.withDescription("desc").withDefaultValue(new String[] { "yellow", "black" }).build();
+		assertThat(prop.getValue()).containsExactly("yellow", "black");
+	}
+
+	@Test
+	public void whenSettingValueToArray_valueMustBeTheArrayOverwritingDefaultValues() {
+		String[] values = new String[] { "red", "green", "blue" };
+		PepperModuleProperty<String[]> prop = create().withName("MyProp").withType(String[].class)
+				.withDescription("desc").withDefaultValue(new String[] { "yellow", "black" }).build();
+		prop.setValue(values);
+		assertThat(prop.getValue()).containsExactly(values);
+	}
 }
