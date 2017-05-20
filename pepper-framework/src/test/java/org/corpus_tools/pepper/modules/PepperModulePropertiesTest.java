@@ -17,10 +17,10 @@
  */
 package org.corpus_tools.pepper.modules;
 
+import static org.corpus_tools.pepper.modules.PepperModuleProperty.create;
+
 import java.util.Properties;
 
-import org.corpus_tools.pepper.modules.PepperModuleProperties;
-import org.corpus_tools.pepper.modules.PepperModuleProperty;
 import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +28,23 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 public class PepperModulePropertiesTest extends TestCase {
+	private static final String propName1 = "prop1";
+	private static final String propName2 = "prop2";
+	private static final String propName3 = "prop3";
+	private static final String propName4 = "prop4";
+	private static final String propName5 = "prop5";
+	private final PepperModuleProperty<Integer> prop1 = createSimpleProperty(propName1);
+	private final PepperModuleProperty<Integer> prop2 = createSimpleProperty(propName2);
+	private final PepperModuleProperty<Integer> prop3 = createSimpleProperty(propName3);
+	private final PepperModuleProperty<Integer> prop4 = createSimpleProperty(propName4);
+	private final PepperModuleProperty<Integer> prop5 = createSimpleProperty(propName5);
+	private final PepperModuleProperty<Integer> requiredProp1 = create().withName(propName1).withType(Integer.class)
+			.withDescription("some desc").isRequired(true).build();
+	private final PepperModuleProperty<Integer> requiredProp2 = create().withName(propName2).withType(Integer.class)
+			.withDescription("some desc").isRequired(true).build();
+	private final PepperModuleProperty<Integer> requiredProp3 = create().withName(propName3).withType(Integer.class)
+			.withDescription("some desc").isRequired(true).build();
+
 	private PepperModuleProperties fixture = null;
 
 	public void setFixture(PepperModuleProperties fixture) {
@@ -43,13 +60,15 @@ public class PepperModulePropertiesTest extends TestCase {
 		this.setFixture(new PepperModuleProperties());
 	}
 
+	private static PepperModuleProperty<Integer> createSimpleProperty(String propName) {
+		return create().withName(propName).withType(Integer.class).withDescription("some desc").build();
+	}
+
 	@Test
 	public void testAddProp() {
-		String propName = "prop1";
-		PepperModuleProperty<Integer> prop = new PepperModuleProperty<Integer>(propName, Integer.class, "some desc");
-		prop.setValue(123);
-		getFixture().addProperty(prop);
-		assertEquals(prop, getFixture().getProperty(propName));
+		prop1.setValue(123);
+		getFixture().addProperty(prop1);
+		assertEquals(prop1, getFixture().getProperty(propName1));
 	}
 
 	/**
@@ -58,15 +77,8 @@ public class PepperModulePropertiesTest extends TestCase {
 	 */
 	@Test
 	public void testAdd_Properties() {
-		String propName1 = "prop1";
-		String propName2 = "prop2";
-		String propName3 = "prop3";
-
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc");
 		getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc");
 		getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc");
 		getFixture().addProperty(prop3);
 
 		Properties properties = new Properties();
@@ -86,17 +98,8 @@ public class PepperModulePropertiesTest extends TestCase {
 	 */
 	@Test
 	public void testAdd_Properties2() {
-		String propName1 = "prop1";
-		String propName2 = "prop2";
-		String propName3 = "prop3";
-		String propName4 = "prop4";
-		String propName5 = "prop5";
-
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc");
 		getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc");
 		getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc");
 		getFixture().addProperty(prop3);
 
 		Properties properties = new Properties();
@@ -122,12 +125,7 @@ public class PepperModulePropertiesTest extends TestCase {
 	 */
 	@Test
 	public void testCheckProperties() {
-		String propName1 = "prop1";
-
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
-				true);
-		getFixture().addProperty(prop1);
-
+		getFixture().addProperty(requiredProp1);
 		try {
 			getFixture().checkProperties();
 			fail("a property, whichs value is marked as required is not given");
@@ -143,26 +141,10 @@ public class PepperModulePropertiesTest extends TestCase {
 	 */
 	@Test
 	public void testAdd_CheckProperties() {
-		String propName1 = "prop1";
-		String propName2 = "prop2";
-		String propName3 = "prop3";
-		String propName4 = "prop4";
-		String propName5 = "prop5";
-
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
-				true);
 		getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc",
-				true);
 		getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc",
-				true);
 		getFixture().addProperty(prop3);
-		PepperModuleProperty<Integer> prop4 = new PepperModuleProperty<Integer>(propName4, Integer.class, "some desc",
-				false);
 		getFixture().addProperty(prop4);
-		PepperModuleProperty<Integer> prop5 = new PepperModuleProperty<Integer>(propName5, Integer.class, "some desc",
-				false);
 		getFixture().addProperty(prop5);
 
 		Properties properties = new Properties();
@@ -179,20 +161,9 @@ public class PepperModulePropertiesTest extends TestCase {
 	 */
 	@Test
 	public void testAdd_CheckProperties2() {
-		String propName1 = "prop1";
-		String propName2 = "prop2";
-		String propName3 = "prop3";
-
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
-				true);
-		getFixture().addProperty(prop1);
-		PepperModuleProperty<Integer> prop2 = new PepperModuleProperty<Integer>(propName2, Integer.class, "some desc",
-				true);
-		getFixture().addProperty(prop2);
-		PepperModuleProperty<Integer> prop3 = new PepperModuleProperty<Integer>(propName3, Integer.class, "some desc",
-				true);
-		getFixture().addProperty(prop3);
-
+		getFixture().addProperty(requiredProp1);
+		getFixture().addProperty(requiredProp2);
+		getFixture().addProperty(requiredProp3);
 		Properties properties = new Properties();
 		properties.put(propName1, 12);
 		properties.put(propName2, 34);
@@ -207,10 +178,7 @@ public class PepperModulePropertiesTest extends TestCase {
 
 	@Test
 	public void testRemoveProperty() {
-		String propName1 = "prop1";
-		PepperModuleProperty<Integer> prop1 = new PepperModuleProperty<Integer>(propName1, Integer.class, "some desc",
-				true);
-		getFixture().addProperty(prop1);
+		getFixture().addProperty(requiredProp1);
 		Properties properties = new Properties();
 		properties.put(propName1, 12);
 		getFixture().setPropertyValues(properties);
@@ -223,7 +191,6 @@ public class PepperModulePropertiesTest extends TestCase {
 	@Test
 	public void test_PROP_SIMPLE_TOKENIZE_3() {
 		String sep = "' ', '\\'', ',', '\\\\'";
-
 		assertEquals(4, getFixture().stringToCharList(sep).size());
 		assertEquals(Character.valueOf(' '), getFixture().stringToCharList(sep).get(0));
 		assertEquals(Character.valueOf('\''), getFixture().stringToCharList(sep).get(1));
