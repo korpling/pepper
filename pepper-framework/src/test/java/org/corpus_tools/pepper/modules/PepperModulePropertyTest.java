@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.modules;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.corpus_tools.pepper.modules.PepperModuleProperty.create;
 
 import org.junit.Test;
 
@@ -25,8 +26,8 @@ public class PepperModulePropertyTest {
 	private PepperModuleProperty<?> property = null;
 
 	private void when() {
-		property = PepperModuleProperty.create().withName("MyProp").withType(Boolean.class)
-				.withDescription("Any description.").withDefaultValue(true).isRequired(true).build();
+		property = create().withName("MyProp").withType(Boolean.class).withDescription("Any description.")
+				.withDefaultValue(true).isRequired(true).build();
 	}
 
 	@Test
@@ -62,8 +63,8 @@ public class PepperModulePropertyTest {
 	@Test
 	public void whenSettingValue_valueMustBeSetOne() {
 		Integer value = 123;
-		PepperModuleProperty<Integer> prop = PepperModuleProperty.create().withName("prop1").withType(Integer.class)
-				.withDescription("desc").build();
+		PepperModuleProperty<Integer> prop = create().withName("prop1").withType(Integer.class).withDescription("desc")
+				.build();
 		prop.setValue(value);
 		assertThat(prop.getValue()).isEqualTo(value);
 	}
@@ -71,25 +72,25 @@ public class PepperModulePropertyTest {
 	@Test
 	public void whenSettingDefaultValueAndNoValue_valueMustBeDefault() {
 		String defaultValue = "hello world";
-		PepperModuleProperty<String> prop = PepperModuleProperty.create().withName("MyProp").withType(String.class)
-				.withDescription("desc").withDefaultValue(defaultValue).build();
+		PepperModuleProperty<String> prop = create().withName("MyProp").withType(String.class).withDescription("desc")
+				.withDefaultValue(defaultValue).build();
 		assertThat(prop.getValue()).isEqualTo(defaultValue);
 	}
 
 	@Test
 	public void whenOverwritingDefaultValueWithValue_valueMustBeValue() {
 		String defaultValue = "hello world";
-		PepperModuleProperty<String> prop = PepperModuleProperty.create().withName("MyProp").withType(String.class)
-				.withDescription("desc").withDefaultValue(defaultValue).build();
+		PepperModuleProperty<String> prop = create().withName("MyProp").withType(String.class).withDescription("desc")
+				.withDefaultValue(defaultValue).build();
 		prop.setValue("goodbye world");
 		assertThat(prop.getValue()).isEqualTo("goodbye world");
 	}
-	
+
 	@Test
 	public void whenOverwritingDefaultValueWithValue_defaultValueMustBeDefaultValue() {
 		String defaultValue = "hello world";
-		PepperModuleProperty<String> prop = PepperModuleProperty.create().withName("MyProp").withType(String.class)
-				.withDescription("desc").withDefaultValue(defaultValue).build();
+		PepperModuleProperty<String> prop = create().withName("MyProp").withType(String.class).withDescription("desc")
+				.withDefaultValue(defaultValue).build();
 		prop.setValue("goodbye world");
 		assertThat(prop.getDefaultValue()).isEqualTo("hello world");
 	}
