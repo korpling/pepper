@@ -576,7 +576,7 @@ public class PepperJobImpl extends PepperJob {
 					sCorpusGraph = getSaltProject().getCorpusGraphs().get(numOfImportStep);
 				} else {
 					sCorpusGraph = SaltFactory.createSCorpusGraph();
-					getSaltProject().addCorpusGraph(sCorpusGraph);
+					getSaltProject().add(sCorpusGraph);
 				}
 
 				futures.add(importStep.getModuleController().importCorpusStructure(sCorpusGraph));

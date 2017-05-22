@@ -67,7 +67,7 @@ public class DOTExporter extends PepperExporterImpl {
 
 				// workaround to deal with a bug in salt
 				if (getDocument().getGraph() == null) {
-					sCorpusGraph.addNode(getDocument());
+					sCorpusGraph.add(getDocument());
 				}
 
 				addProgress(1.0);

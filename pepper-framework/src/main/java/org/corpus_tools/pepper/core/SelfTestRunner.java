@@ -144,7 +144,7 @@ public class SelfTestRunner {
 				if (tmpProject.getCorpusGraphs() == null || tmpProject.getCorpusGraphs().isEmpty()) {
 					continue;
 				}
-				saltProject.addCorpusGraph(tmpProject.getCorpusGraphs().get(0));
+				saltProject.add(tmpProject.getCorpusGraphs().get(0));
 			}
 		}
 		return saltProject;

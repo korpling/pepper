@@ -436,15 +436,15 @@ public class BeforeAfterAction {
 					if (sLayer == null) {
 						sLayer = SaltFactory.createSLayer();
 						sLayer.setName(layer);
-						sDoc.getDocumentGraph().addLayer(sLayer);
+						sDoc.getDocumentGraph().add(sLayer);
 					}
 					// add all nodes to new layer
 					for (SNode sNode : sDoc.getDocumentGraph().getNodes()) {
-						sLayer.addNode(sNode);
+						sLayer.add(sNode);
 					}
 					// add all relations to new layer
 					for (SRelation<?, ?> sRel : sDoc.getDocumentGraph().getRelations()) {
-						sLayer.addRelation(sRel);
+						sLayer.add(sRel);
 					}
 				}
 			}

@@ -421,7 +421,7 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 
 		getFixture().setSaltProject(SaltFactory.createSaltProject());
 		// create three corpus graphs
-		getFixture().getSaltProject().addCorpusGraph(SampleGenerator.createCorpusStructure());
+		getFixture().getSaltProject().add(SampleGenerator.createCorpusStructure());
 
 		Vector<Identifier> primitiveOrder = new Vector<Identifier>();
 		for (SDocument sDocument : getFixture().getSaltProject().getCorpusGraphs().get(0).getDocuments()) {
@@ -481,23 +481,26 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 		@Override
 		public void importCorpusStructure(SCorpusGraph corpusGraph) {
 			SCorpus sCorpus = SaltFactory.createSCorpus();
-			if (corpusGraph == null)
+			if (corpusGraph == null) {
 				throw new PepperOSGiRunnerException("CorpusGraph was null.");
-			corpusGraph.addNode(sCorpus);
+			}
+			corpusGraph.add(sCorpus);
 			for (SDocument sDoc : expectedSDocuments) {
 				corpusGraph.addDocument(sCorpus, sDoc);
 			}
 		}
 
 		public PepperMapper createPepperMapper(Identifier sElementId) {
-			if (sElementId == null)
+			if (sElementId == null) {
 				throw new PepperOSGiRunnerException("Passed sElementId cannot be null.");
-			if (sElementId.getIdentifiableElement() == null)
+			}
+			if (sElementId.getIdentifiableElement() == null) {
 				throw new PepperOSGiRunnerException(
 						"SIdentifiableElement corresponding to passed sElementId cannot be null.");
-
-			if (sElementId.getIdentifiableElement() instanceof SDocument)
+			}
+			if (sElementId.getIdentifiableElement() instanceof SDocument) {
 				givenSDocuments.add((SDocument) sElementId.getIdentifiableElement());
+			}
 			return (new PepperMapperImpl() {
 				public DOCUMENT_STATUS mapSDocument() {
 					try {

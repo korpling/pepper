@@ -142,7 +142,7 @@ public class DocumentBusTest {
 		Vector<DocumentController> docControllers = new Vector<DocumentController>();
 		SCorpusGraph sCorpGraph = SaltFactory.createSCorpusGraph();
 		SCorpus sCorpus = SaltFactory.createSCorpus();
-		sCorpGraph.addNode(sCorpus);
+		sCorpGraph.add(sCorpus);
 		for (int i = 0; i < 20; i++) {
 			SDocument sDoc = SaltFactory.createSDocument();
 			sCorpGraph.addDocument(sCorpus, sDoc);
@@ -186,7 +186,7 @@ public class DocumentBusTest {
 		Vector<DocumentController> docControllers = new Vector<DocumentController>();
 		SCorpusGraph sCorpGraph = SaltFactory.createSCorpusGraph();
 		SCorpus sCorpus = SaltFactory.createSCorpus();
-		sCorpGraph.addNode(sCorpus);
+		sCorpGraph.add(sCorpus);
 		for (int i = 0; i < 20; i++) {
 			SDocument sDoc = SaltFactory.createSDocument();
 			sCorpGraph.addDocument(sCorpus, sDoc);

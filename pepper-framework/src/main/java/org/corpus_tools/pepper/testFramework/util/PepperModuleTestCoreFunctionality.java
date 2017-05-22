@@ -37,7 +37,7 @@ public abstract class PepperModuleTestCoreFunctionality<M extends PepperModule> 
 			testedModule.setResources(resourceURI);
 		}
 		testedModule.setSaltProject(SaltFactory.createSaltProject());
-		testedModule.getSaltProject().addCorpusGraph(SaltFactory.createSCorpusGraph());
+		testedModule.getSaltProject().add(SaltFactory.createSCorpusGraph());
 
 	}
 

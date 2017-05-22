@@ -30,38 +30,23 @@ public class DOTManipulatorProperties extends PepperModuleProperties {
 	public static final String PROP_FILE_ENDING = "fileEnding";
 
 	public DOTManipulatorProperties() {
-		addProperty(new PepperModuleProperty<String>(PROP_OUTPUTFILE, String.class,
-				"The location to where the output shall be written to as File object.", true));
-		addProperty(new PepperModuleProperty<String>(PROP_FILE_ENDING, String.class, "The file ending of dot files.",
-				SaltUtil.FILE_ENDING_DOT, false));
+		addProperty(PepperModuleProperty.create().withName(PROP_OUTPUTFILE).withType(String.class)
+				.withDescription("The location to where the output shall be written to as File object.")
+				.isRequired(true).build());
+		addProperty(PepperModuleProperty.create().withName(PROP_FILE_ENDING).withType(String.class)
+				.withDescription("The file ending of dot files.").isRequired(true)
+				.withDefaultValue(SaltUtil.FILE_ENDING_DOT).build());
 	}
 
-	/**
-	 * Returns the location to where the output shall be written to as File
-	 * object.
-	 * 
-	 * @return
-	 */
 	public File getOutputFile() {
-		final PepperModuleProperty<String> prop = (PepperModuleProperty<String>) getProperty(PROP_OUTPUTFILE);
-		final String fileName = prop.getValue();
+		final String fileName = (String) getProperty(PROP_OUTPUTFILE).getValue();
 		if (fileName != null && !fileName.isEmpty()) {
-			return new File(fileName);
+			return (new File(fileName));
 		}
 		return null;
 	}
 
-	/**
-	 * Returns the file ending of dot files.
-	 * 
-	 * @return
-	 */
 	public String getFileEnding() {
-		PepperModuleProperty<?> prop = getProperty(PROP_FILE_ENDING);
-		if (prop.getValue() instanceof String) {
-			return (String) prop.getValue();
-		} else {
-			return null;
-		}
+		return ((String) getProperty(PROP_FILE_ENDING).getValue());
 	}
 }

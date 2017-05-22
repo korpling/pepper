@@ -17,6 +17,8 @@
  */
 package org.corpus_tools.pepper.modules;
 
+import static org.corpus_tools.pepper.modules.PepperModuleProperty.create;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,10 +36,6 @@ import java.util.Vector;
 
 import org.corpus_tools.pepper.exceptions.PepperException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
-import org.corpus_tools.salt.common.SDocumentGraph;
-import org.corpus_tools.salt.core.SLayer;
-import org.corpus_tools.salt.core.SNode;
-import org.corpus_tools.salt.core.SRelation;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Property;
 
@@ -45,98 +43,31 @@ import org.osgi.service.component.annotations.Property;
  * This class is a container for a set of {@link PepperModuleProperty} objects.
  * This class also offers some methods for accessing and maintaining the
  * objects.
+ * 
+ * @author Florian Zipser
+ * 
  */
-@SuppressWarnings("serial")
 public class PepperModuleProperties implements Serializable {
-	/**
-	 * Prefixes all customization properties directly provided by Pepper (
-	 * {@link PepperModule}).
-	 **/
-	public static final String PREFIX_PEPPER = "pepper";
-	/**
-	 * Prefixes all pre processing customization properties directly provided by
-	 * Pepper ({@link PepperModule}). A pre processing property is handled by
-	 * method
-	 * {@link PepperModule#before(org.corpus_tools.salt.graph.Identifier)}
-	 * before {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)}
-	 * is called.
-	 **/
-	public static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + ".before.";
-	/**
-	 * Prefixes all post processing customization properties directly provided
-	 * by Pepper ({@link PepperModule}). A post processing property is handled
-	 * by method
-	 * {@link PepperModule#after(org.corpus_tools.salt.graph.Identifier)} after
-	 * {@link PepperModule#start(org.corpus_tools.salt.graph.Identifier)} is
-	 * called.
-	 **/
-	public static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + ".after.";
-	/**
-	 * Consumes a semicolon separated list of names for {@link SLayer} objects.
-	 * For each list element, one {@link SLayer} is created and added to all
-	 * {@link SNode} and {@link SRelation} objects of a {@link SDocumentGraph}
-	 * object.
-	 */
+	private static final long serialVersionUID = -7789891973429166813L;
+	private static final String PREFIX_PEPPER = "pepper";
+	private static final String PREFIX_PEPPER_BEFORE = PREFIX_PEPPER + ".before.";
+	private static final String PREFIX_PEPPER_AFTER = PREFIX_PEPPER + ".after.";
 	public static final String PROP_AFTER_ADD_SLAYER = PREFIX_PEPPER_AFTER + "addSLayer";
-
-	/**
-	 * Copies one or more source files to one or more target files after
-	 * processing. This is very helpful, in case of customizations should be
-	 * done in target format. If you use relative paths, the are anchored to
-	 * either the location of the workflow description file or where Pepper was
-	 * started. Syntax is: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE ->
-	 * TARGET_FILE)*
-	 * 
-	 */
+	private static final String PROP_AFTER_ADD_SLAYER_DESC = "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed.";
 	public static final String PROP_AFTER_COPY_RES = PREFIX_PEPPER_AFTER + "copyRes";
-	/**
-	 * Consumes a semicolon separated list of names for {@link SLayer} objects.
-	 * For each list element, one {@link SLayer} is created and added to all
-	 * {@link SNode} and {@link SRelation} objects of a {@link SDocumentGraph}
-	 * object.
-	 */
 	public static final String PROP_BEFORE_ADD_SLAYER = PREFIX_PEPPER_BEFORE + "addSLayer";
-	/**
-	 * Reads meta data for corpora and subcorpora in a very simple
-	 * attribute-value format like:<br/>
-	 * a=b<br/>
-	 * c=d<br/>
-	 * To enable the reading of meta data set this property to the file ending
-	 * of the metadata file. For instance in case of the file is named
-	 * data.meta: {@value #PROP_BEFORE_READ_META}=meta. The file is expected to
-	 * be UTF-8 encoded.
-	 */
+	private static final String PROP_BEFORE_ADD_SLAYER_DESC = "Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed.";
 	public static final String PROP_BEFORE_READ_META = PREFIX_PEPPER_BEFORE + "readMeta";
-
-	/**
-	 * Prints the corpus graph to standard out after a module has processed it.
-	 * This property is mainly used for importers, to visualize the created
-	 * corpus structure.
-	 */
+	private static final String PROP_BEFORE_READ_META_DESC = "Reads meta data for corpora and subcorpora in a very simple attribute-value format like: a=b. To enable the reading of meta data set this property to the file ending of the metadata file.  For instance in case of the file is named data.meta: pepper.before.readMeta=meta. The file is expected to be UTF-8 encoded.";
 	public static final String PROP_AFTER_REPORT_CORPUSGRAPH = PREFIX_PEPPER_AFTER + "reportCorpusGraph";
-
-	/**
-	 * Renames all annotations matching the search template to the new
-	 * namespace, name or value. To rename an annotation, use the following
-	 * syntax: "old_namespace::old_name=old_value :=
-	 * new_namespace::new_name=new_value", determining the name is mandatory
-	 * whereas the namespace and value are optional. For instance a pos
-	 * annotation can be renamed as follows: "salt::pos:=part-of-speech". A list
-	 * of renamings must be separated with ";".
-	 */
+	private static final String PROP_AFTER_REPORT_CORPUSGRAPH_DESC = "When set to true, prints the corpus graph to standard out after a module has processed it. This property is mainly used for importers, to visualize the created corpus structure. The default value is 'false'.";
+	private static final String PROP_AFTER_COPY_RES_DESC = "Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*.";
 	public static final String PROP_AFTER_RENAME_ANNOTATIONS = PREFIX_PEPPER_AFTER + "renameAnnos";
-
-	/**
-	 * Removes all annotations matching the search template. Several templates
-	 * are separated by a semicolon. To remove annoattions use the following
-	 * syntax: 'namespace::name=value (;namespace::name=value) :=
-	 * new_namespace::new_name=new_value'
-	 */
+	private static final String PROP_AFTER_RENAME_ANNOTATIONS_DESC = "Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: 'old_namespace::old_name=old_value := new_namespace::new_name=new_value', determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: 'salt::pos:=part-of-speech'. A list of renamings must be separated with ';'.";
 	public static final String PROP_AFTER_REMOVE_ANNOTATIONS = PREFIX_PEPPER_AFTER + "removeAnnos";
-	/**
-	 * Tokenizes all primary data in the document structrue.
-	 */
+	private static final String PROP_AFTER_REMOVE_ANNOTATIONS_DESC = "Removes all annotations matching the search template. Several templates are separated by a semicolon. To remove annoattions use the following syntax: 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value'. ";
 	public static final String PROP_AFTER_TOKENIZE = PREFIX_PEPPER_AFTER + "tokenize";
+	private static final String PROP_AFTER_TOKENIZE_DESC = "Tokenizes all primary data in the document structrue.";
 
 	/**
 	 * Creates instance of {@link PepperModuleProperties} and initializes it
@@ -146,25 +77,22 @@ public class PepperModuleProperties implements Serializable {
 	 * </ul>
 	 */
 	public PepperModuleProperties() {
-		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_ADD_SLAYER, String.class,
-				"Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure before the mapping was processed."));
-		addProperty(new PepperModuleProperty<String>(PROP_BEFORE_READ_META, String.class,
-				"Reads meta data for corpora and subcorpora in a very simple attribute-value format like: a=b. To enable the reading of meta data set this property to the file ending of the metadata file.  For instance in case of the file is named data.meta: pepper.before.readMeta=meta. The file is expected to be UTF-8 encoded."));
-		addProperty(new PepperModuleProperty<String>(PROP_AFTER_ADD_SLAYER, String.class,
-				"Consumes a semicolon separated list of names for {@link SLayer} objects. For each list element, one layer is created and added to all nodes and relations of a document-structure after the mapping was processed."));
-		addProperty(new PepperModuleProperty<String>(PROP_AFTER_COPY_RES, String.class,
-				"Copies one or more source files to one or more target files after processing. This is very helpful, in case of customizations should be done in target format. If you use relative paths, the are anchored to either the location of the workflow description file or where Pepper was started. The syntax is as follows: SOURCE_FILE -> TARGET_FILE (; SOURCE_FILE -> TARGET_FILE)*."));
-		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_REPORT_CORPUSGRAPH, Boolean.class,
-				"When set to true, prints the corpus graph to standard out after a module has processed it. This property is mainly used for importers, to visualize the created corpus structure. The default value is 'false'.",
-				false, false));
-		addProperty(new PepperModuleProperty<String>(PROP_AFTER_RENAME_ANNOTATIONS, String.class,
-				"Renames all annotations matching the search template to the new namespace, name or value. To rename an annotation, use the following syntax: 'old_namespace::old_name=old_value := new_namespace::new_name=new_value', determining the name is mandatory whereas the namespace and value are optional. For instance a pos annotation can be renamed as follows: 'salt::pos:=part-of-speech'. A list of renamings must be separated with ';'.",
-				false));
-		addProperty(new PepperModuleProperty<String>(PROP_AFTER_REMOVE_ANNOTATIONS, String.class,
-				"Removes all annotations matching the search template. Several templates are separated by a semicolon. To remove annoattions use the following syntax: 'namespace::name=value (;namespace::name=value) := new_namespace::new_name=new_value' ",
-				false));
-		addProperty(new PepperModuleProperty<Boolean>(PROP_AFTER_TOKENIZE, Boolean.class,
-				"Tokenizes all primary data in the document structrue.", false, false));
+		addProperty(create().withName(PROP_BEFORE_ADD_SLAYER).withType(String.class)
+				.withDescription(PROP_BEFORE_ADD_SLAYER_DESC).build());
+		addProperty(create().withName(PROP_BEFORE_READ_META).withType(String.class)
+				.withDescription(PROP_BEFORE_READ_META_DESC).build());
+		addProperty(create().withName(PROP_AFTER_ADD_SLAYER).withType(String.class)
+				.withDescription(PROP_AFTER_ADD_SLAYER_DESC).build());
+		addProperty(create().withName(PROP_AFTER_COPY_RES).withType(String.class)
+				.withDescription(PROP_AFTER_COPY_RES_DESC).build());
+		addProperty(create().withName(PROP_AFTER_REPORT_CORPUSGRAPH).withType(Boolean.class)
+				.withDescription(PROP_AFTER_REPORT_CORPUSGRAPH_DESC).withDefaultValue(false).build());
+		addProperty(create().withName(PROP_AFTER_RENAME_ANNOTATIONS).withType(String.class)
+				.withDescription(PROP_AFTER_RENAME_ANNOTATIONS_DESC).build());
+		addProperty(create().withName(PROP_AFTER_REMOVE_ANNOTATIONS).withType(String.class)
+				.withDescription(PROP_AFTER_REMOVE_ANNOTATIONS_DESC).build());
+		addProperty(create().withName(PROP_AFTER_TOKENIZE).withType(Boolean.class)
+				.withDescription(PROP_AFTER_TOKENIZE_DESC).withDefaultValue(false).build());
 	}
 
 	/**
@@ -262,8 +190,9 @@ public class PepperModuleProperties implements Serializable {
 		if (prop != null) {
 			prop.setValueString(propValue.toString());
 		} else {
-			prop = new PepperModuleProperty<String>(propName, String.class,
-					"this entry is automatically created by pepper and no description exists.");
+			prop = create().withName(propName).withType(String.class)
+					.withDescription("this entry is automatically created by pepper and no description exists.")
+					.build();
 			prop.setValueString(propValue.toString());
 			this.addProperty(prop);
 		}
