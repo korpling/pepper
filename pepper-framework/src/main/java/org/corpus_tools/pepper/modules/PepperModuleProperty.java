@@ -19,6 +19,12 @@ package org.corpus_tools.pepper.modules;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 
 /**
  * With properties, the conversion process done by a Pepper module can be
@@ -149,32 +155,82 @@ public class PepperModuleProperty<T> implements Comparable<PepperModuleProperty<
 	 */
 	@SuppressWarnings("unchecked")
 	public void setValueString(String value) {
-		if (value == null)
+		if (value == null) {
 			this.value = null;
-		else {
-			value = value.trim();
-			if (String.class.isAssignableFrom(type)) {
-				this.value = (T) value;
-			} else if (Character.class.isAssignableFrom(type)) {
-				this.value = (T) Character.valueOf(value.charAt(0));
-			} else if (Boolean.class.isAssignableFrom(type)) {
-				this.value = (T) Boolean.valueOf(value);
-			} else if (Integer.class.isAssignableFrom(type)) {
-				this.value = (T) Integer.valueOf(value);
-			} else if (Long.class.isAssignableFrom(type)) {
-				this.value = (T) Long.valueOf(value);
-			} else if (Float.class.isAssignableFrom(type)) {
-				this.value = (T) Float.valueOf(value);
-			} else if (Double.class.isAssignableFrom(type)) {
-				this.value = (T) Double.valueOf(value);
-			} else if (Byte.class.isAssignableFrom(type)) {
-				this.value = (T) Byte.valueOf(value);
-			} else if (Short.class.isAssignableFrom(type)) {
-				this.value = (T) Short.valueOf(value);
-			} else if (File.class.isAssignableFrom(type)) {
-				this.value = (T) new File(value);
-			}
+			return;
 		}
+		value = value.trim();
+		if (!type.isArray()) {
+			this.value = stringToX(type, value);
+		} else if (String[].class.isAssignableFrom(type)) {
+			List<String> values = extractListFromString(String.class, value);
+			this.value = (T) values.toArray(new String[values.size()]);
+		} else if (Character[].class.isAssignableFrom(type)) {
+			List<Character> values = extractListFromString(Character.class, value);
+			this.value = (T) values.toArray(new Character[values.size()]);
+		} else if (Boolean[].class.isAssignableFrom(type)) {
+			List<Boolean> values = extractListFromString(Boolean.class, value);
+			this.value = (T) values.toArray(new Boolean[values.size()]);
+		} else if (Integer[].class.isAssignableFrom(type)) {
+			List<Integer> values = extractListFromString(Integer.class, value);
+			this.value = (T) values.toArray(new Integer[values.size()]);
+		} else if (Long[].class.isAssignableFrom(type)) {
+			List<Long> values = extractListFromString(Long.class, value);
+			this.value = (T) values.toArray(new Long[values.size()]);
+		} else if (Float[].class.isAssignableFrom(type)) {
+			List<Float> values = extractListFromString(Float.class, value);
+			this.value = (T) values.toArray(new Float[values.size()]);
+		} else if (Double[].class.isAssignableFrom(type)) {
+			List<Double> values = extractListFromString(Double.class, value);
+			this.value = (T) values.toArray(new Double[values.size()]);
+		} else if (Byte[].class.isAssignableFrom(type)) {
+			List<Byte> values = extractListFromString(Byte.class, value);
+			this.value = (T) values.toArray(new Byte[values.size()]);
+		} else if (Short[].class.isAssignableFrom(type)) {
+			List<Short> values = extractListFromString(Short.class, value);
+			this.value = (T) values.toArray(new Short[values.size()]);
+		} else if (File[].class.isAssignableFrom(type)) {
+			List<File> values = extractListFromString(File.class, value);
+			this.value = (T) values.toArray(new File[values.size()]);
+		}
+	}
+
+	private <B> List<B> extractListFromString(Class<B> type, String value) {
+		if (Strings.isNullOrEmpty(value)) {
+			return Collections.<B>emptyList();
+		}
+		List<String> values = Splitter.on(',').trimResults().omitEmptyStrings().splitToList(value);
+		List<B> typedValues = new ArrayList<>();
+		for (String stringValue : values) {
+			typedValues.add(stringToX(type, stringValue));
+		}
+		return typedValues;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <B> B stringToX(Class<B> type, String value) {
+		if (String.class.isAssignableFrom(type)) {
+			return (B) value;
+		} else if (Character.class.isAssignableFrom(type)) {
+			return (B) Character.valueOf(value.charAt(0));
+		} else if (Boolean.class.isAssignableFrom(type)) {
+			return (B) Boolean.valueOf(value);
+		} else if (Integer.class.isAssignableFrom(type)) {
+			return (B) Integer.valueOf(value);
+		} else if (Long.class.isAssignableFrom(type)) {
+			return (B) Long.valueOf(value);
+		} else if (Float.class.isAssignableFrom(type)) {
+			return (B) Float.valueOf(value);
+		} else if (Double.class.isAssignableFrom(type)) {
+			return (B) Double.valueOf(value);
+		} else if (Byte.class.isAssignableFrom(type)) {
+			return (B) Byte.valueOf(value);
+		} else if (Short.class.isAssignableFrom(type)) {
+			return (B) Short.valueOf(value);
+		} else if (File.class.isAssignableFrom(type)) {
+			return (B) new File(value);
+		}
+		return null;
 	}
 
 	public String toString() {
