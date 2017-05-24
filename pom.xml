@@ -82,7 +82,7 @@
 		<pepper.shortDesc>A highly extensible plattform for conversion and
 			manipulation of linguistic data.</pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<bundle.file>${project.artifactId}-${project.version}.jar</bundle.file>
 		<assemblies.name>src/assemble/assemblies.xml</assemblies.name>
 		<license.file>${basedir}/LICENSE</license.file>
