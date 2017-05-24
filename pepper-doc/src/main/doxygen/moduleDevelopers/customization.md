@@ -8,29 +8,27 @@ Property
 
 A property is just an attribute-value pair, consisting of a name called *property name* and a value called *property value*. Properties can be used for customizing the behavior of a mapping. Such a property must be specified by the user and determined in the Pepper workflow. The Pepper framework will pass all customization properties directly to the instance of the Pepper module.
 
-A customization property in Pepper is represented by an object of type @ref org.corpus_tools.pepper.modules.PepperModuleProperty. Such an object consists of the property's name, its datatype, a short description and a flag specifying whether this property is optional or mandatory as shown in the following snippet:
+A customization property in Pepper is represented by an object of type @ref org.corpus_tools.pepper.modules.PepperModuleProperty. A property a minimum contains a name, the value's datatype and a description.
 \code
-    PepperModuleProperty(String name, Class<T> clazz, String description, 
-                         Boolean required)
+    PepperModuleProperty.create().withName(String).withType(Class<T>).withDescription(String).build(); 
 \endcode
-Even a default value could be passed:
+You can further initialize a property with a default value and whether it is required.
 \code
-    PepperModuleProperty(String name, Class<T> clazz, String description,
-                         T defaultValue, Boolean required)                
+    PepperModuleProperty.create().withName(String).withType(Class<T>).withDescription(String).withDefaultValue(boolean).isRequired(boolean).build();
 \endcode
 To register a customization property, you need to add the created object to the registry, which is managed and accessed by the Pepper framework. The registry is realized via a specified @ref org.corpus_tools.pepper.modules.PepperModuleProperty object. To create such an object, first implement a registry class as shown in the following snippet:
 \code
     //...
     import org.corpus_tools.pepper.modules.PepperModuleProperties;
     import org.corpus_tools.pepper.modules.PepperModuleProperty;
+    import static org.corpus_tools.pepper.modules.PepperModuleProperty.create;
     //...
     public class MyModuleProperties extends PepperModuleProperties {
         //...            
         public MyModuleProperties(){  
            //...
            //1: adding a customization property to registry
-           this.addProperty(new PepperModuleProperty<String>
-               ("MyProp", String.class, "description of MyProp", true));
+           this.addProperty(create().withName(("MyProp").withType(String.class).withDescription("description of MyProp").build());
            //...
         }
         //2: return value of customization property
