@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.corpus_tools.pepper.core.ModuleControllerImpl;
 import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperMapper;
@@ -49,6 +50,7 @@ import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.graph.Label;
 import org.corpus_tools.salt.graph.Relation;
 import org.corpus_tools.salt.util.SaltUtil;
+import static org.corpus_tools.salt.util.SaltUtil.splitQName;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -518,7 +520,8 @@ public class BeforeAfterAction {
 							IdentifiableElement container = id.getIdentifiableElement();
 							if ((container != null) && (container instanceof SAnnotationContainer)) {
 								if (!((SAnnotationContainer) container).containsLabel(key.toString())) {
-									((SAnnotationContainer) container).createMetaAnnotation(null, key.toString(),
+									Pair<String, String> qname = SaltUtil.splitQName(key.toString());
+									((SAnnotationContainer) container).createMetaAnnotation(qname.getLeft(), qname.getValue(),
 											props.getProperty(key.toString()));
 								} else {
 									logger.warn("Cannot add meta annotation '" + key.toString()

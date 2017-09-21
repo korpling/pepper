@@ -146,9 +146,11 @@ public class BeforeAfterTest {
 		assertEquals("4", subCorpus.getMetaAnnotation("3").getValue());
 
 		getFixture().readMeta(document.getIdentifier());
-		assertEquals(2, document.getMetaAnnotations().size());
+		assertEquals(4, document.getMetaAnnotations().size());
 		assertEquals("Bart", document.getMetaAnnotation("name").getValue());
 		assertEquals("Springfield", document.getMetaAnnotation("place").getValue());
+		assertEquals("Nancy Cartwright", document.getMetaAnnotation("en_US::voice_actor").getValue());
+		assertEquals("Sandra Schwittau", document.getMetaAnnotation("de_DE::voice_actor").getValue());
 	}
 
 	@Test
