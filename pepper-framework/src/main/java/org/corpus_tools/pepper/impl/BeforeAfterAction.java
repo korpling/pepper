@@ -50,7 +50,6 @@ import org.corpus_tools.salt.graph.Identifier;
 import org.corpus_tools.salt.graph.Label;
 import org.corpus_tools.salt.graph.Relation;
 import org.corpus_tools.salt.util.SaltUtil;
-import static org.corpus_tools.salt.util.SaltUtil.splitQName;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
