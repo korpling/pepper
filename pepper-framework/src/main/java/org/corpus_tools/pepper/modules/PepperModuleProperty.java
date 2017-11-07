@@ -39,7 +39,7 @@ import com.google.common.base.Strings;
  * A property is created in a fluent way. See the following sample:
  * 
  * <pre>
- * PepperModuleProperty.create().withName("MyProp").withClass(String.class)
+ * PepperModuleProperty.create().withName("MyProp").withType(String.class)
  * 		.withDescription("Please describe the property for the user. ")
  * 		.withDefaultValue("theDefaultWhenNoValueIsSet").isRequired(false).build();
  * </pre>
