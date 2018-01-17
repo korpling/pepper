@@ -389,6 +389,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			startProblems.add("No name is set for module.");
 			retVal = false;
 		}
+		retVal = retVal && getProperties().checkProperties();
 		return (retVal);
 	}
 
