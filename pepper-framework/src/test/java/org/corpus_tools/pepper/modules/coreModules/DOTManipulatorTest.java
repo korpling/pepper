@@ -29,7 +29,11 @@ public class DOTManipulatorTest extends PepperManipulatorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		super.setFixture(new DOTManipulator());
+		DOTManipulatorProperties properties = new DOTManipulatorProperties();
+		properties.setPropertyValue("outputDir", "/tmp");
+		DOTManipulator manipulator = new DOTManipulator();
+		manipulator.setProperties(properties);
+		super.setFixture(manipulator);
 		super.getFixture().setSaltProject(SaltFactory.createSaltProject());
 	}
 }
