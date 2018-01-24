@@ -134,10 +134,18 @@ public class SaltXMLExporter extends PepperExporterImpl implements PepperExporte
 					"Cannot export the SaltProject, because no corpus path is given for export.");
 		}
 
-		// create export URI
+		/* 
+		 * Call super.start(), which in turn calls exportCorpusStructure()
+		 * *before* saving the SaltProject, otherwise all data, e.g., annotations,
+		 * on documents will be lost. 
+		 */
+		super.start();
+		/* 
+		 * Now it's safe to save the SaltProject, as the identifier2Resource table
+		 * has been updated via super.start() > exportCorpusStructure().
+		 */
 		URI saltProjectURI = URI
 				.createFileURI(this.getCorpusDesc().getCorpusPath().toFileString() + "/" + SaltUtil.FILE_SALT_PROJECT);
 		SaltUtil.saveSaltProject(saltProject, saltProjectURI);
-		super.start();
 	}
 }
