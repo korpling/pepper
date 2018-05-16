@@ -185,7 +185,7 @@ static NameBuilder&#160;</td><td class="memItemRight" valign="bottom"><b>create<
 <p>A property in general is an attribute value pair, with a unique name and a value influencing the module's behavior. It is possible to add a default value in case the value was not initialized by the Pepper workflow file. A further flag can be used to set the property as required, which means, the property must be set to run the container module. Each property should contain a description, to help the user understanding how to use this property.</p>
 <p>A property is created in a fluent way. See the following sample:</p>
 <pre>
-PepperModuleProperty.create().withName("MyProp").withClass(String.class)
+PepperModuleProperty.create().withName("MyProp").withType(String.class)
                 .withDescription("Please describe the property for the user. ")
                 .withDefaultValue("theDefaultWhenNoValueIsSet").isRequired(false).build();
 </pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -404,7 +404,7 @@ PepperModuleProperty.create().withName("MyProp").withClass(String.class)
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1modules.html">modules</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module_property.html">PepperModuleProperty</a></li>
-    <li class="footer">Generated on Wed Jan 24 2018 19:34:28 for Pepper by
+    <li class="footer">Generated on Wed May 16 2018 13:54:43 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
