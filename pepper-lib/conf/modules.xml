@@ -40,6 +40,10 @@
 		<artifactId>pepperModules-GenericXMLModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<groupId>de.uni-hamburg.traces</groupId>
+		<artifactId>pepperModules-GeTaModules</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
 	<pepperModules>
