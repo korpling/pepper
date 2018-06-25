@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -94,7 +94,7 @@
 		<serviceComponentsTarget>${basedir}/target/classes/OSGI-INF/service-component</serviceComponentsTarget>
 
 		<!-- versions of dependencies -->
-		<salt.version>3.3.1</salt.version>
+		<salt.version>3.3.3-SNAPSHOT</salt.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.11</junit.version>
