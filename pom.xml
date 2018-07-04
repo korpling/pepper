@@ -30,6 +30,12 @@
 			<organization>Humboldt-Universität zu Berlin</organization>
 			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
 		</developer>
+				<developer>
+			<name>Stephan Druskat</name>
+			<email>saltnpepper@lists.hu-berlin.de</email>
+			<organization>Humboldt-Universität zu Berlin</organization>
+			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
+		</developer>
 	</developers>
 	<description>A highly extensible plattform for conversion and manipulation of linguistic data between an unbound set of formats. Pepper can be used stand-alone as a command line interface, or be integrated as an API into other software products.</description>
 	<url>http://corpus-tools.org/pepper/</url>
