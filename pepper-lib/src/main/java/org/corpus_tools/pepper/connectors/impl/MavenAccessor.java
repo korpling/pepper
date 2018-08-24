@@ -833,7 +833,7 @@ public class MavenAccessor {
 								|| STATUS.OVERRIDABLE.equals(status))) {
 					j++;
 				}
-				if (j == parentDeps.size() || STATUS.OVERRIDABLE.equals(status)) {
+				if (!"provided".equals(next.getScope()) && (j == parentDeps.size() || STATUS.OVERRIDABLE.equals(status))) {
 					newDeps.add(next);
 				} else {
 					forbiddenFruits.add(next.getArtifact().toString() + DELIMITER + STATUS.FINAL);
