@@ -20,7 +20,7 @@
 			<includes>
 				<!-- remember to add each include as exclude to the "plugins" folder -->
 
-				<include>org.eclipse:osgi</include>
+				<include>org.eclipse.platform:org.eclipse.osgi</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>

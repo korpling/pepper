@@ -32,8 +32,8 @@
 			<type>zip</type>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>osgi</artifactId>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
 			<version>${org.eclipse.osgi.version}</version>
 		</dependency>
 		<dependency>
