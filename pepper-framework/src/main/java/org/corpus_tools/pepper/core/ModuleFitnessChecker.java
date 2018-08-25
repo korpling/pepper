@@ -303,16 +303,21 @@ public class ModuleFitnessChecker {
 			pepperModule.setSaltProject(saltProject);
 		}
 
-		PepperTestUtil.start(pepper, Arrays.asList(pepperModule));
+		try {
+			PepperTestUtil.start(pepper, Arrays.asList(pepperModule));
+		
+			if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
+				hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule, selfTestDesc);
+				final boolean isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
+				moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
+			} else if (pepperModule instanceof PepperExporter) {
+				hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule, selfTestDesc);
+			}
 
-		if (pepperModule instanceof PepperImporter || pepperModule instanceof PepperManipulator) {
-			hasPassed = whenModuleIsImpoterOrManipualtorThenCallSelftestDescCompare(pepperModule, selfTestDesc);
-			final boolean isValid = SaltUtil.validate(pepperModule.getSaltProject()).andFindInvalidities().isValid();
-			moduleFitness.setFeature(FitnessFeature.IS_VALID_SELFTEST_DATA, isValid);
-		} else if (pepperModule instanceof PepperExporter) {
-			hasPassed = whenModuleIsExpoterThenCallSelftestDescCompare(pepperModule, selfTestDesc);
+		} catch (Exception ex) {
+			logger.error("Selftest throw exception", ex);
+			hasPassed = false;
 		}
-
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
 		return moduleFitness;
 	}

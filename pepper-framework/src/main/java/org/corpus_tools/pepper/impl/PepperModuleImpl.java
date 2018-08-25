@@ -50,6 +50,7 @@ import org.corpus_tools.pepper.modules.PepperModule;
 import org.corpus_tools.pepper.modules.PepperModuleProperties;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
 import org.corpus_tools.pepper.modules.exceptions.PepperModuleNotReadyException;
+import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
 import org.corpus_tools.salt.common.SCorpus;
 import org.corpus_tools.salt.common.SCorpusGraph;
 import org.corpus_tools.salt.common.SDocument;
@@ -389,7 +390,12 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
 			startProblems.add("No name is set for module.");
 			retVal = false;
 		}
-		retVal = retVal && getProperties().checkProperties();
+		try {
+			retVal = retVal && getProperties().checkProperties();
+		} catch(Exception ex) {
+			startProblems.add(ex.getMessage());
+			retVal = false;
+		}
 		return (retVal);
 	}
 
