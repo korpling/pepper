@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.2.1</version>
+	<version>3.2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -58,7 +58,7 @@
 		<connection>scm:git:git://github.com/korpling/pepper.git</connection>
 		<developerConnection>scm:git:git@github.com:korpling/pepper.git</developerConnection>
 		<url>https://github.com/korpling/pepper</url>
-		<tag>pepper-3.2.1</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<snapshotRepository>
