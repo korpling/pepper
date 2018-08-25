@@ -497,6 +497,9 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
 					</plugin>
 					<!-- The Maven GPG plugin is used to sign the components -->
 					<plugin>
