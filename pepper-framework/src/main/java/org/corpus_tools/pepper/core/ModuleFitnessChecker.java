@@ -315,7 +315,7 @@ public class ModuleFitnessChecker {
 			}
 
 		} catch (Exception ex) {
-			logger.error("Selftest throw exception", ex);
+			logger.error("Selftest throw exception: {}", ex.getMessage());
 			hasPassed = false;
 		}
 		moduleFitness.setFeature(FitnessFeature.HAS_PASSED_SELFTEST, hasPassed);
