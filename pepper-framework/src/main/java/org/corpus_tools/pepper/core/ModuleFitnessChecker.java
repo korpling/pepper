@@ -92,10 +92,12 @@ public class ModuleFitnessChecker {
 		if (module == null) {
 			return null;
 		}
+
+		PepperTestUtil.prepareFixturesAndCreateJob(pepper, Arrays.asList(module));
+		
 		// call this function first to make sure all required properties are set for the self-test
 		final SelfTestDesc selfTestDesc = module.getSelfTestDesc();
 
-		
 		ModuleFitness fitness = checkHealth(module);
 
 		new AddFeature(fitness, FitnessFeature.HAS_DESCRIPTION) {
@@ -209,7 +211,6 @@ public class ModuleFitnessChecker {
 		new AddFeature(fitness, FitnessFeature.IS_READY_TO_RUN) {
 			@Override
 			public boolean condition() {
-				PepperTestUtil.prepareFixturesAndCreateJob(pepper, Arrays.asList(module));
 				return module.isReadyToStart();
 			}
 		};
