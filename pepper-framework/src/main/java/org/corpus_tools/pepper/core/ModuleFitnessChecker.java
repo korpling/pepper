@@ -92,6 +92,10 @@ public class ModuleFitnessChecker {
 		if (module == null) {
 			return null;
 		}
+		// call this function first to make sure all required properties are set for the self-test
+		final SelfTestDesc selfTestDesc = module.getSelfTestDesc();
+
+		
 		ModuleFitness fitness = checkHealth(module);
 
 		new AddFeature(fitness, FitnessFeature.HAS_DESCRIPTION) {
@@ -144,7 +148,7 @@ public class ModuleFitnessChecker {
 			};
 		}
 		if (pepper != null) {
-			fitness = selfTest(module, fitness);
+			fitness = selfTest(module, fitness, selfTestDesc);
 		}
 		return fitness;
 	}
@@ -248,7 +252,31 @@ public class ModuleFitnessChecker {
 	 * @param moduleFitness
 	 *            the {@link ModuleFitness} to be filled.
 	 */
-	protected ModuleFitness selfTest(final PepperModule pepperModule, ModuleFitness moduleFitness) {
+	protected ModuleFitness selfTest(final PepperModule pepperModule, 
+			ModuleFitness moduleFitness) {
+		return selfTest(pepperModule, moduleFitness, pepperModule == null ? null : pepperModule.getSelfTestDesc());
+	}
+
+	/**
+	 * When the specified module provides a self test, the fitness feature
+	 * {@link FitnessFeature#HAS_SELFTEST} is set to true and self test is ran.
+	 * Depending on success, the following health features are set:
+	 * <ul>
+	 * <li>{@link FitnessFeature#HAS_PASSED_SELFTEST}</li>
+	 * <li>{@link FitnessFeature#IS_IMPORTABLE_SEFTEST_DATA}</li>
+	 * <li>{@link FitnessFeature#IS_VALID_SELFTEST_DATA}</li>
+	 * </ul>
+	 * 
+	 * @param pepperModule
+	 *            module to test
+	 * @param pepper
+	 *            Pepper environment to test
+	 * @param moduleFitness
+	 *            the {@link ModuleFitness} to be filled.
+	 * @param selfTestDesc The self-test description as provided by {@link PepperModule#getSelfTestDesc()}
+	 */
+	protected ModuleFitness selfTest(final PepperModule pepperModule, 
+			ModuleFitness moduleFitness, SelfTestDesc selfTestDesc) {
 		if (pepperModule == null) {
 			return moduleFitness;
 		}
@@ -260,7 +288,6 @@ public class ModuleFitnessChecker {
 					+ "', because Pepper framework is not specified. ");
 		}
 
-		final SelfTestDesc selfTestDesc = pepperModule.getSelfTestDesc();
 		if (selfTestDesc == null) {
 			moduleFitness.setFeature(FitnessFeature.HAS_SELFTEST, false);
 			return moduleFitness;
