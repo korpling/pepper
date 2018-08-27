@@ -33,6 +33,8 @@ import org.corpus_tools.salt.util.SaltUtil;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.component.annotations.Component;
 
+import com.google.common.io.Files;
+
 @Component(name = "DOTManipulatorComponent", factory = "PepperManipulatorComponentFactory")
 public class DOTManipulator extends PepperManipulatorImpl {
 	public DOTManipulator() {
@@ -45,6 +47,11 @@ public class DOTManipulator extends PepperManipulatorImpl {
 
 	@Override
 	public SelfTestDesc getSelfTestDesc() {
+		
+		File outDir = Files.createTempDir();
+		
+		getProperties().setPropertyValue(DOTManipulatorProperties.PROP_OUTPUTFILE, outDir.getAbsolutePath());
+		
 		return new SelfTestDesc(
 				getResources().appendSegment("modules").appendSegment("selfTests").appendSegment("dotManipulator")
 						.appendSegment("in"),
