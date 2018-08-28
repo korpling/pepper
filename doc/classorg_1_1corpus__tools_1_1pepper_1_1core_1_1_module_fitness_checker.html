@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="pepper.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Pepper
-   &#160;<span id="projectnumber">3.2.2</span>
+   &#160;<span id="projectnumber">3.2.4</span>
    </div>
    <div id="projectbrief">A highly extensible plattform for conversion and manipulationoflinguisticdata.</div>
   </td>
@@ -145,6 +145,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a8985296620140e7c15877091187e4b21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a8985296620140e7c15877091187e4b21">selfTest</a> (final <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a> pepperModule, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a> moduleFitness)</td></tr>
 <tr class="memdesc:a8985296620140e7c15877091187e4b21"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the specified module provides a self test, the fitness feature <a class="el" href="">FitnessFeature#HAS_SELFTEST</a> is set to true and self test is ran.  <a href="#a8985296620140e7c15877091187e4b21">More...</a><br /></td></tr>
 <tr class="separator:a8985296620140e7c15877091187e4b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a461d883edb3fabbcde169c4e940d3be5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html#a461d883edb3fabbcde169c4e940d3be5">selfTest</a> (final <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a> pepperModule, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a> moduleFitness, <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html">SelfTestDesc</a> selfTestDesc)</td></tr>
+<tr class="memdesc:a461d883edb3fabbcde169c4e940d3be5"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the specified module provides a self test, the fitness feature <a class="el" href="">FitnessFeature#HAS_SELFTEST</a> is set to true and self test is ran.  <a href="#a461d883edb3fabbcde169c4e940d3be5">More...</a><br /></td></tr>
+<tr class="separator:a461d883edb3fabbcde169c4e940d3be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A helper class for checking health and fitness of a module or a set of modules. </p>
@@ -337,13 +340,72 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a461d883edb3fabbcde169c4e940d3be5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a> org.corpus_tools.pepper.core.ModuleFitnessChecker.selfTest </td>
+          <td>(</td>
+          <td class="paramtype">final <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html">PepperModule</a>&#160;</td>
+          <td class="paramname"><em>pepperModule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_module_fitness.html">ModuleFitness</a>&#160;</td>
+          <td class="paramname"><em>moduleFitness</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html">SelfTestDesc</a>&#160;</td>
+          <td class="paramname"><em>selfTestDesc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>When the specified module provides a self test, the fitness feature <a class="el" href="">FitnessFeature#HAS_SELFTEST</a> is set to true and self test is ran. </p>
+<p>Depending on success, the following health features are set: </p><ul>
+<li>
+<a class="el" href="">FitnessFeature#HAS_PASSED_SELFTEST</a> </li>
+<li>
+<a class="el" href="">FitnessFeature#IS_IMPORTABLE_SEFTEST_DATA</a> </li>
+<li>
+<a class="el" href="">FitnessFeature#IS_VALID_SELFTEST_DATA</a> </li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pepperModule</td><td>module to test </td></tr>
+    <tr><td class="paramname">pepper</td><td>Pepper environment to test </td></tr>
+    <tr><td class="paramname">moduleFitness</td><td>the <a class="el" href="">ModuleFitness</a> to be filled. </td></tr>
+    <tr><td class="paramname">selfTestDesc</td><td>The self-test description as provided by <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aa0478576501db0d1ab500dcc23f7a14d">PepperModule#getSelfTestDesc()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1core.html">core</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_module_fitness_checker.html">ModuleFitnessChecker</a></li>
-    <li class="footer">Generated on Sat Aug 25 2018 11:33:52 for Pepper by
+    <li class="footer">Generated on Tue Aug 28 2018 13:44:52 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

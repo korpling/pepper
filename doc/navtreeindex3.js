@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html#a5920f17da0b61f75a7cb0cea743d4416":[3,0,0,0,0,6,0,4,0],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html#add5831b96162bd227e8e21e310f2ca93":[3,0,0,0,0,6,0,4,1],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator_properties.html":[3,0,0,0,0,6,0,5],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator_properties.html#a27cc92a1e46521abf2144c77247ff299":[3,0,0,0,0,6,0,5,0],
@@ -245,9 +246,8 @@ var NAVTREEINDEX3 =
 "functions_d.html":[3,2,0,3],
 "functions_e.html":[3,2,0,4],
 "functions_f.html":[3,2,0,5],
-"functions_func.html":[3,2,1,0],
 "functions_func.html":[3,2,1],
+"functions_func.html":[3,2,1,0],
 "functions_func_b.html":[3,2,1,1],
-"functions_func_c.html":[3,2,1,2],
-"functions_func_d.html":[3,2,1,3]
+"functions_func_c.html":[3,2,1,2]
 };
