@@ -28,10 +28,6 @@
                 "lib/*",
                 "plugins/*"
             ],
-            "console": "integratedTerminal",
-            "stopOnEntry": false,
-            "args": "/home/thomas/src/rueg/rueg-corpus/testscript.pepper",
-            "mainClass": "org.corpus_tools.pepper.cli.PepperStarter",
             "vmArgs": "-Dlogback.configurationFile=./conf/logback.xml",
             "projectName": "pepper-lib"
         }
