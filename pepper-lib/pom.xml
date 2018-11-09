@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>3.2.6</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<repositories>
