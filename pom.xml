@@ -208,16 +208,16 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
 		</dependency>
-		<!-- strt Java EE replacements -->
+		<!-- start Java EE replacements -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
+			<artifactId>jaxb-api-osgi</artifactId>
+			<version>2.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-osgi</artifactId>
-			<version>2.3.1</version>
+			<version>2.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.activation</groupId>
