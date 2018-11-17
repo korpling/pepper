@@ -1,0 +1,12 @@
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/exceptions/PepperOSGiFrameworkPluginException.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/Greet.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/PepperStarter.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/ConvertWizardConsole.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/OSGiConsole.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/PepperStarterConfiguration.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/XMLTagExtractor.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/exceptions/PepperOSGiException.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/connectors/PepperConnector.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/cli/exceptions/PepperPropertyException.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/connectors/impl/MavenAccessor.java
+/var/lib/jenkins/workspace/pepper_SNAPSHOT/pepper-lib/src/main/java/org/corpus_tools/pepper/connectors/impl/PepperOSGiConnector.java
