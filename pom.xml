@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
@@ -30,7 +32,7 @@
 			<organization>Humboldt-Universität zu Berlin</organization>
 			<organizationUrl>https://www.linguistik.hu-berlin.de/en/institut-en/professuren-en/korpuslinguistik/standardseite-en?set_language=en</organizationUrl>
 		</developer>
-				<developer>
+		<developer>
 			<name>Stephan Druskat</name>
 			<email>saltnpepper@lists.hu-berlin.de</email>
 			<organization>Humboldt-Universität zu Berlin</organization>
@@ -88,7 +90,7 @@
 		<pepper.shortDesc>A highly extensible plattform for conversion and
 			manipulation of linguistic data.</pepper.shortDesc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<bundle.file>${project.artifactId}-${project.version}.jar</bundle.file>
 		<assemblies.name>src/assemble/assemblies.xml</assemblies.name>
 		<license.file>${basedir}/LICENSE</license.file>
@@ -103,7 +105,7 @@
 		<salt.version>3.3.6</salt.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<slf4j.version>1.7.5</slf4j.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<assertj.version>2.4.1</assertj.version>
 		<mockito.version>1.10.19</mockito.version>
 		<org.osgi.core.version>4.3.1</org.osgi.core.version>
@@ -116,10 +118,10 @@
 		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
 		<commons.io.version>2.4</commons.io.version>
 		<!-- versions of plugins -->
-		<maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
+		<maven-bundle-plugin.version>2.5.4</maven-bundle-plugin.version>
 		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
 		<maven-assembly-plugin.version>2.5.3</maven-assembly-plugin.version>
-		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-license-plugin.version>1.4.0</maven-license-plugin.version>
 		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
@@ -326,11 +328,16 @@
 				<version>${carrot-maven-scr-plugin.version}</version>
 				<dependencies>
 					<!-- manually update to latest ASM version in order to compile under 
-						Java 8 -->
+						Java > 8 -->
 					<dependency>
 						<groupId>org.ow2.asm</groupId>
 						<artifactId>asm</artifactId>
-						<version>5.0.3</version>
+						<version>7.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm-tree</artifactId>
+						<version>7.0</version>
 					</dependency>
 				</dependencies>
 				<configuration>

@@ -10,10 +10,27 @@
             "request": "launch",
             "cwd": "${workspaceFolder}/pepper-lib",
             "classPaths": [
-                "lib/*","plugins/*"
+                "lib/*",
+                "plugins/*"
             ],
             "console": "integratedTerminal",
             "stopOnEntry": false,
+            "mainClass": "org.corpus_tools.pepper.cli.PepperStarter",
+            "vmArgs": "-Dlogback.configurationFile=./conf/logback.xml",
+            "projectName": "pepper-lib"
+        },
+        {
+            "type": "java",
+            "name": "Debug Testscript",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/pepper-lib",
+            "classPaths": [
+                "lib/*",
+                "plugins/*"
+            ],
+            "console": "integratedTerminal",
+            "stopOnEntry": false,
+            "args": "/home/thomas/src/rueg/rueg-corpus/testscript.pepper",
             "mainClass": "org.corpus_tools.pepper.cli.PepperStarter",
             "vmArgs": "-Dlogback.configurationFile=./conf/logback.xml",
             "projectName": "pepper-lib"

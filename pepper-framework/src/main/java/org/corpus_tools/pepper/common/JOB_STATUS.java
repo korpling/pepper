@@ -17,8 +17,6 @@
  */
 package org.corpus_tools.pepper.common;
 
-import org.omg.CORBA.INITIALIZE;
-
 /**
  * Status of a job in Pepper, the status could be one of the following:
  * <ul>
