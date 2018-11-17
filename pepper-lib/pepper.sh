@@ -18,5 +18,5 @@
 #
 CLASS_PATH='-classpath lib/*:plugins/*'
 EXEC_CLASS='org.corpus_tools.pepper.cli.PepperStarter'
-JAVA_PARAMS=$CLASS_PATH' -Dlogback.configurationFile=./conf/logback.xml -XX:+IgnoreUnrecognizedVMOptions --add-modules=java.se.ee '$EXEC_CLASS' '$*
+JAVA_PARAMS=$CLASS_PATH' -Dlogback.configurationFile=./conf/logback.xml '$EXEC_CLASS' '$*
 java $JAVA_PARAMS

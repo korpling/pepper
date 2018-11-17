@@ -21,13 +21,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.corpus_tools.pepper.common.MODULE_TYPE;
-import org.corpus_tools.pepper.common.StepDesc;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +62,7 @@ public class StepDescTest {
 	}
 
 	@Test
-	public void testMarhallUNmarshall() throws JAXBException {
+	public void testMarhallUNmarshall() {
 		getFixture().setModuleType(MODULE_TYPE.EXPORTER);
 		getFixture().setName("MyExporter");
 		getFixture().setVersion("1.0");

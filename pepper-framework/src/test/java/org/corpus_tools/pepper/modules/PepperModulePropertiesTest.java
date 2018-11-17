@@ -18,6 +18,12 @@
 package org.corpus_tools.pepper.modules;
 
 import static org.corpus_tools.pepper.modules.PepperModuleProperty.create;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
@@ -25,9 +31,7 @@ import org.corpus_tools.pepper.modules.exceptions.PepperModulePropertyException;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class PepperModulePropertiesTest extends TestCase {
+public class PepperModulePropertiesTest {
 	private static final String propName1 = "prop1";
 	private static final String propName2 = "prop2";
 	private static final String propName3 = "prop3";
