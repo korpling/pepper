@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.3.0</version>
+	<version>3.3.1</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -136,7 +136,7 @@
 		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
 		<findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
 		<maven-site-plugin.version>3.4</maven-site-plugin.version>
-		<maven-project-info-reports-plugin.version>2.8.1</maven-project-info-reports-plugin.version>
+		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 		<maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
 		<maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
 	</properties>
@@ -257,6 +257,8 @@
 				<configuration>
 					<pushRemote>true</pushRemote>
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
+					<postReleaseGoals>package assembly:single deploy</postReleaseGoals>
+					<postHotfixGoals>package assembly:single deploy</postHotfixGoals>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
@@ -316,26 +318,6 @@
 				</executions>
 			</plugin>
 
-			<!-- start: Plugin for automatic releasing -->
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>${maven-release-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>perform</goal>
-						</goals>
-						<configuration>
-							<pomFileName>pepper/pom.xml</pomFileName>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<releaseProfiles>release</releaseProfiles>
-					<goals>package assembly:single deploy</goals>
-				</configuration>
-			</plugin>
 			<!-- generate a jar for sources -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -470,37 +452,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>${maven-site-plugin.version}</version>
-				<configuration>
-					<reportPlugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>${maven-project-info-reports-plugin.version}</version>
-							<configuration>
-								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-							</configuration>
-							<reports>
-								<report>index</report>
-								<report>summary</report>
-								<report>license</report>
-							</reports>
-						</plugin>
-
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>findbugs-maven-plugin</artifactId>
-							<version>${findbugs-maven-plugin.version}</version>
-							<configuration>
-								<excludeFilterFile>${basedir}/src/findbugs/excludeFilter.xml</excludeFilterFile>
-							</configuration>
-						</plugin>
-					</reportPlugins>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
 			</plugin>
@@ -563,6 +514,38 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${maven-project-info-reports-plugin.version}</version>
+				<configuration>
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>summary</report>
+							<report>license</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs-maven-plugin.version}</version>
+				<configuration>
+					<excludeFilterFile>${basedir}/src/findbugs/excludeFilter.xml</excludeFilterFile>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<name>${project.groupId}.${project.artifactId}</name>
 </project>
