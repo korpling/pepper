@@ -251,24 +251,14 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.amashchenko.maven.plugin</groupId>
-				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.11.0</version>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>1.0-m5.1</version>
 				<configuration>
-					<pushRemote>true</pushRemote>
-					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
-					<postReleaseGoals>deploy</postReleaseGoals>
-					<postHotfixGoals>deploy</postHotfixGoals>
-					<gitFlowConfig>
-						<productionBranch>master</productionBranch>
-						<developmentBranch>develop</developmentBranch>
-						<featureBranchPrefix>feature/</featureBranchPrefix>
-						<releaseBranchPrefix>release/</releaseBranchPrefix>
-						<hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-						<supportBranchPrefix>support/</supportBranchPrefix>
+					<pushReleases>true</pushReleases>
+					<flowInitContext>
 						<versionTagPrefix>pepper-</versionTagPrefix>
-						<origin>origin</origin>
-					</gitFlowConfig>
+					</flowInitContext>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -512,6 +502,12 @@
 	<profiles>
 		<profile>
 			<id>release</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<!-- generate a jar for sources -->
