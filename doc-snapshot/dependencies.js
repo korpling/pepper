@@ -1,4 +1,4 @@
 var dependencies =
 [
-    [ "Tutorial: Develop with Eclipse", "useEclipse.html", null ]
+    [ "Tutorial: Develop with Eclipse", "use_eclipse.html", null ]
 ];

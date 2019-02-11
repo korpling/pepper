@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.corpus_tools.pepper.modules.coreModules.SaltValidatorTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.135 sec - in org.corpus_tools.pepper.modules.coreModules.SaltValidatorTest

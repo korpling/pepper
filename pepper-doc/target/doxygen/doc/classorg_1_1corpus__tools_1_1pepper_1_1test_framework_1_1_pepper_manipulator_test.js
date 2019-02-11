@@ -1,4 +1,0 @@
-var classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_manipulator_test =
-[
-    [ "checkThatWhenSimulatingFitnessCheckModulePassesSelfTest", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1_pepper_manipulator_test.html#ad2f4909824bb4d3614bdb301ae3791e2", null ]
-];

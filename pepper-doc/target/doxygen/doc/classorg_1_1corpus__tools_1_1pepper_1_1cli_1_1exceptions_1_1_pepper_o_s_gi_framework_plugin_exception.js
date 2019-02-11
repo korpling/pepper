@@ -1,6 +1,0 @@
-var classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions_1_1_pepper_o_s_gi_framework_plugin_exception =
-[
-    [ "PepperOSGiFrameworkPluginException", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions_1_1_pepper_o_s_gi_framework_plugin_exception.html#af502bd792efbe6c2e90265fe0d452bca", null ],
-    [ "PepperOSGiFrameworkPluginException", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions_1_1_pepper_o_s_gi_framework_plugin_exception.html#a9ee316e49fafb479ac24ee1f39fbca5c", null ],
-    [ "PepperOSGiFrameworkPluginException", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions_1_1_pepper_o_s_gi_framework_plugin_exception.html#a48f06a20b02cf4d33e31f2de0c2889d8", null ]
-];

@@ -1,9 +1,0 @@
-//make it a picture on: http://yuml.me/
-[PepperModuleException]^[PepperModuleTestException]
-[PepperModuleException]^[JobNotFoundException]
-[PepperModuleException]^[NotInitializedException]
-[PepperModuleException]^[PepperModuleXMLResourceException]
-[PepperModuleException]^[PepperModuleNotReadyException]
-[PepperModuleException]^[PepperModulePropertyException]
-[PepperModuleException]^-[PepperModuleBugException]
-[PepperModuleException]^-[PepperModuleDataException]

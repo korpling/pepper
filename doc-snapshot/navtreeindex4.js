@@ -221,8 +221,8 @@ var NAVTREEINDEX4 =
 "library.html":[2,0],
 "library.html#bridgeOSGi":[2,0,0],
 "mapping.html":[1,6],
-"moduleArchitecture.html":[1,2],
-"moduleDevelopers.html":[1],
+"module_architecture.html":[1,2],
+"module_developers.html":[1],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1cli.html":[3,0,0,0,0,0],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions.html":[3,0,0,0,0,0,0],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1common.html":[3,0,0,0,0,1],
@@ -240,7 +240,7 @@ var NAVTREEINDEX4 =
 "pages.html":[],
 "testing.html":[1,11],
 "tutorial.html":[1,0],
-"useEclipse.html":[1,13,0],
-"useEclipse.html":[1,1],
+"use_eclipse.html":[1,1],
+"use_eclipse.html":[1,13,0],
 "users.html":[2]
 };
