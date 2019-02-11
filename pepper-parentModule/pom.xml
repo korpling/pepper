@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>org.corpus-tools</groupId>
 			<artifactId>pepper-framework</artifactId>
-			<version>${project.version}</version>
+			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
