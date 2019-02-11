@@ -257,6 +257,8 @@
 				<configuration>
 					<pushRemote>true</pushRemote>
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
+					<postReleaseGoals>deploy</postReleaseGoals>
+					<postHotfixGoals>deploy</postHotfixGoals>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
