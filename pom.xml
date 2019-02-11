@@ -257,8 +257,8 @@
 				<configuration>
 					<pushRemote>true</pushRemote>
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
-					<postReleaseGoals>deploy</postReleaseGoals>
-					<postHotfixGoals>deploy</postHotfixGoals>
+					<postReleaseGoals>package assembly:single deploy</postReleaseGoals>
+					<postHotfixGoals>package assembly:single deploy</postHotfixGoals>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
@@ -318,26 +318,6 @@
 				</executions>
 			</plugin>
 
-			<!-- start: Plugin for automatic releasing -->
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>${maven-release-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>perform</goal>
-						</goals>
-						<configuration>
-							<pomFileName>pepper/pom.xml</pomFileName>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<releaseProfiles>release</releaseProfiles>
-					<goals>package assembly:single deploy</goals>
-				</configuration>
-			</plugin>
 			<!-- generate a jar for sources -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
