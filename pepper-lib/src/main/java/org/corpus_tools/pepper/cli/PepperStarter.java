@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -844,7 +845,7 @@ public class PepperStarter {
 		if (this.moduleTable != null) {
 			return moduleTable;
 		}
-		HashMap<String, String[]> table = new HashMap<String, String[]>();
+		TreeMap<String, String[]> table = new TreeMap<>();
 		SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 		try {
 			saxParser.parse(MODULES_XML_PATH, new ModuleTableReader(table));

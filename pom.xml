@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.2.7</version>
+	<version>3.3.0</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -58,7 +60,7 @@
 		<connection>scm:git:git://github.com/korpling/pepper.git</connection>
 		<developerConnection>scm:git:git@github.com:korpling/pepper.git</developerConnection>
 		<url>https://github.com/korpling/pepper</url>
-		<tag>pepper-3.2.7</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<snapshotRepository>
@@ -248,6 +250,25 @@
 	</organization>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+				<version>1.11.0</version>
+				<configuration>
+					<pushRemote>true</pushRemote>
+					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
+					<gitFlowConfig>
+						<productionBranch>master</productionBranch>
+						<developmentBranch>develop</developmentBranch>
+						<featureBranchPrefix>feature/</featureBranchPrefix>
+						<releaseBranchPrefix>release/</releaseBranchPrefix>
+						<hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+						<supportBranchPrefix>support/</supportBranchPrefix>
+						<versionTagPrefix>pepper-</versionTagPrefix>
+						<origin>origin</origin>
+					</gitFlowConfig>
+				</configuration>
+			</plugin>
 			<plugin>
 				<!-- a plugin to clean the project when calling mvn clean -->
 				<artifactId>maven-clean-plugin</artifactId>

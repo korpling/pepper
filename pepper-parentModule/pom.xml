@@ -3,20 +3,13 @@
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.2.7</version>
+		<version>3.3.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>pepper-parentModule</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<!-- ATTENTION: Don't forget to update this, when setting the version to 
-			a snapshot version, or when releasing. This property determines which Pepper 
-			dependencies a derived module uses. Unfortunately this value cannot be set 
-			to project's version, since then the version of the Pepper dependency in 
-			the Pepper module is set to the Pepper module's version. -->
-		<!-- <pepper.version>[1.0.0,2.0.0)</pepper.version> -->
-		<pepper.version>3.2.7</pepper.version>
 		<component.descriptor.name>serviceComponents.xml</component.descriptor.name>
 	</properties>
 	<description>Provides shared POM-data.</description>
@@ -52,7 +45,7 @@
 		<dependency>
 			<groupId>org.corpus-tools</groupId>
 			<artifactId>pepper-framework</artifactId>
-			<version>${pepper.version}</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
