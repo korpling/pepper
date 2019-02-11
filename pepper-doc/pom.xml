@@ -79,6 +79,7 @@
 						<content>${project.build.directory}/doxygen/</content>
 						<ignorePathsToDelete>
 							<path>doc</path>
+							<path>doc-snapshot</path>
 							<path>${site.path}</path>
 							<path>index.html</path>
 							<path>doxygen_sqlite3.db</path>
