@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.2.8-SNAPSHOT</version>
+	<version>3.3.0</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
