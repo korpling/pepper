@@ -257,8 +257,8 @@
 				<configuration>
 					<pushRemote>true</pushRemote>
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
-					<postReleaseGoals>package assembly:single deploy</postReleaseGoals>
-					<postHotfixGoals>package assembly:single deploy</postHotfixGoals>
+					<postReleaseGoals>-Prelease,doxygen package assembly:single deploy</postReleaseGoals>
+					<postHotfixGoals>-Prelease,doxygen package assembly:single deploy</postHotfixGoals>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
