@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.3.1</version>
+	<version>3.3.2</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -257,8 +257,8 @@
 				<configuration>
 					<pushRemote>true</pushRemote>
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
-					<postReleaseGoals>package assembly:single deploy</postReleaseGoals>
-					<postHotfixGoals>package assembly:single deploy</postHotfixGoals>
+					<postReleaseGoals>-Prelease,doxygen package assembly:single deploy</postReleaseGoals>
+					<postHotfixGoals>-Prelease,doxygen package assembly:single deploy</postHotfixGoals>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
