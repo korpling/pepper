@@ -9,7 +9,7 @@
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>3.3.2</version>
+		<version>3.3.3</version>
 	</parent>
 
 	<properties>
@@ -79,6 +79,7 @@
 						<content>${project.build.directory}/doxygen/</content>
 						<ignorePathsToDelete>
 							<path>doc</path>
+							<path>doc-snapshot</path>
 							<path>${site.path}</path>
 							<path>index.html</path>
 							<path>doxygen_sqlite3.db</path>

@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.3.2</version>
+		<version>3.3.3</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>org.corpus-tools</groupId>
 			<artifactId>pepper-framework</artifactId>
-			<version>${project.version}</version>
+			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
