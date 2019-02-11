@@ -27,4 +27,3 @@ var indexSectionLabels =
   4: "Variables",
   5: "Pages"
 };
-
