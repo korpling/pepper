@@ -259,6 +259,7 @@
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
 					<postReleaseGoals>-Prelease,doxygen package assembly:single deploy</postReleaseGoals>
 					<postHotfixGoals>-Prelease,doxygen package assembly:single deploy</postHotfixGoals>
+					<verbose>true</verbose>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
