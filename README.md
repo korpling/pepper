@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/21696821.svg)](https://zenodo.org/badge/latestdoi/21696821)
 [![Build Status](https://travis-ci.org/korpling/pepper.svg?branch=develop)](https://travis-ci.org/korpling/pepper)
 
 ![](http://korpling.github.io/pepper/images/SaltNPepper_logo2010.png)
