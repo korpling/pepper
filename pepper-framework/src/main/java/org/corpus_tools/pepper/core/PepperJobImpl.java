@@ -561,12 +561,11 @@ public class PepperJobImpl extends PepperJob {
 	 * (importing that graph) in {@link SaltProject#getCorpusGraphs()} is
 	 * equivalent to position of {@link Step} in list {@link #getImportSteps()}.
 	 */
-	protected synchronized void importCorpusStructures() {
+	protected void importCorpusStructures() {
 		try {
 			if (!isWired) {
 				wire();
 			}
-			List<Future<?>> futures = new Vector<Future<?>>();
 			int numOfImportStep = 0;
 			for (Step importStep : getImportSteps()) {
 				if (getSaltProject() == null) {
@@ -581,25 +580,12 @@ public class PepperJobImpl extends PepperJob {
 					sCorpusGraph = SaltFactory.createSCorpusGraph();
 					getSaltProject().addCorpusGraph(sCorpusGraph);
 				}
-
-				futures.add(importStep.getModuleController().importCorpusStructure(sCorpusGraph));
+				
+				importStep.getModuleController().importCorpusStructure(sCorpusGraph);
+			
 				numOfImportStep++;
 			}
-			for (Future<?> future : futures) {
-				// wait until all corpus structures have been imported
-				try {
-					future.get();
-				} catch (ExecutionException e) {
-					throw new PepperModuleException("Failed to import corpus by module. Nested exception was: ",
-							e.getCause());
-				} catch (InterruptedException e) {
-					throw new PepperFWException("Failed to import corpus by module. Nested exception was: ",
-							e.getCause());
-				} catch (CancellationException e) {
-					throw new PepperFWException("Failed to import corpus by module. Nested exception was: ",
-							e.getCause());
-				}
-			}
+			
 			int i = 0;
 			for (Step step : getImportSteps()) {
 				if (getSaltProject().getCorpusGraphs().get(i) == null) {

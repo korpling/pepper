@@ -216,7 +216,7 @@ public class ModuleControllerImpl implements ModuleController {
 
 	/** {@inheritDoc} **/
 	@Override
-	public synchronized Future<?> importCorpusStructure(SCorpusGraph sCorpusGraph) {
+	public void importCorpusStructure(SCorpusGraph sCorpusGraph) {
 		if (sCorpusGraph == null) {
 			throw new PepperFWException(
 					"Cannot import corpus structure, because the passed SCorpusGraph object was null.");
@@ -239,27 +239,16 @@ public class ModuleControllerImpl implements ModuleController {
 					"Cannot start importing corpus structure, since this module controller currently imports a corpus structure.");
 		} else {
 			this.sCorpusGraph = sCorpusGraph;
-			ExecutorService executor = Executors.newSingleThreadExecutor();
-			Runnable task = new Runnable() {
-				public void run() {
-					((PepperImporter) getPepperModule()).importCorpusStructure(getCorpusGraph());
-					mLogger.debug("[{}] corpus structure imported. ",
-							((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
-				}
-			};
+			((PepperImporter) getPepperModule()).importCorpusStructure(getCorpusGraph());
+			mLogger.debug("[{}] corpus structure imported. ",
+					((getPepperModule() != null) ? getPepperModule().getName() : " EMPTY "));
 
 			if (!getBusyLock().tryLock()) {
 				throw new PepperInActionException("cannot import corpus structure, because module controller '"
 						+ getId() + "' currently is busy with another process.");
 			}
 			getBusyLock().lock();
-			Future<?> future = null;
-			try {
-				future = executor.submit(task);
-			} finally {
-				getBusyLock().unlock();
-			}
-			return (future);
+
 		}
 	}
 

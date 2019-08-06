@@ -126,18 +126,14 @@ public interface ModuleController {
 	/**
 	 * Starts the import of corpus structure via the set {@link PepperImporter}
 	 * object by calling
-	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}. The import
-	 * runs in a separate thread, which is set as child of current thread.
-	 * Therefore, don#t forget to call method, this method keeps the focus
-	 * until, the import of the corpus structure has ended. This enables the
-	 * calling object to wait until the corpus structure was imported. This
-	 * method can only be invoked once per time.
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)}.
+	 *  This method can only be invoked once per for a module.
 	 * 
 	 * @param sCorpusGraph
 	 *            a {@link SCorpusGraph} object, in which the
 	 *            {@link PepperImporter} shall import the corpus structure.
 	 */
-	public Future<?> importCorpusStructure(SCorpusGraph sCorpusGraph);
+	public void importCorpusStructure(SCorpusGraph sCorpusGraph);
 
 	/**
 	 * Returns the next {@link DocumentController} waiting in the input document
