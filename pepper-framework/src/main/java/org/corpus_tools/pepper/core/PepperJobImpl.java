@@ -952,7 +952,7 @@ public class PepperJobImpl extends PepperJob {
 			logger.info(str.toString());
 
 			runStepsInParallel(getImportSteps());
-			runStepsInParallel(getManipulationSteps());
+			runStepsInSequence(getManipulationSteps());
 			runStepsInParallel(getExportSteps());
 
 			status = JOB_STATUS.ENDED;
@@ -968,8 +968,6 @@ public class PepperJobImpl extends PepperJob {
 			inProgress.unlock();
 		}
 	}
-
-	
 
 	private void runStepsInParallel(Collection<Step> steps) {
 		List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
@@ -1008,6 +1006,41 @@ public class PepperJobImpl extends PepperJob {
 				throw new PepperFWException(
 						"Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ",
 						e.getCause());
+			}
+		}
+	}
+
+	private void runStepsInSequence(Collection<Step> steps) {
+		// create a future for each step
+		for (Step step : steps) {
+			if (step.getModuleController().getPepperModule().getSaltProject() == null)
+				step.getModuleController().getPepperModule().setSaltProject(getSaltProject());
+			{
+				try {
+					step.getModuleController().processDocumentStructures().get();
+				} catch (ExecutionException e) {
+					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+						throw (PepperException) e.getCause();
+					}
+					throw new PepperModuleException(
+							"Failed to process document by module '" + step.getModuleController() + "'. Nested exception was: ",
+							e.getCause());
+				} catch (InterruptedException e) {
+					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+						throw (PepperException) e.getCause();
+					}
+					throw new PepperFWException(
+							"Failed to process document by module '" + step.getModuleController() + "'. Nested exception was: ",
+							e.getCause());
+				} catch (CancellationException e) {
+					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+						throw (PepperException) e.getCause();
+					}
+					throw new PepperFWException(
+							"Failed to process document by module '" + step.getModuleController() + "'. Nested exception was: ",
+							e.getCause());
+				}
+
 			}
 		}
 	}
