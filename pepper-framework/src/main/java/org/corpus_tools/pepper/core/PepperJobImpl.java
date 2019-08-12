@@ -916,16 +916,7 @@ public class PepperJobImpl extends PepperJob {
 				importCorpusStructures();
 			}
 			status = JOB_STATUS.IMPORTING_DOCUMENT_STRUCTURE;
-			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
-			// create a future for each step
-			for (Step step : getAllSteps()) {
-				if (step.getModuleController().getPepperModule().getSaltProject() == null)
-					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());
-				{
-					futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(),
-							step.getModuleController().processDocumentStructures()));
-				}
-			}
+			
 
 			// log workflow information
 			int stepNum = 0; // current number of step
@@ -970,6 +961,17 @@ public class PepperJobImpl extends PepperJob {
 			}
 			str.append("+------------------------------------------------------------------------------+\n");
 			logger.info(str.toString());
+
+			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
+			// create a future for each step
+			for (Step step : getAllSteps()) {
+				if (step.getModuleController().getPepperModule().getSaltProject() == null)
+					step.getModuleController().getPepperModule().setSaltProject(getSaltProject());
+				{
+					futures.add(new ImmutablePair<ModuleControllerImpl, Future<?>>(step.getModuleController(),
+							step.getModuleController().processDocumentStructures()));
+				}
+			}
 
 			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
 				// wait until all document-structures have been imported
