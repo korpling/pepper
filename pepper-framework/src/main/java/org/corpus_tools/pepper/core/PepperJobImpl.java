@@ -873,13 +873,15 @@ public class PepperJobImpl extends PepperJob {
 	 * </ul>
 	 */
 	public void convert() {
-		if (!inProgress.tryLock()) {
+
+		if (inProgress.isLocked()) {
 			throw new PepperInActionException(
 					"Cannot run convert() of job '" + getId() + "', since this job was already started.");
 		}
 
-		inProgress.lock();
 		try {
+			inProgress.lock();
+
 			startTime = System.currentTimeMillis();
 			status = JOB_STATUS.INITIALIZING;
 			if (!isWired) {
@@ -1022,23 +1024,20 @@ public class PepperJobImpl extends PepperJob {
 					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
 						throw (PepperException) e.getCause();
 					}
-					throw new PepperModuleException(
-							"Failed to process document by module '" + step.getModuleController() + "'. Nested exception was: ",
-							e.getCause());
+					throw new PepperModuleException("Failed to process document by module '"
+							+ step.getModuleController() + "'. Nested exception was: ", e.getCause());
 				} catch (InterruptedException e) {
 					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
 						throw (PepperException) e.getCause();
 					}
-					throw new PepperFWException(
-							"Failed to process document by module '" + step.getModuleController() + "'. Nested exception was: ",
-							e.getCause());
+					throw new PepperFWException("Failed to process document by module '" + step.getModuleController()
+							+ "'. Nested exception was: ", e.getCause());
 				} catch (CancellationException e) {
 					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
 						throw (PepperException) e.getCause();
 					}
-					throw new PepperFWException(
-							"Failed to process document by module '" + step.getModuleController() + "'. Nested exception was: ",
-							e.getCause());
+					throw new PepperFWException("Failed to process document by module '" + step.getModuleController()
+							+ "'. Nested exception was: ", e.getCause());
 				}
 
 			}
