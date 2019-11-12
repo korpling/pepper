@@ -473,6 +473,7 @@
 							<artifacts>
 								<artifact>
 									<id>org.corpus-tools:pepper-lib:${project.version}</id>
+									<source>true</source>
 								</artifact>
 							</artifacts>
 						</configuration>
