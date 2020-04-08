@@ -6,30 +6,12 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Debug (Launch)-PepperStarter<pepper-lib>",
+            "name": "PepperStarter",
             "request": "launch",
-            "cwd": "${workspaceFolder}/pepper-lib",
-            "classPaths": [
-                "lib/*",
-                "plugins/*"
-            ],
-            "console": "integratedTerminal",
-            "stopOnEntry": false,
             "mainClass": "org.corpus_tools.pepper.cli.PepperStarter",
+            "projectName": "pepper-lib",
             "vmArgs": "-Dlogback.configurationFile=./conf/logback.xml",
-            "projectName": "pepper-lib"
-        },
-        {
-            "type": "java",
-            "name": "Debug Testscript",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/pepper-lib",
-            "classPaths": [
-                "lib/*",
-                "plugins/*"
-            ],
-            "vmArgs": "-Dlogback.configurationFile=./conf/logback.xml",
-            "projectName": "pepper-lib"
+            "cwd": "${workspaceFolder}/pepper-lib"
         }
     ]
 }
