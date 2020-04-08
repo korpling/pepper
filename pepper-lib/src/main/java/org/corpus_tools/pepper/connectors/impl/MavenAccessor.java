@@ -184,9 +184,9 @@ public class MavenAccessor {
 	/** this String contains the artifactId of pepper-parentModule. */
 	public static final String ARTIFACT_ID_PEPPER_PARENT = "pepper-parentModule";
 	/** path to korpling maven repo */
-	public static final String KORPLING_MAVEN_REPO = "http://korpling.german.hu-berlin.de/maven2/";
+	public static final String KORPLING_MAVEN_REPO = "https://korpling.german.hu-berlin.de/maven2/";
 	/** path to maven central */
-	public static final String CENTRAL_REPO = "http://central.maven.org/maven2/";
+	public static final String CENTRAL_REPO = "https://repo1.maven.org/maven2/";
 
 	/** group-id of pepper-framework artifact **/
 	public static final String GROUP_ID_PEPPER = "org.corpus_tools.pepper";
