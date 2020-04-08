@@ -6,6 +6,12 @@
 *													                              *
 ***********************************************************************************
 
+Version 3.4.0
+=============
+
+* Set Maven Central URL to https://repo1.maven.org/maven2/ to make the internal updater work again.
+* Update to Salt version 3.4.1
+
 Version 3.0.2
 =============
 * fix Salt dependency
