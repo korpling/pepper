@@ -184,7 +184,7 @@ public class PepperStarter {
 		EXIT("exit", "e", null, "Exits Pepper."),
 		//
 		CONVERT("convert", "c", "workflow file",
-				"If no workflow file is passed, Pepper opens a conversion wizard, which help you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is load and the described workflow will be started."),
+				"If no workflow file is passed, Pepper opens a conversion wizard, which helps you through the definition of a workflow proecess. If a 'worklow file' is passed, this file is loaded and the described workflow will be started."),
 		//
 		OSGI("osgi", "o", null,
 				"Opens a console to access the underlying OSGi environment, if OSGi is used."), INSTALL_START(
@@ -194,7 +194,7 @@ public class PepperStarter {
 		// "updates a Pepper module with the module located at 'module path' and
 		// starts it."),
 		REMOVE("remove", "re", "bundle name",
-				"Removes all Pepper modules, being contained in the budnle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "),
+				"Removes all Pepper modules, being contained in the bundle with name 'bundle name'. To find out the bundle name open the osgi console and list all bundles. "),
 		//
 		START_OSGI("start-osgi", "start", null, "Starts the OSGi environment (the plugin system of Pepper)."),
 		//
