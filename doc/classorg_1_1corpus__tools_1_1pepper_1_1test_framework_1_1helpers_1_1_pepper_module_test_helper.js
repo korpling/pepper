@@ -1,8 +1,8 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper =
 [
     [ "PepperModuleTestHelper", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#aec52a2b07394737ed3136fcc90b83688", null ],
-    [ "compareFiles", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a924d9c8d3c3868818d4686aa290fd705", null ],
     [ "compareFiles", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#ae29741167457a0520ac52a9771f99416", null ],
+    [ "compareFiles", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a924d9c8d3c3868818d4686aa290fd705", null ],
     [ "getFixture", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#acf8380db4ae11828cc8922fffc836e3b", null ],
     [ "getTempPath", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#af43fd95b51e3e4659123110c7e4ba641", null ],
     [ "getTempURI", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a2e1492215cf871ff9b15019ac44154ff", null ],

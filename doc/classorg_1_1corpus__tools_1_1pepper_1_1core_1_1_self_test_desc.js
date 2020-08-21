@@ -1,9 +1,9 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc =
 [
     [ "SelfTestDesc", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#ac44c389dfac57c656a4e4359d830d21a", null ],
+    [ "compare", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#a61bd895562954e0707b08afb64997e66", null ],
     [ "compare", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#ac14cb8eb2bdb85445edbf564ccfd3961", null ],
     [ "compare", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#a47bb3bba40d7a95a5901a451283e763a", null ],
-    [ "compare", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#a61bd895562954e0707b08afb64997e66", null ],
     [ "compareXML", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#a0c1c5ca454649f8fdc6c01074cc8e9cb", null ],
     [ "equals", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#a5ac06440ddb328065d0c6adb0a3b1689", null ],
     [ "getExpectedCorpusPath", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_self_test_desc.html#a0aae853920907073eae6c6da82d73001", null ],

@@ -11,7 +11,7 @@ var classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration =
     [ "getReportInterval", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a8f0ba9d41e6df72de6b2ed2361cfb245", null ],
     [ "getTempPath", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a421821ab8226d44897e49725a3d98958", null ],
     [ "getWorkspace", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a8bdfe39ef8dc63c1af40188b1b09b96f", null ],
-    [ "load", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a4b7924f47d3b7ed033d8f007314954df", null ],
     [ "load", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a3b3e8793887cb9c9ece9490c05eb7291", null ],
+    [ "load", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a4b7924f47d3b7ed033d8f007314954df", null ],
     [ "setConfFolder", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_configuration.html#a39b0f0e7924be7bc7d0032c3a604f131", null ]
 ];

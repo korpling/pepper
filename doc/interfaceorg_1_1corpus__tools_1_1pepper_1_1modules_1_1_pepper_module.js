@@ -1,8 +1,8 @@
 var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module =
 [
     [ "createPepperMapper", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a9dc9348828cdffb97cb6f2d2633e5c14", null ],
-    [ "done", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a096b38f49fe3fd4432543990660eac35", null ],
     [ "done", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ad83942548834c7c68bbd657045ce728e", null ],
+    [ "done", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a096b38f49fe3fd4432543990660eac35", null ],
     [ "end", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#aeccf4d0f1495cc9b4a860b6989bfa7bf", null ],
     [ "getComponentContext", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ad7b2508338998453121ca827486e43b4", null ],
     [ "getCorpusGraph", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#af1e0cca2a447a443f55b075185069d34", null ],
@@ -11,8 +11,8 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module =
     [ "getModuleController", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a53e85f3c6b97d03b5a352809f705bbf9", null ],
     [ "getModuleType", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a9f8394c54c4c61701c61c02626656871", null ],
     [ "getName", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a1e322c181f0427ef43e8154739817b20", null ],
-    [ "getProgress", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ae65f26a8a116be23c176cceb16f53e27", null ],
     [ "getProgress", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ad964f9ee65b86795d88261a7555d46ac", null ],
+    [ "getProgress", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#ae65f26a8a116be23c176cceb16f53e27", null ],
     [ "getProperties", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a1856341f264d4d1a849bc58b89c88484", null ],
     [ "getResources", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a15e28b31d76d956690cd9587b7aa9a8d", null ],
     [ "getSaltProject", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_module.html#a2e2d6ad8bbbb8170a0a623f60a79bd9f", null ],
