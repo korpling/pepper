@@ -6,6 +6,12 @@
 *													                              *
 ***********************************************************************************
 
+Version 3.4.1
+=============
+
+* Fix export version of commons-io in manifest
+* Update to Salt version 3.4.2
+
 Version 3.4.0
 =============
 

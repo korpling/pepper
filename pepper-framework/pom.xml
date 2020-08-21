@@ -53,7 +53,7 @@
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
-						<Import-Package>org.corpus_tools.pepper.common,org.corpus_tools.pepper.core,org.corpus_tools.pepper.exceptions,org.corpus_tools.pepper.modules,org.corpus_tools.pepper.testFramework,org.corpus_tools.salt;version="[${salt.version},4)", org.corpus_tools.salt.common;version="[${salt.version},4)", org.corpus_tools.salt.core;version="[${salt.version},4)", org.corpus_tools.salt.graph;version="[${salt.version},4)", org.corpus_tools.salt.util;version="[${salt.version},4)", org.corpus_tools.salt.util.internal;version="[${salt.version},4)",*</Import-Package>
+						<Import-Package>org.corpus_tools.pepper.common,org.corpus_tools.pepper.core,org.corpus_tools.pepper.exceptions,org.corpus_tools.pepper.modules,org.corpus_tools.pepper.testFramework,org.corpus_tools.salt;version="[${salt.version},4)", org.corpus_tools.salt.common;version="[${salt.version},4)", org.corpus_tools.salt.core;version="[${salt.version},4)", org.corpus_tools.salt.graph;version="[${salt.version},4)", org.corpus_tools.salt.util;version="[${salt.version},4)", org.corpus_tools.salt.util.internal;version="[${salt.version},4)",org.apache.commons.io;version=!,org.apache.commons.io.input;version=!,*</Import-Package>
 						<Export-Package>org.corpus_tools.pepper.*</Export-Package>
 						<Service-Component>${allServiceComponents}</Service-Component>
 						<Bundle-ClassPath>.,{maven-dependencies},lib/xmlunit-1.5.jar</Bundle-ClassPath>
