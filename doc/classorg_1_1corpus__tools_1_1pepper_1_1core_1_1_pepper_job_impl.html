@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="pepper.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Pepper
-   &#160;<span id="projectnumber">3.4.2</span>
+   &#160;<span id="projectnumber">3.5.0</span>
    </div>
    <div id="projectbrief">A highly extensible plattform for conversion and manipulationoflinguisticdata.</div>
   </td>
@@ -166,6 +166,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#ab1c231ccf407a67af2ab7f29cfe61983">convertTo</a> ()</td></tr>
 <tr class="memdesc:ab1c231ccf407a67af2ab7f29cfe61983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports the <a class="el" href="">SaltProject</a> into any format.For conversion, a normal process could be created, except the use of an importer. Here the do-nothing importer is used, and it is expected, that the <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#af3d4256969c3cb56fb118859600327c2">getSaltProject()</a> is already 'filled'. <br /></td></tr>
 <tr class="separator:ab1c231ccf407a67af2ab7f29cfe61983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5baad778378f5f2795373d1258a4c324"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a5baad778378f5f2795373d1258a4c324">cancelConversion</a> ()</td></tr>
+<tr class="memdesc:a5baad778378f5f2795373d1258a4c324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels the current conversion.  <a href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a5baad778378f5f2795373d1258a4c324">More...</a><br /></td></tr>
+<tr class="separator:a5baad778378f5f2795373d1258a4c324"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a598c611e45c129446fb58d832afc9fc7"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a598c611e45c129446fb58d832afc9fc7">isCancellationRequested</a> ()</td></tr>
+<tr class="memdesc:a598c611e45c129446fb58d832afc9fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get if someone requested to cancel this job.  <a href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a598c611e45c129446fb58d832afc9fc7">More...</a><br /></td></tr>
+<tr class="separator:a598c611e45c129446fb58d832afc9fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86aa4cef9931f4ea812638a9ed3cc7dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1common.html#enumorg_1_1corpus__tools_1_1pepper_1_1common_1_1_m_e_m_o_r_y___p_o_l_i_c_y">MEMORY_POLICY</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a86aa4cef9931f4ea812638a9ed3cc7dd">getMemPolicy</a> ()</td></tr>
 <tr class="memdesc:a86aa4cef9931f4ea812638a9ed3cc7dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the set memory policy.  <a href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a86aa4cef9931f4ea812638a9ed3cc7dd">More...</a><br /></td></tr>
 <tr class="separator:a86aa4cef9931f4ea812638a9ed3cc7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -421,6 +427,28 @@ start </li>
  {@inheritDoc <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a5c3b2e45f40eebaeaa5968e84fb26203" title="Adds a StepDesc object to job.">PepperJob::addStepDesc(StepDesc)</a>} </p>
 
 <p>Reimplemented from <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a5c3b2e45f40eebaeaa5968e84fb26203">org.corpus_tools.pepper.common.PepperJob</a>.</p>
+
+</div>
+</div>
+<a id="a5baad778378f5f2795373d1258a4c324"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5baad778378f5f2795373d1258a4c324">&#9670;&nbsp;</a></span>cancelConversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void org.corpus_tools.pepper.core.PepperJobImpl.cancelConversion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cancels the current conversion. </p>
+<p>This might not stop immediately, but might finish the running document controller jobs first. </p>
+
+<p>Reimplemented from <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a19200e6d3763b8c856bef512463ba06b">org.corpus_tools.pepper.common.PepperJob</a>.</p>
 
 </div>
 </div>
@@ -758,6 +786,26 @@ If <a class="el" href="interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pe
 
 </div>
 </div>
+<a id="a598c611e45c129446fb58d832afc9fc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a598c611e45c129446fb58d832afc9fc7">&#9670;&nbsp;</a></span>isCancellationRequested()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean org.corpus_tools.pepper.core.PepperJobImpl.isCancellationRequested </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get if someone requested to cancel this job. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if cancellation was requested. </dd></dl>
+
+</div>
+</div>
 <a id="a5396f78772d0bb264064998413d6af40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5396f78772d0bb264064998413d6af40">&#9670;&nbsp;</a></span>setConfiguration()</h2>
 
@@ -1022,7 +1070,7 @@ each step of <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1core.html">core</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html">PepperJobImpl</a></li>
-    <li class="footer">Generated on Fri Aug 21 2020 13:24:03 for Pepper by
+    <li class="footer">Generated on Tue Sep 15 2020 14:51:56 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

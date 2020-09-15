@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"feedback.html#autotoc_md12":[1,7,0],
+"feedback.html#autotoc_md13":[1,7,1],
+"fitness.html":[1,12],
 "fitness.html#autotoc_md14":[1,12,0],
 "fitness.html#autotoc_md15":[1,12,0,0],
 "fitness.html#autotoc_md16":[1,12,0,1],
@@ -20,8 +23,8 @@ var NAVTREEINDEX4 =
 "functions_d.html":[3,2,0,3],
 "functions_e.html":[3,2,0,4],
 "functions_f.html":[3,2,0,5],
-"functions_func.html":[3,2,1],
 "functions_func.html":[3,2,1,0],
+"functions_func.html":[3,2,1],
 "functions_func_b.html":[3,2,1,1],
 "functions_func_c.html":[3,2,1,2],
 "functions_func_d.html":[3,2,1,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "library.html":[2,0],
 "library.html#autotoc_md33":[2,0,0],
 "library.html#autotoc_md34":[2,0,1],
-"library.html#bridgeOSGi":[2,0,2],
-"mapping.html":[1,6],
-"mapping.html#autotoc_md28":[1,6,0],
-"module_architecture.html":[1,2]
+"library.html#bridgeOSGi":[2,0,2]
 };

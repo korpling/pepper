@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"mapping.html":[1,6],
+"mapping.html#autotoc_md28":[1,6,0],
+"module_architecture.html":[1,2],
 "module_developers.html":[1],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1cli.html":[3,0,0,0,0,0],
 "namespaceorg_1_1corpus__tools_1_1pepper_1_1cli_1_1exceptions.html":[3,0,0,0,0,0,0],
@@ -26,8 +29,8 @@ var NAVTREEINDEX5 =
 "use_eclipse.html":[1,1],
 "use_eclipse.html#autotoc_md10":[1,13,2,1],
 "use_eclipse.html#autotoc_md10":[1,1,1],
-"use_eclipse.html#autotoc_md11":[1,13,2,1,0],
 "use_eclipse.html#autotoc_md11":[1,1,1,0],
+"use_eclipse.html#autotoc_md11":[1,13,2,1,0],
 "use_eclipse.html#autotoc_md9":[1,1,0],
 "use_eclipse.html#autotoc_md9":[1,13,2,0],
 "users.html":[2]

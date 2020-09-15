@@ -1,6 +1,7 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job =
 [
     [ "addStepDesc", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a5c3b2e45f40eebaeaa5968e84fb26203", null ],
+    [ "cancelConversion", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a19200e6d3763b8c856bef512463ba06b", null ],
     [ "clear", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a35e8f1d9383e4acb7a47db41703430b6", null ],
     [ "convert", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a6a21875b2ccf318504f6d95773f5f15a", null ],
     [ "convertFrom", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a37c01755845bdd3579b6b75d7f0b280a", null ],

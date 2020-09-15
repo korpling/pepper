@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_exporter.html#ac8c9717a07e1c104ec70d8f386350b80":[3,0,0,0,0,6,0,3,2],
+"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html":[3,0,0,0,0,6,0,4],
+"classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html#a14a40222865e02ce68ebbe933de57dd9":[3,0,0,0,0,6,0,4,2],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html#a5920f17da0b61f75a7cb0cea743d4416":[3,0,0,0,0,6,0,4,0],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator.html#add5831b96162bd227e8e21e310f2ca93":[3,0,0,0,0,6,0,4,1],
 "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1core_modules_1_1_d_o_t_manipulator_properties.html":[3,0,0,0,0,6,0,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "enumorg_1_1corpus__tools_1_1pepper_1_1common_1_1_j_o_b___s_t_a_t_u_s.html#aa9419228d4519f4d5504277fb9e73275":[3,0,0,0,0,1,3,3],
 "enumorg_1_1corpus__tools_1_1pepper_1_1common_1_1_j_o_b___s_t_a_t_u_s.html#add1865ecce70b0bfccb9e822e2203827":[3,0,0,0,0,1,3,0],
 "enumorg_1_1corpus__tools_1_1pepper_1_1common_1_1_j_o_b___s_t_a_t_u_s.html#af335b167e44a7279bc8a9d3b284342bd":[3,0,0,0,0,1,3,5],
-"feedback.html":[1,7],
-"feedback.html#autotoc_md12":[1,7,0],
-"feedback.html#autotoc_md13":[1,7,1],
-"fitness.html":[1,12]
+"feedback.html":[1,7]
 };

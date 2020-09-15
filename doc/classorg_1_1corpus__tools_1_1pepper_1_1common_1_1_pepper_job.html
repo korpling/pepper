@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="pepper.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Pepper
-   &#160;<span id="projectnumber">3.4.2</span>
+   &#160;<span id="projectnumber">3.5.0</span>
    </div>
    <div id="projectbrief">A highly extensible plattform for conversion and manipulationoflinguisticdata.</div>
   </td>
@@ -133,6 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0063bf6cf9a4c2544b833f7c1165bb83"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a0063bf6cf9a4c2544b833f7c1165bb83">convertTo</a> ()</td></tr>
 <tr class="memdesc:a0063bf6cf9a4c2544b833f7c1165bb83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports the <a class="el" href="">SaltProject</a> into any format.  <a href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a0063bf6cf9a4c2544b833f7c1165bb83">More...</a><br /></td></tr>
 <tr class="separator:a0063bf6cf9a4c2544b833f7c1165bb83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19200e6d3763b8c856bef512463ba06b"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a19200e6d3763b8c856bef512463ba06b">cancelConversion</a> ()</td></tr>
+<tr class="memdesc:a19200e6d3763b8c856bef512463ba06b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels the current conversion.  <a href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a19200e6d3763b8c856bef512463ba06b">More...</a><br /></td></tr>
+<tr class="separator:a19200e6d3763b8c856bef512463ba06b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f825330ee28f2f41603972075749ea8"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a0f825330ee28f2f41603972075749ea8">load</a> (URI uri)</td></tr>
 <tr class="memdesc:a0f825330ee28f2f41603972075749ea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a serialization of a <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html">PepperJob</a> and fills this object with these entries.  <a href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html#a0f825330ee28f2f41603972075749ea8">More...</a><br /></td></tr>
 <tr class="separator:a0f825330ee28f2f41603972075749ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,6 +190,36 @@ Vector&lt; <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1
 </dl>
 
 <p>Reimplemented in <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a2de84d392cce3ecf428abc41ec4cdf0f">org.corpus_tools.pepper.core.PepperJobImpl</a>.</p>
+
+</div>
+</div>
+<a id="a19200e6d3763b8c856bef512463ba06b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19200e6d3763b8c856bef512463ba06b">&#9670;&nbsp;</a></span>cancelConversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">abstract void org.corpus_tools.pepper.common.PepperJob.cancelConversion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">abstract</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cancels the current conversion. </p>
+<p>This might not stop immediately, but might finish the running document controller jobs first. </p>
+
+<p>Reimplemented in <a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a5baad778378f5f2795373d1258a4c324">org.corpus_tools.pepper.core.PepperJobImpl</a>.</p>
 
 </div>
 </div>
@@ -609,7 +642,7 @@ If <a class="el" href="">org.corpus_tools.pepper.modules.PepperImporter#importCo
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>org</b></li><li class="navelem"><b>corpus_tools</b></li><li class="navelem"><b>pepper</b></li><li class="navelem"><a class="el" href="namespaceorg_1_1corpus__tools_1_1pepper_1_1common.html">common</a></li><li class="navelem"><a class="el" href="classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_pepper_job.html">PepperJob</a></li>
-    <li class="footer">Generated on Fri Aug 21 2020 13:24:03 for Pepper by
+    <li class="footer">Generated on Tue Sep 15 2020 14:51:56 for Pepper by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
