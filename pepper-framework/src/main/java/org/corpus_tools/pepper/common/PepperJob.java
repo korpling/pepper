@@ -183,6 +183,11 @@ public abstract class PepperJob {
 	public abstract void convertTo();
 
 	/**
+	 * Cancels the current conversion. This might not stop immediately, but might finish the running document controller jobs first.
+	 */
+	public abstract void cancelConversion();
+
+	/**
 	 * Loads a serialization of a {@link PepperJob} and fills this object with
 	 * these entries. The current implementation allows xml files following the
 	 * workflow description scheme version 1.0 and xmi files following the (old)
