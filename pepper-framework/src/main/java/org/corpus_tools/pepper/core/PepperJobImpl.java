@@ -989,8 +989,8 @@ public class PepperJobImpl extends PepperJob {
 				stillRunning = false;
 				if(this.cancellationRequested.get()) {
 					// Cancel all running modules
-					for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
-						future.getRight().cancel(true);
+					for (Pair<ModuleControllerImpl, Future<?>> f : futures) {
+						f.getRight().cancel(true);
 					}
 				} else {
 					// Check each module if it is finished and proceed the loop if any of them is not finished yet
@@ -1065,6 +1065,14 @@ public class PepperJobImpl extends PepperJob {
 	@Override
 	public void cancelConversion() {
 		this.cancellationRequested.set(true);
+	}
+
+	/**
+	 * Get if someone requested to cancel this job.
+	 * @return True if cancellation was requested.
+	 */
+	public boolean isCancellationRequested() {
+		return this.cancellationRequested.get();
 	}
 
 	// ======================================= start: managing number of active
