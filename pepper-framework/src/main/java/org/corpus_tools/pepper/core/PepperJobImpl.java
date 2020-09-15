@@ -34,6 +34,7 @@ import java.util.Vector;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -112,8 +113,7 @@ public class PepperJobImpl extends PepperJob {
 	/**
 	 * Initializes a {@link PepperJobImpl} and sets its unique identifier.
 	 * 
-	 * @param jobId
-	 *            unique identifier for this job. The id is not changeable
+	 * @param jobId unique identifier for this job. The id is not changeable
 	 */
 	public PepperJobImpl(String jobId) {
 		if ((jobId == null) || (jobId.isEmpty())) {
@@ -135,8 +135,7 @@ public class PepperJobImpl extends PepperJob {
 	/**
 	 * Sets the {@link SaltProject} which is converted by this job.
 	 * 
-	 * @param saltProject
-	 *            new {@link SaltProject}
+	 * @param saltProject new {@link SaltProject}
 	 */
 	public void setSaltProject(SaltProject saltProject) {
 		if (inProgress.isLocked()) {
@@ -165,11 +164,10 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Sets the properties to customize the behavior of conversion for this
-	 * single job
+	 * Sets the properties to customize the behavior of conversion for this single
+	 * job
 	 * 
-	 * @param conf
-	 *            for customization
+	 * @param conf for customization
 	 */
 	public void setConfiguration(PepperConfiguration conf) {
 		if (inProgress.isLocked()) {
@@ -183,14 +181,14 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * A reference to the OSGi module resolver, to find modules matching to the
-	 * step description
+	 * A reference to the OSGi module resolver, to find modules matching to the step
+	 * description
 	 **/
 	protected ModuleResolver moduleResolver = null;
 
 	/**
-	 * Returns a reference to the OSGi module resolver, to find modules matching
-	 * to the step description.
+	 * Returns a reference to the OSGi module resolver, to find modules matching to
+	 * the step description.
 	 * 
 	 * @return reference to resolver to resolve {@link PepperModule} objects
 	 */
@@ -199,11 +197,11 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Sets a reference to the OSGi module resolver, to find modules matching to
-	 * the step description.
+	 * Sets a reference to the OSGi module resolver, to find modules matching to the
+	 * step description.
 	 * 
-	 * @param moduleResolver
-	 *            reference to resolver to resolve {@link PepperModule} objects
+	 * @param moduleResolver reference to resolver to resolve {@link PepperModule}
+	 *                       objects
 	 */
 	public void setModuleResolver(ModuleResolver moduleResolver) {
 		if (inProgress.isLocked()) {
@@ -271,11 +269,9 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Returns a of all steps belonging no matter, to which phase they belong.
-	 * <br/>
-	 * <strong>This computation could be expensive, when working more than once
-	 * with the list, make a local copy and don't call this method
-	 * twice.</strong>
+	 * Returns a of all steps belonging no matter, to which phase they belong. <br/>
+	 * <strong>This computation could be expensive, when working more than once with
+	 * the list, make a local copy and don't call this method twice.</strong>
 	 * 
 	 * @return list of {@link Step} objects.
 	 **/
@@ -294,8 +290,8 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Overrides method {@link PepperJob#addStepDesc(StepDesc)}, but calls it
-	 * via super and than calls {@link #addStep(Step)}.<br/>
+	 * Overrides method {@link PepperJob#addStepDesc(StepDesc)}, but calls it via
+	 * super and than calls {@link #addStep(Step)}.<br/>
 	 * {@inheritDoc PepperJob#addStepDesc(StepDesc)}
 	 */
 	@Override
@@ -310,8 +306,7 @@ public class PepperJobImpl extends PepperJob {
 	 * {@link PepperJobImpl}. Further tries to resolve the described
 	 * {@link PepperModule}.
 	 * 
-	 * @param stepDesc
-	 *            {@link StepDesc} object to be added to internal list
+	 * @param stepDesc {@link StepDesc} object to be added to internal list
 	 * @return the created {@link Step} object
 	 */
 	public synchronized Step addStep(StepDesc stepDesc) {
@@ -351,8 +346,7 @@ public class PepperJobImpl extends PepperJob {
 	 * <li>{@link #getSaltProject()} must be set</li>
 	 * </ul>
 	 * 
-	 * @param step
-	 *            {@link Step} object to be added to internal list
+	 * @param step {@link Step} object to be added to internal list
 	 */
 	public synchronized void addStep(Step step) {
 		if (inProgress.isLocked()) {
@@ -407,8 +401,7 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * all documentBusses which are connected with {@link PepperImporter}
-	 * modules
+	 * all documentBusses which are connected with {@link PepperImporter} modules
 	 **/
 	protected List<DocumentBus> initialDocumentBuses = null;
 	/**
@@ -418,17 +411,17 @@ public class PepperJobImpl extends PepperJob {
 	protected boolean isWired = false;
 
 	/**
-	 * Wires all {@link Step} objects being contained by this object to be ready
-	 * for {@link #start()}. Which means, that:
+	 * Wires all {@link Step} objects being contained by this object to be ready for
+	 * {@link #start()}. Which means, that:
 	 * <ol>
-	 * <li>each step of {@link #getImportSteps()} is wired via a initial
-	 * document bus with the framework (no wiring, but listening on
+	 * <li>each step of {@link #getImportSteps()} is wired via a initial document
+	 * bus with the framework (no wiring, but listening on
 	 * {@link #ID_INTITIAL})</li>
-	 * <li>each step of {@link #getManipulationSteps()} is wired with following
-	 * step in list with a {@link DocumentBus}.
+	 * <li>each step of {@link #getManipulationSteps()} is wired with following step
+	 * in list with a {@link DocumentBus}.
 	 * <li/>
-	 * <li>each step of {@link #getExportSteps()} is wired via a terminal
-	 * document bus with the framework (no wiring, but listening on
+	 * <li>each step of {@link #getExportSteps()} is wired via a terminal document
+	 * bus with the framework (no wiring, but listening on
 	 * {@link #ID_TERMINAL})</li>
 	 * </ol>
 	 */
@@ -549,17 +542,17 @@ public class PepperJobImpl extends PepperJob {
 	protected volatile boolean isImportedCorpusStructure = false;
 
 	/**
-	 * Imports corpus structures of all registered
-	 * {@link ImportCorpusStructureTest} steps. After calling
-	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} , all
-	 * following modules will be asked, if they want to influence the order of
-	 * importing documents. If this is the case, an order is created and put to
-	 * all {@link PepperImporter} objects. <br/>
-	 * This method produces as much as {@link SCorpusGraph} objects as
-	 * {@link Step} given in import step list {@link #getImportSteps()}. The
-	 * position of {@link SCorpusGraph} corresponding to {@link PepperImporter}
-	 * (importing that graph) in {@link SaltProject#getCorpusGraphs()} is
-	 * equivalent to position of {@link Step} in list {@link #getImportSteps()}.
+	 * Imports corpus structures of all registered {@link ImportCorpusStructureTest}
+	 * steps. After calling
+	 * {@link PepperImporter#importCorpusStructure(SCorpusGraph)} , all following
+	 * modules will be asked, if they want to influence the order of importing
+	 * documents. If this is the case, an order is created and put to all
+	 * {@link PepperImporter} objects. <br/>
+	 * This method produces as much as {@link SCorpusGraph} objects as {@link Step}
+	 * given in import step list {@link #getImportSteps()}. The position of
+	 * {@link SCorpusGraph} corresponding to {@link PepperImporter} (importing that
+	 * graph) in {@link SaltProject#getCorpusGraphs()} is equivalent to position of
+	 * {@link Step} in list {@link #getImportSteps()}.
 	 */
 	protected synchronized void importCorpusStructures() {
 		try {
@@ -669,16 +662,15 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Returns a list of {@link Identifier}s corresponding to the
-	 * {@link SDocument} objects contained in the passed {@link SCorpusGraph}
-	 * object. If all registered modules, do not make a proposal, the natural
-	 * one (the one given by the order of {@link SDocument}s in
-	 * {@link SCorpusGraph}) is taken. <strong>Note: Currently, this method does
-	 * not a real unification, if more than one proposals are given, the first
-	 * one is taken.</strong>
+	 * Returns a list of {@link Identifier}s corresponding to the {@link SDocument}
+	 * objects contained in the passed {@link SCorpusGraph} object. If all
+	 * registered modules, do not make a proposal, the natural one (the one given by
+	 * the order of {@link SDocument}s in {@link SCorpusGraph}) is taken.
+	 * <strong>Note: Currently, this method does not a real unification, if more
+	 * than one proposals are given, the first one is taken.</strong>
 	 * 
-	 * @param sCorpusGraph
-	 *            the {@link SCorpusGraph} for which the list has to be unified
+	 * @param sCorpusGraph the {@link SCorpusGraph} for which the list has to be
+	 *                     unified
 	 * @return unified list
 	 */
 	protected List<Identifier> unifyProposedImportOrders(SCorpusGraph sCorpusGraph) {
@@ -727,14 +719,14 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * A list of all {@link DocumentControllerImpl} objects corresponding to
-	 * each {@link SDocument} belonging to this job.
+	 * A list of all {@link DocumentControllerImpl} objects corresponding to each
+	 * {@link SDocument} belonging to this job.
 	 **/
 	protected List<DocumentController> documentControllers = null;
 
 	/**
-	 * Returns a list of all {@link DocumentControllerImpl} objects
-	 * corresponding to each {@link SDocument} belonging to this job.
+	 * Returns a list of all {@link DocumentControllerImpl} objects corresponding to
+	 * each {@link SDocument} belonging to this job.
 	 * 
 	 * @return a list of all {@link DocumentControllerImpl}s
 	 */
@@ -842,8 +834,8 @@ public class PepperJobImpl extends PepperJob {
 	protected boolean isReadyToStart = false;
 
 	/**
-	 * Checks for each {@link PepperModule} in all steps, if it is ready to
-	 * start, via calling {@link PepperModule#isReadyToStart()}.
+	 * Checks for each {@link PepperModule} in all steps, if it is ready to start,
+	 * via calling {@link PepperModule#isReadyToStart()}.
 	 * 
 	 * @return a list of steps whose modules are not ready to start
 	 */
@@ -879,17 +871,16 @@ public class PepperJobImpl extends PepperJob {
 	}
 
 	/**
-	 * Specifies if this job currently runs a conversion. If this is the case,
-	 * some other operations, like adding {@link Step}s cannot be done
-	 * simultaneously.
+	 * Specifies if this job currently runs a conversion. If this is the case, some
+	 * other operations, like adding {@link Step}s cannot be done simultaneously.
 	 **/
 	protected volatile ReentrantLock inProgress = new ReentrantLock();
 
 	/**
 	 * Starts the conversion of this job.
 	 * <ul>
-	 * <li>If the single steps of the job has not already been wired, they will
-	 * be wired.
+	 * <li>If the single steps of the job has not already been wired, they will be
+	 * wired.
 	 * <li>
 	 * <li>If {@link PepperImporter#importCorpusStructure(SCorpusGraph)} has not
 	 * already been called, it will be done.
@@ -929,6 +920,12 @@ public class PepperJobImpl extends PepperJob {
 			if (!isImportedCorpusStructure) {
 				importCorpusStructures();
 			}
+
+			if (this.cancellationRequested.get()) {
+				status = JOB_STATUS.ENDED_WITH_ERRORS;
+				return;
+			}
+
 			status = JOB_STATUS.IMPORTING_DOCUMENT_STRUCTURE;
 			List<Pair<ModuleControllerImpl, Future<?>>> futures = new Vector<Pair<ModuleControllerImpl, Future<?>>>();
 			// create a future for each step
@@ -985,33 +982,38 @@ public class PepperJobImpl extends PepperJob {
 			str.append("+------------------------------------------------------------------------------+\n");
 			logger.info(str.toString());
 
-			for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
-				// wait until all document-structures have been imported
-				try {
-					future.getRight().get();
-				} catch (ExecutionException e) {
-					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
-						throw (PepperException) e.getCause();
+
+			// wait until all document-structures have been imported, but cancel futures when requested
+			boolean stillRunning = true;
+			while(stillRunning) {
+				stillRunning = false;
+				if(this.cancellationRequested.get()) {
+					// Cancel all running modules
+					for (Pair<ModuleControllerImpl, Future<?>> f : futures) {
+						f.getRight().cancel(true);
 					}
-					throw new PepperModuleException(
-							"Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ",
-							e.getCause());
-				} catch (InterruptedException e) {
-					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
-						throw (PepperException) e.getCause();
+				} else {
+					// Check each module if it is finished and proceed the loop if any of them is not finished yet
+					for (Pair<ModuleControllerImpl, Future<?>> future : futures) {
+						try {
+							if(!future.getRight().isDone()) {
+								stillRunning = true;
+								break;
+							}
+						} catch (CancellationException e) {
+							if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
+								throw (PepperException) e.getCause();
+							}
+							throw new PepperFWException(
+									"Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ",
+									e.getCause());
+						}
 					}
-					throw new PepperFWException(
-							"Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ",
-							e.getCause());
-				} catch (CancellationException e) {
-					if ((e.getCause() != null) && (e.getCause() instanceof PepperException)) {
-						throw (PepperException) e.getCause();
-					}
-					throw new PepperFWException(
-							"Failed to process document by module '" + future.getLeft() + "'. Nested exception was: ",
-							e.getCause());
 				}
-			}
+
+				// Give the actual conversion computation time
+				Thread.yield();
+			};
 			status = JOB_STATUS.ENDED;
 		} catch (RuntimeException e) {
 			status = JOB_STATUS.ENDED_WITH_ERRORS;
@@ -1056,6 +1058,21 @@ public class PepperJobImpl extends PepperJob {
 				new StepDesc().setName(DoNothingImporter.MODULE_NAME).setModuleType(MODULE_TYPE.IMPORTER).setCorpusDesc(
 						new CorpusDesc().setCorpusPath(URI.createFileURI(PepperUtil.getTempFile().getAbsolutePath()))));
 		convert();
+	}
+
+	private final AtomicBoolean cancellationRequested = new AtomicBoolean(false);
+
+	@Override
+	public void cancelConversion() {
+		this.cancellationRequested.set(true);
+	}
+
+	/**
+	 * Get if someone requested to cancel this job.
+	 * @return True if cancellation was requested.
+	 */
+	public boolean isCancellationRequested() {
+		return this.cancellationRequested.get();
 	}
 
 	// ======================================= start: managing number of active
