@@ -18,6 +18,7 @@
 package org.corpus_tools.pepper.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -32,6 +33,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -70,6 +72,8 @@ import org.corpus_tools.pepper.modules.PepperImporter;
 import org.corpus_tools.pepper.modules.PepperManipulator;
 import org.corpus_tools.pepper.modules.PepperMapper;
 import org.corpus_tools.pepper.modules.PepperModule;
+import org.corpus_tools.pepper.modules.exceptions.PepperModuleException;
+import org.corpus_tools.pepper.testFramework.PepperTestUtil;
 import org.corpus_tools.pepper.testFramework.helpers.PepperModuleTest;
 import org.corpus_tools.salt.SaltFactory;
 import org.corpus_tools.salt.common.SCorpus;
@@ -185,11 +189,11 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests if the adding of different steps like import, manipulation and
-	 * export steps and checks if they are contained in all respecting lists
+	 * Tests if the adding of different steps like import, manipulation and export
+	 * steps and checks if they are contained in all respecting lists
 	 * {@link #getImportSteps()}, {@link #getManipulationSteps()},
-	 * {@link #getExportSteps()} and {@link #getAllSteps()}. Implicitly also
-	 * checks {@link #addStep(Step)}, but not in detail.
+	 * {@link #getExportSteps()} and {@link #getAllSteps()}. Implicitly also checks
+	 * {@link #addStep(Step)}, but not in detail.
 	 */
 	@Test
 	public void testGetAllStep() {
@@ -243,8 +247,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests if the adding of a {@link StepDesc} works correctly. Indirectly
-	 * method {@link #addStep(Step)} is tested.
+	 * Tests if the adding of a {@link StepDesc} works correctly. Indirectly method
+	 * {@link #addStep(Step)} is tested.
 	 */
 	@Test
 	public void testAddStep_STEPDESC() {
@@ -580,8 +584,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests the entire conversion process using a very small workflow
-	 * description containing:
+	 * Tests the entire conversion process using a very small workflow description
+	 * containing:
 	 * <ul>
 	 * <li>one importer</li>
 	 * <li>one exporter</li>
@@ -620,8 +624,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests the entire conversion process using a very small workflow
-	 * description containing:
+	 * Tests the entire conversion process using a very small workflow description
+	 * containing:
 	 * <ul>
 	 * <li>one importer - 10 documents</li>
 	 * <li>one importer - 5 documents</li>
@@ -684,8 +688,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests the entire conversion process using a very small workflow
-	 * description containing:
+	 * Tests the entire conversion process using a very small workflow description
+	 * containing:
 	 * <ul>
 	 * <li>one importer - 10 documents</li>
 	 * <li>one importer - 5 documents</li>
@@ -760,8 +764,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	private URI dummyResourceURI = URI.createFileURI(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
 
 	/**
-	 * Tests the entire conversion process using a very small workflow
-	 * description containing:
+	 * Tests the entire conversion process using a very small workflow description
+	 * containing:
 	 * <ul>
 	 * <li>one importer - 10 documents</li>
 	 * <li>one importer - 5 documents</li>
@@ -840,8 +844,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests the entire conversion process using a very small workflow
-	 * description containing:
+	 * Tests the entire conversion process using a very small workflow description
+	 * containing:
 	 * <ul>
 	 * <li>one importer - 10 documents</li>
 	 * <li>one importer - 5 documents</li>
@@ -932,9 +936,8 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Tests the entire conversion process using a very small workflow
-	 * description and checks, that only 2 documents are processed at the same
-	 * time.
+	 * Tests the entire conversion process using a very small workflow description
+	 * and checks, that only 2 documents are processed at the same time.
 	 */
 	@Test
 	public void testConvert_CurrentNumberOfDocuments() {
@@ -1140,9 +1143,9 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 	}
 
 	/**
-	 * Checks if storing a job to xml file works correctly. Stores a job
-	 * containing an importer, manipulator and exporter. Each having some
-	 * customization properties.
+	 * Checks if storing a job to xml file works correctly. Stores a job containing
+	 * an importer, manipulator and exporter. Each having some customization
+	 * properties.
 	 * 
 	 * @throws IOException
 	 * @throws SAXException
@@ -1217,5 +1220,65 @@ public class PepperJobImplTest extends PepperJobImpl implements UncaughtExceptio
 			System.out.println(diff);
 			fail();
 		}
+	}
+
+	@Test
+	public void testCancelJob() throws InterruptedException {
+
+		// Create an importer that does nothing but needs 10 seconds to map a document
+		final PepperImporter longRunningImporter = new PepperImporterImpl("LongRunningImporter") {
+			@Override
+			public PepperMapper createPepperMapper(Identifier sElementId) {
+				return new PepperMapperImpl() {
+					
+					@Override
+					public DOCUMENT_STATUS mapSDocument() {
+						try {
+							Thread.sleep(10000);
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+						}
+
+						return DOCUMENT_STATUS.COMPLETED;
+					}
+				};
+			}
+		};
+		URI sampleURI = URI.createFileURI(PepperTestUtil.getTestResources() + "/isImportable/normalFiles/corpus/");
+		longRunningImporter.setResources(sampleURI);
+
+		// Make sure the dummy importer is known to Peppper
+		getFixture().setModuleResolver(new ModuleResolverImpl() {
+			@Override
+			public List<PepperImporter> getPepperImporters() {
+				return Arrays.asList(longRunningImporter);
+			}
+
+			@Override
+			public PepperModule getPepperModule(StepDesc stepDesc) {
+				return longRunningImporter;
+			}
+		});
+
+		// Create a dummy import and start it in a background thread
+		StepDesc importStep = new StepDesc();
+		importStep.setModuleType(MODULE_TYPE.IMPORTER);
+		importStep.setName("LongRunningImporter");
+		CorpusDesc desc = new CorpusDesc();
+		desc.setCorpusPath(sampleURI);
+		importStep.setCorpusDesc(desc);
+		getFixture().addStepDesc(importStep);
+
+		Thread background = new Thread(getFixture()::convertFrom);
+		background.start();
+
+		// Cancel the background converter job
+		getFixture().cancelConversion();
+
+		// Wait until the original thread is finished
+		background.join(5000);
+		// The result must indicate failure
+		JOB_STATUS actualStatus = getFixture().getStatus();
+		assertEquals(JOB_STATUS.ENDED_WITH_ERRORS, actualStatus);
 	}
 }
