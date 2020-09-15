@@ -84,6 +84,7 @@
 							<path>index.html</path>
 							<path>doxygen_sqlite3.db</path>
 							<path>.gitignore</path>
+							<path>p2</path>
 						</ignorePathsToDelete>
 						<tryUpdate>true</tryUpdate>
 						<checkoutDirectory>${scmPubCheckoutDirectory}</checkoutDirectory>
