@@ -564,7 +564,7 @@ public class PepperModuleImpl implements PepperModule, UncaughtExceptionHandler 
             // Check if the parent job was cancelled
             if (moduleController != null && moduleController.getJob() != null
                     && moduleController.getJob().isCancellationRequested()) {
-                break;
+                throw new PepperFWException("Stopping module " + getName() + " because parent job was cancelled.");
             }
 
             documentController = this.getModuleController().next();
