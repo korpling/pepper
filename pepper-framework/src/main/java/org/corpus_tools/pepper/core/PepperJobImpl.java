@@ -1013,8 +1013,8 @@ public class PepperJobImpl extends PepperJob {
 
 
 				try {
-					// Wait 1 second until next check if modules have finished execution
-					Thread.sleep(1000);
+					// Wait half a second until next check if modules have finished execution
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
