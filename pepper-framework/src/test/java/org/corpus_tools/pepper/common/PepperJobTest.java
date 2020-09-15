@@ -67,6 +67,11 @@ public class PepperJobTest extends PepperJob {
 	}
 
 	@Override
+	public void cancelConversion() {
+		throw new UnsupportedOperationException();		
+	}
+
+	@Override
 	public void load(URI uri) {
 		throw new UnsupportedOperationException();
 	}
