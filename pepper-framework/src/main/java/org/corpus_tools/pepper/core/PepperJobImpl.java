@@ -1011,14 +1011,8 @@ public class PepperJobImpl extends PepperJob {
 					}
 				}
 
-
-				try {
-					// Wait half a second until next check if modules have finished execution
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					break;
-				}
+				// Give the actual conversion computation time
+				Thread.yield();
 			};
 			status = JOB_STATUS.ENDED;
 		} catch (RuntimeException e) {
