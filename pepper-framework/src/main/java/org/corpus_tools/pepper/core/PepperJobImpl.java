@@ -894,7 +894,6 @@ public class PepperJobImpl extends PepperJob {
 		}
 
 		inProgress.lock();
-		this.cancellationRequested.set(false);
 		try {
 			startTime = System.currentTimeMillis();
 			status = JOB_STATUS.INITIALIZING;
