@@ -7,7 +7,7 @@
 
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.5.1</version>
+		<version>3.5.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<description>This project contains the core of Pepper.</description>
