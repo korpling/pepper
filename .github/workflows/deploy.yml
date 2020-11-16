@@ -1,0 +1,37 @@
+name: Deploy release
+on: push
+
+jobs:
+  p2:
+    name: Deploy as P2 repository
+    # Only run Job on tagged commits that start with "v"
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+          java-package: jdk
+      - name: Get the release version from the GITHUB_REF variable as new SHORT_VERSION variable
+        run: echo "SHORT_VERSION=$(echo ${GITHUB_REF} | sed -E 's/^refs\/heads\/.*/develop/' | sed -E 's/^(refs\/tags\/v)?(.*)(\.[0-9]+)$/\2/')" >> $GITHUB_ENV
+      - run: 'mvn install p2:site'
+      - run: git clone -q  -b gh-pages https://github.com/$GITHUB_REPOSITORY gh-pages
+      - run: echo $SHORT_VERSION
+      - name: Remove old files for this version
+        run: rm -Rf gh-pages/p2/$SHORT_VERSION
+      - run: mkdir --verbose -p gh-pages/p2/$SHORT_VERSION
+      - name: copy the P2 repository content from the maven build directory
+        run: cp -R target/repository/* gh-pages/p2/$SHORT_VERSION
+      - run: git add p2/$SHORT_VERSION
+        working-directory: gh-pages
+      - run: git -c user.name='gh-actions' -c user.email='gh-actions' commit -m "add p2 repository for version $SHORT_VERSION"
+        working-directory: gh-pages
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          directory: gh-pages
+          branch: gh-pages
+      
