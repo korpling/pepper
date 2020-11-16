@@ -9,13 +9,6 @@
 		<version>3.5.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<repositories>
-		<repository>
-			<id>Jabylon</id>
-			<name>Jabylon</name>
-			<url>http://www.jabylon.org/maven/</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.corpus-tools</groupId>
@@ -122,16 +115,14 @@
 			<version>4.2.5</version>
 		</dependency>
 		<dependency>
-			<!-- accessible via Jabylon repo -->
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>util</artifactId>
-			<version>1.0.500</version>
+		    <groupId>org.eclipse.platform</groupId>
+		    <artifactId>org.eclipse.equinox.util</artifactId>
+		    <version>1.1.300</version>
 		</dependency>
 		<dependency>
-			<!-- accessible via Jabylon repo -->
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>ds</artifactId>
-			<version>1.4.101</version>
+		    <groupId>org.eclipse.platform</groupId>
+		    <artifactId>org.eclipse.equinox.ds</artifactId>
+		    <version>1.6.200</version>
 		</dependency>
 		<dependency>
 			<!-- Necessary to run Salt upto version 2.10.1 (unfortunatly version from 
