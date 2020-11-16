@@ -29,6 +29,7 @@ This project includes:
   Aether Utilities under Eclipse Public License, Version 1.0
   Animal Sniffer Annotations under MIT license
   Apache Commons Lang under Apache License, Version 2.0
+  Apache Felix Declarative Services under Apache License, Version 2.0
   Apache Felix Framework under Apache License, Version 2.0
   Apache HttpClient under Apache License
   Apache HttpClient Cache under Apache License
@@ -46,12 +47,12 @@ This project includes:
   Commons IO under The Apache Software License, Version 2.0
   Commons Logging under The Apache Software License, Version 2.0
   Core Runtime under Eclipse Public License - v 1.0
-  Declarative Services under Eclipse Public License - v 1.0
+  Declarative Services under Eclipse Public License - v 2.0
   Eclipse Content Mechanism under Eclipse Public License - v 1.0
   Eclipse Jobs Mechanism under Eclipse Public License - v 1.0
   Eclipse Preferences Mechanism under Eclipse Public License - v 1.0
   Equinox Application Container under Eclipse Public License - v 1.0
-  Equinox Util Bundle under Eclipse Public License - v 1.0
+  Equinox Util Bundle under Eclipse Public License - v 2.0
   Extension Registry Support under Eclipse Public License - v 1.0
   Fluent API for Apache HttpClient under Apache License
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
