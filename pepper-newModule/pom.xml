@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper-parentModule</artifactId>
-		<version>3.5.1-SNAPSHOT</version>
+		<version>3.5.1</version>
 		<relativePath>../pepper-parentModule/pom.xml</relativePath>
 	</parent>
 	<artifactId>pepper-newModule</artifactId>
