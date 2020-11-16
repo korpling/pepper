@@ -6,6 +6,12 @@
 *													                              *
 ***********************************************************************************
 
+Version 3.5.1
+=============
+
+* Avoid busy loop to check for cancelation with the new API. 
+  This should also help to detect and forward some of the internal errors to the calling process.
+
 Version 3.5.0
 =============
 

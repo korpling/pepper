@@ -1,0 +1,38 @@
+name: Automated tests
+on: push
+
+jobs:
+  test_java8:
+    name: Execute all automated tests on Java 8
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-java8-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-java8-
+      - name: Set JAVA_HOME to included JDK 8
+        run: echo JAVA_HOME=$JAVA_HOME_8_X64 >> $GITHUB_ENV
+      - name: Run Maven install (includes tests)
+        run: mvn install
+  test_java11:
+    name: Execute all automated tests on Java 11
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-java11-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-java11-
+      - name: Set JAVA_HOME to included JDK 11
+        run: echo JAVA_HOME=$JAVA_HOME_11_X64 >> $GITHUB_ENV
+      - name: Run Maven install (includes tests)
+        run: mvn install

@@ -9,7 +9,7 @@
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>3.5.0</version>
+		<version>3.5.1</version>
 	</parent>
 
 	<properties>
@@ -84,6 +84,7 @@
 							<path>index.html</path>
 							<path>doxygen_sqlite3.db</path>
 							<path>.gitignore</path>
+							<path>p2</path>
 						</ignorePathsToDelete>
 						<tryUpdate>true</tryUpdate>
 						<checkoutDirectory>${scmPubCheckoutDirectory}</checkoutDirectory>
