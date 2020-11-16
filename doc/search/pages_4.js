@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['im_2d_20and_20exporting_20corpus_20structure_20_28only_20im_2d_20and_20exporters_29_1190',['Im- and exporting corpus structure (only im- and exporters)',['../corpus_structure.html',1,'moduleDevelopers']]]
+  ['fitness_20check_1190',['Fitness check',['../dev_fitness_check.html',1,'developers']]],
+  ['fitness_20check_1191',['Fitness Check',['../fitness.html',1,'moduleDevelopers']]]
 ];
