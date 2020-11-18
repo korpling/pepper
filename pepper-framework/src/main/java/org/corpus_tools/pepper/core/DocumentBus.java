@@ -384,7 +384,7 @@ public class DocumentBus {
 		if (logger.isDebugEnabled()) {
 			logger.debug(
 					"[Pepper] new document '{}' added to document bus. Following documents are waiting in document bus '{}': '{}'... ",
-					documentController.getGlobalId(), getId(), getDocumentBus().values());
+					documentController.getGlobalId(), getId(), getDocumentBus().toString());
 		}
 
 		// TODO if possible send documents to sleep, before waiting for lock,
