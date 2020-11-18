@@ -512,8 +512,8 @@ public class DocumentBus {
 		DocumentController documentController = null;
 		if (logger.isDebugEnabled()) {
 			logger.debug(
-					"[Pepper] remove document for controller {} from document bus. Following documents are still waiting in bus: '{}'... ",
-					outputControllerId, getDocumentBus().values());
+					"[Pepper] removal of document for controller {} from document bus requested. Following documents are still waiting in bus: '{}'... ",
+					outputControllerId, getDocumentBus().toString());
 		}
 		lock.lock();
 		try {

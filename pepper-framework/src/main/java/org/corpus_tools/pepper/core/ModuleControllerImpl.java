@@ -289,7 +289,7 @@ public class ModuleControllerImpl implements ModuleController {
 					getPepperModule().start();
 					if (getControllList().size() != 0) {
 						throw new PepperModuleException(getPepperModule(),
-								"Some documents are still in the processing queue by module '"
+								"Some documents are still in the processing queue '" + getId() +  "' by module '"
 										+ getPepperModule().getName() + "' and neither set to '"
 										+ DOCUMENT_STATUS.COMPLETED + "', '" + DOCUMENT_STATUS.DELETED + "' or '"
 										+ DOCUMENT_STATUS.FAILED + "'. Remaining documents are: " + getControllList());
