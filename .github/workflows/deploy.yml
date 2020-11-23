@@ -4,8 +4,8 @@ on: push
 jobs:
   p2:
     name: Deploy as P2 repository
-    # Only run Job on tagged commits that start with "pepper-"
-    if: startsWith(github.ref, 'refs/tags/pepper-')
+    # Only run Job on tagged commits that start with "v"
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -15,7 +15,7 @@ jobs:
           java-version: '8'
           java-package: jdk
       - name: Get the release version from the GITHUB_REF variable as new SHORT_VERSION variable
-        run: echo "SHORT_VERSION=$(echo ${GITHUB_REF} | sed -E 's/^refs\/heads\/.*/develop/' | sed -E 's/^(refs\/tags\/pepper-)?(.*)(\.[0-9]+)$/\2/')" >> $GITHUB_ENV
+        run: echo "SHORT_VERSION=$(echo ${GITHUB_REF} | sed -E 's/^refs\/heads\/.*/develop/' | sed -E 's/^(refs\/tags\/v)?(.*)(\.[0-9]+)$/\2/')" >> $GITHUB_ENV
       - run: 'mvn install'
       - run: 'mvn p2:site'
       - run: git clone -q  -b gh-pages https://github.com/$GITHUB_REPOSITORY gh-pages

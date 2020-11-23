@@ -6,6 +6,11 @@
 *													                              *
 ***********************************************************************************
 
+Version 3.5.3
+=============
+
+* Use version tag prefix "v" since its inherited to all Pepper modules and should not be "pepper-"
+
 Version 3.5.2
 =============
 
