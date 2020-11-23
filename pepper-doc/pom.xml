@@ -9,7 +9,7 @@
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>3.5.3</version>
+		<version>3.5.4-SNAPSHOT</version>
 	</parent>
 
 	<properties>
