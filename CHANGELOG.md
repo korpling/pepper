@@ -1,63 +1,53 @@
-***********************************************************************************
-***								CHANGELOG for Pepper							***
-***********************************************************************************
-*	groupId:		org.corpus_tools                         					  *
-*	artifactId:		pepper												          *
-*													                              *
-***********************************************************************************
+# Changelog
+All notable changes to this project will be documented in this file.
 
-Version 3.5.3
-=============
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Use version tag prefix "v" since its inherited to all Pepper modules and should not be "pepper-"
+## [3.5.3] - 2020-11-23
 
-Version 3.5.2
-=============
+### Changed
+
+- Use version tag prefix "v" since its inherited to all Pepper modules and should not be "pepper-"
+
+## [3.5.2]
 
 * Re-release 3.5.1 as 3.5.2 because of aborted release process
 
-Version 3.5.1
-=============
+## [3.5.1]
 
 * Avoid busy loop to check for cancelation with the new API. 
   This should also help to detect and forward some of the internal errors to the calling process.
 
-Version 3.5.0
-=============
+## [3.5.0]
 
 * Allow to cancel a running Pepper job via the API
 
-Version 3.4.1
-=============
+## [3.4.1]
 
 * Fixed startup problems introduced in 3.4.1
 
-Version 3.4.1
-=============
+## [3.4.1]
 
 * Fix export version of commons-io in manifest
 * Update to Salt version 3.4.2
 
-Version 3.4.0
-=============
+## [3.4.0]
 
 * Set Maven Central URL to https://repo1.maven.org/maven2/ to make the internal updater work again.
 * Update to Salt version 3.4.1
 
-Version 3.0.2
-=============
+## [3.0.2]
 * fix Salt dependency
 * enhance module tutorial
 * correct pepper parent module version in newModule archetype
 
-Version 3.0.1
-=============
+## [3.0.1]
 * make sure Pepper is using the latest bugfix version of Salt (currently 3.0.6)
 * update Maven Aether dependency to enhance the update process
 * fix some Eclipse build warnings
 
-Version 3.0.0
-=============
+## [3.0.0]
 * updated Salt to version 3.0.3
 * allowed to define a maven snapshot repository separate from stable repository 
 * changed all package names to org.corpus_tools.pepper
@@ -66,13 +56,11 @@ Version 3.0.0
 * added more tolerancy in wizard for backslaches and relative pathes
 * Fix memory leak when documents are deleted
 
-Version 2.1.2
-=============
+## [2.1.2]
 * added an integrated TextExporter
 * removed memeory settings in bat and sh
 
-Version 2.1.1
-=============
+## [2.1.1]
 * a TextExporter is added to Pepper for exporting just primary texts 
 * Pepper's version is displayed when starting Pepper
 * When Pepper cannot retrieve the resource folder for Pepper modules a warning is printed instead of throwing an exception
@@ -86,13 +74,11 @@ Version 2.1.1
 * fixed #55: Problems with path deresolving in Pepper wizard at least in Windows
 * fixed #56: problems with file encoding in Windows
 
-Version 2.1.1
-=============
+## [2.1.1]
 * this is a bugfix version containing fixes for the plugin mechanism and the logging, which caused LinkageExceptions because of a bug in the current logback implementation 
 
 
-Version 2.1.0
-=============
+## [2.1.0]
 * a detailed log can be found on github under: https://github.com/korpling/pepper/issues?utf8=%E2%9C%93&q=is%3Aclosed+milestone%3A%22Pepper+2.1+release%22+
 
 * added a wizard to create pepper workflow descriptions (open console and enter 'convert')
@@ -108,8 +94,7 @@ Version 2.1.0
 * added a naming the users name as extension for temporary folders followed by a randomized sequence ...
 * updated Salt version to 2.1.0
 
-Version 2.0.0
-=============
+## [2.0.0]
 	* removed EMF from Pepper (only used to access Salt)
 	* simplified project structure, main projects are
 	** pepper-framework (core of Pepper)
@@ -122,31 +107,26 @@ Version 2.0.0
 	* improved test environment for modules, see: PepperImporterTest, PepperExporterTest, PepperManipulatorTest
 	* new interactive console to access Pepper and even the underlying OSGi (in parts) 
 	* updated JUnit to version 4
-Version 1.1.7
-=============
+## [1.1.7]
 	* reorganized detection of Pepper module resources, now PEPPER_TEST environment variable is necessary any more, resources now can be directly loaded from same path, where the bundle is located 
-Version 1.1.6
-=============
+## [1.1.6]
 	* added a multi threadable handling for all Pepper modules
 	* a new mechanism for importing the corpus-structure for importers, with which most importers can automatically import the corpus-structure
 	* updated to Salt 1.1.7 
 	
-Version 1.1.5
-=============
+## [1.1.5]
 	* adopted entire project to eclipse juno
 	* set notice plugin-in to a global accessable license-mappings.xml on http://korpling.german.hu-berlin.de/saltnpepper/misc/license-mappings.xml
 	* removed bundle as packaging of dependencies in pom 
 
-Version 1.1.4
-=============
+## [1.1.4]
 	pepper-modules
   ---------------
   	*+ added method addSupportedFormat() for simpler creation of a supported format
   	*+ added automatically method to create the symbolic name of a PepperModule
   	
   	
-Version 1.1.3
-=============
+## [1.1.3]
 
   pepper-framework
   ---------------
