@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.5.2</version>
+	<version>3.5.3</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -266,7 +266,7 @@
 						<releaseBranchPrefix>release/</releaseBranchPrefix>
 						<hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
 						<supportBranchPrefix>support/</supportBranchPrefix>
-						<versionTagPrefix>pepper-</versionTagPrefix>
+						<versionTagPrefix>v</versionTagPrefix>
 						<origin>origin</origin>
 					</gitFlowConfig>
 				</configuration>
