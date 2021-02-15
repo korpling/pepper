@@ -30,11 +30,6 @@
 			<version>${org.eclipse.osgi.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.framework</artifactId>
-			<version>6.0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.13</version>
@@ -123,6 +118,16 @@
 		    <groupId>org.eclipse.platform</groupId>
 		    <artifactId>org.eclipse.equinox.ds</artifactId>
 		    <version>1.6.200</version>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.util.promise</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.util.function</artifactId>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<!-- Necessary to run Salt upto version 2.10.1 (unfortunatly version from 
