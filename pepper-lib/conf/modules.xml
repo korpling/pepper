@@ -16,6 +16,9 @@
 		<artifactId>pepperModules-CoNLLModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-CoNLLCorefModules</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-CoraXMLModules</artifactId>
 	</pepperModules>
 	<pepperModules>
