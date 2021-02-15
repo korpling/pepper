@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import com.google.common.base.Joiner;
+
 import org.corpus_tools.pepper.common.JOB_STATUS;
 import org.corpus_tools.pepper.common.ModuleFitness;
 import org.corpus_tools.pepper.common.Pepper;
@@ -349,7 +351,9 @@ public class PepperImpl implements Pepper {
 				try {
 					logger.info("Checking '" + importer.getName() + "'");
 					if (!importer.isReadyToStart())
-						retVal.add("A Pepper module '" + importer.getName() + "' is not ready to start.");
+						retVal.add("A Pepper module '" + importer.getName()
+								+ "' is not ready to start. Reasons are: ["
+								+ Joiner.on(", ").join(importer.getStartProblems()) + "]");
 				} catch (Exception e) {
 					retVal.add("A Pepper module '" + importer.getName() + "' is not ready to start.");
 				}
@@ -366,7 +370,9 @@ public class PepperImpl implements Pepper {
 				try {
 					logger.info("Checking '" + manipulator.getName() + "'");
 					if (!manipulator.isReadyToStart())
-						retVal.add("A Pepper module '" + manipulator.getName() + "' is not ready to start.");
+						retVal.add("A Pepper module '" + manipulator.getName()
+								+ "' is not ready to start. Reasons are: ["
+								+ Joiner.on(", ").join(manipulator.getStartProblems()) + "]");
 				} catch (Exception e) {
 					retVal.add("A Pepper module '" + manipulator.getName() + "' is not ready to start.");
 				}
@@ -386,7 +392,9 @@ public class PepperImpl implements Pepper {
 				try {
 					logger.info("Checking '" + exporter.getName() + "'");
 					if (!exporter.isReadyToStart())
-						retVal.add("A Pepper module '" + exporter.getName() + "' is not ready to start.");
+						retVal.add("A Pepper module '" + exporter.getName()
+								+ "' is not ready to start. Reasons are: ["
+								+ Joiner.on(", ").join(exporter.getStartProblems()) + "]");
 				} catch (Exception e) {
 					retVal.add("A Pepper module '" + exporter.getName() + "' is not ready to start.");
 				}
