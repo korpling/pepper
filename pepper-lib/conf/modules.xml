@@ -16,6 +16,9 @@
 		<artifactId>pepperModules-CoNLLModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-CoNLLCorefModules</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-CoraXMLModules</artifactId>
 	</pepperModules>
 	<pepperModules>
@@ -44,10 +47,16 @@
 		<artifactId>pepperModules-GeTaModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-HeadMarkerModule</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-MergingModules</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-MMAX2Modules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-MoverModule</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-nlpModules</artifactId>
@@ -63,6 +72,9 @@
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-ANNISModules</artifactId>
+	</pepperModules>
+	<pepperModules>
+		<artifactId>pepperModules-RSDModules</artifactId>
 	</pepperModules>
 	<pepperModules>
 		<artifactId>pepperModules-RSTModules</artifactId>

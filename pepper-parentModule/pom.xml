@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.corpus-tools</groupId>
 		<artifactId>pepper</artifactId>
-		<version>3.5.3</version>
+		<version>3.6.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -109,25 +109,6 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>${maven-release-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>perform</goal>
-						</goals>
-						<configuration>
-							<pomFileName>${project.artifactId}/pom.xml</pomFileName>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<releaseProfiles>release</releaseProfiles>
-					<goals>package assembly:single deploy</goals>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>${maven-assembly-plugin.version}</version>
