@@ -74,6 +74,9 @@
 		<artifactId>pepperModules-ANNISModules</artifactId>
 	</pepperModules>
 	<pepperModules>
+		<artifactId>pepperModules-RSDModules</artifactId>
+	</pepperModules>
+	<pepperModules>
 		<artifactId>pepperModules-RSTModules</artifactId>
 	</pepperModules>
 	<pepperModules>
