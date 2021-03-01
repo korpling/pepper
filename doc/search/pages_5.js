@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['im_2d_20and_20exporting_20corpus_20structure_20_28only_20im_2d_20and_20exporters_29_1192',['Im- and exporting corpus structure (only im- and exporters)',['../corpus_structure.html',1,'moduleDevelopers']]]
+  ['monitoring_20the_20progress_1191',['Monitoring the progress',['../feedback.html',1,'moduleDevelopers']]],
+  ['module_20initialization_1192',['Module initialization',['../init.html',1,'moduleDevelopers']]],
+  ['map_20documents_20and_20corpora_1193',['Map documents and corpora',['../mapping.html',1,'moduleDevelopers']]]
 ];
