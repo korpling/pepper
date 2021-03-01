@@ -124,7 +124,6 @@
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-license-plugin.version>1.4.0</maven-license-plugin.version>
 		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
-		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<maven-source-plugin.version>2.4</maven-source-plugin.version>
 		<carrot-maven-scr-plugin.version>3.0.3</carrot-maven-scr-plugin.version>
 		<maven-notice-plugin.version>1.0.4</maven-notice-plugin.version>
@@ -252,7 +251,7 @@
 			<plugin>
 				<groupId>com.amashchenko.maven.plugin</groupId>
 				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.11.0</version>
+				<version>1.15.1</version>
 				<configuration>
 					<pushRemote>true</pushRemote>
 					<preReleaseGoals>license:format notice:generate</preReleaseGoals>
