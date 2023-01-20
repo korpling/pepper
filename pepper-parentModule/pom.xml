@@ -23,7 +23,7 @@
 		<repository>
 			<id>korpling</id>
 			<name>korpling maven repo</name>
-			<url>http://korpling.german.hu-berlin.de/maven2</url>
+			<url>https://korpling.german.hu-berlin.de/maven2</url>
 		</repository>
 	</repositories>
 	<distributionManagement>
