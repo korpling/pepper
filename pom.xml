@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper</artifactId>
-	<version>3.6.1</version>
+	<version>3.7.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>pepper-framework</module>
@@ -104,7 +104,7 @@
 		<!-- versions of dependencies -->
 		<salt.version>3.4.2</salt.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
-		<slf4j.version>1.7.5</slf4j.version>
+		<slf4j.version>2.0.16</slf4j.version>
 		<junit.version>4.13.1</junit.version>
 		<assertj.version>2.4.1</assertj.version>
 		<mockito.version>1.10.19</mockito.version>
@@ -116,7 +116,7 @@
 		<org.codehaus.janino.version>2.7.8</org.codehaus.janino.version>
 		<org.eclipse.aether.version>1.0.2.v20150114</org.eclipse.aether.version>
 		<org.eclipse.osgi.services.version>3.4.0.v20140312-2051</org.eclipse.osgi.services.version>
-		<commons.io.version>2.4</commons.io.version>
+		<commons.io.version>2.7</commons.io.version>
 		<!-- versions of plugins -->
 		<maven-bundle-plugin.version>2.5.4</maven-bundle-plugin.version>
 		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
