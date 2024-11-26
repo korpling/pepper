@@ -4,12 +4,12 @@ on: push
 jobs:
   test_java8:
     name: Execute all automated tests on Java 8
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-java8-${{ hashFiles('**/pom.xml') }}
@@ -21,12 +21,12 @@ jobs:
         run: mvn install
   test_java11:
     name: Execute all automated tests on Java 11
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-java11-${{ hashFiles('**/pom.xml') }}
