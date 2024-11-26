@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Update some dependencies for better compatibility with newer Java versions
+- Update logging implementation to fix security issues and compatibility with newer Eclipse releases 
 
 ## [3.6.0] - 2021-03-01
 
