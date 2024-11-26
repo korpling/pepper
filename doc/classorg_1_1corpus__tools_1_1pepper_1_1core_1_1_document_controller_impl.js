@@ -10,7 +10,7 @@ var classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl =
     [ "getGlobalId", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a1a696d2d6e5d3e48427dc5631c37cb19", null ],
     [ "getGlobalStatus", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a1cd19f75ee52679013d4f6296608e2fe", null ],
     [ "getLocation", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a95c7926a0acbd99d6bb8b99245dde88e", null ],
-    [ "getModuleControllers", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#afb9b160b929736734fec0053143b37dc", null ],
+    [ "getModuleControllers", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a9e87a67d7c488dbffce875fe484449cf", null ],
     [ "getNumOfProcessingModules", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#aa712510c0ce19898fbd3b54a89e1c806", null ],
     [ "getProcessingTime", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a36c420052e6615e454a901cd13f88257", null ],
     [ "getProgress", "classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#a495190e974227ed05e6faa81734fa708", null ],

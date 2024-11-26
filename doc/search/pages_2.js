@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['clean_20up_1186',['Clean up',['../clean_up.html',1,'moduleDevelopers']]],
-  ['customizing_20the_20mapping_1187',['Customizing the mapping',['../customization.html',1,'moduleDevelopers']]]
+  ['bundle_20and_20deliver_0',['Bundle and deliver',['../bundle.html',1,'moduleDevelopers']]]
 ];

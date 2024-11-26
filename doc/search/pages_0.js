@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['analyzing_20corpus_20format_20_28only_20importers_29_1184',['Analyzing corpus format (only importers)',['../analyze.html',1,'moduleDevelopers']]]
+  ['10_20minutes_0',['Tutorial: Getting started in 10 minutes',['../tutorial.html',1,'moduleDevelopers']]]
 ];

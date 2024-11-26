@@ -2,7 +2,7 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_control
 [
     [ "getIdentifier", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#a3eadcaa573b564bd98e2a8aafa6101c3", null ],
     [ "getMappingResult", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#ad21d4404a3b9c11a09a728b4070856a8", null ],
-    [ "getMappingSubjects", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#a60774182dbf184f4e6becee5a5bf9ff1", null ],
+    [ "getMappingSubjects", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#a657596e89ac53ded4012ed1a7018c246", null ],
     [ "getPepperMapper", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#af3321d45053f35af6117571cf294741e", null ],
     [ "getPermissionForProcessDoument", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#a8e29eb6399aa744705293ea88d07a9d1", null ],
     [ "getProgress", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper_controller.html#a10320a09084c4849d42be21100a55aa4", null ],

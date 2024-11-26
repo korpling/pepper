@@ -1,6 +1,6 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console =
 [
-    [ "COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d" ],
+    [ "COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console_1_1_c_o_m_m_a_n_d.html", null ],
     [ "ConvertWizardConsole", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html#acc0b5f74798be64c07da1c7b207b4623", null ],
     [ "exportPhase", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html#a1993947b9de82150096f37601a3f9686", null ],
     [ "getPepper", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_convert_wizard_console.html#a41bf55522f596c0b5e447117b86b2054", null ],

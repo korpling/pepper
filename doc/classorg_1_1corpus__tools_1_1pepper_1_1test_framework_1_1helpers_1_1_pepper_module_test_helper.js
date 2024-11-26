@@ -9,7 +9,5 @@ var classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_
     [ "initialize", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a2f0a6602b7e8c43a45b46b2be6dfb8c1", null ],
     [ "setFixture", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a59cf1dfe80441cbaf22d5bcd47989d7b", null ],
     [ "setResourcesURI", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a4ae056159ecf7765bf2e567f6ea9d1a5", null ],
-    [ "start", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a7c7143f176d1a96aeac6dfcc76ec6eb1", null ],
-    [ "fixture", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a2febbf8f4fd024b440b7d28b2ca17a93", null ],
-    [ "resourceURI", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#aabb7b1462c35a849e4080e35be94f72e", null ]
+    [ "start", "classorg_1_1corpus__tools_1_1pepper_1_1test_framework_1_1helpers_1_1_pepper_module_test_helper.html#a7c7143f176d1a96aeac6dfcc76ec6eb1", null ]
 ];

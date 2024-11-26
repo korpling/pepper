@@ -1,7 +1,14 @@
 var searchData=
 [
-  ['waituntilalldocumentsareput_578',['waitUntilAllDocumentsArePut',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_bus.html#a0230e0b243bb804f7460b8ec0fbeac3c',1,'org::corpus_tools::pepper::core::DocumentBus']]],
-  ['wire_579',['wire',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#a75156d34a20984a88265e05c7d30b46d',1,'org::corpus_tools::pepper::core::PepperJobImpl']]],
-  ['workflowdescriptionreader_580',['WorkflowDescriptionReader',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_workflow_description_reader.html',1,'org::corpus_tools::pepper::core']]],
-  ['workflowexception_581',['WorkflowException',['../classorg_1_1corpus__tools_1_1pepper_1_1exceptions_1_1_workflow_exception.html',1,'org::corpus_tools::pepper::exceptions']]]
+  ['uncaughtexception_0',['uncaughtException',['../classorg_1_1corpus__tools_1_1pepper_1_1impl_1_1_pepper_module_impl.html#a8c6a3d92759a1dd22ee57b497eb7bfba',1,'org::corpus_tools::pepper::impl::PepperModuleImpl']]],
+  ['unifyproposedimportorders_1',['unifyProposedImportOrders',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_job_impl.html#aa4ad0c0fc3e4fc43773f5f951d72a9dd',1,'org::corpus_tools::pepper::core::PepperJobImpl']]],
+  ['uninstall_2',['uninstall',['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_o_s_gi_console.html#a25f42ac222cd200e4759ad0ff3ef7f0d',1,'org.corpus_tools.pepper.cli.OSGiConsole.uninstall()'],['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#aba781cc79d4887a410c313fd06ce371f',1,'org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector.uninstall(Long bundleId)'],['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#af76fe5c46659e0def601e0859a79b433',1,'org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector.uninstall(URI location)']]],
+  ['unsetmoduleresolver_3',['unsetModuleResolver',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_impl.html#a878e4cb238b48369f00b2748d57da12a',1,'org::corpus_tools::pepper::core::PepperImpl']]],
+  ['unsetpepper_4',['unsetPepper',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_pepper_o_s_gi_runner.html#a913aeef2cfa3d96d84df9601246ac89e',1,'org::corpus_tools::pepper::core::PepperOSGiRunner']]],
+  ['up_5',['up',['../clean_up.html',1,'Clean up'],['../tutorial.html#autotoc_md31',1,'Set up']]],
+  ['update_6',['update',['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_pepper_o_s_gi_connector.html#ad7e058e409ea17fa7bc103a2847b91df',1,'org.corpus_tools.pepper.connectors.impl.PepperOSGiConnector.update()'],['../classorg_1_1corpus__tools_1_1pepper_1_1connectors_1_1impl_1_1_maven_accessor.html#a37bb8b60cab99794571e745a23e7dba4',1,'org.corpus_tools.pepper.connectors.impl.MavenAccessor.update()'],['../classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_o_s_gi_console.html#a9a284e492d48ab211a92032d19383754',1,'org.corpus_tools.pepper.cli.OSGiConsole.update()']]],
+  ['updatestatus_7',['updatestatus',['../classorg_1_1corpus__tools_1_1pepper_1_1core_1_1_document_controller_impl.html#ab3143b8faa64502e4fe65e175d5325ad',1,'org.corpus_tools.pepper.core.DocumentControllerImpl.updateStatus()'],['../interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a99b76832c73dec3dbf676a08dd75a25d',1,'org.corpus_tools.pepper.modules.DocumentController.updateStatus()']]],
+  ['users_8',['Pepper users',['../users.html',1,'']]],
+  ['using_20jrebel_9',['Using JRebel',['../dependencies.html#autotoc_md8',1,'']]],
+  ['using_20third_20party_20dependencies_10',['Using third-party dependencies',['../dependencies.html',1,'moduleDevelopers']]]
 ];

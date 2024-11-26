@@ -8,7 +8,7 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller =
     [ "getGlobalId", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a77ea4903b3d6991725e4715745f0a1ab", null ],
     [ "getGlobalStatus", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a00493c1ce13775e61da2d0f4c41235ce", null ],
     [ "getLocation", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a13bdce06b38f380dbb2fde701981865a", null ],
-    [ "getModuleControllers", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a23912c9c84d6778d47710a3c798577c3", null ],
+    [ "getModuleControllers", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#ad137db2320bbd57469f4ec610f824467", null ],
     [ "getNumOfProcessingModules", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#aef497d6f83529c3479850efd217a674b", null ],
     [ "getProcessingTime", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#ac68f621cc42742e4669097551af58116", null ],
     [ "getProgress", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_document_controller.html#a1abe4f4777cf14552148bfd9f25138ec", null ],

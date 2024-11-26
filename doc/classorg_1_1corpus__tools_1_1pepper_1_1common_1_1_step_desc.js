@@ -10,6 +10,5 @@ var classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc =
     [ "setName", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#aabdfd6e54cc551e7c0e7caa8f2be7519", null ],
     [ "setProps", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#a4c90ba9e49a26c733cc5b23be659ba57", null ],
     [ "setVersion", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#a8fbc0ee62d6816da9eafd39cadd38c70", null ],
-    [ "toString", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#a2ca17287fc9b08e5d9b9a9769a96d706", null ],
-    [ "toXML", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#acb84fd84687857e596544e428588cb56", null ]
+    [ "toString", "classorg_1_1corpus__tools_1_1pepper_1_1common_1_1_step_desc.html#a2ca17287fc9b08e5d9b9a9769a96d706", null ]
 ];

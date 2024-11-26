@@ -1,6 +1,6 @@
 var classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter =
 [
-    [ "COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d" ],
+    [ "COMMAND", "enumorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter_1_1_c_o_m_m_a_n_d.html", null ],
     [ "PepperStarter", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter.html#a3a90e95f94a5c1f0f63459d883640760", null ],
     [ "PepperStarter", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter.html#abb069597908471974d136e2ff3a68eba", null ],
     [ "clean", "classorg_1_1corpus__tools_1_1pepper_1_1cli_1_1_pepper_starter.html#a18eabc4af2962f3a9dd77a29120739d7", null ],

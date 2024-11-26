@@ -4,7 +4,7 @@ var interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper =
     [ "getCorpus", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#ae08c6607c56e00c0555a3b85c7991527", null ],
     [ "getDocument", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a209f9a2fc577a31c47e54be798f5cdcd", null ],
     [ "getMappingResult", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#acfc2493f50c4a1ce3c413ebd917836df", null ],
-    [ "getMappingSubjects", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#ab3018b95675db1013e4a8a2485ff9532", null ],
+    [ "getMappingSubjects", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a4baca4537b34ceede70edeb7a86da164", null ],
     [ "getPepperMapperController", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#ab6124b997a7e8c7c830c153dca8f1d3c", null ],
     [ "getProgress", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#abf0d14220f36ea623237ce5b05c446e4", null ],
     [ "getProperties", "interfaceorg_1_1corpus__tools_1_1pepper_1_1modules_1_1_pepper_mapper.html#a17bdef7f40a18c2aac1c19b284f55941", null ],

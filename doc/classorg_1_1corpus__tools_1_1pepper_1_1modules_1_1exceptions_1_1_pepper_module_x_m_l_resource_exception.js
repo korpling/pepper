@@ -1,6 +1,0 @@
-var classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_x_m_l_resource_exception =
-[
-    [ "PepperModuleXMLResourceException", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_x_m_l_resource_exception.html#ab3c803e9884f489778adf925bfdc3a30", null ],
-    [ "PepperModuleXMLResourceException", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_x_m_l_resource_exception.html#acdcb25c4de602c5925e5d0805fa538cf", null ],
-    [ "PepperModuleXMLResourceException", "classorg_1_1corpus__tools_1_1pepper_1_1modules_1_1exceptions_1_1_pepper_module_x_m_l_resource_exception.html#a9ed142ee7417797aeb5ddd19f006d5a6", null ]
-];
